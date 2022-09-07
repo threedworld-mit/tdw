@@ -13,29 +13,31 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 - Unity Hub
 - Unity Editor 2020.3.24f1
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
-  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `AssetBundleCreator` constructor (see below).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `ModelCreator` constructor (see below).
 - A .fbx or .obj+.mtl model
 
 ## The Asset Bundle Creator Unity project
 
 To convert mesh files into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
 
+Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [robots](../robots/custom_robots.md).
+
 Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 
-## The `AssetBundleCreator` Python class
+## The `ModelCreator` Python class
 
-The [`AssetBundleCreator`](../../python/asset_bundle_creator.md) Python class will convert an .fbx or .obj file into an asset bundle and generate physics colliders. Depending on the complexity of the base mesh, this can be a lengthy process, especially when generating physics colliders.
+The [`ModelCreator`](../../python/asset_bundle_creator/model_creator.md) Python class will convert an .fbx or .obj file into an asset bundle and generate physics colliders. Depending on the complexity of the base mesh, this can be a lengthy process, especially when generating physics colliders.
 
 ```python
 from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
 print(f"Asset bundles will be saved to: {output_directory}")
-AssetBundleCreator().source_file_to_asset_bundles(name="cube",
-                                                  source_file=Path("cube.fbx").resolve(),
-                                                  output_directory=output_directory)
+ModelCreator().source_file_to_asset_bundles(name="cube",
+                                            source_file=Path("cube.fbx").resolve(),
+                                            output_directory=output_directory)
 ```
 
 Output:
@@ -56,74 +58,126 @@ Output:
 - `record.json` is a serialized ModelRecord.
 - `log.txt` is a log of the creation process.
 
-There are optional parameters for setting the semantic category of the model, for controlling whether intermediary mesh files and prefabs are saved or deleted, and so on. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+There are optional parameters for setting the semantic category of the model, for controlling whether intermediary mesh files and prefabs are saved or deleted, and so on. [Read the API document for more information.](../../python/asset_bundle_creator/model_creator.md)
 
 This example includes all optional parameters:
 
 ```python
 from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
 print(f"Asset bundles will be saved to: {output_directory}")
-AssetBundleCreator().source_file_to_asset_bundles(name="cube",
-                                                  source_file=Path("cube.fbx").resolve(),
-                                                  output_directory=output_directory,
-                                                  vhacd_resolution=800000,
-                                                  internal_materials=True,
-                                                  wnid="n02942699",
-                                                  wcategory="camera",
-                                                  scale_factor=1,
-                                                  library_path="library.json",
-                                                  library_description="My custom library",
-                                                  cleanup=True,
-                                                  write_physics_quality=False,
-                                                  validate=False)
+ModelCreator().source_file_to_asset_bundles(name="cube",
+                                            source_file=Path("cube.fbx").resolve(),
+                                            output_directory=output_directory,
+                                            vhacd_resolution=800000,
+                                            internal_materials=True,
+                                            wnid="n02942699",
+                                            wcategory="camera",
+                                            scale_factor=1,
+                                            library_path="library.json",
+                                            library_description="My custom library",
+                                            cleanup=True,
+                                            write_physics_quality=False,
+                                            validate=False)
 ```
 
-### Constructor parameters
+## Constructor parameters
 
-`AssetBundleCreator` has several optional constructor parameters:
+`ModelCreator` has several optional constructor parameters:
 
 #### 1. `quiet`
 
 If True, suppress output messages.
 
-### 2. `unity_editor_path`
+#### 2. `unity_editor_path`
 
-If you installed Unity Editor via Unity Hub, `AssetBundleCreator` should be able to automatically find the Unity Editor executable.
+If you installed Unity Editor via Unity Hub, `ModelCreator` should be able to automatically find the Unity Editor executable.
 
-If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `AssetBundleCreator` by setting the optional `unity_editor_path` parameter:
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `ModelCreator` by setting the optional `unity_editor_path` parameter:
 
 ```python
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 
-a = AssetBundleCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
+a = ModelCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
 ```
 
 #### 3. `check_version`
 
-When you create a new `AssetBundleCreator` Python object, it automatically compares the version of your local Unity project to the one stored on GitHub. This requires an Internet connection and might not be desirable in all cases, especially on servers. To prevent the version check, set `check_version=False` in the constructor.
+When you create a new `ModelCreator` Python object, it automatically compares the version of your local Unity project to the one stored on GitHub. This requires an Internet connection and might not be desirable in all cases, especially on servers. To prevent the version check, set `check_version=False` in the constructor.
 
 #### 4. `display`
 
 This must be set on Linux machines, especially headless servers, and must match a valid X display.
 
-### Intermediate API calls
+## Create multiple asset bundles
 
-It's possible to manually perform any of the operations involved in creating an asset bundle.
+You can feasibly create asset bundles for multiple models by calling `source_file_to_asset_bundles()` in a loop. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
 
-Sometimes, it's useful to convert a 3D model to a [prefab](https://docs.unity3d.com/Manual/Prefabs.html), edit the prefab in Unity Editor (for example, to adjust the color or positions of the colliders), and then convert the prefab to an asset bundle. In that case, you'd first do this:
+There are two ways to generate asset bundles for multiple source files:
+
+### Option 1: `source_directory_to_asset_bundles()`
+
+This will read a source directory and convert every mesh file within it into asset bundles.
 
 ```python
 from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+a = ModelCreator()
+a.source_directory_to_asset_bundles(source_directory=Path.home().joinpath("tdw_asset_bundles"),
+                                    output_directory=output_directory)
+```
+
+There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator/model_creator.md)
+
+### Option 2: `metadata_file_to_asset_bundles()`
+
+This will read a metadata.csv file and convert every mesh file listed into asset bundles:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator.model_creator import ModelCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
+a = ModelCreator()
+a.metadata_file_to_asset_bundles(metadata_path=Path.home().joinpath("tdw_asset_bundles/metadata.csv"),
+                                 output_directory=output_directory)
+```
+
+There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator/model_creator.md)
+
+This is an example metadata file:
+
+```
+name,wnid,wcategory,scale_factor,path
+model_0,n04148054,scissors,1,source_directory/model_0/model_0.obj
+model_1,n03056701,coaster,1,source_directory/model_1/model_1.obj
+```
+
+The *disadvantage* to using this function is that you need to prep the .csv file manually, as opposed to `source_directory_to_asset_bundles()`, which requires no manual prep (other than placing the target source files in the directory).
+
+The *advantage* to using this function is that you can specify metadata such as the `wnid` per model; this data will be included in the `record.json` and `library.json` files.
+
+## Create a prefab and then asset bundles
+
+When creating asset bundles, `ModelCreator` automatically converts the source .fbx or .obj file into a Unity prefab, and then creates asset bundles of the prefab.
+
+Sometimes, it's useful to convert a 3D model to a [prefab](https://docs.unity3d.com/Manual/Prefabs.html), edit the prefab in Unity Editor (for example, to adjust the color or positions of the colliders), and then convert the prefab to an asset bundle. In that case, you can call `source_file_to_prefab()`:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 model_name = "chair"
 model_path = Path(model_name + ".fbx")
-a = AssetBundleCreator()
+a = ModelCreator()
 a.source_file_to_prefab(name=model_name, 
                         source_file=model_path,
                         output_directory=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("source_file_to_prefab"))
@@ -134,36 +188,61 @@ Then adjust the prefab in Unity Editor. It will be located at: `~/asset_bundle_c
 Then do this:
 
 ```python
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 model_name = "chair"
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("prefab_to_asset_bundles")
-a = AssetBundleCreator()
+a = ModelCreator()
 a.prefab_to_asset_bundles(name=model_name, 
                          output_directory=output_directory)
 ```
 
-You can also call `create_record()` to create a new metadata record .json file.
+## Create a record
 
-###  Create a custom model library
+`source_file_to_asset_bundles()` automatically creates a new record.json file.
 
-If you want to create many asset bundles, it's usually convenient to create your own `ModelLibrarian` and store it as a local json file. This `ModelLibrarian` can contain any model records including models from other model libraries.
+If you've called `source_file_to_prefab()` followed by `prefab_to_asset_bundles()`, you can create a record via `create_record()`:
+
+```python
+from pathlib import Path
+from json import loads
+from tdw.asset_bundle_creator.model_creator import ModelCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.librarian import ModelRecord
+
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("chair_example")
+model_name = "chair"
+model_path = Path(model_name + ".fbx")
+a = ModelCreator()
+a.create_record(name=model_name,
+                output_directory=output_directory)
+# Get the expected record path.
+record_path = output_directory.joinpath("record.json")
+# Load the record data.
+record_data = loads(record_path.read_text())
+# Load the record.
+record = ModelRecord(record_data)
+```
+
+##  Create a custom model library
+
+If you want to create many asset bundles, it's usually convenient to create your own `ModelLibrarian` and store it as a local json file. This `ModelLibrarian` can contain any records including those of models from other libraries.
 
 To do this, set the `library_path` and, optionally, `library_description` parameters in either `source_file_to_asset_bundles()` or `create_record()`:
 
 ```python
 from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
 print(f"Asset bundles will be saved to: {output_directory}")
-AssetBundleCreator().source_file_to_asset_bundles(name="cube",
-                                                  source_file=Path("cube.fbx").resolve(),
-                                                  output_directory=output_directory.joinpath("cube"),
-                                                  library_path=output_directory.joinpath("library.json"),
-                                                  library_description="My custom library")
+ModelCreator().source_file_to_asset_bundles(name="cube",
+                                            source_file=Path("cube.fbx").resolve(),
+                                            output_directory=output_directory.joinpath("cube"),
+                                            library_path=output_directory.joinpath("library.json"),
+                                            library_description="My custom library")
 ```
 
 Output:
@@ -194,57 +273,38 @@ output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
 librarian = ModelLibrarian(library=str(output_directory.joinpath("library.json").resolve()))
 ```
 
-### Create asset bundles from a source directory
+## Validate a model
 
-You can feasibly create asset bundles for multiple models by calling `source_file_to_asset_bundles()` in a loop. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls).
+`ModelCreator` includes two optional functions for "validating" a model.
 
-There are two ways to generate asset bundles for multiple source files:
+- `write_physics_quality()` will check the quality of the hull mesh colliders, meaning the extent to which they match the visual geometry.
+- `validate()` will check the asset bundles for any errors such as missing materials.
 
-#### Option 1: `source_directory_to_asset_bundles()`
+Both of these functions are optional. If called, they will update the record.json file and library.json file (if one exists).
 
-This will read a source directory and convert every mesh file within it into asset bundles.
+[Read the API document for more information.](../../python/asset_bundle_creator/model_creator.md)
 
-```python
-from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+## Cleanup
 
-output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
-a = AssetBundleCreator()
-a.source_directory_to_asset_bundles(source_directory=Path.home().joinpath("tdw_asset_bundles"),
-                                    output_directory=output_directory)
-```
+Call `cleanup()` to delete any intermediary mesh files and prefabs within the Unity Editor project created in the process of creating asset bundles. This will delete *all* intermediary files, including those of other models. This won't delete any of your original files (assuming that they weren't in the Unity Editor project).
 
-There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+## Low-level functions
 
-#### Option 2: `metadata_file_to_asset_bundles()`
-
-This will read a metadata.csv file and convert every mesh file listed into asset bundles:
+`get_base_unity_call()` returns a list of strings that can be used to call a Unity Editor function:
 
 ```python
-from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 
-output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
-a = AssetBundleCreator()
-a.metadata_file_to_asset_bundles(metadata_path=Path.home().joinpath("tdw_asset_bundles/metadata.csv"),
-                                 output_directory=output_directory)
+print(ModelCreator().get_base_unity_call())
 ```
 
-There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator.md)
-
-This is an example metadata file:
+Output:
 
 ```
-name,wnid,wcategory,scale_factor,path
-model_0,n04148054,scissors,1,source_directory/model_0/model_0.obj
-model_1,n03056701,coaster,1,source_directory/model_1/model_1.obj
+['C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe', '-projectpath', 'C:/Users/USER Alter/asset_bundle_creator', '-quit', '-batchmode']
 ```
 
-The *disadvantage* to using this function is that you need to prep the .csv file manually, as opposed to `source_directory_to_asset_bundles()`, which requires no manual prep (other than placing the target source files in the directory).
-
-The *advantage* to using this function is that you can specify metadata such as the `wnid` per model; this data will be included in the `record.json` and `library.json` files.
+`call_unity()` will call the Asset Bundle Creator Unity project as a subprocess with command-line arguments. You can call arbitrary methods this way (assuming you know the [underlying C# API](https://github.com/alters-mit/asset_bundle_creator). This function is used by every function that communicates with Unity, for example `source_file_to_asset_bundles()`.
 
 ## Add a custom model to a TDW simulation
 
@@ -289,7 +349,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                 "id": c.get_unique_id()}])
 ```
 
-Or, you can use the record data generated by the `AssetBundleCreator`. `ModelRecord.get_url()` returns the URL for your operating system:
+Or, you can use the record data generated by the `ModelCreator`. `ModelRecord.get_url()` returns the URL for your operating system:
 
 ```python
 from json import loads
@@ -327,8 +387,8 @@ To set correct .fbx model scaling in Blender:
 
 ## Troubleshooting
 
-- Make sure that Unity Editor is _closed_ when running `AssetBundleCreator`.
-- If AssetBundleCreator can't find Unity Editor, set `unity_editor_path` in the constructor.
+- Make sure that Unity Editor is _closed_ when running `ModelCreator`.
+- If `ModelCreator` can't find Unity Editor, set `unity_editor_path` in the constructor.
 - If you get this warning in the Editor log: `[warn] kq_init: detected broken kqueue; not using.: Undefined error: 0` it means that there's a problem with your Unity license. Make sure you have valid and active Unity credentials.
 
 ***
@@ -346,7 +406,7 @@ Example controllers:
 Python API:
 
 - [`ModelLibrarian`](../../python/librarian/model_librarian.md)
-- [`AssetBundleCreator`](../../python/asset_bundle_creator.md)
+- [`ModelCreator`](../../python/asset_bundle_creator/model_creator.md)
 
 Command API:
 

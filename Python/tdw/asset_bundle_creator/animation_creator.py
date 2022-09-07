@@ -1,9 +1,10 @@
 from typing import Union
 from pathlib import Path
-from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
+from tdw.tdw_utils import TDWUtils
+from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
 
 
-class AnimationCreator(AssetBundleCreatorBase):
+class AnimationCreator(AssetBundleCreator):
     """
     Create animation asset bundles from .anim or .fbx files.
     """
@@ -47,7 +48,7 @@ class AnimationCreator(AssetBundleCreatorBase):
         args = AnimationCreator._get_source_destination_args(name=name, source=source_file, destination=output_directory)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
+                        log_path=AssetBundleCreator._get_log_path(output_directory))
 
     def source_directory_to_asset_bundles(self, source_directory: Union[str, Path], output_directory: Union[str, Path],
                                           overwrite: bool = False, continue_on_error: bool = True,
@@ -100,8 +101,8 @@ class AnimationCreator(AssetBundleCreatorBase):
         :param search_pattern: A search pattern for files, for example `"*.obj"`. All subdirectories will be recursively searched.
         """
 
-        args = [f'-source_directory="{AssetBundleCreatorBase.get_string_path(source_directory)}"',
-                f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"']
+        args = [f'-source_directory="{TDWUtils.get_string_path(source_directory)}"',
+                f'-output_directory="{TDWUtils.get_string_path(output_directory)}"']
         if search_pattern is not None:
             args.append(f'-search_pattern="{search_pattern}"')
         if overwrite:
@@ -110,4 +111,4 @@ class AnimationCreator(AssetBundleCreatorBase):
             args.append("-continue_on_error")
         self.call_unity(method="SourceDirectoryToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase.get_path(output_directory).joinpath("progress.txt"))
+                        log_path=TDWUtils.get_path(output_directory).joinpath("progress.txt"))

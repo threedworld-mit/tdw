@@ -2,7 +2,7 @@
 
 # Add your own robots to TDW
 
-It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/robot_creator.md).
+It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/asset_bundle_creator/robot_creator.md).
 
 The `RobotCreator` can download a .urdf or .xacro file plus all relevant textures, meshes, etc. or it can use local files.
 
@@ -15,7 +15,7 @@ The `RobotCreator` can download a .urdf or .xacro file plus all relevant texture
 - Unity Hub
 - Unity Editor 2020.3.24f1
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
-  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `AssetBundleCreator` constructor (see below).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to set the `unity_editor_path` parameter in the `RobotCreator` constructor (see below).
 
 - git
 
@@ -48,7 +48,9 @@ ROS isn't well-supported on OS X. You can try following installation instruction
 
 ## The Asset Bundle Creator Unity project
 
-To convert mesh files into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
+To convert robot .urdf files and their referenced meshes into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
+
+Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [models](../3d_models/custom_models.md).
 
 Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 
@@ -57,7 +59,7 @@ Asset Bundle Creator will be  downloaded automatically the first time you use th
 To create an asset bundle of the UR5 robot:
 
 ```python
-from tdw.robot_creator import RobotCreator
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ur5_asset_bundles")
@@ -85,9 +87,9 @@ Output:
 - `record.json` is a serialized RobotRecord.
 - `log.txt` is a log of the creation process.
 
-There are optional parameters for setting the semantic category of the model, for controlling whether the root object is immovable. [Read the API document for more information.](../../python/asset_bundle_creator.md)
+There are optional parameters for setting the semantic category of the model, for controlling whether the root object is immovable. [Read the API document for more information.](../../python/asset_bundle_creator/robot_creator.md)
 
-### Constructor parameters
+## Constructor parameters
 
 `RobotCreator` has several optional constructor parameters:
 
@@ -95,14 +97,14 @@ There are optional parameters for setting the semantic category of the model, fo
 
 If True, suppress output messages.
 
-### 2. `unity_editor_path`
+#### 2. `unity_editor_path`
 
 If you installed Unity Editor via Unity Hub, `RobotCreator` should be able to automatically find the Unity Editor executable.
 
 If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `RobotCreator` by setting the optional `unity_editor_path` parameter:
 
 ```python
-from tdw.robot_creator import RobotCreator
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
 
 a = RobotCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
 ```
@@ -115,28 +117,24 @@ When you create a new `RobotCreator` Python object, it automatically compares th
 
 This must be set on Linux machines, especially headless servers, and must match a valid X display.
 
-### Intermediate API calls
+## Download remote repo
 
-It's possible to manually perform any of the operations involved in creating an asset bundle.
+`source_url_to_asset_bundles()` automatically clones a repo and finds the local .urdf file. You can do these steps manually as well.
 
-#### 1. `clone_repo()`
-
-Clone a robot repo:
+To clone a repo, call `clone_repo()`. Note that the URL is of the source URDF file, not the repo URL:
 
 ```python
-from tdw.robot_creator import RobotCreator
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
 
 r = RobotCreator()
 url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
 repo_path = r.clone_repo(url=url)
 ```
 
-#### 2. `get_urdf_path_from_local_repo()`
-
-Find a .urdf file within a local repo:
+Having cloned the repo, you can find the .urdf file via `get_urdf_path_from_local_repo()`:
 
 ```python
-from tdw.robot_creator import RobotCreator
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
 
 r = RobotCreator()
 url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
@@ -144,12 +142,18 @@ repo_path = r.clone_repo(url=url)
 urdf_path = r.get_urdf_path_from_local_repo(url=url, local_repo_path=repo_path)
 ```
 
-#### 3. `urdf_to_prefab()`
+## Create asset bundles from a local .urdf file
+
+Having downloaded or created a local .urdf file, you can call `source_file_to_asset_bundles()` to generate asset bundles.
+
+## Create a prefab
+
+When creating asset bundles, `RobotCreator`  needs to first create a Unity prefab, and then it can generate asset bundles of the prefab.
 
 In many cases, a fully automated robot creation process will be faulty; you may need to adjust parameters for joints, or remove some redundant joints, and so on. It's usually worth creating, testing, and editing a prefab before finalizing the asset bundle. To create a prefab, call `urdf_to_prefab()`:
 
 ```python
-from tdw.robot_creator import RobotCreator
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ur5_asset_bundles")
@@ -178,7 +182,7 @@ r.urdf_to_prefab(urdf_path=urdf_path, output_directory=output_directory)
 | Joints snap to a weird angle. | Usually this is because there are overlapping physics colliders. Double-click the prefab and in the Hierarchy panel click the root object. The green wireframe meshes in the Scene View are the physics colliders. Try deleting or disabling colliders near the glitching joint. |
 | The robot tips over. | Set `immovable=True` in your Python script. If that doesn't work, double-click the prefab. In the Hierarchy panel, click the ArticulationBody that you think is causing the robot to tilt. In the Inspector panel, click "Add Component". Add: `Center Of Mass`. Adjust the center of mass in the Inspector until the robot stops tipping. |
 
-#### 4. `prefab_to_asset_bundles()`
+## Create asset bundles from a prefab
 
 Having adjusted a prefab as needed, you can then convert it into asset bundles by calling `prefab_to_asset_bundles()`:
 
@@ -192,66 +196,133 @@ r = RobotCreator()
 r.prefab_to_asset_bundles(name="ur5", output_directory=output_directory)
 ```
 
-#### 5. `create_record()`
+## Create a record
 
-**TODO**
+`source_url_to_asset_bundles()` and `source_file_to_asset_bundles()` automatically create a new record.json file.
 
-#### 6. `xacro_to_urdf()`
-
-**TODO**
-
-#### 7. `fix_urdf()`
-
-**TODO**
-
-## Create an asset bundle from a prefab
-
-Once the robot prefab is working correctly, you can create asset bundles without overwriting the prefab:
+If you've called `source_file_to_prefab()` followed by `prefab_to_asset_bundles()`, you can create a record via `create_record()`:
 
 ```python
-from tdw.robot_creator import RobotCreator
+from json import loads
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.librarian import RobotRecord
 
-r = RobotCreator()
-urdf_url = "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
-record = r.create_asset_bundles(urdf_url=urdf_url)
-print(record.name)
-print(record.urls)
-
-asset_bundles = rc.prefab_to_asset_bundles(name=name)
-record = RobotCreator.get_record(name=record.name, urdf_url=urdf_url, immovable=True, asset_bundles=asset_bundles)
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ur5_example")
+a = RobotCreator()
+a.create_record(name="ur5",
+                output_directory=output_directory)
+# Get the expected record path.
+record_path = output_directory.joinpath("record.json")
+# Load the record data.
+record_data = loads(record_path.read_text())
+# Load the record.
+record = RobotRecord(record_data)
 ```
 
-## Store metadata
+There are other optional parameters. [Read the API document for more information.](../../python/asset_bundle_creator/robot_creator.md)
 
-`RobotCreator.create_asset_bundles()` returns a [`RobotRecord`](../../python/librarian/robot_librarian.md) metadata object, which contains the files paths to the asset bundle.
+## Create a custom robot library
 
-You can store a `RobotRecord` object in a [`RobotLibrarian`](../../python/librarian/robot_librarian.md), which is saved as a JSON file.
+If you want to create many asset bundles, it's usually convenient to create your own `RobotLibrarian` and store it as a local json file. This `RobotLibrarian` can contain any records including those of robots from other libraries.
 
-To create a `RobotLibrarian`:
+To do this, set the `library_path` and, optionally, `library_description` parameters in either  `source_url_to_asset_bundles()`, `source_file_to_asset_bundles()` or `create_record()`:
 
 ```python
-from tdw.librarian import RobotLibrarian
+from pathlib import Path
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
-RobotLibrarian.create_library(path="my_robot_librarian.json", description="Custom Robot Librarian")
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("robots")
+print(f"Asset bundles will be saved to: {output_directory}")
+RobotCreator().source_file_to_asset_bundles(source_file=Path("ur5.urdf").resolve(),
+                                            output_directory=output_directory.joinpath("ur5"),
+                                            library_path=output_directory.joinpath("library.json"),
+                                            library_description="My custom library")
 ```
 
-To create asset bundles and save the `RobotRecord` metadata:
+Output:
+
+```
+~/tdw_example_controller_output/robots/
+....ur5/
+........Darwin/
+............ur5
+........Linux/
+............ur5
+........Windows/
+............ur5
+........record.json
+........log.txt
+....library.json
+```
+
+Note that we set `output_directory` to be a subdirectory ending in `cube/`. This is because we might want to create multiple asset bundles and store all of their metadata in a shared `library.json` file.
+
+You can load the custom library by setting the `library` parameter in RobotLibrarian:
 
 ```python
-from tdw.robot_creator import RobotCreator
-from tdw.librarian import RobotLibrarian
+from tdw.backend.paths RobotLibrarian EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.librarian import ModelLibrarian
 
-r = RobotCreator()
-
-# Create the asset bundles and generate a metadata record.
-record = r.create_asset_bundles(urdf_url="https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf")
-
-# Add the record to the local library.
-lib = RobotLibrarian("my_robot_librarian.json")
-lib.add_or_update_record(record=record, overwrite=False, write=True)
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("robots")
+librarian = RobotLibrarian(library=str(output_directory.joinpath("library.json").resolve()))
 ```
 
-## Add the robot to TDW
+## Cleanup
+
+Call `cleanup()` to delete any intermediary mesh files and prefabs within the Unity Editor project created in the process of creating asset bundles. This will delete *all* intermediary files, including those of other models. This won't delete any of your original files (assuming that they weren't in the Unity Editor project).
+
+## Convert a .xacro file
+
+If you're using a .xacro file, it must be converted to a .urdf file. Call `xacro_to_urdf()`.
+
+[Read the API document for more information.](../../python/asset_bundle_creator/robot_creator.md)
+
+## "Fix" a .urdf file
+
+In some cases, a .urdf file won't be useable as-is. This can happen if it has an unusual XML namespace convention, if it has too many joints, etc.
+
+You can create a new, simplified, file via `fix_urdf()`:
+
+```python
+from pathlib import Path
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
+
+urdf_path = Path.home().joinpath("robots/pr2/pr2.urdf")
+urdf_path = RobotCreator.fix_urdf(urdf_path=urdf_path,
+                                  link_name_excludes_regex=["_gazebo_", "_cam_", "world_link", "imu_link",
+                                                            "sensor_mount_link", "head_plate_frame",
+                                                            "_gripper_motor_accelerometer_link"],
+                                  link_exclude_types=["camera", "laser"])
+```
+
+This will do the following:
+
+- Simplify the XML namespaces.
+- Remove all `<gazebo>` elements.
+- Remove all links that have regular expression matches to any string in `link_name_exludes_regex`.
+- Remove all links that have a `type` attribute, and if the `type` matches any string in `link_exclude_types`.
+
+## Low-level functions
+
+`get_base_unity_call()` returns a list of strings that can be used to call a Unity Editor function:
+
+```python
+from tdw.asset_bundle_creator.model_creator import ModelCreator
+
+print(ModelCreator().get_base_unity_call())
+```
+
+Output:
+
+```
+['C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe', '-projectpath', 'C:/Users/USER Alter/asset_bundle_creator', '-quit', '-batchmode']
+```
+
+`call_unity()` will call the Asset Bundle Creator Unity project as a subprocess with command-line arguments. You can call arbitrary methods this way (assuming you know the [underlying C# API](https://github.com/alters-mit/asset_bundle_creator). This function is used by every function that communicates with Unity, for example `source_file_to_asset_bundles()`.
+
+## Add a custom robot to a TDW simulation
 
 To add the robot to a TDW scene, use a `Robot` add-on but set the `source` parameter to your custom `RobotLibrarian`:
 
@@ -288,5 +359,5 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 Python API:
 
-- [`RobotCreator`](../../python/robot_creator.md)
+- [`RobotCreator`](../../python/asset_bundle_creator/robot_creator.md)
 - [`RobotLibrarian`](../../python/librarian/robot_librarian.md)

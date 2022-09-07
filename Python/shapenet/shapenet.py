@@ -4,7 +4,8 @@ from typing import Union
 from json import loads
 from argparse import ArgumentParser
 from csv import DictReader
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.tdw_utils import TDWUtils
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 
 
 class _ShapeNet(ABC):
@@ -18,8 +19,8 @@ class _ShapeNet(ABC):
         :param output_directory: The root destination directory for the library file and asset bundles.
         """
 
-        self.source_directory: Path = AssetBundleCreator.get_path(source_directory)
-        self.output_directory: Path = AssetBundleCreator.get_path(output_directory)
+        self.source_directory: Path = TDWUtils.get_path(source_directory)
+        self.output_directory: Path = TDWUtils.get_path(output_directory)
         if not self.output_directory.exists():
             self.output_directory.mkdir(parents=True)
         self.metadata_path: Path = self.output_directory.joinpath("metadata.csv")
@@ -35,10 +36,10 @@ class _ShapeNet(ABC):
         if not self.metadata_path.exists():
             self.metadata_path.write_text("name,wnid,wcategory,scale_factor,path\n" + self.get_csv().strip())
             print("Generated metadata.csv")
-        AssetBundleCreator().metadata_file_to_asset_bundles(metadata_path=self.metadata_path,
-                                                            output_directory=self.output_directory,
-                                                            vhacd_resolution=vhacd_resolution,
-                                                            library_description=self.get_library_description())
+        ModelCreator().metadata_file_to_asset_bundles(metadata_path=self.metadata_path,
+                                                      output_directory=self.output_directory,
+                                                      vhacd_resolution=vhacd_resolution,
+                                                      library_description=self.get_library_description())
 
     @abstractmethod
     def get_csv(self) -> str:

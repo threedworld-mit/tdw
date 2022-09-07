@@ -3,8 +3,8 @@ from json import loads, dumps
 from pathlib import Path
 import xml.etree.ElementTree as ElementTree
 from tdw.add_ons.add_on import AddOn
-from tdw.asset_bundle_creator import AssetBundleCreator
-from tdw.robot_creator import RobotCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
+from tdw.asset_bundle_creator.robot_creator import RobotCreator
 from tdw.lisdf_data.lisdf_robot_metadata import LisdfRobotMetadata
 
 
@@ -128,7 +128,7 @@ class LisdfReader(AddOn):
         # Mark these files as robots.
         if len(robots) > 0:
             args.append('-robots="' + dumps(robots).replace('"', "'") + '"')
-        a = AssetBundleCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
+        a = ModelCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
         a.call_unity(class_name="LisdfReader",
                      method="Read",
                      args=args,

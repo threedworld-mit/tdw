@@ -1,6 +1,6 @@
 from platform import system
 from pathlib import Path
-from tdw.asset_bundle_creator import AssetBundleCreator
+from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.controller import Controller
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
@@ -14,9 +14,9 @@ Create a local asset bundle and load it into TDW.
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("local_object")
 print(f"Images and asset bundles will be saved to: {output_directory}")
 name = "cube"
-AssetBundleCreator().source_file_to_asset_bundles(name=name,
-                                                  source_file=Path("cube.fbx").resolve(),
-                                                  output_directory=output_directory)
+ModelCreator().source_file_to_asset_bundles(name=name,
+                                            source_file=Path("cube.fbx").resolve(),
+                                            output_directory=output_directory)
 # Get the path to the asset bundle.
 asset_bundle_path = output_directory.joinpath(system()).joinpath(name)
 uri = f"file:///{str(asset_bundle_path.resolve())}"

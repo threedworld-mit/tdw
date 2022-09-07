@@ -5,10 +5,11 @@ from platform import system
 from pathlib import Path
 from subprocess import call
 from shutil import rmtree, copyfile, move
-from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
+from tdw.tdw_utils import TDWUtils
+from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
 
 
-class RobotCreator(AssetBundleCreatorBase):
+class RobotCreator(AssetBundleCreator):
     """
     Download a .urdf or .xacro file and convert it into an asset bundle that is usable by TDW.
     """
@@ -16,7 +17,7 @@ class RobotCreator(AssetBundleCreatorBase):
     """:class_var
     The root temporary directory.
     """
-    TEMP_ROOT: Path = AssetBundleCreatorBase.PROJECT_PATH.joinpath("temp_robots")
+    TEMP_ROOT: Path = AssetBundleCreator.PROJECT_PATH.joinpath("temp_robots")
 
     def source_url_to_asset_bundles(self, url: str, output_directory: Union[str, Path],
                                     required_repo_urls: Dict[str, str] = None,
@@ -169,12 +170,12 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append("-immovable")
         if source_description is not None:
             args.append(f'-source_description="{source_description}"')
-        args = AssetBundleCreatorBase._add_library_args(args=args,
-                                                        library_path=library_path,
-                                                        library_description=library_description)
+        args = AssetBundleCreator._add_library_args(args=args,
+                                                    library_path=library_path,
+                                                    library_description=library_description)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
+                        log_path=AssetBundleCreator._get_log_path(output_directory))
 
     def clone_repo(self, url: str) -> Path:
         """
@@ -330,7 +331,7 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append("-immovable")
         self.call_unity(method="SourceFileToPrefab",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
+                        log_path=AssetBundleCreator._get_log_path(output_directory))
 
     def create_record(self, name: str, output_directory: Union[str, Path],
                       library_path: Union[str, Path] = None, library_description: str = None,
@@ -382,12 +383,12 @@ class RobotCreator(AssetBundleCreatorBase):
             args.append(f'-source_description="{source_description}"')
         if immovable:
             args.append('-immovable')
-        args = AssetBundleCreatorBase._add_library_args(args=args,
-                                                        library_path=library_path,
-                                                        library_description=library_description)
+        args = AssetBundleCreator._add_library_args(args=args,
+                                                    library_path=library_path,
+                                                    library_description=library_description)
         self.call_unity(method="CreateRecord",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
+                        log_path=AssetBundleCreator._get_log_path(output_directory))
 
     @staticmethod
     def get_name(urdf_path: Union[str, Path]) -> str:
@@ -398,7 +399,7 @@ class RobotCreator(AssetBundleCreatorBase):
         """
 
         return re.search(r'<robot(.*?)name="(.*?)"',
-                         AssetBundleCreatorBase.get_path(urdf_path).read_text(encoding="utf-8"),
+                         TDWUtils.get_path(urdf_path).read_text(encoding="utf-8"),
                          flags=re.MULTILINE).group(2).strip()
 
     def get_creator_class_name(self) -> str:
@@ -424,7 +425,7 @@ class RobotCreator(AssetBundleCreatorBase):
         :return: The path to the "fixed" .urdf file.
         """
 
-        path = AssetBundleCreatorBase.get_path(urdf_path)
+        path = TDWUtils.get_path(urdf_path)
         text = path.read_text(encoding="utf-8")
         # Remove gazebo elements.
         if remove_gazebo:

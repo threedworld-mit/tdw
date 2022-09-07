@@ -8,10 +8,10 @@ import re
 from time import sleep
 from overrides import final
 from requests import get
-from tdw.backend.platforms import SYSTEM_TO_UNITY
+from tdw.tdw_utils import TDWUtils
 
 
-class AssetBundleCreatorBase(ABC):
+class AssetBundleCreator(ABC):
     """
     Base class for creating asset bundles.
     """
@@ -36,14 +36,14 @@ class AssetBundleCreatorBase(ABC):
         :param check_version: If True, check if there is an update to the Unity Editor project.
         """
 
-        if check_version and not AssetBundleCreatorBase._VERSION_CHECKED:
+        if check_version and not AssetBundleCreator._VERSION_CHECKED:
             resp = get("https://raw.githubusercontent.com/alters-mit/asset_bundle_creator/main/ProjectSettings/ProjectSettings.asset")
             if resp.status_code == 200:
-                remote_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
+                remote_version = re.search(AssetBundleCreator._BUNDLE_VERSION_REGEX,
                                            resp.text,
                                            flags=re.MULTILINE).group(1)
-                local_version = re.search(AssetBundleCreatorBase._BUNDLE_VERSION_REGEX,
-                                          AssetBundleCreatorBase.PROJECT_PATH.joinpath("ProjectSettings/ProjectSettings.asset").resolve().read_text(),
+                local_version = re.search(AssetBundleCreator._BUNDLE_VERSION_REGEX,
+                                          AssetBundleCreator.PROJECT_PATH.joinpath("ProjectSettings/ProjectSettings.asset").resolve().read_text(),
                                           flags=re.MULTILINE).group(1)
                 if remote_version != local_version:
                     print(f"You are using version {local_version} but version {remote_version} is available. To update:\n" +
@@ -52,7 +52,7 @@ class AssetBundleCreatorBase(ABC):
             else:
                 print("Failed to check version for the Asset Bundle Creator Unity project. Check your Internet connection.")
             # Don't check the version multiple times during runtime.
-            AssetBundleCreatorBase._VERSION_CHECKED = True
+            AssetBundleCreator._VERSION_CHECKED = True
         # Get the binaries path and verify that AssetBundleCreator will work on this platform.
         system = platform.system()
         # Copy environment variables.
@@ -87,9 +87,9 @@ class AssetBundleCreatorBase(ABC):
             assert editor_path.exists(), f"Unity Hub not found: {editor_path}"
             # Get the expected Unity version.
             ds = []
-            re_pattern = AssetBundleCreatorBase.UNITY_VERSION + ".(.*)"
+            re_pattern = AssetBundleCreator.UNITY_VERSION + ".(.*)"
             for d in editor_path.iterdir():
-                if AssetBundleCreatorBase.UNITY_VERSION not in d.stem:
+                if AssetBundleCreator.UNITY_VERSION not in d.stem:
                     continue
                 re_search = re.search(re_pattern, str(d.resolve()))
                 if re_search is None:
@@ -125,7 +125,7 @@ class AssetBundleCreatorBase(ABC):
 
         return [str(self._unity_editor_path.resolve()),
                 "-projectpath",
-                str(AssetBundleCreatorBase.PROJECT_PATH.resolve()),
+                str(AssetBundleCreator.PROJECT_PATH.resolve()),
                 "-quit",
                 "-batchmode"]
 
@@ -141,7 +141,7 @@ class AssetBundleCreatorBase(ABC):
         """
 
         # Clone the repo.
-        if not AssetBundleCreatorBase.PROJECT_PATH.exists():
+        if not AssetBundleCreator.PROJECT_PATH.exists():
             cwd = os.getcwd()
             os.chdir(str(Path.home().resolve()))
             call(["git", "clone", "https://github.com/alters-mit/asset_bundle_creator.git"])
@@ -159,8 +159,8 @@ class AssetBundleCreatorBase(ABC):
         if self.quiet:
             call(unity_call, env=self._env)
         else:
-            self.run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=True),
-                                           log_path=log_path)
+            self._run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=True),
+                                            log_path=log_path)
 
     @final
     def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path]) -> None:
@@ -204,8 +204,8 @@ class AssetBundleCreatorBase(ABC):
         self.call_unity(method="PrefabToAssetBundles",
                         args=[f'-name="{name}"',
                               "-source=temp",
-                              f'-output_directory="{AssetBundleCreatorBase.get_string_path(output_directory)}"'],
-                        log_path=AssetBundleCreatorBase.get_path(output_directory).joinpath("log.txt"))
+                              f'-output_directory="{TDWUtils.get_string_path(output_directory)}"'],
+                        log_path=TDWUtils.get_path(output_directory).joinpath("log.txt"))
 
     @final
     def cleanup(self) -> None:
@@ -223,28 +223,13 @@ class AssetBundleCreatorBase(ABC):
     @abstractmethod
     def get_creator_class_name(self) -> str:
         """
-        :return: The name of the Unity C# class, e.g. `ModelCreatorLauncher`.
+        :return: The name of the Unity C# class, e.g. `ModelCreator`.
         """
 
         raise Exception()
 
     @staticmethod
-    def asset_bundles_exist(name: str, output_directory: Union[str, Path]) -> bool:
-        """
-        :param name: The name of the asset bundle (the filename).
-        :param output_directory: The *root* output directory of *all* of the platform-specific asset bundles as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If an asset bundle is located in `/home/user/output_directory/Windows/asset_bundle`, set this to `"/home/user/output_directory"`.
-
-        :return: True if asset bundles for all three platforms exist in `output_directory`.
-        """
-
-        d = AssetBundleCreatorBase.get_path(output_directory)
-        for p in SYSTEM_TO_UNITY:
-            if not d.joinpath(p).joinpath(name).exists():
-                return False
-        return True
-
-    @staticmethod
-    def run_process_and_print_log(process: Popen, log_path: Union[str, Path], sleep_time: float = 1) -> None:
+    def _run_process_and_print_log(process: Popen, log_path: Union[str, Path], sleep_time: float = 1) -> None:
         """
         Poll a process to check if it is completed. If not, try to read a log file. Print the new text of the log file.
 
@@ -253,14 +238,14 @@ class AssetBundleCreatorBase(ABC):
         :param sleep_time: The time in seconds to wait between process polling.
         """
 
-        path = AssetBundleCreatorBase.get_path(log_path)
+        path = TDWUtils.get_path(log_path)
         previous_log_text = ""
         while process.poll() is None:
             # Update the log text.
-            previous_log_text = AssetBundleCreatorBase._read_log_text(previous_log_text=previous_log_text, log_path=path)
+            previous_log_text = AssetBundleCreator._read_log_text(previous_log_text=previous_log_text, log_path=path)
             sleep(sleep_time)
         # Finish reading the log.
-        AssetBundleCreatorBase._read_log_text(previous_log_text=previous_log_text, log_path=path)
+        AssetBundleCreator._read_log_text(previous_log_text=previous_log_text, log_path=path)
 
     @staticmethod
     def _read_log_text(previous_log_text: str, log_path: Path) -> str:
@@ -303,7 +288,7 @@ class AssetBundleCreatorBase(ABC):
         """
 
         if library_path is not None:
-            args.append(f'-library_path="{AssetBundleCreatorBase.get_string_path(library_path)}"')
+            args.append(f'-library_path="{TDWUtils.get_string_path(library_path)}"')
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
         return args
@@ -321,39 +306,8 @@ class AssetBundleCreatorBase(ABC):
         """
 
         return [f'-name="{name}"',
-                f'-source="{AssetBundleCreatorBase.get_string_path(source)}"',
-                f'-output_directory="{AssetBundleCreatorBase.get_string_path(destination)}"']
-
-    @staticmethod
-    def get_path(path: Union[str, Path]) -> Path:
-        """
-        :param path: A path as either a string or a `Path`.
-
-        :return: The path as a `Path`.
-        """
-
-        if isinstance(path, str):
-            return Path(path)
-        elif isinstance(path, Path):
-            return path
-        else:
-            raise Exception(path)
-
-    @staticmethod
-    def get_string_path(path: Union[str, Path]) -> str:
-        """
-        :param path: A path as either a string or a `Path`.
-
-        :return: The path as a string.
-        """
-
-        if isinstance(path, str):
-            p = path
-        elif isinstance(path, Path):
-            p = str(path.resolve())
-        else:
-            raise Exception(path)
-        return p.replace("\\", "/")
+                f'-source="{TDWUtils.get_string_path(source)}"',
+                f'-output_directory="{TDWUtils.get_string_path(destination)}"']
 
     @staticmethod
     def _get_log_path(output_directory: Union[str, Path]) -> Path:
@@ -363,4 +317,4 @@ class AssetBundleCreatorBase(ABC):
         :return: The expected path to the log file: `output_directory/log.txt`.
         """
 
-        return AssetBundleCreatorBase.get_path(output_directory).joinpath("log.txt")
+        return TDWUtils.get_path(output_directory).joinpath("log.txt")

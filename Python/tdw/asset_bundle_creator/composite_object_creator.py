@@ -1,9 +1,9 @@
 from pathlib import Path
 from typing import Union
-from tdw.asset_bundle_creator_base import AssetBundleCreatorBase
+from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
 
 
-class CompositeObjectCreator(AssetBundleCreatorBase):
+class CompositeObjectCreator(AssetBundleCreator):
     """
     Create asset bundles of objects from a .urdf file.
 
@@ -70,7 +70,7 @@ class CompositeObjectCreator(AssetBundleCreatorBase):
             args.append("-cleanup")
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
+                        log_path=AssetBundleCreator._get_log_path(output_directory))
 
     def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                               vhacd_resolution: int = None) -> None:
@@ -115,7 +115,7 @@ class CompositeObjectCreator(AssetBundleCreatorBase):
         # Execute the call.
         self.call_unity(method="SourceFileToPrefab",
                         args=args,
-                        log_path=AssetBundleCreatorBase._get_log_path(output_directory))
+                        log_path=AssetBundleCreator._get_log_path(output_directory))
 
     def get_creator_class_name(self) -> str:
         return "CompositeObjectCreator"

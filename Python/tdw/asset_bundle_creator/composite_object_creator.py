@@ -7,7 +7,7 @@ class CompositeObjectCreator(AssetBundleCreator):
     """
     Create asset bundles of objects from a .urdf file.
 
-    This class should very rarely be used! In most cases, you should use `RobotCreator` instead.
+    This class should very rarely be used! In most cases, you should use [`RobotCreator`](robot_creator.md) instead.
 
     This class should only be used for *non*-robot .urdf files such as PartNet Mobility files.
     """

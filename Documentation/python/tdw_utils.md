@@ -704,6 +704,38 @@ Given a corner and a wall, get the direction that a lateral arrangement will run
 
 _Returns:_  Tuple: direction, wall
 
+#### ros_position_to_vector3
+
+**`TDWUtils.ros_position_to_vector3(arr)`**
+
+_(Static)_
+
+Convert a ROS position to a TDW Vector3 dictionary position.
+Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| arr |  List[float] |  | The ROS position. |
+
+_Returns:_  A TDW Vector3 dictionary.
+
+#### ros_rpy_to_vector3
+
+**`TDWUtils.ros_rpy_to_vector3(arr)`**
+
+_(Static)_
+
+Convert ROS RPY angles to a TDW Vector3 dictionary of Euler angles.
+Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| arr |  List[float] |  | The ROS RPY angles. |
+
+_Returns:_  A TDW Vector3 dictionary.
+
 #### get_expected_window_position
 
 **`TDWUtils.get_expected_window_position()`**
@@ -737,4 +769,30 @@ print(screeninfo.get_monitors())
 | title_bar_height |  int  | None | The height of the window title bar in pixels. If None, this method will use a default value based on the operating system. |
 
 _Returns:_  The expected position of the top-left corner of the build window.
+
+#### get_path
+
+**`TDWUtils.get_path(path)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | A path as either a string or a `Path`. |
+
+_Returns:_  The path as a `Path`.
+
+#### get_string_path
+
+**`TDWUtils.get_string_path(path)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | A path as either a string or a `Path`. |
+
+_Returns:_  The path as a string.
 

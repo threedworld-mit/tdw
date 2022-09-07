@@ -62,13 +62,25 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 4. [Visual materials, textures, and colors](Documentation/lessons/scene_setup_low_level/materials_textures_colors.md)
 5. [ProcGenRoom](Documentation/lessons/scene_setup_low_level/proc_gen_room.md)
 
-## 2. 3D Model Libraries
+## 2. 3D Models
+
+### 2.1 Other model libraries
 
 1. [Overview](Documentation/lessons/3d_models/overview.md)
 2. [Free models](Documentation/lessons/3d_models/free_models.md)
 3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
-4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
-5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
+
+### 2.2 Custom models
+
+1. [Add your own models to TDW](Documentation/lessons/custom_models/custom_models.md)
+2. [Add ShapeNet models to TDW](Documentation/lessons/custom_models/shapenet.md)
+
+### 2.3 Composite (articulated) objects
+
+1. [Overview](Documentation/lessons/composite_objects/overview.md)
+2. [Composite objects in TDW](Documentation/lessons/composite_objects/composite_objects.md)
+3. [Create a composite object from a prefab](Documentation/lessons/composite_objects/create_from_prefab.md)
+4. [Create a composite object from a .urdf file](Documentation/lessons/composite_objects/create_from_urdf.md)
 
 ## 3. Read/Write to Disk
 
@@ -88,7 +100,7 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 3. [Proximity to region (`Overlap` output data)](Documentation/lessons/semantic_states/overlap.md)
 3. [Proximity to other objects (the `TriggerCollisionManager` add-on)](Documentation/lessons/semantic_states/trigger_collisions.md)
 3. [Containment (the `ContainerManager` add-on)](Documentation/lessons/semantic_states/containment.md)
-4. [Composite objects (objects with affordances)](Documentation/lessons/semantic_states/composite_objects.md)
+4. [Open and closed states](Documentation/lessons/semantic_states/openness.md)
 4. [Grasped objects](Documentation/lessons/semantic_states/grasped.md)
 
 ## 5. Visual Perception
@@ -258,8 +270,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw**
 
-- [AssetBundleCreator](Documentation/python/asset_bundle_creator.md)
-- [AssetBundleCreatorBase](Documentation/python/asset_bundle_creator_base.md)
 - [AudioConstants](Documentation/python/audio_constants.md)
 - [AudioUtils](Documentation/python/audio_utils.md)
 - [CardinalDirection](Documentation/python/cardinal_direction.md)
@@ -268,7 +278,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [OrdinalDirection](Documentation/python/ordinal_direction.md)
 - [QuaternionUtils](Documentation/python/quaternion_utils.md)
 - [RemoteBuildLauncher](Documentation/python/remote_build_launcher.md)
-- [RobotCreator](Documentation/python/robot_creator.md)
 - [TDWUtils](Documentation/python/tdw_utils.md)
 
 **tdw.add_ons**
@@ -289,6 +298,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [InteriorSceneLighting](Documentation/python/add_ons/interior_scene_lighting.md)
 - [JsonWriter](Documentation/python/add_ons/json_writer.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
+- [LisdfReader](Documentation/python/add_ons/lisdf_reader.md)
 - [Logger](Documentation/python/add_ons/logger.md)
 - [LogPlayback](Documentation/python/add_ons/log_playback.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
@@ -312,6 +322,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [UI](Documentation/python/add_ons/ui.md)
 - [VR](Documentation/python/add_ons/vr.md)
 - [Writer](Documentation/python/add_ons/writer.md)
+
+**tdw.asset_bundle_creator**
+
+- [AnimationCreator](Documentation/python/asset_bundle_creator/animation_creator.md)
+- [AssetBundleCreator](Documentation/python/asset_bundle_creator/asset_bundle_creator.md)
+- [CompositeObjectCreator](Documentation/python/asset_bundle_creator/composite_object_creator.md)
+- [ModelCreator](Documentation/python/asset_bundle_creator/model_creator.md)
+- [RobotCreator](Documentation/python/asset_bundle_creator/robot_creator.md)
 
 **tdw.collision_data**
 

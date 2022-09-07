@@ -1,17 +1,6 @@
-##### Semantic States
+##### Composite (articulated) objects
 
-# Composite objects (objects with affordances)
-
-*Composite objects utilize the PhysX physics engine. If you haven't done so already, please read [the documentation for PhysX in TDW](../physx/physx.md)*.
-
-**Composite objects** are objects in TDW that have multiple "sub-objects". Sub-objects appear in [output data](../core_concepts/output_data.md) as separate objects with separate IDs and [segmentation colors](../visual_perception/id.md).
-
-Composite objects can be:
-
-- Objects with hinged joints such as a fridge with doors
-- Objects with hinged motorized joints such as a fan
-- Multiple disconnected objects such as a pot with a lid 
-- An object with a light source such as a lamp
+# Composite objects in TDW
 
 ##  Add a composite object to the scene
 
@@ -308,80 +297,9 @@ Result:
 
 ![](images/microwave_door.gif)
 
-## Semantic States
-
-It is possible to use composite object output data to determine **semantic states** of objects.
-
-For **lights**, see `composite_object_manager.dynamic[object_id].lights[sub_object_id].is_on`
-
-For **hinges, motors, and springs** it is possible to determine whether an object is "open" by defining an angle threshold; if the current angle is above the threshold, then the object is "open":
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.composite_object_manager import CompositeObjectManager
-
-
-class CompositeObjectOpen(Controller):
-    """
-    Determine when a composite object is "open".
-    """
-
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
-        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.communicate(TDWUtils.create_empty_room(12, 12))
-        self.composite_object_manager = CompositeObjectManager()
-        self.add_ons.append(self.composite_object_manager)
-
-    def trial(self, open_at: float):
-        # Reset the composite object manager.
-        self.composite_object_manager.reset()
-        # Add the object.
-        object_id = Controller.get_unique_id()
-        self.communicate(Controller.get_add_physics_object(model_name="b03_bosch_cbg675bs1b_2013__vray_composite",
-                                                           object_id=object_id,
-                                                           kinematic=True))
-        # Get the hinge ID.
-        hinge_id = list(self.composite_object_manager.static[object_id].hinges.keys())[0]
-        # Apply a torque to the hinge.
-        self.communicate({"$type": "apply_torque_to_object",
-                          "id": hinge_id,
-                          "torque": {"x": 0.5, "y": 0, "z": 0}})
-        for i in range(200):
-            # Get the angle of the hinge.
-            angle = self.composite_object_manager.dynamic[object_id].hinges[hinge_id].angle
-            # Check if the hinge is open.
-            is_open = angle >= open_at
-            if is_open:
-                print(f"Microwave door is open on frame {i} at angle {angle}.")
-                break
-            self.communicate([])
-        # Destroy the object.
-        self.communicate({"$type": "destroy_object",
-                          "id": object_id})
-
-
-if __name__ == "__main__":
-    c = CompositeObjectOpen()
-    c.trial(open_at=30)
-    c.communicate({"$type": "terminate"})
-
-
-if __name__ == "__main__":
-    c = CompositeObjectOpen()
-    c.trial(open_at=30)
-    c.communicate({"$type": "terminate"})
-```
-
-Output:
-
-```
-Microwave door is open on frame 16 at angle 30.119487762451172.
-```
-
 ***
 
-**Next: [Grasped objects](grasped.md)**
+**Next: [Create a composite object from a prefab](create_from_prefab.md)**
 
 [Return to the README](../../../README.md)
 
@@ -389,9 +307,8 @@ Microwave door is open on frame 16 at angle 30.119487762451172.
 
 Example controllers:
 
-- [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
-- [composite_object_torque.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/composite_object_torque.py) Apply a torque to the door of a microwave.
-- [composite_object_open.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/semantic_states/composite_object_open.py) Determine when a composite object is "open".
+- [composite_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/composite_objects/composite_object.py) Demonstration of how to use composite sub-objects with a test model.
+- [composite_object_torque.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/composite_objects/composite_object_torque.py) Apply a torque to the door of a microwave.
 
 Python API:
 

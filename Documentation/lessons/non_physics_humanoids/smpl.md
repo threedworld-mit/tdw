@@ -2,7 +2,7 @@
 
 # SMPL humanoids
 
- [SMPL humanoids](https://smpl.is.tue.mpg.de) have parameterized body shapes.
+[SMPL humanoids](https://smpl.is.tue.mpg.de) have parameterized body shapes.
 
 To review the SMPL models available, load the SMPL humanoid librarian and iterate through the records:
 
@@ -97,7 +97,7 @@ Result:
 
 ***
 
-**This is the last document in the "Non-physics objects" tutorial.**
+**Next: [Create custom non-physics humanoids](custom_humanoids.md)**
 
 [Return to the README](../../../README.md)
 

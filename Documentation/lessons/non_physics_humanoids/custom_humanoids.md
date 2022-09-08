@@ -2,120 +2,176 @@
 
 # Create custom non-physics humanoids
 
- [SMPL humanoids](https://smpl.is.tue.mpg.de) have parameterized body shapes.
+It is possible to add your own non-physics humanoids into TDW from a .fbx file. However, the files must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`HumanoidCreator`](../../python/asset_bundle_creator/humanoid_creator.md).
 
-To review the SMPL models available, load the SMPL humanoid librarian and iterate through the records:
+The humanoid .fbx model must already be rigged. When it is converted into asset bundles, it won't receive colliders.
+
+## Requirements
+
+- Windows 10, OS X, or Linux
+- (Windows only) Visual C++ 2012 Redistributable
+- The `tdw` module
+- Python 3.6+
+- Unity Hub
+- Unity Editor 2020.3.24f1
+  - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to set the `unity_editor_path` parameter in the `HumanoidCreator` constructor (see below).
+- git
+
+## The Asset Bundle Creator Unity project
+
+To convert robot .urdf files and their referenced meshes into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
+
+Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [models](../3d_models/custom_models.md).
+
+Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
+
+## Usage
+
+To create an asset bundle of a humanoid:
 
 ```python
-from tdw.librarian import HumanoidLibrarian
+from pathlib import Path
+from tdw.asset_bundle_creator.humanoid_creator import HumanoidCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
-lib = HumanoidLibrarian("smpl_humanoids.json")
-for record in lib.records:
-    print(record.name)
+source_file = Path.home().joinpath("humanoid.fbx")
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("humanoid_asset_bundles")
+print(f"Asset bundles will be saved to: {output_directory}")
+r = HumanoidCreator()
+r.source_file_to_asset_bundles(name="test_humanoid", 
+                               source_file=source_file,
+                               output_directory=output_directory)
 ```
 
 Output:
 
 ```
-humanoid_smpl_f
-humanoid_smpl_m
+~/tdw_example_controller_output/humanoid_asset_bundles/
+....Darwin/
+........test_humanoid
+....Linux/
+........test_humanoid
+....Windows/
+........test_humanoid
+....record.json
+....log.txt
 ```
 
-To fetch a specific record:
+- `Darwin/test_humanoid`, `Linux/test_humanoid`, and `Windows/test_humanoid` are platform-specific asset bundles.
+- `record.json` is a serialized HumanoidRecord.
+- `log.txt` is a log of the creation process.
+
+## Constructor parameters
+
+`HumanoidCreator` has several optional constructor parameters:
+
+#### 1. `quiet`
+
+If True, suppress output messages.
+
+#### 2. `unity_editor_path`
+
+If you installed Unity Editor via Unity Hub, `HumanoidCreator` should be able to automatically find the Unity Editor executable.
+
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `HumanoidCreator` by setting the optional `unity_editor_path` parameter:
 
 ```python
-from tdw.librarian import HumanoidLibrarian
+from tdw.asset_bundle_creator.humanoid_creator import HumanoidCreator
 
-lib = HumanoidLibrarian("smpl_humanoids.json")
-record = lib.get_record("humanoid_smpl_f")
+a = HumanoidCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
 ```
 
-To add a SMPL humanoid, send [`add_smpl_humanoid`](../../api/command_api.md#add_smpl_humanoid):
+#### 3. `check_version`
+
+When you create a new `HumanoidCreator` Python object, it automatically compares the version of your local Unity project to the one stored on GitHub. This requires an Internet connection and might not be desirable in all cases, especially on servers. To prevent the version check, set `check_version=False` in the constructor.
+
+#### 4. `display`
+
+This must be set on Linux machines, especially headless servers, and must match a valid X display.
+
+## Create multiple asset bundles
+
+You can feasibly create asset bundles for multiple models by calling `source_file_to_asset_bundles()` in a loop. **This is not a good idea.** Repeatedly calling Unity from a Python script is actually very slow. (It also appears to slow down over many consecutive calls). Instead, call `source_directory_to_asset_bundles()`:
 
 ```python
-import random
+from pathlib import Path
+from tdw.asset_bundle_creator.humanoid_creator import HumanoidCreator
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+h = HumanoidCreator()
+h.source_directory_to_asset_bundles(source_directory=Path.home().joinpath("humanoid_fbx_files"),
+                                    output_directory=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("humanoids"))
+```
+
+There are many optional parameters not shown in this example. [Read the API document for more information.](../../python/asset_bundle_creator/humanoid_creator.md)
+
+## Cleanup
+
+Call `cleanup()` to delete any intermediary files within the Unity Editor project created in the process of creating asset bundles. This will delete *all* intermediary files, including those of other models. This won't delete any of your original files (assuming that they weren't in the Unity Editor project).
+
+## Low-level functions
+
+`get_base_unity_call()` returns a list of strings that can be used to call a Unity Editor function:
+
+```python
+from tdw.asset_bundle_creator.humanoid_creator import HumanoidCreator
+
+print(HumanoidCreator().get_base_unity_call())
+```
+
+Output:
+
+```
+['C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe', '-projectpath', 'C:/Users/USER Alter/asset_bundle_creator', '-quit', '-batchmode']
+```
+
+`call_unity()` will call the Asset Bundle Creator Unity project as a subprocess with command-line arguments. You can call arbitrary methods this way (assuming you know the [underlying C# API](https://github.com/alters-mit/asset_bundle_creator). This function is used by every function that communicates with Unity, for example `source_file_to_asset_bundles()`.
+
+## Add a custom humanoid to a TDW simulation
+
+You can load a humanoid saved on a local machine with the [`add_humanoid` command](../../api/command_api.md#add_humanoid).
+
+There are two ways to do this. First, you can just manually set the URL of the asset bundle. Be aware that you need to select the asset bundle for your operating system and you need to add `file:///` to the start of the URL.
+
+The second, easier, way is to deserialize the record.json file, which includes the file paths:
+
+```python
+import json
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.librarian import HumanoidLibrarian
+from tdw.librarian import HumanoidRecord
 
-"""
-Add and animate a SMPL humanoid.
-"""
+name = "humanoid_0"
+# This assumes that you've already created asset bundles and a record.json file in this directory.
+output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("humanoids").joinpath(name)
+# Load the record.
+record_path = output_directory.joinpath("record.json")
+record_data = json.loads(record_path.read_text())
+record = HumanoidRecord(record_data)
 
-# Add a camera and enable image capture.
-humanoid_id = Controller.get_unique_id()
-camera = ThirdPersonCamera(avatar_id="a",
-                           position={"x": -3, "y": 2.5, "z": 1.6},
-                           look_at=humanoid_id)
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("smpl")
-print(f"Images will be saved to: {path}")
-capture = ImageCapture(avatar_ids=["a"], path=path)
-# Start the controller.
 c = Controller()
-c.add_ons.extend([camera, capture])
-# Get the record for the SMPL humanoid and for the animation.
-c.humanoid_librarian = HumanoidLibrarian("smpl_humanoids.json")
-humanoid_record = c.humanoid_librarian.get_record("humanoid_smpl_f")
-animation_command, animation_record = c.get_add_humanoid_animation("walking_1")
-commands = [TDWUtils.create_empty_room(12, 12),
-            {"$type": "add_smpl_humanoid",
-             "id": humanoid_id,
-             "name": humanoid_record.name,
-             "url": humanoid_record.get_url(),
-             "position": {"x": 0, "y": 0, "z": 0},
-             "rotation": {"x": 0, "y": 0, "z": 0},
-             "height": random.uniform(-1, 1),
-             "weight": random.uniform(-1, 1),
-             "torso_height_and_shoulder_width": random.uniform(-1, 1),
-             "chest_breadth_and_neck_height": random.uniform(-1, 1),
-             "upper_lower_back_ratio": random.uniform(-1, 1),
-             "pelvis_width": random.uniform(-1, 1),
-             "hips_curve": random.uniform(-1, 1),
-             "torso_height": random.uniform(-1, 1),
-             "left_right_symmetry": random.uniform(-1, 1),
-             "shoulder_and_torso_width": random.uniform(-1, 1)},
-            animation_command,
-            {"$type": "play_humanoid_animation",
-             "name": animation_record.name,
-             "id": humanoid_id},
-            {"$type": "set_target_framerate",
-             "framerate": animation_record.framerate}]
-c.communicate(commands)
-frames = animation_record.get_num_frames()
-for i in range(frames):
-    c.communicate({"$type": "look_at",
-                   "object_id": humanoid_id})
-c.communicate({"$type": "terminate"})
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               {"$type": "add_humanoid",
+                "name": name,
+                "url": record.get_url(),
+                "id": c.get_unique_id()}])
 ```
-
-Result:
-
-![](images/humanoids/smpl.gif)
 
 ***
 
-**This is the last document in the "Non-physics objects" tutorial.**
+**Next: [Create custom humanoid animations](custom_animations.md)**
 
 [Return to the README](../../../README.md)
 
 ***
 
-Example controllers:
-
-- [smpl.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/non_physics_humanoids/smpl.py) Minimal example of an animated non-physics SMPL humanoid.
-
 Python API:
 
-- [`Controller.get_add_humanoid()`](../../Python/controller.md)
-- [`Controller.get_add_humanoid_animation()`](../../Python/controller.md)
-- [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md)
-- [`HumanoidAnimationLibrarian`](../../python/librarian/humanoid_animation_librarian.md)
+- [`HumanoidCreator`](../../Python/asset_bundle_creator/humanoid_creator.md)
+- [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md)
 
 Command API:
 
-- [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)
-- [`look_at`](../../api/command_api.md#look_at)
-- [`add_smpl_humanoid`](../../api/command_api.md#add_smpl_humanoid)
+- [`add_humanoid`](../../api/command_api.md#add_humanoid)

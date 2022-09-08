@@ -244,10 +244,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Overview](Documentation/lessons/non_physics_humanoids/overview.md)
 2. [SMPL humanoids](Documentation/lessons/non_physics_humanoids/smpl.md)
-3. Create custom non-physics humanoids
-4. Create custom animations
+3. [Create custom non-physics humanoids](Documentation/lessons/non_physics_humanoids/custom_humanoids.md)
+4. [Create custom humanoid animations](Documentation/lessons/non_physics_humanoids/custom_animations.md)
 
-### 14.2 Misc. non-physics
+### 14.2 Misc. non-physics objects
 
 1. [Overview](Documentation/lessons/non_physics/overview.md)
 2. [Position markers](Documentation/lessons/non_physics/position_markers.md)

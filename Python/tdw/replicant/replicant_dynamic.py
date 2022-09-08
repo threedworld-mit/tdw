@@ -58,10 +58,6 @@ class ReplicantDynamic:
         Value = A list of [environment collision data.](../../object_data/collision_obj_env.md)
         """
         """:field
-        A dictionary of object IDs currently held by the Replicant. Key = The arm. Value = a list of object IDs.
-        """
-        self.held: Dict[Arm, List[int]] = {Arm.left: [], Arm.right: []}
-        """:field
         The images rendered by the robot as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
 
         | Pass | Image | Description |

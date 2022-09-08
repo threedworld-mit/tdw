@@ -2,6 +2,7 @@ from typing import Dict, List
 from tdw.add_ons.container_manager import ContainerManager
 from tdw.output_data import OutputData, Replicants
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
+from tdw.replicant.arm import Arm
 
 
 class ReplicantStatic():

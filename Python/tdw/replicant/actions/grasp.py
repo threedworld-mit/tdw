@@ -23,20 +23,40 @@ class Grasp(ArmMotion):
     """
 
     def __init__(self, target: int, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
-                 collision_detection: CollisionDetection, previous: Action = None):
+                 collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], previous: Action = None,
+                 use_other_arm: bool = False):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.static=static
+        self.use_other_arm = use_other_arm
         self.affordance_id = -1
         self.frame_count = 0
         self._target = target
+        self.held_objects = held_objects
         self.initialized_grasp = False
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
+        print("Arm in grasp = " + self.reach_arm.name)
         # This Replicant is already holding the object.
-        if self._target in dynamic.held[Arm.left] or self._target in dynamic.held[Arm.right]:
+        if self._target in self.held_objects[Arm.left] or self._target in self.held_objects[Arm.right] or self._target in self.held_objects[Arm.both]:
             self.status = ActionStatus.success
             return []
+        # There was no successful reach action preceding this, so abort.
+        """
+        if static.primary_target_affordance_id == -1:
+            self.status = ActionStatus.failure
+            return []
+        """
+        # Is Replicant already holding an object in the reach arm?
+        if len(self.held_objects[self.reach_arm]) > 0:
+            # Use the other arm to reach with.
+            if self.use_other_arm and self.reach_arm != Arm.both:
+                    print("Using other arm in grasp")
+                    if self.reach_arm == Arm.left:
+                        self.reach_arm = Arm.right
+                    else:
+                        self.reach_arm = Arm.left
+
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
@@ -65,7 +85,7 @@ class Grasp(ArmMotion):
                             "primary_affordance_id": static.primary_target_affordance_id,
                             "secondary_affordance_id": static.secondary_target_affordance_id,  
                             "id": dynamic.replicant_id, 
-                            "arm": self.reach_arm})
+                            "arm": self.reach_arm.name})
             commands.extend(self._get_hold_object_commands(static=static,
                                                            dynamic=dynamic, 
                                                            object_id=self._target))
@@ -75,10 +95,7 @@ class Grasp(ArmMotion):
         if self.frame_count >= self.reset_action_length:
             self.status = ActionStatus.success
             # Add this object to the held objects for the grasping arm.
-            if self.reach_arm == "left":
-                dynamic.held[Arm.left].append(self._target)
-            else:
-                dynamic.held[Arm.right].append(self._target)
+            self.held_objects[self.reach_arm].append(self._target)
             return []
         elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
@@ -88,10 +105,13 @@ class Grasp(ArmMotion):
                 return []
 
     def _is_success(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
-        return self._target in dynamic.held[self.reach_arm]
+        return self._target in static.held[self.reach_arm]
 
     def _previous_was_same(self, previous: Action) -> bool:
+        """
         if isinstance(previous, MoveBy):
             return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
         else:
             return False
+        """
+        return False

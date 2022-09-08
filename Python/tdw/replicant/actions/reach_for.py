@@ -30,10 +30,13 @@ class ReachFor(ArmMotion):
     """
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, static: ReplicantStatic, 
-                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], 
+                 previous: Action = None, use_other_arm: bool = False):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.static = static
         self.dynamic = dynamic
+        self.held_objects = held_objects
+        self.use_other_arm = use_other_arm
         self.affordance_id = -1
         self.frame_count = 0
         self.target = target
@@ -56,6 +59,19 @@ class ReachFor(ArmMotion):
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
         self.__image_frequency: ImageFrequency = image_frequency
+        # Is Replicant already holding an object in the reach arm?
+        if len(self.held_objects[self.reach_arm]) > 0:
+            # Use the other arm to reach with.
+            if self.use_other_arm and self.reach_arm != Arm.both:
+                print("Using other arm")
+                if self.reach_arm == Arm.left:
+                    self.reach_arm = Arm.right
+                else:
+                    self.reach_arm = Arm.left
+                print("Reach arm now " + self.reach_arm.name)
+            else:
+                # Flag that we are already holding with that arm, and let the user decide what to do.
+                self.status = ActionStatus.already_holding
         return commands
 
 
@@ -65,14 +81,22 @@ class ReachFor(ArmMotion):
         #  as we need the empty objects and bounds output data.
         if isinstance(self.target, int):
             if not self.initialized_affordances:
-                if self.reach_arm == "left":
+                if self.reach_arm == Arm.left:
                    static.primary_target_affordance_id, self.primary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
-                elif self.reach_arm == "right":
+                elif self.reach_arm == Arm.right:
                     static.primary_target_affordance_id, self.primary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
-                elif self.reach_arm == "both":
+                elif self.reach_arm == Arm.both:
                     static.primary_target_affordance_id, self.primary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_l, resp=resp)
                     static.secondary_target_affordance_id, self.secondary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
                 self.initialized_affordances = True
+                # If the target is too far away, fail immediately.
+                print(self.primary_target_position)
+                target_pos_arr = TDWUtils.vector3_to_array(self.primary_target_position)
+                distance = np.linalg.norm(target_pos_arr - dynamic.position)
+                if distance > 0.99:
+                    self.status = ActionStatus.cannot_reach
+                    static.primary_target_affordance_id = -1
+                    return []
         if not self.initialized_reach:
             commands = []
             commands.extend(self._get_reach_commands(dynamic=dynamic, 
@@ -109,7 +133,6 @@ class ReachFor(ArmMotion):
                     # Found the target object.
                     if object_id == self.target:
                         got_affordance_position = True
-
                         # Get the position of the empty object.
                         empty_object_position = empt.get_position(j)
                         # Get the nearest affordance position.
@@ -122,9 +145,9 @@ class ReachFor(ArmMotion):
         if got_affordance_position:
             return self.affordance_id, TDWUtils.array_to_vector3(nearest_position)
         else:
-            return -1, None
+            return -1, self.find_object_center(resp=resp)
 
-    def find_object_center(self, resp: List[bytes]):
+    def find_object_center(self, resp: List[bytes]) -> Dict[str, float]:
         # If the object doesn't have empty game objects, aim for the center and hope for the best.
         got_center = False
         for i in range(len(resp) - 1):
@@ -133,19 +156,19 @@ class ReachFor(ArmMotion):
                 bounds = Bounds(resp[i])
                 for j in range(bounds.get_num()):
                     if bounds.get_id(j) == self.target:
-                        self.primary_target_position = TDWUtils.array_to_vector3(bounds.get_center(j))
                         got_center = True
-                        break
+                        return TDWUtils.array_to_vector3(bounds.get_center(j))
         if not got_center:
             raise Exception("Couldn't get the centroid of the target object.")
 
     def _previous_was_same(self, previous: Action) -> bool:
+        """
         if isinstance(previous, MoveBy):
             return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
         else:
             return False
-
-
+        """
+        return False
 
 
  

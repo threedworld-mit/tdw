@@ -22,12 +22,11 @@ class Drop(ArmMotion):
     """
 
     def __init__(self, target: int, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
-                 collision_detection: CollisionDetection, previous: Action = None):
+                 collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.frame_count = 0
-        self.static=static
-        self.dynamic=dynamic
         self.target = target
+        self.held_objects = held_objects
         self.initialized_drop = False
         #self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self.target][self.static.primary_target_affordance_id]
 
@@ -42,17 +41,20 @@ class Drop(ArmMotion):
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         if not self.initialized_drop:
             commands = []
-            commands.extend(self._get_drop_commands(dynamic=self.dynamic,
+            commands.extend(self._get_drop_commands(dynamic=dynamic,
                                                     object_id=self.target))
             self.initialized_drop = True
             return commands
         # We've completed the drop.
         if self.frame_count >= self.drop_length:
             self.status = ActionStatus.success
+            # Remove the target object from the appropriate held objects list.
+            self.held_objects[self.reach_arm].remove(self.target)
+            # Reset the target object's affordance points tio their original state.
             commands = []
             commands.extend(AffordancePoints.reset_affordance_points(self.target))
             return commands
-        elif not self._is_valid_ongoing(dynamic=self.dynamic):
+        elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
         else:
             while self.frame_count < self.drop_length:

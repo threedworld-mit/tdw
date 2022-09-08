@@ -70,13 +70,13 @@ class ArmMotion(Action, ABC):
                           "secondary_target_position": secondary_target_position, 
                           "id": dynamic.replicant_id, 
                           "length": self.reach_action_length, 
-                          "arm": self.reach_arm})
+                          "arm": self.reach_arm.name})
         else:
             commands.append({"$type": "humanoid_reach_for_position", 
                           "primary_target_position": primary_target_position, 
                           "id": dynamic.replicant_id, 
                           "length": self.reach_action_length, 
-                          "arm": self.reach_arm})
+                          "arm": self.reach_arm.name})
         return commands
 
 
@@ -95,14 +95,14 @@ class ArmMotion(Action, ABC):
                                    "secondary_affordance_id": static.secondary_target_affordance_id,  
                                    "id": dynamic.replicant_id,
                                    "length": self.reset_action_length, 
-                                   "arm": self.reach_arm},
+                                   "arm": self.reach_arm.name},
                           {"$type": "humanoid_reset_held_object_rotation", 
                                "target": object_id, 
                                "primary_affordance_id": static.primary_target_affordance_id,
                                "secondary_affordance_id": static.secondary_target_affordance_id,   
                                "id": dynamic.replicant_id,
                                "length": self.reset_action_length, 
-                               "arm": self.reach_arm}
+                               "arm": self.reach_arm.name}
                         ])
         return commands
    
@@ -111,14 +111,14 @@ class ArmMotion(Action, ABC):
         commands.append({"$type": "humanoid_drop_object",
                           "target": object_id,
                           "id": dynamic.replicant_id,
-                          "arm": self.reach_arm})
+                          "arm": self.reach_arm.name})
         return commands
 
     def _get_reset_arm_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands=[]
         commands.append({"$type": "humanoid_reset_arm",
                           "id": dynamic.replicant_id,
-                          "arm": self.reach_arm})
+                          "arm": self.reach_arm.name})
         return commands
 
     @final
@@ -129,7 +129,6 @@ class ArmMotion(Action, ABC):
         :return: True if the Replicant didn't collide with something that should make it stop.
         """
 
-        
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
             print("Collided - arm motion")

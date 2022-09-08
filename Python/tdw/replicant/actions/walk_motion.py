@@ -150,15 +150,14 @@ class WalkMotion(Action, ABC):
                         collidee_id = collision.get_collidee_id()
                         state = collision.get_state()
                         print("Walk: object collision:", collider_id, collidee_id, state)
-                        object_id = object_ids[1]
                         # Accept the collision if the object is in the includes list or if it's not in the excludes list.
-                        if object_id in self._collision_detection.include_objects or \
-                                (self._collision_detection.objects and object_id not in
+                        if body_part_id in self._collision_detection.include_objects or \
+                                (self._collision_detection.objects and body_part_id not in
                                  self._collision_detection.exclude_objects):
                             if collision.get_state() == "enter":
-                                enters.append(object_ids)
+                                enters.append(body_part_id)
                             elif collision.get_state() == "exit":
-                                exits.append(object_ids)
+                                exits.append(body_part_id)
             # Ignore exit events.
             enters: List[Tuple[int, int]] = [e for e in enters if e not in exits]
             if len(enters) > 0:

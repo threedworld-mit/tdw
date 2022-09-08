@@ -46,4 +46,4 @@ class ActionStatus(Enum):
     collision = 11  # Tried to move or turn but failed because it collided with the environment (such as a wall) or a large object (mass > 30).
     tipping = 12  # Tried to move or turn but failed because it started to tip over.
     held_by_other = 13  # Didn't try to grasp a target object because another Replicant is already holding it.
-    cannot_reset_position = 14  # Didn't try to reset the position because the Replicant hasn't tipped over.
+    already_holding = 14  # Replicant is already hodling an object in the requested arm.

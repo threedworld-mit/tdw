@@ -77,6 +77,11 @@ class Replicant(AddOn):
         """:field
         The current (roll, pitch, yaw) angles of the Magnebot's camera in degrees as a numpy array. This is handled outside of `self.state` because it isn't calculated using output data from the build. See: `Magnebot.CAMERA_RPY_CONSTRAINTS` and `self.rotate_camera()`
         """
+        """:field
+        A dictionary of object IDs currently held by the Replicant. Key = The arm. Value = a list of object IDs.
+        """
+        self.held: Dict[Arm, List[int]] = {Arm.left: [], Arm.right: [], Arm.both: []}
+
         self.camera_rpy: np.array = np.array([0, 0, 0])
         self._previous_resp: List[bytes] = list()
         self._previous_action: Optional[Action] = None
@@ -212,19 +217,19 @@ class Replicant(AddOn):
                              collision_detection=self.collision_detection, arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
-    def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm) -> None:
+    def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm, use_other_arm: bool) -> None:
         """
         Reach for a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arm: Which arm the Replicant is reachiing with -- left, right or both.
-        :param hand_position: The location of the reaching hand in 3D space.
+        :param use_other_arm: Whether to use the other arm for reaching, if the Replicant is holding an object with the selected arm.
         """
 
         self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
-                               collision_detection=self.collision_detection, previous=self._previous_action)
+                               collision_detection=self.collision_detection, held_objects=self.held, previous=self._previous_action, use_other_arm=use_other_arm)
 
-    def grasp(self, target: int, arm: Arm) -> None:
+    def grasp(self, target: int, arm: Arm, use_other_arm: bool) -> None:
         """
         Grasp a target object.
 
@@ -234,7 +239,7 @@ class Replicant(AddOn):
         """
 
         self.action = Grasp(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
-                               collision_detection=self.collision_detection, previous=self._previous_action)
+                               collision_detection=self.collision_detection, held_objects=self.held, previous=self._previous_action, use_other_arm=use_other_arm)
 
     def drop(self, target: int, arm: Arm) -> None:
         """
@@ -246,7 +251,7 @@ class Replicant(AddOn):
         """
 
         self.action = Drop(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
-                               collision_detection=self.collision_detection, previous=self._previous_action)
+                               collision_detection=self.collision_detection, held_objects=self.held, previous=self._previous_action)
 
     def perform_action_sequence(self, animation_list: List[str]) -> None:
         """

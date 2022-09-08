@@ -155,12 +155,12 @@ class AssetBundleCreator(ABC):
         unity_call.extend(["-executeMethod", f"{class_name}.{method}"])
         # Add additional arguments.
         unity_call.extend(args)
-        # Call Unity Editor.
+        # Remove quotes and fix spaces on Linux.
+        shell = not (platform.system() == "Linux")
         if self.quiet:
-            call(unity_call, env=self._env)
+            call(unity_call, env=self._env, shell=shell)
         else:
-            self._run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=True),
-                                            log_path=log_path)
+            self._run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=shell), log_path=log_path)
 
     @final
     def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path]) -> None:

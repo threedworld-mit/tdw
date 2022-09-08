@@ -10,11 +10,9 @@ from tdw.lisdf_data.lisdf_robot_metadata import LisdfRobotMetadata
 
 class LisdfReader(AddOn):
     """
-    Parse an [.lisdf](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/) or [.sdf](http://sdformat.org/) file.
+    Import data from an [.sdf](http://sdformat.org/) or [.lisdf](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/) file.
 
-    .lisdf models can't be directly added into TDW; they must first be converted into asset bundles. These asset bundles will be saved to the local disk, meaning that converting .lisdf data to asset bundles is a one-time process.
-
-    Note that this is only a partial implementation of an .lisdf parser. More functionality will be added over time.
+    Models referenced by .sdf and .lisdf  files can't be directly added into TDW; they must first be converted into asset bundles. These asset bundles will be saved to the local disk, meaning that converting data to asset bundles is a one-time process.
 
     When `read()` is called, asset bundles are automatically generated if they don't already exist. Then this add-on appends commands to the controller to add the objects to the scene.
     """
@@ -25,7 +23,8 @@ class LisdfReader(AddOn):
 
     def read(self, lisdf_path: Union[str, Path], output_directory: Union[str, Path], overwrite: bool = False,
              cleanup: bool = True, robot_metadata: List[LisdfRobotMetadata] = None, send_commands: bool = True,
-             quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None) -> None:
+             quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None,
+             check_version: bool = True) -> None:
         """
         Read an .lisdf file and send commands to the build to add the objects to the scene.
         If corresponding asset bundles don't exist in `asset_bundles_directory` or if `overwrite == True`, this function will call the `asset_bundle_creator` Unity project and generate new asset bundles.
@@ -80,6 +79,7 @@ class LisdfReader(AddOn):
         :param quiet: If True, don't print any messages to console.
         :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
         :param unity_editor_path: The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically.
+        :param check_version: If True, check if there is an update to the Unity Editor project.
         """
 
         if isinstance(lisdf_path, Path):
@@ -128,7 +128,7 @@ class LisdfReader(AddOn):
         # Mark these files as robots.
         if len(robots) > 0:
             args.append('-robots="' + dumps(robots).replace('"', "'") + '"')
-        a = ModelCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path)
+        a = ModelCreator(quiet=quiet, display=display, unity_editor_path=unity_editor_path, check_version=check_version)
         a.call_unity(class_name="LisdfReader",
                      method="Read",
                      args=args,

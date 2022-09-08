@@ -2,11 +2,9 @@
 
 `from tdw.add_ons.lisdf_reader import LisdfReader`
 
-Parse an [.lisdf](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/) or [.sdf](http://sdformat.org/) file.
+Import data from an [.sdf](http://sdformat.org/) or [.lisdf](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/) file.
 
-.lisdf models can't be directly added into TDW; they must first be converted into asset bundles. These asset bundles will be saved to the local disk, meaning that converting .lisdf data to asset bundles is a one-time process.
-
-Note that this is only a partial implementation of an .lisdf parser. More functionality will be added over time.
+Models referenced by .sdf and .lisdf  files can't be directly added into TDW; they must first be converted into asset bundles. These asset bundles will be saved to the local disk, meaning that converting data to asset bundles is a one-time process.
 
 When `read()` is called, asset bundles are automatically generated if they don't already exist. Then this add-on appends commands to the controller to add the objects to the scene.
 
@@ -63,7 +61,7 @@ This is called within `Controller.communicate(commands)` before sending commands
 
 **`self.read(lisdf_path, output_directory)`**
 
-**`self.read(lisdf_path, output_directory, overwrite=False, cleanup=True, robot_metadata=None, send_commands=True, quiet=False, display="0", unity_editor_path=None)`**
+**`self.read(lisdf_path, output_directory, overwrite=False, cleanup=True, robot_metadata=None, send_commands=True, quiet=False, display="0", unity_editor_path=None, check_version=True)`**
 
 Read an .lisdf file and send commands to the build to add the objects to the scene.
 If corresponding asset bundles don't exist in `asset_bundles_directory` or if `overwrite == True`, this function will call the `asset_bundle_creator` Unity project and generate new asset bundles.
@@ -120,3 +118,4 @@ output_directory/
 | quiet |  bool  | False | If True, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
 | unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
+| check_version |  bool  | True | If True, check if there is an update to the Unity Editor project. |

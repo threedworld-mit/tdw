@@ -13,7 +13,7 @@ In most cases, composite objects are synonymous with "articulated objects" in th
 - Multiple disconnected objects such as a pot with a lid 
 - An object with a light source such as a lamp
 
-This lesson explains how to add and use composite objects in TDW and how to create custom composite objects. In general, creating composite objects requires a lot more knowledge of Unity Editor than [creating non-articulated, non-composite objects](../3d_models/custom_models.md); accordingly, the documentation for creating composite objects assumes more prior Unity Editor knowledge.
+This lesson explains how to add and use composite objects in TDW and how to create custom composite objects. In general, creating composite objects requires a lot more knowledge of Unity Editor than [creating non-articulated, non-composite objects](../custom_models/custom_models.md); accordingly, the documentation for creating composite objects assumes more prior Unity Editor knowledge.
 
 ***
 

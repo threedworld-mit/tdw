@@ -16,7 +16,7 @@ a.source_file_to_asset_bundles(name="cube",
                                output_directory=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("cube"))
 ```
 
-[For more information, read this.](../lessons/3d_models/custom_models.md)
+[For more information, read this.](../../lessons/custom_models/custom_models.md)
 
 ## Class Variables
 

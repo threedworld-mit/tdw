@@ -336,6 +336,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [AnimationCreator](Documentation/python/asset_bundle_creator/animation_creator.md)
 - [AssetBundleCreator](Documentation/python/asset_bundle_creator/asset_bundle_creator.md)
 - [CompositeObjectCreator](Documentation/python/asset_bundle_creator/composite_object_creator.md)
+- [HumanoidCreator](Documentation/python/asset_bundle_creator/humanoid_creator.md)
+- [HumanoidCreatorBase](Documentation/python/asset_bundle_creator/humanoid_creator_base.md)
 - [ModelCreator](Documentation/python/asset_bundle_creator/model_creator.md)
 - [RobotCreator](Documentation/python/asset_bundle_creator/robot_creator.md)
 
@@ -369,6 +371,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+
+**tdw.lisdf_data**
+
+- [LisdfRobotMetadata](Documentation/python/lisdf_data/lisdf_robot_metadata.md)
 
 **tdw.model_tests**
 

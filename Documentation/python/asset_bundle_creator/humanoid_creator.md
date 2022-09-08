@@ -1,8 +1,8 @@
-# AnimationCreator
+# HumanoidCreator
 
-`from tdw.asset_bundle_creator.animation_creator import AnimationCreator`
+`from tdw.asset_bundle_creator.humanoid_creator import HumanoidCreator`
 
-Create animation asset bundles from .anim or .fbx files.
+Create asset bundles of non-physics humanoids from .fbx files.
 
 ## Class Variables
 
@@ -25,9 +25,9 @@ Create animation asset bundles from .anim or .fbx files.
 
 \_\_init\_\_
 
-**`AnimationCreator()`**
+**`HumanoidCreator()`**
 
-**`AnimationCreator(quiet=False, display="0", unity_editor_path=None, check_version=True)`**
+**`HumanoidCreator(quiet=False, display="0", unity_editor_path=None, check_version=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

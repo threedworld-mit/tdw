@@ -2,7 +2,7 @@
 
 # Create custom non-physics humanoids
 
-It is possible to add your own non-physics humanoids into TDW from a .fbx file. However, the files must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`HumanoidCreator`](../../python/asset_bundle_creator/humanoid_creator.md).
+It is possible to add your own non-physics humanoids into TDW from a .fbx file. However, the files must first be converted into an asset bundle (just like [objects](../custom_models/custom_models.md)). To do so, you'll need to use TDW's [`HumanoidCreator`](../../python/asset_bundle_creator/humanoid_creator.md).
 
 The humanoid .fbx model must already be rigged. When it is converted into asset bundles, it won't receive colliders.
 
@@ -22,7 +22,7 @@ The humanoid .fbx model must already be rigged. When it is converted into asset 
 
 To convert robot .urdf files and their referenced meshes into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
 
-Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [models](../3d_models/custom_models.md).
+Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [models](../custom_models/custom_models.md).
 
 Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 

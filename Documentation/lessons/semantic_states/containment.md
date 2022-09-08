@@ -317,7 +317,7 @@ Per object in the scene, `ContainerManager` tries to find a corresponding `Model
 
 ***
 
-**Next: [Composite objects (objects with affordances)](composite_objects.md)**
+**Next: [Open and closed states](openness.md)**
 
 [Return to the README](../../../README.md)
 

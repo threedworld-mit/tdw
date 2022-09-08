@@ -1,8 +1,8 @@
-# AnimationCreator
+# HumanoidCreatorBase
 
-`from tdw.asset_bundle_creator.animation_creator import AnimationCreator`
+`from tdw.asset_bundle_creator.humanoid_creator_base import HumanoidCreatorBase`
 
-Create animation asset bundles from .anim or .fbx files.
+Abstract base class for creating humanoids and humanoid animations.
 
 ## Class Variables
 
@@ -25,9 +25,9 @@ Create animation asset bundles from .anim or .fbx files.
 
 \_\_init\_\_
 
-**`AnimationCreator()`**
+**`HumanoidCreatorBase()`**
 
-**`AnimationCreator(quiet=False, display="0", unity_editor_path=None, check_version=True)`**
+**`HumanoidCreatorBase(quiet=False, display="0", unity_editor_path=None, check_version=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -35,38 +35,6 @@ Create animation asset bundles from .anim or .fbx files.
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
 | unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 | check_version |  bool  | True | If True, check if there is an update to the Unity Editor project. |
-
-#### source_file_to_asset_bundles
-
-**`self.source_file_to_asset_bundles(name, source_file, output_directory)`**
-
-Convert a source file into 3 asset bundle files (Windows, OS X, and Linux).
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| name |  str |  | The name of the animation. |
-| source_file |  Union[str, Path] |  | The path to the source file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
-
-#### source_directory_to_asset_bundles
-
-**`self.source_directory_to_asset_bundles(source_directory, output_directory)`**
-
-**`self.source_directory_to_asset_bundles(source_directory, output_directory, library_description=None, overwrite=False, continue_on_error=True, search_pattern=None, cleanup=True)`**
-
-Convert a directory of source files to asset bundles.
-
-Calling this is *significantly* faster than calling `self.source_file_to_asset_bundles()` multiple times.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| source_directory |  Union[str, Path] |  | The root directory of the source files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| library_description |  str  | None | An optional description of the `ModelAnimationLibrarian` that will be included in the `library.json` file. |
-| overwrite |  bool  | False | If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents. |
-| continue_on_error |  bool  | True | If True, continue generating asset bundles even if there is a problem with one file. If False, stop the process if there's an error. |
-| search_pattern |  str  | None | A search pattern for files, for example `"*.fbx"`. All subdirectories will be recursively searched. |
-| cleanup |  bool  | True | If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project. |
 
 #### get_base_unity_call
 
@@ -141,3 +109,35 @@ Delete any intermediary files in the `asset_bundle_creator` Unity Editor project
 **`self.get_creator_class_name()`**
 
 _Returns:_  The name of the Unity C# class, e.g. `ModelCreator`.
+
+#### source_file_to_asset_bundles
+
+**`self.source_file_to_asset_bundles(name, source_file, output_directory)`**
+
+Convert a source file into 3 asset bundle files (Windows, OS X, and Linux).
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| name |  str |  | The name of the animation. |
+| source_file |  Union[str, Path] |  | The path to the source file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+
+#### source_directory_to_asset_bundles
+
+**`self.source_directory_to_asset_bundles(source_directory, output_directory)`**
+
+**`self.source_directory_to_asset_bundles(source_directory, output_directory, library_description=None, overwrite=False, continue_on_error=True, search_pattern=None, cleanup=True)`**
+
+Convert a directory of source files to asset bundles.
+
+Calling this is *significantly* faster than calling `self.source_file_to_asset_bundles()` multiple times.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| source_directory |  Union[str, Path] |  | The root directory of the source files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  Union[str, Path] |  | The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| library_description |  str  | None | An optional description of the `ModelAnimationLibrarian` that will be included in the `library.json` file. |
+| overwrite |  bool  | False | If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents. |
+| continue_on_error |  bool  | True | If True, continue generating asset bundles even if there is a problem with one file. If False, stop the process if there's an error. |
+| search_pattern |  str  | None | A search pattern for files, for example `"*.fbx"`. All subdirectories will be recursively searched. |
+| cleanup |  bool  | True | If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project. |

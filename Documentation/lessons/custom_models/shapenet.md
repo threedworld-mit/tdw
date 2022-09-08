@@ -9,7 +9,7 @@ ShapeNet is a huge repository of semantically tagged obj files available to user
 **Advantages:**
 
 - There are *far* more ShapeNet models and semantic categories than TDW's model libraries.
-- ShapeNet is free (as opposed to [TDW's largest model library](non_free_models.md), which is non-free).
+- ShapeNet is free (as opposed to [TDW's largest model library](../3d_models/non_free_models.md), which is non-free).
 
 **Disadvantages:**
 
@@ -27,13 +27,13 @@ That said, you can generate your own ShapeNet asset bundles and host them locall
 ### ShapeNetCore
 
 1. Clone the `tdw` repo in order to use `shapenet.py`.
-2. See [the requirements for using the `AssetBundleCreator`](custom_models.md).
+2. See [the requirements for using the `ModelCreator`](custom_models.md).
 3. Download and extract `ShapeNetCore.v2.zip`.
 
 ### ShapeNet SEM
 
 1. Clone the `tdw` repo in order to use `shapenet.py`.
-2. See [the requirements for using the `AssetBundleCreator`](custom_models.md).
+2. See [the requirements for using the `ModelCreator`](custom_models.md).
 3. Create a root directory, for example `D:/shapenet_sem/`
 4. Download and extract `models-OBJ.zip` into the root directory.
 5. Download and extract `models-textures.zip` into the root directory.
@@ -106,4 +106,4 @@ ShapeNet convertor script:
 Python API:
 
 - [`ModelLibrarian`](../../python/librarian/model_librarian.md)
-- [`AssetBundleCreator`](../../python/asset_bundle_creator.md)
+- [`ModelCreator`](../../python/asset_bundle_creator/model_creator.md)

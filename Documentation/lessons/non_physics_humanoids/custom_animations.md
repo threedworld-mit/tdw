@@ -20,7 +20,7 @@ It is possible to add your own humanoid animations into TDW from either a .anim 
 
 To convert robot .urdf files and their referenced meshes into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
 
-Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [humanoids](humanoids.md).
+Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [humanoids](custom_humanoids.md).
 
 Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 

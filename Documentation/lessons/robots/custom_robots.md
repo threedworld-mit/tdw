@@ -2,7 +2,7 @@
 
 # Add your own robots to TDW
 
-It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../3d_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/asset_bundle_creator/robot_creator.md).
+It is possible to add your own robots into TDW from a .urdf or .xacro file. However, the robot must first be converted into an asset bundle (just like [objects](../custom_models/custom_models.md)). To do so, you'll need to use TDW's [`RobotCreator`](../../python/asset_bundle_creator/robot_creator.md).
 
 The `RobotCreator` can download a .urdf or .xacro file plus all relevant textures, meshes, etc. or it can use local files.
 
@@ -50,7 +50,7 @@ ROS isn't well-supported on OS X. You can try following installation instruction
 
 To convert robot .urdf files and their referenced meshes into asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alters-mit/asset_bundle_creator), a Unity Editor project. It is possible to run the Unity project without any Python wrapper classes but there is usually no reason to do so.
 
-Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [models](../3d_models/custom_models.md).
+Asset Bundle Creator can be used not just for models, but for other types of asset bundles as well, such as [models](../custom_models/custom_models.md).
 
 Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 

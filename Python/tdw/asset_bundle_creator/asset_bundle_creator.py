@@ -57,12 +57,19 @@ class AssetBundleCreator(ABC):
         system = platform.system()
         # Copy environment variables.
         self._env = os.environ.copy()
-        # libgconf needs to be installed the Editor to work.
+        # Some packages need to be installed for the creator to work.
         if system == "Linux":
             try:
                 check_output(["dpkg", "-l", "libgconf-2-4"])
             except CalledProcessError as e:
                 raise Exception(f"{e}\n\nRun: sudo apt install libgconf-2-4")
+            for pkg in ["gcc-9", "libstdc++6"]:
+                try:
+                    check_output(["dpkg", "-l", pkg])
+                except CalledProcessError as e:
+                    raise Exception(f"{e}\n\nRun:\n"
+                                    f"sudo add-apt-repository ppa:ubuntu-toolchain-r/test\n"
+                                    f"sudo apt install {pkg}")
             # Set the display for Linux.
             self._env["DISPLAY"] = display
         """:field
@@ -140,12 +147,19 @@ class AssetBundleCreator(ABC):
         :param class_name: The name of the Unity C# class. If None, a default class name will be used. See: `self.get_creator_class_name()`.
         """
 
+        s = platform.system()
         # Clone the repo.
         if not AssetBundleCreator.PROJECT_PATH.exists():
             cwd = os.getcwd()
             os.chdir(str(Path.home().resolve()))
             call(["git", "clone", "https://github.com/alters-mit/asset_bundle_creator.git"])
             os.chdir(cwd)
+            # Run chmod +x for all binaries.
+            if s == "Linux":
+                executables_directory = AssetBundleCreator.PROJECT_PATH.joinpath("executables/Linux")
+                for executable_path in ["vhacd/testVHACD", "meshconv/meshconv", "assimp/assimp"]:
+                    call(["chmod", "+x", str(executables_directory.joinpath(executable_path).resolve())])
+
         # Get the base Unity call.
         unity_call = self.get_base_unity_call()
         # Get the class name.
@@ -156,7 +170,7 @@ class AssetBundleCreator(ABC):
         # Add additional arguments.
         unity_call.extend(args)
         # Remove quotes and fix spaces on Linux.
-        shell = not (platform.system() == "Linux")
+        shell = not (s == "Linux")
         if self.quiet:
             call(unity_call, env=self._env, shell=shell)
         else:

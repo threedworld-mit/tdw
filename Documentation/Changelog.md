@@ -10,6 +10,73 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 - Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
 
+### `tdw` module
+
+- **Added: `LisdfReader`.** This add-on can import data from .sdf or .lisdf files into TDW as asset bundles and commands.
+  - Added: `LisdfRobotMetadata`. Metadata for how to read a robot referenced by a .lisdf file.
+- **Complete re-write of the asset bundle creation process:**
+  - The abstract base class `AssetBundleCreatorBase` is now named `AssetBundleCreator`. It has been moved to`tdw.asset_bundle_creator.asset_bundle_creator`.
+  - The class `AssetBundleCreator` is now named `ModelCreator`. It has been moved to `tdw.asset_bundle_creator.model_creator`. **`ModelCreator` has a completely new API.** Read the documentation.
+  - The class `RobotCreator` has been moved to `tdw.asset_bundle_creator.robot_creator` **`RobotCreator` has a completely new API.** Read the documentation.
+  - Added: `AnimationCreator`. Create animation asset bundles from .anim or .fbx files.
+  - Added: `CompositeObjectCreator`. Create composite object asset bundles from .urdf files.
+  - Added: `HumanoidCreator`. Create non-physics humanoid asset bundles from .fbx files.
+  - Added: `HumanoidCreatorBase`. Abstract base class for `AnimationCreator` and `HumanoidCreator`.
+  - **All asset bundle creators now reference a new Asset Bundle Creator Unity project**, which is located in a separate repo.
+    - Removed `asset_bundle_creator.unitypackage`, which was used create a model asset bundle creator Unity project.
+    - Removed all binaries located in `binaries/` such as VHACD and assimp. These are located in the new Unity project.
+- Added to `TDWUtils`:
+  - `get_path(path)` Returns the path as a `Path` object, as opposed to a string.
+  - `get_string_path(path)` Returns the path as a string, as opposed to a `Path`.
+
+### Example controllers
+
+- Moved examples of non-physics humanoids from `non_physics/` to `non_physics_humanoids/`
+- Revised `3d_models/local_object.py` to use the new `ModelCreator`.
+
+### Misc. Python
+
+- Revised  `shapenet/shapenet.py` to use the new `ModelCreator`.
+
+### Robot library
+
+- Added: pr2
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/composite_objects/overview.md`                      | Overview of what composite objects are.                      |
+| `lessons/composite_objects/composite_objects.md`             | How to use composite objects in TDW. Most of this was previously in `semantic_states/composite_objects.md` (see below). |
+| `lessons/composite_objects/create_from_prefab.md`            | How to create composite objects in Unity Editor.             |
+| `lessons/composite_objects/create_from_urdf.md`              | How to create composite objects from a .urdf file.           |
+| `lessons/non_physics_humanoids/custom_animations.md`         | How to create custom humanoid animations.                    |
+| `lessons/non_physics_humanoids/custom_humanoids.md`          | How to create custom non-physics humanoids.                  |
+| `lessons/non_physics_humanoids/overview.md`                  | Overview of non-physics humanoids. Most of this was previously in `non_physics/humanoids.md` (see below). |
+| `lessons/non_physics_humanoids/smpl.md`                      | Description of how to use SMPL humanoids. Most of this was previously in `non_physics/humanoids.md` (see below). |
+| `lessons/read_write/lisdf.md`                                | How to read .sdf and .lisdf files.                           |
+| `python/add_ons/lisdf_reader.md`<br>`python/lisdf_data/lisdf_robot_metadata.md` | API documentation for .lisdf classes.                        |
+| `python/asset_bundle_creators/animation_creator.md`<br>`python/asset_bundle_creators/asset_bundle_creator.md`<br/>`python/asset_bundle_creators/composite_object_creator.md`<br/>`python/asset_bundle_creators/humanoid_creator.md`<br/>`python/asset_bundle_creators/humanoid_creator_base.md`<br/>`python/asset_bundle_creators/model_creator.md`<br/>`python/asset_bundle_creators/robot_creator.md` | API documentation for asset bundle creators.                 |
+
+#### Modified Documentation
+
+| Document                                                     | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `benchmark/benchmark.md`<br>`benchmark/command_deserialization.md`<br>`benchmark/image_capture.md`<br>`benchmark/object_data.md`<br>`lessons/remote/xpra.md` | Fixed broken links.                                          |
+| `lessons/3d_models/custom_models.md`                         | Moved to `lessons/custom_models/custom_models.md`<br>Rewritten to describe how to use `ModelCreator`. |
+| `lessons/3d_models/shapenet.md`                              | Moved to `lessons/custom_models/shapenet.md`<br>Revised to explain how to use the new version of shapenet.py |
+| `lessons/semantic_states/composite_objects.md`               | Split into two documents:<br>1. `lessons/semantic_states/openness.md`<br>2.`lessons/composite_objects/composite_objects.md` |
+| `lessons/non_physics/humanoids.md`                           | Moved to `lessons/non_physics_humanoids/overview.md` and `lessons/non_physics_humanoids/smpl.md` |
+| `lessons/robots/custom_robots.md`                            | Rewritten to explain how to use  the new `RobotCreator`.     |
+
+### Removed Documentation
+
+| Document                                                     | Reason    |
+| ------------------------------------------------------------ | --------- |
+| `python/asset_bundle_creator.md`<br>`python/asset_bundle_creator_base.md`<br>`python/robot_creator.md` | Obsolete. |
+
 ## v1.10.5
 
 ### Build

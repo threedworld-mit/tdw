@@ -969,32 +969,6 @@ class TDWUtils:
         raise Exception(corner, wall)
 
     @staticmethod
-    def ros_position_to_vector3(arr: List[float]) -> Dict[str, float]:
-        """
-        Convert a ROS position to a TDW Vector3 dictionary position.
-        Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
-
-        :param arr: The ROS position.
-
-        :return: A TDW Vector3 dictionary.
-        """
-
-        return {"x": -arr[1], "y": arr[2], "z": arr[0]}
-
-    @staticmethod
-    def ros_rpy_to_vector3(arr: List[float]) -> Dict[str, float]:
-        """
-        Convert ROS RPY angles to a TDW Vector3 dictionary of Euler angles.
-        Source: https://github.com/Unity-Technologies/URDF-Importer/blob/main/com.unity.robotics.urdf-importer/Runtime/Extensions/BuiltInExtensions.cs
-
-        :param arr: The ROS RPY angles.
-
-        :return: A TDW Vector3 dictionary.
-        """
-
-        return {"x": math.degrees(-arr[1]), "y": math.degrees(arr[2]), "z": math.degrees(-arr[0])}
-
-    @staticmethod
     def get_expected_window_position(window_width: int = 256, window_height: int = 256, monitor_index: int = 0, title_bar_height: int = None) -> Dict[str, float]:
         """
         When the TDW build launches, it usually appears at the center of the primary monitor. The expected position of the top-left corner of the build window is therefore:
@@ -1037,7 +1011,6 @@ class TDWUtils:
                 raise Exception(s)
         return {"x": monitor.x + monitor.width // 2 - window_width // 2,
                 "y": monitor.y + monitor.height // 2 - window_height // 2 + title_bar_height}
-
 
     @staticmethod
     def get_path(path: Union[str, Path]) -> Path:

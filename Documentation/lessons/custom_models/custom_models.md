@@ -13,7 +13,13 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 - Unity Hub
 - Unity Editor 2020.3.24f1
   - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
-  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `ModelCreator` constructor (see below).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `ModelCreator` constructor (see below). 
+  - On Linux, you may have trouble specifying the version of Unity you want to install, in which case you should do this (having already downloaded and install Unity Hub)
+
+```bash
+./UnityHub.AppImage --headless install --version 2020.3.24f1 --changeset 79c78de19888
+```
+
 - A .fbx or .obj+.mtl model
 
 ## The Asset Bundle Creator Unity project

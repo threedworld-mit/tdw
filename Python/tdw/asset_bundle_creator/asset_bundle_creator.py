@@ -168,8 +168,7 @@ class AssetBundleCreator(ABC):
         unity_call.extend(["-executeMethod", f"{class_name}.{method}"])
         # Add additional arguments.
         unity_call.extend(args)
-        # Remove quotes and fix spaces on Linux.
-        shell = not (s == "Linux")
+        shell = s == "Windows"
         if self.quiet:
             call(unity_call, env=self._env, shell=shell)
         else:

@@ -36,7 +36,7 @@ class AssetBundleCreator(ABC):
         :param check_version: If True, check if there is an update to the Unity Editor project.
         """
 
-        if check_version and not AssetBundleCreator._VERSION_CHECKED:
+        if check_version and not AssetBundleCreator._VERSION_CHECKED and AssetBundleCreator.PROJECT_PATH.exists():
             resp = get("https://raw.githubusercontent.com/alters-mit/asset_bundle_creator/main/ProjectSettings/ProjectSettings.asset")
             if resp.status_code == 200:
                 remote_version = re.search(AssetBundleCreator._BUNDLE_VERSION_REGEX,

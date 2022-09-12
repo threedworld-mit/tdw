@@ -10,17 +10,12 @@ It is possible to add any 3D model to TDW. However, the underlying Unity engine 
 - (Windows only) Visual C++ 2012 Redistributable
 - The `tdw` module
 - Python 3.6+
+- git
 - Unity Hub
 - Unity Editor 2020.3.24f1
-  - Build options must enabled for Windows, OS X, and Linux (these can  be set when installing Unity).
-  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to add the `unity_editor_path` parameter to the `ModelCreator` constructor (see below). 
-  - On Linux, you may have trouble specifying the version of Unity you want to install, in which case you should do this (having already downloaded and install Unity Hub)
-
-```bash
-./UnityHub.AppImage --headless install --version 2020.3.24f1 --changeset 79c78de19888
-```
-
-- A .fbx or .obj+.mtl model
+  - Build options must enabled for Windows, OS X, and Linux (these can be set when installing Unity).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to set the `unity_editor_path` parameter in the `ModelCreator` constructor (see below). 
+  - To install on a Linux server, [read this.](https://github.com/alters-mit/asset_bundle_creator/blob/main/doc/linux_server.md)
 
 ## The Asset Bundle Creator Unity project
 
@@ -102,7 +97,7 @@ If True, suppress output messages.
 
 If you installed Unity Editor via Unity Hub, `ModelCreator` should be able to automatically find the Unity Editor executable.
 
-If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `ModelCreator` by setting the optional `unity_editor_path` parameter:
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set the optional `unity_editor_path` parameter:
 
 ```python
 from tdw.asset_bundle_creator.model_creator import ModelCreator

@@ -29,11 +29,24 @@ To create asset bundles, TDW uses [Asset Bundle Creator](https://github.com/alte
 
 Asset Bundle Creator will be  downloaded automatically the first time you use the Python wrapper class (see below).
 
+## Requirements
+
+- Windows 10, OS X, or Linux
+- (Windows only) Visual C++ 2012 Redistributable
+- The `tdw` module
+- Python 3.6+
+- git
+- Unity Hub
+- Unity Editor 2020.3.24f1
+  - Build options must enabled for Windows, OS X, and Linux (these can be set when installing Unity).
+  - Ideally, Unity Editor should be installed via Unity Hub; otherwise, you'll need to set the `unity_editor_path` parameter (see below). 
+  - To install on a Linux server, [read this.](https://github.com/alters-mit/asset_bundle_creator/blob/main/doc/linux_server.md)
+
 ## Unity Editor parameters
 
 If you installed Unity Editor via Unity Hub, `LisdfReader` should be able to automatically find the Unity Editor executable.
 
-If the Unity Editor executable is in an unexpected location, you will need to explicitly set its location in the `ModelCreator` by setting the optional `unity_editor_path` parameter:
+If the Unity Editor executable is in an unexpected location, you will need to explicitly set the optional `unity_editor_path` parameter:
 
 ```python
 from pathlib import Path

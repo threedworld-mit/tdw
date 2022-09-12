@@ -12,6 +12,11 @@ Given that a .urdf file can describe a composite object, it follows that technic
 
 There are advantages and disadvantages to each of these but generally if you're creating a robot asset bundle, you should *always* use [RobotCreator](../robots/custom_robots.md) and if you're creating an articulated object from a .urdf file, you can use the CompositeObjectCreator.
 
+## Requirements
+
+- The `tdw` module
+- The Asset Bundle Creator Unity project. [Read this for a list of requirements.](https://github.com/alters-mit/asset_bundle_creator)
+
 ## The `CompositeObjectCreator`
 
 [`CompositeObjectCreator`](../../python/asset_bundle_creator/composite_object_creator.md) can be used to create asset bundles *from a .urdf file.* If you want to create an asset bundle from a .fbx file or a prefab, *do not* use `CompositeObjectCreator`; use `ModelCreator` instead, [as described here](create_from_prefab.md).

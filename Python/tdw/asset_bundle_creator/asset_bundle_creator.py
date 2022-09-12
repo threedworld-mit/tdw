@@ -155,8 +155,8 @@ class AssetBundleCreator(ABC):
             call(["git", "clone", "https://github.com/alters-mit/asset_bundle_creator.git"])
             os.chdir(cwd)
             # Run chmod +x for all binaries.
-            if s == "Linux":
-                executables_directory = AssetBundleCreator.PROJECT_PATH.joinpath("executables/Linux")
+            if s == "Linux" or s == "Darwin":
+                executables_directory = AssetBundleCreator.PROJECT_PATH.joinpath(f"executables/{s}")
                 for executable_path in ["vhacd/testVHACD", "meshconv/meshconv", "assimp/assimp"]:
                     call(["chmod", "+x", str(executables_directory.joinpath(executable_path).resolve())])
 

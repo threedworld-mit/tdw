@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from overrides import final
 from tdw.replicant.action_status import ActionStatus
@@ -9,6 +9,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
 from tdw.output_data import OutputData, Collision, EnvironmentCollision
+from tdw.replicant.arm import Arm
 
 
 class WalkMotion(Action, ABC):
@@ -16,7 +17,7 @@ class WalkMotion(Action, ABC):
     Abstract base class for a Replicant walking action.
     """
 
-    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,  held_objects: Dict[Arm, List[int]], previous: Action = None):
         """
         :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
@@ -26,6 +27,7 @@ class WalkMotion(Action, ABC):
         super().__init__()
         # My collision detection rules.
         self._collision_detection: CollisionDetection = collision_detection
+        self.held_objects = held_objects
         self._resetting: bool = False
         self.meters_per_frame = 0.04911
         self.walk_cycle_num_frames = 68
@@ -59,12 +61,20 @@ class WalkMotion(Action, ABC):
 
     def _get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
-        #print("Starting play")
-        commands.extend([{"$type": "set_target_framerate", 
-                          "framerate": self.walk_record.framerate},
-                         {"$type": "play_humanoid_animation",
-                          "name": "walking_2",
-                          "id": dynamic.replicant_id}])
+        commands.append({"$type": "set_target_framerate", 
+                          "framerate": self.walk_record.framerate})
+        left_id = -1
+        right_id = -1
+        if len(self.held_objects[Arm.left]) > 0:
+            left_id = self.held_objects[Arm.left][0]
+        if len(self.held_objects[Arm.right]) > 0:
+            right_id = self.held_objects[Arm.right][0] 
+        if len(self.held_objects[Arm.both]) > 0:
+            left_id = self.held_objects[Arm.both][0] 
+        commands.append({"$type": "humanoid_walk",
+                         "left_arm_object_id": left_id,
+                         "right_arm_object_id": right_id,
+                          "id": dynamic.replicant_id})
         self.playing = True
         return commands
 

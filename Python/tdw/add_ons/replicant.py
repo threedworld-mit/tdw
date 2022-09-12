@@ -200,7 +200,7 @@ class Replicant(AddOn):
         """
 
         self.action = MoveBy(distance=distance, arrived_at=arrived_at, collision_detection=self.collision_detection,
-                             previous=self._previous_action, dynamic=self.dynamic)
+                              held_objects=self.held, previous=self._previous_action, dynamic=self.dynamic)
 
     def move_to(self, target: Union[int, Dict[str, float]], arrived_at: float = 0.1, aligned_at: float = 1,
                 arrived_offset: float = 0) -> None:
@@ -214,7 +214,8 @@ class Replicant(AddOn):
         """
 
         self.action = MoveTo(target=target, resp=self._previous_resp, dynamic=self.dynamic,
-                             collision_detection=self.collision_detection, arrived_at=arrived_at, aligned_at=aligned_at,
+                             collision_detection=self.collision_detection, held_objects=self.held, 
+                             arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
     def reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], arm: Arm, use_other_arm: bool) -> None:

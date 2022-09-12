@@ -37,8 +37,10 @@ basket_id = c.get_unique_id()
 table_id = c.get_unique_id()
 ball_id = c.get_unique_id()
 ball_id2 = c.get_unique_id()
+zenblocks_id=c.get_unique_id()
+box_id=c.get_unique_id()
 affordance_id = 0
-reach_arm = Arm.both
+reach_arm = Arm.left
 
 replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
 c.add_ons.append(replicant)
@@ -48,10 +50,10 @@ commands.extend([{"$type": "set_screen_size",
                            "height": 1080},
                           {"$type": "set_render_quality",
                            "render_quality": 5},
-                 c.get_add_object(model_name="chair_billiani_doll",
-                                     object_id=5555,
-                                     position={"x": -2.0, "y": 0, "z": -1.3},
-                                     rotation={"x": 0, "y": 63.25, "z": 0})])
+                 c.get_add_object(model_name="iron_box",
+                                     object_id=box_id,
+                                     position={"x": -1.575, "y": 0.35, "z": 2.25},
+                                     rotation={"x": 0, "y": 0, "z": 0})])
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                object_id=ball_id,
                                position={"x": 3.5, "y": 0, "z": -3.5},
@@ -74,8 +76,8 @@ commands.extend(c.get_add_physics_object(model_name="live_edge_coffee_table",
                                          rotation={"x": 0, "y": 20, "z": 0},
                                          library="models_core.json"))
 commands.extend(c.get_add_physics_object(model_name="zenblocks",
-                                         object_id=c.get_unique_id(),
-                                         position={"x": -0.8, "y": 0.65, "z": 2},
+                                         object_id=zenblocks_id,
+                                         position={"x": -0.38, "y": 0.35, "z": 1.885},
                                          scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                                          mass=0.1,
                                          rotation={"x": 0, "y": 0, "z": 0}))
@@ -88,7 +90,7 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
 
 c.communicate(commands)
 
-replicant.move_to(target=basket_id, arrived_offset=0.5)
+replicant.move_to(target=basket_id, arrived_offset=0.4)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

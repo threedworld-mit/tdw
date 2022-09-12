@@ -12,9 +12,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ### `tdw` module
 
-- **Added: `LisdfReader`.** This add-on can import data from .sdf or .lisdf files into TDW as asset bundles and commands.
-  - Added: `LisdfRobotMetadata`. Metadata for how to read a robot referenced by a .lisdf file.
 - **Complete re-write of the asset bundle creation process:**
+  - **If you have the asset_bundle_creator Unity project installed on your computer from a prior version of TDW, you need to delete it. A new asset_bundle_creator Unity project will be created.**
   - The abstract base class `AssetBundleCreatorBase` is now named `AssetBundleCreator`. It has been moved to`tdw.asset_bundle_creator.asset_bundle_creator`.
   - The class `AssetBundleCreator` is now named `ModelCreator`. It has been moved to `tdw.asset_bundle_creator.model_creator`. **`ModelCreator` has a completely new API.** Read the documentation.
   - The class `RobotCreator` has been moved to `tdw.asset_bundle_creator.robot_creator` **`RobotCreator` has a completely new API.** Read the documentation.
@@ -25,6 +24,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
   - **All asset bundle creators now reference a new Asset Bundle Creator Unity project**, which is located in a separate repo.
     - Removed `asset_bundle_creator.unitypackage`, which was used create a model asset bundle creator Unity project.
     - Removed all binaries located in `binaries/` such as VHACD and assimp. These are located in the new Unity project.
+- **Added: `LisdfReader`.** This add-on can import data from .sdf or .lisdf files into TDW as asset bundles and commands.
+  - Added: `LisdfRobotMetadata`. Metadata for how to read a robot referenced by a .lisdf file.
 - Added to `TDWUtils`:
   - `get_path(path)` Returns the path as a `Path` object, as opposed to a string.
   - `get_string_path(path)` Returns the path as a string, as opposed to a `Path`.

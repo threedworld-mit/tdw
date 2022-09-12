@@ -78,7 +78,6 @@ class AssetBundleCreator(ABC):
         self.quiet: bool = quiet
         # Get the Unity path.
         if unity_editor_path is None:
-            system = platform.system()
             # Get the path to the Editor executable.
             if system == "Windows":
                 editor_path = Path('C:/Program Files/Unity/Hub/Editor/')

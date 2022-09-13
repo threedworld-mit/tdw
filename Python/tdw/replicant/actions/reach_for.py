@@ -63,12 +63,10 @@ class ReachFor(ArmMotion):
         if len(self.held_objects[self.reach_arm]) > 0:
             # Use the other arm to reach with.
             if self.use_other_arm and self.reach_arm != Arm.both:
-                print("Using other arm")
                 if self.reach_arm == Arm.left:
                     self.reach_arm = Arm.right
                 else:
                     self.reach_arm = Arm.left
-                print("Reach arm now " + self.reach_arm.name)
             else:
                 # Flag that we are already holding with that arm, and let the user decide what to do.
                 self.status = ActionStatus.already_holding
@@ -90,7 +88,6 @@ class ReachFor(ArmMotion):
                     static.secondary_target_affordance_id, self.secondary_target_position = self._initialize_affordances(reach_body_part=ReplicantBodyPart.hand_r, resp=resp)
                 self.initialized_affordances = True
                 # If the target is too far away, fail immediately.
-                print(self.primary_target_position)
                 target_pos_arr = TDWUtils.vector3_to_array(self.primary_target_position)
                 distance = np.linalg.norm(target_pos_arr - dynamic.position)
                 if distance > 0.99:

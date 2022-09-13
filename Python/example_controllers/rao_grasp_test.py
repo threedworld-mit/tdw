@@ -15,8 +15,8 @@ a randomly-positioned object multiple times.
 
 # A dictionary of affordance points per model. This could be saved to a json file.
 AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [
-                                                           {'x': -0.2285, 'y': 0.305, 'z': 0.0},
-                                                           {'x': 0.2285, 'y': 0.305, 'z': 0.0},
+                                                           #{'x': -0.2285, 'y': 0.305, 'z': 0.0},
+                                                           #{'x': 0.2285, 'y': 0.305, 'z': 0.0},
                                                            {'x': 0, 'y': 0.305, 'z': 0.2285},
                                                            {'x': 0, 'y': 0.305, 'z': -0.2285}],
                                       "basket_18inx18inx12iin_bamboo": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
@@ -84,11 +84,11 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
                                                                        object_id=basket_id,
                                                                        mass=2,
                                                                        position={"x": -0.8, "y": 0.35, "z": 2},
-                                                                       rotation={"x": 0, "y": 90, "z": 0}))
+                                                                       rotation={"x": 0, "y": 110, "z": 0}))
 
 c.communicate(commands)
 
-replicant.move_to(target=basket_id, arrived_offset=0.5)
+replicant.move_to(target=basket_id, arrived_offset=0.4)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

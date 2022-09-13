@@ -33,7 +33,8 @@ commands.extend([{"$type": "set_screen_size",
 
 c.communicate(commands)
 
-anim_list = ["clean_windows", "smoke_cigarette_1", "smoke_cigarette_2", "open_can_drink", "hammering", "brushing_off_dust"]
+#anim_list = ["mop_floor", "clean_windows", "smoke_cigarette_1", "smoke_cigarette_2", "open_can_drink", "hammering", "brushing_off_dust"]
+anim_list = ["smoke_cigarette_2", "open_can_drink"]
 
 replicant.move_to(target={"x": 1, "y": 0, "z": -6.5}, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:

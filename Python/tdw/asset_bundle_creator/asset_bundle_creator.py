@@ -156,7 +156,7 @@ class AssetBundleCreator(ABC):
             # Run chmod +x for all binaries.
             if s == "Linux" or s == "Darwin":
                 executables_directory = AssetBundleCreator.PROJECT_PATH.joinpath(f"executables/{s}")
-                for executable_path in ["vhacd/testVHACD", "meshconv/meshconv", "assimp/assimp"]:
+                for executable_path in ["vhacd/testVHACD", "assimp/assimp"]:
                     call(["chmod", "+x", str(executables_directory.joinpath(executable_path).resolve())])
 
         # Get the base Unity call.

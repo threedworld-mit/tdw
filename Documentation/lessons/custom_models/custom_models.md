@@ -380,9 +380,10 @@ To set correct .fbx model scaling in Blender:
 
 ## Troubleshooting
 
+- If the Asset Bundle Creator Unity project crashes immediately, it may be because you're using an obsolete version. TDW 1.10.5 and earlier used an entirely different Asset Bundle Creator project. Check the project version in Unity Editor; if it is less than 2.0.0, it is the wrong project. Deleting the project will force the Python `ModelCreator` class to re-download the unity project.
 - Make sure that Unity Editor is _closed_ when running `ModelCreator`.
 - If `ModelCreator` can't find Unity Editor, set `unity_editor_path` in the constructor.
-- If you get this warning in the Editor log: `[warn] kq_init: detected broken kqueue; not using.: Undefined error: 0` it means that there's a problem with your Unity license. Make sure you have valid and active Unity credentials.
+- For problems specific to the Asset Bundle Creator Unity project, [read this.](https://github.com/alters-mit/asset_bundle_creator/blob/main/doc/troubleshooting.md)
 
 ***
 

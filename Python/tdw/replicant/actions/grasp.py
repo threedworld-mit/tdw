@@ -36,7 +36,6 @@ class Grasp(ArmMotion):
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        print("Arm in grasp = " + self.reach_arm.name)
         # This Replicant is already holding the object.
         if self._target in self.held_objects[Arm.left] or self._target in self.held_objects[Arm.right] or self._target in self.held_objects[Arm.both]:
             self.status = ActionStatus.success
@@ -51,7 +50,6 @@ class Grasp(ArmMotion):
         if len(self.held_objects[self.reach_arm]) > 0:
             # Use the other arm to reach with.
             if self.use_other_arm and self.reach_arm != Arm.both:
-                    print("Using other arm in grasp")
                     if self.reach_arm == Arm.left:
                         self.reach_arm = Arm.right
                     else:
@@ -80,7 +78,7 @@ class Grasp(ArmMotion):
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         if not self.initialized_grasp:
             commands = []
-            commands.append({"$type": "humanoid_grasp_object", 
+            commands.append({"$type": "replicant_grasp_object", 
                             "target": self._target, 
                             "primary_affordance_id": static.primary_target_affordance_id,
                             "secondary_affordance_id": static.secondary_target_affordance_id,  

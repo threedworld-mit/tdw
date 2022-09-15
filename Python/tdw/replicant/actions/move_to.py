@@ -16,7 +16,7 @@ from tdw.replicant.arm import Arm
 
 class MoveTo(Action):
     """
-    Turn the Replicant to a target position or object and then move to it.
+    Turn the Replicant to a target position or object and then walk to it.
 
     This action has two "sub-actions": A [`TurnTo`](turn_by.md) and a [`MoveBy`](move_by.md).
     """
@@ -29,8 +29,8 @@ class MoveTo(Action):
         :param resp: The response from the build.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
-        :param arrived_offset: Offset the arrival position by this value. This can be useful if the Magnebot needs to move to an object but shouldn't try to move to the object's centroid. This is distinct from `arrived_at` because it won't affect the Magnebot's braking solution.
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param arrived_offset: Offset the arrival position by this value. This can be useful if the Replicant needs to move to an object but shouldn't try to move to the object's centroid. This is distinct from `arrived_at` because it won't affect the Replicant's braking solution.
+        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """

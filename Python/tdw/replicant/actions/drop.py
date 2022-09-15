@@ -50,7 +50,7 @@ class Drop(ArmMotion):
             self.status = ActionStatus.success
             # Remove the target object from the appropriate held objects list.
             self.held_objects[self.reach_arm].remove(self.target)
-            # Reset the target object's affordance points tio their original state.
+            # Reset the target object's affordance points to their original state.
             commands = []
             commands.extend(AffordancePoints.reset_affordance_points(self.target))
             return commands
@@ -62,10 +62,12 @@ class Drop(ArmMotion):
                 return []
 
     def _previous_was_same(self, previous: Action) -> bool:
-        #if isinstance(previous, MoveBy):
-            #return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
-        #else:
-            #return False
+        """
+        if isinstance(previous, MoveBy):
+            return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
+        else:
+            return False
+        """
         return False
         
         

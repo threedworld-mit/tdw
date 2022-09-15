@@ -19,8 +19,7 @@ from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
 
 """
-Create a humanoid that walks across the room, knocks over a chair and reaches for 
-a randomly-positioned object multiple times.
+Reach for a target object or position, using one or both arms.
 """
 
 

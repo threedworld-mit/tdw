@@ -18,15 +18,13 @@ from tdw.replicant.arm import Arm
 
 class ResetArm(ArmMotion):
     """
-    Move arm back to rest position.
+    Move arm(s) back to rest position.
     """
 
     def __init__(self, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
                  collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
         self.frame_count = 0
-        self.static=static
-        self.dynamic=dynamic
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -42,7 +40,7 @@ class ResetArm(ArmMotion):
         if self.frame_count >= self.reset_action_length:
             self.status = ActionStatus.success
             return []
-        elif not self._is_valid_ongoing(dynamic=self.dynamic):
+        elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
         else:
             while self.frame_count < self.reset_action_length:

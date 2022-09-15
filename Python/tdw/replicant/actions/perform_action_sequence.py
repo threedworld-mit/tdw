@@ -14,7 +14,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 class PerformActionSequence(Action):
     """
-    Perform a sequence chain of motion capture animations.
+    Perform a sequence of motion capture animations.
     """
 
     def __init__(self, animation_list: List[str], resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic, 
@@ -98,7 +98,6 @@ class PerformActionSequence(Action):
         """
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
-            print("Collided")
             self.status = ActionStatus.collision
             return False
         else:

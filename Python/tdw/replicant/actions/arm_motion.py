@@ -21,7 +21,7 @@ class ArmMotion(Action, ABC):
 
     def __init__(self, dynamic: ReplicantDynamic, arm: Arm, collision_detection: CollisionDetection, previous: Action = None):
         """
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
@@ -65,14 +65,14 @@ class ArmMotion(Action, ABC):
         commands=[]
         # Reach for IK target, at affordance position.
         if secondary_target_position != None:
-            commands.append({"$type": "humanoid_reach_for_position", 
+            commands.append({"$type": "replicant_reach_for_position", 
                           "primary_target_position": primary_target_position, 
                           "secondary_target_position": secondary_target_position, 
                           "id": dynamic.replicant_id, 
                           "length": self.reach_action_length, 
                           "arm": self.reach_arm.name})
         else:
-            commands.append({"$type": "humanoid_reach_for_position", 
+            commands.append({"$type": "replicant_reach_for_position", 
                           "primary_target_position": primary_target_position, 
                           "id": dynamic.replicant_id, 
                           "length": self.reach_action_length, 
@@ -88,7 +88,7 @@ class ArmMotion(Action, ABC):
         r_hand_pos = TDWUtils.array_to_vector3(dynamic.body_part_transforms[static.body_parts[ReplicantBodyPart.hand_r]].position)
         fwd = TDWUtils.array_to_vector3(dynamic.forward)
         hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
-        commands.extend([{"$type": "humanoid_reach_for_position", 
+        commands.extend([{"$type": "replicant_reach_for_position", 
                                    "primary_target_position": {"x": l_hand_pos["x"] + (fwd["x"] * 0.5), "y": l_hand_pos["y"] + 0.25, "z": l_hand_pos["z"] + (fwd["z"] * 0.5)},
                                    "secondary_target_position": {"x": r_hand_pos["x"] + (fwd["x"] * 0.5), "y": r_hand_pos["y"] + 0.25, "z": r_hand_pos["z"]  + (fwd["z"] * 0.5)},   
                                    "primary_affordance_id": static.primary_target_affordance_id,
@@ -96,7 +96,7 @@ class ArmMotion(Action, ABC):
                                    "id": dynamic.replicant_id,
                                    "length": self.reset_action_length, 
                                    "arm": self.reach_arm.name},
-                          {"$type": "humanoid_reset_held_object_rotation", 
+                          {"$type": "replicant_reset_held_object_rotation", 
                                "target": object_id, 
                                "primary_affordance_id": static.primary_target_affordance_id,
                                "secondary_affordance_id": static.secondary_target_affordance_id,   
@@ -108,7 +108,7 @@ class ArmMotion(Action, ABC):
    
     def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int) -> List[dict]:
         commands=[]
-        commands.append({"$type": "humanoid_drop_object",
+        commands.append({"$type": "replicant_drop_object",
                           "target": object_id,
                           "id": dynamic.replicant_id,
                           "arm": self.reach_arm.name})
@@ -116,7 +116,7 @@ class ArmMotion(Action, ABC):
 
     def _get_reset_arm_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands=[]
-        commands.append({"$type": "humanoid_reset_arm",
+        commands.append({"$type": "replicant_reset_arm",
                           "id": dynamic.replicant_id,
                           "arm": self.reach_arm.name})
         return commands
@@ -131,7 +131,6 @@ class ArmMotion(Action, ABC):
 
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
-            print("Collided - arm motion")
             self.status = ActionStatus.collision
             return False
         else:
@@ -156,7 +155,6 @@ class ArmMotion(Action, ABC):
                     if isinstance(collision, EnvironmentCollision):
                         collider_id = collision.get_object_id()
                         state = collision.get_state()
-                        print("Arm: environment_collision:", collider_id, state)
                         if (self._collision_detection.floor and collision.get_floor()) or \
                                 (self._collision_detection.walls and not collision.get_floor()):
                             if collision.get_state() == "enter":
@@ -177,7 +175,6 @@ class ArmMotion(Action, ABC):
                         collider_id = collision.get_collider_id()
                         collidee_id = collision.get_collidee_id()
                         state = collision.get_state()
-                        print("Arm: object collision:", collider_id, collidee_id, state)
                         object_id = object_ids[1]
                         # Accept the collision if the object is in the includes list or if it's not in the excludes list.
                         if object_id in self._collision_detection.include_objects or \

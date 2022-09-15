@@ -19,7 +19,7 @@ class TurnTo(Action):
     def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Action = None):
         """
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary.
         :param resp: The response from the build.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
@@ -28,7 +28,7 @@ class TurnTo(Action):
         """
         """:field
             The target position as a dictionary.
-            """
+        """
         self.target_position = {"x": 0,"y": 0,"z": 0}
         # Set the target position.
         if isinstance(target, int):
@@ -67,7 +67,7 @@ class TurnTo(Action):
     def _get_turn_command(self, dynamic: ReplicantDynamic) -> dict:
         # Turn to face position. 
         commands = []    
-        commands.append({"$type": "humanoid_look_at_position", 
+        commands.append({"$type": "replicant_look_at_position", 
                          "position": self.target_position, 
                          "id": dynamic.replicant_id})
         return commands

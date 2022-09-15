@@ -23,7 +23,7 @@ class MoveBy(WalkMotion):
         """
         :param distance: The target distance.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
@@ -69,7 +69,6 @@ class MoveBy(WalkMotion):
         elif self.status == ActionStatus.ongoing:
             # We are still walking.
             if self.processing_remainder:
-                #print("Processing remainder: " + str(self.frame_count))
                 if self.frame_count < self.remainder:
                     self.frame_count += 1 
                     self.total_frame_count += 1
@@ -80,13 +79,11 @@ class MoveBy(WalkMotion):
             else:
                 if self.loop_count < self.num_loops:
                     if self.frame_count < self.walk_cycle_num_frames:
-                        #print("Processing frame: " + str(self.frame_count))
                         self.frame_count += 1 
                         self.total_frame_count += 1
                         return []
                     elif (self.num_frames - self.total_frame_count) > self.remainder:
                         # Start a new loop.
-                        #print("Starting new loop")
                         commands = []
                         self.loop_count += 1
                         self.frame_count = 0
@@ -96,7 +93,6 @@ class MoveBy(WalkMotion):
                         # We have performed the required number of loop cycles. 
                         # Now set up to process any remainder frames.
                         if self.remainder > 0:
-                            #print("Setting up remainder")
                             self.processing_remainder = True
                             commands = []
                             self.frame_count = 0

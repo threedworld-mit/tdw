@@ -32,6 +32,6 @@ class TurnBy(Action):
 
     def _get_turn_command(self, replicant_id: int) -> dict:
             # Turn to face position.     
-            return({"$type": "humanoid_look_at_position", 
+            return({"$type": "replicant_look_at_position", 
                                   "position": self.object_position, 
                                   "id": replicant_id})

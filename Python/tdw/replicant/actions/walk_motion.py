@@ -19,7 +19,7 @@ class WalkMotion(Action, ABC):
 
     def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,  held_objects: Dict[Arm, List[int]], previous: Action = None):
         """
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
@@ -45,7 +45,7 @@ class WalkMotion(Action, ABC):
                                     image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
 
         :return: A list of commands to initialize this action.
@@ -71,7 +71,7 @@ class WalkMotion(Action, ABC):
             right_id = self.held_objects[Arm.right][0] 
         if len(self.held_objects[Arm.both]) > 0:
             left_id = self.held_objects[Arm.both][0] 
-        commands.append({"$type": "humanoid_walk",
+        commands.append({"$type": "replicant_walk",
                          "left_arm_object_id": left_id,
                          "right_arm_object_id": right_id,
                           "id": dynamic.replicant_id})
@@ -90,8 +90,8 @@ class WalkMotion(Action, ABC):
                          image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param static: [The static Magnebot data.](../magnebot_static.md)
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param static: [The static Replicant data.](../Replicant_static.md)
+        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
 
         :return: A list of commands that must be sent to end any action.
@@ -113,7 +113,6 @@ class WalkMotion(Action, ABC):
         
         # Stop if the Replicant is colliding with something.
         if self._is_collision(dynamic=dynamic):
-            print("Collided -- walking")
             self.status = ActionStatus.collision
             return False
         else:
@@ -138,7 +137,6 @@ class WalkMotion(Action, ABC):
                     if isinstance(collision, EnvironmentCollision):
                         collider_id = collision.get_object_id()
                         state = collision.get_state()
-                        print("Walk: environment_collision:", collider_id, state)
                         if (self._collision_detection.floor and collision.get_floor()) or \
                                 (self._collision_detection.walls and not collision.get_floor()):
                             if collision.get_state() == "enter":
@@ -159,15 +157,14 @@ class WalkMotion(Action, ABC):
                         collider_id = collision.get_collider_id()
                         collidee_id = collision.get_collidee_id()
                         state = collision.get_state()
-                        print("Walk: object collision:", collider_id, collidee_id, state)
                         # Accept the collision if the object is in the includes list or if it's not in the excludes list.
-                        if body_part_id in self._collision_detection.include_objects or \
-                                (self._collision_detection.objects and body_part_id not in
+                        if collider_id in self._collision_detection.include_objects or \
+                                (self._collision_detection.objects and collider_id not in
                                  self._collision_detection.exclude_objects):
                             if collision.get_state() == "enter":
-                                enters.append(body_part_id)
+                                enters.append(collider_id)
                             elif collision.get_state() == "exit":
-                                exits.append(body_part_id)
+                                exits.append(collider_id)
             # Ignore exit events.
             enters: List[Tuple[int, int]] = [e for e in enters if e not in exits]
             if len(enters) > 0:

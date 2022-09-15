@@ -77,7 +77,10 @@ class Mouse(AddOn):
         If `self.mouse_is_over_object == True`, this is the ID of the object.
         """
         self.mouse_over_object_id: int = -1
-        self._raycast_id: int = Controller.get_unique_id()
+        """:field
+        The ID of the mouse raycast.
+        """
+        self.raycast_id: int = Controller.get_unique_id()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_mouse",
@@ -85,7 +88,7 @@ class Mouse(AddOn):
 
     def on_send(self, resp: List[bytes]) -> None:
         self.commands.append({"$type": "send_mouse_raycast",
-                              "id": self._raycast_id,
+                              "id": self.raycast_id,
                               "avatar_id": self.avatar_id})
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -108,7 +111,7 @@ class Mouse(AddOn):
             # Get the mouse world position raycast.
             elif r_id == "rayc":
                 raycast = Raycast(resp[i])
-                if raycast.get_raycast_id() == self._raycast_id:
+                if raycast.get_raycast_id() == self.raycast_id:
                     self.world_position = np.array(raycast.get_point())
                     self.mouse_is_over_object = raycast.get_hit() and raycast.get_hit_object()
                     self.mouse_over_object_id = int(raycast.get_object_id())

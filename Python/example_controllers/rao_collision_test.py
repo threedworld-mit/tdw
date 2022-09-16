@@ -41,7 +41,13 @@ ball_id2 = c.get_unique_id()
 affordance_id = 0
 reach_arm = Arm.both
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
+print("Chair ID = " + str(chair_id))
+print("basket ID = " + str(basket_id))
+print("table ID = " + str(table_id))
+print("ball ID = " + str(ball_id))
+
+
+replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never, avoid_objects=True)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",
@@ -51,11 +57,11 @@ commands.extend([{"$type": "set_screen_size",
                            "render_quality": 5},
                  c.get_add_object(model_name="chair_billiani_doll",
                                      object_id=chair_id,
-                                     position={"x": -2.0, "y": 0, "z": -1.3},
+                                     position={"x": 0, "y": 0, "z": -1.3},
                                      rotation={"x": 0, "y": 63.25, "z": 0}),
                  c.get_add_object(model_name="live_edge_coffee_table",
                                          object_id=table_id,
-                                         position={"x": -1, "y": 0, "z": 2},
+                                         position={"x": 0, "y": 0, "z": 2},
                                          rotation={"x": 0, "y": 20, "z": 0},
                                          library="models_core.json")])
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
@@ -66,19 +72,11 @@ commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                kinematic=True,
                                gravity=False,
                                library="models_special.json"))
-commands.extend(c.get_add_physics_object(model_name="prim_sphere",
-                               object_id=ball_id2,
-                               position={"x": -1, "y": 0, "z": -7.5},
-                               rotation={"x": 0, "y": 0, "z": 0},
-                               scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
-                               kinematic=True,
-                               gravity=False,
-                               library="models_special.json"))
 
 
 c.communicate(commands)
 
-replicant.collision_detection.objects = True
+replicant.collision_detection.objects = False
 #replicant.collision_detection.exclude_objects = [chair_id]
 
 replicant.move_to(target=ball_id, arrived_offset=0.2)

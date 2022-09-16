@@ -1,7 +1,7 @@
 from typing import Dict, List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import Transforms
+from tdw.output_data import OutputData, Transforms, Raycast
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.walk_motion import WalkMotion
 from tdw.replicant.actions.action import Action
@@ -19,7 +19,8 @@ class MoveBy(WalkMotion):
     """
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 held_objects: Dict[Arm, List[int]], arrived_at: float = 0.1, previous: Action = None):
+                 held_objects: Dict[Arm, List[int]], avoid_objects: bool = False, arrived_at: float = 0.1, 
+                 previous: Action = None):
         """
         :param distance: The target distance.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
@@ -32,7 +33,8 @@ class MoveBy(WalkMotion):
         """
         self.distance: float = distance
         self._arrived_at: float = arrived_at
-        super().__init__(dynamic=dynamic, collision_detection=collision_detection, held_objects = held_objects, previous=previous)
+        super().__init__(dynamic=dynamic, collision_detection=collision_detection, held_objects=held_objects, 
+                         avoid_objects=avoid_objects, previous=previous)
         # Get the initial state.
         self._initial_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(dynamic.position)
         self._target_position_arr: np.array = dynamic.position + (dynamic.forward * distance)
@@ -54,6 +56,7 @@ class MoveBy(WalkMotion):
         self.loop_count: int = 0
         # Flag for remainder handling.
         self.processing_remainder: bool = False
+
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         p1 = dynamic.position
@@ -81,7 +84,21 @@ class MoveBy(WalkMotion):
                     if self.frame_count < self.walk_cycle_num_frames:
                         self.frame_count += 1 
                         self.total_frame_count += 1
-                        return []
+                        if self.avoid_objects:
+                            commands = []
+                            for i in range(len(resp) - 1):
+                                r_id = OutputData.get_data_type_id(resp[i])
+                                if r_id == "rayc":
+                                    raycast = Raycast(resp[i])
+                                    #if raycast.get_raycast_id() == raycast_id:
+                                    if raycast.get_hit() and raycast.get_hit_object():
+                                        commands = []
+                                        #commands.extend(self._get_stop_commands(dynamic=dynamic))
+                                        print("Boxcast hit; object ID = " + str(raycast.get_object_id()))
+                                        self.status = ActionStatus.collision
+                            return commands
+                        else:
+                            return []
                     elif (self.num_frames - self.total_frame_count) > self.remainder:
                         # Start a new loop.
                         commands = []

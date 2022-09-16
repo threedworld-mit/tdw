@@ -31,7 +31,7 @@ from tdw.replicant.arm import Arm
 class Replicant(AddOn):
 
     def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 image_frequency: ImageFrequency = ImageFrequency.once):
+                 image_frequency: ImageFrequency = ImageFrequency.once, avoid_objects: bool = False):
         """
         :param replicant_id: The ID of the replicant.
         :param position: The position of the replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -81,6 +81,10 @@ class Replicant(AddOn):
         A dictionary of object IDs currently held by the Replicant. Key = The arm. Value = a list of object IDs.
         """
         self.held: Dict[Arm, List[int]] = {Arm.left: [], Arm.right: [], Arm.both: []}
+        """:field
+        Whether this replicant should avoid other objects in the scene.
+        """
+        self.avoid_objects: bool = avoid_objects
 
         self.camera_rpy: np.array = np.array([0, 0, 0])
         self._previous_resp: List[bytes] = list()
@@ -199,7 +203,7 @@ class Replicant(AddOn):
         """
 
         self.action = MoveBy(distance=distance, arrived_at=arrived_at, collision_detection=self.collision_detection,
-                              held_objects=self.held, previous=self._previous_action, dynamic=self.dynamic)
+                              held_objects=self.held, avoid_objects = self.avoid_objects, previous=self._previous_action, dynamic=self.dynamic)
 
     def move_to(self, target: Union[int, Dict[str, float]], arrived_at: float = 0.1, aligned_at: float = 1,
                 arrived_offset: float = 0) -> None:
@@ -214,7 +218,7 @@ class Replicant(AddOn):
 
         self.action = MoveTo(target=target, resp=self._previous_resp, dynamic=self.dynamic,
                              collision_detection=self.collision_detection, held_objects=self.held, 
-                             arrived_at=arrived_at, aligned_at=aligned_at,
+                             avoid_objects = self.avoid_objects, arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
     def reach_for(self, target: Union[int, Dict[str,  float]], arm: Arm, use_other_arm: bool) -> None:

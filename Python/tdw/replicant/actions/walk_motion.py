@@ -8,7 +8,8 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
-from tdw.output_data import OutputData, Collision, EnvironmentCollision
+from tdw.output_data import OutputData, Collision, EnvironmentCollision, Raycast
+from tdw.tdw_utils import TDWUtils
 from tdw.replicant.arm import Arm
 
 
@@ -17,7 +18,8 @@ class WalkMotion(Action, ABC):
     Abstract base class for a Replicant walking action.
     """
 
-    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,  held_objects: Dict[Arm, List[int]], previous: Action = None):
+    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,  held_objects: Dict[Arm, List[int]], 
+                 avoid_objects: bool = False, previous: Action = None):
         """
         :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
@@ -28,6 +30,7 @@ class WalkMotion(Action, ABC):
         # My collision detection rules.
         self._collision_detection: CollisionDetection = collision_detection
         self.held_objects = held_objects
+        self.avoid_objects = avoid_objects
         self._resetting: bool = False
         self.meters_per_frame = 0.04911
         self.walk_cycle_num_frames = 68
@@ -71,10 +74,19 @@ class WalkMotion(Action, ABC):
             right_id = self.held_objects[Arm.right][0] 
         if len(self.held_objects[Arm.both]) > 0:
             left_id = self.held_objects[Arm.both][0] 
-        commands.append({"$type": "replicant_walk",
+        pos = TDWUtils.array_to_vector3(dynamic.position)
+        pos["y"] = pos["y"] + 1.0
+        fwd = TDWUtils.array_to_vector3(dynamic.forward)
+        print(pos, fwd)
+        commands.extend([{"$type": "replicant_walk",
                          "left_arm_object_id": left_id,
                          "right_arm_object_id": right_id,
-                          "id": dynamic.replicant_id})
+                          "id": dynamic.replicant_id},
+                         {"$type": "send_boxcast",
+                          "half_extents": {"x": 0.001, "y": 0.001, "z": 0.001},
+                          "origin": pos,
+                          "destination": fwd,
+                          "id": 99999}])
         self.playing = True
         return commands
 

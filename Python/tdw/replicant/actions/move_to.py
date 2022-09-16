@@ -22,8 +22,8 @@ class MoveTo(Action):
     """
 
     def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], arrived_at: float = 0.1, 
-                 aligned_at: float = 1, arrived_offset: float = 0, previous: Action = None):
+                 collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], avoid_objects: bool = False, 
+                 arrived_at: float = 0.1, aligned_at: float = 1, arrived_offset: float = 0, previous: Action = None):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param resp: The response from the build.
@@ -44,6 +44,7 @@ class MoveTo(Action):
         self.__collision_detection: CollisionDetection = collision_detection
         self.__arrived_at: float = arrived_at
         self.__arrived_offset: float = arrived_offset
+        self.avoid_objects = avoid_objects
         self.held_objects = held_objects
         self._move_by: Optional[MoveBy] = None
         target_position = {"x": 0,"y": 0,"z": 0}
@@ -77,7 +78,8 @@ class MoveTo(Action):
                 return commands
             # The turn succeeded. Start the move action.
             self._move_by = MoveBy(distance=self.distance, arrived_at=self.__arrived_at, dynamic=dynamic,
-                                   collision_detection=self.__collision_detection, held_objects=self.held_objects, previous=self._turn_to)
+                                   collision_detection=self.__collision_detection, held_objects=self.held_objects,  
+                                   avoid_objects=self.avoid_objects, previous=self._turn_to)
             self._move_by.initialized = True
             # Initialize the move_by action.
             commands.extend(self._move_by.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,

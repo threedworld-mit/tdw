@@ -175,21 +175,19 @@ class ArmMotion(Action, ABC):
                         collider_id = collision.get_collider_id()
                         collidee_id = collision.get_collidee_id()
                         state = collision.get_state()
-                        object_id = object_ids[1]
                         # Accept the collision if the object is in the includes list or if it's not in the excludes list.
-                        if object_id in self._collision_detection.include_objects or \
-                                (self._collision_detection.objects and object_id not in
+                        if collider_id in self._collision_detection.include_objects or \
+                                (self._collision_detection.objects and collider_id not in
                                  self._collision_detection.exclude_objects):
                             if collision.get_state() == "enter":
-                                enters.append(object_ids)
+                                enters.append(collider_id)
                             elif collision.get_state() == "exit":
-                                exits.append(object_ids)
+                                exits.append(collider_id)
             # Ignore exit events.
             enters: List[Tuple[int, int]] = [e for e in enters if e not in exits]
             if len(enters) > 0:
                 return True
         return False
-
 
     @abstractmethod
     def _previous_was_same(self, previous: Action) -> bool:

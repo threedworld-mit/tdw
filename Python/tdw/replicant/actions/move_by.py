@@ -96,6 +96,7 @@ class MoveBy(WalkMotion):
                                         #commands.extend(self._get_stop_commands(dynamic=dynamic))
                                         print("Boxcast hit; object ID = " + str(raycast.get_object_id()))
                                         self.status = ActionStatus.collision
+                                        break
                             return commands
                         else:
                             return []

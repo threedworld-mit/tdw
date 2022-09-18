@@ -57,7 +57,7 @@ commands.extend([{"$type": "set_screen_size",
                            "render_quality": 5},
                  c.get_add_object(model_name="chair_billiani_doll",
                                      object_id=chair_id,
-                                     position={"x": 0, "y": 0, "z": -1.3},
+                                     position={"x": 0, "y": 0, "z": 0},
                                      rotation={"x": 0, "y": 63.25, "z": 0}),
                  c.get_add_object(model_name="live_edge_coffee_table",
                                          object_id=table_id,
@@ -85,7 +85,7 @@ while replicant.action.status == ActionStatus.ongoing:
 
 print(replicant.action.status, replicant.dynamic.position)
 
-logger.save()
+#logger.save()
 
 #c.communicate({"$type": "terminate"})
 

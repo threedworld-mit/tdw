@@ -75,18 +75,19 @@ class WalkMotion(Action, ABC):
         if len(self.held_objects[Arm.both]) > 0:
             left_id = self.held_objects[Arm.both][0] 
         pos = TDWUtils.array_to_vector3(dynamic.position)
+        pos["z"] = pos["z"] + 0.1
         pos["y"] = pos["y"] + 1.0
-        fwd = TDWUtils.array_to_vector3(dynamic.forward)
-        print(pos, fwd)
+        dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.6)
         commands.extend([{"$type": "replicant_walk",
                          "left_arm_object_id": left_id,
                          "right_arm_object_id": right_id,
                           "id": dynamic.replicant_id},
                          {"$type": "send_boxcast",
-                          "half_extents": {"x": 0.001, "y": 0.001, "z": 0.001},
+                          "half_extents": {"x": 0.1, "y": 0.1, "z": 0.1},
                           "origin": pos,
-                          "destination": fwd,
+                          "destination": dest,
                           "id": 99999}])
+        print(pos, dest)
         self.playing = True
         return commands
 

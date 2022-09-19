@@ -98,7 +98,7 @@ class Replicant(AddOn):
                       "name": "replicant",
                       "position": self.initial_position,
                       "rotation": self.initial_rotation,
-                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                      "url": "file:///" + "D://TDW_Strategic_Plan_2021//HumanoidAgent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
                       #"url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//replicant",
                       "id": self.replicant_id},
                     {"$type": "send_replicants",
@@ -181,7 +181,7 @@ class Replicant(AddOn):
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         """
 
-        self.action = TurnBy(angle=angle, aligned_at=aligned_at, collision_detection=self.collision_detection,
+        self.action = TurnBy(angle=angle, resp=self._previous_resp, aligned_at=aligned_at, collision_detection=self.collision_detection,
                              previous=self._previous_action, dynamic=self.dynamic)
 
     def turn_to(self, target: Union[int, Dict[str, float]]) -> None:

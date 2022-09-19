@@ -66,10 +66,19 @@ class TurnTo(Action):
 
     def _get_turn_command(self, dynamic: ReplicantDynamic) -> dict:
         # Turn to face position. 
-        commands = []    
-        commands.append({"$type": "replicant_look_at_position", 
+        commands = []  
+        pos = TDWUtils.array_to_vector3(dynamic.position)
+        pos["z"] = pos["z"] + 0.1
+        pos["y"] = pos["y"] + 1.0
+        dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.0)  
+        commands.extend([{"$type": "replicant_look_at_position", 
                          "position": self.target_position, 
-                         "id": dynamic.replicant_id})
+                         "id": dynamic.replicant_id},
+                         {"$type": "send_boxcast",
+                          "half_extents": {"x": 0.1, "y": 0.1, "z": 0.25},
+                          "origin": pos,
+                          "destination": dest,
+                          "id": 99999}])
         return commands
 
     def _get_angle(self, dynamic: ReplicantDynamic) -> float:

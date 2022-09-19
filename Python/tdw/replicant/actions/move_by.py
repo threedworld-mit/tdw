@@ -10,6 +10,7 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.arm import Arm
+from tdw.replicant.image_frequency import ImageFrequency
 
 
 
@@ -57,7 +58,6 @@ class MoveBy(WalkMotion):
         # Flag for remainder handling.
         self.processing_remainder: bool = False
 
-
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         p1 = dynamic.position
         d = np.linalg.norm(p1 - self._target_position_arr)
@@ -80,7 +80,7 @@ class MoveBy(WalkMotion):
                     self.processing_remainder = False
                     return []
             else:
-                if self.loop_count < self.num_loops:
+                if self.loop_count <= self.num_loops:
                     if self.frame_count < self.walk_cycle_num_frames:
                         self.frame_count += 1 
                         self.total_frame_count += 1
@@ -93,9 +93,8 @@ class MoveBy(WalkMotion):
                                     #if raycast.get_raycast_id() == raycast_id:
                                     if raycast.get_hit() and raycast.get_hit_object():
                                         commands = []
-                                        #commands.extend(self._get_stop_commands(dynamic=dynamic))
                                         print("Boxcast hit; object ID = " + str(raycast.get_object_id()))
-                                        self.status = ActionStatus.collision
+                                        self.status = ActionStatus.detected_obstacle
                                         break
                             return commands
                         else:

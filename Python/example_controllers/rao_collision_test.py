@@ -13,79 +13,78 @@ Create a humanoid that walks across the room, knocks over a chair and reaches fo
 a randomly-positioned object multiple times.
 """
 
-# A dictionary of affordance points per model. This could be saved to a json file.
-AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [
-                                                           #{'x': -0.2285, 'y': 0.305, 'z': 0.0},
-                                                           #{'x': 0.2285, 'y': 0.305, 'z': 0.0},
-                                                           {'x': 0, 'y': 0.305, 'z': 0.2285},
-                                                           {'x': 0, 'y': 0.305, 'z': -0.2285}],
-                                      "basket_18inx18inx12iin_bamboo": [{'x': -0.2285, 'y': 0.305, 'z': 0.0},
-                                                           {'x': 0.2285, 'y': 0.305, 'z': 0.0},
-                                                           {'x': 0, 'y': 0.305, 'z': 0.2285},
-                                                           {'x': 0, 'y': 0.305, 'z': -0.2285}]}
+class AvoidObstacles(Controller):
 
-c = Controller(launch_build=False)
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.communicate(TDWUtils.create_empty_room(12, 20))
+        self.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, look_at={"x": 0.5, "y": 1, "z": 0}))
 
-logger = Logger(record=True, path="log.json")
-c.add_ons.append(logger)
-c.communicate([])
-c.communicate(TDWUtils.create_empty_room(12, 20))
-c.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, look_at={"x": 0.5, "y": 1, "z": 0}))
+        self.replicant_id=self.get_unique_id()
+        self.chair_id=self.get_unique_id()
+        self.basket_id = self.get_unique_id()
+        self.table_id = self.get_unique_id()
+        self.ball_id = self.get_unique_id()
+        self.ball_id2 = self.get_unique_id()
 
-replicant_id=c.get_unique_id()
-chair_id=c.get_unique_id()
-basket_id = c.get_unique_id()
-table_id = c.get_unique_id()
-ball_id = c.get_unique_id()
-ball_id2 = c.get_unique_id()
-affordance_id = 0
-reach_arm = Arm.both
-
-print("Chair ID = " + str(chair_id))
-print("basket ID = " + str(basket_id))
-print("table ID = " + str(table_id))
-print("ball ID = " + str(ball_id))
-
-
-replicant = Replicant(replicant_id=replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never, avoid_objects=True)
-c.add_ons.append(replicant)
-commands=[]
-commands.extend([{"$type": "set_screen_size",
+        self.replicant = Replicant(replicant_id=self.replicant_id, position={"x": 0, "y": 0, "z": -8}, image_frequency=ImageFrequency.never, avoid_objects=True)
+        self.add_ons.append(self.replicant)
+        commands=[]
+        commands.extend([{"$type": "set_screen_size",
                            "width": 1920,
                            "height": 1080},
                           {"$type": "set_render_quality",
                            "render_quality": 5},
-                 c.get_add_object(model_name="chair_billiani_doll",
-                                     object_id=chair_id,
+                        self.get_add_object(model_name="chair_billiani_doll",
+                                     object_id=self.chair_id,
                                      position={"x": 0, "y": 0, "z": 0},
                                      rotation={"x": 0, "y": 63.25, "z": 0}),
-                 c.get_add_object(model_name="live_edge_coffee_table",
-                                         object_id=table_id,
-                                         position={"x": 0, "y": 0, "z": 2},
+                        self.get_add_object(model_name="live_edge_coffee_table",
+                                         object_id=self.table_id,
+                                         position={"x": 1, "y": 0, "z": 2},
                                          rotation={"x": 0, "y": 20, "z": 0},
                                          library="models_core.json")])
-commands.extend(c.get_add_physics_object(model_name="prim_sphere",
-                               object_id=ball_id,
+        commands.extend(self.get_add_physics_object(model_name="prim_sphere",
+                               object_id=self.ball_id,
                                position={"x": 0, "y": 0, "z": 4.0},
                                rotation={"x": 0, "y": 0, "z": 0},
                                scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                kinematic=True,
                                gravity=False,
                                library="models_special.json"))
+        commands.extend(self.get_add_physics_object(model_name="prim_sphere",
+                               object_id=self.ball_id2,
+                               position={"x": 5, "y": 0, "z": 3.5},
+                               rotation={"x": 0, "y": 0, "z": 0},
+                               scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
+                               kinematic=True,
+                               gravity=False,
+                               library="models_special.json"))
+        self.communicate(commands)
+
+    def run(self):
+        self.replicant.collision_detection.objects = False
+        #replicant.collision_detection.exclude_objects = [chair_id]
+        while True:
+            self.avoid_obstacles()
 
 
-c.communicate(commands)
+    def avoid_obstacles(self):
+        self.replicant.move_to(target=self.ball_id, arrived_offset=0.2)
+        while self.replicant.action.status == ActionStatus.ongoing:
+                self.communicate([])
+        if self.replicant.action.status == ActionStatus.detected_obstacle:
+            print("Detected obstacle -- 1")
+            self.replicant.turn_by(angle=45.0)
+            while self.replicant.action.status == ActionStatus.ongoing:
+                self.communicate([])
+            self.replicant.move_by(distance=1.0)
+            while self.replicant.action.status == ActionStatus.ongoing:
+                self.communicate([])
+            return
+                   
 
-replicant.collision_detection.objects = False
-#replicant.collision_detection.exclude_objects = [chair_id]
+if __name__ == "__main__":
+    AvoidObstacles(launch_build=False).run()
 
-replicant.move_to(target=ball_id, arrived_offset=0.2)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-
-print(replicant.action.status, replicant.dynamic.position)
-
-#logger.save()
-
-#c.communicate({"$type": "terminate"})
 

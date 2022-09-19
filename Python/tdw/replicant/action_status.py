@@ -44,6 +44,6 @@ class ActionStatus(Enum):
     clamped_camera_rotation = 9  # Rotated the camera but at least one angle of rotation was clamped.
     failed_to_bend = 10  # Tried to bend its arm but failed to bend it all the way.
     collision = 11  # Tried to move or turn but failed because it collided with the environment (such as a wall) or a large object (mass > 30).
-    tipping = 12  # Tried to move or turn but failed because it started to tip over.
+    detected_obstacle = 12  # Boxcast detected an obstacle in replicant's path.
     held_by_other = 13  # Didn't try to grasp a target object because another Replicant is already holding it.
     already_holding = 14  # Replicant is already hodling an object in the requested arm.

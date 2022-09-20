@@ -8,20 +8,6 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ### `tdw` module
 
-- Added optional parameter `raycast_target` to `UI.add_text()` and `UI.add_image()`. If True, raycasts will hit the UI element. Default = True.
-- Exposed `Mouse.raycast_id` field.
-- Added: `ModelRecord.affordance_points`. A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on.
-
-### Model library
-
-- Added affordance points for coffeemug.
-
-### Build
-
-- Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
-
-### `tdw` module
-
 - **Complete re-write of the asset bundle creation process:**
   - **If you have the asset_bundle_creator Unity project installed on your computer from a prior version of TDW, you need to delete it. A new asset_bundle_creator Unity project will be created.**
   - The abstract base class `AssetBundleCreatorBase` is now named `AssetBundleCreator`. It has been moved to`tdw.asset_bundle_creator.asset_bundle_creator`.
@@ -39,6 +25,9 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 - Added to `TDWUtils`:
   - `get_path(path)` Returns the path as a `Path` object, as opposed to a string.
   - `get_string_path(path)` Returns the path as a string, as opposed to a `Path`.
+- Added optional parameter `raycast_target` to `UI.add_text()` and `UI.add_image()`. If True, raycasts will hit the UI element. Default = True.
+- Exposed `Mouse.raycast_id` field.
+- Added: `ModelRecord.affordance_points`. A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on.
 
 ### Example controllers
 
@@ -48,6 +37,14 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 ### Misc. Python
 
 - Revised  `shapenet/shapenet.py` to use the new `ModelCreator`.
+
+### Build
+
+- Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
+
+### Model library
+
+- Added affordance points for coffeemug.
 
 ### Robot library
 

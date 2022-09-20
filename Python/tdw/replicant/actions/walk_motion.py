@@ -76,14 +76,14 @@ class WalkMotion(Action, ABC):
             left_id = self.held_objects[Arm.both][0] 
         pos = TDWUtils.array_to_vector3(dynamic.position)
         pos["z"] = pos["z"] + 0.1
-        pos["y"] = pos["y"] + 1.0
+        pos["y"] = pos["y"] + 0.25
         dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.75)
         commands.extend([{"$type": "replicant_walk",
                          "left_arm_object_id": left_id,
                          "right_arm_object_id": right_id,
                           "id": dynamic.replicant_id},
                          {"$type": "send_boxcast",
-                          "half_extents": {"x": 0.1, "y": 0.1, "z": 0.25},
+                          "half_extents": {"x": 0.1, "y": 0.1, "z": 0.75},
                           "origin": pos,
                           "destination": dest,
                           "id": 99999}])

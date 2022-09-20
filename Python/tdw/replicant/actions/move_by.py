@@ -40,6 +40,7 @@ class MoveBy(WalkMotion):
         self._initial_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(dynamic.position)
         self._target_position_arr: np.array = dynamic.position + (dynamic.forward * distance)
         self._target_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(self._target_position_arr)
+        self._collision_detection = collision_detection
         # Total number of frames needed to cover distance.
         self.num_frames = int(distance / self.meters_per_frame)
         # Running frame count.
@@ -94,7 +95,8 @@ class MoveBy(WalkMotion):
                                     if raycast.get_hit() and raycast.get_hit_object():
                                         commands = []
                                         print("Boxcast hit; object ID = " + str(raycast.get_object_id()))
-                                        self.status = ActionStatus.detected_obstacle
+                                        if raycast.get_object_id() not in self._collision_detection.exclude_objects:
+                                            self.status = ActionStatus.detected_obstacle
                                         break
                             return commands
                         else:

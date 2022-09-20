@@ -6,6 +6,16 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ## v1.10.6
 
+### `tdw` module
+
+- Added optional parameter `raycast_target` to `UI.add_text()` and `UI.add_image()`. If True, raycasts will hit the UI element. Default = True.
+- Exposed `Mouse.raycast_id` field.
+- Added: `ModelRecord.affordance_points`. A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on.
+
+### Model library
+
+- Added affordance points for coffeemug.
+
 ### Build
 
 - Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.

@@ -136,6 +136,36 @@ output_directory/
 
 Delete any intermediary files in the `asset_bundle_creator` Unity Editor project such as .prefab files.
 
+#### asset_bundles_exist
+
+**`AnimationCreator.asset_bundles_exist(name, directory)`**
+
+_(Static)_
+
+Check whether asset bundles exist for all platforms in the source directory.
+
+Expected directory structure:
+
+```
+directory/
+....Darwin/
+........name
+....Linux/
+........name
+....Windows/
+........name
+```
+
+...where `name` is an asset bundle file.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| name |  str |  | The name of the asset bundle. |
+| directory |  Union[str, Path] |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+
+_Returns:_  True if asset bundles exist for all platforms in the source directory.
+
 #### get_creator_class_name
 
 **`self.get_creator_class_name()`**

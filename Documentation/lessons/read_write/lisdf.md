@@ -2,9 +2,9 @@
 
 # Import .sdf and .lisdf files
 
-*Please read the documentation for [custom models](../custom_models/custom_models.md), [custom robots](../robots/custom_robots.md), and [custom composite objects](../composite_objects/create_from_urdf).*
+*Please read the documentation for [custom models](../custom_models/custom_models.md), [custom robots](../robots/custom_robots.md), and [custom composite objects](../composite_objects/create_from_urdf.md).*
 
-It is possible to import data from an [.sdf](http://sdformat.org/) or [.lisdf](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/) scene description file into TDW using the [`LisdfReader`](../add_ons/lisdf_reader.md)
+It is possible to import data from an [.sdf](http://sdformat.org/) or [.lisdf](https://learning-and-intelligent-systems.github.io/kitchen-worlds/tut-lisdf/) scene description file into TDW using the [`LisdfReader`](../../Python/add_ons/lisdf_reader.md)
 
 As with all other import processes in TDW, objects referenced by .sdf and .lisdf file must be converted into asset bundles. We can do this by calling `LisdfReader.read()`:
 
@@ -152,7 +152,7 @@ lisdf_reader = LisdfReader()
 lisdf_reader.read(lisdf_path=source_path, output_directory=output_directory, cleanup=False)
 ```
 
-Having set `cleanup=False`, you can manually create asset bundles from the prefabs using [ModelCreator](../custom_models/custom_models.md), [RobotCreator](../robots/custom_robots.md), and [CompositeObjectCreator](../composite_objects/create_from_urdf).
+Having set `cleanup=False`, you can manually create asset bundles from the prefabs using [ModelCreator](../custom_models/custom_models.md), [RobotCreator](../robots/custom_robots.md), and [CompositeObjectCreator](../composite_objects/create_from_urdf.md).
 
 ## Write and send commands
 

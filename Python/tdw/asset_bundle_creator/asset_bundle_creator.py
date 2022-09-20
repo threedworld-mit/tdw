@@ -9,6 +9,7 @@ from time import sleep
 from overrides import final
 from requests import get
 from tdw.tdw_utils import TDWUtils
+from tdw.backend.platforms import SYSTEM_TO_S3
 
 
 class AssetBundleCreator(ABC):
@@ -231,6 +232,38 @@ class AssetBundleCreator(ABC):
                               "-output_directory=temp",
                               "-cleanup"],
                         log_path="")
+
+    @staticmethod
+    def asset_bundles_exist(name: str, directory: Union[str, Path]) -> bool:
+        """
+        Check whether asset bundles exist for all platforms in the source directory.
+
+        Expected directory structure:
+
+        ```
+        directory/
+        ....Darwin/
+        ........name
+        ....Linux/
+        ........name
+        ....Windows/
+        ........name
+        ```
+
+        ...where `name` is an asset bundle file.
+
+        :param name: The name of the asset bundle.
+        :param directory: The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
+
+        :return: True if asset bundles exist for all platforms in the source directory.
+        """
+
+        d = TDWUtils.get_path(directory)
+        for platform in SYSTEM_TO_S3:
+            path = d.joinpath(platform).joinpath(name)
+            if not path.exists():
+                return False
+        return True
 
     @abstractmethod
     def get_creator_class_name(self) -> str:

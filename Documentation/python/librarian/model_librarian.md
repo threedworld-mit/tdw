@@ -104,6 +104,7 @@ record = ModelRecord(data=data) # Creates a record from JSON data.
 | `composite_object`   | bool                        | If true, this model is a composite object.                   |
 | `volume`             | float                       | The volume of the object in cubic meters.                    |
 | `container_shapes`   | List[ContainerShape]        | A list of [`ContainerShape`](../container_data/container_shape.md) data. This data is used by the [`ContainerManager`](../add_ons/container_manager.md) add-on. |
+| `affordance_points`  | List[Dict[str, float]]      | A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on. |
 
 ### Functions
 

@@ -43,6 +43,8 @@ You can combine a `FirstPersonAvatar` with [`ImageCapture`](image_capture.md) to
 
 - `mouse_over_object_id` If `self.mouse_is_over_object == True`, this is the ID of the object.
 
+- `raycast_id` The ID of the mouse raycast.
+
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
 - `initialized` If True, this module has been initialized.

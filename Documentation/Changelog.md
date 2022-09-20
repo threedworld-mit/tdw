@@ -4,6 +4,28 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.6
+
+### `tdw` module
+
+- Added optional parameter `raycast_target` to `UI.add_text()` and `UI.add_image()`. If True, raycasts will hit the UI element. Default = True.
+- Exposed `Mouse.raycast_id` field.
+- Added: `ModelRecord.affordance_points`. A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on.
+
+### Model library
+
+- Added affordance points for coffeemug.
+
+### Build
+
+- Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
+
+## v1.10.5
+
+### Build
+
+- Fixed: AttributeError if `set_robot_joint_id` is sent and the new joint ID is the same as the old joint ID.
+
 ## v1.10.4
 
 ### Command API
@@ -17,29 +39,41 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
 | `stop_video_capture`          | Stop ongoing video capture.     |
 
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+- Refactored `Logger`: 
+  - Removed the `record` parameter and the `save()` function. The `Logger` add-on doesn't handle playback anymore.
+  - `Logger` automatically saves lists of commands per `communicate()` call rather than writing all of them to disk at once using `save()`.
+- Added `LogPlayback` option to play back logs of commands.
+- Fixed: `ContainerShape` classes don't sanitize numpy types e.g. converting `numpy.float32` to `float`.
+- Robot add-ons (such as `Robot`) send `set_robot_joint_id` to ensure that joint IDs are always the same, even when loading from a log file.
+
+### Humanoid animation library
+
+- Added: idle_251087, idle_251105, kitchen_bendoverandopendrawer_f, kitchen_cooking_f, kitchen_microwave_m, kitchen_refrigerator_f
+
 ### Docker
 
 - Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)
 
 ### Documentation
 
-### New Documentation
+#### New Documentation
 
 | Document                                                     | Description                               |
 | ------------------------------------------------------------ | ----------------------------------------- |
 | `lessons/video/screen_record_linux.md`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | How to record audio and video on each OS. |
+| `python/add_ons/log_playback.md`                             | API document for `LogPlayback`.           |
 
 #### Modified Documentation
 
-| Document                    | Modification                                                 |
-| --------------------------- | ------------------------------------------------------------ |
-| `lessons/video/audio.md`    | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
-| `lessons/video/images.md`   | Removed sections regarding ffmpeg and OBS.                   |
-| `lessons/video/overview.md` | Added a section about installing ffmpeg.                     |
-
-### `tdw` module
-
-- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+| Document                       | Modification                                                 |
+| ------------------------------ | ------------------------------------------------------------ |
+| `lessons/video/audio.md`       | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
+| `lessons/video/images.md`      | Removed sections regarding ffmpeg and OBS.                   |
+| `lessons/video/overview.md`    | Added a section about installing ffmpeg.                     |
+| `lessons/read_write/logger.md` | Updated for the removal of `Logger`'s playback functionality, and for the inclusion of the `LogPlayback` option. |
 
 ## v1.10.3
 

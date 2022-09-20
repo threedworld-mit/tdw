@@ -6,6 +6,7 @@ from subprocess import call, check_output, CalledProcessError, Popen
 import os
 import re
 from time import sleep
+from packaging import version
 from overrides import final
 from requests import get
 from tdw.tdw_utils import TDWUtils
@@ -38,18 +39,33 @@ class AssetBundleCreator(ABC):
         """
 
         if check_version and not AssetBundleCreator._VERSION_CHECKED and AssetBundleCreator.PROJECT_PATH.exists():
+            # Get the local version from ProjectSettings.asset
+            local_version = re.search(AssetBundleCreator._BUNDLE_VERSION_REGEX,
+                                      AssetBundleCreator.PROJECT_PATH.joinpath(
+                                          "ProjectSettings/ProjectSettings.asset").resolve().read_text(),
+                                      flags=re.MULTILINE).group(1)
+            # Check if the old <= 1.4.1 asset_bundle_creator exists. If so, end here and tell the user to upgrade.
+            local_version_parsed = version.parse(local_version)
+            if local_version_parsed.major <= 1:
+                print("You have an obsolete version of the asset_bundle_creator Unity project. To upgrade:\n"
+                      f"1. Delete this directory: {str(AssetBundleCreator.PROJECT_PATH.resolve())}\n"
+                      f"2. Run this script again. The updated asset_bundle_creator will automatically be downloaded.")
+                # End here because nothing will work with the pre-v2 project.
+                exit()
+            # Get the remote version from ProjectSettings.assets
             resp = get("https://raw.githubusercontent.com/alters-mit/asset_bundle_creator/main/ProjectSettings/ProjectSettings.asset")
             if resp.status_code == 200:
                 remote_version = re.search(AssetBundleCreator._BUNDLE_VERSION_REGEX,
                                            resp.text,
                                            flags=re.MULTILINE).group(1)
-                local_version = re.search(AssetBundleCreator._BUNDLE_VERSION_REGEX,
-                                          AssetBundleCreator.PROJECT_PATH.joinpath("ProjectSettings/ProjectSettings.asset").resolve().read_text(),
-                                          flags=re.MULTILINE).group(1)
-                if remote_version != local_version:
-                    print(f"You are using version {local_version} but version {remote_version} is available. To update:\n" +
-                          "cd asset_bundle_creator\ngit pull")
-                print(f"Your version of the Asset Bundle Creator Unity project is up to date: {local_version}")
+                remote_version_parsed = version.parse(remote_version)
+                # Print a warning if an update is available.
+                if remote_version_parsed < local_version_parsed:
+                    print(f'You are using version {local_version} but version {remote_version} is available. To update:\n' +
+                          f'cd "{str(AssetBundleCreator.PROJECT_PATH.resolve())}"'
+                          f'\ngit pull')
+                else:
+                    print(f"Your version of the Asset Bundle Creator Unity project is up to date: {local_version}")
             else:
                 print("Failed to check version for the Asset Bundle Creator Unity project. Check your Internet connection.")
             # Don't check the version multiple times during runtime.
@@ -102,7 +118,8 @@ class AssetBundleCreator(ABC):
                 if re_search is None:
                     continue
                 ds.append(d)
-            ds = sorted(ds, key=lambda version: int(re.search(re_pattern, str(version.resolve())).group(1), 16))
+            # Try to find Unity Editor.
+            ds = sorted(ds, key=lambda v: int(re.search(re_pattern, str(v.resolve())).group(1), 16))
             editor_version = ds[-1]
             editor_path = editor_path.joinpath(editor_version)
             if system == "Windows":
@@ -116,12 +133,7 @@ class AssetBundleCreator(ABC):
             assert editor_path.exists(), f"Unity Editor {editor_version} not found."
             self._unity_editor_path: Path = editor_path
         else:
-            if isinstance(unity_editor_path, Path):
-                self._unity_editor_path = unity_editor_path
-            elif isinstance(unity_editor_path, str):
-                self._unity_editor_path = Path(unity_editor_path)
-            else:
-                raise Exception(f"Invalid Unity editor path: {self._unity_editor_path}")
+            self._unity_editor_path = TDWUtils.get_path(unity_editor_path)
             assert self._unity_editor_path.exists(), "Unity Editor not found: " + str(self._unity_editor_path.resolve())
 
     @final
@@ -159,7 +171,6 @@ class AssetBundleCreator(ABC):
                 executables_directory = AssetBundleCreator.PROJECT_PATH.joinpath(f"executables/{s}")
                 for executable_path in ["vhacd/testVHACD", "assimp/assimp"]:
                     call(["chmod", "+x", str(executables_directory.joinpath(executable_path).resolve())])
-
         # Get the base Unity call.
         unity_call = self.get_base_unity_call()
         # Get the class name.
@@ -169,9 +180,12 @@ class AssetBundleCreator(ABC):
         unity_call.extend(["-executeMethod", f"{class_name}.{method}"])
         # Add additional arguments.
         unity_call.extend(args)
+        # Run everything in the shell if it's Windows, otherwise don't.
         shell = s == "Windows"
+        # If we're in quiet mode, call and wait for the process to end.
         if self.quiet:
             call(unity_call, env=self._env, shell=shell)
+        # This will run the process asynchronously and check the log and the process until it's done.
         else:
             self._run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=shell), log_path=log_path)
 
@@ -259,8 +273,8 @@ class AssetBundleCreator(ABC):
         """
 
         d = TDWUtils.get_path(directory)
-        for platform in SYSTEM_TO_S3:
-            path = d.joinpath(platform).joinpath(name)
+        for s in SYSTEM_TO_S3:
+            path = d.joinpath(s).joinpath(name)
             if not path.exists():
                 return False
         return True
@@ -283,8 +297,11 @@ class AssetBundleCreator(ABC):
         :param sleep_time: The time in seconds to wait between process polling.
         """
 
+        # Get the path to the log file.
         path = TDWUtils.get_path(log_path)
+        # Don't print this text.
         previous_log_text = ""
+        # Wait for the process to end.
         while process.poll() is None:
             # Update the log text.
             previous_log_text = AssetBundleCreator._read_log_text(previous_log_text=previous_log_text, log_path=path)

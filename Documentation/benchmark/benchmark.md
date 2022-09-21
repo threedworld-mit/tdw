@@ -103,7 +103,7 @@ Output:
 
 **Next: [Image capture](image_capture.md)**
 
-[Return to the README](../../../README.md)
+[Return to the README](../../README.md)
 
 ***
 

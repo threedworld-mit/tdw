@@ -294,7 +294,7 @@ while True:
 
 ### Composite objects
 
-It is possible to grasp [composite sub-objects](../semantic_states/composite_objects.md) such as the door of a microwave in VR. The VR system automatically finds 'affordance points' for the hands to grasp. The resulting motion may at times be jittery; this is due to the underlying hand tracking and object grasping system:
+It is possible to grasp [composite sub-objects](../composite_objects/overview.md) such as the door of a microwave in VR. The VR system automatically finds 'affordance points' for the hands to grasp. The resulting motion may at times be jittery; this is due to the underlying hand tracking and object grasping system:
 
 ```python
 from tdw.controller import Controller

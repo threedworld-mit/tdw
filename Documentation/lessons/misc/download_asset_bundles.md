@@ -6,10 +6,10 @@
 - *[Materials](../scene_setup_low_level/materials_textures_colors.md)*
 - *[HDRI skyboxes](../photorealism/lighting.md)*
 - *[Robots](../robots/overview.md)*
-- *[Non-physics humanoids](../non_physics/humanoids.md)*
-- *[Humanoid animations](../non_physics/humanoids.md)*
+- *[Non-physics humanoids](../non_physics_humanoids/overview.md)*
+- *[Humanoid animations](../non_physics_humanoids/overview.md)*
 
-As described in [this document](../3d_models/custom_models.md), it is possible to create custom 3D models and load them at runtime by providing a filepath instead of a URL. It is likewise possible to download any* of TDW's asset bundles (models, scenes, etc.) and load them at runtime.
+As described in [this document](../custom_models/custom_models.md), it is possible to create custom 3D models and load them at runtime by providing a filepath instead of a URL. It is likewise possible to download any* of TDW's asset bundles (models, scenes, etc.) and load them at runtime.
 
 The main reason to use local asset bundles is that is *always* faster to load local asset bundles than remote asset bundles because local files don't need to be downloaded. That said, it can still take a while to load the asset bundles into memory at runtime.
 

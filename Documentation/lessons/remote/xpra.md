@@ -2,7 +2,7 @@
 
 # Remote rendering with xpra
 
-It is desirable while debugging to be able to view a remote rendering process. In order to forward the X server to your local screen, we recommend [Xpra](https://www.xpra.org/trac/wiki/Download) in combination with [VirtualGL](https://sourceforge.net/projects/virtualgl/files).
+It is desirable while debugging to be able to view a remote rendering process. In order to forward the X server to your local screen, we recommend [Xpra](https://www.xpra.org) in combination with [VirtualGL](https://sourceforge.net/projects/virtualgl/files).
 # Installation instructions
 1. Install Xpra on both client and server
 2. Install VirtualGL on server. Note: if using Docker, this is already included in the Docker image

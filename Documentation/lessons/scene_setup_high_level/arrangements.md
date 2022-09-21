@@ -198,7 +198,7 @@ Like the previous `Plate` example, [`Microwave`](../../python/proc_gen/arrangeme
 - `model` is optional and can set the microwave model; it can be either a string (the model name) or a `ModelRecord`.
 - `rng` is optional and defaults to None. It is either a random seed (and integer) or a `numpy.random.RandomState` object. If None, a new `numpy.random.RandomState` object is created.
 
-All microwave models used by the `Microwave` arrangement are [composite objects](../semantic_states/composite_objects.md) with articulated doors.
+All microwave models used by the `Microwave` arrangement are [composite objects](../composite_objects/overview.md) with articulated doors.
 
 This example controller adds a `Microwave` to the scene. We'll add a [`CompositeObjectManager`](../../python/add_ons/composite_object_manager.md) and use it to open the microwave door so that we can see the `Plate` arrangement. To open the door, we use some low-level API commands. In most controllers that use articulated objects, an [agent](../agents/overview.md) would open the door instead.
 

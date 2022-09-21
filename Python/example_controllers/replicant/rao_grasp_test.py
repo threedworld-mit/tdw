@@ -26,11 +26,8 @@ AffordancePoints.AFFORDANCE_POINTS = {"basket_18inx18inx12iin_wicker": [
 
 c = Controller(launch_build=False)
 
-logger = Logger(record=True, path="log.json")
-c.add_ons.append(logger)
-c.communicate([])
 c.communicate(TDWUtils.create_empty_room(12, 20))
-c.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, look_at={"x": 0.5, "y": 1, "z": 0}))
+c.communicate(TDWUtils.create_avatar(position={"x": -1.5, "y": 1.175, "z": 6}, look_at={"x": 0, "y": 1, "z": 0}))
 
 replicant_id=c.get_unique_id()
 basket_id = c.get_unique_id()
@@ -50,7 +47,7 @@ commands.extend([{"$type": "set_screen_size",
                            "render_quality": 5},
                  c.get_add_object(model_name="chair_billiani_doll",
                                      object_id=5555,
-                                     position={"x": -2.0, "y": 0, "z": -1.3},
+                                     position={"x": -2.325, "y": 0, "z": -1.3},
                                      rotation={"x": 0, "y": 63.25, "z": 0})])
 commands.extend(c.get_add_physics_object(model_name="prim_sphere",
                                object_id=ball_id,
@@ -84,7 +81,8 @@ commands.extend(AffordancePoints.get_add_object_with_affordance_points(model_nam
                                                                        object_id=basket_id,
                                                                        mass=2,
                                                                        position={"x": -0.8, "y": 0.35, "z": 2},
-                                                                       rotation={"x": 0, "y": 110, "z": 0}))
+                                                                       rotation={"x": 0, "y": 110, "z": 0},
+                                                                       show_markers=False))
 
 c.communicate(commands)
 
@@ -115,8 +113,6 @@ while replicant.action.status == ActionStatus.ongoing:
 replicant.move_to(target=ball_id2, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-
-logger.save()
 
 #c.communicate({"$type": "terminate"})
 

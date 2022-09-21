@@ -22,7 +22,6 @@ class AvoidObstacles(Controller):
 
         self.replicant_id=self.get_unique_id()
         self.chair_id=self.get_unique_id()
-        self.basket_id = self.get_unique_id()
         self.table_id = self.get_unique_id()
         self.ball_id = self.get_unique_id()
         self.ball_id2 = self.get_unique_id()
@@ -63,12 +62,14 @@ class AvoidObstacles(Controller):
                                library="models_special.json"))
         self.communicate(commands)
         self.replicant.collision_detection.objects = False
+        # We need to exclude the target markers, so they do not act as obstacles and trigger the avoidance mechanisms.
         self.replicant.collision_detection.exclude_objects = [self.ball_id, self.ball_id2]
 
     def run(self):
         self.replicant.move_to(target=self.ball_id, arrived_offset=0.2)
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])
+        # Take evasive action if an obstacle is detected in the replicant's path.
         if self.replicant.action.status == ActionStatus.detected_obstacle:
             avoided = self.avoid_obstacle()
             if avoided:
@@ -78,6 +79,10 @@ class AvoidObstacles(Controller):
 
 
     def avoid_obstacle(self)-> bool:
+        """
+        Adjust replicant's path to avoid a pending obstacle.
+        """
+        # Turn and move forward a little. If path is clear, return True, otherwise return False.
         self.replicant.turn_by(angle=45.0)
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])

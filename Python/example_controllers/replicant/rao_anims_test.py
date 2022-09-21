@@ -14,8 +14,6 @@ a randomly-positioned object multiple times.
 
 c = Controller(launch_build=False)
 
-logger = Logger(record=True, path="log.json")
-c.add_ons.append(logger)
 c.communicate([])
 c.communicate(TDWUtils.create_empty_room(12, 20))
 c.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, look_at={"x": 0.5, "y": 1, "z": 0}))
@@ -33,8 +31,8 @@ commands.extend([{"$type": "set_screen_size",
 
 c.communicate(commands)
 
-#anim_list = ["mop_floor", "clean_windows", "smoke_cigarette_1", "smoke_cigarette_2", "open_can_drink", "hammering", "brushing_off_dust"]
-anim_list = ["smoke_cigarette_2", "open_can_drink"]
+anim_list = ["mop_floor", "clean_windows", "smoke_cigarette_1", "open_can_drink", "hammering"]
+#anim_list = ["smoke_cigarette_2", "open_can_drink"]
 
 replicant.move_to(target={"x": 1, "y": 0, "z": -6.5}, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
@@ -44,7 +42,6 @@ replicant.perform_action_sequence(animation_list=anim_list)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-logger.save()
 
 #c.communicate({"$type": "terminate"})
 

@@ -109,8 +109,6 @@ class ReplicantDynamic:
                             # Cache the transform.
                             self.body_part_transforms[replicants.get_id(body_part_index)] = body_part_transform
                         # Stop reading output data. We have what we need.
-                        #print(replicants.get_position(1))
-                        #print(replicants.get_position(2))
                         self.position=replicants.get_position(0)
                         self.forward=replicants.get_forward(0)
                         self.rotation=replicants.get_rotation(0)

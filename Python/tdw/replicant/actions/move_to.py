@@ -52,6 +52,8 @@ class MoveTo(Action):
         if isinstance(target, int):
             # Get the position of the object's origin. We may adjust this later, if an offset was applied.
             self._target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
+            # We want the Replicant to stay on the floor, if the object is on a table for example.
+            self._target_position["y"] = 0
         elif isinstance(target, dict):
             self._target_position = target
         else:

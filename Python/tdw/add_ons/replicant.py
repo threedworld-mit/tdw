@@ -221,24 +221,26 @@ class Replicant(AddOn):
                              avoid_objects=self.avoid_objects, target_offset=target_offset, arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
-    def reach_for(self, target: Union[int, Dict[str,  float]], arm: Arm, use_other_arm: bool) -> None:
+    def reach_for(self, target: Union[int, Dict[str,  float]], arm: Arm, use_other_arm: bool, reverse_reach: bool = False) -> None:
         """
         Reach for a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. 
         :param arm: Which arm the Replicant is reaching with -- left, right or both.
         :param use_other_arm: Whether to use the other arm for reaching, if the Replicant is holding an object with the selected arm.
+        :param reverse_reach: Whether the replicant is carrying one end of an object, held behind it.
         """
 
         self.action = ReachFor(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,
-                               collision_detection=self.collision_detection, held_objects=self.held, previous=self._previous_action, use_other_arm=use_other_arm)
+                               collision_detection=self.collision_detection, held_objects=self.held, reverse_reach=reverse_reach,
+                               previous=self._previous_action, use_other_arm=use_other_arm)
 
     def grasp(self, target: int, arm: Arm, use_other_arm: bool) -> None:
         """
         Grasp a target object.
 
         :param target: The target. 
-        :param arm: Which arm the Replicant is reachiing with -- left, right or both.
+        :param arm: Which arm the Replicant is grasping with -- left, right or both.
         :param use_other_arm: Whether to use the other arm for reaching, if the Replicant is holding an object with the selected arm.
         """
 
@@ -250,7 +252,7 @@ class Replicant(AddOn):
         Drop a held target object.
 
         :param target: The target object ID. 
-        :param arm: Which arm the Replicant is reaching with -- left, right or both.
+        :param arm: Which arm the Replicant is holding the object -- left, right or both.
         """
 
         self.action = Drop(target=target, resp=self._previous_resp, arm=arm, static=self.static, dynamic=self.dynamic,

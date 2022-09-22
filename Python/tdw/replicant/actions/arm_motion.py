@@ -22,18 +22,20 @@ class ArmMotion(Action, ABC):
     def __init__(self, dynamic: ReplicantDynamic, arm: Arm, collision_detection: CollisionDetection, previous: Action = None):
         """
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
+        :param Arm. The arm performing the action.
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
 
         super().__init__()
+        self.reverse_reach: bool
         # My collision detection rules.
         self._collision_detection: CollisionDetection = collision_detection
         self._resetting: bool = False
-        self.reach_action_length = 30
-        self.reset_action_length = 20
-        self.drop_length = 5
-        self.reach_arm = arm
+        self._reach_action_length = 30
+        self._reset_action_length = 20
+        self._drop_length = 5
+        self._reach_arm = arm
 
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and \
@@ -69,14 +71,14 @@ class ArmMotion(Action, ABC):
                           "primary_target_position": primary_target_position, 
                           "secondary_target_position": secondary_target_position, 
                           "id": dynamic.replicant_id, 
-                          "length": self.reach_action_length, 
-                          "arm": self.reach_arm.name})
+                          "length": self._reach_action_length, 
+                          "arm": self._reach_arm.name})
         else:
             commands.append({"$type": "replicant_reach_for_position", 
                           "primary_target_position": primary_target_position, 
                           "id": dynamic.replicant_id, 
-                          "length": self.reach_action_length, 
-                          "arm": self.reach_arm.name})
+                          "length": self._reach_action_length, 
+                          "arm": self._reach_arm.name})
         return commands
 
 
@@ -86,23 +88,28 @@ class ArmMotion(Action, ABC):
         pos = TDWUtils.array_to_vector3(dynamic.position)
         l_hand_pos = TDWUtils.array_to_vector3(dynamic.body_part_transforms[static.body_parts[ReplicantBodyPart.hand_l]].position)
         r_hand_pos = TDWUtils.array_to_vector3(dynamic.body_part_transforms[static.body_parts[ReplicantBodyPart.hand_r]].position)
-        fwd = TDWUtils.array_to_vector3(dynamic.forward)
-        hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
+        # Handle the case where the replicant carries an object that is behind it (i.e. carrying one end of a sofa).
+        if self.reverse_reach:
+            fwd = TDWUtils.array_to_vector3(-dynamic.forward) 
+            hold_dist = np.linalg.norm(dynamic.position + -dynamic.forward) * 0.1
+        else:
+            fwd = TDWUtils.array_to_vector3(dynamic.forward)
+            hold_dist = np.linalg.norm(dynamic.position + dynamic.forward) * 0.1
         commands.extend([{"$type": "replicant_reach_for_position", 
                                    "primary_target_position": {"x": l_hand_pos["x"] + (fwd["x"] * 0.5), "y": l_hand_pos["y"] + 0.25, "z": l_hand_pos["z"] + (fwd["z"] * 0.5)},
                                    "secondary_target_position": {"x": r_hand_pos["x"] + (fwd["x"] * 0.5), "y": r_hand_pos["y"] + 0.25, "z": r_hand_pos["z"]  + (fwd["z"] * 0.5)},   
                                    "primary_affordance_id": static.primary_target_affordance_id,
                                    "secondary_affordance_id": static.secondary_target_affordance_id,  
                                    "id": dynamic.replicant_id,
-                                   "length": self.reset_action_length, 
-                                   "arm": self.reach_arm.name},
+                                   "length": self._reset_action_length, 
+                                   "arm": self._reach_arm.name},
                           {"$type": "replicant_reset_held_object_rotation", 
                                "target": object_id, 
                                "primary_affordance_id": static.primary_target_affordance_id,
                                "secondary_affordance_id": static.secondary_target_affordance_id,   
                                "id": dynamic.replicant_id,
-                               "length": self.reset_action_length, 
-                               "arm": self.reach_arm.name}
+                               "length": self._reset_action_length, 
+                               "arm": self._reach_arm.name}
                         ])
         return commands
    
@@ -111,14 +118,14 @@ class ArmMotion(Action, ABC):
         commands.append({"$type": "replicant_drop_object",
                           "target": object_id,
                           "id": dynamic.replicant_id,
-                          "arm": self.reach_arm.name})
+                          "arm": self._reach_arm.name})
         return commands
 
     def _get_reset_arm_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
         commands=[]
         commands.append({"$type": "replicant_reset_arm",
                           "id": dynamic.replicant_id,
-                          "arm": self.reach_arm.name})
+                          "arm": self._reach_arm.name})
         return commands
 
     @final

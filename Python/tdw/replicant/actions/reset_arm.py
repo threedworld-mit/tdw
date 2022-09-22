@@ -24,7 +24,7 @@ class ResetArm(ArmMotion):
     def __init__(self, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
                  collision_detection: CollisionDetection, previous: Action = None):
         super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
-        self.frame_count = 0
+        self._frame_count = 0
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -37,14 +37,14 @@ class ResetArm(ArmMotion):
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # We've completed the reset.
-        if self.frame_count >= self.reset_action_length:
+        if self._frame_count >= self._reset_action_length:
             self.status = ActionStatus.success
             return []
         elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
         else:
-            while self.frame_count < self.reset_action_length:
-                self.frame_count += 1 
+            while self._frame_count < self._reset_action_length:
+                self._frame_count += 1 
                 return []
 
     def _previous_was_same(self, previous: Action) -> bool:

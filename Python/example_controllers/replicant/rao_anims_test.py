@@ -8,8 +8,8 @@ from tdw.replicant.actions.perform_action_sequence import PerformActionSequence
 import numpy as np
 
 """
-Create a humanoid that walks across the room, knocks over a chair and reaches for 
-a randomly-positioned object multiple times.
+Create a humanoid that walks across the room, then performs a sequence of
+motion-capture animations.
 """
 
 c = Controller(launch_build=False)
@@ -28,11 +28,9 @@ commands.extend([{"$type": "set_screen_size",
                            "height": 1080},
                           {"$type": "set_render_quality",
                            "render_quality": 5}])
-
 c.communicate(commands)
 
 anim_list = ["mop_floor", "clean_windows", "smoke_cigarette_1", "open_can_drink", "hammering"]
-#anim_list = ["smoke_cigarette_2", "open_can_drink"]
 
 replicant.move_to(target={"x": 1, "y": 0, "z": -6.5}, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
@@ -41,7 +39,6 @@ while replicant.action.status == ActionStatus.ongoing:
 replicant.perform_action_sequence(animation_list=anim_list)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-
 
 #c.communicate({"$type": "terminate"})
 

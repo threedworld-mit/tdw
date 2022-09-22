@@ -21,23 +21,23 @@ class PerformActionSequence(Action):
                  collision_detection: CollisionDetection, previous: Action = None):
         """
         :param animation_list: The list of animation names in the sequence we want to play.
-        :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
+        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
         super().__init__()
         self._collision_detection: CollisionDetection = collision_detection
-        self.animation_list = animation_list
-        self.animation_manager = AnimationManager(self.animation_list)
-        self.current_anim_name: str = ""
+        self._animation_list = animation_list
+        self._animation_manager = AnimationManager(self._animation_list)
+        self._current_anim_name: str = ""
         # Per-animation frame count.
-        self.frame_count: int = 0
+        self._frame_count: int = 0
         # Number of frames in current animation.
-        self.current_anim_length: int = 0
+        self._current_anim_length: int = 0
         # Running count of played animations.
-        self.played_anim_count: int = 0
+        self._played_anim_count: int = 0
         # Running count of played animations.
-        self.anim_index: int = 0
+        self._anim_index: int = 0
         self._initialized = False
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -46,7 +46,8 @@ class PerformActionSequence(Action):
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
         self.__image_frequency: ImageFrequency = image_frequency
-        commands.extend(self.animation_manager.download_animations())
+        # Download all 
+        commands.extend(self._animation_manager.download_animations())
         return commands
 
 
@@ -55,13 +56,13 @@ class PerformActionSequence(Action):
             return []
         elif self.status == ActionStatus.ongoing:
             # Still playing back current animation.
-            if self.frame_count < self.current_anim_length:
-                self.frame_count += 1 
+            if self._frame_count < self._current_anim_length:
+                self._frame_count += 1 
                 return []
             else:
-                self.played_anim_count += 1
+                self._played_anim_count += 1
                 # We've played all of the animations.
-                if self.played_anim_count > len(self.animation_list):
+                if self._played_anim_count > len(self._animation_list):
                     self.status = ActionStatus.success
                     commands = []
                     #commands.extend(self.get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=None))
@@ -70,23 +71,23 @@ class PerformActionSequence(Action):
                     # Start the next animation in the sequence.
                     commands = []
                     # Fetch next animation in the sequence.
-                    self.current_anim_name = self.animation_list[self.anim_index]
-                    self.current_anim_length = self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].get_num_frames()
-                    commands.extend(self._get_play_anim_commands(anim_name=self.current_anim_name, 
-                                                                     framerate=self.animation_manager.ANIMATION_DATA_LIST[self.current_anim_name].framerate,
+                    self._current_anim_name = self._animation_list[self._anim_index]
+                    self._current_anim_length = self._animation_manager.ANIMATION_DATA_LIST[self._current_anim_name].get_num_frames()
+                    commands.extend(self._get_play_anim_commands(anim_name=self._current_anim_name, 
+                                                                     framerate=self._animation_manager.ANIMATION_DATA_LIST[self._current_anim_name].framerate,
                                                                      dynamic=dynamic))
-                    self.anim_index += 1
+                    self._anim_index += 1
                     return commands
                 
     def _get_play_anim_commands(self, anim_name: str, framerate: int, dynamic: ReplicantDynamic) -> List[dict]:
-        self.frame_count = 0
+        self._frame_count = 0
         commands = []
         commands.extend([{"$type": "set_target_framerate", 
                           "framerate": framerate},
                          {"$type": "play_humanoid_animation",
                           "name": anim_name,
                           "id": dynamic.replicant_id}])
-        self.playing = True
+        self._playing = True
         return commands  
 
 

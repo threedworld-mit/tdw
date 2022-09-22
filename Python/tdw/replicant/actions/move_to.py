@@ -1,7 +1,7 @@
 from typing import Union, Dict, List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import Transforms
+from tdw.output_data import Transforms, OutputData, Bounds
 from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
@@ -23,7 +23,7 @@ class MoveTo(Action):
 
     def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], avoid_objects: bool = False, 
-                 arrived_at: float = 0.1, aligned_at: float = 1, arrived_offset: float = 0, previous: Action = None):
+                 target_offset: str = "center", arrived_at: float = 0.1, aligned_at: float = 1, arrived_offset: float = 0, previous: Action = None):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param resp: The response from the build.
@@ -36,39 +36,65 @@ class MoveTo(Action):
         """
 
         super().__init__()
-        self._turn_to: TurnTo = TurnTo(target=target, resp=resp, dynamic=dynamic,
-                                       collision_detection=collision_detection,
-                                       previous=previous)
         self.__image_frequency: ImageFrequency = ImageFrequency.once
         # Cache these in order to initialize the MoveBy action later.
+        self._previous = previous
         self.__collision_detection: CollisionDetection = collision_detection
         self.__arrived_at: float = arrived_at
         self.__arrived_offset: float = arrived_offset
+        self._target = target
+        self._target_offset = target_offset
         self.avoid_objects = avoid_objects
         self.held_objects = held_objects
         self._move_by: Optional[MoveBy] = None
-        target_position = {"x": 0,"y": 0,"z": 0}
+        self._target_position = {"x": 0,"y": 0,"z": 0}
         # Set the target position.
         if isinstance(target, int):
-            # Get the position of the object.
-            target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
-            # We want the Replicant to stay on the floor, if the object is on a table for example.
-            target_position["y"] = 0
+            # Get the position of the object's origin. We may adjust this later, if an offset was applied.
+            self._target_position = ReplicantUtils.get_object_position(resp=resp, object_id=target)
         elif isinstance(target, dict):
-            target_position = target
+            self._target_position = target
         else:
            raise Exception(f"Invalid target: {target}")
-        # Compute distance from Replicant current location to object.
-        self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), target_position) - self.__arrived_offset
-        print(target_position)
+        self._initialized = False
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         # Remember the image frequency for the move action.
         self.__image_frequency: ImageFrequency = image_frequency
-        return self._turn_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        commands = []
+        #commands.extend(self._turn_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency))
+        commands.append({"$type": "send_bounds",
+                         "frequency": "once"})
+        return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        if not self._initialized:
+            if self._target_offset != "center":
+                # We need to compute the location of the end(s) of the object.
+                left = (0, 0, 0)
+                right = (0, 0, 0)
+                for i in range(len(resp) - 1):
+                    r_id = OutputData.get_data_type_id(resp[i])
+                    if r_id == "boun":
+                        bounds = Bounds(resp[i])
+                        for j in range(bounds.get_num()):
+                            if bounds.get_id(j) == self._target:
+                                left = bounds.get_left(j)
+                                right = bounds.get_right(j)
+                                break
+                # Set the target position to be the left or right end of the object.
+                # Regardless we want the Replicant to stay on the floor, if the object is on a table for example.
+                if self._target_offset == "left":
+                    self._target_position = {"x": TDWUtils.array_to_vector3(left)["x"], "y": 0, "z": TDWUtils.array_to_vector3(left)["z"]}
+                elif self._target_offset == "right":
+                    self._target_position = {"x": TDWUtils.array_to_vector3(right)["x"], "y": 0, "z": TDWUtils.array_to_vector3(right)["z"]}
+            self._turn_to: TurnTo = TurnTo(target=self._target_position, resp=resp, dynamic=dynamic,
+                                           collision_detection=self.__collision_detection,
+                                           previous=self._previous)
+            # Compute distance from Replicant current location to object.
+            self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), self._target_position) - self.__arrived_offset
+            self._initialized = True
         commands = []
         # We haven't started moving yet (we are turning).
         if self._move_by is None:

@@ -91,10 +91,8 @@ class MoveBy(WalkMotion):
                                 r_id = OutputData.get_data_type_id(resp[i])
                                 if r_id == "rayc":
                                     raycast = Raycast(resp[i])
-                                    #if raycast.get_raycast_id() == raycast_id:
                                     if raycast.get_hit() and raycast.get_hit_object():
                                         commands = []
-                                        print("Boxcast hit; object ID = " + str(raycast.get_object_id()))
                                         if raycast.get_object_id() not in self._collision_detection.exclude_objects:
                                             self.status = ActionStatus.detected_obstacle
                                         break

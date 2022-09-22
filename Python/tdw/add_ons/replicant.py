@@ -206,7 +206,7 @@ class Replicant(AddOn):
                               held_objects=self.held, avoid_objects = self.avoid_objects, previous=self._previous_action, dynamic=self.dynamic)
 
     def move_to(self, target: Union[int, Dict[str, float]], arrived_at: float = 0.1, aligned_at: float = 1,
-                arrived_offset: float = 0) -> None:
+                arrived_offset: float = 0, target_offset: str = "center") -> None:
         """
         Move to a target object or position. This combines turn_to() followed by move_by().
 
@@ -218,7 +218,7 @@ class Replicant(AddOn):
 
         self.action = MoveTo(target=target, resp=self._previous_resp, dynamic=self.dynamic,
                              collision_detection=self.collision_detection, held_objects=self.held, 
-                             avoid_objects = self.avoid_objects, arrived_at=arrived_at, aligned_at=aligned_at,
+                             avoid_objects=self.avoid_objects, target_offset=target_offset, arrived_at=arrived_at, aligned_at=aligned_at,
                              arrived_offset=arrived_offset, previous=self._previous_action)
 
     def reach_for(self, target: Union[int, Dict[str,  float]], arm: Arm, use_other_arm: bool) -> None:

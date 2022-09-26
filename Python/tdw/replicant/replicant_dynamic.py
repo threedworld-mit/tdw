@@ -163,6 +163,7 @@ class ReplicantDynamic:
                         self.images[pass_name] = image_data
                         # Record the file extension.
                         self.__image_extensions[pass_name] = images.get_extension(j)
+                        self.save_images("D://TDW_Strategic_Plan_2021//HumanoidAgent//replicant_pov_images//")
             # Get the camera matrices for the avatar's camera.
             elif r_id == "cama":
                 camera_matrices = CameraMatrices(resp[i])
@@ -172,6 +173,7 @@ class ReplicantDynamic:
         # Update the frame count.
         if got_replicant_images:
             self.frame_count += 1
+
 
     def save_images(self, output_directory: Union[str, Path]) -> None:
         """

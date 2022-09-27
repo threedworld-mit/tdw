@@ -7,7 +7,7 @@ from tdw.output_data import OutputData, StaticRigidbodies
 
 class LeapMotion(VR):
     """
-    Add a VR rig to the scene that uses Oculus Touch controllers.
+    Add a VR rig to the scene that uses UltraLeap (LeapMotion) hand tracking.
 
     Make all non-kinematic objects graspable by the rig.
 

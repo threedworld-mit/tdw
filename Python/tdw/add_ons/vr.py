@@ -177,6 +177,10 @@ class VR(AddOn, ABC):
         self.held_left = np.array([], dtype=int)
         self.held_right = np.array([], dtype=int)
 
+    def show_loading_screen(self, show: bool) -> None:
+        self.commands.append({"$type": "set_vr_loading_screen",
+                              "show": show})
+
     @staticmethod
     def _get_empty_transform() -> Transform:
         """

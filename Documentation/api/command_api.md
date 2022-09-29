@@ -676,6 +676,7 @@
 | [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
+| [`set_vr_loading_screen`](#set_vr_loading_screen) | Show or hide the VR rig's loading screen.  |
 | [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
@@ -8460,12 +8461,12 @@ Attach a UI canvas to the head camera of a VR rig.
 ```
 
 ```python
-{"$type": "attach_ui_canvas_to_vr_rig", "plane_distance": 1, "canvas_id": 0}
+{"$type": "attach_ui_canvas_to_vr_rig", "plane_distance": 0.25, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"plane_distance"` | float | The distance from the camera to the UI canvas. | 1 |
+| `"plane_distance"` | float | The distance from the camera to the UI canvas. | 0.25 |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
 ***
@@ -8796,6 +8797,22 @@ Rotate the VR rig by an angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The angle of rotation in degrees. | |
+
+***
+
+## **`set_vr_loading_screen`**
+
+Show or hide the VR rig's loading screen. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_loading_screen", "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If true, show the loading screen. If false, hide it. | |
 
 ***
 

@@ -6,9 +6,33 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ## v1.0.7
 
+### Command API
+
+#### New Commands
+
+| Command                 | Description                         |
+| ----------------------- | ----------------------------------- |
+| `set_vr_loading_screen` | Show or hide the VR loading screen. |
+
+### `tdw` module
+
+- Added to  `OculusTouch` add-on: `show_loading_screen(show)`. Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_loading_screen.py`
+
 ### Build
 
 - Fixed: `set_screen_size` doesn't wait until the window is done resizing, resulting in occasional errors in video capture commands such as `start_video_capture_windows` as well as in `send_images`. 
+
+### Documentation
+
+#### Modified Documention
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/oculus_touch.md` | Added an explanation and example code of how to use a VR loading screen. |
 
 ## v1.10.6
 

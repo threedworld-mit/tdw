@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.0.7
+
+### Build
+
+- Fixed: `set_screen_size` doesn't wait until the window is done resizing, resulting in occasional errors in video capture commands such as `start_video_capture_windows` as well as in `send_images`. 
+
 ## v1.10.6
 
 ### `tdw` module

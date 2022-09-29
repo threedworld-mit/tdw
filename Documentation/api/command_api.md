@@ -8461,12 +8461,12 @@ Attach a UI canvas to the head camera of a VR rig.
 ```
 
 ```python
-{"$type": "attach_ui_canvas_to_vr_rig", "plane_distance": 0.25, "canvas_id": 0}
+{"$type": "attach_ui_canvas_to_vr_rig", "plane_distance": 1, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"plane_distance"` | float | The distance from the camera to the UI canvas. | 0.25 |
+| `"plane_distance"` | float | The distance from the camera to the UI canvas. | 1 |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
 ***

@@ -115,6 +115,16 @@ Reset the VR rig. Call this whenever a scene is reset.
 | position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
 | rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
 
+#### show_loading_screen
+
+**`self.show_loading_screen(show)`**
+
+Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| show |  bool |  | If True, show the loading screen. If False, hide the loading screen. |
+
 #### before_send
 
 **`self.before_send(commands)`**

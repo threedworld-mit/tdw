@@ -37,7 +37,7 @@ ball_id2 = c.get_unique_id()
 affordance_id = 0
 reach_arm = Arm.both
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": -8}, image_frequency=ImageFrequency.always)
+replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": -8}, image_frequency=ImageFrequency.once)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",

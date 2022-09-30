@@ -37,7 +37,7 @@ ball_id2 = c.get_unique_id()
 affordance_id = 0
 reach_arm = Arm.both
 
-replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": -8}, image_frequency=ImageFrequency.never)
+replicant = Replicant(replicant_id=replicant_id, position={"x": -4, "y": 0, "z": -8}, image_frequency=ImageFrequency.always)
 c.add_ons.append(replicant)
 commands=[]
 commands.extend([{"$type": "set_screen_size",
@@ -89,30 +89,36 @@ c.communicate(commands)
 replicant.move_to(target=basket_id, arrived_offset=0.4)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 
 replicant.reach_for(target=basket_id, arm=reach_arm, use_other_arm=True)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 
 replicant.grasp(target=basket_id, arm=reach_arm, use_other_arm=True)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 
 replicant.move_to(target=ball_id, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 
 replicant.drop(target=basket_id, arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 
 replicant.reset_arm(arm=reach_arm)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 
 replicant.move_to(target=ball_id2, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-
+    replicant.dynamic.save_images("D:/TDW_Strategic_Plan_2021/Humanoid_Agent/replicant_saved_images/")
 #c.communicate({"$type": "terminate"})
 

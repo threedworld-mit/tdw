@@ -159,6 +159,15 @@ Open the video in VLC.
 
 If the video file size is very low (e.g. 48 bytes or 0 bytes), there was an error in video capture; see above for how to troubleshoot.
 
+## What to do if you get an error about framerate
+
+On some (but not all) machines, you may get an error like this:
+```
+[avfoundation @ 0x7fe0d2800000] Selected framerate (29.970030) is not supported by the device
+```
+
+If you see this error, the framerate you have selected (60 by default) isn't supported on your machine. Set `"framerate": 30` in your command.
+
 ***
 
 **This is the last document in the "Video Recording" tutorial.**

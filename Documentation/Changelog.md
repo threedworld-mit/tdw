@@ -24,7 +24,9 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 ### Build
 
+
 - Fixed: `set_screen_size` doesn't wait until the window is done resizing, resulting in occasional errors in video capture commands such as `start_video_capture_windows` as well as in `send_images`. 
+- Fixed: `start_video_capture_osx` fails if `"audio"` is set to `False`.
 - Fixed: Unloading the scene unloads XR subsystems, causing a VR rig to temporarily exit the simulation entirely and back into the generic Oculus 3D space. Now, VR scene reloads are seamless.
 
 ### Documentation
@@ -33,6 +35,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 
 | Document                     | Modification                                                 |
 | ---------------------------- | ------------------------------------------------------------ |
+`lessons/video/screen_record_linux.d`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | Clarified how to use `log_args` to check for ffmpeg errors and listed a few common errors plus their solutions. |
 | `lessons/vr/oculus_touch.md` | Added an explanation and example code of how to use a VR loading screen. |
 
 ## v1.10.6

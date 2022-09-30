@@ -8657,7 +8657,7 @@ Start video capture using ffmpeg. This command can only be used on Linux.
 | `"display"` | int | The X11 display index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
 | `"screen"` | int | The X11 screen index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
 | `"audio_device"` | string | The pulseaudio device name. Ignored if audio == False. To get a list of devices: pactl list sources | grep output | "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor" |
-| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
 | `"framerate"` | int | The framerate of the output video. | 60 |
@@ -8691,7 +8691,7 @@ Start video capture using ffmpeg. This command can only be used on OS X.
 | `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
 | `"size_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture size. | 2 |
 | `"position_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture position. | 2 |
-| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
 | `"framerate"` | int | The framerate of the output video. | 60 |
@@ -8724,7 +8724,7 @@ Start video capture using ffmpeg. This command can only be used on Windows.
 | `"audio_device"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices: ffmpeg -list_devices true -f dshow -i dummy | "" |
 | `"audio_buffer_size"` | int | The audio buffer size in ms. This should always be greater than 0. Adjust this if the audio doesn't sync with the video. See: <ulink url="https://ffmpeg.org/ffmpeg-devices.html">https://ffmpeg.org/ffmpeg-devices.html</ulink> (search for audio_buffer_size). | 5 |
 | `"draw_mouse"` | bool | If True, show the mouse in the video. | False |
-| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mkv | |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
 | `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
 | `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
 | `"framerate"` | int | The framerate of the output video. | 60 |

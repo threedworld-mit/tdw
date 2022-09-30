@@ -4,6 +4,40 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.0.7
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                         |
+| ----------------------- | ----------------------------------- |
+| `set_vr_loading_screen` | Show or hide the VR loading screen. |
+
+### `tdw` module
+
+- Added to  `OculusTouch` add-on: `show_loading_screen(show)`. Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_loading_screen.py`
+
+### Build
+
+
+- Fixed: `set_screen_size` doesn't wait until the window is done resizing, resulting in occasional errors in video capture commands such as `start_video_capture_windows` as well as in `send_images`. 
+- Fixed: `start_video_capture_osx` fails if `"audio"` is set to `False`.
+- Fixed: Unloading the scene unloads XR subsystems, causing a VR rig to temporarily exit the simulation entirely and back into the generic Oculus 3D space. Now, VR scene reloads are seamless.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+`lessons/video/screen_record_linux.d`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | Clarified how to use `log_args` to check for ffmpeg errors and listed a few common errors plus their solutions. |
+| `lessons/vr/oculus_touch.md` | Added an explanation and example code of how to use a VR loading screen. |
+
 ## v1.10.6
 
 ### `tdw` module

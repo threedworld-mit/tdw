@@ -147,7 +147,7 @@ To stop video capture, send [`stop_video_capture`](../../api/command_api.md#stop
 1. Set the optional `log_args` parameter to `True` to log the ffmpeg args. This can allow you to replicate the exact ffmpeg call:
 
 ```
-{"$type": "start_video_capture_windows",
+{"$type": "start_video_capture_osx",
  "output_path": str(path.resolve()),
  "log_args": True}
 ```
@@ -164,7 +164,7 @@ To stop video capture, send [`stop_video_capture`](../../api/command_api.md#stop
 ffmpeg -f avfoundation -i "1:0" -vsync 0 -framerate 60 -filter:v"crop=512:512,1792:956" -c:v h264 -qp 0 -preset ultrafast -y "/Users/user/tdw_example_controller_output/video_capture/video.mp4" 
 ```
 
-4. If the ffmpeg process has an error, read the error carefully. An audio-related error, for example, usually means that your `"audio_device"` is wrong. If, on the other hand, there is no error, you can press `q` to quit.
+4. If the ffmpeg process has an error, read the error carefully and adjust your command's parameters accordingly. An audio-related error, for example, usually means that your `"audio_device"` is wrong. If, on the other hand, there is no error, you can press `q` to quit.
 
 *If you get an error about the framerate:* On some (but not all) machines, you may get an error like this:
 

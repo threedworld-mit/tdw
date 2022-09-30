@@ -155,14 +155,27 @@ To stop video capture, send [`stop_video_capture`](../../api/command_api.md#stop
 
 ## What to do if there is no video
 
-- [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) It will usually tell you what the error was.
-- Set the optional `log_args` parameter to `True` to log the ffmpeg args. This can allow you to replicate the exact ffmpeg call:
+1. Set the optional `log_args` parameter to `True` to log the ffmpeg args. This can allow you to replicate the exact ffmpeg call:
 
 ```
 {"$type": "start_video_capture_windows",
  "output_path": str(path.resolve()),
  "log_args": True}
 ```
+
+2. [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) It will have a line that looks like this:
+
+```
+-audio_buffer_size 5 -f dshow -i audio="Stereo Mix (Realtek(R) Audio)" -c:a aac -ac 2 -f gdigrab -draw_mouse 0 -framerate 60 -offset_x 952 -offset_y 1817 -video_size 256x256 -i desktop -c:v h264 -qp 0 -preset ultrafast -y "C:\Users\user\tdw_example_controller_output\video_capture\video.mp4" [TDWInput.StartVideoCaptureWindows]
+```
+
+3. In a terminal, type `ffmpeg` plus the arguments in the Player log:
+
+```bash
+ffmpeg -audio_buffer_size 5 -f dshow -i audio="Stereo Mix (Realtek(R) Audio)" -c:a aac -ac 2 -f gdigrab -draw_mouse 0 -framerate 60 -offset_x 952 -offset_y 1817 -video_size 256x256 -i desktop -c:v h264 -qp 0 -preset ultrafast -y "C:\Users\user\tdw_example_controller_output\video_capture\video.mp4" 
+```
+
+4. If the ffmpeg process has an error, read the error carefully. An audio-related error, for example, usually means that your `"audio_device"` is wrong. If, on the other hand, there is no error, you can press `q` to quit.
 
 ## What to do if the video doesn't open
 

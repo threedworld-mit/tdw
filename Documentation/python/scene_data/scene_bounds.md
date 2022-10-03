@@ -33,7 +33,7 @@ scene_bounds = SceneBounds(resp=resp)
 
 - `z_max` Maximum z positional coordinate of the scene.
 
-- `rooms` All of the rooms in the scene.
+- `regions` All of the regions in the scene.
 
 ***
 

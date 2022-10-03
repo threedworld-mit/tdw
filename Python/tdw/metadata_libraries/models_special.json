@@ -1,6 +1,192 @@
 {
     "description": "Free primitive and special-purpose models.",
     "records": {
+        "b04_db_apps_tech_08_03_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438344,
+                "Linux": 674828,
+                "Windows": 429107
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4606601,
+                    "z": -0.3258934
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4606601,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4606601,
+                    "z": 0.3258934
+                },
+                "left": {
+                    "x": -0.2995402,
+                    "y": 0.4606601,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2995402,
+                    "y": 0.4606601,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.9213202,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.2995402,
+                        "y": 0.01,
+                        "z": 0.3258934
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_db_apps_tech_08_03_counter_top",
+            "physics_quality": 0.5648129399552467,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "b04_db_apps_tech_08_03_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b04_db_apps_tech_08_03_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b04_db_apps_tech_08_03_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b04_db_apps_tech_08_03_counter_top"
+            },
+            "volume": 0.01498418,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "b05_db_apps_tech_08_09_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 437882,
+                "Linux": 675002,
+                "Windows": 428574
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4606604,
+                    "z": -0.32599
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0.02112603
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4606604,
+                    "z": 0.02112603
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4606604,
+                    "z": 0.3682421
+                },
+                "left": {
+                    "x": -0.3071053,
+                    "y": 0.4606604,
+                    "z": 0.02112603
+                },
+                "right": {
+                    "x": 0.3071053,
+                    "y": 0.4606604,
+                    "z": 0.02112603
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.9213207,
+                    "z": 0.02112603
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.3071053,
+                        "y": 0.01,
+                        "z": 0.34711605
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b05_db_apps_tech_08_09_counter_top",
+            "physics_quality": 0.5635531896376197,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "b05_db_apps_tech_08_09_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/b05_db_apps_tech_08_09_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/b05_db_apps_tech_08_09_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/b05_db_apps_tech_08_09_counter_top"
+            },
+            "volume": 0.01627459,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
         "cloth_1meter_square": {
             "asset_bundle_sizes": {
                 "Darwin": 16423490,
@@ -50,7 +236,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -122,7 +308,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -144,6 +330,192 @@
             },
             "wcategory": "flex_primitive",
             "wnid": "n09999990"
+        },
+        "dishwasher_4_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438397,
+                "Linux": 674798,
+                "Windows": 429914
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.4606598,
+                    "z": -0.3206144
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.4606598,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.4606598,
+                    "z": 0.3206143
+                },
+                "left": {
+                    "x": -0.3275375,
+                    "y": 0.4606598,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.3275375,
+                    "y": 0.4606598,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.9213195,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.3275375,
+                        "y": 0.01,
+                        "z": 0.3206143
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "dishwasher_4_counter_top",
+            "physics_quality": 0.5680550766426401,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "dishwasher_4_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/dishwasher_4_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/dishwasher_4_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/dishwasher_4_counter_top"
+            },
+            "volume": 0.01643472,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
+        },
+        "floating_counter_top_counter_top": {
+            "asset_bundle_sizes": {
+                "Darwin": 438217,
+                "Linux": 674613,
+                "Windows": 429045
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.4606557,
+                    "z": -0.3242055
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": 0,
+                    "z": -0.01940551
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.4606557,
+                    "z": -0.01940551
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.4606557,
+                    "z": 0.2853945
+                },
+                "left": {
+                    "x": -0.3048,
+                    "y": 0.4606557,
+                    "z": -0.01940551
+                },
+                "right": {
+                    "x": 0.3048,
+                    "y": 0.4606557,
+                    "z": -0.01940551
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.9213115,
+                    "z": -0.01940551
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [
+                {
+                    "half_extents": {
+                        "x": 0.3048,
+                        "y": 0.01,
+                        "z": 0.2853945
+                    },
+                    "position": {
+                        "x": 0,
+                        "y": 0.9713115,
+                        "z": 0
+                    },
+                    "rotation": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0
+                    },
+                    "shape": "box",
+                    "tag": "on"
+                }
+            ],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "floating_counter_top_counter_top",
+            "physics_quality": 0.5616745922419789,
+            "scale_factor": 1,
+            "substructure": [
+                {
+                    "materials": [
+                        "granite_grey_dark"
+                    ],
+                    "name": "floating_counter_top_counter_top"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/floating_counter_top_counter_top",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/floating_counter_top_counter_top",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/floating_counter_top_counter_top"
+            },
+            "volume": 0.0144116,
+            "wcategory": "cabinet",
+            "wnid": "n02933112"
         },
         "fluid_receptacle1m_round": {
             "asset_bundle_sizes": {
@@ -194,7 +566,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Bad colliders",
             "flex": true,
@@ -266,7 +638,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -339,7 +711,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -412,7 +784,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": false,
@@ -538,7 +910,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -610,7 +982,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Some MeshColliders have non-readable meshes.",
             "flex": true,
@@ -683,7 +1055,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -755,7 +1127,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": true,
@@ -827,7 +1199,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -900,7 +1272,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Linux asset bundle doesn't have a Rigidbody",
             "flex": false,
@@ -1032,7 +1404,7 @@
                 "z": 0
             },
             "composite_object": false,
-            "container_colliders": [],
+            "container_shapes": [],
             "do_not_use": true,
             "do_not_use_reason": "Some MeshColliders have non-readable meshes.",
             "flex": true,
@@ -1055,6 +1427,188 @@
             "volume": 3.503831148147583,
             "wcategory": "incline",
             "wnid": "n09999999"
+        },
+        "spider": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 127027,
+                "Linux": 175351,
+                "Windows": 121569
+            },
+            "bounds": {
+                "back": {
+                    "x": 1735.95068,
+                    "y": -236.493164,
+                    "z": -10669.1211
+                },
+                "bottom": {
+                    "x": 1735.95068,
+                    "y": -4223.38232,
+                    "z": -1000.0
+                },
+                "center": {
+                    "x": 1735.95068,
+                    "y": -236.493164,
+                    "z": -1000.0
+                },
+                "front": {
+                    "x": 1735.95068,
+                    "y": -236.493164,
+                    "z": 8669.121
+                },
+                "left": {
+                    "x": -5793.622,
+                    "y": -236.493164,
+                    "z": -1000.0
+                },
+                "right": {
+                    "x": 9265.523,
+                    "y": -236.493164,
+                    "z": -1000.0
+                },
+                "top": {
+                    "x": 1735.95068,
+                    "y": 3750.396,
+                    "z": -1000.0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": true,
+            "do_not_use_reason": "This model is used to test backend model pipeline functionality.",
+            "flex": false,
+            "name": "spider",
+            "physics_quality": 0.6651088836167821,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Augentex"
+                    ],
+                    "name": "Auge"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein1Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein1Re"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein2Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein2Re"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein3Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein3Re"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein4Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein4Re"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "Brust"
+                },
+                {
+                    "materials": [
+                        "Augentex"
+                    ],
+                    "name": "Duplicate05"
+                },
+                {
+                    "materials": [
+                        "HLeibTex"
+                    ],
+                    "name": "HLeib01"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "klZahn"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "klZahn2"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "Kopf"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "Kopf2"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "OK"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Zahn"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Zahn2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/spider",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/spider",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/spider"
+            },
+            "volume": 493250500000.0,
+            "wcategory": "test",
+            "wnid": "n00791078"
         },
         "stairs_one": {
             "asset_bundle_sizes": {
@@ -1105,6 +1659,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,
@@ -1177,6 +1732,7 @@
                 "z": 0
             },
             "composite_object": false,
+            "container_shapes": [],
             "do_not_use": false,
             "do_not_use_reason": "",
             "flex": true,

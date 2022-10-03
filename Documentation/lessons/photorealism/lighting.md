@@ -51,7 +51,7 @@ for record in librarian.records:
 
 Most streamed scenes in TDW include a default HDRI skybox, but the skybox can be changed programmatically. 
 
-In TDW, HDRI skyboxes, like [models](../core_concepts/objects.md) and [visual materials](../objects_and_scenes/materials_textures_colors.md), are stored as **asset bundles**, typically on a remote server.
+In TDW, HDRI skyboxes, like [models](../core_concepts/objects.md) and [visual materials](../scene_setup_low_level/materials_textures_colors.md), are stored as **asset bundles**, typically on a remote server.
 
 The metadata for each material is stored in an [`HDRISkyboxLibrarian`](../../python/librarian/hdri_skybox_librarian.md):
 

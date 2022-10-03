@@ -1,5 +1,523 @@
 # CHANGELOG
 
+# v1.10.x
+
+To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
+
+## v1.10.7
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                         |
+| ----------------------- | ----------------------------------- |
+| `set_vr_loading_screen` | Show or hide the VR loading screen. |
+
+### `tdw` module
+
+- Added to  `OculusTouch` add-on: `show_loading_screen(show)`. Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_loading_screen.py`
+
+### Build
+
+
+- Fixed: `set_screen_size` doesn't wait until the window is done resizing, resulting in occasional errors in video capture commands such as `start_video_capture_windows` as well as in `send_images`. 
+- Fixed: `start_video_capture_osx` fails if `"audio"` is set to `False`.
+- Fixed: Unloading the scene unloads XR subsystems, causing a VR rig to temporarily exit the simulation entirely and back into the generic Oculus 3D space. Now, VR scene reloads are seamless.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+`lessons/video/screen_record_linux.d`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | Clarified how to use `log_args` to check for ffmpeg errors and listed a few common errors plus their solutions. |
+| `lessons/vr/oculus_touch.md` | Added an explanation and example code of how to use a VR loading screen. |
+
+## v1.10.6
+
+### `tdw` module
+
+- **Complete re-write of the asset bundle creation process:**
+  - **If you have the asset_bundle_creator Unity project installed on your computer from a prior version of TDW, you need to delete it. A new asset_bundle_creator Unity project will be created.**
+  - The abstract base class `AssetBundleCreatorBase` is now named `AssetBundleCreator`. It has been moved to`tdw.asset_bundle_creator.asset_bundle_creator`.
+  - The class `AssetBundleCreator` is now named `ModelCreator`. It has been moved to `tdw.asset_bundle_creator.model_creator`. **`ModelCreator` has a completely new API.** Read the documentation.
+  - The class `RobotCreator` has been moved to `tdw.asset_bundle_creator.robot_creator` **`RobotCreator` has a completely new API.** Read the documentation.
+  - Added: `AnimationCreator`. Create animation asset bundles from .anim or .fbx files.
+  - Added: `CompositeObjectCreator`. Create composite object asset bundles from .urdf files.
+  - Added: `HumanoidCreator`. Create non-physics humanoid asset bundles from .fbx files.
+  - Added: `HumanoidCreatorBase`. Abstract base class for `AnimationCreator` and `HumanoidCreator`.
+  - **All asset bundle creators now reference a new Asset Bundle Creator Unity project**, which is located in a separate repo.
+    - Removed `asset_bundle_creator.unitypackage`, which was used create a model asset bundle creator Unity project.
+    - Removed all binaries located in `binaries/` such as VHACD and assimp. These are located in the new Unity project.
+- **Added: `LisdfReader`.** This add-on can import data from .sdf or .lisdf files into TDW as asset bundles and commands.
+  - Added: `LisdfRobotMetadata`. Metadata for how to read a robot referenced by a .lisdf file.
+- Added to `TDWUtils`:
+  - `get_path(path)` Returns the path as a `Path` object, as opposed to a string.
+  - `get_string_path(path)` Returns the path as a string, as opposed to a `Path`.
+- Added optional parameter `raycast_target` to `UI.add_text()` and `UI.add_image()`. If True, raycasts will hit the UI element. Default = True.
+- Exposed `Mouse.raycast_id` field.
+- Added: `ModelRecord.affordance_points`. A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on.
+
+### Example controllers
+
+- Moved examples of non-physics humanoids from `non_physics/` to `non_physics_humanoids/`
+- Revised `3d_models/local_object.py` to use the new `ModelCreator`.
+
+### Misc. Python
+
+- Revised  `shapenet/shapenet.py` to use the new `ModelCreator`.
+
+### Build
+
+- Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
+
+### Model library
+
+- Added affordance points for coffeemug.
+
+### Robot library
+
+- Added: pr2
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/composite_objects/overview.md`                      | Overview of what composite objects are.                      |
+| `lessons/composite_objects/composite_objects.md`             | How to use composite objects in TDW. Most of this was previously in `semantic_states/composite_objects.md` (see below). |
+| `lessons/composite_objects/create_from_prefab.md`            | How to create composite objects in Unity Editor.             |
+| `lessons/composite_objects/create_from_urdf.md`              | How to create composite objects from a .urdf file.           |
+| `lessons/non_physics_humanoids/custom_animations.md`         | How to create custom humanoid animations.                    |
+| `lessons/non_physics_humanoids/custom_humanoids.md`          | How to create custom non-physics humanoids.                  |
+| `lessons/non_physics_humanoids/overview.md`                  | Overview of non-physics humanoids. Most of this was previously in `non_physics/humanoids.md` (see below). |
+| `lessons/non_physics_humanoids/smpl.md`                      | Description of how to use SMPL humanoids. Most of this was previously in `non_physics/humanoids.md` (see below). |
+| `lessons/read_write/lisdf.md`                                | How to read .sdf and .lisdf files.                           |
+| `python/add_ons/lisdf_reader.md`<br>`python/lisdf_data/lisdf_robot_metadata.md` | API documentation for .lisdf classes.                        |
+| `python/asset_bundle_creators/animation_creator.md`<br>`python/asset_bundle_creators/asset_bundle_creator.md`<br/>`python/asset_bundle_creators/composite_object_creator.md`<br/>`python/asset_bundle_creators/humanoid_creator.md`<br/>`python/asset_bundle_creators/humanoid_creator_base.md`<br/>`python/asset_bundle_creators/model_creator.md`<br/>`python/asset_bundle_creators/robot_creator.md` | API documentation for asset bundle creators.                 |
+
+#### Modified Documentation
+
+| Document                                                     | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `benchmark/benchmark.md`<br>`benchmark/command_deserialization.md`<br>`benchmark/image_capture.md`<br>`benchmark/object_data.md`<br>`lessons/remote/xpra.md` | Fixed broken links.                                          |
+| `lessons/3d_models/custom_models.md`                         | Moved to `lessons/custom_models/custom_models.md`<br>Rewritten to describe how to use `ModelCreator`. |
+| `lessons/3d_models/shapenet.md`                              | Moved to `lessons/custom_models/shapenet.md`<br>Revised to explain how to use the new version of shapenet.py |
+| `lessons/semantic_states/composite_objects.md`               | Split into two documents:<br>1. `lessons/semantic_states/openness.md`<br>2.`lessons/composite_objects/composite_objects.md` |
+| `lessons/non_physics/humanoids.md`                           | Moved to `lessons/non_physics_humanoids/overview.md` and `lessons/non_physics_humanoids/smpl.md` |
+| `lessons/robots/custom_robots.md`                            | Rewritten to explain how to use  the new `RobotCreator`.     |
+
+### Removed Documentation
+
+| Document                                                     | Reason    |
+| ------------------------------------------------------------ | --------- |
+| `python/asset_bundle_creator.md`<br>`python/asset_bundle_creator_base.md`<br>`python/robot_creator.md` | Obsolete. |
+
+## v1.10.5
+
+### Build
+
+- Fixed: AttributeError if `set_robot_joint_id` is sent and the new joint ID is the same as the old joint ID.
+
+## v1.10.4
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `start_video_capture_linux`   | Start video capture using ffmpeg. This command can only be used on Linux. |
+| `start_video_capture_osx`     | Start video capture using ffmpeg. This command can only be used on OS X. |
+| `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
+| `stop_video_capture`          | Stop ongoing video capture.     |
+
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+- Refactored `Logger`: 
+  - Removed the `record` parameter and the `save()` function. The `Logger` add-on doesn't handle playback anymore.
+  - `Logger` automatically saves lists of commands per `communicate()` call rather than writing all of them to disk at once using `save()`.
+- Added `LogPlayback` option to play back logs of commands.
+- Fixed: `ContainerShape` classes don't sanitize numpy types e.g. converting `numpy.float32` to `float`.
+- Robot add-ons (such as `Robot`) send `set_robot_joint_id` to ensure that joint IDs are always the same, even when loading from a log file.
+
+### Humanoid animation library
+
+- Added: idle_251087, idle_251105, kitchen_bendoverandopendrawer_f, kitchen_cooking_f, kitchen_microwave_m, kitchen_refrigerator_f
+
+### Docker
+
+- Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                               |
+| ------------------------------------------------------------ | ----------------------------------------- |
+| `lessons/video/screen_record_linux.md`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | How to record audio and video on each OS. |
+| `python/add_ons/log_playback.md`                             | API document for `LogPlayback`.           |
+
+#### Modified Documentation
+
+| Document                       | Modification                                                 |
+| ------------------------------ | ------------------------------------------------------------ |
+| `lessons/video/audio.md`       | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
+| `lessons/video/images.md`      | Removed sections regarding ffmpeg and OBS.                   |
+| `lessons/video/overview.md`    | Added a section about installing ffmpeg.                     |
+| `lessons/read_write/logger.md` | Updated for the removal of `Logger`'s playback functionality, and for the inclusion of the `LogPlayback` option. |
+
+## v1.10.3
+
+### Build
+
+- Fixed: `rotate_object_by` doesn't work as expected when `use_centroid == True`.
+
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `set_revolute_angle`     | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. |
+| `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
+| `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
+| `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
+| `send_dynamic_robots` | Send dynamic robot data. |
+
+#### Deprecated Commands
+
+| Command       | Reason                              |
+| ------------- | ----------------------------------- |
+| `send_robots` | Replaced with `send_dynamic_robots` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data     | Description                |
+| --------------- | -------------------------- |
+| `DynamicRobots` | Dynamic robot output data. |
+
+#### Modified Output Data
+
+| Output Data   | Modification                                               |
+| ------------- | ---------------------------------------------------------- |
+| `StaticRobot` | Added: `get_joint_indices()`<br>Added: `get_robot_index()` |
+
+#### Deprecated Output Data
+
+| Output Data | Reason                        |
+| ----------- | ----------------------------- |
+| `Robot`     | Replaced with `DynamicRobots` |
+
+### `tdw` module
+
+- Added: `JsonWriter` an add-on that serializes JSON data per-frame.
+- Added: `OutputDataWriter` an add-on that dumps raw output data per-frame.
+- Added: `Writer` abstract base class for per-frame writer add-ons.
+- Modified `JointDynamic` constructor parameters:
+  - Removed constructor parameters: `robot` and `joint_index`.
+  - Added constructor parameters: `joint_id`, `position`, `angles`, and `moving`.
+- Modified `JointStatic` constructor parameters and fields:
+  - Removed constructor parameter: `joint_index`
+  - Added constructor parameters: `static_index` and `dynamic_index`
+  - Added fields: `num_dof` and `dynamic_index`
+- Modified `RobotDynamic` constructor parameters:
+  - Removed constructor parameters: `robot_id`, `body_parts`, and `previous`.
+  - Added constructor parameters: `static` (of type `RobotStatic`)
+- Modified `RobotStatic` fields:
+  - Added: `robot_index`
+- Fixed: `TDWUtils.array_to_vector4(arr)` doesn't convert numpy float32 to pure-Python float.
+
+### Example Controllers
+
+- Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
+- Added: `read_write/object_data_json.py`
+- Added: `read_write/write_json.py`
+- Added: `read_write/write_multi_agent_json.py`
+- Added: `read_write/write_output_data.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                   | Description                               |
+| ------------------------------------------ | ----------------------------------------- |
+| `lessons/read_write/custom_writers.md`     | Tips for custom data writers.             |
+| `lessons/read_write/json.md`               | How to use `JsonWriter`.                  |
+| `lessons/read_write/output_data_writer.md` | How to use `OutputDataWriter`.            |
+| `lessons/read_write/overview.md`           | Overview of how to write data to disk.    |
+| `python/add_ons/json_writer.md`            | API documentation for `JsonWriter`.       |
+| `python/add_ons/output_data_writer.md`     | API documentation for `OutputDataWriter`. |
+| `python/add_ons/writer.md`                 | API documentation for `Writer`.           |
+
+#### Modified Documentation
+
+- Clarified in all of the API documents for `AddOn` subclasses how and when `on_send(resp)` gets called.
+
+| Document                            | Modification                                                 |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `lessons/robots/low_level_api.md`   | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
+| `lessons/troubleshooting/logger.md` | Moved to `lessons/read_write/logger.md`                      |
+
+## v1.10.1
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                     |
+| -------------------- | ----------------------------------------------- |
+| `send_field_of_view` | Send the camera field of view and focal length. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                |
+| ------------- | ------------------------------------------ |
+| `FieldOfView` | The camera field of view and focal length. |
+
+### `tdw` module
+
+- Added optional parameter `device_name` to `PhysicsAudioRecorder.start()`.
+- Fixed: `AudioUtils.stop()` doesn't work on OS X.
+  - Replaced `AudioUtils.RECORDER_PID` with `AudioUtils.RECORDER_PROCESS`.
+  - `AudioUtils.DEVICE` is now an integer (was a string).
+
+
+### Model Library
+
+- Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
+### Example Controllers
+
+- Fixed audio example controllers that use `PhysicsAudioRecorder` and had `while record.done:` instead of `while not recorder.done:`
+
+## v1.10.0
+
+### New Features
+
+- **Added `ProcGenKitchen`.** This add-on procedurally generates kitchen environments.
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `add_box_container`              | Add a box container shape to an object.                      |
+| `add_cylinder_container`         | Add a cylindrical container shape to an object.              |
+| `add_sphere_container`           | Add a spherical container shape to an object.                |
+| `send_containment`               | Send `Overlap` output data from every container shape.       |
+| `set_sub_object_id`              | Set the ID of a composite sub-object.                        |
+| `set_first_person_avatar`        | Set the parameters of an A_First_Person avatar.              |
+| `send_mouse_raycast`             | Raycast from a camera through the mouse screen position.     |
+| `send_mouse`                     | Send mouse output data.                                      |
+| `set_cursor`                     | Set cursor parameters                                        |
+| `set_visual_material_smoothness` | Set the smoothness (glossiness) of an object's visual material. |
+
+### Modified Commands
+
+| Command                                               | Modification                                                 |
+| ----------------------------------------------------- | ------------------------------------------------------------ |
+| `create_avatar`                                       | Removed: `A_Img_Caps`, `A_StickyMitten_Baby`, `A_StickyMitten_Adult`, `A_Nav_Mesh`<br>Added: `A_First_Person` |
+| `send_boxcast`<br>`send_raycast`<br>`send_spherecast` | `origin` and `destination` parameters now default to `{"x": 0, "y": 0, "z": 0}`. |
+| `add_ui_image`<br>`add_ui_text`                       | Added optional parameter `raycast_target`.                   |
+
+#### Removed Commands
+
+| Command                                                      | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `set_proc_gen_floor_color`                                   | Deprecated in v1.9; use `set_floor_color` instead.           |
+| `set_proc_gen_floor_texture_scale`                           | Deprecated in v1.9; use `set_floor_texture_scale` instead.   |
+| `set_proc_gen_floor_material`                                | Deprecated in v1.9; use `set_floor_material` instead.        |
+| `send_composite_objects`                                     | Deprecated in v1.9; use `send_static_composite_objects` and `send_dynamic_composite_objects` instead. |
+| `set_nav_mesh_avatar`<br>`set_nav_mesh_avatar_destination`   | Removed `A_Nav_Mesh`                                         |
+| `set_avatar_rigidbody_constraints`<br>`rotate_head_by`<br>`rotate_waist`<br>`set_sticky_mitten_profile`<br>`stop_arm_joint`<br>`bend_arm_joint_by`<br>`bend_arm_joint_to`<br>`adjust_joint_angular_drag_by`<br>`set_joint_angular_drag`<br>`adjust_joint_damper_by`<br>`adjust_joint_force_by`<br>`set_joint_damper`<br>`set_joint_force`<br>`put_down`<br>`set_stickiness`<br>`pick_up`<br>`pick_up_proximity` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                        |
+| ----------- | ---------------------------------- |
+| `Mouse`     | Data for mouse input and movement. |
+
+#### Modified Output Data
+
+| Output Data                | Modification                                                 |
+| -------------------------- | ------------------------------------------------------------ |
+| `Transforms`               | Significant speed improvement.<br>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `Rigidbodies`              | Significant speed improvement.<br/>`get_velocity(index)` and `get_angular_velocity(index)` return a numpy arrays instead of tuples. |
+| `StaticRigidbodies`        | Significant speed improvement.                               |
+| `Bounds`                   | Significant speed improvement.<br>`get_front(index)`, `get_back(index)`, etc. return numpy arrays instead of tuples. |
+| `SegmentationColors`       | `get_object_color(index)` returns a numpy array instead of a tuple. |
+| `Volumes`                  | Significant speed improvement.                               |
+| `LocalTransforms`          | Significant speed improvement.<br/>`get_position(index)`,  `get_rotation(index)`, and `get_forward(index)` return numpy arrays instead of tuples. |
+| `DynamicCompositeObjects`  | Significant speed improvement.<br>Restructured how hinge and light data is stored and returned. |
+| `IdPassSegmentationColors` | Moderate (approximately 25%) speed improvement.<br>Removed `get_sensor_name()`. |
+
+#### Removed Output Data
+
+| Output Data                                                  | Reason                                                       |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `CompositeObjects`                                           | Deprecated in v1.9; use `StaticCompositeObjects` and `DynamicCompositeObjects` instead. |
+| `ArrivedAtNavMeshDestination`                                | Removed `A_Nav_Mesh`                                         |
+| `AvatarStickyMitten`<br>`AvatarStickyMittenSegmentationColors` | Removed `A_StickyMitten_Baby` and `A_StickyMitten_Adult`     |
+
+### `tdw` module
+
+- **Added `ProcGenKitchen`.** Procedurally generate a kitchen in a new scene or an existing scene.
+- Added procedural generation "arrangement" data classes:
+  - `Arrangement` Abstract base class for procedurally-generated spatial arrangements of objects.
+  - `ArrangementAlongWall` Abstract class procedurally-generated spatial arrangements of objects that are positioned alongside a wall as part of a lateral arrangement.
+  - `ArrangementWithRootObject` Abstract class for procedurally-generated spatial arrangements of objects with a single root object.
+  - `Basket` A basket with random objects.
+  - `CupAndCoaster` A cup, which sometimes has a coaster underneath it.
+  - `Dishwasher` A dishwasher with a kitchen counter top with objects on it.
+  - `KitchenCabinet` Abstract class for kitchen counters, wall cabinets, and sinks. These all shared the same canonical rotation and height.
+  - `KitchenCounter` A kitchen counter can have objects on it and inside it.
+  - `KitchenCounterTop` A floating kitchen counter top along a wall.
+  - `KitchenTable` A kitchen table has chairs and table settings.
+  - `Microwave` A microwave can have objects on top of it and inside of it.
+  - `Painting` A painting hanging on the wall.
+  - `Plate` A kitchen plate that may have food on it.
+  - `Radiator` A radiator.
+  - `Refrigerator` A refrigerator.
+  - `Shelf` Shelving with objects on the shelves.
+  - `SideTable` A small side table with objects on it.
+  - `Sink` A sink can have objects on it and inside it.
+  - `StackOfPlates` A stack of plates.
+  - `Stool` A stool placed along a wall.
+  - `Stove` A stove with oven doors.
+  - `Suitcase` A suitcase placed along a wall.
+  - `TableAndChairs` Abstract base class for a table with chairs around it.
+  - `TableSetting` A table setting includes a plate, fork, knife, spoon, and sometimes a cup.
+  - `Void` An empty space along a wall.
+  - `WallCabinet` A wall cabinet hangs on the wall above a kitchen counter. It can have objects inside it.
+- Added procedural generation cabinetry data classes:
+  - `Cabinetry` A set of cabinetry models.
+  - `CabinetryType` Enum values describing a set of cabinetry.
+- Added scene data classes:
+  - `InteriorRegion` An interior region has bounds data and cached data regarding continuous walls and walls with windows.
+  - `Room` A room in an interior environment.
+- Adjusted existing scene data classes:
+  - New constructor parameters for `RegionBounds`
+  - Renamed `scene_bounds.rooms` to `scene_bounds.regions`
+- Added: `CardinalDirection` Enum for cardinal directions.
+- Added: `OrdinalDirection` Enum for ordinal directions.
+- Added: `TDWUtils.get_corners_from_wall(wall)` Returns the corners of the wall as a 2-element list of `OrdinalDirection`.
+- Added: `TDWUtils.get_direction_from_corner(corner, wall)` Given an corner an a wall, get the direction that a lateral arrangement will run along. 
+- `ContainerManager` now uses "container shapes" instead of trigger colliders. Trigger colliders are a built-in feature of Unity that detect non-physics collisions. They generate lots of event data, causing `ContainerManager` to be very slow in complex scenes. Now, `ContainerManager` sends "container shape" commands such as `add_box_container`, which define a 3D space without a trigger collider. Per-frame, container shapes will send `Overlap` data instead of `TriggerCollision` data. The result is that `ContainerManager` is much faster now.
+  - `ContainerManager` sends container shape commands (see above) per object and then sends `send_containment` to request `Overlap` data per frame.
+  - `ContainerManager` is no longer a subclass of `TriggerCollisionManager`, meaning that it no longer has the following fields: `trigger_ids` and `collisions`.
+  - Added: `ContainerManager.container_shapes` A dictionary of container IDs to parent object IDs.
+  - Renamed `ContainerManager._tags` to `ContainerManager.tags`
+  - Replaced `ContainerManager.add_box_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_box(object_id, position, tag, half_extents, rotation)`
+  - Replaced `ContainerManager.add_cylinder_collider(object_id, position, scale, rotation, trigger_id, tag)` with `ContainerManager.add_cylinder(object_id, position, tag, radius, height, rotation)`
+  - Replaced `ContainerManager.add_sphere_collider(object_id, position, diameter, trigger_id, tag)` with `ContainerManager.add_sphere(object_id, position, tag, radius)`
+- Refactored the following containment data classes:
+  - Replaced `ContainerBoxTriggerCollider` with `BoxContainer`
+  - Replaced `ContainerCylinderTriggerCollider` with `CylinderContainer`
+  - Replaced `ContainerSphereTriggerCollider` with `SphereContainer`
+  - Renamed `ContainerColliderTag` to `ContainerTag`
+  - Replaced `ModelRecord.container_colliders` with `ModelRecord.container_shapes`
+  - Replaced `ContainmentEvent.object_id` (the ID of the contained object) with `ContainmentEvent.object_ids` (a numpy array of all contained objects)
+- The data classes used in `DynamicCompositeObjects` (`CompositeObjectDynamic`, `HingeDynamic`, `LightDynamic`, and `SubObjectDynamic`) all take different constructor parameters. They are otherwise unchanged. The API for `CompositeObjectManager` is the same as before.
+- **Added: `FirstPersonAvatar` add-on.** This avatar can be controlled using standard video game first-person keyboard and mouse controls.
+- Added: `Mouse` add-on. Listen for mouse input and movement.
+- Renamed `ThirdPersonCameraBase._RENDER_ORDER` to `ThirdPersonCameraBase.RENDER_ORDER`
+- Renamed `PhysicsAudioRecorder.recording` to `PhysicsAudioRecorder.done`
+- Added optional parameter `record_audio` to the `PhysicsAudioRecorder` constructor.
+- Parameter `path` in `PhysicsAudioRecorder.start(path)` is now optional (defaults to None).
+
+### Build
+
+- Fixed: `add_line_renderer` doesn't correctly add line points.
+
+### Example Controllers
+
+- Split `objects_and_scenes/` controllers into `scene_setup_high_level/` and `scene_setup_low_level/`
+- Removed: `objects_and_scenes/proc_gen_objects.py` (obsolete)
+- Removed: `keyboard/keyboard_controls.py` (obsolete)
+- Added: `scene_setup_high_level/cup_and_coaster.py`
+- Added: `scene_setup_high_level/kitchen_counter.py`
+- Added: `scene_setup_high_level/microwave.py`
+- Added: `scene_setup_high_level/plate.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_lighting.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_minimal.py`
+- Added: `scene_setup_high_level/proc_gen_kitchen_rng.py`
+- Added: `keyboard_and_mouse/first_person_controls.py`
+- Added: `keyboard_and_mouse/mouse_controls.py`
+
+### Model Library
+
+- Added to `models_special.json`: b04_db_apps_tech_08_03_counter_top, b05_db_apps_tech_08_09_counter_top, dishwasher_4_counter_top, floating_counter_top_counter_top
+
+### Scene Library
+
+- Added: `SceneRecord.rooms` Cached `Room` data per scene.
+
+### Benchmark
+
+- Added kitchen benchmark to `PerformanceBenchmarkController` and `main.py`
+- Removed agent and flex benchmarks from `PerformanceBenchmarkController` and `main.py` because they are obsolete.
+- Updated Object Data benchmarks.
+
+### Documentation
+
+- The "Objects and Scenes" lesson has been split into two sections: "Scene Setup (High-Level APIs)" and "Scene Setup (Low-Level APIs)"
+- The "Keyboard" lesson has been renamed to "Keyboard and Mouse"
+
+#### New Documentation
+
+| Document                                                     | Description                                               |
+| ------------------------------------------------------------ | --------------------------------------------------------- |
+| `upgrade_guides/v1.9_to_v1.10.md`                            | Upgrade guide.                                            |
+| `scene_setup/overview.md`                                    | Overview of scene setups.                                 |
+| `scene_setup_high_level/overview.md`                         | Overview of TDW's high-level scene setup APIs.            |
+| `scene_setup_high_level/arrangements.md`                     | How `Arrangement` and its sub-classes work.               |
+| `scene_setup_high_level/proc_gen_kitchen.md`                 | Lesson document for the `ProcGenKitchen` add-on.          |
+| `scene_setup_high_level/rooms.md`                            | How room data works.                                      |
+| `scene_setup_low_level/overview.md`                          | Overview of TDW's lower-level scene setup APIs.           |
+| `keyboard_and_mouse/first_person_avatar.md`                  | Lesson document for the `FirstPersonAvatar` add-on.       |
+| `keyboard_and_mouse/mouse.md`                                | Lesson document for the `Mouse` add-on.                   |
+| `keyboard_and_mouse/overview.md`                             | Overview of keyboard and mouse input.                     |
+| `python/add_ons/proc_gen_kitchen.md`                         | API documentation for `ProcGenKitchen`                    |
+| `python/proc_gen/arrangements/cabinetry/cabinetry.md`<br>`python/proc_gen/arrangements/cabinetry/cabinetry_type.md` | API documentation for cabinetry.                          |
+| `python/proc_gen/arrangements/arrangement.md`<br/>`python/proc_gen/arrangements/arrangement_along_wall.md`<br/>`python/proc_gen/arrangements/arrangement_with_root_object.md`<br/>`python/proc_gen/arrangements/basket.md`<br/>`python/proc_gen/arrangements/cup_and_coaster.md`<br/>`python/proc_gen/arrangements/dishwasher.md`<br/>`python/proc_gen/arrangements/kitchen_cabinet.md`<br/>`python/proc_gen/arrangements/kitchen_counter.md`<br/>`python/proc_gen/arrangements/kitchen_counter_top.md`<br/>`python/proc_gen/arrangements/kitchen_table.md`<br/>`python/proc_gen/arrangements/microwave.md`<br/>`python/proc_gen/arrangements/painting.md`<br/>`python/proc_gen/arrangements/plate.md`<br/>`python/proc_gen/arrangements/radiator.md`<br/>`python/proc_gen/arrangements/refrigerator.md`<br/>`python/proc_gen/arrangements/shelf.md`<br/>`python/proc_gen/arrangements/side_table.md`<br/>`python/proc_gen/arrangements/sink.md`<br/>`python/proc_gen/arrangements/stack_of_plates.md`<br/>`python/proc_gen/arrangements/stool.md`<br/>`python/proc_gen/arrangements/stove.md`<br/>`python/proc_gen/arrangements/suitcase.md`<br/>`python/proc_gen/arrangements/table_and_chairs.md`<br/>`python/proc_gen/arrangements/table_setting.md`<br/>`python/proc_gen/arrangements/void.md`<br/>`python/proc_gen/arrangements/wall_cabinet.md` | API documentation for `Arrangement` and its data classes. |
+| `python/cardinal_direction.md`                               | API documentation for `CardinalDirection`.                |
+| `python/ordinal_direction.md`                                | API documentation for `OrdinalDirection`.                 |
+| `python/add_ons/mouse.md`                                    | API documentation for `Mouse`.                            |
+| `python/add_ons/first_person_avatar.md`                      | API documentation for `FirstPersonAvatar`.                |
+
+#### Modified Documentation
+
+| Document                                                     | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/semantic_states/containment.md`                     | Rewrote most of the document and replaced some images in order to describe container shapes. |
+| `python/container_data/`                                     | Removed old API documents (e.g. `container_collider_tag.md`) and added new API documents (e.g. `container_tag.md`). |
+| `benchmark/benchmark.md`                                     | Added explanation and FPS of kitchen benchmark.              |
+| `objects_and_scenes/floorplans.md`<br>`objects_and_scenes/reset_scene.md` | Moved to `scene_setup_high_level/`                           |
+| `objects_and_scenes/bounds.md`<br>`objects_and_scenes/materials_textures_colors.md`<br>`objects_and_scenes/proc_gen_room.md`<br>`objects_and_scenes/units.md` | Moved to `scene_setup_low_level/`                            |
+
+### Removed Documentation
+
+| Document                                 | Reason    |
+| ---------------------------------------- | --------- |
+| `objects_and_scenes/proc_gen_objects.md` | Obsolete. |
+
 # v1.9.x
 
 To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.md).

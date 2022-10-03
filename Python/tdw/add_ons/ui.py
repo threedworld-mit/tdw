@@ -37,7 +37,7 @@ class UI(AddOn):
         pass
 
     def add_text(self, text: str, font_size: int, position: Dict[str, int], anchor: Dict[str, float] = None,
-                 pivot: Dict[str, float] = None, color: Dict[str, float] = None) -> int:
+                 pivot: Dict[str, float] = None, color: Dict[str, float] = None, raycast_target: bool = True) -> int:
         """
         Add UI text to the scene.
 
@@ -47,12 +47,13 @@ class UI(AddOn):
         :param anchor: The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
         :param pivot: The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
         :param color: The color of the text. If None, defaults to `{"r": 1, "g": 1, "b": 1, "a": 1}`.
+        :param raycast_target: If True, raycasts will hit the UI element.
 
         :return: The ID of the new UI element.
         """
 
         cmd, ui_id = self._get_add_element(command_type="add_ui_text", anchor=anchor, pivot=pivot, position=position,
-                                           color=color)
+                                           color=color, raycast_target=raycast_target)
         cmd.update({"text": text,
                     "font_size": font_size})
         self.commands.append(cmd)
@@ -60,7 +61,7 @@ class UI(AddOn):
 
     def add_image(self, image: Union[str, Path, bytes], position: Dict[str, int], size: Dict[str, int],
                   rgba: bool = True, scale_factor: Dict[str, float] = None, anchor: Dict[str, float] = None,
-                  pivot: Dict[str, float] = None, color: Dict[str, float] = None) -> int:
+                  pivot: Dict[str, float] = None, color: Dict[str, float] = None, raycast_target: bool = True) -> int:
         """
         Add a UI image to the scene.
 
@@ -72,6 +73,7 @@ class UI(AddOn):
         :param anchor: The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
         :param pivot: The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
         :param color: The color of the text. If None, defaults to `{"r": 1, "g": 1, "b": 1, "a": 1}`.
+        :param raycast_target: If True, raycasts will hit the UI element.
 
         :return: The ID of the new UI element.
         """
@@ -87,7 +89,7 @@ class UI(AddOn):
         if scale_factor is None:
             scale_factor = {"x": 1, "y": 1}
         cmd, ui_id = self._get_add_element(command_type="add_ui_image", anchor=anchor, pivot=pivot,
-                                           position=position, color=color)
+                                           position=position, color=color, raycast_target=raycast_target)
         cmd.update({"image": img,
                     "size": size,
                     "rgba": rgba,
@@ -201,12 +203,14 @@ class UI(AddOn):
         return background_id, text_id
 
     def _get_add_element(self, command_type: str, position: Dict[str, int], anchor: Tuple[float, float] = None,
-                         pivot: Dict[str, float] = None, color: Dict[str, float] = None) -> Tuple[dict, int]:
+                         pivot: Dict[str, float] = None, color: Dict[str, float] = None,
+                         raycast_target: bool = True) -> Tuple[dict, int]:
         """
         :param position: The screen (pixel) position as a Vector2. Values must be integers.
         :param anchor: The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
         :param pivot: The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
         :param color: The color of the text. If None, defaults to `{"r": 1, "g": 1, "b": 1, "a": 1}`.
+        :param raycast_target: If True, raycasts will hit the UI element.
 
         :return: Tuple: A partial command, the ID of the new UI element.
         """
@@ -225,4 +229,5 @@ class UI(AddOn):
                 "anchor": anchor,
                 "pivot": pivot,
                 "position": position,
-                "color": color}, ui_id
+                "color": color,
+                "raycast_target": raycast_target}, ui_id

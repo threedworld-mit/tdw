@@ -1,0 +1,22 @@
+{
+  "b03_ka90ivi20r_2013__vray_composite": {
+    "depth": 2,
+    "length": 0,
+    "rotations": {
+      "north":  0,
+      "east": 90,
+      "south": 180,
+      "west": 270
+    }
+  },
+  "kenmore_refr_74049_composite": {
+    "depth": 0,
+    "length": 2,
+    "rotations": {
+      "north":  270,
+      "east": 0,
+      "south": 90,
+      "west": 180
+    }
+  }
+}

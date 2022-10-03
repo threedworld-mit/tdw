@@ -136,7 +136,7 @@ On every `c.communicate()` call, `trigger_collision_manager.collisions` updates.
 
 ### Reset
 
-Call `trigger_collision_manager.reset()` whenever you [reset a scene](../objects_and_scenes/reset_scene.md).
+Call `trigger_collision_manager.reset()` whenever you [reset a scene](../scene_setup_high_level/reset_scene.md).
 
 ## Low-level API
 

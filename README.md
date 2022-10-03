@@ -10,14 +10,14 @@
 - [Website](https://threedworld.org/)
 - [Example controllers](https://github.com/threedworld-mit/tdw/tree/master/Python/example_controllers)
 
-# 1. General guide to TDW
+# General guide to TDW
 
-## 1.1 Setup
+## Setup
 
 1. [Install TDW](Documentation/lessons/setup/install.md)
 3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
 
-## 1.2 Core Concepts
+## Core Concepts
 
 1. [The controller](Documentation/lessons/core_concepts/controller.md)
 2. [Auto-launching the TDW build](Documentation/lessons/core_concepts/launch_build.md)
@@ -30,48 +30,81 @@
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
 
-## 1.3 Troubleshooting
+## Troubleshooting
 
 1. [How to report an issue](Documentation/lessons/troubleshooting/issues.md)
 2. [Common errors](Documentation/lessons/troubleshooting/common_errors.md)
 3. [Performance optimizations](Documentation/lessons/troubleshooting/performance_optimizations.md)
 4. [Good coding practices](Documentation/lessons/troubleshooting/good_coding_practices.md)
-5. [The `Logger` add-on](Documentation/lessons/troubleshooting/logger.md)
 
-# 2. Tutorials
+# Tutorials
 
-## 2.1 Objects and Scenes
+## 1. Scene Setup
 
-1. [Overview](Documentation/lessons/objects_and_scenes/overview.md)
-2. [Scripted object placement (floorplan layouts)](Documentation/lessons/objects_and_scenes/floorplans.md)
-3. [Visual materials, textures, and colors](Documentation/lessons/objects_and_scenes/materials_textures_colors.md)
-4. [Procedural generation (scenes)](Documentation/lessons/objects_and_scenes/proc_gen_room.md)
-5. [Units and data formats](Documentation/lessons/objects_and_scenes/units.md)
-6. [`Bounds` output data](Documentation/lessons/objects_and_scenes/bounds.md)
-7. [Procedural generation (objects)](Documentation/lessons/objects_and_scenes/proc_gen_objects.md)
-10. [Reset a scene](Documentation/lessons/objects_and_scenes/reset_scene.md)
+**[Overview](Documentation/lessons/scene_setup/overview.md)**
 
-High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
+### 1.1 Scene Setup (High-Level APIs)
 
-### 2.2.2 3D Model Libraries
+1. [Overview](Documentation/lessons/scene_setup_high_level/overview.md)
+2. [Procedural generation (the `ProcGenKitchen` add-on)](Documentation/lessons/scene_setup_high_level/proc_gen_kitchen.md)
+2. [Regions, interior regions, and rooms](Documentation/lessons/scene_setup_high_level/rooms.md)
+3. [Procedural object arrangements](Documentation/lessons/scene_setup_high_level/arrangements.md)
+4. [Scripted object placement (floorplan layouts)](Documentation/lessons/scene_setup_high_level/floorplans.md)
+5. [Reset a scene](Documentation/lessons/scene_setup_high_level/reset_scene.md)
+
+High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
+
+### 1.2 Scene Setup (Low-Level APIs)
+
+1. [Overview](Documentation/lessons/scene_setup_low_level/overview.md)
+2. [Units and data formats](Documentation/lessons/scene_setup_low_level/units.md)
+3. [`Bounds` output data](Documentation/lessons/scene_setup_low_level/bounds.md)
+4. [Visual materials, textures, and colors](Documentation/lessons/scene_setup_low_level/materials_textures_colors.md)
+5. [ProcGenRoom](Documentation/lessons/scene_setup_low_level/proc_gen_room.md)
+
+## 2. 3D Models
+
+### 2.1 Other model libraries
 
 1. [Overview](Documentation/lessons/3d_models/overview.md)
 2. [Free models](Documentation/lessons/3d_models/free_models.md)
 3. [Non-free models](Documentation/lessons/3d_models/non_free_models.md)
-4. [Add your own models to TDW](Documentation/lessons/3d_models/custom_models.md)
-5. [Add ShapeNet models to TDW](Documentation/lessons/3d_models/shapenet.md)
 
-### 2.2.3 Semantic States
+### 2.2 Custom models
+
+1. [Add your own models to TDW](Documentation/lessons/custom_models/custom_models.md)
+2. [Add ShapeNet models to TDW](Documentation/lessons/custom_models/shapenet.md)
+
+### 2.3 Composite (articulated) objects
+
+1. [Overview](Documentation/lessons/composite_objects/overview.md)
+2. [Composite objects in TDW](Documentation/lessons/composite_objects/composite_objects.md)
+3. [Create a composite object from a prefab](Documentation/lessons/composite_objects/create_from_prefab.md)
+4. [Create a composite object from a .urdf file](Documentation/lessons/composite_objects/create_from_urdf.md)
+
+## 3. Read/Write to Disk
+
+1. [Overview](Documentation/lessons/read_write/overview.md)
+2. [The `Logger` and `LogPlayback` add-ons](Documentation/lessons/read_write/logger.md)
+3. [The `JsonWriter` add-on](Documentation/lessons/read_write/json.md)
+4. [The `OutputDataWriter` add-on](Documentation/lessons/read_write/output_data_writer.md)
+5. [Create a custom data writer](Documentation/lessons/read_write/custom_writers.md)
+6. [Import .sdf and .lisdf files](Documentation/lessons/read_write/lisdf.md)
+7. [Images](Documentation/lessons/core_concepts/images.md) (Cross-referenced with "Core Concepts")
+8. [Audio](Documentation/lessons/audio/overview.md) (Cross-referenced with "Audio")
+9. [Video](Documentation/lessons/video/overview.md) (Cross-referenced with "Video Recording")
+
+## 4. Semantic States
 
 1. [Overview](Documentation/lessons/semantic_states/overview.md)
 2. [Line of sight (`Raycast` output data)](Documentation/lessons/semantic_states/raycast.md)
 3. [Proximity to region (`Overlap` output data)](Documentation/lessons/semantic_states/overlap.md)
 3. [Proximity to other objects (the `TriggerCollisionManager` add-on)](Documentation/lessons/semantic_states/trigger_collisions.md)
 3. [Containment (the `ContainerManager` add-on)](Documentation/lessons/semantic_states/containment.md)
-4. [Composite objects (objects with affordances)](Documentation/lessons/semantic_states/composite_objects.md)
+4. [Open and closed states](Documentation/lessons/semantic_states/openness.md)
 4. [Grasped objects](Documentation/lessons/semantic_states/grasped.md)
 
-## 2.3 Visual Perception
+## 5. Visual Perception
 
 1. [Overview](Documentation/lessons/visual_perception/overview.md)
 2. [Instance ID segmentation colors (`_id` pass)](Documentation/lessons/visual_perception/id.md)
@@ -81,7 +114,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 6. [Other image passes (`_mask`, `_normals`, and `_albedo` passes)](Documentation/lessons/visual_perception/other_passes.md)
 7. [`Occlusion` output data](Documentation/lessons/visual_perception/occlusion.md)
 
-## 2.4 Camera Controls
+## 6. Camera Controls
 
 1. [Overview](Documentation/lessons/camera/overview.md)
 2. [Move a camera](Documentation/lessons/camera/position.md)
@@ -89,7 +122,7 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 4. [Follow an object](Documentation/lessons/camera/follow.md)
 4. [The `CinematicCamera` add-on](Documentation/lessons/camera/cinematic_camera.md)
 
-## 2.5 Photorealism
+## 7. Photorealism
 
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
@@ -99,11 +132,11 @@ High-level API: [Floorplan](Documentation/python/add_ons/floorplan.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
-## 2.6 Physics
+## 8. Physics
 
 **[Overview](Documentation/lessons/physx/overview.md)**
 
-### 2.6.1 Physics (PhysX)
+### 8.1 Physics (PhysX)
 
 1. [PhysX](Documentation/lessons/physx/physx.md)
 2. [Object physics parameters](Documentation/lessons/physx/physics_objects.md)
@@ -115,7 +148,7 @@ High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_data
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-### 2.6.2 Physics (Obi)
+### 8.2 Physics (Obi)
 
 1. [Obi](Documentation/lessons/obi/obi.md)
 2. [Fluids](Documentation/lessons/obi/fluids.md)
@@ -126,7 +159,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [Obi and robots](Documentation/lessons/obi/robots.md)
 6. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
 
-### 2.6.3 Physics (Flex)
+### 8.3 Physics (Flex)
 
 1. [Flex](Documentation/lessons/flex/flex.md)
 2. [Solid and soft actors](Documentation/lessons/flex/solid_and_soft.md)
@@ -140,7 +173,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
-## 2.8 Audio
+## 9. Audio
 
 1. [Overview](Documentation/lessons/audio/overview.md)
 2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
@@ -150,17 +183,21 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
 7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
 
-## 2.9 Video Recording
+## 10. Video Recording
 
 1. [Overview](Documentation/lessons/video/overview.md)
 2. [Image-only video](Documentation/lessons/video/images.md)
 3. [Video with audio](Documentation/lessons/video/audio.md)
+   1. [Video with audio (Linux)](Documentation/lessons/video/screen_record_linux.md)
+   2. [Video with audio (OS X)](Documentation/lessons/video/screen_record_osx.md)
+   3. [Video with audio (Windows)](Documentation/lessons/video/screen_record_windows.md)
 
-## 2.10 Agents
+
+## 11. Agents
 
 [**Overview**](Documentation/lessons/agents/overview.md)
 
-### 2.10.1 Robots
+### 11.1 Robots
 
 1. [Overview](Documentation/lessons/robots/overview.md)
 2. [The `Robot` add-on](Documentation/lessons/robots/robot_add_on.md)
@@ -171,75 +208,85 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 7. [Robotics API (low-level)](Documentation/lessons/robots/custom_robots.md)
 8. [Add a camera to a robot](Documentation/lessons/robots/add_camera.md)
 
-### 2.10.2 Magnebots
+### 11.2 Magnebots
 
 1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
-### 2.10.3 Virtual Reality (VR)
+### 11.3 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 2.10.4 Keyboard controls
+### 11.4 Keyboard and Mouse
 
-1. [Keyboard controls](Documentation/lessons/keyboard/keyboard.md)
+1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
+2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
+3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
+4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 2.10.4 Embodied avatars
+### 11.5 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
-## 2.11 Multi-agent simulations
+## 12. Multi-agent simulations
 
 1. [Overview](Documentation/lessons/multi_agent/overview.md)
 2. [Custom agent classes](Documentation/lessons/multi_agent/custom_agent_classes.md)
 
-## 2.12 Navigation
+## 13. Navigation
 
 1. [Overview](Documentation/lessons/navigation/overview.md)
 2. [NavMesh pathfinding](Documentation/lessons/navigation/nav_mesh.md)
 3. [Occupancy maps](Documentation/lessons/navigation/occupancy_maps.md)
 
-## 2.13 Non-physics objects
+## 14. Non-physics objects
+
+### 14.1 Non-physics humanoids
+
+1. [Overview](Documentation/lessons/non_physics_humanoids/overview.md)
+2. [SMPL humanoids](Documentation/lessons/non_physics_humanoids/smpl.md)
+3. [Create custom non-physics humanoids](Documentation/lessons/non_physics_humanoids/custom_humanoids.md)
+4. [Create custom humanoid animations](Documentation/lessons/non_physics_humanoids/custom_animations.md)
+
+### 14.2 Misc. non-physics objects
 
 1. [Overview](Documentation/lessons/non_physics/overview.md)
 2. [Position markers](Documentation/lessons/non_physics/position_markers.md)
-2. [Line renderers](Documentation/lessons/non_physics/line_renderers.md)
-3. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
-3. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
-3. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
-4. [Non-physics humanoids](Documentation/lessons/non_physics/humanoids.md)
+3. [Line renderers](Documentation/lessons/non_physics/line_renderers.md)
+4. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
+5. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
+6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
 
-## 2.14 Misc. remote server topics
+## 15. Misc. remote server topics
 
 1. [Launch a TDW build on a remote server from a personal computer](Documentation/lessons/remote/launch_build.md)
 2. [Remote rendering with xpra](Documentation/lessons/remote/xpra.md)
 
-## 2.15 Misc. other topics
+## 16. Misc. other topics
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
 2. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
 
-# 3. API Documentation
+# API Documentation
 
-## 3.1 Command API
+## Command API
 
 - [Command API](Documentation/api/command_api.md)
 - [Output Data](Documentation/api/output_data.md)
 
-## 3.2 `tdw` module API
+## `tdw` module API
 
 **tdw**
 
-- [AssetBundleCreator](Documentation/python/asset_bundle_creator.md)
-- [AssetBundleCreatorBase](Documentation/python/asset_bundle_creator_base.md)
 - [AudioConstants](Documentation/python/audio_constants.md)
 - [AudioUtils](Documentation/python/audio_utils.md)
+- [CardinalDirection](Documentation/python/cardinal_direction.md)
 - [Controller](Documentation/python/controller.md)
 - [IntPair](Documentation/python/int_pair.md)
+- [OrdinalDirection](Documentation/python/ordinal_direction.md)
 - [QuaternionUtils](Documentation/python/quaternion_utils.md)
 - [RemoteBuildLauncher](Documentation/python/remote_build_launcher.md)
-- [RobotCreator](Documentation/python/robot_creator.md)
 - [TDWUtils](Documentation/python/tdw_utils.md)
 
 **tdw.add_ons**
@@ -254,17 +301,24 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
+- [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [ImageCapture](Documentation/python/add_ons/image_capture.md)
 - [InteriorSceneLighting](Documentation/python/add_ons/interior_scene_lighting.md)
+- [JsonWriter](Documentation/python/add_ons/json_writer.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
+- [LisdfReader](Documentation/python/add_ons/lisdf_reader.md)
 - [Logger](Documentation/python/add_ons/logger.md)
+- [LogPlayback](Documentation/python/add_ons/log_playback.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
+- [Mouse](Documentation/python/add_ons/mouse.md)
 - [Obi](Documentation/python/add_ons/obi.md)
 - [ObjectManager](Documentation/python/add_ons/object_manager.md)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)
 - [OculusTouch](Documentation/python/add_ons/oculus_touch.md)
+- [OutputDataWriter](Documentation/python/add_ons/output_data_writer.md)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
+- [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
@@ -276,6 +330,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [UI](Documentation/python/add_ons/ui.md)
 - [VR](Documentation/python/add_ons/vr.md)
+- [Writer](Documentation/python/add_ons/writer.md)
+
+**tdw.asset_bundle_creator**
+
+- [AnimationCreator](Documentation/python/asset_bundle_creator/animation_creator.md)
+- [AssetBundleCreator](Documentation/python/asset_bundle_creator/asset_bundle_creator.md)
+- [CompositeObjectCreator](Documentation/python/asset_bundle_creator/composite_object_creator.md)
+- [HumanoidCreator](Documentation/python/asset_bundle_creator/humanoid_creator.md)
+- [HumanoidCreatorBase](Documentation/python/asset_bundle_creator/humanoid_creator_base.md)
+- [ModelCreator](Documentation/python/asset_bundle_creator/model_creator.md)
+- [RobotCreator](Documentation/python/asset_bundle_creator/robot_creator.md)
 
 **tdw.collision_data**
 
@@ -287,13 +352,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.container_data**
 
-- [ContainerBoxTriggerCollider](Documentation/python/container_data/container_box_trigger_collider.md)
-- [ContainerColliderTag](Documentation/python/container_data/container_collider_tag.md)
-- [ContainerCylinderTriggerCollider](Documentation/python/container_data/container_cylinder_trigger_collider.md)
-- [ContainerNonUniformScaleTriggerCollider](Documentation/python/container_data/container_non_uniform_scale_trigger_collider.md)
-- [ContainerSphereTriggerCollider](Documentation/python/container_data/container_sphere_trigger_collider.md)
-- [ContainerTriggerCollider](Documentation/python/container_data/container_trigger_collider.md)
+- [BoxContainer](Documentation/python/container_data/box_container.md)
+- [ContainerShape](Documentation/python/container_data/container_shape.md)
+- [ContainerTag](Documentation/python/container_data/container_tag.md)
 - [ContainmentEvent](Documentation/python/container_data/containment_event.md)
+- [CylinderContainer](Documentation/python/container_data/cylinder_container.md)
+- [SphereContainer](Documentation/python/container_data/sphere_container.md)
 
 **tdw.flex_data**
 
@@ -308,6 +372,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+
+**tdw.lisdf_data**
+
+- [LisdfRobotMetadata](Documentation/python/lisdf_data/lisdf_robot_metadata.md)
 
 **tdw.model_tests**
 
@@ -386,6 +454,40 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ScrapeModel](Documentation/python/physics_audio/scrape_model.md)
 - [ScrapeSubObject](Documentation/python/physics_audio/scrape_sub_object.md)
 
+**tdw.proc_gen.arrangements**
+
+- [Arrangement](Documentation/python/proc_gen/arrangements/arrangement.md)
+- [ArrangementAlongWall](Documentation/python/proc_gen/arrangements/arrangement_along_wall.md)
+- [ArrangementWithRootObject](Documentation/python/proc_gen/arrangements/arrangement_with_root_object.md)
+- [Basket](Documentation/python/proc_gen/arrangements/basket.md)
+- [CupAndCoaster](Documentation/python/proc_gen/arrangements/cup_and_coaster.md)
+- [Dishwasher](Documentation/python/proc_gen/arrangements/dishwasher.md)
+- [KitchenCabinet](Documentation/python/proc_gen/arrangements/kitchen_cabinet.md)
+- [KitchenCounter](Documentation/python/proc_gen/arrangements/kitchen_counter.md)
+- [KitchenCounterTop](Documentation/python/proc_gen/arrangements/kitchen_counter_top.md)
+- [KitchenTable](Documentation/python/proc_gen/arrangements/kitchen_table.md)
+- [Microwave](Documentation/python/proc_gen/arrangements/microwave.md)
+- [Painting](Documentation/python/proc_gen/arrangements/painting.md)
+- [Plate](Documentation/python/proc_gen/arrangements/plate.md)
+- [Radiator](Documentation/python/proc_gen/arrangements/radiator.md)
+- [Refrigerator](Documentation/python/proc_gen/arrangements/refrigerator.md)
+- [Shelf](Documentation/python/proc_gen/arrangements/shelf.md)
+- [SideTable](Documentation/python/proc_gen/arrangements/side_table.md)
+- [Sink](Documentation/python/proc_gen/arrangements/sink.md)
+- [StackOfPlates](Documentation/python/proc_gen/arrangements/stack_of_plates.md)
+- [Stool](Documentation/python/proc_gen/arrangements/stool.md)
+- [Stove](Documentation/python/proc_gen/arrangements/stove.md)
+- [Suitcase](Documentation/python/proc_gen/arrangements/suitcase.md)
+- [TableAndChairs](Documentation/python/proc_gen/arrangements/table_and_chairs.md)
+- [TableSetting](Documentation/python/proc_gen/arrangements/table_setting.md)
+- [Void](Documentation/python/proc_gen/arrangements/void.md)
+- [WallCabinet](Documentation/python/proc_gen/arrangements/wall_cabinet.md)
+
+**tdw.proc_gen.arrangements.cabinetry**
+
+- [Cabinetry](Documentation/python/proc_gen/arrangements/cabinetry/cabinetry.md)
+- [CabinetryType](Documentation/python/proc_gen/arrangements/cabinetry/cabinetry_type.md)
+
 **tdw.release**
 
 - [Build](Documentation/python/release/build.md)
@@ -403,7 +505,9 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.scene_data**
 
+- [InteriorRegion](Documentation/python/scene_data/interior_region.md)
 - [RegionBounds](Documentation/python/scene_data/region_bounds.md)
+- [Room](Documentation/python/scene_data/room.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
 
 **tdw.vr_data**
@@ -411,7 +515,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
 - [RigType](Documentation/python/vr_data/rig_type.md)
 
-# 4. Performance benchmarks
+# Performance benchmarks
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)
 2. [Image capture](Documentation/benchmark/image_capture.md)
 3. [Object data](Documentation/benchmark/object_data.md)

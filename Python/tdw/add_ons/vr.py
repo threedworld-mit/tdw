@@ -177,6 +177,16 @@ class VR(AddOn, ABC):
         self.held_left = np.array([], dtype=int)
         self.held_right = np.array([], dtype=int)
 
+    def show_loading_screen(self, show: bool) -> None:
+        """
+        Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+        :param show: If True, show the loading screen. If False, hide the loading screen.
+        """
+
+        self.commands.append({"$type": "set_vr_loading_screen",
+                              "show": show})
+
     @staticmethod
     def _get_empty_transform() -> Transform:
         """

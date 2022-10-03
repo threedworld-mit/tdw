@@ -37,6 +37,18 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.2/niryo_one"
             }
         },
+        "pr2": {
+            "ik": [],
+            "immovable": false,
+            "name": "pr2",
+            "source": "",
+            "targets": {},
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/robots/osx/2020.3/pr2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/robots/linux/2020.3/pr2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/robots/windows/2020.3/pr2"
+            }
+        },
         "sawyer": {
             "ik": [],
             "immovable": true,

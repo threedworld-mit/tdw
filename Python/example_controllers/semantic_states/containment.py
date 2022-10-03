@@ -5,7 +5,7 @@ from tdw.add_ons.container_manager import ContainerManager
 from tdw.add_ons.object_manager import ObjectManager
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
-from tdw.container_data.container_collider_tag import ContainerColliderTag
+from tdw.container_data.container_tag import ContainerTag
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
@@ -55,14 +55,15 @@ class Containment(Controller):
         while not sleeping:
             sleeping = self.object_manager.rigidbodies[falling_object_id].sleeping
             containment = False
-            tag = ContainerColliderTag.inside
-            for object_id in self.container_manager.events:
+            tag = ContainerTag.inside
+            for container_shape_id in self.container_manager.events:
+                object_id = self.container_manager.container_shapes[container_shape_id]
                 if object_id == container_id:
-                    for event in self.container_manager.events[object_id]:
-                        if event.object_id == falling_object_id:
-                            containment = True
-                            tag = event.tag
-                            break
+                    event = self.container_manager.events[container_shape_id]
+                    if falling_object_id in event.object_ids:
+                        containment = True
+                        tag = event.tag
+                        break
             frames.append((containment, tag))
             self.communicate([])
         # Create a timeline diagram of the containment states.
@@ -74,7 +75,7 @@ class Containment(Controller):
             if not frame[0]:
                 color = (255, 255, 255)
             else:
-                if frame[1] == ContainerColliderTag.on:
+                if frame[1] == ContainerTag.on:
                     color = (255, 0, 0)
                 else:
                     color = (0, 0, 255)

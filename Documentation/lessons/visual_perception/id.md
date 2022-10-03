@@ -116,7 +116,7 @@ pil_image = cap.get_pil_images()["a"]["_id"]
 colors = Counter(pil_image.getdata())
 # Get the percentage of the image occupied by each object.
 for object_id in segmentation_colors:
-    segmentation_color = segmentation_colors[object_id]
+    segmentation_color = tuple(segmentation_colors[object_id])
     object_name = object_names[object_id]
     if segmentation_color not in colors:
         print(object_name + " is not in the image!")
@@ -203,8 +203,10 @@ for i in range(len(resp) - 1):
             segmentation_colors_in_image.append(ipsc.get_segmentation_color(j))
 # Print the ID of each object in the image.
 for object_id in segmentation_colors_per_object:
-    if segmentation_colors_per_object[object_id] in segmentation_colors_in_image:
-        print(object_id)
+    for i in range(len(segmentation_colors_in_image)):
+        if any((segmentation_colors_in_image[i] == j).all() for j in segmentation_colors_per_object.values()):
+            print(object_id)
+            break
 c.communicate({"$type": "terminate"})
 ```
 

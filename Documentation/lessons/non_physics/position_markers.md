@@ -2,7 +2,7 @@
 
 # Position markers
 
-*Position markers are most useful when setting up a scene. If you haven't done so already, we recommend you read the [Objects and Scenes tutorial](../objects_and_scenes/overview.md).*
+*Position markers are most useful when setting up a scene. If you haven't done so already, we recommend you read the [Scene Setup tutorials](../scene_setup/overview.md).*
 
 **Position markers** are simple non-physics objects that can be used to mark a position. They are useful when debugging a scene.
 
@@ -10,7 +10,7 @@ Consider this model, `arflex_hollywood_sofa`:
 
 ![](images/arflex_hollywood_sofa.jpg)
 
-It might be difficult to estimate at a glance where the object's [bounds](../objects_and_scenes/bounds.md) are. To visualize them, we can add position markers with the [`add_position_marker`](../../api/command_api.md#add_position_marker) command:
+It might be difficult to estimate at a glance where the object's [bounds](../scene_setup_low_level/bounds.md) are. To visualize them, we can add position markers with the [`add_position_marker`](../../api/command_api.md#add_position_marker) command:
 
 ```python
 from tdw.controller import Controller

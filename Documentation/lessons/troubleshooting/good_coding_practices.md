@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
 ## 2. Reset the scene efficiently
 
-This is covered more thoroughly [elsewhere](../objects_and_scenes/reset_scene.md) but you should manage objects and scenes carefully. In the above example, notice that we don't actually rebuild the scene at the start of each trial. For the sake of efficiency, we keep the same scene loaded and just destroy the object in the scene.
+This is covered more thoroughly [elsewhere](../scene_setup_high_level/reset_scene.md) but you should manage objects and scenes carefully. In the above example, notice that we don't actually rebuild the scene at the start of each trial. For the sake of efficiency, we keep the same scene loaded and just destroy the object in the scene.
 
 ## 3. Compartmentalize your code
 
@@ -530,7 +530,7 @@ if __name__ == "__main__":
 
 ***
 
-**Next: [The `Logger` add-on](logger.md)**
+**This is the last document in the "Troubleshooting" guide.**
 
 [Return to the README](../../../README.md)
 

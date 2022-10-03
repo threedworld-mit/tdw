@@ -35,7 +35,7 @@
 1. [Download fmedia.](https://stsaz.github.io/fmedia/)
 2. Unpack archive to the directory of your choice.
 3. [Add the location of the fmedia directory to the $PATH variable.](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/)
-4. Download [iShowU Audio Capture](https://support.shinywhitebox.com).
+4. Download [iShowU Audio Capture](https://support.shinywhitebox.com) or [BlackHole](https://github.com/ExistentialAudio/BlackHole).
 5. Go to “Audio MIDI Setup” on your Mac and create a new device with multiple output channels that should include the “iShowU Audio Capture” and the usual device that you use for audio output in your computer.
 
 #### Linux
@@ -102,7 +102,7 @@ AudioUtils.start(output_path=path, device_name="Headset Microphone")
 
 So far, we've ended audio recordings and audio trials by just waiting a certain number of frames, i.e. `for i in range(200):`. It's possible to end the trial when the audio events are actually finished. `PhysicsAudioRecorder` starts recording when you call `start(path)` and automatically stops recording when no objects are moving and the TDW build isn't outputting any audio.
 
-This example is similar to the previous example except that it uses a `PhysicsAudioRecorder`. Instead of `for i in range(200):`, we evaluate `while recoder.recording:`.
+This example is similar to the previous example except that it uses a `PhysicsAudioRecorder`. Instead of `for i in range(200):`, we evaluate `while recoder.done:`.
 
 ```python
 from tdw.controller import Controller
@@ -127,7 +127,7 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("physics_audio_recorder/audio.wav
 print(f"Audio will be saved to: {path}")
 recorder.start(path=path)
 c.communicate(commands)
-while recorder.recording:
+while not recorder.done:
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
@@ -140,13 +140,26 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.py_impact import PyImpact
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 py_impact = PyImpact()
 audio = AudioInitializer(avatar_id="a")
 recorder = PhysicsAudioRecorder(max_frames=1000)
 c.add_ons.extend([audio, py_impact, recorder])
+```
+
+You can optionally choose to make `PhysicsAudioRecorder` listen to audio events without actually saving .wav data by setting `record_audio=False` in the constructor:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.audio_initializer import AudioInitializer
+from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
+
+c = Controller()
+audio = AudioInitializer(avatar_id="a")
+recorder = PhysicsAudioRecorder(max_frames=1000, record_audio=False)
+c.add_ons.extend([audio, recorder])
 ```
 
 ## "Rube Goldberg" example controller

@@ -85,10 +85,6 @@ obi = Obi(output_data=False)
 
 ***
 
-Example controllers:
-
-- [obi_fluid.py](https://github.com/threedworld-mit/tdw/blob/master/Python/benchmarking/obi_fluid.py) Obi fluid benchmark.
-
 
 Python API:
 

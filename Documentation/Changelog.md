@@ -4,6 +4,17 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.8
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `teleport_avatar_by`     | Teleport an avatar by a position offset.                     |
+| `add_visual_camera_mesh` | Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics. |
+
 ## v1.10.7
 
 ### Command API

@@ -49,7 +49,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | human_hands |  bool  | True | If True, visualize the hands as human hands. If False, visualize the hands as robot hands. |
-| set_graspable |  bool  | True | If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/semantic_states/composite_objects.md) as graspable by the VR rig. |
+| set_graspable |  bool  | True | If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/composite_objects/overview.md) as graspable by the VR rig. |
 | output_data |  bool  | True | If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame. |
 | position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
 | rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
@@ -114,6 +114,16 @@ Reset the VR rig. Call this whenever a scene is reset.
 | non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
 | position |  Dict[str, float] | None | The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}` |
 | rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
+
+#### show_loading_screen
+
+**`self.show_loading_screen(show)`**
+
+Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| show |  bool |  | If True, show the loading screen. If False, hide the loading screen. |
 
 #### before_send
 

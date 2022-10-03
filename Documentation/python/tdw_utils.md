@@ -738,3 +738,29 @@ print(screeninfo.get_monitors())
 
 _Returns:_  The expected position of the top-left corner of the build window.
 
+#### get_path
+
+**`TDWUtils.get_path(path)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | A path as either a string or a `Path`. |
+
+_Returns:_  The path as a `Path`.
+
+#### get_string_path
+
+**`TDWUtils.get_string_path(path)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| path |  Union[str, Path] |  | A path as either a string or a `Path`. |
+
+_Returns:_  The path as a string.
+

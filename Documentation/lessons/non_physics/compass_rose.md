@@ -45,7 +45,7 @@ Result:
 
 ***
 
-**Next: [Non-physics humanoids](humanoids.md)**
+**This is the last document in the "Non-physics objects" tutorial.**
 
 [Return to the README](../../../README.md)
 

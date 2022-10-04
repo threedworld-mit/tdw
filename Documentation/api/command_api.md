@@ -97,6 +97,7 @@
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
 | [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
+| [`teleport_avatar_by`](#teleport_avatar_by) | Teleport the avatar by a position offset.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
 
 **Add Audio Sensor Command**
@@ -142,6 +143,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_visual_camera_mesh`](#add_visual_camera_mesh) | Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics. |
 | [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
@@ -1970,6 +1972,27 @@ Set which types of images the avatar will render. By default, the avatar will re
 
 ***
 
+## **`teleport_avatar_by`**
+
+Teleport the avatar by a position offset. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+
+```python
+{"$type": "teleport_avatar_by", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "teleport_avatar_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position offset to teleport by. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
 ## **`teleport_avatar_to`**
 
 Teleport the avatar to a position. 
@@ -2327,6 +2350,27 @@ Move the avatar towards the target position.
 # SensorContainerCommand
 
 These commands adjust an avatar's image sensor container. All avatars have at least one sensor, which is named "SensorContainer". Sticky Mitten Avatars have an additional sensor named "FollowCamera". For a list of all image sensors attached to an avatar, send send_image_sensors.
+
+***
+
+## **`add_visual_camera_mesh`**
+
+Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics.
+
+
+```python
+{"$type": "add_visual_camera_mesh"}
+```
+
+```python
+{"$type": "add_visual_camera_mesh", "position": {"x": 0, "y": 0, "z": -0.06}, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the visual camera mesh relative to the sensor container. | {"x": 0, "y": 0, "z": -0.06} |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 

@@ -82,7 +82,7 @@ class Grasp(ArmMotion):
                             "target": self._target, 
                             "primary_affordance_id": static.primary_target_affordance_id,
                             "secondary_affordance_id": static.secondary_target_affordance_id,  
-                            "id": dynamic.replicant_id, 
+                            "id": static.replicant_id, 
                             "arm": self._reach_arm.name})
             commands.extend(self._get_hold_object_commands(static=static,
                                                            dynamic=dynamic, 

@@ -62,7 +62,7 @@ class ArmMotion(Action, ABC):
                           "frequency": "always"}])
         return commands
 
-    def _get_reach_commands(self, dynamic: ReplicantDynamic, primary_target_position: Dict[str, float],
+    def _get_reach_commands(self, static: ReplicantStatic, primary_target_position: Dict[str, float],
                             secondary_target_position: Dict[str, float]) -> List[dict]:
         commands=[]
         # Reach for IK target, at affordance position.
@@ -70,13 +70,13 @@ class ArmMotion(Action, ABC):
             commands.append({"$type": "replicant_reach_for_position", 
                           "primary_target_position": primary_target_position, 
                           "secondary_target_position": secondary_target_position, 
-                          "id": dynamic.replicant_id, 
+                          "id": static.replicant_id, 
                           "length": self._reach_action_length, 
                           "arm": self._reach_arm.name})
         else:
             commands.append({"$type": "replicant_reach_for_position", 
                           "primary_target_position": primary_target_position, 
-                          "id": dynamic.replicant_id, 
+                          "id": static.replicant_id, 
                           "length": self._reach_action_length, 
                           "arm": self._reach_arm.name})
         return commands
@@ -100,31 +100,31 @@ class ArmMotion(Action, ABC):
                                    "secondary_target_position": {"x": r_hand_pos["x"] + (fwd["x"] * 0.5), "y": r_hand_pos["y"] + 0.25, "z": r_hand_pos["z"]  + (fwd["z"] * 0.5)},   
                                    "primary_affordance_id": static.primary_target_affordance_id,
                                    "secondary_affordance_id": static.secondary_target_affordance_id,  
-                                   "id": dynamic.replicant_id,
+                                   "id": static.replicant_id,
                                    "length": self._reset_action_length, 
                                    "arm": self._reach_arm.name},
                           {"$type": "replicant_reset_held_object_rotation", 
                                "target": object_id, 
                                "primary_affordance_id": static.primary_target_affordance_id,
                                "secondary_affordance_id": static.secondary_target_affordance_id,   
-                               "id": dynamic.replicant_id,
+                               "id": static.replicant_id,
                                "length": self._reset_action_length, 
                                "arm": self._reach_arm.name}
                         ])
         return commands
    
-    def _get_drop_commands(self, dynamic: ReplicantDynamic, object_id: int) -> List[dict]:
+    def _get_drop_commands(self, static: ReplicantStatic, object_id: int) -> List[dict]:
         commands=[]
         commands.append({"$type": "replicant_drop_object",
                           "target": object_id,
-                          "id": dynamic.replicant_id,
+                          "id": static.replicant_id,
                           "arm": self._reach_arm.name})
         return commands
 
-    def _get_reset_arm_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+    def _get_reset_arm_commands(self, static: ReplicantStatic) -> List[dict]:
         commands=[]
         commands.append({"$type": "replicant_reset_arm",
-                          "id": dynamic.replicant_id,
+                          "id": static.replicant_id,
                           "arm": self._reach_arm.name})
         return commands
 

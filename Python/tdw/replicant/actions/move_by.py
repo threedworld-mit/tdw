@@ -104,7 +104,7 @@ class MoveBy(WalkMotion):
                         commands = []
                         self.loop_count += 1
                         self.frame_count = 0
-                        commands.extend(self._get_walk_commands(dynamic=dynamic))
+                        commands.extend(self._get_walk_commands(static=static, dynamic=dynamic))
                         return commands
                     else:
                         # We have performed the required number of loop cycles. 
@@ -113,7 +113,7 @@ class MoveBy(WalkMotion):
                             self.processing_remainder = True
                             commands = []
                             self.frame_count = 0
-                            commands.extend(self._get_walk_commands(dynamic=dynamic))
+                            commands.extend(self._get_walk_commands(static=static, dynamic=dynamic))
                             return commands
                 
 

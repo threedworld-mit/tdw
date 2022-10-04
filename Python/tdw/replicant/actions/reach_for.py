@@ -106,7 +106,7 @@ class ReachFor(ArmMotion):
                     return []
         if not self._initialized_reach:
             commands = []
-            commands.extend(self._get_reach_commands(dynamic=dynamic, 
+            commands.extend(self._get_reach_commands(static=static, 
                                                      primary_target_position=self._primary_target_position,
                                                      secondary_target_position=self._secondary_target_position))
             self._initialized_reach = True

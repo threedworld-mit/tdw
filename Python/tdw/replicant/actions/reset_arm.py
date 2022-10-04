@@ -32,7 +32,7 @@ class ResetArm(ArmMotion):
                                                        image_frequency=image_frequency)
         # Remember the image frequency for the action.
         self.__image_frequency: ImageFrequency = image_frequency
-        commands.extend(self._get_reset_arm_commands(dynamic=dynamic))
+        commands.extend(self._get_reset_arm_commands(static=static))
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

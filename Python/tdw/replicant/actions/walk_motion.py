@@ -58,11 +58,11 @@ class WalkMotion(Action, ABC):
         commands.append({"$type": "add_humanoid_animation", 
                          "name": self.walk_record.name, 
                          "url": url})
-        commands.extend(self._get_walk_commands(dynamic=dynamic))
+        commands.extend(self._get_walk_commands(static=static, dynamic=dynamic))
         return commands
 
 
-    def _get_walk_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+    def _get_walk_commands(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
         commands.append({"$type": "set_target_framerate", 
                           "framerate": self.walk_record.framerate})
@@ -81,7 +81,7 @@ class WalkMotion(Action, ABC):
         commands.extend([{"$type": "replicant_walk",
                          "left_arm_object_id": left_id,
                          "right_arm_object_id": right_id,
-                          "id": dynamic.replicant_id},
+                          "id": static.replicant_id},
                          {"$type": "send_boxcast",
                           "half_extents": {"x": 0.1, "y": 0.1, "z": 0.75},
                           "origin": pos,
@@ -90,12 +90,11 @@ class WalkMotion(Action, ABC):
         self.playing = True
         return commands
 
-    def _get_stop_commands(self, dynamic: ReplicantDynamic) -> List[dict]:
+    def _get_stop_commands(self, static: ReplicantStatic) -> List[dict]:
         commands = []
-        #print("Stopping play")
         self.playing = False
         commands.append({"$type": "stop_humanoid_animation",
-                         "id": dynamic.replicant_id})
+                         "id": static.replicant_id})
         return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -108,9 +107,9 @@ class WalkMotion(Action, ABC):
 
         :return: A list of commands that must be sent to end any action.
         """
-        #print("Ending")
+
         commands = []
-        commands.extend(self._get_stop_commands(dynamic=dynamic))
+        commands.extend(self._get_stop_commands(static=static))
         commands.extend(super().get_end_commands(resp=resp, static=static, dynamic=dynamic,
                                                  image_frequency=image_frequency))
         return commands

@@ -60,11 +60,11 @@ class TurnTo(Action):
             return []
         else:
             commands = []
-            commands.extend(self._get_turn_command(dynamic=dynamic))
+            commands.extend(self._get_turn_command(static=static, dynamic=dynamic))
             self.turned = True
             return commands
 
-    def _get_turn_command(self, dynamic: ReplicantDynamic) -> dict:
+    def _get_turn_command(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> dict:
         # Turn to face position. 
         commands = []  
         pos = TDWUtils.array_to_vector3(dynamic.position)
@@ -73,7 +73,7 @@ class TurnTo(Action):
         dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.0)  
         commands.extend([{"$type": "replicant_look_at_position", 
                          "position": self.target_position, 
-                         "id": dynamic.replicant_id},
+                         "id": static.replicant_id},
                          {"$type": "send_boxcast",
                           "half_extents": {"x": 0.1, "y": 0.1, "z": 0.25},
                           "origin": pos,

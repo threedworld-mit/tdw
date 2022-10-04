@@ -25,10 +25,6 @@ class ReplicantDynamic:
         :param previous: If not None, the previous replicantDynamic data. Use this to determine if the joints are moving.
         """
         """:field
-        The ID of the replicant.
-        """
-        self.replicant_id = replicant_id
-        """:field
         The current position of this replicant.
         """
         self.position: np.array = [0, 0, 0]
@@ -136,7 +132,6 @@ class ReplicantDynamic:
                         self.collisions[body_part_id] = list()
                     # Record the collision.
                     self.collisions[body_part_id].append(collision)
-                #print("registered object collision: " + str(collider_id) + " with " + str(collidee_id))
             # This is an environment collision.
             elif r_id == "enco":
                 collision = EnvironmentCollision(resp[i])
@@ -145,7 +140,6 @@ class ReplicantDynamic:
                     self.collisions[collider_id] = list()
                 # Record the collision.
                 self.collisions[collider_id].append(collision)
-                #print("registered environment collision with " + str(collider_id))
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])
@@ -163,7 +157,7 @@ class ReplicantDynamic:
                         self.images[pass_name] = image_data
                         # Record the file extension.
                         self.__image_extensions[pass_name] = images.get_extension(j)
-                        self.save_images("D://TDW_Strategic_Plan_2021//HumanoidAgent//replicant_pov_images//")
+                        #self.save_images("D:/TDW_Strategic_Plan_2021/HumanoidAgent/replicant_pov_images/")
             # Get the camera matrices for the avatar's camera.
             elif r_id == "cama":
                 camera_matrices = CameraMatrices(resp[i])

@@ -45,11 +45,11 @@ class TurnBy(Action):
             return []
         else:
             commands = []
-            commands.extend(self._get_turn_command(dynamic=dynamic))
+            commands.extend(self._get_turn_command(static=static, dynamic=dynamic))
             self.turned = True
             return commands
 
-    def _get_turn_command(self, dynamic: ReplicantDynamic) -> dict:
+    def _get_turn_command(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> dict:
         # Turn by a given angle.
         commands = []     
         pos = TDWUtils.array_to_vector3(dynamic.position)
@@ -57,7 +57,7 @@ class TurnBy(Action):
         pos["y"] = pos["y"] + 1.0
         dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.0)
         commands.extend([{"$type": "rotate_object_by", 
-                         "angle": self.angle, "id": dynamic.replicant_id, 
+                         "angle": self.angle, "id": static.replicant_id, 
                          "axis": "yaw",
                          "is_world": True,
                          "use_centroid": False},

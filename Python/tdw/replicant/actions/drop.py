@@ -41,7 +41,7 @@ class Drop(ArmMotion):
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         if not self._initialized_drop:
             commands = []
-            commands.extend(self._get_drop_commands(dynamic=dynamic,
+            commands.extend(self._get_drop_commands(static=static,
                                                     object_id=self._target))
             self._initialized_drop = True
             return commands

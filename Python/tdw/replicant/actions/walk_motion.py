@@ -19,10 +19,12 @@ class WalkMotion(Action, ABC):
     """
 
     def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,  held_objects: Dict[Arm, List[int]], 
-                 avoid_objects: bool = False, previous: Action = None):
+                 avoid_objects: bool = False, forward:bool = True, previous: Action = None):
         """
         :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
+        :param avoid_objects: Whether to use boxcasting to adjust path to avoid potential obstacles
+        :param forward: Whether to walk forward or backward (True = forward)
         :param previous: The previous action, if any.
         """
 
@@ -31,6 +33,7 @@ class WalkMotion(Action, ABC):
         self._collision_detection: CollisionDetection = collision_detection
         self.held_objects = held_objects
         self.avoid_objects = avoid_objects
+        self.forward = forward
         self._resetting: bool = False
         self.meters_per_frame = 0.04911
         self.walk_cycle_num_frames = 68
@@ -81,6 +84,7 @@ class WalkMotion(Action, ABC):
         commands.extend([{"$type": "replicant_walk",
                          "left_arm_object_id": left_id,
                          "right_arm_object_id": right_id,
+                         "forward": self.forward,
                           "id": static.replicant_id},
                          {"$type": "send_boxcast",
                           "half_extents": {"x": 0.1, "y": 0.1, "z": 0.75},

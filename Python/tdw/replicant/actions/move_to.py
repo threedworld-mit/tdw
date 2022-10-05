@@ -23,13 +23,16 @@ class MoveTo(Action):
 
     def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], avoid_objects: bool = False, 
-                 target_offset: str = "center", arrived_at: float = 0.1, aligned_at: float = 1, arrived_offset: float = 0, previous: Action = None):
+                 target_offset: str = "center", forward: bool = True, arrived_at: float = 0.1, aligned_at: float = 1, 
+                 arrived_offset: float = 0, previous: Action = None):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param resp: The response from the build.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         :param arrived_offset: Offset the arrival position by this value. This can be useful if the Replicant needs to move to an object but shouldn't try to move to the object's centroid. This is distinct from `arrived_at` because it won't affect the Replicant's braking solution.
+        :param avoid_objects: Whether to use boxcasting to adjust path to avoid potential obstacles
+        :param forward: Whether to walk forward or backward (True = forward)
         :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
@@ -44,6 +47,7 @@ class MoveTo(Action):
         self.__arrived_offset: float = arrived_offset
         self._target = target
         self._target_offset = target_offset
+        self.forward = forward
         self.avoid_objects = avoid_objects
         self.held_objects = held_objects
         self._move_by: Optional[MoveBy] = None
@@ -92,7 +96,7 @@ class MoveTo(Action):
                 elif self._target_offset == "right":
                     self._target_position = {"x": TDWUtils.array_to_vector3(right)["x"], "y": 0, "z": TDWUtils.array_to_vector3(right)["z"]}
             self._turn_to: TurnTo = TurnTo(target=self._target_position, resp=resp, dynamic=dynamic,
-                                           collision_detection=self.__collision_detection,
+                                           forward=self.forward, collision_detection=self.__collision_detection,
                                            previous=self._previous)
             # Compute distance from Replicant current location to object.
             self.distance = TDWUtils.get_distance(TDWUtils.array_to_vector3(dynamic.position), self._target_position) - self.__arrived_offset
@@ -107,7 +111,7 @@ class MoveTo(Action):
             # The turn succeeded. Start the move action.
             self._move_by = MoveBy(distance=self.distance, arrived_at=self.__arrived_at, dynamic=dynamic,
                                    collision_detection=self.__collision_detection, held_objects=self.held_objects,  
-                                   avoid_objects=self.avoid_objects, previous=self._turn_to)
+                                   avoid_objects=self.avoid_objects, forward= self.forward, previous=self._turn_to)
             self._move_by.initialized = True
             # Initialize the move_by action.
             commands.extend(self._move_by.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,

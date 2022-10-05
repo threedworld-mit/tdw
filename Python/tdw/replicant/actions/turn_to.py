@@ -17,18 +17,20 @@ class TurnTo(Action):
     """
 
     def __init__(self, target: Union[int, Dict[str, float]], resp: List[bytes], dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, previous: Action = None):
+                 collision_detection: CollisionDetection, forward: bool = True, previous: Action = None):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary.
         :param resp: The response from the build.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
+        :param forward: Whether we are walking walk forward or backward (True = forward)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
         """:field
             The target position as a dictionary.
         """
+        self.forward = forward
         self.target_position = {"x": 0,"y": 0,"z": 0}
         # Set the target position.
         if isinstance(target, int):
@@ -42,7 +44,6 @@ class TurnTo(Action):
             raise Exception(f"Invalid target: {target}")
         self._initial_rotation = dynamic.rotation
         self.target_arr = TDWUtils.vector3_to_array(self.target_position)
-        self._angle = self._get_angle(dynamic=dynamic)
         self.turned = False
         super().__init__()
 
@@ -68,20 +69,36 @@ class TurnTo(Action):
         # Turn to face position. 
         commands = []  
         pos = TDWUtils.array_to_vector3(dynamic.position)
-        pos["z"] = pos["z"] + 0.1
         pos["y"] = pos["y"] + 1.0
-        dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.0)  
-        commands.extend([{"$type": "replicant_look_at_position", 
-                         "position": self.target_position, 
-                         "id": static.replicant_id},
-                         {"$type": "send_boxcast",
-                          "half_extents": {"x": 0.1, "y": 0.1, "z": 0.25},
-                          "origin": pos,
-                          "destination": dest,
-                          "id": 99999}])
+        if self.forward:
+            pos["z"] = pos["z"] + 0.1
+            dest = TDWUtils.array_to_vector3(dynamic.position + dynamic.forward * 1.0)
+            commands.extend([{"$type": "replicant_look_at_position", 
+                             "position": self.target_position, 
+                             "id": static.replicant_id},
+                             {"$type": "send_boxcast",
+                              "half_extents": {"x": 0.1, "y": 0.1, "z": 0.25},
+                              "origin": pos,
+                              "destination": dest,
+                              "id": 99999}])
+        else:
+            # Calculate turn based on facing backwards
+            pos["z"] = pos["z"] - 0.1
+            dest = TDWUtils.array_to_vector3(dynamic.position + -dynamic.forward * 1.0)
+            commands.extend([{"$type": "rotate_object_by", 
+                              "angle": self._get_angle(dynamic=dynamic), 
+                              "id": static.replicant_id, 
+                              "axis": "yaw", 
+                              "is_world": True, 
+                              "use_centroid": False},
+                             {"$type": "send_boxcast",
+                              "half_extents": {"x": 0.1, "y": 0.1, "z": 0.25},
+                              "origin": pos,
+                              "destination": dest,
+                              "id": 99999}])
         return commands
 
     def _get_angle(self, dynamic: ReplicantDynamic) -> float:
-        return TDWUtils.get_angle_between(v1=dynamic.forward,
+        return TDWUtils.get_angle_between(v1=-dynamic.forward,
                                           v2=self.target_arr - dynamic.position)
 

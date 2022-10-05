@@ -21,12 +21,14 @@ class MoveBy(WalkMotion):
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  held_objects: Dict[Arm, List[int]], avoid_objects: bool = False, arrived_at: float = 0.1, 
-                 previous: Action = None):
+                 forward: bool = True, previous: Action = None):
         """
         :param distance: The target distance.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
+        :param avoid_objects: Whether to use boxcasting to adjust path to avoid potential obstacles
+        :param forward: Whether to walk forward or backward (True = forward)
         :param previous: The previous action, if any.
         """
         """:field
@@ -35,10 +37,14 @@ class MoveBy(WalkMotion):
         self.distance: float = distance
         self._arrived_at: float = arrived_at
         super().__init__(dynamic=dynamic, collision_detection=collision_detection, held_objects=held_objects, 
-                         avoid_objects=avoid_objects, previous=previous)
+                         avoid_objects=avoid_objects, forward=forward, previous=previous)
         # Get the initial state.
         self._initial_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(dynamic.position)
-        self._target_position_arr: np.array = dynamic.position + (dynamic.forward * distance)
+        # We need to know if we are walking forwards or backwards,to define target position.
+        if forward:
+            self._target_position_arr: np.array = dynamic.position + (dynamic.forward * distance)
+        else:
+            self._target_position_arr: np.array = dynamic.position + (-dynamic.forward * distance)
         self._target_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(self._target_position_arr)
         self._collision_detection = collision_detection
         # Total number of frames needed to cover distance.

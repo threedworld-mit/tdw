@@ -90,6 +90,7 @@ replicant.move_to(target=basket_id, arrived_offset=0.3)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
+"""
 replicant.turn_by(angle=180)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
@@ -97,12 +98,21 @@ while replicant.action.status == ActionStatus.ongoing:
 replicant.reach_for(target=basket_id, arm=reach_arm, use_other_arm=True, reverse_reach=True)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+"""
+
+replicant.reach_for(target=basket_id, arm=reach_arm, use_other_arm=True)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
 
 replicant.grasp(target=basket_id, arm=reach_arm, use_other_arm=True)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
-replicant.move_to(target=ball_id, arrived_offset=0.25)
+replicant.move_to(target=ball_id, arrived_offset=0.25, forward=False)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+
+replicant.move_to(target=ball_id2, arrived_offset=0.25, forward=False)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
@@ -111,10 +121,6 @@ while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 
 replicant.reset_arm(arm=reach_arm)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-
-replicant.move_to(target=ball_id2, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 

@@ -184,17 +184,17 @@ class Replicant(AddOn):
         self.action = TurnBy(angle=angle, resp=self._previous_resp, aligned_at=aligned_at, collision_detection=self.collision_detection,
                              previous=self._previous_action, dynamic=self.dynamic)
 
-    def turn_to(self, target: Union[int, Dict[str, float]]) -> None:
+    def turn_to(self, target: Union[int, Dict[str, float]], forward: bool = True) -> None:
         """
         Turn the Replicant to face a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
 
-        self.action = TurnTo(target=target, resp=self._previous_resp, collision_detection=self.collision_detection,
+        self.action = TurnTo(target=target, forward=forward, resp=self._previous_resp, collision_detection=self.collision_detection,
                              previous=self._previous_action, dynamic=self.dynamic)
 
-    def move_by(self, distance: float, arrived_at: float = 0.1) -> None:
+    def move_by(self, distance: float, arrived_at: float = 0.1, forward: bool = True) -> None:
         """
         Move the Replicant forward by a given distance.
 
@@ -202,11 +202,11 @@ class Replicant(AddOn):
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         """
 
-        self.action = MoveBy(distance=distance, arrived_at=arrived_at, collision_detection=self.collision_detection,
+        self.action = MoveBy(distance=distance, arrived_at=arrived_at, forward=forward, collision_detection=self.collision_detection,
                               held_objects=self.held, avoid_objects = self.avoid_objects, previous=self._previous_action, dynamic=self.dynamic)
 
     def move_to(self, target: Union[int, Dict[str, float]], arrived_at: float = 0.1, aligned_at: float = 1,
-                arrived_offset: float = 0, target_offset: str = "center") -> None:
+                arrived_offset: float = 0, target_offset: str = "center", forward:bool = True) -> None:
         """
         Move to a target object or position. This combines turn_to() followed by move_by().
 
@@ -218,8 +218,9 @@ class Replicant(AddOn):
 
         self.action = MoveTo(target=target, resp=self._previous_resp, dynamic=self.dynamic,
                              collision_detection=self.collision_detection, held_objects=self.held, 
-                             avoid_objects=self.avoid_objects, target_offset=target_offset, arrived_at=arrived_at, aligned_at=aligned_at,
-                             arrived_offset=arrived_offset, previous=self._previous_action)
+                             avoid_objects=self.avoid_objects, target_offset=target_offset, forward=forward, 
+                             arrived_at=arrived_at, aligned_at=aligned_at, arrived_offset=arrived_offset, 
+                             previous=self._previous_action)
 
     def reach_for(self, target: Union[int, Dict[str,  float]], arm: Arm, use_other_arm: bool, reverse_reach: bool = False) -> None:
         """

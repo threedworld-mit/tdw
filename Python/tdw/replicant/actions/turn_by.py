@@ -16,11 +16,10 @@ class TurnBy(Action):
     """
 
     def __init__(self, angle: float, resp: List[bytes], dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, aligned_at: float = 1, previous: Action = None):
+                 collision_detection: CollisionDetection, previous: Action = None):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param resp: The response from the build.
-        :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         :param dynamic: [The dynamic Magnebot data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.

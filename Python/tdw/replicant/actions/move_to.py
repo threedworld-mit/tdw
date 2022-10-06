@@ -28,13 +28,15 @@ class MoveTo(Action):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param resp: The response from the build.
+        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
+        :param collision_detection: [The collision detection rules.](../collision_detection.md)
+        :param held_objects: Dictionary of objects being held, and which arm is holding them
+        :param avoid_objects: Whether to use boxcasting to adjust path to avoid potential obstacles
+        :param target_offset: Which end of a large object to walk to -- left, center, right. Uses Bounds data to compute dynamically
+        :param forward: Whether to walk forward or backward (True = forward)
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         :param arrived_offset: Offset the arrival position by this value. This can be useful if the Replicant needs to move to an object but shouldn't try to move to the object's centroid. This is distinct from `arrived_at` because it won't affect the Replicant's braking solution.
-        :param avoid_objects: Whether to use boxcasting to adjust path to avoid potential obstacles
-        :param forward: Whether to walk forward or backward (True = forward)
-        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
-        :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
 

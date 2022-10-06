@@ -75,18 +75,18 @@ class PerformActionSequence(Action):
                     self._current_anim_length = self._animation_manager.ANIMATION_DATA_LIST[self._current_anim_name].get_num_frames()
                     commands.extend(self._get_play_anim_commands(anim_name=self._current_anim_name, 
                                                                      framerate=self._animation_manager.ANIMATION_DATA_LIST[self._current_anim_name].framerate,
-                                                                     dynamic=dynamic))
+                                                                     static=static))
                     self._anim_index += 1
                     return commands
                 
-    def _get_play_anim_commands(self, anim_name: str, framerate: int, dynamic: ReplicantDynamic) -> List[dict]:
+    def _get_play_anim_commands(self, anim_name: str, framerate: int, static: ReplicantStatic) -> List[dict]:
         self._frame_count = 0
         commands = []
         commands.extend([{"$type": "set_target_framerate", 
                           "framerate": framerate},
                          {"$type": "play_humanoid_animation",
                           "name": anim_name,
-                          "id": dynamic.replicant_id}])
+                          "id": static.replicant_id}])
         self._playing = True
         return commands  
 

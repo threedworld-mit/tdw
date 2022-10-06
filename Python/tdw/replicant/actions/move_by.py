@@ -24,10 +24,10 @@ class MoveBy(WalkMotion):
                  forward: bool = True, previous: Action = None):
         """
         :param distance: The target distance.
-        :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param avoid_objects: Whether to use boxcasting to adjust path to avoid potential obstacles
+        :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param forward: Whether to walk forward or backward (True = forward)
         :param previous: The previous action, if any.
         """

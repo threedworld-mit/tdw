@@ -16,7 +16,7 @@ c = Controller(launch_build=False)
 
 c.communicate([])
 c.communicate(TDWUtils.create_empty_room(12, 20))
-c.communicate(TDWUtils.create_avatar(position={"x": -0.5, "y": 1.175, "z": 6}, look_at={"x": 0.5, "y": 1, "z": 0}))
+c.communicate(TDWUtils.create_avatar(position={"x": -1.6, "y": 1.175, "z": 1.25}, look_at={"x": 1, "y": 1, "z": -6.5}))
 
 replicant_id=c.get_unique_id()
 
@@ -30,7 +30,7 @@ commands.extend([{"$type": "set_screen_size",
                            "render_quality": 5}])
 c.communicate(commands)
 
-anim_list = ["mop_floor", "clean_windows", "smoke_cigarette_1", "open_can_drink", "hammering"]
+anim_list = ["mop_floor", "clean_windows", "hammering"]
 
 replicant.move_to(target={"x": 1, "y": 0, "z": -6.5}, arrived_offset=0.25)
 while replicant.action.status == ActionStatus.ongoing:

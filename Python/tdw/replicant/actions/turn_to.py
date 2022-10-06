@@ -21,17 +21,16 @@ class TurnTo(Action):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary.
         :param resp: The response from the build.
-        :param aligned_at: If the difference between the current angle and the target angle is less than this value, then the action is successful.
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
-        :param forward: Whether we are walking walk forward or backward (True = forward)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
+        :param forward: Whether we are walking walk forward or backward (True = forward)
         :param previous: The previous action, if any.
         """
         """:field
             The target position as a dictionary.
         """
-        self.forward = forward
         self.target_position = {"x": 0,"y": 0,"z": 0}
+        self.forward = forward
         # Set the target position.
         if isinstance(target, int):
             # Get the position of the object.
@@ -82,7 +81,7 @@ class TurnTo(Action):
                               "destination": dest,
                               "id": 99999}])
         else:
-            # Calculate turn based on facing backwards
+            # Calculate turn angle based on facing backwards
             pos["z"] = pos["z"] - 0.1
             dest = TDWUtils.array_to_vector3(dynamic.position + -dynamic.forward * 1.0)
             commands.extend([{"$type": "rotate_object_by", 

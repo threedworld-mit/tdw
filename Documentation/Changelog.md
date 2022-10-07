@@ -4,6 +4,23 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.8
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `teleport_avatar_by`     | Teleport an avatar by a position offset.                     |
+| `add_visual_camera_mesh` | Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics. |
+
+#### Modified Commands
+
+| Command                                                      | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `start_video_capture_linux`<br>`start_video_capture_osx`<br>`start_video_capture_window` | Added an optional parameter `pixel_format` that defaults to `"yuv420p"` and set the default value of `qp` to 1 (was 0). Because of these changes, the generated .mp4 video is much more likely to be playable in programs other than VLC. |
+
 ## v1.10.7
 
 ### Command API

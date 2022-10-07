@@ -97,6 +97,7 @@
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
 | [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
+| [`teleport_avatar_by`](#teleport_avatar_by) | Teleport the avatar by a position offset.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
 
 **Add Audio Sensor Command**
@@ -142,6 +143,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_visual_camera_mesh`](#add_visual_camera_mesh) | Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics. |
 | [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
@@ -1970,6 +1972,27 @@ Set which types of images the avatar will render. By default, the avatar will re
 
 ***
 
+## **`teleport_avatar_by`**
+
+Teleport the avatar by a position offset. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+
+```python
+{"$type": "teleport_avatar_by", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "teleport_avatar_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position offset to teleport by. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
 ## **`teleport_avatar_to`**
 
 Teleport the avatar to a position. 
@@ -2327,6 +2350,27 @@ Move the avatar towards the target position.
 # SensorContainerCommand
 
 These commands adjust an avatar's image sensor container. All avatars have at least one sensor, which is named "SensorContainer". Sticky Mitten Avatars have an additional sensor named "FollowCamera". For a list of all image sensors attached to an avatar, send send_image_sensors.
+
+***
+
+## **`add_visual_camera_mesh`**
+
+Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics.
+
+
+```python
+{"$type": "add_visual_camera_mesh"}
+```
+
+```python
+{"$type": "add_visual_camera_mesh", "position": {"x": 0, "y": 0, "z": -0.06}, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the visual camera mesh relative to the sensor container. | {"x": 0, "y": 0, "z": -0.06} |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 
@@ -8649,7 +8693,7 @@ Start video capture using ffmpeg. This command can only be used on Linux.
 ```
 
 ```python
-{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor", "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor", "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 1, "pixel_format": "yuv420p", "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8666,7 +8710,8 @@ Start video capture using ffmpeg. This command can only be used on Linux.
 | `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
 | `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
 | `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
-| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 1 |
+| `"pixel_format"` | string | The pixel format. You should almost never need to set this to anything other than the default value. | "yuv420p" |
 | `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
 | `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 
@@ -8682,7 +8727,7 @@ Start video capture using ffmpeg. This command can only be used on OS X.
 ```
 
 ```python
-{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 1, "pixel_format": "yuv420p", "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8700,7 +8745,8 @@ Start video capture using ffmpeg. This command can only be used on OS X.
 | `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
 | `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
 | `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
-| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 1 |
+| `"pixel_format"` | string | The pixel format. You should almost never need to set this to anything other than the default value. | "yuv420p" |
 | `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
 | `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 
@@ -8716,7 +8762,7 @@ Start video capture using ffmpeg. This command can only be used on Windows.
 ```
 
 ```python
-{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 0, "log_args": False, "override_args": ""}
+{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 1, "pixel_format": "yuv420p", "log_args": False, "override_args": ""}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8733,7 +8779,8 @@ Start video capture using ffmpeg. This command can only be used on Windows.
 | `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
 | `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
 | `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
-| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 0 |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 1 |
+| `"pixel_format"` | string | The pixel format. You should almost never need to set this to anything other than the default value. | "yuv420p" |
 | `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
 | `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
 

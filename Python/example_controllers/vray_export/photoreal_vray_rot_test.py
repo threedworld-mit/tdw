@@ -18,7 +18,7 @@ class Photoreal(Controller):
     def run(self):
         # Add a camera and enable image capture.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": -3, "y": 1, "z": 0},
+                                   position={"x": 3, "y": 1, "z": 0},
                                    look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("photoreal")
@@ -46,15 +46,15 @@ class Photoreal(Controller):
                           self.get_add_scene(scene_name="tdw_room"),
                           self.get_add_object(model_name="live_edge_coffee_table",
                                               object_id=table_id,
-                                              position={"x": 1.80, "y": 0, "z": 0},
-                                              rotation={"x": 0, "y": 0, "z": 0}),
+                                              position={"x": -2.5, "y": 0, "z": 0.15},
+                                              rotation={"x": 0, "y": -50, "z": 0}),
                          self.get_add_object(model_name="buddah",
                                               object_id=statue_id,
-                                              position={"x": 2.35, "y": 0, "z": 2},
+                                              position={"x": -2.25, "y": 0, "z": 2},
                                               rotation={"x": 0, "y": 90, "z": 0}),
                          self.get_add_object(model_name="bastone_floor_lamp",
                                               object_id=lamp_id,
-                                              position={"x": 2.0, "y": 0, "z": -1.5},
+                                              position={"x": -2.5, "y": 0, "z": -1.5},
                                               rotation={"x": 0, "y": 0, "z": 0}),
                           {"$type": "set_aperture",
                            "aperture": 4.0},

@@ -100,6 +100,6 @@ class ReachFor(ArmMotion):
                      "position": targets[arm],
                      "id": static.replicant_id,
                      "num_frames": self._num_frames,
-                     "arm": arm} for arm in self._arms]
+                     "arm": arm.name} for arm in self._arms]
         # Continue the action, checking for collisions.
         return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)

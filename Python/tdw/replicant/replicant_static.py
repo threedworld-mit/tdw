@@ -1,5 +1,6 @@
 from typing import Dict, List
 from tdw.output_data import OutputData, Replicants
+from tdw.agents.arm import Arm
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
 
@@ -27,6 +28,10 @@ class ReplicantStatic:
         Body parts by name. Key = The name. Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
+        """:field
+        The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
+        """
+        self.hands: Dict[Arm, int] = dict()
 
         got_data = False
         for i in range(len(resp) - 1):
@@ -44,6 +49,9 @@ class ReplicantStatic:
                         for k in range(len(BODY_PARTS)):
                             # Cache the ID.
                             self.body_parts[BODY_PARTS[k]] = replicants.get_id(j + k + 1)
+                        # Set the IDs of the hands.
+                        self.hands[Arm.left] = self.body_parts[ReplicantBodyPart.hand_l]
+                        self.hands[Arm.right] = self.body_parts[ReplicantBodyPart.hand_r]
                         # Stop reading output data. We have what we need.
                         got_data = True
                         break

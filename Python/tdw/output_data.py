@@ -1222,7 +1222,7 @@ class EmptyObjects(OutputData):
     def get_id(self, index: int) -> int:
         return int(self._ids[index])
 
-    def get_position(self, index: int) -> np.array:
+    def get_position(self, index: int) -> np.ndarray:
         return self._positions[index]
 
 

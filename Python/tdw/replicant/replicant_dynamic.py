@@ -76,7 +76,7 @@ class ReplicantDynamic:
         got_replicant_images = False
         avatar_id = str(replicant_id)
         # Transform data for each body part.
-        self.body_part_transforms: Dict[int, Transform] = dict()
+        self.body_parts: Dict[int, Transform] = dict()
         # A dictionary of collisions. Key = Body part ID. Value = Collision data.
         self.collisions: Dict[int, List[Union[Collision, EnvironmentCollision]]] = dict()
         got_data = False
@@ -95,9 +95,9 @@ class ReplicantDynamic:
                         for k in range(len(BODY_PARTS)):
                             body_part_index = j + k + 1
                             # Cache the transform.
-                            self.body_part_transforms[replicants.get_id(body_part_index)] = Transform(position=replicants.get_position(body_part_index),
-                                                                                                      forward=replicants.get_forward(body_part_index),
-                                                                                                      rotation=replicants.get_rotation(body_part_index))
+                            self.body_parts[replicants.get_id(body_part_index)] = Transform(position=replicants.get_position(body_part_index),
+                                                                                            forward=replicants.get_forward(body_part_index),
+                                                                                            rotation=replicants.get_rotation(body_part_index))
                         self.transform = Transform(position=replicants.get_position(0),
                                                    rotation=replicants.get_position(0),
                                                    forward=replicants.get_position(0))
@@ -119,9 +119,9 @@ class ReplicantDynamic:
                 collider_id = collision.get_collider_id()
                 collidee_id = collision.get_collidee_id()
                 # This collision included body parts.
-                if collider_id in self.body_part_transforms:
+                if collider_id in self.body_parts:
                     body_part_id = collider_id
-                elif collidee_id in self.body_part_transforms:
+                elif collidee_id in self.body_parts:
                     body_part_id = collidee_id
                 else:
                     body_part_id = None

@@ -5,29 +5,31 @@ from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.actions.action import Action
+from tdw.replicant.actions.arm_motion import ArmMotion
+from tdw.replicant.collision_detection import CollisionDetection
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
 
 
-class ReachFor(Action):
+class ReachFor(ArmMotion):
     """
     Reach for a target object or position.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], arms: List[Arm], num_frames: int = 15):
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], arms: List[Arm],
+                 collision_detection: CollisionDetection, previous_collisions: List[Arm] = None, num_frames: int = 15):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arms: The [`Arm`](../../agents/arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
+        :param collision_detection: [The collision detection rules.](../collision_detection.md)
+        :param previous_collisions: Arms that reached for a target during the previous action but failed because they collided with something.
         :param num_frames: The number of frames for the action. This controls the speed of the action.
         """
 
-        super().__init__()
-        self._arms: List[Arm] = arms
-        self._frame_count: int = 0
+        super().__init__(arms=arms, collision_detection=collision_detection, previous_collisions=previous_collisions,
+                         num_frames=num_frames)
         self._target: Union[int, np.ndarray, Dict[str,  float]] = target
         self._initialized: bool = False
-        self._num_frames: int = num_frames
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -99,7 +101,5 @@ class ReachFor(Action):
                      "id": static.replicant_id,
                      "num_frames": self._num_frames,
                      "arm": arm} for arm in self._arms]
-        self._frame_count += 1
-        if self._frame_count >= self._num_frames:
-            self.status = ActionStatus.success
-        return []
+        # Continue the action, checking for collisions.
+        return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)

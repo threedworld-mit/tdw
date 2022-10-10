@@ -7,8 +7,13 @@ from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 class ReplicantStatic:
     """
     Static data for the Replicant.
-
     """
+
+    """:class_var
+    A dictionary of arms and their constituent joints.
+    """
+    ARM_JOINTS: Dict[Arm, List[ReplicantBodyPart]] = {Arm.left: [__b for __b in ReplicantBodyPart if __b.name.endswith("_l")],
+                                                      Arm.right: [__b for __b in ReplicantBodyPart if __b.name.endswith("_r")]}
 
     def __init__(self, replicant_id: int, resp: List[bytes]):
         """

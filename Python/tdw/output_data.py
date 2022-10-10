@@ -1486,9 +1486,10 @@ class Replicants(OutputData):
     def __init__(self, b):
         super().__init__(b)
         self._ids = self.data.IdsAsNumpy()
-        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
-        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
-        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 3)
+        self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2)
 
     def get_data(self) -> Repl.Replicants:
         return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)
@@ -1507,3 +1508,15 @@ class Replicants(OutputData):
 
     def get_rotation(self, index: int) -> np.array:
         return self._rotations[index]
+
+    def is_holding_left(self, index: int) -> bool:
+        return self._held[index][0][0] == 1
+
+    def get_held_left(self, index: int) -> int:
+        return int(self._held[index][0][1])
+
+    def is_holding_right(self, index: int) -> bool:
+        return self._held[index][0][1] == 1
+
+    def get_held_right(self, index: int) -> int:
+        return int(self._held[index][1][1])

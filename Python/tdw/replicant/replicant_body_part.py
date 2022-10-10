@@ -4,7 +4,7 @@ from typing import List
 
 class ReplicantBodyPart(Enum):
     """
-    The name of each replicant body part.
+    The name of each Replicant body part.
     """
 
     hand_l = 0
@@ -21,6 +21,7 @@ class ReplicantBodyPart(Enum):
     upperarm_r = 11
     upperleg_l = 12
     upperleg_r = 13
+
 
 # The body part enum values in a list.
 BODY_PARTS: List[ReplicantBodyPart] = [r for r in ReplicantBodyPart]

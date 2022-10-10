@@ -12,7 +12,7 @@ class ActionStatus(Enum):
     ```python
     from tdw.controller import Controller
     from tdw.tdw_utils import TDWUtils
-    from Replicant import Replicant, ActionStatus
+    from tdw.replicant import Replicant, ActionStatus
 
     m = Replicant(replicant_id=0, position={"x": 0.5, "y": 0, "z": -1})
     c = Controller()

@@ -1,14 +1,14 @@
+from io import BytesIO
 from typing import List, Dict, Optional, Tuple, Union
 import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Transforms, Collision, EnvironmentCollision, Images, CameraMatrices, Replicants
+from tdw.output_data import OutputData, Collision, EnvironmentCollision, Images, CameraMatrices, Replicants
 from tdw.object_data.transform import Transform
 from tdw.collision_data.collision_obj_obj import CollisionObjObj
-from tdw.collision_data.collision_obj_env import CollisionObjEnv
-from tdw.replicant.arm import Arm
-from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
+from tdw.replicant.replicant_body_part import BODY_PARTS
+from tdw.agents.arm import Arm
 
 
 class ReplicantDynamic:
@@ -17,25 +17,20 @@ class ReplicantDynamic:
 
     """
 
-    def __init__(self, resp: List[bytes], replicant_id: int, body_parts: List[int], frame_count: int, previous=None):
+    def __init__(self, resp: List[bytes], replicant_id: int, frame_count: int):
         """
         :param resp: The response from the build, which we assume contains `replicant` output data.
         :param replicant_id: The ID of this replicant.
-        :param body_parts: The IDs of all body parts belonging to this replicant.
-        :param previous: If not None, the previous replicantDynamic data. Use this to determine if the joints are moving.
         """
+
         """:field
-        The current position of this replicant.
+        The [`Transform`](../object_data/transform.md) of the Replicant.
         """
-        self.position: np.array = [0, 0, 0]
+        self.transform: Transform = Transform(np.zeros(shape=3), np.zeros(shape=4), np.zeros(shape=3))
         """:field
-        The current orientation of this replicant.
+        A dictionary of objects held in each hand. Key = [`Arm`](../agents/arm.md). Value = Object ID.
         """
-        self.rotation: np.array = [0, 0, 0]
-        """:field
-        The current forward direction vector of this replicant.
-        """
-        self.forward: np.array = [0, 0, 0]
+        self.held_objects: Dict[Arm, int] = dict()
         """:field
         A dictionary of collisions between one of this replicant's [body parts (joints or non-moving)](replicant_static.md) and another object.
         Key = A tuple where the first element is the body part ID and the second element is the object ID.
@@ -65,11 +60,11 @@ class ReplicantDynamic:
         """
         self.images: Dict[str, np.array] = dict()
         """:field
-        The [camera projection matrix](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#cameramatrices) of the Magnebot's camera as a numpy array.
+        The [camera projection matrix](../../api/output_data.md#cameramatrices) of the Replicant's camera as a numpy array.
         """
         self.projection_matrix: Optional[np.array] = None
         """:field
-        The [camera matrix](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/output_data.md#cameramatrices) of the Magnebot's camera as a numpy array.
+        The [camera matrix](../../api/output_data.md#cameramatrices) of the Replicant's camera as a numpy array.
         """
         self.camera_matrix: Optional[np.array] = None
         """:field
@@ -99,15 +94,18 @@ class ReplicantDynamic:
                         # So, having found the ID of this replicant, we know that the next IDs are those of its body parts.
                         for k in range(len(BODY_PARTS)):
                             body_part_index = j + k + 1
-                            body_part_transform = Transform(position=replicants.get_position(body_part_index),
-                                                            forward=replicants.get_forward(body_part_index),
-                                                            rotation=replicants.get_rotation(body_part_index))
                             # Cache the transform.
-                            self.body_part_transforms[replicants.get_id(body_part_index)] = body_part_transform
-                        # Stop reading output data. We have what we need.
-                        self.position=replicants.get_position(0)
-                        self.forward=replicants.get_forward(0)
-                        self.rotation=replicants.get_rotation(0)
+                            self.body_part_transforms[replicants.get_id(body_part_index)] = Transform(position=replicants.get_position(body_part_index),
+                                                                                                      forward=replicants.get_forward(body_part_index),
+                                                                                                      rotation=replicants.get_rotation(body_part_index))
+                        self.transform = Transform(position=replicants.get_position(0),
+                                                   rotation=replicants.get_position(0),
+                                                   forward=replicants.get_position(0))
+                        # Get the held objects.
+                        if replicants.is_holding_left(j):
+                            self.held_objects[Arm.left] = replicants.get_held_left(j)
+                        if replicants.is_holding_right(j):
+                            self.held_objects[Arm.right] = replicants.get_held_right(j)
                         got_data = True
                         break
             if got_data:
@@ -157,7 +155,6 @@ class ReplicantDynamic:
                         self.images[pass_name] = image_data
                         # Record the file extension.
                         self.__image_extensions[pass_name] = images.get_extension(j)
-                        #self.save_images("D:/TDW_Strategic_Plan_2021/HumanoidAgent/replicant_pov_images/")
             # Get the camera matrices for the avatar's camera.
             elif r_id == "cama":
                 camera_matrices = CameraMatrices(resp[i])
@@ -167,7 +164,6 @@ class ReplicantDynamic:
         # Update the frame count.
         if got_replicant_images:
             self.frame_count += 1
-
 
     def save_images(self, output_directory: Union[str, Path]) -> None:
         """

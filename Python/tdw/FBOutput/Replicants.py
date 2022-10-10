@@ -106,7 +106,29 @@ class Replicants(object):
             return self._tab.VectorLen(o)
         return 0
 
-def ReplicantsStart(builder): builder.StartObject(4)
+    # Replicants
+    def Held(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Replicants
+    def HeldAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # Replicants
+    def HeldLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def ReplicantsStart(builder): builder.StartObject(5)
 def ReplicantsAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
 def ReplicantsStartIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ReplicantsAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
@@ -115,4 +137,6 @@ def ReplicantsAddRotations(builder, rotations): builder.PrependUOffsetTRelativeS
 def ReplicantsStartRotationsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ReplicantsAddForwards(builder, forwards): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(forwards), 0)
 def ReplicantsStartForwardsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ReplicantsAddHeld(builder, held): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(held), 0)
+def ReplicantsStartHeldVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ReplicantsEnd(builder): return builder.EndObject()

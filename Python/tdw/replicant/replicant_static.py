@@ -1,45 +1,28 @@
 from typing import Dict, List
-from tdw.add_ons.container_manager import ContainerManager
 from tdw.output_data import OutputData, Replicants
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
-from tdw.replicant.arm import Arm
 
 
-class ReplicantStatic():
+class ReplicantStatic:
     """
-    Static data for the Magnebot.
+    Static data for the Replicant.
 
     """
 
-    def __init__(self, replicant_id: int, container_manager: ContainerManager, resp: List[bytes]):
+    def __init__(self, replicant_id: int, resp: List[bytes]):
+        """
+        :param replicant_id: The ID of the Replicant.
+        :param resp: The response from the build.
+        """
+
         """:field
-        The ID of the replicant.
+        The ID of the Replicant.
         """
         self.replicant_id: int = replicant_id
-        """:field
-        The ContainerManager of the replicant.
-        """
-        self.container_manager: int = container_manager
-        """:field
-        A dictionary of body parts. Key = The part ID. Value = The name of the part.
-        """
-        self.joints: Dict[int,str] = dict()
-        """:field
-        The name and ID of each arm joint. Key = The [`ArmJoint` enum value](arm_joint.md). Value = The object ID.
-        """
-        self.arm_joints: Dict[ArmJoint, int] = dict()
         """:field
         The ID of the Replicant's avatar (camera). This is used internally for API calls.
         """
         self.avatar_id: str = str(replicant_id)
-        """:field
-        The current primary affordance ID the replicant is reaching for/grasping when using one hand.
-        """
-        self.primary_target_affordance_id: int = -1
-        """:field
-        The current secondary affordance ID the replicant is reaching for/grasping when using two hands.
-        """
-        self.secondary_target_affordance_id: int = -1
         """:field
         Body parts by name. Key = The name. Value = Object ID.
         """

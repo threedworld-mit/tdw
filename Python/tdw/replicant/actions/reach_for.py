@@ -10,12 +10,11 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.affordance_points import AffordancePoints
-from tdw.replicant.actions.arm_motion import ArmMotion
-from tdw.replicant.arm import Arm
+from tdw.replicant.actions.action import Action
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
-
+from tdw.agents.image_frequency import ImageFrequency
+from tdw.agents.arm import Arm
 
 
 """
@@ -23,30 +22,27 @@ Reach for a target object or position, using one or both arms.
 """
 
 
-class ReachFor(ArmMotion):
+class ReachFor(Action):
     """
     Reach for a target object or position.
-
     """
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes], arm: Arm, static: ReplicantStatic, 
-                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], 
+                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  reverse_reach: bool = False, previous: Action = None, use_other_arm: bool = False):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arm: Which arm the Replicant is reaching with -- left, right or both.
+        :param arm: The [`Arm`](../../agents/arm.md) that will reach for the `target`.
         :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
-        :param held_objects: A dictionary of objects being held, by arm.
         :param reverse_reach: Whether the replicant is carrying one end of an object, held behind it.
         :param previous: The previous action, if any.
         :param use_other_arm: Whether to use the other arm for reaching, if the Replicant is holding an object with the selected arm.
         """
-        super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
+        super().__init__()
         ArmMotion.reverse_reach = reverse_reach
         self._static = static
         self._dynamic = dynamic
-        self._held_objects = held_objects
         self._use_other_arm = use_other_arm
         self._affordance_id = -1
         self._frame_count = 0
@@ -67,8 +63,11 @@ class ReachFor(ArmMotion):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        # Remember the image frequency for the action.
-        self.__image_frequency: ImageFrequency = image_frequency
+        # Request EmptyObjects and Bounds data.
+        commands.extend([{"$type": "send_empty_objects",
+                         "frequency": "always"},
+                         {"$type": "send_bounds",
+                          "frequency": "always"}])
         # Is Replicant already holding an object in the reach arm?
         if len(self._held_objects[self._reach_arm]) > 0:
             # Use the other arm to reach with.

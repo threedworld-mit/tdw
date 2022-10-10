@@ -1,28 +1,27 @@
 from typing import Dict, List, Tuple
 from abc import ABC, abstractmethod
 from overrides import final
+import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
-from tdw.replicant.actions.action import Action
-from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.actions.action import ReplicantAction
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.output_data import OutputData, Collision, EnvironmentCollision
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
-from tdw.replicant.arm import Arm
-import numpy as np
+from tdw.agents.arm import Arm
+from tdw.agents.image_frequency import ImageFrequency
 
 
-class ArmMotion(Action, ABC):
+class ArmMotion(ReplicantAction, ABC):
     """
     Abstract base class for actions related to Replicant arm motion.
     """
 
-    def __init__(self, dynamic: ReplicantDynamic, arm: Arm, collision_detection: CollisionDetection, previous: Action = None):
+    def __init__(self, arm: Arm, collision_detection: CollisionDetection, previous: ReplicantAction = None):
         """
-        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
-        :param Arm. The arm performing the action.
+        :param arm: The [`Arm`](../../agents/arm.md) performing the action.
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action, if any.
         """
@@ -36,7 +35,6 @@ class ArmMotion(Action, ABC):
         self._reset_action_length = 20
         self._drop_length = 5
         self._reach_arm = arm
-
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and \
                 previous.status != ActionStatus.success and previous.status != ActionStatus.ongoing and \

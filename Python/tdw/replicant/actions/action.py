@@ -1,14 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import List, Tuple, Dict
+from typing import List
 from overrides import final
 import numpy as np
-from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.action_status import ActionStatus
-from tdw.replicant.image_frequency import ImageFrequency
-
+from tdw.agents.image_frequency import ImageFrequency
 
 
 class Action(ABC):
@@ -39,9 +37,9 @@ class Action(ABC):
                                     image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param static: [The static Replicant data.](../Replicant_static.md)
-        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
-        :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
+        :param static: [The static Replicant data.](../replicant_static.md)
+        :param dynamic: [The dynamic Replicant data.](../replicant_dynamic.md)
+        :param image_frequency: An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured.
 
         :return: A list of commands to initialize this action.
         """
@@ -92,7 +90,7 @@ class Action(ABC):
         :param resp: The response from the build.
         :param static: [The static Replicant data.](../Replicant_static.md)
         :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
-        :param image_frequency: [How image data will be captured during the image.](../image_frequency.md)
+        :param image_frequency: An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured.
 
         :return: A list of commands that must be sent to end any action.
         """

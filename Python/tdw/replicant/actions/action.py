@@ -85,7 +85,7 @@ class Action(ABC):
         raise Exception()
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
-                         image_frequency: ImageFrequency,) -> List[dict]:
+                         image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
         :param static: [The static Replicant data.](../Replicant_static.md)
@@ -120,5 +120,4 @@ class Action(ABC):
                                                      origin=dynamic.transform.position,
                                                      rotation=dynamic.transform.rotation)
 
- 
     

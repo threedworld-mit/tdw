@@ -17,16 +17,16 @@ class ReachFor(ArmMotion):
     """
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], arms: List[Arm],
-                 collision_detection: CollisionDetection, previous_collisions: List[Arm] = None, num_frames: int = 15):
+                 collision_detection: CollisionDetection, previous=None, num_frames: int = 15):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arms: The [`Arm`](../../agents/arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
-        :param previous_collisions: Arms that reached for a target during the previous action but failed because they collided with something.
+        :param previous: The previous action. Can be None.
         :param num_frames: The number of frames for the action. This controls the speed of the action.
         """
 
-        super().__init__(arms=arms, collision_detection=collision_detection, previous_collisions=previous_collisions,
+        super().__init__(arms=arms, collision_detection=collision_detection, previous=previous,
                          num_frames=num_frames)
         self._target: Union[int, np.ndarray, Dict[str,  float]] = target
         self._initialized: bool = False

@@ -30,9 +30,13 @@ class ReplicantStatic:
         """
         self.avatar_id: str = str(replicant_id)
         """:field
-        Body parts by name. Key = The name. Value = Object ID.
+        Body parts by name. Key = [`ReplicantBodyPart`](replicant_body_part.md). Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
+        """:field
+        Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
+        """
+        self.body_parts_by_id: Dict[int, ReplicantBodyPart] = dict()
         """:field
         The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
         """
@@ -62,3 +66,4 @@ class ReplicantStatic:
                         break
             if got_data:
                 break
+        self.body_parts_by_id = {v: k for k, v in self.body_parts.items()}

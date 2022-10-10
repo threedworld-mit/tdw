@@ -1,13 +1,13 @@
 from io import BytesIO
-from typing import List, Dict, Optional, Tuple, Union
+from typing import List, Dict, Optional, Union
 import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
 from tdw.output_data import OutputData, Collision, EnvironmentCollision, Images, CameraMatrices, Replicants
 from tdw.object_data.transform import Transform
-from tdw.collision_data.collision_obj_obj import CollisionObjObj
 from tdw.replicant.replicant_body_part import BODY_PARTS
+from tdw.replicant.collision_detection import CollisionDetection
 from tdw.agents.arm import Arm
 
 
@@ -31,18 +31,6 @@ class ReplicantDynamic:
         A dictionary of objects held in each hand. Key = [`Arm`](../agents/arm.md). Value = Object ID.
         """
         self.held_objects: Dict[Arm, int] = dict()
-        """:field
-        A dictionary of collisions between one of this replicant's [body parts (joints or non-moving)](replicant_static.md) and another object.
-        Key = A tuple where the first element is the body part ID and the second element is the object ID.
-        Value = A list of [collision data.](../../object_data/collision_obj_obj.md)
-        """
-        self.collisions_with_objects: Dict[Tuple[int, int], List[CollisionObjObj]] = dict()
-        """:field
-        A dictionary of collisions between two of this replicant's [body parts](replicant_static.md).
-        Key = An unordered tuple of two body part IDs.
-        Value = A list of [collision data.](../../object_data/collision_obj_obj.md)
-        """
-        self.collisions_with_self: Dict[Tuple[int, int], List[CollisionObjObj]] = dict()
         """:field
         A dictionary of collisions between one of this replicant's [body parts](replicant_static.md) and the environment (floors, walls, etc.).
         Key = The ID of the body part.
@@ -233,3 +221,35 @@ class ReplicantDynamic:
                                             camera_matrix=self.camera_matrix, far_plane=100, near_plane=1)
         else:
             return None
+
+    def get_collision_enters(self, collision_detection: CollisionDetection) -> List[int]:
+        """
+        :param collision_detection: The [`CollisionDetection`](collision_detection.md) rules.
+
+        :return: A list of body IDs that entered a collision on this frame and *didn't* exit a collision on this frame, filtered by the collision detection rules.
+        """
+
+        enters: List[int] = list()
+        exits: List[int] = list()
+        for body_part_id in self.collisions:
+            for collision in self.collisions[body_part_id]:
+                if isinstance(collision, EnvironmentCollision):
+                    state = collision.get_state()
+                    if (collision_detection.floor and collision.get_floor()) or \
+                            (collision_detection.walls and not collision.get_floor()):
+                        if state == "enter":
+                            enters.append(body_part_id)
+                        elif state == "exit":
+                            exits.append(body_part_id)
+                elif isinstance(collision, Collision):
+                    collider_id = collision.get_collider_id()
+                    # Accept the collision if the object is in the includes list or if it's not in the excludes list.
+                    if collider_id in collision_detection.include_objects or \
+                            (collision_detection.objects and collider_id not in
+                             collision_detection.exclude_objects):
+                        if collision.get_state() == "enter":
+                            enters.append(body_part_id)
+                        elif collision.get_state() == "exit":
+                            exits.append(body_part_id)
+        # Ignore exit events.
+        return [e for e in enters if e not in exits]

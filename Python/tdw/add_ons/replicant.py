@@ -217,7 +217,6 @@ class Replicant(AddOn):
 
         self.action = MoveTo(target=target,
                              resp=self._previous_resp,
-                             dynamic=self.dynamic,
                              collision_detection=self.collision_detection,
                              previous=self._previous_action,
                              reset_arms_num_frames=reset_arms_num_frames,

@@ -1,115 +1,121 @@
-from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
+from enum import Enum
 from tdw.container_data.container_tag import ContainerTag
-from typing import List, Dict, Union
-from tdw.output_data import OutputData, Transforms, LocalTransforms, EmptyObjects, Bounds
+from typing import List
+from tdw.output_data import OutputData, EmptyObjects
 import numpy as np
-from tdw.tdw_utils import TDWUtils
-from tdw.quaternion_utils import QuaternionUtils
-from tdw.replicant.replicant_utils import ReplicantUtils
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.image_frequency import ImageFrequency
-from tdw.replicant.affordance_points import AffordancePoints
-from tdw.replicant.actions.arm_motion import ArmMotion
-from tdw.replicant.arm import Arm
+from tdw.replicant.replicant_simulation_state import CONTAINER_MANAGER
+from tdw.agents.arm import Arm
+from tdw.agents.image_frequency import ImageFrequency
 
 
-class Grasp(ArmMotion):
+class _InitializationState(Enum):
+    """
+    State machine enum fails for initializing a grasp action.
+    """
+
+    uninitialized = 0
+    initialized_container_manager = 1
+    initialized_grasp = 2
+
+
+class Grasp(Action):
     """
     Grasp a target object.
     """
 
-    def __init__(self, target: int, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
-                 collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], previous: Action = None,
-                 use_other_arm: bool = False):
-        super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
-        self._static=static
-        self._use_other_arm = use_other_arm
-        self._affordance_id = -1
-        self._frame_count = 0
-        self._target = target
-        self._held_objects = held_objects
-        self._initialized_grasp = False
+    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic):
+        """
+        :param target: The target object ID.
+        :param arm: The [`Arm`](../../agents/arm.md) value for the hand that will grasp the target object.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
+        """
+
+        super().__init__()
+        self._target: int = target
+        self._arm: Arm = arm
+        # We're already holding an object.
+        if self._arm in dynamic.held_objects:
+            self.status = ActionStatus.already_holding
+        # Set the initialization state.
+        if CONTAINER_MANAGER.initialized:
+            self._initialization_state: _InitializationState = _InitializationState.initialized_container_manager
+        else:
+            self._initialization_state = _InitializationState.uninitialized
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # This Replicant is already holding the object.
-        if self._target in self._held_objects[Arm.left] or self._target in self._held_objects[Arm.right] or self._target in self._held_objects[Arm.both]:
-            self.status = ActionStatus.success
-            return []
-        # There was no successful reach action preceding this, so abort.
-        """
-        if static.primary_target_affordance_id == -1:
-            self.status = ActionStatus.failure
-            return []
-        """
-        # Is Replicant already holding an object in the reach arm?
-        if len(self._held_objects[self._reach_arm]) > 0:
-            # Use the other arm to reach with.
-            if self._use_other_arm and self._reach_arm != Arm.both:
-                    if self._reach_arm == Arm.left:
-                        self._reach_arm = Arm.right
-                    else:
-                        self._reach_arm = Arm.left
-
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        # Remember the image frequency for the action.
-        self.__image_frequency: ImageFrequency = image_frequency
-        # First include any objects contained by the target object.
-        for container_shape_id in self._static.container_manager.events:
-            event = self._static.container_manager.events[container_shape_id]
-            object_id = self._static.container_manager.container_shapes[container_shape_id]
-            tag = self._static.container_manager.tags[container_shape_id]
-            if object_id == self._target and tag == ContainerTag.inside:
-                for ob_id in event.object_ids:
-                    commands.extend([{"$type": "parent_object_to_object", 
-                                      "parent_id": self._target, 
-                                      "id": int(ob_id)},
-                                     {"$type": "set_kinematic_state", 
-                                      "id": int(ob_id), 
-                                      "is_kinematic": True, 
-                                      "use_gravity": False}])
+        # Initialize the container manager.
+        if self._initialization_state == _InitializationState.uninitialized:
+            commands.extend(CONTAINER_MANAGER.get_initialization_commands())
+            CONTAINER_MANAGER.initialized = True
+            self._initialization_state = _InitializationState.initialized_container_manager
+        elif self._initialization_state == _InitializationState.initialized_container_manager:
+            # Update the container manager.
+            CONTAINER_MANAGER.on_send(resp=resp)
+            commands.extend(self._get_grasp_commands(resp=resp, static=static, dynamic=dynamic))
+            self._initialization_state = _InitializationState.initialized_grasp
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        if not self._initialized_grasp:
-            commands = []
-            commands.append({"$type": "replicant_grasp_object", 
-                            "target": self._target, 
-                            "primary_affordance_id": static.primary_target_affordance_id,
-                            "secondary_affordance_id": static.secondary_target_affordance_id,  
-                            "id": static.replicant_id, 
-                            "arm": self._reach_arm.name})
-            commands.extend(self._get_hold_object_commands(static=static,
-                                                           dynamic=dynamic, 
-                                                           object_id=self._target))
-            self._initialized_grasp = True
-            return commands
-        # We've completed the grasping sequence.
-        if self._frame_count >= self._reset_action_length:
+        # We grasped the object.
+        if self._initialization_state == _InitializationState.initialized_grasp:
             self.status = ActionStatus.success
-            # Add this object to the held objects for the grasping arm.
-            self._held_objects[self._reach_arm].append(self._target)
-            return []
-        elif not self._is_valid_ongoing(dynamic=dynamic):
             return []
         else:
-            while self._frame_count < self._reset_action_length:
-                self._frame_count += 1 
-                return []
+            # Update the container manager.
+            CONTAINER_MANAGER.on_send(resp=resp)
+            self._initialization_state = _InitializationState.initialized_grasp
+            return self._get_grasp_commands(resp=resp, static=static, dynamic=dynamic)
 
-    def _is_success(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
-        return self._target in static.held[self._reach_arm]
-
-    def _previous_was_same(self, previous: Action) -> bool:
-        """
-        if isinstance(previous, MoveBy):
-            return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
-        else:
-            return False
-        """
-        return False
+    def _get_grasp_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        commands = []
+        # Get all of the objects contained by the grasped object. Parent them to the container and make them kinematic.
+        for container_shape_id in CONTAINER_MANAGER.events:
+            event = CONTAINER_MANAGER.events[container_shape_id]
+            object_id = CONTAINER_MANAGER.container_shapes[container_shape_id]
+            tag = CONTAINER_MANAGER.tags[container_shape_id]
+            if object_id == self._target and tag == ContainerTag.inside:
+                for ob_id in event.object_ids:
+                    commands.extend([{"$type": "parent_object_to_object",
+                                      "parent_id": self._target,
+                                      "id": int(ob_id)},
+                                     {"$type": "set_kinematic_state",
+                                      "id": int(ob_id),
+                                      "is_kinematic": True,
+                                      "use_gravity": False}])
+        # Get the nearest empty object, if any.
+        nearest_empty_object_distance: float = np.inf
+        nearest_empty_object_id: int = 0
+        got_empty_object: bool = False
+        hand_position = dynamic.body_parts[static.hands[self._arm]].position
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            # Get the empty objects.
+            if r_id == "empt":
+                empty_objects = EmptyObjects(resp[i])
+                for j in range(empty_objects.get_num()):
+                    empty_object_id = empty_objects.get_id(j)
+                    if empty_object_id == self._target:
+                        got_empty_object = True
+                        # Update the nearest affordance point.
+                        p = empty_objects.get_position(j)
+                        d = np.linalg.norm(p - hand_position)
+                        # Too far away.
+                        if d > 0.99:
+                            continue
+                        if d < nearest_empty_object_distance:
+                            nearest_empty_object_distance = d
+                            nearest_empty_object_id = empty_object_id
+        # Grasp the object.
+        commands.append({"$type": "replicant_grasp_object",
+                         "id": static.replicant_id,
+                         "object_id": self._target,
+                         "empty_object": got_empty_object,
+                         "empty_object_id": nearest_empty_object_id})
+        return commands

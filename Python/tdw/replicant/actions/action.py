@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Dict
 from overrides import final
 import numpy as np
 from tdw.quaternion_utils import QuaternionUtils
@@ -111,7 +111,7 @@ class Action(ABC):
     def _absolute_to_relative(self, position: np.array, dynamic: ReplicantDynamic) -> np.array:
         """
         :param position: The position in absolute world coordinates.
-        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
 
         :return: The converted position relative to the Replicant's position and rotation.
         """
@@ -119,5 +119,3 @@ class Action(ABC):
         return QuaternionUtils.world_to_local_vector(position=position,
                                                      origin=dynamic.transform.position,
                                                      rotation=dynamic.transform.rotation)
-
-    

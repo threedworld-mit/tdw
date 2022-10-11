@@ -313,6 +313,10 @@ class Replicant(AddOn):
         # Reset the primary replicant.
         if Replicant._PRIMARY_REPLICANT == self:
             Replicant._PRIMARY_REPLICANT = None
+            # Reset the manager add-ons.
+            OBJECT_MANAGER.reset()
+            CONTAINER_MANAGER.reset()
+            EMPTY_OBJECT_MANAGER.reset()
         self.initialized = False
         self.dynamic = None
         self.static = None

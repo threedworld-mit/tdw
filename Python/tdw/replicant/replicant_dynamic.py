@@ -87,8 +87,8 @@ class ReplicantDynamic:
                                                                                             forward=replicants.get_forward(body_part_index),
                                                                                             rotation=replicants.get_rotation(body_part_index))
                         self.transform = Transform(position=replicants.get_position(0),
-                                                   rotation=replicants.get_position(0),
-                                                   forward=replicants.get_position(0))
+                                                   rotation=replicants.get_rotation(0),
+                                                   forward=replicants.get_forward(0))
                         # Get the held objects.
                         if replicants.is_holding_left(j):
                             self.held_objects[Arm.left] = replicants.get_held_left(j)

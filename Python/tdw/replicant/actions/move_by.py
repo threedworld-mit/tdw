@@ -37,7 +37,7 @@ class MoveBy(Animate):
         self._distance: float = distance
         self._arrived_at: float = arrived_at
         self._reset_arms_num_frames: int = reset_arms_num_frames
-        super().__init__(animation="walking_02",
+        super().__init__(animation="walking_2",
                          collision_detection=collision_detection,
                          library="humanoid_animations.json",
                          previous=previous,

@@ -9,5 +9,3 @@ CONTAINER_MANAGER: ContainerManager = ContainerManager()
 EMPTY_OBJECT_MANAGER: EmptyObjectManager = EmptyObjectManager()
 # An object manager shared between multiple replicants.
 OBJECT_MANAGER: ObjectManager = ObjectManager(transforms=True, rigidbodies=False, bounds=True)
-# If True, the shared add-ons have been initialized.
-INITIALIZED: bool = False

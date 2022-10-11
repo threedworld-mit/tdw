@@ -21,6 +21,7 @@ class ReplicantDynamic:
         """
         :param resp: The response from the build, which we assume contains `replicant` output data.
         :param replicant_id: The ID of this replicant.
+        :param frame_count: The current frame count.
         """
 
         """:field
@@ -55,13 +56,12 @@ class ReplicantDynamic:
         The [camera matrix](../../api/output_data.md#cameramatrices) of the Replicant's camera as a numpy array.
         """
         self.camera_matrix: Optional[np.array] = None
-        """:field
-        The current frame count. This is used for image filenames.
-        """
-        self.frame_count: int = frame_count
         # File extensions per pass.
         self.__image_extensions: Dict[str, str] = dict()
-        got_replicant_images = False
+        """:field
+        If True, we got images from the output data.
+        """
+        self.got_images: bool = False
         avatar_id = str(replicant_id)
         # Transform data for each body part.
         self.body_parts: Dict[int, Transform] = dict()
@@ -131,7 +131,7 @@ class ReplicantDynamic:
                 images = Images(resp[i])
                 # Get this robot's avatar and save the images.
                 if images.get_avatar_id() == avatar_id:
-                    got_replicant_images = True
+                    self.got_images = True
                     for j in range(images.get_num_passes()):
                         image_data = images.get_image(j)
                         pass_mask = images.get_pass_mask(j)
@@ -149,9 +149,6 @@ class ReplicantDynamic:
                 if camera_matrices.get_avatar_id() == avatar_id:
                     self.projection_matrix = camera_matrices.get_projection_matrix()
                     self.camera_matrix = camera_matrices.get_camera_matrix()
-        # Update the frame count.
-        if got_replicant_images:
-            self.frame_count += 1
 
     def save_images(self, output_directory: Union[str, Path]) -> None:
         """

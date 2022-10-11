@@ -62,14 +62,6 @@ class Action(ABC):
             raise Exception(f"Invalid image capture option: {image_frequency}")
         return commands
 
-    def set_status_after_initialization(self) -> None:
-        """
-        In some cases (such as camera actions) that finish on one frame, we want to set the status after sending initialization commands.
-        To do so, override this method.
-        """
-
-        pass
-
     @abstractmethod
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         """

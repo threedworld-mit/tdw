@@ -56,8 +56,6 @@ class Grasp(Action):
             CONTAINER_MANAGER.initialized = True
             self._initialization_state = _InitializationState.initialized_container_manager
         elif self._initialization_state == _InitializationState.initialized_container_manager:
-            # Update the container manager.
-            CONTAINER_MANAGER.on_send(resp=resp)
             commands.extend(self._get_grasp_commands(resp=resp, static=static, dynamic=dynamic))
             self._initialization_state = _InitializationState.initialized_grasp
         return commands
@@ -68,12 +66,12 @@ class Grasp(Action):
             self.status = ActionStatus.success
             return []
         else:
-            # Update the container manager.
-            CONTAINER_MANAGER.on_send(resp=resp)
             self._initialization_state = _InitializationState.initialized_grasp
             return self._get_grasp_commands(resp=resp, static=static, dynamic=dynamic)
 
     def _get_grasp_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        # Update the container manager.
+        CONTAINER_MANAGER.on_send(resp=resp)
         commands = []
         # Get all of the objects contained by the grasped object. Parent them to the container and make them kinematic.
         for container_shape_id in CONTAINER_MANAGER.events:

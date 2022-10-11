@@ -1,74 +1,74 @@
-from tdw.librarian import HumanoidAnimationLibrarian, HumanoidLibrarian
-from typing import List, Dict, Union
-from tdw.output_data import OutputData, Transforms, LocalTransforms, EmptyObjects, Bounds
+from typing import List
 import numpy as np
-from tdw.tdw_utils import TDWUtils
-from tdw.quaternion_utils import QuaternionUtils
-from tdw.replicant.replicant_utils import ReplicantUtils
-from tdw.replicant.actions.action import Action
+from tdw.output_data import OutputData, Transforms
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.image_frequency import ImageFrequency
-from tdw.replicant.affordance_points import AffordancePoints
-from tdw.replicant.actions.arm_motion import ArmMotion
-from tdw.replicant.arm import Arm
+from tdw.replicant.actions.action import Action
+from tdw.agents.arm import Arm
+from tdw.agents.image_frequency import ImageFrequency
 
 
-class Drop(ArmMotion):
+class Drop(Action):
     """
-    Drop a grasped target object.
+    Drop a held object.
     """
 
-    def __init__(self, target: int, resp: List[bytes], arm: Arm, static: ReplicantStatic, dynamic: ReplicantDynamic, 
-                 collision_detection: CollisionDetection, held_objects: Dict[Arm, List[int]], previous: Action = None):
-        super().__init__(dynamic=dynamic, arm=arm, collision_detection=collision_detection, previous=previous)
-        self._frame_count = 0
-        self._target = target
-        self._held_objects = held_objects
-        self._initialized_drop = False
-        #self.offset = AffordancePoints.AFFORDANCE_POINTS_BY_OBJECT_ID[self._target][self.static.primary_target_affordance_id]
+    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int = 100):
+        """
+        :param arm: The [`Arm`](../../agents/arm.md) holding the object.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
+        :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        """
+
+        super().__init__()
+        self._arm: Arm = arm
+        if arm not in dynamic.held_objects:
+            self.status = ActionStatus.not_holding
+            self._object_id: int = 0
+        else:
+            self._object_id = dynamic.held_objects[arm]
+        self._object_position: np.ndarray = np.zeros(shape=3)
+        self._max_num_frames: int = max_num_frames
+        self._frame_count: int = 0
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        # Remember the image frequency for the action.
-        self.__image_frequency: ImageFrequency = image_frequency
+        commands.append({"$type": "replicant_drop_object",
+                         "id": static.replicant_id,
+                         "arm": self._arm.name})
+        # Get the initial position of the object.
+        self._object_position = self._get_object_position(resp=resp)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        if not self._initialized_drop:
-            commands = []
-            commands.extend(self._get_drop_commands(static=static,
-                                                    object_id=self._target))
-            self._initialized_drop = True
-            return commands
-        # We've completed the drop.
-        if self._frame_count >= self._drop_length:
+        # Get the current position of the object.
+        position = self._get_object_position(resp=resp)
+        # The object stopped moving or fell through the floor.
+        if np.linalg.norm(position - self._object_position) < 0.001 or position[1] < -0.1:
             self.status = ActionStatus.success
-            # Remove the target object from the appropriate held objects list.
-            self._held_objects[self._reach_arm].remove(self._target)
-            # Reset the target object's affordance points to their original state.
-            commands = []
-            commands.extend(AffordancePoints.reset_affordance_points(self._target))
-            return commands
-        elif not self._is_valid_ongoing(dynamic=dynamic):
-            return []
         else:
-            while self._frame_count < self._drop_length:
-                self._frame_count += 1 
-                return []
+            # Update the current position.
+            self._object_position = position
+            self._frame_count += 1
+            if self._frame_count >= self._max_num_frames:
+                self.status = ActionStatus.still_dropping
+        return []
 
-    def _previous_was_same(self, previous: Action) -> bool:
+    def _get_object_position(self, resp: List[bytes]) -> np.ndarray:
         """
-        if isinstance(previous, MoveBy):
-            return (previous.distance > 0 and self.distance > 0) or (previous.distance < 0 and self.distance < 0)
-        else:
-            return False
+        :param resp: The response from the build.
+
+        :return: The position of the held object.
         """
-        return False
-        
-        
-        
+
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "tran":
+                transforms = Transforms(resp[i])
+                for j in range(transforms.get_num()):
+                    if transforms.get_id(j) == self._object_id:
+                        return transforms.get_position(j)
+        raise Exception(f"Transform data not found for: {self._object_id}")

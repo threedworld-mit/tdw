@@ -47,3 +47,4 @@ class ActionStatus(Enum):
     detected_obstacle = 12  # Boxcast detected an obstacle in replicant's path.
     held_by_other = 13  # Didn't try to grasp a target object because another Replicant is already holding it.
     already_holding = 14  # Replicant is already hodling an object in the requested arm.
+    still_dropping = 15  # The Replicant dropped an object but, after many `communicate()` calls, the object is still moving.

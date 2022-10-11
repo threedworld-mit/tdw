@@ -14,11 +14,12 @@ class Animate(Action):
     Play an animation.
     """
 
-    def __init__(self, animation: str, collision_detection: CollisionDetection,
+    def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool = True,
                  library: str = "humanoid_animations.json", previous=None):
         """
         :param animation: The name of the animation.
         :param collision_detection: The [`CollisionDetection`](collision_detection.md) rules.
+        :param forward: If True, play the animation forwards. If False, play the animation backwards.
         :param library: The animation library.
         :param previous: The previous action. Can be None.
         """
@@ -36,6 +37,7 @@ class Animate(Action):
             self.status = ActionStatus.collision
         self._frame_count = 0
         self._animation_length: int = self._record.get_num_frames()
+        self._forward: bool = forward
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -45,7 +47,8 @@ class Animate(Action):
                 {"$type": "play_humanoid_animation",
                  "name": self._record.name,
                  "id": static.replicant_id,
-                 "framerate": self._record.framerate}]
+                 "framerate": self._record.framerate,
+                 "forward": self._forward}]
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # If there was a collision, stop the animation.

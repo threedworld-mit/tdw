@@ -105,6 +105,8 @@ class Replicant(AddOn):
                      "frequency": "always"},
                     {"$type": "send_transforms",
                      "frequency": "always"},
+                    {"$type": "send_bounds",
+                     "frequency": "always"},
                     {"$type": "send_empty_transforms",
                      "frequency": "always"},
                     {"$type": "send_collisions",

@@ -40,7 +40,8 @@ class MoveBy(Animate):
         super().__init__(animation="walking_02",
                          collision_detection=collision_detection,
                          library="humanoid_animations.json",
-                         previous=previous)        # Get the initial state and the destination.
+                         previous=previous,
+                         forward=self._distance > 0)
         self._initial_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(dynamic.transform.position)
         self._destination_arr: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
         self._max_walk_cycles: int = max_walk_cycles

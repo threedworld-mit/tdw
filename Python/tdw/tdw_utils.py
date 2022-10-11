@@ -613,7 +613,7 @@ class TDWUtils:
         return np.array([(hashable >> 16) & 255, (hashable >> 8) & 255, hashable & 255], dtype=int)
 
     @staticmethod
-    def get_bounds_dict(bounds: Bounds, index: int) -> Dict[str, np.array]:
+    def get_bounds_dict(bounds: Bounds, index: int) -> Dict[str, np.ndarray]:
         """
         :param bounds: Bounds output data.
         :param index: The index in `bounds` of the target object.

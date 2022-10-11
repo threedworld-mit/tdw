@@ -7,7 +7,6 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
 
 
@@ -30,15 +29,6 @@ class ReachFor(ArmMotion):
                          num_frames=num_frames)
         self._target: Union[int, np.ndarray, Dict[str,  float]] = target
         self._initialized: bool = False
-
-    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
-                                    image_frequency: ImageFrequency) -> List[dict]:
-        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
-                                                       image_frequency=image_frequency)
-        # Request Bounds data.
-        commands.extend([{"$type": "send_bounds",
-                          "frequency": "once"}])
-        return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         if not self._initialized:

@@ -33,15 +33,6 @@ class ReplicantStatic:
         Body parts by name. Key = [`ReplicantBodyPart`](replicant_body_part.md). Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
-        """:field
-        Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
-        """
-        self.body_parts_by_id: Dict[int, ReplicantBodyPart] = dict()
-        """:field
-        The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
-        """
-        self.hands: Dict[Arm, int] = dict()
-
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -58,12 +49,17 @@ class ReplicantStatic:
                         for k in range(len(BODY_PARTS)):
                             # Cache the ID.
                             self.body_parts[BODY_PARTS[k]] = replicants.get_id(j + k + 1)
-                        # Set the IDs of the hands.
-                        self.hands[Arm.left] = self.body_parts[ReplicantBodyPart.hand_l]
-                        self.hands[Arm.right] = self.body_parts[ReplicantBodyPart.hand_r]
                         # Stop reading output data. We have what we need.
                         got_data = True
                         break
             if got_data:
                 break
-        self.body_parts_by_id = {v: k for k, v in self.body_parts.items()}
+        """:field
+        The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
+        """
+        self.hands: Dict[Arm, int] = {Arm.left: self.body_parts[ReplicantBodyPart.hand_l],
+                                      Arm.right: self.body_parts[ReplicantBodyPart.hand_r]}
+        """:field
+        Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
+        """
+        self.body_parts_by_id: Dict[int, ReplicantBodyPart] = {v: k for k, v in self.body_parts.items()}

@@ -62,6 +62,7 @@ class ReplicantDynamic:
         If True, we got images from the output data.
         """
         self.got_images: bool = False
+        self._frame_count: int = frame_count
         avatar_id = str(replicant_id)
         # Transform data for each body part.
         self.body_parts: Dict[int, Transform] = dict()
@@ -166,7 +167,7 @@ class ReplicantDynamic:
         if not output_directory.exists():
             output_directory.mkdir(parents=True)
         # The prefix is a zero-padded integer to ensure sequential images.
-        prefix = TDWUtils.zero_padding(self.frame_count, 8)
+        prefix = TDWUtils.zero_padding(self._frame_count, 8)
         # Save each image.
         for pass_name in self.images:
             if self.images[pass_name] is None:

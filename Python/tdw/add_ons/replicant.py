@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
-from tdw.add_ons.add_on import AddOn
 import numpy as np
+from tdw.add_ons.add_on import AddOn
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
@@ -17,9 +17,12 @@ from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
+from tdw.replicant.replicant_simulation_state import OBJECT_MANAGER, CONTAINER_MANAGER, EMPTY_OBJECT_MANAGER
+from tdw.librarian import ReplicantRecord, ReplicantLibrarian
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
-from tdw.replicant.replicant_simulation_state import OBJECT_MANAGER, CONTAINER_MANAGER, EMPTY_OBJECT_MANAGER
+from tdw.controller import Controller
+
 
 class Replicant(AddOn):
 
@@ -29,12 +32,13 @@ class Replicant(AddOn):
     _MANAGER_ADD_ONS: List[AddOn] = [OBJECT_MANAGER, CONTAINER_MANAGER, EMPTY_OBJECT_MANAGER]
 
     def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
-                 image_frequency: ImageFrequency = ImageFrequency.once):
+                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
         """
-        :param replicant_id: The ID of the replicant.
-        :param position: The position of the replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The rotation of the replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param image_frequency: [The frequency of image capture.](image_frequency.md)
+        :param replicant_id: The ID of the Replicant.
+        :param position: The position of the Replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the Replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param image_frequency: An [`ImageFrequency`](../agents/image_frequency.md) value that sets how often images are captured.
+        :param name: The name of the Replicant model.
         """
 
         super().__init__()
@@ -43,14 +47,14 @@ class Replicant(AddOn):
             Replicant._PRIMARY_REPLICANT = self
         if position is None:
             """:field
-            The initial position of the replicant.
+            The initial position of the Replicant.
             """
             self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         else:
             self.initial_position: Dict[str, float] = position
         if rotation is None:
             """:field
-            The initial rotation of the replicant.
+            The initial rotation of the Replicant.
             """
             self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         else:
@@ -72,7 +76,7 @@ class Replicant(AddOn):
         """
         self.action: Optional[Action] = None
         """:field
-        This sets [how often images are captured](../agents/image_frequency.md).
+        An [`ImageFrequency`](../agents/image_frequency.md) value that sets how often images are captured.
         """
         self.image_frequency: ImageFrequency = image_frequency
         """:field
@@ -82,13 +86,18 @@ class Replicant(AddOn):
         self._previous_action: Optional[Action] = None
         self._previous_resp: List[bytes] = list()
         self._frame_count: int = 0
+        # Initialize the Replicant metdata library.
+        if "replicants.json" not in Controller.REPLICANT_LIBRARIANS:
+            Controller.REPLICANT_LIBRARIANS["replicants.json"] = ReplicantLibrarian()
+        # Get the metdata record.
+        self._record: ReplicantRecord = Controller.REPLICANT_LIBRARIANS["replicants.json"].get_record(name)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "add_replicant",
-                     "name": "replicant",
+                     "name": self._record.name,
                      "position": self.initial_position,
                      "rotation": self.initial_rotation,
-                     "url": "file:///" + "D://TDW_Strategic_Plan_2021//Humanoid_Agent//HumanoidAgent_proto_V1//AssetBundles//Windows//non_t_pose",
+                     "url": self._record.get_url(),
                      "id": self.replicant_id},
                     {"$type": "send_replicants",
                      "frequency": "always"},

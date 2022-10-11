@@ -66,6 +66,9 @@ class MoveBy(Animate):
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        # Reset the action status because we want to loop the animation.
+        if self.status == ActionStatus.success:
+            self.status = ActionStatus.ongoing
         if self.status != ActionStatus.ongoing:
             return commands
         else:

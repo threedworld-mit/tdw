@@ -9,7 +9,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
-from tdw.output_data import OutputData, Raycast
+from tdw.output_data import OutputData, Raycast, TriggerCollision
 from tdw.controller import Controller
 
 
@@ -91,19 +91,24 @@ class MoveBy(Animate):
                                         continue
                                     # We detected an obstacle.
                                     self.status = ActionStatus.detected_obstacle
+                                    print(raycast_object_id)
                                     return commands
                                 # The raycast hit a non-object, probably a wall.
                                 elif self._collision_detection.walls and raycast.get_point()[1] > 0.01:
                                     self.status = ActionStatus.detected_obstacle
                                     return commands
+                        elif r_id == "trco":
+                            trigger_collision = TriggerCollision(resp[i])
+                            # This is my trigger collider.
+                            if trigger_collision.get_trigger_id() == static.replicant_id:
+                                print(trigger_collision.get_collider_id(), trigger_collision.get_collidee_id())
                     # Boxcast.
                     position = dynamic.transform.position.copy()
                     position[1] += 0.25
-                    position += dynamic.transform.forward * 0.1
                     commands.append({"$type": "send_boxcast",
-                                     "half_extents": {"x": 0.1, "y": 0.1, "z": 0.75},
+                                     "half_extents": {"x": 0.1, "y": 0.1, "z": 0.1},
                                      "origin": TDWUtils.array_to_vector3(position),
-                                     "destination": TDWUtils.array_to_vector3(position + dynamic.transform.forward * 0.3),
+                                     "destination": TDWUtils.array_to_vector3(position + dynamic.transform.forward * 0.05),
                                      "id": self._boxcast_id})
                 # We're at the end of the walk cycle. Continue the animation.
                 if self._frame_count % self._animation_length == 0:

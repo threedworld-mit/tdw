@@ -64,11 +64,14 @@ class Grasp(Action):
                 nearest_empty_object_distance = d
                 nearest_empty_object_id = empty_object_id
         # Grasp the object.
-        commands.append({"$type": "replicant_grasp_object",
-                         "id": static.replicant_id,
-                         "object_id": self._target,
-                         "empty_object": got_empty_object,
-                         "empty_object_id": nearest_empty_object_id})
+        commands.extend([{"$type": "replicant_grasp_object",
+                          "id": static.replicant_id,
+                          "object_id": self._target,
+                          "empty_object": got_empty_object,
+                          "empty_object_id": nearest_empty_object_id},
+                         {"$type": "replicant_orient_held_object",
+                          "id": static.replicant_id,
+                          "arm": self._arm.name}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

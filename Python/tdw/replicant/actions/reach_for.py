@@ -44,18 +44,19 @@ class ReachFor(ArmMotion):
                 centroid: np.ndarray = OBJECT_MANAGER.bounds[self._target].center
                 nearest_empty_object_distances: Dict[Arm, float] = dict()
                 nearest_empty_object_positions: Dict[Arm, np.ndarray] = dict()
-                hand_positions = {arm: dynamic.body_parts[static.hands[arm]] for arm in self._arms}
-                for empty_object_id in EMPTY_OBJECT_MANAGER.empty_object_ids[self._target]:
-                    # Update the nearest affordance point per arm.
-                    for arm in self._arms:
-                        p = EMPTY_OBJECT_MANAGER.empty_object_positions[empty_object_id]
-                        d = np.linalg.norm(p - hand_positions[arm])
-                        # Too far away.
-                        if d > 0.99:
-                            continue
-                        if d < nearest_empty_object_distances[arm]:
-                            nearest_empty_object_distances[arm] = d
-                            nearest_empty_object_positions[arm] = p
+                hand_positions = {arm: dynamic.body_parts[static.hands[arm]].position for arm in self._arms}
+                if self._target in EMPTY_OBJECT_MANAGER.empty_object_ids:
+                    for empty_object_id in EMPTY_OBJECT_MANAGER.empty_object_ids[self._target]:
+                        # Update the nearest affordance point per arm.
+                        for arm in self._arms:
+                            p = EMPTY_OBJECT_MANAGER.empty_object_positions[empty_object_id]
+                            d = np.linalg.norm(p - hand_positions[arm])
+                            # Too far away.
+                            if d > 0.99:
+                                continue
+                            if arm not in nearest_empty_object_distances or d < nearest_empty_object_distances[arm]:
+                                nearest_empty_object_distances[arm] = d
+                                nearest_empty_object_positions[arm] = p
                 # Reach for an affordance point.
                 for arm in self._arms:
                     if arm in nearest_empty_object_positions:

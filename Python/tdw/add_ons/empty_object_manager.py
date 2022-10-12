@@ -4,6 +4,7 @@ from tdw.add_ons.add_on import AddOn
 from tdw.output_data import OutputData, SegmentationColors, EmptyObjects
 from tdw.librarian import ModelLibrarian
 from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
 
 
 class EmptyObjectManager(AddOn):
@@ -57,6 +58,7 @@ class EmptyObjectManager(AddOn):
                                                           "id": object_id,
                                                           "empty_object_id": empty_object_id,
                                                           "position": affordance_position})
+                                    self.empty_object_positions[empty_object_id] = TDWUtils.vector3_to_array(affordance_position)
                                     # Update the dictionary of empty object IDs.
                                     if object_id not in self.empty_object_ids:
                                         self.empty_object_ids[object_id] = list()
@@ -66,9 +68,9 @@ class EmptyObjectManager(AddOn):
                                 break
                     # We only need SegmentationColors data.
                     break
-                # Request empty objects data per frame.
-                self.commands.append({"$type": "send_empty_objects",
-                                      "frequency": "always"})
+            # Request empty objects data per frame.
+            self.commands.append({"$type": "send_empty_objects",
+                                  "frequency": "always"})
         # Update the positions of each empty object.
         self.empty_object_positions.clear()
         for i in range(len(resp) - 1):

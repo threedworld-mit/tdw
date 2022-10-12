@@ -123,10 +123,11 @@ class ReplicantDynamic:
             elif r_id == "enco":
                 collision = EnvironmentCollision(resp[i])
                 collider_id = collision.get_object_id()
-                if collider_id not in self.collisions:
-                    self.collisions[collider_id] = list()
-                # Record the collision.
-                self.collisions[collider_id].append(collision)
+                if collider_id in self.body_parts:
+                    if collider_id not in self.collisions:
+                        self.collisions[collider_id] = list()
+                    # Record the collision.
+                    self.collisions[collider_id].append(collision)
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])

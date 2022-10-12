@@ -18,9 +18,6 @@ class MoveBy(Animate):
     Walk a given distance.
     """
 
-    _BOXCAST_Y: float = 0.25
-    _BOXCAST_Z: float = 0.1
-
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Action = None, reset_arms_num_frames: int = 15, arrived_at: float = 0.1,
                  max_walk_cycles: int = 100):
@@ -83,21 +80,30 @@ class MoveBy(Animate):
                         r_id = OutputData.get_data_type_id(resp[i])
                         if r_id == "rayc":
                             raycast = Raycast(resp[i])
-                            if raycast.get_raycast_id() == self._boxcast_id and raycast.get_hit() and raycast.get_hit_object():
-                                if raycast.get_object_id() not in self._collision_detection.exclude_objects:
+                            # The raycast hit something.
+                            if raycast.get_raycast_id() == self._boxcast_id and raycast.get_hit():
+                                # The raycast hit an object.
+                                if raycast.get_hit_object():
+                                    raycast_object_id = raycast.get_object_id()
+                                    # Ignore this object.
+                                    if raycast_object_id in self._collision_detection.exclude_objects or \
+                                            raycast_object_id in static.body_parts_by_id:
+                                        continue
+                                    # We detected an obstacle.
+                                    self.status = ActionStatus.detected_obstacle
+                                    return commands
+                                # The raycast hit a non-object, probably a wall.
+                                elif self._collision_detection.walls and raycast.get_point()[1] > 0.01:
                                     self.status = ActionStatus.detected_obstacle
                                     return commands
                     # Boxcast.
                     position = dynamic.transform.position.copy()
-                    position[1] += MoveBy._BOXCAST_Y
-                    position[2] += MoveBy._BOXCAST_Z
-                    forward = dynamic.transform.forward.copy()
-                    forward[1] += MoveBy._BOXCAST_Y
-                    forward[2] += MoveBy._BOXCAST_Z
+                    position[1] += 0.25
+                    position += dynamic.transform.forward * 0.1
                     commands.append({"$type": "send_boxcast",
                                      "half_extents": {"x": 0.1, "y": 0.1, "z": 0.75},
                                      "origin": TDWUtils.array_to_vector3(position),
-                                     "destination": TDWUtils.array_to_vector3(position + forward * 1.75),
+                                     "destination": TDWUtils.array_to_vector3(position + dynamic.transform.forward * 0.3),
                                      "id": self._boxcast_id})
                 # We're at the end of the walk cycle. Continue the animation.
                 if self._frame_count % self._animation_length == 0:

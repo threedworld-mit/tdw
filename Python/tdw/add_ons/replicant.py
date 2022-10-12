@@ -241,6 +241,7 @@ class Replicant(AddOn):
             raise Exception(f"Invalid arms: {arms}")
         self.action = ReachFor(target=target,
                                arms=a,
+                               dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                previous=self._previous_action,
                                num_frames=num_frames)
@@ -297,6 +298,7 @@ class Replicant(AddOn):
         else:
             raise Exception(f"Invalid arms: {arms}")
         self.action = ResetArm(arms=a,
+                               dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                previous=self._previous_action,
                                num_frames=num_frames)

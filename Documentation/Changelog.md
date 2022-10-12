@@ -4,6 +4,13 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
 
+## v1.10.9
+
+### Build
+
+- Fixed: `scale_object_and_mass` calculates mass incorrectly.
+- Fixed: `send_volumes` always sends an array of zeros instead of an array of volumes.
+
 ## v1.10.8
 
 ### Command API

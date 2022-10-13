@@ -103,3 +103,10 @@ class MoveTo(Action):
                                                       dynamic=dynamic)
         self.status = self._move_by.status
         return commands
+
+    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
+                         image_frequency: ImageFrequency) -> List[dict]:
+        if self._move_by is not None:
+            return self._move_by.get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        else:
+            return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)

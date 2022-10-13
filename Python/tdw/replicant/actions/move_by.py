@@ -9,7 +9,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
-from tdw.output_data import OutputData, Raycast, TriggerCollision
+from tdw.output_data import OutputData, TriggerCollision
 from tdw.controller import Controller
 
 
@@ -73,43 +73,21 @@ class MoveBy(Animate):
             if d < self._arrived_at:
                 self.status = ActionStatus.success
             else:
-                # Try to avoid obstacles by boxcasting.
+                # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
                 if self._collision_detection.avoid:
-                    # Check the raycast data.
                     for i in range(len(resp) - 1):
                         r_id = OutputData.get_data_type_id(resp[i])
-                        if r_id == "rayc":
-                            raycast = Raycast(resp[i])
-                            # The raycast hit something.
-                            if raycast.get_raycast_id() == self._boxcast_id and raycast.get_hit():
-                                # The raycast hit an object.
-                                if raycast.get_hit_object():
-                                    raycast_object_id = raycast.get_object_id()
-                                    # Ignore this object.
-                                    if raycast_object_id in self._collision_detection.exclude_objects or \
-                                            raycast_object_id in static.body_parts_by_id:
-                                        continue
-                                    # We detected an obstacle.
-                                    self.status = ActionStatus.detected_obstacle
-                                    print(raycast_object_id)
-                                    return commands
-                                # The raycast hit a non-object, probably a wall.
-                                elif self._collision_detection.walls and raycast.get_point()[1] > 0.01:
-                                    self.status = ActionStatus.detected_obstacle
-                                    return commands
-                        elif r_id == "trco":
+                        if r_id == "trco":
                             trigger_collision = TriggerCollision(resp[i])
                             # This is my trigger collider.
                             if trigger_collision.get_trigger_id() == static.replicant_id:
-                                print(trigger_collision.get_collider_id(), trigger_collision.get_collidee_id())
-                    # Boxcast.
-                    position = dynamic.transform.position.copy()
-                    position[1] += 0.25
-                    commands.append({"$type": "send_boxcast",
-                                     "half_extents": {"x": 0.1, "y": 0.1, "z": 0.1},
-                                     "origin": TDWUtils.array_to_vector3(position),
-                                     "destination": TDWUtils.array_to_vector3(position + dynamic.transform.forward * 0.05),
-                                     "id": self._boxcast_id})
+                                collider_id: int = trigger_collision.get_collider_id()
+                                collidee_id: int = trigger_collision.get_collidee_id()
+                                object_id: int = collidee_id if collider_id == static.replicant_id else collider_id
+                                # The trigger collider hit an object.
+                                if object_id not in static.body_parts_by_id and object_id not in self._collision_detection.exclude_objects:
+                                    self.status = ActionStatus.detected_obstacle
+                                    return commands
                 # We're at the end of the walk cycle. Continue the animation.
                 if self._frame_count % self._animation_length == 0:
                     commands.append({"$type": "play_humanoid_animation",

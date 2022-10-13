@@ -99,6 +99,8 @@ class Replicant(AddOn):
                      "rotation": self.initial_rotation,
                      "url": self._record.get_url(),
                      "id": self.replicant_id},
+                    {"$type": "add_replicant_rigidbody",
+                     "id": self.replicant_id},
                     {"$type": "add_trigger_collider",
                      "id": self.replicant_id,
                      "shape": "cube",

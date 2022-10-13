@@ -7,7 +7,6 @@ from tdw.agents.arm import Arm
 
 c = Controller()
 r = Replicant()
-r.collision_detection.avoid = False
 c.add_ons.append(r)
 trunk_id = Controller.get_unique_id()
 mug_id = Controller.get_unique_id()

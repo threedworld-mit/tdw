@@ -3,6 +3,7 @@ from tdw.output_data import OutputData, Replicants
 from tdw.agents.arm import Arm
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 from tdw.relative_direction import RelativeDirection
+from tdw.controller import Controller
 
 
 class ReplicantStatic:
@@ -16,11 +17,10 @@ class ReplicantStatic:
     ARM_JOINTS: Dict[Arm, List[ReplicantBodyPart]] = {Arm.left: [__b for __b in ReplicantBodyPart if __b.name.endswith("_l")],
                                                       Arm.right: [__b for __b in ReplicantBodyPart if __b.name.endswith("_r")]}
 
-    def __init__(self, replicant_id: int, resp: List[bytes], trigger_colliders: Dict[RelativeDirection, int]):
+    def __init__(self, replicant_id: int, resp: List[bytes]):
         """
         :param replicant_id: The ID of the Replicant.
         :param resp: The response from the build.
-        :param trigger_colliders: Trigger colliders used for movement. Key = [`RelativeDirection`](../relative_direction.md) (`front` or `back`). Value = The trigger collider ID.
         """
 
         """:field
@@ -36,9 +36,10 @@ class ReplicantStatic:
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
         """:field
-        Trigger colliders used for movement. Key = [`RelativeDirection`](../relative_direction.md) (`front` or `back`). Value = The trigger collider ID.
+        The IDs of overlaps used for movement. Key = [`RelativeDirection`](../relative_direction.md) (`front` or `back`). Value = The overlap ID.
         """
-        self.trigger_colliders: Dict[RelativeDirection, int] = trigger_colliders
+        self.overlap_ids: Dict[RelativeDirection, int] = {RelativeDirection.front: Controller.get_unique_id(),
+                                                          RelativeDirection.back: Controller.get_unique_id()}
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

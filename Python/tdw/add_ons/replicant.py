@@ -22,7 +22,6 @@ from tdw.librarian import ReplicantRecord, ReplicantLibrarian
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
 from tdw.controller import Controller
-from tdw.relative_direction import RelativeDirection
 
 
 class Replicant(AddOn):
@@ -345,11 +344,8 @@ class Replicant(AddOn):
         :param resp: The response from the build.
         """
 
-        # Get trigger collider IDs.
-        trigger_colliders: Dict[RelativeDirection, int] = {RelativeDirection.front: Controller.get_unique_id(),
-                                                           RelativeDirection.back: Controller.get_unique_id()}
-        self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp, trigger_colliders=trigger_colliders)
-        # Add an avatar and set up its camera. Add trigger colliders to detect obstacles while moving.
+        self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
+        # Add an avatar and set up its camera.
         self.commands.extend([{"$type": "create_avatar",
                                "type": "A_Img_Caps_Kinematic",
                                "id": self.static.avatar_id},
@@ -360,20 +356,6 @@ class Replicant(AddOn):
                                "position": {"x": -0.1, "y": -0.1, "z": 0},
                                "avatar_id": self.static.avatar_id,
                                "id": self.replicant_id},
-                              {"$type": "add_trigger_collider",
-                               "id": self.replicant_id,
-                               "shape": "cube",
-                               "enter": True,
-                               "trigger_id": trigger_colliders[RelativeDirection.front],
-                               "scale": {"x": 0.6375, "y": 1.7628, "z": 0.175},
-                               "position": {"x": 0, "y": 0.989, "z": 0.32}},
-                              {"$type": "add_trigger_collider",
-                               "id": self.replicant_id,
-                               "shape": "cube",
-                               "enter": True,
-                               "trigger_id": trigger_colliders[RelativeDirection.back],
-                               "scale": {"x": 0.6375, "y": 1.7628, "z": 0.175},
-                               "position": {"x": 0, "y": 0.989, "z": -0.32}},
                               {"$type": "enable_image_sensor",
                                "enable": False,
                                "avatar_id": self.static.avatar_id},

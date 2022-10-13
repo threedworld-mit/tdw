@@ -9,7 +9,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
-from tdw.output_data import OutputData, TriggerCollision
+from tdw.output_data import OutputData, Overlap
 from tdw.controller import Controller
 from tdw.relative_direction import RelativeDirection
 
@@ -79,21 +79,36 @@ class MoveBy(Animate):
             else:
                 # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
                 if self._collision_detection.avoid:
+                    # Check for overlap.
+                    overlap_z = 0.175
+                    if self._distance < 0:
+                        overlap_z *= -1
+                        overlap_id = static.overlap_ids[RelativeDirection.back]
+                    else:
+                        overlap_id = static.overlap_ids[RelativeDirection.front]
+                    # Send the next overlap command.
+                    commands.append({"$type": "send_overlap_box",
+                                     "id": overlap_id,
+                                     "half_extents": {"x": 0.31875, "y": 0.8814, "z": 0.0875},
+                                     "rotation": dynamic.transform.rotation,
+                                     "position": {"x": 0, "y": 0.989, "z": overlap_z}})
                     for i in range(len(resp) - 1):
                         r_id = OutputData.get_data_type_id(resp[i])
-                        if r_id == "trco":
-                            trigger_collision = TriggerCollision(resp[i])
-                            trigger_collider_id = trigger_collision.get_trigger_id()
-                            # Check if this is my trigger collider and if it corresponds to the direction in which I'm moving.
-                            if (self._distance > 0 and trigger_collider_id == static.trigger_colliders[RelativeDirection.front]) or \
-                                    (self._distance < 0 and trigger_collider_id == static.trigger_colliders[RelativeDirection.back]):
-                                collider_id: int = trigger_collision.get_collider_id()
-                                collidee_id: int = trigger_collision.get_collidee_id()
-                                object_id: int = collidee_id if collider_id == static.replicant_id else collider_id
-                                # The trigger collider hit an object.
-                                if object_id not in static.body_parts_by_id and object_id not in self._collision_detection.exclude_objects:
-                                    self.status = ActionStatus.detected_obstacle
-                                    return commands
+                        if r_id == "over":
+                            overlap = Overlap(resp[i])
+                            if overlap.get_id() in static.overlap_ids:
+                                # We detected a wall.
+                                if self._collision_detection.walls and overlap.get_env() and overlap.get_walls():
+                                    if overlap.get_walls():
+                                        self.status = ActionStatus.detected_obstacle
+                                        return commands
+                                else:
+                                    object_ids = overlap.get_object_ids()
+                                    for object_id in object_ids:
+                                        # We detected an object.
+                                        if object_id not in self._collision_detection.exclude_objects:
+                                            self.status = ActionStatus.detected_obstacle
+                                            return commands
                 # We're at the end of the walk cycle. Continue the animation.
                 if self._frame_count % self._animation_length == 0:
                     commands.append({"$type": "play_humanoid_animation",

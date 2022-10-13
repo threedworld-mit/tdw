@@ -64,10 +64,15 @@ class ReplicantDynamic:
         self.got_images: bool = False
         self._frame_count: int = frame_count
         avatar_id = str(replicant_id)
-        # Transform data for each body part.
+        """:field
+        Transform data for each body part. Key = Body part ID. Value = [`Transform`](../object_data/transform.md).
+        """
         self.body_parts: Dict[int, Transform] = dict()
-        # A dictionary of collisions. Key = Body part ID. Value = Collision data.
-        self.collisions: Dict[int, List[Union[Collision, EnvironmentCollision]]] = dict()
+        """
+        A list of [`Collision` and `EnvironmentCollision`](../../api/output_data.md) collisions between this Replicant and other objects and the environment.
+        """
+        self.collisions: List[Union[Collision, EnvironmentCollision]] = list()
+        self._replicant_id: int = replicant_id
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -105,29 +110,11 @@ class ReplicantDynamic:
             # This is a collision.
             if r_id == "coll":
                 collision = Collision(resp[i])
-                collider_id = collision.get_collider_id()
-                collidee_id = collision.get_collidee_id()
-                # This collision included body parts.
-                if collider_id in self.body_parts:
-                    body_part_id = collider_id
-                elif collidee_id in self.body_parts:
-                    body_part_id = collidee_id
-                else:
-                    body_part_id = None
-                if body_part_id is not None:
-                    if body_part_id not in self.collisions:
-                        self.collisions[body_part_id] = list()
-                    # Record the collision.
-                    self.collisions[body_part_id].append(collision)
+                if collision.get_collider_id() == replicant_id or collision.get_collidee_id() == replicant_id:
+                    self.collisions.append(collision)
             # This is an environment collision.
             elif r_id == "enco":
-                collision = EnvironmentCollision(resp[i])
-                collider_id = collision.get_object_id()
-                if collider_id in self.body_parts:
-                    if collider_id not in self.collisions:
-                        self.collisions[collider_id] = list()
-                    # Record the collision.
-                    self.collisions[collider_id].append(collision)
+                self.collisions.append(EnvironmentCollision(resp[i]))
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])
@@ -230,25 +217,24 @@ class ReplicantDynamic:
 
         enters: List[int] = list()
         exits: List[int] = list()
-        for body_part_id in self.collisions:
-            for collision in self.collisions[body_part_id]:
-                if isinstance(collision, EnvironmentCollision):
-                    state = collision.get_state()
-                    if (collision_detection.floor and collision.get_floor()) or \
-                            (collision_detection.walls and not collision.get_floor()):
-                        if state == "enter":
-                            enters.append(body_part_id)
-                        elif state == "exit":
-                            exits.append(body_part_id)
-                elif isinstance(collision, Collision):
-                    collider_id = collision.get_collider_id()
-                    # Accept the collision if the object is in the includes list or if it's not in the excludes list.
-                    if collider_id in collision_detection.include_objects or \
-                            (collision_detection.objects and collider_id not in
-                             collision_detection.exclude_objects):
-                        if collision.get_state() == "enter":
-                            enters.append(body_part_id)
-                        elif collision.get_state() == "exit":
-                            exits.append(body_part_id)
+        for collision in self.collisions:
+            if isinstance(collision, EnvironmentCollision):
+                state = collision.get_state()
+                if (collision_detection.floor and collision.get_floor()) or \
+                        (collision_detection.walls and not collision.get_floor()):
+                    if state == "enter":
+                        enters.append(collision.get_object_id())
+                    elif state == "exit":
+                        exits.append(collision.get_object_id())
+            elif isinstance(collision, Collision):
+                collider_id = collision.get_collider_id()
+                collidee_id = collision.get_collidee_id()
+                object_id = collider_id if collidee_id == self._replicant_id else collidee_id
+                # Accept the collision if the object isn't not in the excludes list.
+                if object_id not in collision_detection.exclude_objects:
+                    if collision.get_state() == "enter":
+                        enters.append(object_id)
+                    elif collision.get_state() == "exit":
+                        exits.append(object_id)
         # Ignore exit events.
         return [e for e in enters if e not in exits]

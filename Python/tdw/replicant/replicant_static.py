@@ -2,8 +2,6 @@ from typing import Dict, List
 from tdw.output_data import OutputData, Replicants
 from tdw.agents.arm import Arm
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
-from tdw.relative_direction import RelativeDirection
-from tdw.controller import Controller
 
 
 class ReplicantStatic:
@@ -35,11 +33,6 @@ class ReplicantStatic:
         Body parts by name. Key = [`ReplicantBodyPart`](replicant_body_part.md). Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
-        """:field
-        The IDs of overlaps used for movement. Key = [`RelativeDirection`](../relative_direction.md) (`front` or `back`). Value = The overlap ID.
-        """
-        self.overlap_ids: Dict[RelativeDirection, int] = {RelativeDirection.front: Controller.get_unique_id(),
-                                                          RelativeDirection.back: Controller.get_unique_id()}
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

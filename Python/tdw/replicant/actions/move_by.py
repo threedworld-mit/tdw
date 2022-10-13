@@ -11,13 +11,14 @@ from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
 from tdw.output_data import OutputData, Overlap
 from tdw.controller import Controller
-from tdw.relative_direction import RelativeDirection
 
 
 class MoveBy(Animate):
     """
     Walk a given distance.
     """
+
+    _OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Action = None, reset_arms_num_frames: int = 15, arrived_at: float = 0.1,
@@ -80,35 +81,33 @@ class MoveBy(Animate):
                 # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
                 if self._collision_detection.avoid:
                     # Check for overlap.
-                    overlap_z = 0.175
+                    overlap_z = 0.5
                     if self._distance < 0:
                         overlap_z *= -1
-                        overlap_id = static.overlap_ids[RelativeDirection.back]
-                    else:
-                        overlap_id = static.overlap_ids[RelativeDirection.front]
+                    overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
+                    overlap_position[1] += 1
                     # Send the next overlap command.
                     commands.append({"$type": "send_overlap_box",
-                                     "id": overlap_id,
-                                     "half_extents": {"x": 0.31875, "y": 0.8814, "z": 0.0875},
-                                     "rotation": dynamic.transform.rotation,
-                                     "position": {"x": 0, "y": 0.989, "z": overlap_z}})
+                                     "id": static.replicant_id,
+                                     "half_extents": MoveBy._OVERLAP_HALF_EXTENTS,
+                                     "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
+                                     "position": TDWUtils.array_to_vector3(overlap_position)})
                     for i in range(len(resp) - 1):
                         r_id = OutputData.get_data_type_id(resp[i])
                         if r_id == "over":
                             overlap = Overlap(resp[i])
-                            if overlap.get_id() in static.overlap_ids:
+                            if overlap.get_id() == static.replicant_id:
                                 # We detected a wall.
                                 if self._collision_detection.walls and overlap.get_env() and overlap.get_walls():
                                     if overlap.get_walls():
                                         self.status = ActionStatus.detected_obstacle
                                         return commands
-                                else:
-                                    object_ids = overlap.get_object_ids()
-                                    for object_id in object_ids:
-                                        # We detected an object.
-                                        if object_id not in self._collision_detection.exclude_objects:
-                                            self.status = ActionStatus.detected_obstacle
-                                            return commands
+                                object_ids = overlap.get_object_ids()
+                                for object_id in object_ids:
+                                    # We detected an object.
+                                    if object_id != static.replicant_id and object_id not in self._collision_detection.exclude_objects:
+                                        self.status = ActionStatus.detected_obstacle
+                                        return commands
                 # We're at the end of the walk cycle. Continue the animation.
                 if self._frame_count % self._animation_length == 0:
                     commands.append({"$type": "play_humanoid_animation",

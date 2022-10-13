@@ -53,19 +53,20 @@ class Grasp(Action):
         got_empty_object: bool = False
         hand_position = dynamic.body_parts[static.hands[self._arm]].position
         for empty_object_id in EMPTY_OBJECT_MANAGER.empty_object_ids[self._target]:
-            got_empty_object = True
             # Update the nearest affordance point.
             p = EMPTY_OBJECT_MANAGER.empty_object_positions[empty_object_id]
             d = np.linalg.norm(p - hand_position)
             # Too far away.
             if d > 0.99:
                 continue
+            got_empty_object = True
             if d < nearest_empty_object_distance:
                 nearest_empty_object_distance = d
                 nearest_empty_object_id = empty_object_id
         # Grasp the object.
         commands.extend([{"$type": "replicant_grasp_object",
                           "id": static.replicant_id,
+                          "arm": self._arm.name,
                           "object_id": self._target,
                           "empty_object": got_empty_object,
                           "empty_object_id": nearest_empty_object_id},

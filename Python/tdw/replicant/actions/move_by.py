@@ -11,6 +11,7 @@ from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
 from tdw.output_data import OutputData, TriggerCollision
 from tdw.controller import Controller
+from tdw.relative_direction import RelativeDirection
 
 
 class MoveBy(Animate):
@@ -79,8 +80,10 @@ class MoveBy(Animate):
                         r_id = OutputData.get_data_type_id(resp[i])
                         if r_id == "trco":
                             trigger_collision = TriggerCollision(resp[i])
-                            # This is my trigger collider.
-                            if trigger_collision.get_trigger_id() == static.replicant_id:
+                            trigger_collider_id = trigger_collision.get_trigger_id()
+                            # Check if this is my trigger collider and if it corresponds to the direction in which I'm moving.
+                            if (self._distance > 0 and trigger_collider_id == static.trigger_colliders[RelativeDirection.front]) or \
+                                    (self._distance < 0 and trigger_collider_id == static.trigger_colliders[RelativeDirection.back]):
                                 collider_id: int = trigger_collision.get_collider_id()
                                 collidee_id: int = trigger_collision.get_collidee_id()
                                 object_id: int = collidee_id if collider_id == static.replicant_id else collider_id
@@ -93,7 +96,8 @@ class MoveBy(Animate):
                     commands.append({"$type": "play_humanoid_animation",
                                      "name": self._record.name,
                                      "id": static.replicant_id,
-                                     "framerate": self._record.framerate})
+                                     "framerate": self._record.framerate,
+                                     "forward": self._distance > 0})
                     # Too many walk cycles. End the action.
                     self._walk_cycle += 1
                     if self._walk_cycle >= self._max_walk_cycles:

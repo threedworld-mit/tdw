@@ -21,20 +21,22 @@ commands.extend(Controller.get_add_physics_object(model_name="coffeemug",
                                                   object_id=mug_id,
                                                   position={"x": 0, "y": 0.9888946, "z": 3}))
 c.communicate(commands)
-
 r.move_to(target=trunk_id)
 while r.action.status == ActionStatus.ongoing:
     c.communicate([])
-print(r.action.status)
-r.reach_for(target=mug_id, arms=[Arm.left, Arm.right])
+r.reach_for(target=mug_id, arms=Arm.right)
 while r.action.status == ActionStatus.ongoing:
     c.communicate([])
+print(r.action.status)
 r.grasp(target=mug_id, arm=Arm.right)
-exit()
 while r.action.status == ActionStatus.ongoing:
     c.communicate([])
 print(r.action.status)
 r.reset_arm(arms=[Arm.left, Arm.right])
 while r.action.status == ActionStatus.ongoing:
     c.communicate([])
-# c.communicate({"$type": "terminate"})
+r.move_by(-4)
+while r.action.status == ActionStatus.ongoing:
+    c.communicate([])
+print(r.action.status)
+c.communicate({"$type": "terminate"})

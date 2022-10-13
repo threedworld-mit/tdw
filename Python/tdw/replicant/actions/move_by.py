@@ -73,6 +73,9 @@ class MoveBy(Animate):
             d = np.linalg.norm(dynamic.transform.position - self._destination_arr)
             if d < self._arrived_at:
                 self.status = ActionStatus.success
+            # Stop walking if there is a collision.
+            elif len(dynamic.get_collision_enters(collision_detection=self._collision_detection)) > 0:
+                self.status = ActionStatus.collision
             else:
                 # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
                 if self._collision_detection.avoid:

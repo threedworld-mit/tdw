@@ -829,7 +829,7 @@ class Overlap(OutputData):
 class Containment(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, 2)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
 
     def get_data(self):
         return Cont.Containment.GetRootAsContainment(self.bytes, 0)

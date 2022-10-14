@@ -310,23 +310,23 @@ class Controller:
         # Add container shapes.
         for container_shape in record.container_shapes:
             if isinstance(container_shape, BoxContainer):
-                Controller._add_box_container(object_id=object_id,
-                                              position=container_shape.position,
-                                              tag=container_shape.tag,
-                                              half_extents=container_shape.half_extents,
-                                              rotation=container_shape.rotation)
+                commands.append(Controller._add_box_container(object_id=object_id,
+                                                              position=container_shape.position,
+                                                              tag=container_shape.tag,
+                                                              half_extents=container_shape.half_extents,
+                                                              rotation=container_shape.rotation))
             elif isinstance(container_shape, CylinderContainer):
-                Controller._add_cylinder_container(object_id=object_id,
-                                                   position=container_shape.position,
-                                                   tag=container_shape.tag,
-                                                   radius=container_shape.radius,
-                                                   height=container_shape.height,
-                                                   rotation=container_shape.rotation)
+                commands.append(Controller._add_cylinder_container(object_id=object_id,
+                                                                   position=container_shape.position,
+                                                                   tag=container_shape.tag,
+                                                                   radius=container_shape.radius,
+                                                                   height=container_shape.height,
+                                                                   rotation=container_shape.rotation))
             elif isinstance(container_shape, SphereContainer):
-                Controller._add_sphere_container(object_id=object_id,
-                                                 position=container_shape.position,
-                                                 tag=container_shape.tag,
-                                                 radius=container_shape.radius)
+                commands.append(Controller._add_sphere_container(object_id=object_id,
+                                                                 position=container_shape.position,
+                                                                 tag=container_shape.tag,
+                                                                 radius=container_shape.radius))
         return commands
 
     @staticmethod

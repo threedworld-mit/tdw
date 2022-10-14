@@ -1,12 +1,13 @@
 from typing import List, Dict, Union
 import numpy as np
 from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, DynamicEmptyObjects
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.replicant_simulation_state import EMPTY_OBJECT_MANAGER, OBJECT_MANAGER
+from tdw.replicant.replicant_simulation_state import OBJECT_MANAGER
 from tdw.agents.arm import Arm
 
 
@@ -46,18 +47,23 @@ class ReachFor(ArmMotion):
                 nearest_empty_object_distances: Dict[Arm, float] = dict()
                 nearest_empty_object_positions: Dict[Arm, np.ndarray] = dict()
                 hand_positions = {arm: dynamic.body_parts[static.hands[arm]].position for arm in self._arms}
-                if self._target in EMPTY_OBJECT_MANAGER.empty_object_ids:
-                    for empty_object_id in EMPTY_OBJECT_MANAGER.empty_object_ids[self._target]:
-                        # Update the nearest affordance point per arm.
-                        for arm in self._arms:
-                            p = EMPTY_OBJECT_MANAGER.empty_object_positions[empty_object_id]
-                            d = np.linalg.norm(p - hand_positions[arm])
-                            # Too far away.
-                            if d > 1.5:
-                                continue
-                            if arm not in nearest_empty_object_distances or d < nearest_empty_object_distances[arm]:
-                                nearest_empty_object_distances[arm] = d
-                                nearest_empty_object_positions[arm] = p
+                # Get empty objects.
+                for i in range(len(resp) - 1):
+                    r_id = OutputData.get_data_type_id(resp[i])
+                    if r_id == "dyem":
+                        empty_objects = DynamicEmptyObjects(resp[i])
+                        for j in range(empty_objects.get_num()):
+                            # This empty object belongs to the target object.
+                            if static.empty_object_parent_ids[j] == self._target:
+                                # Update the nearest affordance point per arm.
+                                for arm in self._arms:
+                                    p = empty_objects.get_position(j)
+                                    d = np.linalg.norm(p - hand_positions[arm])
+                                    # Too far away.
+                                    if d > 1.5:
+                                        continue
+                                    if arm not in nearest_empty_object_distances or d < nearest_empty_object_distances[arm]:
+                                        nearest_empty_object_distances[arm] = d
                 # Reach for an affordance point.
                 for arm in self._arms:
                     if arm in nearest_empty_object_positions:

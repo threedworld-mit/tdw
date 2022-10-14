@@ -42,7 +42,8 @@ from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
 from tdw.FBOutput import RobotJointVelocities as RoJoVe
-from tdw.FBOutput import EmptyObjects as Empty
+from tdw.FBOutput import StaticEmptyObjects as StaticEmpty
+from tdw.FBOutput import DynamicEmptyObjects as DynamicEmpty
 from tdw.FBOutput import OculusTouchButtons as OculusTouch
 from tdw.FBOutput import StaticOculusTouch as StatOc
 from tdw.FBOutput import StaticCompositeObjects as StatComp
@@ -1207,20 +1208,34 @@ class Categories(OutputData):
         return OutputData._get_rgb(self.data.CategoryData(index).Color())
 
 
-class EmptyObjects(OutputData):
+class StaticEmptyObjects(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy().view(dtype=int)
-        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, 2)
 
-    def get_data(self) -> Empty.EmptyObjects:
-        return Empty.EmptyObjects.GetRootAsEmptyObjects(self.bytes, 0)
+    def get_data(self) -> StaticEmpty.StaticEmptyObjects:
+        return StaticEmpty.StaticEmptyObjects.GetRootAsStaticEmptyObjects(self.bytes, 0)
 
     def get_num(self) -> int:
-        return len(self._ids)
+        return int(self._ids.shape[0])
 
-    def get_id(self, index: int) -> int:
-        return int(self._ids[index])
+    def get_object_id(self, index: int) -> int:
+        return int(self._ids[index][0])
+
+    def get_empty_object_id(self, index: int) -> int:
+        return int(self._ids[index][1])
+
+
+class DynamicEmptyObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_data(self) -> DynamicEmpty.DynamicEmptyObjects:
+        return DynamicEmpty.DynamicEmptyObjects.GetRootAsDynamicEmptyObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return int(self._positions.shape[0])
 
     def get_position(self, index: int) -> np.ndarray:
         return self._positions[index]

@@ -182,7 +182,8 @@ class Controller:
                 "position": position if position is not None else {"x": 0, "y": 0, "z": 0},
                 "rotation": rotation if rotation is not None else {"x": 0, "y": 0, "z": 0},
                 "category": record.wcategory,
-                "id": object_id}
+                "id": object_id,
+                "affordance_points": record.affordance_points}
 
     @staticmethod
     def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
@@ -222,7 +223,8 @@ class Controller:
                      "scale_factor": record.scale_factor,
                      "position": position,
                      "category": record.wcategory,
-                     "id": object_id}]
+                     "id": object_id,
+                     "affordance_points": record.affordance_points}]
         if rotation is not None:
             # The rotation is a quaternion.
             if "w" in rotation:

@@ -1,5 +1,5 @@
 from typing import Dict, List
-from tdw.output_data import OutputData, Replicants
+from tdw.output_data import OutputData, Replicants, StaticEmptyObjects
 from tdw.agents.arm import Arm
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
@@ -33,7 +33,18 @@ class ReplicantStatic:
         Body parts by name. Key = [`ReplicantBodyPart`](replicant_body_part.md). Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
-        got_data = False
+        """:field
+        The IDs of each empty object (affordance point).
+        """
+        self.empty_object_ids: List[int] = list()
+        """:field
+        The IDs of each empty object's (affordance point's) parent object.
+        """
+        self.empty_object_parent_ids: List[int] = list()
+        """:field
+        The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
+        """
+        self.hands: Dict[Arm, int] = dict()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get Replicants data.
@@ -49,11 +60,13 @@ class ReplicantStatic:
                         for k in range(len(BODY_PARTS)):
                             # Cache the ID.
                             self.body_parts[BODY_PARTS[k]] = replicants.get_id(j + k + 1)
-                        # Stop reading output data. We have what we need.
-                        got_data = True
                         break
-            if got_data:
-                break
+            # Get the empty object IDs.
+            elif r_id == "stem":
+                static_empty_objects: StaticEmptyObjects = StaticEmptyObjects(resp[i])
+                for j in range(static_empty_objects.get_num()):
+                    self.empty_object_ids.append(static_empty_objects.get_empty_object_id(j))
+                    self.empty_object_parent_ids.append(static_empty_objects.get_object_id(j))
         """:field
         The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
         """

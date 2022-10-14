@@ -24,6 +24,6 @@ while r.action.status == ActionStatus.ongoing:
 r.grasp(target=object_id, arm=Arm.right)
 while r.action.status == ActionStatus.ongoing:
     c.communicate([])
-r.reset_arm(arms=[Arm.left, Arm.right])
+r.reach_for(target={"x": -2, "y": 1, "z": 3}, arms=Arm.right)
 while r.action.status == ActionStatus.ongoing:
     c.communicate([])

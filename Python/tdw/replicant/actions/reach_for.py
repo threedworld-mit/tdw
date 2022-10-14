@@ -53,7 +53,7 @@ class ReachFor(ArmMotion):
                             p = EMPTY_OBJECT_MANAGER.empty_object_positions[empty_object_id]
                             d = np.linalg.norm(p - hand_positions[arm])
                             # Too far away.
-                            if d > 0.99:
+                            if d > 1.5:
                                 continue
                             if arm not in nearest_empty_object_distances or d < nearest_empty_object_distances[arm]:
                                 nearest_empty_object_distances[arm] = d
@@ -65,7 +65,7 @@ class ReachFor(ArmMotion):
                     else:
                         d = np.linalg.norm(centroid - hand_positions[arm])
                         # The centroid is close enough.
-                        if d < 0.99:
+                        if d < 1.5:
                             targets[arm] = TDWUtils.array_to_vector3(centroid)
             else:
                 raise Exception(f"Invalid target: {self._target}")

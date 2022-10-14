@@ -17,7 +17,6 @@ from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
-from tdw.replicant.replicant_simulation_state import CONTAINER_MANAGER
 from tdw.librarian import ReplicantRecord, ReplicantLibrarian
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
@@ -25,12 +24,6 @@ from tdw.controller import Controller
 
 
 class Replicant(AddOn):
-
-    # The primary Replicant initializes and updates all of the shared manager add-ons.
-    _PRIMARY_REPLICANT: Optional[Replicant] = None
-    # A list of shared managers.
-    _MANAGER_ADD_ONS: List[AddOn] = [CONTAINER_MANAGER]
-
     def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
         """
@@ -42,9 +35,6 @@ class Replicant(AddOn):
         """
 
         super().__init__()
-        # Set the primary Replicant.
-        if Replicant._PRIMARY_REPLICANT is None:
-            Replicant._PRIMARY_REPLICANT = self
         if position is None:
             """:field
             The initial position of the Replicant.
@@ -107,16 +97,13 @@ class Replicant(AddOn):
                      "frequency": "always"},
                     {"$type": "send_bounds",
                      "frequency": "always"},
+                    {"$type": "send_containment",
+                     "frequency": "always"},
                     {"$type": "send_collisions",
                      "enter": True,
                      "stay": False,
                      "exit": True,
                      "collision_types": ["obj", "env"]}]
-        # If this is the primary replicant, initialize the add-ons.
-        if Replicant._PRIMARY_REPLICANT == self:
-            for add_on in Replicant._MANAGER_ADD_ONS:
-                commands.extend(add_on.get_initialization_commands())
-                add_on.initialized = True
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -128,12 +115,6 @@ class Replicant(AddOn):
         :param resp: The response from the build.
         """
 
-        # If this is the primary replicant, update the add-ons.
-        if Replicant._PRIMARY_REPLICANT == self:
-            for add_on in Replicant._MANAGER_ADD_ONS:
-                add_on.on_send(resp=resp)
-                self.commands.extend(add_on.commands)
-                add_on.commands.clear()
         if self.static is None:
             self._cache_static_data(resp=resp)
         self._set_dynamic_data(resp=resp)
@@ -317,11 +298,6 @@ class Replicant(AddOn):
         :param rotation: The rotation of the replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         """
 
-        # Reset the primary replicant.
-        if Replicant._PRIMARY_REPLICANT == self:
-            Replicant._PRIMARY_REPLICANT = None
-            # Reset the manager add-ons.
-            CONTAINER_MANAGER.reset()
         self.initialized = False
         self.dynamic = None
         self.static = None

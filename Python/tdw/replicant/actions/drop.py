@@ -4,11 +4,9 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.action import Action
-from tdw.replicant.replicant_simulation_state import CONTAINER_MANAGER
 from tdw.agents.arm import Arm
 from tdw.agents.image_frequency import ImageFrequency
-from tdw.container_data.container_tag import ContainerTag
-from tdw.output_data import OutputData, Transforms
+from tdw.output_data import OutputData, Transforms, Containment
 
 
 class Drop(Action):
@@ -39,18 +37,20 @@ class Drop(Action):
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         # Unparent all contained objects.
-        for container_shape_id in CONTAINER_MANAGER.events:
-            event = CONTAINER_MANAGER.events[container_shape_id]
-            object_id = CONTAINER_MANAGER.container_shapes[container_shape_id]
-            tag = CONTAINER_MANAGER.tags[container_shape_id]
-            if object_id == self._object_id and tag == ContainerTag.inside:
-                for ob_id in event.object_ids:
-                    commands.extend([{"$type": "unparent_object",
-                                      "id": int(ob_id)},
-                                     {"$type": "set_kinematic_state",
-                                      "id": int(ob_id),
-                                      "is_kinematic": False,
-                                      "use_gravity": True}])
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "cont":
+                containment = Containment(resp[i])
+                object_id = containment.get_object_id()
+                if object_id == self._object_id:
+                    overlap_ids = containment.get_overlap_ids()
+                    for overlap_id in overlap_ids:
+                        commands.extend([{"$type": "unparent_object",
+                                          "id": int(overlap_id)},
+                                         {"$type": "set_kinematic_state",
+                                          "id": int(overlap_id),
+                                          "is_kinematic": False,
+                                          "use_gravity": True}])
         commands.append({"$type": "replicant_drop_object",
                          "id": static.replicant_id,
                          "arm": self._arm.name})

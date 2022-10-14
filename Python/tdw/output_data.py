@@ -57,7 +57,6 @@ from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
-from tdw.FBOutput import StaticContainerShapes as StaticContainers
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 import numpy as np
@@ -833,7 +832,7 @@ class Containment(OutputData):
         self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, 2)
 
     def get_data(self):
-        return StaticContainers.StaticContainerShapes.GetRootAsStaticContainerShapes(self.bytes, 0)
+        return Cont.Containment.GetRootAsContainment(self.bytes, 0)
 
     def get_object_id(self) -> int:
         return int(self._ids[0])

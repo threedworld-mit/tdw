@@ -17,7 +17,7 @@ from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
-from tdw.replicant.replicant_simulation_state import OBJECT_MANAGER, CONTAINER_MANAGER
+from tdw.replicant.replicant_simulation_state import CONTAINER_MANAGER
 from tdw.librarian import ReplicantRecord, ReplicantLibrarian
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
@@ -29,7 +29,7 @@ class Replicant(AddOn):
     # The primary Replicant initializes and updates all of the shared manager add-ons.
     _PRIMARY_REPLICANT: Optional[Replicant] = None
     # A list of shared managers.
-    _MANAGER_ADD_ONS: List[AddOn] = [OBJECT_MANAGER, CONTAINER_MANAGER]
+    _MANAGER_ADD_ONS: List[AddOn] = [CONTAINER_MANAGER]
 
     def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
@@ -103,8 +103,9 @@ class Replicant(AddOn):
                      "id": self.replicant_id},
                     {"$type": "send_replicants",
                      "frequency": "always"},
-                    {"$type": "send_static_empty_objects"},
-                    {"$type": "send_dynamic_empty_objects",
+                    {"$type": "send_transforms",
+                     "frequency": "always"},
+                    {"$type": "send_bounds",
                      "frequency": "always"},
                     {"$type": "send_collisions",
                      "enter": True,
@@ -320,7 +321,6 @@ class Replicant(AddOn):
         if Replicant._PRIMARY_REPLICANT == self:
             Replicant._PRIMARY_REPLICANT = None
             # Reset the manager add-ons.
-            OBJECT_MANAGER.reset()
             CONTAINER_MANAGER.reset()
         self.initialized = False
         self.dynamic = None

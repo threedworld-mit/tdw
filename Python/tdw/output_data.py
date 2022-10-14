@@ -741,8 +741,8 @@ class EnvironmentCollision(OutputData):
 class Volumes(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._volumes = self.data.VolumesAsNumpy()
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._volumes: np.ndarray = self.data.VolumeAsNumpy()
 
     def get_data(self) -> Vol.Volumes:
         return Vol.Volumes.GetRootAsVolumes(self.bytes, 0)

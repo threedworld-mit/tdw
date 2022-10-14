@@ -26,6 +26,7 @@ from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
+from tdw.FBOutput import Containment as Cont
 from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import StaticRobot as StRobo
 from tdw.FBOutput import Robot as Robo
@@ -50,13 +51,15 @@ from tdw.FBOutput import StaticCompositeObjects as StatComp
 from tdw.FBOutput import DynamicCompositeObjects as DynComp
 from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.FBOutput import ObiParticles as ObiP
-from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import StaticContainerShapes as StaticContainers
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.container_data.container_tag import ContainerTag
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -816,6 +819,33 @@ class Overlap(OutputData):
 
     def get_object_ids(self) -> np.array:
         return self.data.ObjectIdsAsNumpy()
+
+    def get_env(self) -> bool:
+        return self.data.Env()
+
+    def get_walls(self) -> bool:
+        return self.data.Walls()
+
+
+class Containment(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, 2)
+
+    def get_data(self):
+        return StaticContainers.StaticContainerShapes.GetRootAsStaticContainerShapes(self.bytes, 0)
+
+    def get_object_id(self) -> int:
+        return int(self._ids[0])
+
+    def get_container_id(self) -> int:
+        return int(self._ids[1])
+
+    def get_tag(self) -> ContainerTag:
+        return ContainerTag(self.data.Tag())
+
+    def get_overlap_ids(self) -> np.array:
+        return self.data.OverlapIdsAsNumpy()
 
     def get_env(self) -> bool:
         return self.data.Env()

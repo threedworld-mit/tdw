@@ -14,6 +14,10 @@ from tdw.add_ons.add_on import AddOn
 from tdw.physics_audio.object_audio_static import DEFAULT_OBJECT_AUDIO_STATIC_DATA
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION, DENSITIES
+from tdw.container_data.container_tag import ContainerTag
+from tdw.container_data.box_container import BoxContainer
+from tdw.container_data.sphere_container import SphereContainer
+from tdw.container_data.cylinder_container import CylinderContainer
 
 
 class Controller:
@@ -183,8 +187,7 @@ class Controller:
                 "rotation": rotation if rotation is not None else {"x": 0, "y": 0, "z": 0},
                 "category": record.wcategory,
                 "id": object_id,
-                "affordance_points": record.affordance_points,
-                "container_shapes": [shape.to_dict() for shape in record.container_shapes]}
+                "affordance_points": record.affordance_points}
 
     @staticmethod
     def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
@@ -225,8 +228,7 @@ class Controller:
                      "position": position,
                      "category": record.wcategory,
                      "id": object_id,
-                     "affordance_points": record.affordance_points,
-                     "container_shapes": [shape.to_dict() for shape in record.container_shapes]}]
+                     "affordance_points": record.affordance_points}]
         if rotation is not None:
             # The rotation is a quaternion.
             if "w" in rotation:
@@ -247,7 +249,6 @@ class Controller:
             commands.append({"$type": "set_object_collision_detection_mode",
                              "id": object_id,
                              "mode": "continuous_speculative"})
-
         if default_physics_values:
             # Use default physics values.
             if model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
@@ -306,6 +307,26 @@ class Controller:
                 commands.append({"$type": "scale_object",
                                  "scale_factor": scale_factor,
                                  "id": object_id})
+        # Add container shapes.
+        for container_shape in record.container_shapes:
+            if isinstance(container_shape, BoxContainer):
+                Controller._add_box_container(object_id=object_id,
+                                              position=container_shape.position,
+                                              tag=container_shape.tag,
+                                              half_extents=container_shape.half_extents,
+                                              rotation=container_shape.rotation)
+            elif isinstance(container_shape, CylinderContainer):
+                Controller._add_cylinder_container(object_id=object_id,
+                                                   position=container_shape.position,
+                                                   tag=container_shape.tag,
+                                                   radius=container_shape.radius,
+                                                   height=container_shape.height,
+                                                   rotation=container_shape.rotation)
+            elif isinstance(container_shape, SphereContainer):
+                Controller._add_sphere_container(object_id=object_id,
+                                                 position=container_shape.position,
+                                                 tag=container_shape.tag,
+                                                 radius=container_shape.radius)
         return commands
 
     @staticmethod
@@ -618,3 +639,90 @@ class Controller:
                           f"\npip3 install tdw -U")
         else:
             print("Your installed tdw Python module is up to date with PyPi.")
+
+    @staticmethod
+    def _get_container_shape_command(command_name: str, object_id: int, position: Dict[str, float],
+                                     tag: ContainerTag) -> dict:
+        """
+        :param command_name: The name of the command.
+        :param object_id: The object ID.
+        :param tag: The semantic tag.
+        :param position: The local position of the container shape.
+
+        :return: A partial command to add a container shape to an object.
+        """
+
+        # Return a partial command.
+        return {"$type": command_name,
+                "id": object_id,
+                "container_id": int(Controller.get_unique_id()),
+                "position": position,
+                "tag": tag.name}
+
+    @staticmethod
+    def _add_box_container(object_id: int, position: Dict[str, float], tag: ContainerTag, half_extents: Dict[str, float],
+                           rotation: Dict[str, float]) -> dict:
+        """
+        Add a box container shape to an object.
+
+        :param object_id: The ID of the object.
+        :param position: The position of the box relative to the parent object.
+        :param tag: The box's semantic [`ContainerTag`](../container_data/container_tag.md).
+        :param half_extents: The half-extents (half the scale) of the box.
+        :param rotation: The rotation of the box in Euler angles relative to the parent object.
+
+        :return: A command to add a container shape.
+        """
+
+        command = Controller._get_container_shape_command(command_name="add_box_container",
+                                                          object_id=object_id,
+                                                          position=position,
+                                                          tag=tag)
+        command["half_extents"] = half_extents
+        command["rotation"] = rotation
+        return command
+
+    @staticmethod
+    def _add_cylinder_container(object_id: int, position: Dict[str, float], tag: ContainerTag, radius: float,
+                                height: float, rotation: Dict[str, float]) -> dict:
+        """
+        Add a cylinder container shape to an object.
+
+        :param object_id: The ID of the object.
+        :param position: The position of the cylinder relative to the parent object.
+        :param tag: The cylinder's semantic [`ContainerTag`](../container_data/container_tag.md).
+        :param radius: The radius of the cylinder.
+        :param height: The height of the cylinder.
+        :param rotation: The rotation of the cylinder in Euler angles relative to the parent object.
+
+        :return: A command to add a container shape.
+        """
+
+        command = Controller._get_container_shape_command(command_name="add_cylinder_container",
+                                                          object_id=object_id,
+                                                          position=position,
+                                                          tag=tag)
+        command["radius"] = radius
+        command["height"] = height
+        command["rotation"] = rotation
+        return command
+
+    @staticmethod
+    def _add_sphere_container(object_id: int, position: Dict[str, float], tag: ContainerTag, radius: float) -> dict:
+        """
+        Add a sphere container shape to an object.
+
+        :param object_id: The ID of the object.
+        :param position: The position of the sphere relative to the parent object.
+        :param tag: The sphere's semantic [`ContainerTag`](../container_data/container_tag.md).
+        :param radius: The radius of the sphere.
+
+        :return: A command to add a container shape.
+        """
+
+        command = Controller._get_container_shape_command(command_name="add_sphere_container",
+                                                          object_id=object_id,
+                                                          position=position,
+                                                          tag=tag)
+        command["radius"] = radius
+        return command

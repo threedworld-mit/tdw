@@ -45,6 +45,9 @@ class Drop(Action):
                 if object_id == self._object_id:
                     overlap_ids = containment.get_overlap_ids()
                     for overlap_id in overlap_ids:
+                        # Ignore the Replicant.
+                        if overlap_id == static.replicant_id:
+                            continue
                         commands.extend([{"$type": "unparent_object",
                                           "id": int(overlap_id)},
                                          {"$type": "set_kinematic_state",

@@ -1533,7 +1533,7 @@ class Replicants(OutputData):
         self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 3)
         self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 4)
         self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 3)
-        self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 3)
+        self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
 
     def get_data(self) -> Repl.Replicants:
         return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)

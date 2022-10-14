@@ -742,7 +742,7 @@ class Volumes(OutputData):
     def __init__(self, b):
         super().__init__(b)
         self._ids = self.data.IdsAsNumpy()
-        self._volumes = self.data.VolumesAsNumpy()
+        self._volumes = self.data.VolumeAsNumpy()
 
     def get_data(self) -> Vol.Volumes:
         return Vol.Volumes.GetRootAsVolumes(self.bytes, 0)

@@ -21,6 +21,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.1
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `start_video_capture_linux`<br>`start_video_capture_osx`<br>`start_video_capture_window` | Added an optional parameter `pixel_format` that defaults to `"yuv420p"` and set the default value of `qp` to 1 (was 0). Because of these changes, the generated .mp4 video is much more likely to be playable in programs other than VLC. |
 
+### `tdw` module
+
+- Fixed: Crash in `Volumes` output data constructor.
+
 ## v1.10.7
 
 ### Command API

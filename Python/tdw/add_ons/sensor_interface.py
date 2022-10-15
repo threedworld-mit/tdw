@@ -1,5 +1,5 @@
 from tdw.add_ons.sensor_interface_base import SensorInterfaceBase
-from typing import List, Dict, Optional
+from typing import List, Dict
 
 class SensorInterface(SensorInterfaceBase):
     """
@@ -19,12 +19,10 @@ class SensorInterface(SensorInterfaceBase):
         self.commands.extend(super().get_initialization_commands())
         return self.commands
 
+    def on_send(self, resp: List[bytes]) -> None:
+        return
 
-    def get_digital_write_command(self, pin: int, value: int) -> Optional[dict]:
-        self.commands = []
-        self.commands.append({"$type": "digital_write",
-                              "digital_pin": pin,
-                              "value": value})
-        return self.commands
+
+
 
 

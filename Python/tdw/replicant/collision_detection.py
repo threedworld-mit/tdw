@@ -11,7 +11,7 @@ class CollisionDetection:
         """
         :param walls: If True, the Replicant will stop when it collides with a wall.
         :param floor: If True, the Replicant will stop when it collides with the floor.
-        :param objects: If True, the Replicant will stop when it collides collides with an object with a mass greater than the `mass` value unless the object is in the `exclude_objects`.
+        :param objects: If True, the Replicant will stop when it collides with an object unless the is in the `exclude_objects`.
         :param avoid: If True, while walking, the Replicant will try to stop *before* colliding with objects.
         :param exclude_objects: The Replicant will ignore a collision with any object in this list, *regardless* of whether or not `objects == True`. Can be None.
         :param previous_was_same: If True, the Replicant will stop if the previous action resulted in a collision and was the same sort of action as the current one.
@@ -26,7 +26,7 @@ class CollisionDetection:
         """
         self.floor: bool = floor
         """:field
-        If True, the Replicant will stop when it collides with an object with a mass greater than the `mass` value unless the object is in the `exclude_objects`.
+        If True, the Replicant will stop when it collides with an object unless the is in the `exclude_objects`.
         """
         self.objects: bool = objects
         """:field

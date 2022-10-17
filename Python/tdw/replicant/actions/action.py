@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict
+from typing import List, Optional
 from overrides import final
 import numpy as np
-from tdw.quaternion_utils import QuaternionUtils
+from tdw.output_data import OutputData, Transforms, ReplicantStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.action_status import ActionStatus
@@ -100,14 +100,37 @@ class Action(ABC):
         return commands
 
     @final
-    def _absolute_to_relative(self, position: np.array, dynamic: ReplicantDynamic) -> np.array:
+    def _get_object_position(self, object_id: int, resp: List[bytes]) -> np.ndarray:
         """
-        :param position: The position in absolute world coordinates.
-        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
+        :param object_id: The object ID.
+        :param resp: The response from the build.
 
-        :return: The converted position relative to the Replicant's position and rotation.
+        :return: The position of the object.
         """
 
-        return QuaternionUtils.world_to_local_vector(position=position,
-                                                     origin=dynamic.transform.position,
-                                                     rotation=dynamic.transform.rotation)
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "tran":
+                transforms = Transforms(resp[i])
+                for j in range(transforms.get_num()):
+                    if transforms.get_id(j) == object_id:
+                        return transforms.get_position(j)
+        raise Exception(f"Transform data not found for: {object_id}")
+
+    @final
+    def _get_status(self, replicant_id: int, resp: List[bytes]) -> Optional[ActionStatus]:
+        """
+        :param replicant_id: The ID of my Replicant.
+        :param resp: The response from the build.
+
+        :return: Either an `ActionStatus` if one is present in the output data, or None.
+        """
+
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "rest":
+                replicant_status = ReplicantStatus(resp[i])
+                if replicant_status.get_id() == replicant_id:
+                    return replicant_status.get_status()
+        return None
+

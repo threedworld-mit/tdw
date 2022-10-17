@@ -211,12 +211,19 @@ class Replicant(AddOn):
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
-    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arms: Union[Arm, List[Arm]], num_frames: int = 15) -> None:
+    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arms: Union[Arm, List[Arm]],
+                  arrived_at: float = 0.01, max_distance: float = 1.5, num_frames: int = 15) -> None:
         """
         Reach for a target object or position.
 
+        If target is an object, the target position is a point on the object.
+        If the object has affordance points, the target position is the affordance point closest to the hand.
+        Otherwise, the target position is the bounds position closest to the hand.
+
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arms: The [`Arm`](../agents/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
+        :param max_distance: The maximum distance from the hand to the target position.
         :param num_frames: The number of frames for the action. This controls the speed of the action.
         """
 
@@ -230,8 +237,10 @@ class Replicant(AddOn):
                                arms=a,
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
+                               arrived_at=arrived_at,
                                previous=self._previous_action,
-                               num_frames=num_frames)
+                               num_frames=num_frames,
+                               max_distance=max_distance)
 
     def grasp(self, target: int, arm: Arm, orient_to_floor: bool = True) -> None:
         """

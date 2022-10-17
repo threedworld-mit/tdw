@@ -6,7 +6,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.action import Action
 from tdw.agents.arm import Arm
 from tdw.agents.image_frequency import ImageFrequency
-from tdw.output_data import OutputData, Transforms, Containment
+from tdw.output_data import OutputData, Containment
 
 
 class Drop(Action):
@@ -57,11 +57,11 @@ class Drop(Action):
         commands.append({"$type": "replicant_drop_object",
                          "id": static.replicant_id,
                          "arm": self._arm.name})
-        self._object_position = self._get_object_position(resp=resp)
+        self._object_position = self._get_object_position(object_id=self._object_id, resp=resp)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        position = self._get_object_position(resp=resp)
+        position = self._get_object_position(object_id=self._object_id, resp=resp)
         # The object stopped moving or fell through the floor.
         if np.linalg.norm(position - self._object_position) < 0.001 or position[1] < -0.1:
             self.status = ActionStatus.success
@@ -72,21 +72,3 @@ class Drop(Action):
             if self._frame_count >= self._max_num_frames:
                 self.status = ActionStatus.still_dropping
         return []
-
-    def _get_object_position(self, resp: List[bytes]):
-        """
-        :param resp: The response from the build.
-
-        :return: The position of the target object.
-        """
-
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "tran":
-                transforms = Transforms(resp[i])
-                for j in range(transforms.get_num()):
-                    if transforms.get_id(j) == self._object_id:
-                        return transforms.get_position(j)
-                    break
-                break
-        raise Exception(f"No transform data found for: {self._object_id}")

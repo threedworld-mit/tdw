@@ -57,8 +57,10 @@ from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import ReplicantStatus as ReplStat
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
+from tdw.replicant.action_status import ActionStatus
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -1564,3 +1566,15 @@ class Replicants(OutputData):
 
     def get_held_right(self, index: int) -> int:
         return int(self._held[index][1][1])
+
+
+class ReplicantStatus(OutputData):
+    def get_data(self) -> ReplStat.ReplicantStatus:
+        return ReplStat.ReplicantStatus.GetRootAsReplicantStatus(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()
+
+    def get_status(self) -> ActionStatus:
+        return ActionStatus(self.data.Status())
+

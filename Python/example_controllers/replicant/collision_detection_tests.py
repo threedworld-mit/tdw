@@ -55,4 +55,5 @@ if __name__ == "__main__":
     c.test(avoid=False, exclude=True, status=ActionStatus.success)
     c.test(distance=-12, status=ActionStatus.detected_obstacle)
     c.test(kinematic=True, status=ActionStatus.detected_obstacle)
+    c.test(kinematic=True, avoid=False, status=ActionStatus.collision)
     c.communicate({"$type": "terminate"})

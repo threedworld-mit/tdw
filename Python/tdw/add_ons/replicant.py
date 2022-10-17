@@ -17,13 +17,15 @@ from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
-from tdw.librarian import ReplicantRecord, ReplicantLibrarian
+from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
 from tdw.controller import Controller
 
 
 class Replicant(AddOn):
+    _LIBRARY_NAME: str = "replicants.json"
+
     def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
         """
@@ -77,10 +79,10 @@ class Replicant(AddOn):
         self._previous_resp: List[bytes] = list()
         self._frame_count: int = 0
         # Initialize the Replicant metdata library.
-        if "replicants.json" not in Controller.REPLICANT_LIBRARIANS:
-            Controller.REPLICANT_LIBRARIANS["replicants.json"] = ReplicantLibrarian()
+        if Replicant._LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
+            Controller.HUMANOID_LIBRARIANS[Replicant._LIBRARY_NAME] = HumanoidLibrarian(Replicant._LIBRARY_NAME)
         # Get the metdata record.
-        self._record: ReplicantRecord = Controller.REPLICANT_LIBRARIANS["replicants.json"].get_record(name)
+        self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant._LIBRARY_NAME].get_record(name)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "add_replicant",

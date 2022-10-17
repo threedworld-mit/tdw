@@ -260,15 +260,6 @@ class HumanoidRecord(_Record):
         super().__init__(data)
 
 
-class ReplicantRecord(_Record):
-    """
-    A record for a humanoid asset bundle.
-    """
-
-    def __init__(self, data: Optional[dict] = None):
-        super().__init__(data)
-
-
 class RobotRecord(_Record):
     """
     A record for a robot asset bundle.
@@ -630,19 +621,6 @@ class HumanoidLibrarian(_Librarian[HumanoidRecord]):
 
     def _generate_record(self, data: dict) -> T:
         return HumanoidRecord(data)
-
-
-class ReplicantLibrarian(_Librarian[ReplicantRecord]):
-    """
-    Librarian class for Replicant metadata.
-    """
-
-    @staticmethod
-    def get_library_filenames() -> List[str]:
-        return ["replicants.json"]
-
-    def _generate_record(self, data: dict) -> T:
-        return ReplicantRecord(data)
 
 
 class RobotLibrarian(_Librarian[RobotRecord]):

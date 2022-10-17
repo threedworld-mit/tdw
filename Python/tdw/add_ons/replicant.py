@@ -233,17 +233,19 @@ class Replicant(AddOn):
                                previous=self._previous_action,
                                num_frames=num_frames)
 
-    def grasp(self, target: int, arm: Arm) -> None:
+    def grasp(self, target: int, arm: Arm, orient_to_floor: bool = True) -> None:
         """
         Grasp a target object.
 
         :param target: The target object ID.
         :param arm: The [`Arm`](../agents/arm.md) value for the hand that will grasp the target object.
+        :param orient_to_floor: If True, rotate the grasped object to be level with the floor.
         """
 
         self.action = Grasp(target=target,
                             arm=arm,
-                            dynamic=self.dynamic)
+                            dynamic=self.dynamic,
+                            orient_to_floor=orient_to_floor)
 
     def drop(self, arm: Arm, max_num_frames: int = 100) -> None:
         """

@@ -13,16 +13,18 @@ class Grasp(Action):
     Grasp a target object.
     """
 
-    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic):
+    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, orient_to_floor: bool):
         """
         :param target: The target object ID.
         :param arm: The [`Arm`](../../agents/arm.md) value for the hand that will grasp the target object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
+        :param orient_to_floor: If True, rotate the grasped object to be level with the floor.
         """
 
         super().__init__()
         self._target: int = target
         self._arm: Arm = arm
+        self._orient_to_floor: bool = orient_to_floor
         # We're already holding an object.
         if self._arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
@@ -51,7 +53,8 @@ class Grasp(Action):
         commands.extend([{"$type": "replicant_grasp_object",
                           "id": static.replicant_id,
                           "arm": self._arm.name,
-                          "object_id": self._target}])
+                          "object_id": self._target,
+                          "orient_to_floor": self._orient_to_floor}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

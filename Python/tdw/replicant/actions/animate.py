@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import List
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
@@ -15,12 +16,12 @@ class Animate(Action):
     """
 
     def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool = True,
-                 library: str = "humanoid_animations.json", previous=None):
+                 library: str = "humanoid_animations.json", previous: Action = None):
         """
         :param animation: The name of the animation.
-        :param collision_detection: The [`CollisionDetection`](collision_detection.md) rules.
+        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param forward: If True, play the animation forwards. If False, play the animation backwards.
-        :param library: The animation library.
+        :param library: The name animation library.
         :param previous: The previous action. Can be None.
         """
 
@@ -41,6 +42,7 @@ class Animate(Action):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
+        # Download the animation if needed. Play the animation.
         commands.extend([{"$type": "add_humanoid_animation",
                           "name": self._record.name,
                           "url": self._record.get_url()},

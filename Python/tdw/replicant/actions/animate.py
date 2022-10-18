@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Optional
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
@@ -15,12 +15,13 @@ class Animate(Action):
     Play an animation.
 
     The animation will end either when the animation clip is finished or if the Replicant collides with something (see `self.collision_detection`).
-    The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
-    Additionally, if the previous action was `Animate`, and it was the same animation, and it ended in a collision, this action fails immediately without trying to play the animation.
+
+    - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+    - If `self.collision_detection.previous_was_same == True`, and it was the same animation, and it ended in a collision, this action ends immediately.
     """
 
-    def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool = True,
-                 library: str = "humanoid_animations.json", previous: Action = None):
+    def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool, library: str,
+                 previous: Optional[Action]):
         """
         :param animation: The name of the animation.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.

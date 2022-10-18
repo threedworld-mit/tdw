@@ -12,25 +12,42 @@ from tdw.output_data import OutputData, Containment
 class Drop(Action):
     """
     Drop a held object.
+
+    The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
     """
 
     def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int = 100):
         """
-        :param arm: The [`Arm`](../../agents/arm.md) holding the object.
-        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
+        :param arm: The [`Arm`](../arm.md) holding the object.
+        :param dynamic: The [`ReplicantDynamic``](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
         """
 
         super().__init__()
-        self._arm: Arm = arm
+        """:field
+        The [`Arm`](../arm.md) holding the object.
+        """
+        self.arm: Arm = arm
         if arm not in dynamic.held_objects:
             self.status = ActionStatus.not_holding
-            self._object_id: int = 0
+            """:field
+            The ID of the held object.
+            """
+            self.object_id: int = 0
         else:
-            self._object_id = dynamic.held_objects[arm]
-        self._object_position: np.ndarray = np.zeros(shape=3)
-        self._max_num_frames: int = max_num_frames
-        self._frame_count: int = 0
+            self.object_id = dynamic.held_objects[arm]
+        """:field
+        The current position of the object.
+        """
+        self.object_position: np.ndarray = np.zeros(shape=3)
+        """:field
+        Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        """
+        self.max_num_frames: int = max_num_frames
+        """:field
+        The current frame.
+        """
+        self.frame_count: int = 0
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -42,7 +59,7 @@ class Drop(Action):
             if r_id == "cont":
                 containment = Containment(resp[i])
                 object_id = containment.get_object_id()
-                if object_id == self._object_id:
+                if object_id == self.object_id:
                     overlap_ids = containment.get_overlap_ids()
                     for overlap_id in overlap_ids:
                         # Ignore the Replicant.
@@ -56,19 +73,19 @@ class Drop(Action):
                                           "use_gravity": True}])
         commands.append({"$type": "replicant_drop_object",
                          "id": static.replicant_id,
-                         "arm": self._arm.name})
-        self._object_position = self._get_object_position(object_id=self._object_id, resp=resp)
+                         "arm": self.arm.name})
+        self.object_position = self._get_object_position(object_id=self.object_id, resp=resp)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        position = self._get_object_position(object_id=self._object_id, resp=resp)
+        position = self._get_object_position(object_id=self.object_id, resp=resp)
         # The object stopped moving or fell through the floor.
-        if np.linalg.norm(position - self._object_position) < 0.001 or position[1] < -0.1:
+        if np.linalg.norm(position - self.object_position) < 0.001 or position[1] < -0.1:
             self.status = ActionStatus.success
         else:
             # Update the current position.
-            self._object_position = position
-            self._frame_count += 1
-            if self._frame_count >= self._max_num_frames:
+            self.object_position = position
+            self.frame_count += 1
+            if self.frame_count >= self.max_num_frames:
                 self.status = ActionStatus.still_dropping
         return []

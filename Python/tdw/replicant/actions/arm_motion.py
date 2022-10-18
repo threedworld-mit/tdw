@@ -1,4 +1,5 @@
-from typing import List
+from __future__ import annotations
+from typing import List, Optional
 from abc import ABC
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
@@ -12,28 +13,39 @@ from tdw.replicant.image_frequency import ImageFrequency
 class ArmMotion(Action, ABC):
     """
     Abstract base class for actions related to Replicant arm motion.
+
+    Duration an arm motion, the Replicant's arm(s) will continously move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+
+    - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+    - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
     """
 
     def __init__(self, arms: List[Arm], dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous=None, duration: float = 0.25):
+                 duration: float, previous: Optional[Action]):
         """
-        :param arms: The [`Arm`](../../agents/arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
-        :param dynamic: [`ReplicantDynamic`](../replicant_dynamic.md) data.
-        :param collision_detection: [The collision detection rules.](../collision_detection.md)
-        :param previous: The previous action. Can be None.
+        :param arms: A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
+        :param dynamic: The [`ReplicantDynamic``](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param duration: The duration of the motion in seconds.
+        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
+        :param previous: The previous action. Can be None.
         """
 
         super().__init__()
-        self._arms: List[Arm] = arms
-        self._collision_detection: CollisionDetection = collision_detection
+        """:field
+        A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
+        """
+        self.arms: List[Arm] = arms
+        """:field
+        The [`CollisionDetection`](../collision_detection.md) rules.
+        """
+        self.collision_detection: CollisionDetection = collision_detection
         # Ignore collision detection for held items.
-        self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self._collision_detection.exclude_objects]
-        self._collision_detection.exclude_objects.extend(self.__held_objects)
+        self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
+        self.collision_detection.exclude_objects.extend(self.__held_objects)
         self._duration: float = duration
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
-        if self._collision_detection.previous_was_same and previous is not None and isinstance(previous, ArmMotion):
-            for arm in self._arms:
+        if self.collision_detection.previous_was_same and previous is not None and isinstance(previous, ArmMotion):
+            for arm in self.arms:
                 if arm in previous.collisions:
                     self.status = ActionStatus.collision
         """:field
@@ -43,9 +55,9 @@ class ArmMotion(Action, ABC):
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # Get body part collisions.
-        body_part_collisions = dynamic.get_collision_enters(collision_detection=self._collision_detection)
+        body_part_collisions = dynamic.get_collision_enters(collision_detection=self.collision_detection)
         # Filter for only collisions involving arm joints.
-        for arm in self._arms:
+        for arm in self.arms:
             if len([b for b in body_part_collisions if static.body_parts_by_id[b] in ReplicantStatic.ARM_JOINTS[arm]]) > 0:
                 self.collisions.append(arm)
         if len(self.collisions) > 0:
@@ -58,5 +70,5 @@ class ArmMotion(Action, ABC):
                          image_frequency: ImageFrequency) -> List[dict]:
         # Ignore held objects.
         for object_id in self.__held_objects:
-            self._collision_detection.exclude_objects.remove(object_id)
+            self.collision_detection.exclude_objects.remove(object_id)
         return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)

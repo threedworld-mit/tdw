@@ -45,7 +45,7 @@ class MoveBy(Animate):
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
-        :param reset_arms_duration: The speed at which the arms are reset.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
@@ -59,7 +59,7 @@ class MoveBy(Animate):
         """
         self.reset_arms: bool = reset_arms
         """:field
-        The speed at which the arms are reset.
+        The speed at which the arms are reset in seconds.
         """
         self.reset_arms_duration: float = reset_arms_duration
         """:field

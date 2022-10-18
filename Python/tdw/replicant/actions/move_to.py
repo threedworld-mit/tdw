@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Union, Dict, List, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
@@ -14,30 +15,49 @@ from tdw.replicant.image_frequency import ImageFrequency
 class MoveTo(Action):
     """
     Turn the Replicant to a target position or object and then walk to it.
+
+    While walking, the Replicant will continuously play a walk cycle animation until the action ends.
+
+    The action can end for several reasons:
+
+    - If the Replicant walks the target distance (i.e. it reaches its target), the action succeeds.
+    - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+    - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+      - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+      - Otherwise, the action ends in failure.
+    - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+      - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+      - Otherwise, the action ends in failure.
+    - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    def __init__(self, target: Union[int, Dict[str, float], np.ndarray], resp: List[bytes],
-                 collision_detection: CollisionDetection, previous: Action = None, reset_arms_num_frames: int = 15,
-                 arrived_at: float = 0.1, max_walk_cycles: int = 100, bounds_position: str = "center"):
+    def __init__(self, target: Union[int, Dict[str, float], np.ndarray], dynamic: ReplicantDynamic, resp: List[bytes],
+                 collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
+                 reset_arms_duration: float, arrived_at: float, max_walk_cycles: int, bounds_position: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param resp: The response from the build.
-        :param collision_detection: [The collision detection rules.](../collision_detection.md)
+        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
-        :param reset_arms_num_frames: The number of frames for resetting the arms while walking. This controls the speed of the arm motion.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
         """
 
-        self._target: Union[int, Dict[str, float], np.ndarray] = target
-        if isinstance(self._target, np.ndarray):
-            self._target_position: np.ndarray = self._target
-        elif isinstance(self._target, dict):
-            self._target_position = TDWUtils.vector3_to_array(self._target)
+        """:field
+        The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        """
+        self.target: Union[int, Dict[str, float], np.ndarray] = target
+        if isinstance(self.target, np.ndarray):
+            target_position: np.ndarray = self.target
+        elif isinstance(self.target, dict):
+            target_position = TDWUtils.vector3_to_array(self.target)
         # Get the target position.
-        elif isinstance(self._target, int):
-            self._target_position = np.zeros(shape=3)
+        elif isinstance(self.target, int):
+            target_position = np.zeros(shape=3)
             for i in range(len(resp) - 1):
                 # Get the output data ID.
                 r_id = OutputData.get_data_type_id(resp[i])
@@ -45,21 +65,41 @@ class MoveTo(Action):
                 if r_id == "boun":
                     bounds = Bounds(resp[i])
                     for j in range(bounds.get_num()):
-                        if bounds.get_id(j) == self._target:
+                        if bounds.get_id(j) == self.target:
                             bound = TDWUtils.get_bounds_dict(bounds, j)
-                            self._target_position = bound[bounds_position]
+                            target_position = bound[bounds_position]
                             break
                     break
         else:
-            raise Exception(f"Invalid target: {self._target}")
+            raise Exception(f"Invalid target: {self.target}")
+        """:field
+        The target distance.
+        """
+        self.distance: float = np.linalg.norm(dynamic.transform.position - target_position)
+        """:field
+        The [`CollisionDetection`](../collision_detection.md) rules.
+        """
+        self.collision_detection: CollisionDetection = collision_detection
+        """:field
+        If True, reset the arms to their neutral positions while beginning the walk cycle.
+        """
+        self.reset_arms: bool = reset_arms
+        """:field
+        The speed at which the arms are reset in seconds.
+        """
+        self.reset_arms_duration: float = reset_arms_duration
+        """:field
+        If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        """
+        self.arrived_at: float = arrived_at
+        """:field
+        The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
+        """
+        self.max_walk_cycles: int = max_walk_cycles
         self._turning: bool = True
         self._image_frequency: ImageFrequency = ImageFrequency.once
         self._move_by: Optional[MoveBy] = None
-        self._collision_detection: CollisionDetection = collision_detection
         self._previous_action: Optional[Action] = previous
-        self._reset_arms_num_frames: int = reset_arms_num_frames
-        self._arrived_at: float = arrived_at
-        self._max_walk_cycles: int = max_walk_cycles
         super().__init__()
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -67,30 +107,29 @@ class MoveTo(Action):
         # Remember the image frequency.
         self._image_frequency = image_frequency
         # Turn to the target.
-        return TurnTo(target=self._target).get_initialization_commands(resp=resp,
-                                                                       static=static,
-                                                                       dynamic=dynamic,
-                                                                       image_frequency=image_frequency)
+        return TurnTo(target=self.target).get_initialization_commands(resp=resp,
+                                                                      static=static,
+                                                                      dynamic=dynamic,
+                                                                      image_frequency=image_frequency)
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         if self._turning:
             # Start walking.
             self._turning = False
-            # Get the distance.
-            distance = np.linalg.norm(dynamic.transform.position - self._target_position)
             # Get the direction.
-            forward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * distance))
-            backward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * -distance))
+            forward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * self.distance))
+            backward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * -self.distance))
             if forward > backward:
-                distance *= -1
+                self.distance *= -1
             # Start walking.
-            self._move_by = MoveBy(distance=float(distance),
+            self._move_by = MoveBy(distance=float(self.distance),
                                    dynamic=dynamic,
-                                   collision_detection=self._collision_detection,
+                                   collision_detection=self.collision_detection,
                                    previous=self._previous_action,
-                                   reset_arms_num_frames=self._reset_arms_num_frames,
-                                   arrived_at=self._arrived_at,
-                                   max_walk_cycles=self._max_walk_cycles)
+                                   reset_arms=self.reset_arms,
+                                   reset_arms_duration=self.reset_arms_duration,
+                                   arrived_at=self.arrived_at,
+                                   max_walk_cycles=self.max_walk_cycles)
             commands = self._move_by.get_initialization_commands(resp=resp,
                                                                  static=static,
                                                                  dynamic=dynamic,

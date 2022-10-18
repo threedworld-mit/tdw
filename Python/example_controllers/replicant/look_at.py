@@ -24,6 +24,9 @@ commands = [TDWUtils.create_empty_room(12, 12),
 commands.extend(Controller.get_add_physics_object(model_name="basket_18inx18inx12iin_wicker",
                                                   object_id=object_id,
                                                   position={"x": -2, "y": 0, "z": 3}))
+commands.extend(Controller.get_add_physics_object(model_name="rh10",
+                                                  object_id=Controller.get_unique_id(),
+                                                  position={"x": 2, "y": 0, "z": 3}))
 c.communicate(commands)
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_look_at")
 print(f"Images will be saved to: {path}")
@@ -33,5 +36,7 @@ c.communicate([])
 replicant.look_at(target=object_id)
 do_action()
 replicant.look_at(target={"x": 2, "y": 0.3, "z": 3})
+do_action()
+replicant.reset_head()
 do_action()
 c.communicate({"$type": "terminate"})

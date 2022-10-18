@@ -18,6 +18,7 @@ from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
 from tdw.replicant.actions.look_at import LookAt
+from tdw.replicant.actions.reset_head import ResetHead
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.agents.image_frequency import ImageFrequency
 from tdw.agents.arm import Arm
@@ -304,13 +305,24 @@ class Replicant(AddOn):
                                previous=self._previous_action,
                                duration=duration)
 
-    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.25):
+    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1):
         """
+        Look at a target object or position.
+
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
         """
 
         self.action = LookAt(target=target, duration=duration)
+
+    def reset_head(self, duration: float = 0.1):
+        """
+        Look at a target object or position.
+
+        :param duration: The duration of the motion in seconds.
+        """
+
+        self.action = ResetHead(duration=duration)
 
     def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,) -> None:
         """

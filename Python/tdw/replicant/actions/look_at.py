@@ -3,25 +3,23 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.actions.action import Action
-from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.actions.head_motion import HeadMotion
 from tdw.agents.image_frequency import ImageFrequency
 
 
-class LookAt(Action):
+class LookAt(HeadMotion):
     """
     Look at a target object or position.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.25):
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
         """
 
-        super().__init__()
+        super().__init__(duration=duration)
         self._target: Union[int, np.ndarray, Dict[str,  float]] = target
-        self._duration: float = duration
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -49,8 +47,3 @@ class LookAt(Action):
         else:
             raise Exception(f"Invalid target: {self._target}")
         return commands
-
-    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        if self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
-            self.status = ActionStatus.success
-        return []

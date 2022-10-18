@@ -59,13 +59,15 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
+| [Containment](#Containment) | The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag. | `cont` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
+| [DynamicEmptyObjects](#DynamicEmptyObjects) | The position of each empty object in the scene. | `dyem` |
 | [DynamicRobots](#DynamicRobots) | Dynamic robot output data. | `drob` |
-| [EmptyObjects](#EmptyObjects) | The position of each empty object in the scene. | `empt` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
 | [FieldOfView](#FieldOfView) | An avatar's camera field of view and focal length. | `fofv` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
+| [HumanoidMotionComplete](#HumanoidMotionComplete) | An announcement that a humanoid motion ended. | `humc` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
 | [IdPassSegmentationColors](#IdPassSegmentationColors) | All segmentation colors in an _id pass. | `ipsc` |
 | [Images](#Images) | The images and associated metadata that were captured by an avatar. | `imag` |
@@ -87,6 +89,8 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
+| [Replicants](#Replicants) | Data about the Transform component of Replicants (position and rotation). | `repl` |
+| [ReplicantStatus](#ReplicantStatus) | The status of a Replicant. | `rest` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
@@ -94,6 +98,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
 | [StaticCompositeObjects](#StaticCompositeObjects) | Static data for composite objects. | `scom` |
+| [StaticEmptyObjects](#StaticEmptyObjects) | Static data for empty objects in the scene. | `stem` |
 | [StaticOculusTouch](#StaticOculusTouch) | Static data for the Oculus Touch rig. | `soct` |
 | [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
@@ -267,6 +272,23 @@ Data for a collision between objects occurring on this frame.
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
 
+## Containment
+
+`c = Containment(byte_array)`
+
+**Identifier:** `cont`
+
+The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_object_id()` | The ID of the object. | `int` |
+| `get_container_id()` | The ID of the container. | `int` |
+| `get_tag()` | The semantic tag. | `ContainerTag` |
+| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
+| `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
+
 ## DynamicCompositeObjects
 
 `d = DynamicCompositeObjects(byte_array)`
@@ -287,6 +309,19 @@ Dynamic data for composite objects.
 | `get_light_id(index)` | The ID of the light. | `int` |
 | `get_light_is_on(index)` | The on of the light is. | `bool` |
 
+## DynamicEmptyObjects
+
+`d = DynamicEmptyObjects(byte_array)`
+
+**Identifier:** `dyem`
+
+The position of each empty object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of positions. | `int` |
+| `get_position(index)` | The position. | `np.ndarray` |
+
 ## DynamicRobots
 
 `d = DynamicRobots(byte_array)`
@@ -304,20 +339,6 @@ Dynamic robot output data.
 | `get_joint_position(index)` | The position of the joint. | `np.array` |
 | `get_joint_angles(index)` | The angles of the joint. | `np.array` |
 | `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
-
-## EmptyObjects
-
-`e = EmptyObjects(byte_array)`
-
-**Identifier:** `empt`
-
-The position of each empty object in the scene.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.array` |
 
 ## EnvironmentColliderIntersection
 
@@ -379,6 +400,18 @@ NVIDIA Flex data.
 | `get_particles(index)` | The Flex particle positions and inverse mass. | `np.array` |
 | `get_velocities(index)` | The Flex particle velocities. | `np.array` |
 | `get_id(index)` | The unique ID of the object. | `int` |
+
+## HumanoidMotionComplete
+
+`h = HumanoidMotionComplete(byte_array)`
+
+**Identifier:** `humc`
+
+An announcement that a humanoid motion ended.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the humanoid. | `int` |
 
 ## IdPassGrayscale
 
@@ -712,6 +745,39 @@ A ray cast from an origin to a destination and what, if anything, it hit.
 | `get_normal()` | The normal of the surface that the raycast hit. | `Tuple[float, float, float]` |
 | `get_point()` | The point that the raycast hit. | `Tuple[float, float, float]` |
 
+## Replicants
+
+`r = Replicants(byte_array)`
+
+**Identifier:** `repl`
+
+Data about the Transform component of Replicants (position and rotation).
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position. | `np.array` |
+| `get_forward(index)` | The forward. | `np.array` |
+| `get_rotation(index)` | The rotation. | `np.array` |
+| `get_is_holding_left(index)` | The left of the is holding. | `bool` |
+| `get_held_left(index)` | The left of the held. | `int` |
+| `get_is_holding_right(index)` | The right of the is holding. | `bool` |
+| `get_held_right(index)` | The right of the held. | `int` |
+
+## ReplicantStatus
+
+`r = ReplicantStatus(byte_array)`
+
+**Identifier:** `rest`
+
+The status of a Replicant.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_id()` | The ID of the Replicant. | `int` |
+| `get_status()` | The Replicant's status. | `ActionStatus` |
+
 ## Rigidbodies
 
 `r = Rigidbodies(byte_array)`
@@ -853,6 +919,20 @@ Static data for composite objects.
 | `get_prismatic_joint_id(index, prismatic_joint_index)` | The ID of the prismatic joint. | `int` |
 | `get_prismatic_joint_limit(index, prismatic_joint_index)` | The limit of the prismatic joint. | `float` |
 | `get_prismatic_joint_axis(index, prismatic_joint_index)` | The axis of the prismatic joint. | `Tuple[float, float, float]` |
+
+## StaticEmptyObjects
+
+`s = StaticEmptyObjects(byte_array)`
+
+**Identifier:** `stem`
+
+Static data for empty objects in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of ids. | `int` |
+| `get_object_id(index)` | The ID of the object. | `int` |
+| `get_empty_object_id(index)` | The ID of the empty object. | `int` |
 
 ## StaticOculusTouch
 

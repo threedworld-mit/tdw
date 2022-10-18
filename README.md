@@ -320,6 +320,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
 - [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
+- [Replicant](Documentation/python/add_ons/replicant.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
 - [RobotArm](Documentation/python/add_ons/robot_arm.md)
@@ -492,6 +493,33 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [Build](Documentation/python/release/build.md)
 - [PyPi](Documentation/python/release/pypi.md)
+
+**tdw.replicant**
+
+- [ActionStatus](Documentation/python/replicant/action_status.md)
+- [Arm](Documentation/python/replicant/arm.md)
+- [CollisionDetection](Documentation/python/replicant/collision_detection.md)
+- [ImageFrequency](Documentation/python/replicant/image_frequency.md)
+- [ReplicantBodyPart](Documentation/python/replicant/replicant_body_part.md)
+- [ReplicantDynamic](Documentation/python/replicant/replicant_dynamic.md)
+- [ReplicantStatic](Documentation/python/replicant/replicant_static.md)
+
+**tdw.replicant.actions**
+
+- [Action](Documentation/python/replicant/actions/action.md)
+- [Animate](Documentation/python/replicant/actions/animate.md)
+- [ArmMotion](Documentation/python/replicant/actions/arm_motion.md)
+- [Drop](Documentation/python/replicant/actions/drop.md)
+- [Grasp](Documentation/python/replicant/actions/grasp.md)
+- [HeadMotion](Documentation/python/replicant/actions/head_motion.md)
+- [LookAt](Documentation/python/replicant/actions/look_at.md)
+- [MoveBy](Documentation/python/replicant/actions/move_by.md)
+- [MoveTo](Documentation/python/replicant/actions/move_to.md)
+- [ReachFor](Documentation/python/replicant/actions/reach_for.md)
+- [ResetArm](Documentation/python/replicant/actions/reset_arm.md)
+- [ResetHead](Documentation/python/replicant/actions/reset_head.md)
+- [TurnBy](Documentation/python/replicant/actions/turn_by.md)
+- [TurnTo](Documentation/python/replicant/actions/turn_to.md)
 
 **tdw.robot_data**
 

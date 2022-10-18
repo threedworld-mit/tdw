@@ -63,57 +63,6 @@ This is called within `Controller.communicate(commands)` before sending commands
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
-#### add_box
-
-**`self.add_box(object_id, position, tag, half_extents, rotation)`**
-
-Add a box container shape to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the box relative to the parent object. |
-| tag |  ContainerTag |  | The box's semantic [`ContainerTag`](../container_data/container_tag.md). |
-| half_extents |  Dict[str, float] |  | The half-extents (half the scale) of the box. |
-| rotation |  Dict[str, float] |  | The rotation of the box in Euler angles relative to the parent object. |
-
-_Returns:_  The ID of the container shape.
-
-#### add_cylinder
-
-**`self.add_cylinder(object_id, position, tag, radius, height, rotation)`**
-
-Add a cylinder container shape to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the cylinder relative to the parent object. |
-| tag |  ContainerTag |  | The cylinder's semantic [`ContainerTag`](../container_data/container_tag.md). |
-| radius |  float |  | The radius of the cylinder. |
-| height |  float |  | The height of the cylinder. |
-| rotation |  Dict[str, float] |  | The rotation of the cylinder in Euler angles relative to the parent object. |
-
-_Returns:_  The ID of the container shape.
-
-#### add_sphere
-
-**`self.add_sphere(object_id, position, tag, radius)`**
-
-Add a sphere container shape to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the sphere relative to the parent object. |
-| tag |  ContainerTag |  | The sphere's semantic [`ContainerTag`](../container_data/container_tag.md). |
-| radius |  float |  | The radius of the sphere. |
-
-_Returns:_  The ID of the container shape.
-
 #### reset
 
 **`self.reset()`**

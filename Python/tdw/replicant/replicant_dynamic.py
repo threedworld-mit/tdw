@@ -96,9 +96,9 @@ class ReplicantDynamic:
                                                    rotation=replicants.get_rotation(0),
                                                    forward=replicants.get_forward(0))
                         # Get the held objects.
-                        if replicants.is_holding_left(j):
+                        if replicants.get_is_holding_left(j):
                             self.held_objects[Arm.left] = replicants.get_held_left(j)
-                        if replicants.is_holding_right(j):
+                        if replicants.get_is_holding_right(j):
                             self.held_objects[Arm.right] = replicants.get_held_right(j)
                         got_data = True
                         break

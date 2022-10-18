@@ -63,6 +63,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
+| [`add_replicant`](#add_replicant) | Add a Replicant to the scene.  |
 | [`add_smpl_humanoid`](#add_smpl_humanoid) | Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters.  |
 
 **Add Material Command**
@@ -276,7 +277,6 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
-| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
@@ -291,10 +291,12 @@
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
+| [`set_ik_graspable`](#set_ik_graspable) | Make an object graspable for use with the FinalIK Interaction System (in other words, make this object graspable by a Replicant). |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
+| [`teleport_object_by`](#teleport_object_by) | Translate an object by an amount, optionally in local or world space. |
 | [`unparent_object`](#unparent_object) | Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything. |
 
 **Add Container Shape Command**
@@ -304,6 +306,13 @@
 | [`add_box_container`](#add_box_container) | Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 | [`add_cylinder_container`](#add_cylinder_container) | Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 | [`add_sphere_container`](#add_sphere_container) | Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+
+**Empty Object Command**
+
+| Command | Description |
+| --- | --- |
+| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
+| [`teleport_empty_object`](#teleport_empty_object) | Teleport an empty object to a new position. |
 
 **Flex Object Command**
 
@@ -349,8 +358,43 @@
 | Command | Description |
 | --- | --- |
 | [`destroy_humanoid`](#destroy_humanoid) | Destroy a humanoid.  |
-| [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command. |
+| [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.  |
 | [`stop_humanoid_animation`](#stop_humanoid_animation) | Stop a motion capture animation on a humanoid. |
+
+**Replicant Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
+| [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant. |
+
+**Replicant Arm Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_drop_object`](#replicant_drop_object) | Drop a held object. |
+| [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object at the current reach position. Grsap at object pivot point, or optional affordance point as represented by the ID of an attached empty game object. |
+
+**Replicant Arm Motion Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_reset_arm`](#replicant_reset_arm) | Reset the arm on a humanoid to its rest position. |
+
+**Replicant Reach For Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_reach_for_object`](#replicant_reach_for_object) | Instruct a Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. |
+| [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position. |
+
+**Replicant Look At Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_look_at_object`](#replicant_look_at_object) | Tell a Replicant to start to look at a position. |
+| [`replicant_look_at_position`](#replicant_look_at_position) | Tell a Replicant to start to look at a position. |
+| [`replicant_reset_head`](#replicant_reset_head) | Tell a Replicant to start to reset its head to its neutral position. |
 
 **Sub Object Command**
 
@@ -577,8 +621,8 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
+| [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send data each empty object in the scene.  |
 | [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
-| [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
@@ -586,8 +630,10 @@
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
+| [`send_replicants`](#send_replicants) | Send Transform (position and rotation) data of Replicant and their body parts.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
+| [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -1497,6 +1543,30 @@ Add a humanoid model to the scene.
 
 ***
 
+## **`add_replicant`**
+
+Add a Replicant to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/replicant_librarian.md`</font>
+
+```python
+{"$type": "add_replicant", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_replicant", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the humanoid. | |
+| `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
 ## **`add_smpl_humanoid`**
 
 Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. 
@@ -1615,7 +1685,7 @@ Add a single object from a model library or from a local asset bundle to the sce
 ```
 
 ```python
-{"$type": "add_object", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "scale_factor": 1, "category": ""}
+{"$type": "add_object", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "scale_factor": 1, "category": "", "affordance_points": []}
 ```
 
 | Parameter | Type | Description | Default |
@@ -1625,6 +1695,7 @@ Add a single object from a model library or from a local asset bundle to the sce
 | `"id"` | int | The unique ID of the object. | |
 | `"scale_factor"` | float | The default scale factor of a model. | 1 |
 | `"category"` | string | The model category. | "" |
+| `"affordance_points"` | Vector3 [] | A list of affordance points. Can be empty. | [] |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -1647,7 +1718,7 @@ Tell the build to send a report of a model asset bundle. Each report will be a s
 ```
 
 ```python
-{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": ""}
+{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": "", "affordance_points": []}
 ```
 
 | Parameter | Type | Description | Default |
@@ -1656,6 +1727,7 @@ Tell the build to send a report of a model asset bundle. Each report will be a s
 | `"id"` | int | The unique ID of the object. | |
 | `"scale_factor"` | float | The default scale factor of a model. | 1 |
 | `"category"` | string | The model category. | "" |
+| `"affordance_points"` | Vector3 [] | A list of affordance points. Can be empty. | [] |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -3724,23 +3796,6 @@ The shape of the trigger collider.
 
 ***
 
-## **`attach_empty_object`**
-
-Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
-
-
-```python
-{"$type": "attach_empty_object", "empty_object_id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
-| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`create_obi_colliders`**
 
 Create Obi colliders for an object if there aren't any. 
@@ -4047,6 +4102,21 @@ Set the albedo RGBA color of an object.
 
 ***
 
+## **`set_ik_graspable`**
+
+Make an object graspable for use with the FinalIK Interaction System (in other words, make this object graspable by a Replicant).
+
+
+```python
+{"$type": "set_ik_graspable", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_obi_collision_material`**
 
 Set the Obi collision material of an object. 
@@ -4133,13 +4203,35 @@ Teleport an object to a new position.
 ```
 
 ```python
-{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False}
+{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False, "absolute": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the object. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches. | False |
+| `"absolute"` | bool | If True, set the position in world coordindate space. If False, set the position in local coordinate space. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`teleport_object_by`**
+
+Translate an object by an amount, optionally in local or world space.
+
+
+```python
+{"$type": "teleport_object_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "teleport_object_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "absolute": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The positional offset. | |
+| `"absolute"` | bool | If True, set the position in world coordindate space. If False, set the position in local coordinate space. | True |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4172,11 +4264,11 @@ Add a box container shape to an object. The object will send output data wheneve
     - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
 
 ```python
-{"$type": "add_box_container", "id": 1}
+{"$type": "add_box_container", "tag": "on", "id": 1}
 ```
 
 ```python
-{"$type": "add_box_container", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+{"$type": "add_box_container", "tag": "on", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4185,7 +4277,18 @@ Add a box container shape to an object. The object will send output data wheneve
 | `"rotation"` | Vector3 | The rotation of the box in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
 | `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
 | `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"tag"` | ContainerTag | The container tag. | |
 | `"id"` | int | The unique object ID. | |
+
+#### ContainerTag
+
+A tag for a container shape.
+
+| Value | Description |
+| --- | --- |
+| `"on"` | An object on top of a surface, for example a plate on a table. |
+| `"inside"` | An object inside a cavity or basin, for example a toy in a basket or a plate in a sink. |
+| `"enclosed"` | An object inside an enclosed cavity, for example a pan in an oven. |
 
 ***
 
@@ -4198,11 +4301,11 @@ Add a cylindrical container shape to an object. The object will send output data
     - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
 
 ```python
-{"$type": "add_cylinder_container", "id": 1}
+{"$type": "add_cylinder_container", "tag": "on", "id": 1}
 ```
 
 ```python
-{"$type": "add_cylinder_container", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+{"$type": "add_cylinder_container", "tag": "on", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4212,7 +4315,18 @@ Add a cylindrical container shape to an object. The object will send output data
 | `"rotation"` | Vector3 | The rotation of the cylinder in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
 | `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
 | `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"tag"` | ContainerTag | The container tag. | |
 | `"id"` | int | The unique object ID. | |
+
+#### ContainerTag
+
+A tag for a container shape.
+
+| Value | Description |
+| --- | --- |
+| `"on"` | An object on top of a surface, for example a plate on a table. |
+| `"inside"` | An object inside a cavity or basin, for example a toy in a basket or a plate in a sink. |
+| `"enclosed"` | An object inside an enclosed cavity, for example a pan in an oven. |
 
 ***
 
@@ -4225,11 +4339,11 @@ Add a spherical container shape to an object. The object will send output data w
     - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
 
 ```python
-{"$type": "add_sphere_container", "id": 1}
+{"$type": "add_sphere_container", "tag": "on", "id": 1}
 ```
 
 ```python
-{"$type": "add_sphere_container", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+{"$type": "add_sphere_container", "tag": "on", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4237,6 +4351,61 @@ Add a spherical container shape to an object. The object will send output data w
 | `"radius"` | float | The radius of the sphere. | 0.5 |
 | `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
 | `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"tag"` | ContainerTag | The container tag. | |
+| `"id"` | int | The unique object ID. | |
+
+#### ContainerTag
+
+A tag for a container shape.
+
+| Value | Description |
+| --- | --- |
+| `"on"` | An object on top of a surface, for example a plate on a table. |
+| `"inside"` | An object inside a cavity or basin, for example a toy in a basket or a plate in a sink. |
+| `"enclosed"` | An object inside an enclosed cavity, for example a pan in an oven. |
+
+# EmptyObjectCommand
+
+These commands add or adjust an empty object attached to an object.
+
+***
+
+## **`attach_empty_object`**
+
+Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
+
+
+```python
+{"$type": "attach_empty_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "empty_object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`teleport_empty_object`**
+
+Teleport an empty object to a new position.
+
+
+```python
+{"$type": "teleport_empty_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "empty_object_id": 1, "id": 1}
+```
+
+```python
+{"$type": "teleport_empty_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "empty_object_id": 1, "id": 1, "rotation": {"w": 1, "x": 0, "y": 0, "z": 0}, "absolute": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The location to teleport to. | |
+| `"rotation"` | Quaternion | The new local rotation of the empty object. | {"w": 1, "x": 0, "y": 0, "z": 0} |
+| `"absolute"` | bool | If True, teleport the empty object in world coordinate space. If False, teleport the empty object in local coordinate space. | True |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
 | `"id"` | int | The unique object ID. | |
 
 # FlexObjectCommand
@@ -4903,21 +5072,27 @@ Destroy a humanoid.
 
 ## **`play_humanoid_animation`**
 
-Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.
+Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command. 
 
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`HumanoidMotionComplete`](output_data.md#HumanoidMotionComplete)</font>
 
 ```python
 {"$type": "play_humanoid_animation", "name": "string", "id": 1}
 ```
 
 ```python
-{"$type": "play_humanoid_animation", "name": "string", "id": 1, "framerate": -1}
+{"$type": "play_humanoid_animation", "name": "string", "id": 1, "framerate": -1, "forward": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"name"` | string | Name of the animation clip to play. | |
 | `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4933,6 +5108,279 @@ Stop a motion capture animation on a humanoid.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+# ReplicantCommand
+
+These commands affect replicants currently in the scene.
+
+***
+
+## **`add_replicant_rigidbody`**
+
+Add a Rigidbody to a Replicant.
+
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1}
+```
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1, "is_kinematic": True, "use_gravity": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | True |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`parent_avatar_to_replicant`**
+
+Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant.
+
+
+```python
+{"$type": "parent_avatar_to_replicant", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_replicant", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"position"` | Vector3 | The position of the avatar relative to the Replicant's head. | |
+| `"id"` | int | The unique object ID. | |
+
+# ReplicantArmCommand
+
+These commands involve a Replicant's arm.
+
+***
+
+## **`replicant_drop_object`**
+
+Drop a held object.
+
+
+```python
+{"$type": "replicant_drop_object", "arm": "left", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_grasp_object`**
+
+Grasp a target object at the current reach position. Grsap at object pivot point, or optional affordance point as represented by the ID of an attached empty game object.
+
+
+```python
+{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "orient_to_floor": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The target object ID. | |
+| `"orient_to_floor"` | bool | If True, rotate the grasped object to level it with the floor. | True |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# ReplicantArmMotionCommand
+
+These commands involve the motion of a Replicant's arm.
+
+***
+
+## **`replicant_reset_arm`**
+
+Reset the arm on a humanoid to its rest position.
+
+
+```python
+{"$type": "replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# ReplicantReachForCommand
+
+These commands instruct a replicant to start to reach for a target.
+
+***
+
+## **`replicant_reach_for_object`**
+
+Instruct a Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.
+
+
+```python
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.01}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The target object ID. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.01 |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_reach_for_position`**
+
+Instruct a Replicant to start to reach for a target position.
+
+
+```python
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.01}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.01 |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# ReplicantLookAtCommand
+
+These commands tell a Replicant to look at a target position or object.
+
+***
+
+## **`replicant_look_at_object`**
+
+Tell a Replicant to start to look at a position.
+
+
+```python
+{"$type": "replicant_look_at_object", "object_id": 1, "id": 1}
+```
+
+```python
+{"$type": "replicant_look_at_object", "object_id": 1, "id": 1, "use_centroid": True, "duration": 0.1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the target object. | |
+| `"use_centroid"` | bool | If True, look at the centroid of the object. If False, look at the position of the object (y=0). | True |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_look_at_position`**
+
+Tell a Replicant to start to look at a position.
+
+
+```python
+{"$type": "replicant_look_at_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "replicant_look_at_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "duration": 0.1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position. | |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_reset_head`**
+
+Tell a Replicant to start to reset its head to its neutral position.
+
+
+```python
+{"$type": "replicant_reset_head", "id": 1}
+```
+
+```python
+{"$type": "replicant_reset_head", "id": 1, "duration": 0.1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"duration"` | float | The duration of the motion. | 0.1 |
 | `"id"` | int | The unique object ID. | |
 
 # SubObjectCommand
@@ -6857,7 +7305,7 @@ Send containment data using container shapes. See: <computeroutput>add_box_conta
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+    - <font style="color:green">**Type:** [`Containment`](output_data.md#Containment)</font>
 
 ```python
 {"$type": "send_containment"}
@@ -7521,20 +7969,20 @@ Options for when to send data.
 
 ***
 
-## **`send_dynamic_robots`**
+## **`send_dynamic_empty_objects`**
 
-Send dynamic robot data for each robot in the scene. 
+Send data each empty object in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`DynamicRobots`](output_data.md#DynamicRobots)</font>
+    - <font style="color:green">**Type:** [`DynamicEmptyObjects`](output_data.md#DynamicEmptyObjects)</font>
 
 ```python
-{"$type": "send_dynamic_robots"}
+{"$type": "send_dynamic_empty_objects"}
 ```
 
 ```python
-{"$type": "send_dynamic_robots", "frequency": "once"}
+{"$type": "send_dynamic_empty_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7553,20 +8001,20 @@ Options for when to send data.
 
 ***
 
-## **`send_empty_objects`**
+## **`send_dynamic_robots`**
 
-Send data each empty object in the scene. See: attach_empty_object 
+Send dynamic robot data for each robot in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`EmptyObjects`](output_data.md#EmptyObjects)</font>
+    - <font style="color:green">**Type:** [`DynamicRobots`](output_data.md#DynamicRobots)</font>
 
 ```python
-{"$type": "send_empty_objects"}
+{"$type": "send_dynamic_robots"}
 ```
 
 ```python
-{"$type": "send_empty_objects", "frequency": "once"}
+{"$type": "send_dynamic_robots", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7814,6 +8262,38 @@ Options for when to send data.
 
 ***
 
+## **`send_replicants`**
+
+Send Transform (position and rotation) data of Replicant and their body parts. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
+
+```python
+{"$type": "send_replicants"}
+```
+
+```python
+{"$type": "send_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_scene_regions`**
 
 Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
@@ -7860,6 +8340,38 @@ Send static data for every composite object in the scene.
 
 ```python
 {"$type": "send_static_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_empty_objects`**
+
+Send the IDs of each empty object and the IDs of their parent objects. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticEmptyObjects`](output_data.md#StaticEmptyObjects)</font>
+
+```python
+{"$type": "send_static_empty_objects"}
+```
+
+```python
+{"$type": "send_static_empty_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

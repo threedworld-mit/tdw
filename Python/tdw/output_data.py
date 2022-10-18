@@ -1556,13 +1556,13 @@ class Replicants(OutputData):
     def get_rotation(self, index: int) -> np.array:
         return self._rotations[index]
 
-    def is_holding_left(self, index: int) -> bool:
+    def get_is_holding_left(self, index: int) -> bool:
         return self._held[index][0][0] == 1
 
     def get_held_left(self, index: int) -> int:
         return int(self._held[index][0][1])
 
-    def is_holding_right(self, index: int) -> bool:
+    def get_is_holding_right(self, index: int) -> bool:
         return self._held[index][1][0] == 1
 
     def get_held_right(self, index: int) -> int:

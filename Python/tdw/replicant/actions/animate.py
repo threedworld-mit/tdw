@@ -15,6 +15,8 @@ class Animate(Action):
     Play an animation.
 
     The animation will end either when the animation clip is finished or if the Replicant collides with something (see `self.collision_detection`).
+    The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+    Additionally, if the previous action was `Animate`, and it was the same animation, and it ended in a collision, this action fails immediately without trying to play the animation.
     """
 
     def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool = True,

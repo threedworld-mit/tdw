@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List, Optional
 from overrides import final
 import numpy as np
-from tdw.output_data import OutputData, Transforms, ReplicantStatus
+from tdw.output_data import OutputData, Transforms, ReplicantStatus, HumanoidMotionComplete
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.action_status import ActionStatus
@@ -134,3 +134,18 @@ class Action(ABC):
                     return replicant_status.get_status()
         return None
 
+    @final
+    def _get_motion_complete(self, replicant_id: int, resp: List[bytes]) -> bool:
+        """
+        :param replicant_id: The ID of my Replicant.
+        :param resp: The response from the build.
+
+        :return: True if the Replicant completed a motion.
+        """
+
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "humc":
+                humanoid_motion_complete = HumanoidMotionComplete(resp[i])
+                return humanoid_motion_complete.get_id() == replicant_id
+        return False

@@ -117,6 +117,7 @@ class MoveBy(Animate):
                                      "forward": self._distance > 0})
                     # Too many walk cycles. End the action.
                     self._walk_cycle += 1
+                    self._frame_count = 0
                     if self._walk_cycle >= self._max_walk_cycles:
                         self.status = ActionStatus.failed_to_move
             return commands

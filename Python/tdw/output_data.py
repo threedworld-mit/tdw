@@ -1574,7 +1574,7 @@ class ReplicantStatus(OutputData):
         return ReplStat.ReplicantStatus.GetRootAsReplicantStatus(self.bytes, 0)
 
     def get_id(self) -> int:
-        return self.data.Id()
+        return int(self.data.Id())
 
     def get_status(self) -> ActionStatus:
         return ActionStatus(self.data.Status())
@@ -1585,4 +1585,4 @@ class HumanoidMotionComplete(OutputData):
         return HumanMotion.HumanoidMotionComplete.GetRootAsHumanoidMotionComplete(self.bytes, 0)
 
     def get_id(self) -> int:
-        return self.data.Id()
+        return int(self.data.Id())

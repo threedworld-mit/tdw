@@ -58,6 +58,8 @@ class Animate(Action):
         else:
             self._frame_count += 1
             if self._frame_count >= self._animation_length:
+                print(self._get_motion_complete(replicant_id=static.replicant_id, resp=resp),
+                      self._frame_count, self._animation_length)
                 self.status = ActionStatus.success
         return []
 

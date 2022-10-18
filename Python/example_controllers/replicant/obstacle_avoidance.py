@@ -4,7 +4,7 @@ from tdw.add_ons.replicant import Replicant
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.replicant.action_status import ActionStatus
-from tdw.agents.image_frequency import ImageFrequency
+from tdw.replicant.image_frequency import ImageFrequency
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 

@@ -8,7 +8,7 @@ from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.agents.image_frequency import ImageFrequency
+from tdw.replicant.image_frequency import ImageFrequency
 
 
 class MoveTo(Action):

@@ -3,8 +3,8 @@ from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.agents.arm import Arm
-from tdw.agents.image_frequency import ImageFrequency
+from tdw.replicant.arm import Arm
+from tdw.replicant.image_frequency import ImageFrequency
 from tdw.output_data import OutputData, Containment
 
 

@@ -2,7 +2,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.replicant import Replicant
 from tdw.replicant.action_status import ActionStatus
-from tdw.agents.arm import Arm
+from tdw.replicant.arm import Arm
 
 
 c = Controller()

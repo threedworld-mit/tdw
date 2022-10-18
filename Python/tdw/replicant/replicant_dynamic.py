@@ -8,7 +8,7 @@ from tdw.output_data import OutputData, Collision, EnvironmentCollision, Images,
 from tdw.object_data.transform import Transform
 from tdw.replicant.replicant_body_part import BODY_PARTS
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.agents.arm import Arm
+from tdw.replicant.arm import Arm
 
 
 class ReplicantDynamic:

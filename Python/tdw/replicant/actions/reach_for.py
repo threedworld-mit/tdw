@@ -6,7 +6,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.action_status import ActionStatus
-from tdw.agents.arm import Arm
+from tdw.replicant.arm import Arm
 
 
 class ReachFor(ArmMotion):

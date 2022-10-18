@@ -5,8 +5,8 @@ from tdw.replicant.actions.action import Action
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.agents.arm import Arm
-from tdw.agents.image_frequency import ImageFrequency
+from tdw.replicant.arm import Arm
+from tdw.replicant.image_frequency import ImageFrequency
 
 
 class ArmMotion(Action, ABC):

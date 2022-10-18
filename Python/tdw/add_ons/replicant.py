@@ -19,9 +19,9 @@ from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
 from tdw.replicant.actions.look_at import LookAt
 from tdw.replicant.actions.reset_head import ResetHead
+from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
-from tdw.agents.image_frequency import ImageFrequency
-from tdw.agents.arm import Arm
 from tdw.controller import Controller
 
 

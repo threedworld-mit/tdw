@@ -4,7 +4,7 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.replicant_static import ReplicantStatic
-from tdw.agents.image_frequency import ImageFrequency
+from tdw.replicant.image_frequency import ImageFrequency
 from tdw.controller import Controller
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidAnimationRecord
 

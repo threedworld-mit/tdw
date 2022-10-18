@@ -1,6 +1,6 @@
 from typing import Dict, List
 from tdw.output_data import OutputData, Replicants
-from tdw.agents.arm import Arm
+from tdw.replicant.arm import Arm
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
 

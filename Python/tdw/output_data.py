@@ -58,6 +58,7 @@ from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import ReplicantStatus as ReplStat
+from tdw.FBOutput import HumanoidMotionComplete as HumanMotion
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1578,3 +1579,10 @@ class ReplicantStatus(OutputData):
     def get_status(self) -> ActionStatus:
         return ActionStatus(self.data.Status())
 
+
+class HumanoidMotionComplete(OutputData):
+    def get_data(self) -> HumanMotion.HumanoidMotionComplete:
+        return HumanMotion.HumanoidMotionComplete.GetRootAsHumanoidMotionComplete(self.bytes, 0)
+
+    def get_id(self) -> int:
+        return self.data.Id()

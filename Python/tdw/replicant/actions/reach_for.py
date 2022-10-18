@@ -20,7 +20,7 @@ class ReachFor(ArmMotion):
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, arrived_at: float = 0.01, max_distance: float = 1.5,
-                 previous=None, num_frames: int = 15):
+                 previous=None, duration: float = 0.25):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arms: The [`Arm`](../../agents/arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
@@ -29,11 +29,11 @@ class ReachFor(ArmMotion):
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param previous: The previous action. Can be None.
-        :param num_frames: The number of frames for the action. This controls the speed of the action.
+        :param duration: The duration of the motion in seconds.
         """
 
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
-                         num_frames=num_frames)
+                         duration=duration)
         self._target: Union[int, np.ndarray, Dict[str,  float]] = target
         self._initialized: bool = False
         self._max_distance: float = max_distance
@@ -48,7 +48,7 @@ class ReachFor(ArmMotion):
                 return [{"$type": "replicant_reach_for_position",
                          "id": static.replicant_id,
                          "position": target,
-                         "num_frames": self._num_frames,
+                         "duration": self._duration,
                          "arm": arm.name,
                          "max_distance": self._max_distance,
                          "arrived_at": self._arrived_at} for arm in self._arms]
@@ -57,7 +57,7 @@ class ReachFor(ArmMotion):
                 return [{"$type": "replicant_reach_for_position",
                          "id": static.replicant_id,
                          "position": self._target,
-                         "num_frames": self._num_frames,
+                         "duration": self._duration,
                          "arm": arm.name,
                          "max_distance": self._max_distance,
                          "arrived_at": self._arrived_at} for arm in self._arms]
@@ -66,7 +66,7 @@ class ReachFor(ArmMotion):
                 return [{"$type": "replicant_reach_for_object",
                          "id": static.replicant_id,
                          "object_id": int(self._target),
-                         "num_frames": self._num_frames,
+                         "duration": self._duration,
                          "arm": arm.name,
                          "max_distance": self._max_distance,
                          "arrived_at": self._arrived_at} for arm in self._arms]

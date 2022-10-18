@@ -8,6 +8,12 @@ from tdw.agents.arm import Arm
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
+def do_action(status: ActionStatus = ActionStatus.success):
+    while replicant.action.status == ActionStatus.ongoing:
+        c.communicate([])
+    assert replicant.action.status == status, replicant.action.status
+
+
 c = Controller()
 replicant = Replicant()
 camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 0.3},
@@ -32,20 +38,15 @@ c.communicate(commands)
 replicant.move_to(target=object_id)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+do_action(status=ActionStatus.detected_obstacle)
 replicant.reach_for(target=object_id, arms=Arm.right)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
+do_action()
 replicant.grasp(target=object_id, arm=Arm.right)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-print(replicant.action.status)
+do_action()
 replicant.move_by(-2)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
+do_action()
 replicant.drop(arm=Arm.right)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
+do_action()
 replicant.reset_arm(arms=Arm.right)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
+do_action()
 c.communicate({"$type": "terminate"})

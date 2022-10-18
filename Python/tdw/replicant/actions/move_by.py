@@ -51,6 +51,9 @@ class MoveBy(Animate):
         if self._collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
                 previous.status == ActionStatus.collision and np.sign(previous._distance) == np.sign(self._distance):
             self.status = ActionStatus.collision
+        # Ignore collision detection for held items.
+        self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self._collision_detection.exclude_objects]
+        self._collision_detection.exclude_objects.extend(self.__held_objects)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -120,3 +123,10 @@ class MoveBy(Animate):
                     if self._walk_cycle >= self._max_walk_cycles:
                         self.status = ActionStatus.failed_to_move
             return commands
+
+    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
+                         image_frequency: ImageFrequency) -> List[dict]:
+        # Ignore held objects.
+        for object_id in self.__held_objects:
+            self._collision_detection.exclude_objects.remove(object_id)
+        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)

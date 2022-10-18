@@ -16,6 +16,6 @@ class ResetArm(ArmMotion):
                                                        image_frequency=image_frequency)
         commands.extend([{"$type": "replicant_reset_arm",
                           "id": static.replicant_id,
-                          "num_frames": self._num_frames,
+                          "duration": self._duration,
                           "arm": arm.name} for arm in self._arms])
         return commands

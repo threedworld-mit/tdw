@@ -15,23 +15,22 @@ class ArmMotion(Action, ABC):
     """
 
     def __init__(self, arms: List[Arm], dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous=None, num_frames: int = 15):
+                 previous=None, duration: float = 0.25):
         """
         :param arms: The [`Arm`](../../agents/arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
         :param dynamic: [`ReplicantDynamic`](../replicant_dynamic.md) data.
         :param collision_detection: [The collision detection rules.](../collision_detection.md)
         :param previous: The previous action. Can be None.
-        :param num_frames: The number of frames for the action. This controls the speed of the action.
+        :param duration: The duration of the motion in seconds.
         """
 
         super().__init__()
         self._arms: List[Arm] = arms
         self._collision_detection: CollisionDetection = collision_detection
         # Ignore collision detection for held items.
-        self._held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self._collision_detection.exclude_objects]
-        self._collision_detection.exclude_objects.extend(self._held_objects)
-        self._num_frames: int = num_frames
-        self._frame_count: int = 0
+        self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self._collision_detection.exclude_objects]
+        self._collision_detection.exclude_objects.extend(self.__held_objects)
+        self._duration: float = duration
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self._collision_detection.previous_was_same and previous is not None and isinstance(previous, ArmMotion):
             for arm in self._arms:
@@ -51,15 +50,13 @@ class ArmMotion(Action, ABC):
                 self.collisions.append(arm)
         if len(self.collisions) > 0:
             self.status = ActionStatus.collision
-        else:
-            self._frame_count += 1
-            if self._frame_count >= self._num_frames:
-                self.status = ActionStatus.success
+        elif self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
+            self.status = ActionStatus.success
         return []
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
         # Ignore held objects.
-        for object_id in self._held_objects:
+        for object_id in self.__held_objects:
             self._collision_detection.exclude_objects.remove(object_id)
         return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)

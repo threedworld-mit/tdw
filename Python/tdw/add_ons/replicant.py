@@ -214,7 +214,7 @@ class Replicant(AddOn):
                              bounds_position=bounds_position)
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arms: Union[Arm, List[Arm]],
-                  arrived_at: float = 0.01, max_distance: float = 1.5, num_frames: int = 15) -> None:
+                  arrived_at: float = 0.01, max_distance: float = 1.5, duration: float = 0.25) -> None:
         """
         Reach for a target object or position.
 
@@ -226,7 +226,7 @@ class Replicant(AddOn):
         :param arms: The [`Arm`](../agents/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
-        :param num_frames: The number of frames for the action. This controls the speed of the action.
+        :param duration: The duration of the motion in seconds.
         """
 
         if isinstance(arms, Arm):
@@ -241,7 +241,7 @@ class Replicant(AddOn):
                                collision_detection=self.collision_detection,
                                arrived_at=arrived_at,
                                previous=self._previous_action,
-                               num_frames=num_frames,
+                               duration=duration,
                                max_distance=max_distance)
 
     def grasp(self, target: int, arm: Arm, orient_to_floor: bool = True) -> None:
@@ -283,12 +283,12 @@ class Replicant(AddOn):
                               library=library,
                               previous=self._previous_action)
 
-    def reset_arm(self, arms: Union[Arm, List[Arm]], num_frames: int = 15) -> None:
+    def reset_arm(self, arms: Union[Arm, List[Arm]], duration: float = 0.25) -> None:
         """
         Reset arm to rest position, after performing an action.
        
         :param arms: The [`Arm`](../agents/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
-        :param num_frames: The number of frames for the action. This controls the speed of the action.
+        :param duration: The duration of the motion in seconds.
         """
 
         if isinstance(arms, Arm):
@@ -301,7 +301,7 @@ class Replicant(AddOn):
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                previous=self._previous_action,
-                               num_frames=num_frames)
+                               duration=duration)
 
     def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,) -> None:
         """

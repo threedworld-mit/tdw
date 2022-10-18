@@ -179,38 +179,48 @@ class Replicant(AddOn):
 
         self.action = TurnTo(target=target)
 
-    def move_by(self, distance: float, reset_arms_num_frames: int = 15, arrived_at: float = 0.1,
-                max_walk_cycles: int = 100) -> None:
+    def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
+                arrived_at: float = 0.1, max_walk_cycles: int = 100) -> None:
         """
         Move the Replicant forward by a given distance.
 
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
-        :param reset_arms_num_frames: The number of frames for resetting the arms while walking. This controls the speed of the arm motion.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
 
-        self.action = MoveBy(distance=distance, dynamic=self.dynamic, collision_detection=self.collision_detection,
-                             previous=self._previous_action, reset_arms_num_frames=reset_arms_num_frames,
-                             arrived_at=arrived_at, max_walk_cycles=max_walk_cycles)
+        self.action = MoveBy(distance=distance,
+                             dynamic=self.dynamic,
+                             collision_detection=self.collision_detection,
+                             previous=self._previous_action,
+                             reset_arms=reset_arms,
+                             reset_arms_duration=reset_arms_duration,
+                             arrived_at=arrived_at,
+                             max_walk_cycles=max_walk_cycles)
 
-    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms_num_frames: int = 15,
-                arrived_at: float = 0.1, max_walk_cycles: int = 100, bounds_position: str = "center") -> None:
+    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms: bool = True,
+                reset_arms_duration: float = 0.25, arrived_at: float = 0.1, max_walk_cycles: int = 100,
+                bounds_position: str = "center") -> None:
         """
         Move to a target object or position.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param reset_arms_num_frames: The number of frames for resetting the arms while walking. This controls the speed of the arm motion.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
         """
 
         self.action = MoveTo(target=target,
+                             dynamic=self.dynamic,
                              resp=self._previous_resp,
                              collision_detection=self.collision_detection,
                              previous=self._previous_action,
-                             reset_arms_num_frames=reset_arms_num_frames,
+                             reset_arms=reset_arms,
+                             reset_arms_duration=reset_arms_duration,
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)

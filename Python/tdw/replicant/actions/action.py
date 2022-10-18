@@ -11,7 +11,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 class Action(ABC):
     """
-    An action that the Replicant can do. An action is initialized, has an ongoing state, and an end state.
+    An action that the Replicant can do. An action is first initialized, has an ongoing state, and an end state.
     An action also has a status indicating whether it's ongoing, succeeded, or failed; and if it failed, why.
     """
 
@@ -37,8 +37,8 @@ class Action(ABC):
                                     image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param static: [The static Replicant data.](../replicant_static.md)
-        :param dynamic: [The dynamic Replicant data.](../replicant_dynamic.md)
+        :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic``](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param image_frequency: An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured.
 
         :return: A list of commands to initialize this action.
@@ -68,8 +68,8 @@ class Action(ABC):
         Evaluate an action per-frame to determine whether it's done.
 
         :param resp: The response from the build.
-        :param static: [The static Replicant data.](../Replicant_static.md)
-        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
+        :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic``](../replicant_dynamic.md) data that changes per `communicate()` call.
 
         :return: A list of commands to send to the build to continue the action.
         """
@@ -80,8 +80,8 @@ class Action(ABC):
                          image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param static: [The static Replicant data.](../Replicant_static.md)
-        :param dynamic: [The dynamic Replicant data.](../Replicant_dynamic.md)
+        :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic``](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param image_frequency: An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured.
 
         :return: A list of commands that must be sent to end any action.

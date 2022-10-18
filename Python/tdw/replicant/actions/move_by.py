@@ -109,7 +109,7 @@ class MoveBy(Animate):
                                         self.status = ActionStatus.detected_obstacle
                                         return commands
                 # We're at the end of the walk cycle. Continue the animation.
-                if self._frame_count % self._animation_length == 0:
+                if self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
                     commands.append({"$type": "play_humanoid_animation",
                                      "name": self._record.name,
                                      "id": static.replicant_id,
@@ -117,7 +117,6 @@ class MoveBy(Animate):
                                      "forward": self._distance > 0})
                     # Too many walk cycles. End the action.
                     self._walk_cycle += 1
-                    self._frame_count = 0
                     if self._walk_cycle >= self._max_walk_cycles:
                         self.status = ActionStatus.failed_to_move
             return commands

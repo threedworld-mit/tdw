@@ -35,8 +35,6 @@ class Animate(Action):
         if self._collision_detection.previous_was_same and previous is not None and isinstance(previous, Animate) and \
                 previous.status == ActionStatus.collision and previous._record.name == self._record.name:
             self.status = ActionStatus.collision
-        self._frame_count = 0
-        self._animation_length: int = self._record.get_num_frames()
         self._forward: bool = forward
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -55,12 +53,8 @@ class Animate(Action):
         if len(dynamic.get_collision_enters(collision_detection=self._collision_detection)) > 0:
             self.status = ActionStatus.collision
         # Continue the animation.
-        else:
-            self._frame_count += 1
-            if self._frame_count >= self._animation_length:
-                print(self._get_motion_complete(replicant_id=static.replicant_id, resp=resp),
-                      self._frame_count, self._animation_length)
-                self.status = ActionStatus.success
+        elif self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
+            self.status = ActionStatus.success
         return []
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,

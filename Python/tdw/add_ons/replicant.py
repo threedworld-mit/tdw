@@ -158,7 +158,7 @@ class Replicant(AddOn):
                                                                                       image_frequency=self.image_frequency)
 
                     # Most actions are `ongoing` after initialization, but they might've succeeded or failed already.
-                    if self.action.status != ActionStatus.ongoing:
+                    if self.action.status == ActionStatus.ongoing:
                         self.commands.extend(initialization_commands)
                     else:
                         self.commands.extend(self.action.get_end_commands(resp=resp,

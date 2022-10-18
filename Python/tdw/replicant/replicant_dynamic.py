@@ -229,6 +229,8 @@ class ReplicantDynamic:
                     elif state == "exit":
                         exits.append(collision.get_object_id())
             elif isinstance(collision, Collision):
+                if not collision_detection.objects:
+                    continue
                 collider_id = collision.get_collider_id()
                 collidee_id = collision.get_collidee_id()
                 object_id = collider_id if collidee_id == self._replicant_id else collidee_id

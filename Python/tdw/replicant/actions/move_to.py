@@ -117,8 +117,8 @@ class MoveTo(Action):
                 raise Exception(f"Invalid target: {self.target}")
             distance = np.linalg.norm(dynamic.transform.position - target_position)
             # Get the direction.
-            forward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * distance))
-            backward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * -distance))
+            forward = np.linalg.norm(dynamic.transform.position + dynamic.transform.forward * distance)
+            backward = np.linalg.norm(dynamic.transform.position + dynamic.transform.forward * -distance)
             if forward > backward:
                 distance *= -1
             # Start walking.

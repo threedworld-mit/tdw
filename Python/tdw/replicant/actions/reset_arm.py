@@ -7,7 +7,7 @@ from tdw.replicant.actions.arm_motion import ArmMotion
 
 class ResetArm(ArmMotion):
     """
-    Move arm(s) back to rest position.
+    Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
 
     The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 

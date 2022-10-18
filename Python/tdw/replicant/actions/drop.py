@@ -16,7 +16,7 @@ class Drop(Action):
     The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
     """
 
-    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int = 100):
+    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int):
         """
         :param arm: The [`Arm`](../arm.md) holding the object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.

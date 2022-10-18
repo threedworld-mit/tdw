@@ -14,7 +14,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 class ReachFor(ArmMotion):
     """
-    Reach for a target object or position.
+    Reach for a target object or position. One or both hands can reach for the target at the same time.
 
     If target is an object, the target position is a point on the object.
     If the object has affordance points, the target position is the affordance point closest to the hand.

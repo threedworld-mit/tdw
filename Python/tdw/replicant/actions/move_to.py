@@ -18,10 +18,10 @@ class MoveTo(Action):
 
     While walking, the Replicant will continuously play a walk cycle animation until the action ends.
 
-    The action can end for several reasons:
+    The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
 
     - If the Replicant walks the target distance (i.e. it reaches its target), the action succeeds.
-    - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+    - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
     - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
       - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
       - Otherwise, the action ends in failure.
@@ -31,13 +31,11 @@ class MoveTo(Action):
     - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    def __init__(self, target: Union[int, Dict[str, float], np.ndarray], dynamic: ReplicantDynamic, resp: List[bytes],
-                 collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
-                 reset_arms_duration: float, arrived_at: float, max_walk_cycles: int, bounds_position: str):
+    def __init__(self, target: Union[int, Dict[str, float], np.ndarray], collision_detection: CollisionDetection,
+                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float, arrived_at: float,
+                 max_walk_cycles: int, bounds_position: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
-        :param resp: The response from the build.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
@@ -51,31 +49,6 @@ class MoveTo(Action):
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
         self.target: Union[int, Dict[str, float], np.ndarray] = target
-        if isinstance(self.target, np.ndarray):
-            target_position: np.ndarray = self.target
-        elif isinstance(self.target, dict):
-            target_position = TDWUtils.vector3_to_array(self.target)
-        # Get the target position.
-        elif isinstance(self.target, int):
-            target_position = np.zeros(shape=3)
-            for i in range(len(resp) - 1):
-                # Get the output data ID.
-                r_id = OutputData.get_data_type_id(resp[i])
-                # Get the bounds data.
-                if r_id == "boun":
-                    bounds = Bounds(resp[i])
-                    for j in range(bounds.get_num()):
-                        if bounds.get_id(j) == self.target:
-                            bound = TDWUtils.get_bounds_dict(bounds, j)
-                            target_position = bound[bounds_position]
-                            break
-                    break
-        else:
-            raise Exception(f"Invalid target: {self.target}")
-        """:field
-        The target distance.
-        """
-        self.distance: float = np.linalg.norm(dynamic.transform.position - target_position)
         """:field
         The [`CollisionDetection`](../collision_detection.md) rules.
         """
@@ -96,6 +69,10 @@ class MoveTo(Action):
         The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
         self.max_walk_cycles: int = max_walk_cycles
+        """:field
+        If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
+        """
+        self.bounds_position: str = bounds_position
         self._turning: bool = True
         self._image_frequency: ImageFrequency = ImageFrequency.once
         self._move_by: Optional[MoveBy] = None
@@ -104,7 +81,7 @@ class MoveTo(Action):
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Remember the image frequency.
+        # Remember the image frequency for both the turn and move sub-actions.
         self._image_frequency = image_frequency
         # Turn to the target.
         return TurnTo(target=self.target).get_initialization_commands(resp=resp,
@@ -113,16 +90,39 @@ class MoveTo(Action):
                                                                       image_frequency=image_frequency)
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        # Turning requires only one `communicate()` call. Now, it's time to start walking.
         if self._turning:
-            # Start walking.
             self._turning = False
+            # Get the target position.
+            if isinstance(self.target, np.ndarray):
+                target_position: np.ndarray = self.target
+            elif isinstance(self.target, dict):
+                target_position = TDWUtils.vector3_to_array(self.target)
+            # If the target is and object ID, the target position is a bounds position.
+            elif isinstance(self.target, int):
+                target_position = np.zeros(shape=3)
+                for i in range(len(resp) - 1):
+                    # Get the output data ID.
+                    r_id = OutputData.get_data_type_id(resp[i])
+                    # Get the bounds data.
+                    if r_id == "boun":
+                        bounds = Bounds(resp[i])
+                        for j in range(bounds.get_num()):
+                            if bounds.get_id(j) == self.target:
+                                bound = TDWUtils.get_bounds_dict(bounds, j)
+                                target_position = bound[self.bounds_position]
+                                break
+                        break
+            else:
+                raise Exception(f"Invalid target: {self.target}")
+            distance = np.linalg.norm(dynamic.transform.position - target_position)
             # Get the direction.
-            forward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * self.distance))
-            backward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * -self.distance))
+            forward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * distance))
+            backward = np.linalg.norm(dynamic.transform.position - (dynamic.transform.position + dynamic.transform.forward * -distance))
             if forward > backward:
-                self.distance *= -1
+                distance *= -1
             # Start walking.
-            self._move_by = MoveBy(distance=float(self.distance),
+            self._move_by = MoveBy(distance=float(distance),
                                    dynamic=dynamic,
                                    collision_detection=self.collision_detection,
                                    previous=self._previous_action,

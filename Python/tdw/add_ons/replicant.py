@@ -27,7 +27,11 @@ from tdw.controller import Controller
 
 class Replicant(AddOn):
     """
-    TODO
+    A Replicant is a human-like agent that can interact with the scene with pseudo-physics behavior.
+
+    When a Replicant collides with objects, it initiates a physics-driven collision. The Replicant's own movements are driven by non-physics animation.
+
+    A Replicant can walk, turn, reach for positions or objects, grasp and drop objects, and turn its head to look around.
     """
 
     """:class_var
@@ -85,7 +89,6 @@ class Replicant(AddOn):
         """
         self.collision_detection: CollisionDetection = CollisionDetection()
         self._previous_action: Optional[Action] = None
-        self._previous_resp: List[bytes] = list()
         self._frame_count: int = 0
         # Initialize the Replicant metdata library.
         if Replicant.LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
@@ -94,6 +97,12 @@ class Replicant(AddOn):
         self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME].get_record(name)
 
     def get_initialization_commands(self) -> List[dict]:
+        """
+        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+        :return: A list of commands that will initialize this add-on.
+        """
+
         commands = [{"$type": "add_replicant",
                      "name": self._record.name,
                      "position": self.initial_position,
@@ -119,38 +128,46 @@ class Replicant(AddOn):
 
     def on_send(self, resp: List[bytes]) -> None:
         """
-        This is called after commands are sent to the build and a response is received.
+        This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-        This function is called automatically by the controller; you don't need to call it yourself.
+        Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+        Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
         :param resp: The response from the build.
         """
 
+        # If there isn't cached static data, assume we have the output data we need and cache it now.
         if self.static is None:
             self._cache_static_data(resp=resp)
+        # Update the dynamic data per `communicate()` call.
         self._set_dynamic_data(resp=resp)
-        self._previous_resp = resp
+        # Don't do anything if there isn't an action or if the action is done.
         if self.action is None or self.action.done:
             return
+        # Start or continue the action.
         else:
+            # Initialize the action.
             if not self.action.initialized:
-                # Some actions can fail immediately.
+                # The action's status defaults to `ongoing`, but actions sometimes fail prior to initialization.
                 if self.action.status == ActionStatus.ongoing:
+                    # Initialize the action and get initialization commands.
                     self.action.initialized = True
                     initialization_commands = self.action.get_initialization_commands(resp=resp,
                                                                                       static=self.static,
                                                                                       dynamic=self.dynamic,
                                                                                       image_frequency=self.image_frequency)
-                    # This is an ongoing action.
-                    if self.action.status == ActionStatus.ongoing:
+
+                    # Most actions are `ongoing` after initialization, but they might've succeeded or failed already.
+                    if self.action.status != ActionStatus.ongoing:
                         self.commands.extend(initialization_commands)
-                        # This action is done. Append end commands.
-                        if self.action.status != ActionStatus.ongoing:
-                            self.commands.extend(self.action.get_end_commands(resp=resp,
-                                                                              static=self.static,
-                                                                              dynamic=self.dynamic,
-                                                                              image_frequency=self.image_frequency))
+                    else:
+                        self.commands.extend(self.action.get_end_commands(resp=resp,
+                                                                          static=self.static,
+                                                                          dynamic=self.dynamic,
+                                                                          image_frequency=self.image_frequency))
+            # Continue an ongoing action.
             else:
+                # Get the ongoing action commands.
                 action_commands = self.action.get_ongoing_commands(resp=resp, static=self.static, dynamic=self.dynamic)
                 # This is an ongoing action. Append ongoing commands.
                 if self.action.status == ActionStatus.ongoing:
@@ -172,6 +189,8 @@ class Replicant(AddOn):
         """
         Turn the Replicant by an angle.
 
+        This is a non-animated action, meaning that the Replicant will immediately snap to the angle.
+
         :param angle: The target angle in degrees. Positive value = clockwise turn.
         """
 
@@ -181,6 +200,8 @@ class Replicant(AddOn):
         """
         Turn the Replicant to face a target object or position.
 
+        This is a non-animated action, meaning that the Replicant will immediately snap to the angle.
+
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
 
@@ -189,7 +210,21 @@ class Replicant(AddOn):
     def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
                 arrived_at: float = 0.1, max_walk_cycles: int = 100) -> None:
         """
-        Move the Replicant forward by a given distance.
+        Walk a given distance.
+
+        The Replicant will continuously play a walk cycle animation until the action ends.
+
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
+
+        - If the Replicant walks the target distance, the action succeeds.
+        - If `collision_detection.previous_was_same == True`, and the previous action was `move_by()` or `move_to()`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
@@ -211,7 +246,21 @@ class Replicant(AddOn):
                 reset_arms_duration: float = 0.25, arrived_at: float = 0.1, max_walk_cycles: int = 100,
                 bounds_position: str = "center") -> None:
         """
-        Move to a target object or position.
+        Turn the Replicant to a target position or object and then walk to it.
+
+        While walking, the Replicant will continuously play a walk cycle animation until the action ends.
+
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
+
+        - If the Replicant walks the target distance, the action succeeds.
+        - If `collision_detection.previous_was_same == True`, and the previous action was `move_by()` or `move_to()`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
@@ -222,8 +271,6 @@ class Replicant(AddOn):
         """
 
         self.action = MoveTo(target=target,
-                             dynamic=self.dynamic,
-                             resp=self._previous_resp,
                              collision_detection=self.collision_detection,
                              previous=self._previous_action,
                              reset_arms=reset_arms,
@@ -235,14 +282,21 @@ class Replicant(AddOn):
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arms: Union[Arm, List[Arm]],
                   arrived_at: float = 0.01, max_distance: float = 1.5, duration: float = 0.25) -> None:
         """
-        Reach for a target object or position.
+        Reach for a target object or position. One or both hands can reach for the target at the same time.
 
         If target is an object, the target position is a point on the object.
         If the object has affordance points, the target position is the affordance point closest to the hand.
         Otherwise, the target position is the bounds position closest to the hand.
 
+        The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+
+        - If the hand is near the target at the end of the action, the action succeeds.
+        - If the target is too far away at the start of the action, the action fails.
+        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+        - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
+
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arms: The [`Arm`](../agents/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param arms: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
@@ -267,8 +321,10 @@ class Replicant(AddOn):
         """
         Grasp a target object.
 
+        The action fails if the hand is already holding an object. Otherwise, the action succeeds.
+
         :param target: The target object ID.
-        :param arm: The [`Arm`](../agents/arm.md) value for the hand that will grasp the target object.
+        :param arm: The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object.
         :param orient_to_floor: If True, rotate the grasped object to be level with the floor.
         """
 
@@ -281,7 +337,9 @@ class Replicant(AddOn):
         """
         Drop a held target object.
 
-        :param arm: The [`Arm`](../agents/arm.md) holding the object.
+        The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
+
+        :param arm: The [`Arm`](../replicant/arm.md) holding the object.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
         """
 
@@ -290,6 +348,11 @@ class Replicant(AddOn):
     def animate(self, animation: str, forward: bool = True, library: str = "humanoid_animations.json") -> None:
         """
         Play an animation.
+
+        The animation will end either when the animation clip is finished or if the Replicant collides with something (see [`self.collision_detection`](../replicant/collision_detection.md)).
+
+        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+        - If `self.collision_detection.previous_was_same == True`, and it was the same animation, and it ended in a collision, this action ends immediately.
 
         :param animation: The name of the animation.
         :param forward: If True, play the animation forwards. If False, play the animation backwards.
@@ -304,9 +367,14 @@ class Replicant(AddOn):
 
     def reset_arm(self, arms: Union[Arm, List[Arm]], duration: float = 0.25) -> None:
         """
-        Reset arm to rest position, after performing an action.
+        Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
+
+        The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+
+        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+        - If `self.collision_detection.previous_was_same == True`, and if the previous action was an arm motion, and it ended in a collision, this action ends immediately.
        
-        :param arms: The [`Arm`](../agents/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param arms: The [`Arm`](../replicants/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param duration: The duration of the motion in seconds.
         """
 
@@ -326,6 +394,8 @@ class Replicant(AddOn):
         """
         Look at a target object or position.
 
+        The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
         """
@@ -335,6 +405,8 @@ class Replicant(AddOn):
     def reset_head(self, duration: float = 0.1):
         """
         Look at a target object or position.
+
+        The head will continuously move over multiple `communicate()` calls until it is at its neutral rotation.
 
         :param duration: The duration of the motion in seconds.
         """
@@ -354,7 +426,6 @@ class Replicant(AddOn):
         self.static = None
         self.action = None
         self._previous_action = None
-        self._previous_resp.clear()
         self._frame_count: int = 0
         self.collision_detection = CollisionDetection()
         if position is None:

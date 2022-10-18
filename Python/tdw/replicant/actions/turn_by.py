@@ -9,6 +9,8 @@ from tdw.replicant.image_frequency import ImageFrequency
 class TurnBy(Action):
     """
     Turn by an angle.
+
+    This is a non-animated action, meaning that the Replicant will immediately snap to the angle.
     """
 
     def __init__(self, angle: float):

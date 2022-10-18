@@ -9,7 +9,7 @@ class ResetHead(HeadMotion):
     """
     Reset the head to its neutral rotation.
 
-    The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+    The head will continuously move over multiple `communicate()` calls until it is at its neutral rotation.
     """
 
     def __init__(self, duration: float):

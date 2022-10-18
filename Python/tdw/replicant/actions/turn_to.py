@@ -11,6 +11,8 @@ from tdw.replicant.image_frequency import ImageFrequency
 class TurnTo(Action):
     """
     Turn to a target object or position.
+
+    This is a non-animated action, meaning that the Replicant will immediately snap to the angle.
     """
 
     def __init__(self, target: Union[int, Dict[str, float], np.ndarray]):

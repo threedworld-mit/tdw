@@ -12,7 +12,7 @@ class Grasp(Action):
     """
     Grasp a target object.
 
-    The action fails if the hand is already holding an object.
+    The action fails if the hand is already holding an object. Otherwise, the action succeeds.
     """
 
     def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, orient_to_floor: bool):

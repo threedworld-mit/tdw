@@ -39,14 +39,17 @@ class Animate(Action):
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        return [{"$type": "add_humanoid_animation",
-                 "name": self._record.name,
-                 "url": self._record.get_url()},
-                {"$type": "play_humanoid_animation",
-                 "name": self._record.name,
-                 "id": static.replicant_id,
-                 "framerate": self._record.framerate,
-                 "forward": self._forward}]
+        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
+                                                       image_frequency=image_frequency)
+        commands.extend([{"$type": "add_humanoid_animation",
+                          "name": self._record.name,
+                          "url": self._record.get_url()},
+                         {"$type": "play_humanoid_animation",
+                          "name": self._record.name,
+                          "id": static.replicant_id,
+                          "framerate": self._record.framerate,
+                          "forward": self._forward}])
+        return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # If there was a collision, stop the animation.

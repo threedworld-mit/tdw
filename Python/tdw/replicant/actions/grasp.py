@@ -11,22 +11,33 @@ from tdw.output_data import OutputData, Containment
 class Grasp(Action):
     """
     Grasp a target object.
+
+    The action fails if the hand is already holding an object.
     """
 
     def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, orient_to_floor: bool):
         """
         :param target: The target object ID.
-        :param arm: The [`Arm`](../../agents/arm.md) value for the hand that will grasp the target object.
-        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data.
+        :param arm: The [`Arm`](../arm.md) value for the hand that will grasp the target object.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param orient_to_floor: If True, rotate the grasped object to be level with the floor.
         """
 
         super().__init__()
-        self._target: int = target
-        self._arm: Arm = arm
-        self._orient_to_floor: bool = orient_to_floor
+        """:field
+        The target object ID.
+        """
+        self.target: int = target
+        """:field
+        The [`Arm`](../arm.md) value for the hand that will grasp the target object.
+        """
+        self.arm: Arm = arm
+        """:field
+        If True, rotate the grasped object to be level with the floor.
+        """
+        self.orient_to_floor: bool = orient_to_floor
         # We're already holding an object.
-        if self._arm in dynamic.held_objects:
+        if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -39,11 +50,11 @@ class Grasp(Action):
             if r_id == "cont":
                 containment = Containment(resp[i])
                 object_id = containment.get_object_id()
-                if object_id == self._target:
+                if object_id == self.target:
                     overlap_ids = containment.get_overlap_ids()
                     for overlap_id in overlap_ids:
                         commands.extend([{"$type": "parent_object_to_object",
-                                          "parent_id": self._target,
+                                          "parent_id": self.target,
                                           "id": int(overlap_id)},
                                          {"$type": "set_kinematic_state",
                                           "id": int(overlap_id),
@@ -52,9 +63,9 @@ class Grasp(Action):
         # Grasp the object.
         commands.extend([{"$type": "replicant_grasp_object",
                           "id": static.replicant_id,
-                          "arm": self._arm.name,
-                          "object_id": self._target,
-                          "orient_to_floor": self._orient_to_floor}])
+                          "arm": self.arm.name,
+                          "object_id": self.target,
+                          "orient_to_floor": self.orient_to_floor}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

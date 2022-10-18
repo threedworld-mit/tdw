@@ -1,4 +1,5 @@
-from typing import Dict, List
+from __future__ import annotations
+from typing import Dict, List, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.replicant.actions.animate import Animate
@@ -10,60 +11,93 @@ from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 from tdw.output_data import OutputData, Overlap
-from tdw.controller import Controller
 
 
 class MoveBy(Animate):
     """
     Walk a given distance.
+
+    The Replicant will continuously play a walk cycle animation until the action ends.
+
+    The action can end for several reasons:
+
+    - If the Replicant walks the target distance, the action succeeds.
+    - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+    - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+      - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+      - Otherwise, the action ends in failure.
+    - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+      - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+      - Otherwise, the action ends in failure.
+    - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    _OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
+    """:class_var
+    While walking, the Replicant will cast an overlap shape in front of or behind it, depending on whether it is walking forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
+    """
+    OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Action = None, reset_arms_num_frames: int = 15, arrived_at: float = 0.1,
-                 max_walk_cycles: int = 100):
+                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float, arrived_at: float, max_walk_cycles: int):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
-        :param dynamic: [The dynamic Replicant data.](../magnebot_dynamic.md)
-        :param collision_detection: The [`CollisionDetection`](collision_detection.md) rules.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
+        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
-        :param reset_arms_num_frames: The number of frames for resetting the arms while walking. This controls the speed of the arm motion.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
+        :param reset_arms_duration: The speed at which the arms are reset.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
 
-        self._distance: float = distance
-        self._arrived_at: float = arrived_at
-        self._reset_arms_num_frames: int = reset_arms_num_frames
+        """:field
+        The target distance. If less than 0, the Replicant will walk backwards.
+        """
+        self.distance: float = distance
+        """:field
+        If True, reset the arms to their neutral positions while beginning the walk cycle.
+        """
+        self.reset_arms: bool = reset_arms
+        """:field
+        The speed at which the arms are reset.
+        """
+        self.reset_arms_duration: float = reset_arms_duration
+        """:field
+        If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        """
+        self.arrived_at: float = arrived_at
         super().__init__(animation="walking_2",
                          collision_detection=collision_detection,
                          library="humanoid_animations.json",
                          previous=previous,
-                         forward=self._distance > 0)
-        self._initial_position_v3: Dict[str, float] = TDWUtils.array_to_vector3(dynamic.transform.position)
+                         forward=self.distance > 0)
         self._destination_arr: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
-        self._max_walk_cycles: int = max_walk_cycles
-        self._walk_cycle: int = 0
-        # Get the ID for the boxcast.
-        self._boxcast_id: int = Controller.get_unique_id()
+        """:field
+        The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
+        """
+        self.max_walk_cycles: int = max_walk_cycles
+        """:field
+        The current walk cycle.
+        """
+        self.walk_cycle: int = 0
         # Don't try to walk in the same direction twice.
-        if self._collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
-                previous.status == ActionStatus.collision and np.sign(previous._distance) == np.sign(self._distance):
+        if self.collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
+                previous.status == ActionStatus.collision and np.sign(previous.distance) == np.sign(self.distance):
             self.status = ActionStatus.collision
         # Ignore collision detection for held items.
-        self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self._collision_detection.exclude_objects]
-        self._collision_detection.exclude_objects.extend(self.__held_objects)
+        self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
+        self.collision_detection.exclude_objects.extend(self.__held_objects)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         # Reset the arms.
-        commands.extend([{"$type": "replicant_reset_arm",
-                          "id": static.replicant_id,
-                          "num_frames": self._reset_arms_num_frames,
-                          "arm": arm.name} for arm in Arm])
+        if self.reset_arms:
+            commands.extend([{"$type": "replicant_reset_arm",
+                              "id": static.replicant_id,
+                              "duration": self.reset_arms_duration,
+                              "arm": arm.name} for arm in Arm])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
@@ -75,24 +109,24 @@ class MoveBy(Animate):
             return commands
         else:
             d = np.linalg.norm(dynamic.transform.position - self._destination_arr)
-            if d < self._arrived_at:
+            if d < self.arrived_at:
                 self.status = ActionStatus.success
             # Stop walking if there is a collision.
-            elif len(dynamic.get_collision_enters(collision_detection=self._collision_detection)) > 0:
+            elif len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:
                 self.status = ActionStatus.collision
             else:
                 # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
-                if self._collision_detection.avoid:
+                if self.collision_detection.avoid:
                     # Check for overlap.
                     overlap_z = 0.5
-                    if self._distance < 0:
+                    if self.distance < 0:
                         overlap_z *= -1
                     overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
                     overlap_position[1] += 1
                     # Send the next overlap command.
                     commands.append({"$type": "send_overlap_box",
                                      "id": static.replicant_id,
-                                     "half_extents": MoveBy._OVERLAP_HALF_EXTENTS,
+                                     "half_extents": MoveBy.OVERLAP_HALF_EXTENTS,
                                      "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
                                      "position": TDWUtils.array_to_vector3(overlap_position)})
                     for i in range(len(resp) - 1):
@@ -101,32 +135,32 @@ class MoveBy(Animate):
                             overlap = Overlap(resp[i])
                             if overlap.get_id() == static.replicant_id:
                                 # We detected a wall.
-                                if self._collision_detection.walls and overlap.get_env() and overlap.get_walls():
+                                if self.collision_detection.walls and overlap.get_env() and overlap.get_walls():
                                     if overlap.get_walls():
                                         self.status = ActionStatus.detected_obstacle
                                         return commands
                                 object_ids = overlap.get_object_ids()
                                 for object_id in object_ids:
                                     # We detected an object.
-                                    if object_id != static.replicant_id and object_id not in self._collision_detection.exclude_objects:
+                                    if object_id != static.replicant_id and object_id not in self.collision_detection.exclude_objects:
                                         self.status = ActionStatus.detected_obstacle
                                         return commands
                 # We're at the end of the walk cycle. Continue the animation.
                 if self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
                     commands.append({"$type": "play_humanoid_animation",
-                                     "name": self._record.name,
+                                     "name": self.record.name,
                                      "id": static.replicant_id,
-                                     "framerate": self._record.framerate,
-                                     "forward": self._distance > 0})
+                                     "framerate": self.record.framerate,
+                                     "forward": self.distance > 0})
                     # Too many walk cycles. End the action.
-                    self._walk_cycle += 1
-                    if self._walk_cycle >= self._max_walk_cycles:
+                    self.walk_cycle += 1
+                    if self.walk_cycle >= self.max_walk_cycles:
                         self.status = ActionStatus.failed_to_move
             return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
-        # Ignore held objects.
+        # Stop excluding held objects.
         for object_id in self.__held_objects:
-            self._collision_detection.exclude_objects.remove(object_id)
+            self.collision_detection.exclude_objects.remove(object_id)
         return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)

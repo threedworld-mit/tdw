@@ -10,15 +10,20 @@ from tdw.replicant.action_status import ActionStatus
 class HeadMotion(Action, ABC):
     """
     Abstract base class for actions that rotate the Replicant's head.
+
+    Duration an head motion, the Replicant's head will continuously move over multiple `communicate()` calls until either the motion is complete.
     """
 
-    def __init__(self, duration: float = 0.1):
+    def __init__(self, duration: float):
         """
         :param duration: The duration of the motion in seconds.
         """
 
         super().__init__()
-        self._duration: float = duration
+        """:field
+        The duration of the motion in seconds.
+        """
+        self.duration: float = duration
 
     @final
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

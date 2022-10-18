@@ -19,7 +19,7 @@ class Drop(Action):
     def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int = 100):
         """
         :param arm: The [`Arm`](../arm.md) holding the object.
-        :param dynamic: The [`ReplicantDynamic``](../replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
         """
 

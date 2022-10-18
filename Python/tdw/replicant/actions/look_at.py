@@ -10,40 +10,45 @@ from tdw.replicant.image_frequency import ImageFrequency
 class LookAt(HeadMotion):
     """
     Look at a target object or position.
+
+    The head will continuously move over multiple `communicate()` calls until it is looking at the target.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1):
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
         """
 
         super().__init__(duration=duration)
-        self._target: Union[int, np.ndarray, Dict[str,  float]] = target
+        """:field
+        The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        """
+        self.target: Union[int, np.ndarray, Dict[str,  float]] = target
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         # Look at a target position.
-        if isinstance(self._target, np.ndarray):
+        if isinstance(self.target, np.ndarray):
             commands.append({"$type": "replicant_look_at_position",
                              "id": static.replicant_id,
-                             "position": TDWUtils.array_to_vector3(self._target),
-                             "duration": self._duration})
+                             "position": TDWUtils.array_to_vector3(self.target),
+                             "duration": self.duration})
         # Reach for a target position.
-        elif isinstance(self._target, dict):
+        elif isinstance(self.target, dict):
             commands.append({"$type": "replicant_look_at_position",
                              "id": static.replicant_id,
-                             "position": self._target,
-                             "duration": self._duration})
+                             "position": self.target,
+                             "duration": self.duration})
         # Reach for a target object.
-        elif isinstance(self._target, int):
+        elif isinstance(self.target, int):
             commands.append({"$type": "replicant_look_at_object",
                              "id": static.replicant_id,
-                             "object_id": self._target,
+                             "object_id": self.target,
                              "use_centroid": True,
-                             "duration": self._duration})
+                             "duration": self.duration})
         else:
-            raise Exception(f"Invalid target: {self._target}")
+            raise Exception(f"Invalid target: {self.target}")
         return commands

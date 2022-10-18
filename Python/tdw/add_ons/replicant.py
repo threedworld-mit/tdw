@@ -26,7 +26,14 @@ from tdw.controller import Controller
 
 
 class Replicant(AddOn):
-    _LIBRARY_NAME: str = "replicants.json"
+    """
+    TODO
+    """
+
+    """:class_var
+    The Replicants library file. You can override this to use a custom library (e.g. a local library).
+    """
+    LIBRARY_NAME: str = "replicants.json"
 
     def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
@@ -81,10 +88,10 @@ class Replicant(AddOn):
         self._previous_resp: List[bytes] = list()
         self._frame_count: int = 0
         # Initialize the Replicant metdata library.
-        if Replicant._LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
-            Controller.HUMANOID_LIBRARIANS[Replicant._LIBRARY_NAME] = HumanoidLibrarian(Replicant._LIBRARY_NAME)
+        if Replicant.LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
+            Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME] = HumanoidLibrarian(Replicant.LIBRARY_NAME)
         # Get the metdata record.
-        self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant._LIBRARY_NAME].get_record(name)
+        self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME].get_record(name)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "add_replicant",

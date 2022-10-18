@@ -8,9 +8,11 @@ from tdw.replicant.image_frequency import ImageFrequency
 class ResetHead(HeadMotion):
     """
     Reset the head to its neutral rotation.
+
+    The head will continuously move over multiple `communicate()` calls until it is looking at the target.
     """
 
-    def __init__(self, duration: float = 0.1):
+    def __init__(self, duration: float):
         """
         :param duration: The duration of the motion in seconds.
         """
@@ -23,5 +25,5 @@ class ResetHead(HeadMotion):
                                                        image_frequency=image_frequency)
         commands.append({"$type": "replicant_reset_head",
                          "id": static.replicant_id,
-                         "duration": self._duration})
+                         "duration": self.duration})
         return commands

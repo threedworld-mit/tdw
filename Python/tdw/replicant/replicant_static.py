@@ -61,6 +61,15 @@ class ReplicantStatic:
         self.lower_arms: Dict[Arm, int] = {Arm.left: self.body_parts[ReplicantBodyPart.lowerarm_l],
                                            Arm.right: self.body_parts[ReplicantBodyPart.lowerarm_r]}
         """:field
+        The IDs of the hands, lower arms, and upper arms grouped by arm. Key = [`Arm`](arm.md). Value = A list of IDs.
+        """
+        self.arm_ids: Dict[Arm, List[int]] = {Arm.left: [self.body_parts[ReplicantBodyPart.hand_l],
+                                                         self.body_parts[ReplicantBodyPart.lowerarm_l],
+                                                         self.body_parts[ReplicantBodyPart.upperarm_l]],
+                                              Arm.right: [self.body_parts[ReplicantBodyPart.hand_r],
+                                                          self.body_parts[ReplicantBodyPart.lowerarm_r],
+                                                          self.body_parts[ReplicantBodyPart.upperarm_r]]}
+        """:field
         Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
         """
         self.body_parts_by_id: Dict[int, ReplicantBodyPart] = {v: k for k, v in self.body_parts.items()}

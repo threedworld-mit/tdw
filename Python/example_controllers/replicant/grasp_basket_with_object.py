@@ -15,6 +15,12 @@ Grasp a basket containing an object.
 def do_action(status: ActionStatus = ActionStatus.success):
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
+    pass
+    if replicant.action.status == ActionStatus.collision:
+        print(replicant.dynamic.get_collision_enters(replicant.collision_detection))
+        print(replicant.dynamic.held_objects)
+        print(replicant.static.body_parts_by_id)
+        print(replicant.dynamic.body_parts.keys())
     assert replicant.action.status == status, replicant.action.status
 
 
@@ -39,6 +45,9 @@ commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=Controller.get_unique_id(),
                                                   position={"x": -2, "y": 0.1, "z": 3}))
 c.communicate(commands)
+for i in range(len(commands)):
+    if commands[i]["$type"] == "add_object":
+        print(commands[i]["id"])
 replicant.move_to(target=object_id)
 do_action(status=ActionStatus.detected_obstacle)
 replicant.reach_for(target=object_id, arm=Arm.right)

@@ -100,7 +100,6 @@ class ReplicantDynamic:
                             self.collisions[body_part_id] = dict()
                             for m in range(10):
                                 collision_state = replicants.get_collision_state(j, k, m)
-                                print(j, k, collision_state)
                                 # There was a collision.
                                 if collision_state > 0:
                                     collision_id = replicants.get_collision_id(j, k, m)

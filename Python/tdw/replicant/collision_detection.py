@@ -6,7 +6,7 @@ class CollisionDetection:
     Parameters for how a Replicant handles collision detection.
     """
 
-    def __init__(self, objects: bool = False, avoid: bool = True, held: bool = True, exclude_objects: List[int] = None,
+    def __init__(self, objects: bool = True, avoid: bool = True, held: bool = True, exclude_objects: List[int] = None,
                  previous_was_same: bool = True):
         """
         :param objects: If True, the Replicant will stop when it collides with an object unless the is in the `exclude_objects`.

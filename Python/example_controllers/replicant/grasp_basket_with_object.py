@@ -28,7 +28,7 @@ print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
 c.add_ons.extend([replicant, camera, capture])
 object_id = Controller.get_unique_id()
-# Create the room. Set a target target.
+# Create the room. Set a target framerate.
 commands = [TDWUtils.create_empty_room(12, 12),
             {"$type": "set_target_framerate",
              "framerate": 60}]

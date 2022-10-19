@@ -46,15 +46,15 @@ class ArmMotion(Action, ABC):
         The duration of the motion in seconds.
         """
         self.duration: float = duration
+        """:field
+        If the action fails in a collision, this is a list of arms that collided with something.
+        """
+        self.collisions: List[Arm] = list()
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self.collision_detection.previous_was_same and previous is not None and isinstance(previous, ArmMotion):
             for arm in self.arms:
                 if arm in previous.collisions:
                     self.status = ActionStatus.collision
-        """:field
-        If the action fails in a collision, this is a list of arms that collided with something.
-        """
-        self.collisions: List[Arm] = list()
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # Get body part collisions.

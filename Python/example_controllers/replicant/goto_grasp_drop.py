@@ -1,16 +1,28 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.replicant import Replicant
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
+
+"""
+Walk to an object, grasp it, walk away, and drop it.
+"""
 
 c = Controller()
-r = Replicant()
-c.add_ons.append(r)
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": -1.5, "y": 1.175, "z": 5.25},
+                           look_at={"x": 0.5, "y": 1, "z": 0},
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_go_to_grasp")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+c.add_ons.extend([replicant, camera, capture])
 trunk_id = Controller.get_unique_id()
 mug_id = Controller.get_unique_id()
-print(trunk_id, mug_id)
 # Create the room.
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(Controller.get_add_physics_object(model_name="trunck",
@@ -21,22 +33,22 @@ commands.extend(Controller.get_add_physics_object(model_name="coffeemug",
                                                   object_id=mug_id,
                                                   position={"x": 0, "y": 0.9888946, "z": 3}))
 c.communicate(commands)
-r.move_to(target=trunk_id)
-while r.action.status == ActionStatus.ongoing:
+replicant.move_to(target=trunk_id)
+while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-r.reach_for(target=mug_id, arms=Arm.right)
-while r.action.status == ActionStatus.ongoing:
+replicant.reach_for(target=mug_id, arm=Arm.right)
+while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-print(r.action.status)
-r.grasp(target=mug_id, arm=Arm.right)
-while r.action.status == ActionStatus.ongoing:
+replicant.grasp(target=mug_id, arm=Arm.right)
+while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-print(r.action.status)
-r.reset_arm(arms=[Arm.left, Arm.right])
-while r.action.status == ActionStatus.ongoing:
+replicant.reset_arm(arm=[Arm.left, Arm.right])
+while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-r.move_by(-4)
-while r.action.status == ActionStatus.ongoing:
+replicant.move_by(-4)
+while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-print(r.action.status)
+replicant.drop(arm=Arm.right)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
 c.communicate({"$type": "terminate"})

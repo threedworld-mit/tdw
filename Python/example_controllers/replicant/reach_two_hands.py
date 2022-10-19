@@ -29,7 +29,7 @@ c.communicate(commands)
 replicant.move_to(target=object_id)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
-replicant.reach_for(target=object_id, arms=[Arm.left, Arm.right])
+replicant.reach_for(target=object_id, arm=[Arm.left, Arm.right])
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 print(replicant.action.status)

@@ -279,7 +279,7 @@ class Replicant(AddOn):
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
-    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arms: Union[Arm, List[Arm]],
+    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   arrived_at: float = 0.01, max_distance: float = 1.5, duration: float = 0.25) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
@@ -296,20 +296,14 @@ class Replicant(AddOn):
         - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arms: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         """
 
-        if isinstance(arms, Arm):
-            a = [arms]
-        elif isinstance(arms, list):
-            a = arms
-        else:
-            raise Exception(f"Invalid arms: {arms}")
         self.action = ReachFor(target=target,
-                               arms=a,
+                               arms=Replicant._arms_to_list(arm),
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                arrived_at=arrived_at,
@@ -365,7 +359,7 @@ class Replicant(AddOn):
                               library=library,
                               previous=self._previous_action)
 
-    def reset_arm(self, arms: Union[Arm, List[Arm]], duration: float = 0.25) -> None:
+    def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25) -> None:
         """
         Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
 
@@ -374,17 +368,11 @@ class Replicant(AddOn):
         - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
         - If `self.collision_detection.previous_was_same == True`, and if the previous action was an arm motion, and it ended in a collision, this action ends immediately.
        
-        :param arms: The [`Arm`](../replicants/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param arm: The [`Arm`](../replicants/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param duration: The duration of the motion in seconds.
         """
 
-        if isinstance(arms, Arm):
-            a = [arms]
-        elif isinstance(arms, list):
-            a = arms
-        else:
-            raise Exception(f"Invalid arms: {arms}")
-        self.action = ResetArm(arms=a,
+        self.action = ResetArm(arms=Replicant._arms_to_list(arm),
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                previous=self._previous_action,
@@ -472,3 +460,20 @@ class Replicant(AddOn):
         self.dynamic = ReplicantDynamic(resp=resp, replicant_id=self.replicant_id, frame_count=self._frame_count)
         if self.dynamic.got_images:
             self._frame_count += 1
+
+    @staticmethod
+    def _arms_to_list(arm: Union[Arm, List[Arm]]) -> List[Arm]:
+        """
+        Converts a single `Arm` value to a list if needed.
+
+        :param arm: Either a single `Arm` value or a list of `Arm` values.
+
+        :return: A list of `Arm` values.
+        """
+
+        if isinstance(arm, Arm):
+            return [arm]
+        elif isinstance(arm, list):
+            return arm
+        else:
+            raise Exception(f"Invalid arms: {arm}")

@@ -25,12 +25,12 @@ commands.extend(Controller.get_add_physics_object(model_name="basket_18inx18inx1
                                                   position={"x": -2, "y": 0, "z": 3}))
 c.communicate(commands)
 # The object is too far away.
-replicant.reach_for(target=object_id, arms=Arm.right)
+replicant.reach_for(target=object_id, arm=Arm.right)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 assert replicant.action.status == ActionStatus.failed_to_reach, replicant.action.status
 # Try to reach the object anyway and fail.
-replicant.reach_for(target=object_id, arms=Arm.right, max_distance=4)
+replicant.reach_for(target=object_id, arm=Arm.right, max_distance=4)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 assert replicant.action.status == ActionStatus.failed_to_reach, replicant.action.status

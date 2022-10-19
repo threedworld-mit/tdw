@@ -12,14 +12,13 @@ class CollisionDetectionTests(Controller):
 
     OBJECT_ID: int = 1
 
-    def test(self, status: ActionStatus, kinematic: bool = False, walls: bool = True, avoid: bool = True,
+    def test(self, status: ActionStatus, kinematic: bool = False, avoid: bool = True,
              exclude: bool = False, distance: float = 4) -> None:
         """
         Test collision detection.
 
         :param status: The expected action status at the end of the move_by(distance) action.
         :param kinematic: If True, the object is kinematic.
-        :param walls: If True, listen to collisions with walls.
         :param avoid: If True, try to avoid obstacles and walls.
         :param exclude: If True, ignore collisions with the object.
         :param distance: The distance to move by.
@@ -30,7 +29,6 @@ class CollisionDetectionTests(Controller):
         camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 0.3},
                                    look_at=replicant.replicant_id)
         self.add_ons.extend([replicant, camera])
-        replicant.collision_detection.walls = walls
         replicant.collision_detection.avoid = avoid
         if exclude:
             replicant.collision_detection.exclude_objects.append(CollisionDetectionTests.OBJECT_ID)

@@ -118,12 +118,7 @@ class Replicant(AddOn):
                     {"$type": "send_bounds",
                      "frequency": "always"},
                     {"$type": "send_containment",
-                     "frequency": "always"},
-                    {"$type": "send_collisions",
-                     "enter": True,
-                     "stay": False,
-                     "exit": True,
-                     "collision_types": ["obj", "env"]}]
+                     "frequency": "always"}]
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

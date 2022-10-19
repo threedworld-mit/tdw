@@ -33,10 +33,6 @@ class ReplicantStatic:
         Body parts by name. Key = [`ReplicantBodyPart`](replicant_body_part.md). Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
-        """:field
-        The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
-        """
-        self.hands: Dict[Arm, int] = dict()
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -47,21 +43,23 @@ class ReplicantStatic:
                     object_id = replicants.get_id(j)
                     # We found the ID of this replicant.
                     if object_id == self.replicant_id:
-                        # The order of the data is always:
-                        # [replicant_0, replicant_0_hand_l, replicant_0_hand_r, ... ,replicant_1, replicant_1_hand_l, ... ]
-                        # So, having found the ID of this replicant, we know that the next IDs are those of its body parts.
                         for k in range(len(BODY_PARTS)):
                             # Cache the ID.
-                            self.body_parts[BODY_PARTS[k]] = replicants.get_id(j + k + 1)
+                            self.body_parts[BODY_PARTS[k]] = replicants.get_body_part_id(j, k)
                         got_data = True
                         break
             if got_data:
                 break
         """:field
-        The Replicant's hands. Key = [`Arm`](../agents/arm.md). Value = Object ID.
+        The Replicant's hands. Key = [`Arm`](arm.md). Value = Hand ID.
         """
         self.hands: Dict[Arm, int] = {Arm.left: self.body_parts[ReplicantBodyPart.hand_l],
                                       Arm.right: self.body_parts[ReplicantBodyPart.hand_r]}
+        """:field
+        The Replicant's lower arms. This is used for collision detection with held objects. Key = [`Arm`](arm.md). Value = Lower arm ID.
+        """
+        self.lower_arms: Dict[Arm, int] = {Arm.left: self.body_parts[ReplicantBodyPart.lowerarm_l],
+                                           Arm.right: self.body_parts[ReplicantBodyPart.lowerarm_r]}
         """:field
         Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
         """

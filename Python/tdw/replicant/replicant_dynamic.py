@@ -4,17 +4,17 @@ import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Collision, EnvironmentCollision, Images, CameraMatrices, Replicants
+from tdw.output_data import OutputData, Images, CameraMatrices, Replicants
 from tdw.object_data.transform import Transform
-from tdw.replicant.replicant_body_part import BODY_PARTS
+from tdw.collision_data.collision_state import CollisionState
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.arm import Arm
 
 
 class ReplicantDynamic:
     """
-    Dynamic data for a replicant that can change per frame (such as the position of the replicant)
-
+    Dynamic data for a replicant that can change per `communicate()` call (such as the position of the Replicant).
     """
 
     def __init__(self, resp: List[bytes], replicant_id: int, frame_count: int):
@@ -69,9 +69,10 @@ class ReplicantDynamic:
         """
         self.body_parts: Dict[int, Transform] = dict()
         """
+        Collision data per body part. Key = Body part ID. Value = A dictionary of collision events. Key = The ID of the object the body part collided with. Value = A list of [`CollisionState`](../collision_data/collision_state.md). 
         A list of [`Collision` and `EnvironmentCollision`](../../api/output_data.md) collisions between this Replicant and other objects and the environment.
         """
-        self.collisions: List[Union[Collision, EnvironmentCollision]] = list()
+        self.collisions: Dict[int, Dict[int, List[CollisionState]]] = dict()
         self._replicant_id: int = replicant_id
         got_data = False
         for i in range(len(resp) - 1):
@@ -83,23 +84,35 @@ class ReplicantDynamic:
                     object_id = replicants.get_id(j)
                     # We found the ID of this replicant.
                     if object_id == replicant_id:
-                        # The order of the data is always:
-                        # [replicant_0, replicant_0_hand_l, replicant_0_hand_r, ... ,replicant_1, replicant_1_hand_l, ... ]
-                        # So, having found the ID of this replicant, we know that the next IDs are those of its body parts.
-                        for k in range(len(BODY_PARTS)):
-                            body_part_index = j + k + 1
-                            # Cache the transform.
-                            self.body_parts[replicants.get_id(body_part_index)] = Transform(position=replicants.get_position(body_part_index),
-                                                                                            forward=replicants.get_forward(body_part_index),
-                                                                                            rotation=replicants.get_rotation(body_part_index))
-                        self.transform = Transform(position=replicants.get_position(0),
-                                                   rotation=replicants.get_rotation(0),
-                                                   forward=replicants.get_forward(0))
                         # Get the held objects.
                         if replicants.get_is_holding_left(j):
                             self.held_objects[Arm.left] = replicants.get_held_left(j)
                         if replicants.get_is_holding_right(j):
                             self.held_objects[Arm.right] = replicants.get_held_right(j)
+                        # Get the body part transforms.
+                        for k in range(len(BODY_PARTS)):
+                            # Cache the transform.
+                            body_part_id = replicants.get_body_part_id(j, k)
+                            self.body_parts[body_part_id] = Transform(position=replicants.get_body_part_position(j, k),
+                                                                      forward=replicants.get_body_part_forward(j, k),
+                                                                      rotation=replicants.get_body_part_rotation(j, k))
+                            # Get collision states.
+                            self.collisions[body_part_id] = dict()
+                            for m in range(10):
+                                collision_state = replicants.get_collision_state(j, k, m)
+                                print(j, k, collision_state)
+                                # There was a collision.
+                                if collision_state > 0:
+                                    collision_id = replicants.get_collision_id(j, k, m)
+                                    self.collisions[body_part_id][collision_id] = list()
+                                    # Parse the bitwise collision data sum.
+                                    for c in CollisionState:
+                                        if collision_state & c != 0:
+                                            self.collisions[body_part_id][collision_id].append(c)
+                        self.transform = Transform(position=replicants.get_position(0),
+                                                   rotation=replicants.get_rotation(0),
+                                                   forward=replicants.get_forward(0))
+                        # Get collision data.
                         got_data = True
                         break
             if got_data:
@@ -107,18 +120,8 @@ class ReplicantDynamic:
         # Now that we have the body part IDs, iterate through the output data a second time to get collisions.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
-            # This is a collision.
-            if r_id == "coll":
-                collision = Collision(resp[i])
-                if collision.get_collider_id() == replicant_id or collision.get_collidee_id() == replicant_id:
-                    self.collisions.append(collision)
-            # This is an environment collision.
-            elif r_id == "enco":
-                collision = EnvironmentCollision(resp[i])
-                if collision.get_object_id() == replicant_id:
-                    self.collisions.append(collision)
             # Get the images captured by the avatar's camera.
-            elif r_id == "imag":
+            if r_id == "imag":
                 images = Images(resp[i])
                 # Get this robot's avatar and save the images.
                 if images.get_avatar_id() == avatar_id:
@@ -217,28 +220,22 @@ class ReplicantDynamic:
         :return: A list of body IDs that entered a collision on this frame and *didn't* exit a collision on this frame, filtered by the collision detection rules.
         """
 
+        if not collision_detection.objects:
+            return []
         enters: List[int] = list()
         exits: List[int] = list()
-        for collision in self.collisions:
-            if isinstance(collision, EnvironmentCollision):
-                state = collision.get_state()
-                if (collision_detection.floor and collision.get_floor()) or \
-                        (collision_detection.walls and not collision.get_floor()):
-                    if state == "enter":
-                        enters.append(collision.get_object_id())
-                    elif state == "exit":
-                        exits.append(collision.get_object_id())
-            elif isinstance(collision, Collision):
-                if not collision_detection.objects:
+        for body_part_id in self.collisions:
+            for object_id in self.collisions[body_part_id]:
+                if object_id in collision_detection.exclude_objects:
                     continue
-                collider_id = collision.get_collider_id()
-                collidee_id = collision.get_collidee_id()
-                object_id = collider_id if collidee_id == self._replicant_id else collidee_id
-                # Accept the collision if the object isn't not in the excludes list.
-                if object_id not in collision_detection.exclude_objects:
-                    if collision.get_state() == "enter":
-                        enters.append(object_id)
-                    elif collision.get_state() == "exit":
-                        exits.append(object_id)
+                # Ignore held objects.
+                if collision_detection.held and (
+                        (body_part_id == ReplicantBodyPart.lowerarm_l and self.held_objects[Arm.left] == object_id) or
+                        (body_part_id == ReplicantBodyPart.lowerarm_r and self.held_objects[Arm.right] == object_id)):
+                    continue
+                if CollisionState.enter in self.collisions[body_part_id][object_id]:
+                    enters.append(object_id)
+                elif CollisionState.exit in self.collisions[body_part_id][object_id]:
+                    exits.append(object_id)
         # Ignore exit events.
         return [e for e in enters if e not in exits]

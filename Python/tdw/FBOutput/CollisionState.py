@@ -5,5 +5,5 @@
 class CollisionState(object):
     enter = 1
     stay = 2
-    exit = 3
+    exit = 4
 

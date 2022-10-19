@@ -1,8 +1,8 @@
-from enum import Enum
+from enum import IntEnum
 from typing import List
 
 
-class ReplicantBodyPart(Enum):
+class ReplicantBodyPart(IntEnum):
     """
     The name of each Replicant body part.
     """

@@ -135,10 +135,9 @@ class MoveBy(Animate):
                             overlap = Overlap(resp[i])
                             if overlap.get_id() == static.replicant_id:
                                 # We detected a wall.
-                                if self.collision_detection.walls and overlap.get_env() and overlap.get_walls():
-                                    if overlap.get_walls():
-                                        self.status = ActionStatus.detected_obstacle
-                                        return commands
+                                if overlap.get_env() and overlap.get_walls():
+                                    self.status = ActionStatus.detected_obstacle
+                                    return commands
                                 object_ids = overlap.get_object_ids()
                                 for object_id in object_ids:
                                     # We detected an object.

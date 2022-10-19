@@ -1532,11 +1532,13 @@ class FieldOfView(OutputData):
 class Replicants(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 3)
-        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 4)
-        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 3)
+        self._ids = self.data.IdsAsNumpy().reshape(-1, 15)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 15, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 15, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
+        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
+        self._collision_states: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
 
     def get_data(self) -> Repl.Replicants:
         return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)
@@ -1545,16 +1547,28 @@ class Replicants(OutputData):
         return len(self._ids)
 
     def get_id(self, index: int) -> int:
-        return int(self._ids[index])
+        return int(self._ids[index][0])
 
-    def get_position(self, index: int) -> np.array:
-        return self._positions[index]
+    def get_position(self, index: int) -> np.ndarray:
+        return self._positions[index][0]
 
-    def get_forward(self, index: int) -> np.array:
-        return self._forwards[index]
+    def get_forward(self, index: int) -> np.ndarray:
+        return self._forwards[index][0]
 
-    def get_rotation(self, index: int) -> np.array:
-        return self._rotations[index]
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index][0]
+
+    def get_body_part_id(self, index: int, body_part_index: int) -> int:
+        return int(self._ids[index][body_part_index + 1])
+
+    def get_body_part_position(self, index: int, body_part_index: int) -> np.ndarray:
+        return self._positions[index][body_part_index + 1]
+
+    def get_body_part_rotation(self, index: int, body_part_index: int) -> np.ndarray:
+        return self._rotations[index][body_part_index + 1]
+
+    def get_body_part_forward(self, index: int, body_part_index: int) -> np.ndarray:
+        return self._forwards[index][body_part_index + 1]
 
     def get_is_holding_left(self, index: int) -> bool:
         return self._held[index][0][0] == 1
@@ -1567,6 +1581,12 @@ class Replicants(OutputData):
 
     def get_held_right(self, index: int) -> int:
         return int(self._held[index][1][1])
+
+    def get_collision_state(self, index: int, body_part_index: int, collision_index: int) -> int:
+        return int(self._collision_states[index][body_part_index][collision_index])
+
+    def get_collision_id(self, index: int, body_part_index: int, collision_index: int) -> int:
+        return int(self._collision_ids[index][body_part_index][collision_index])
 
 
 class ReplicantStatus(OutputData):

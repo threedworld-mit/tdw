@@ -15,7 +15,6 @@ Grasp a basket containing an object.
 def do_action(status: ActionStatus = ActionStatus.success):
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
-    pass
     if replicant.action.status == ActionStatus.collision:
         print(replicant.dynamic.get_collision_enters(replicant.collision_detection))
         print(replicant.dynamic.held_objects)

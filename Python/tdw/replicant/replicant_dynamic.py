@@ -225,7 +225,7 @@ class ReplicantDynamic:
         exits: List[int] = list()
         for body_part_id in self.collisions:
             for object_id in self.collisions[body_part_id]:
-                if object_id in collision_detection.exclude_objects:
+                if object_id in collision_detection.exclude_objects or object_id in self.body_parts:
                     continue
                 # Ignore held objects.
                 if collision_detection.held and (

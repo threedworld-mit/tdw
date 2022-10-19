@@ -229,12 +229,12 @@ class ReplicantDynamic:
                     continue
                 # Ignore held objects.
                 if collision_detection.held and (
-                        (body_part_id == ReplicantBodyPart.lowerarm_l and self.held_objects[Arm.left] == object_id) or
-                        (body_part_id == ReplicantBodyPart.lowerarm_r and self.held_objects[Arm.right] == object_id)):
+                        (Arm.left in self.held_objects and self.held_objects[Arm.left] == object_id) or
+                        (Arm.right in self.held_objects and self.held_objects[Arm.right] == object_id)):
                     continue
                 if CollisionState.enter in self.collisions[body_part_id][object_id]:
-                    enters.append(object_id)
+                    enters.append(body_part_id)
                 elif CollisionState.exit in self.collisions[body_part_id][object_id]:
-                    exits.append(object_id)
+                    exits.append(body_part_id)
         # Ignore exit events.
         return [e for e in enters if e not in exits]

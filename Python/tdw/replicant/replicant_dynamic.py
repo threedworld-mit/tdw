@@ -212,22 +212,19 @@ class ReplicantDynamic:
         else:
             return None
 
-    def get_collision_enters(self, collision_detection: CollisionDetection, body_parts: List[int] = None) -> List[int]:
+    def get_collision_enters(self, collision_detection: CollisionDetection) -> List[int]:
         """
         :param collision_detection: The [`CollisionDetection`](collision_detection.md) rules.
-        :param body_parts: A list of body parts that we're checking. If None, defaults to all body parts.
 
         :return: A list of body IDs that entered a collision on this frame and *didn't* exit a collision on this frame, filtered by the collision detection rules.
         """
 
         if not collision_detection.objects:
             return []
-        if body_parts is None:
-            body_parts = list(self.body_parts.keys())
         enters: List[int] = list()
         exits: List[int] = list()
         for body_part_id in self.collisions:
-            if body_part_id not in body_parts:
+            if body_part_id not in self.body_parts:
                 continue
             for object_id in self.collisions[body_part_id]:
                 if object_id in collision_detection.exclude_objects or object_id in self.body_parts:

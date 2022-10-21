@@ -57,14 +57,7 @@ class ArmMotion(Action, ABC):
                     self.status = ActionStatus.collision
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        # Get body part collisions.
-        body_parts = []
-        for arm in self.arms:
-            body_parts.extend(static.arm_ids[arm])
-        # Get the collisions for the arms.
-        body_part_collisions = dynamic.get_collision_enters(collision_detection=self.collision_detection,
-                                                            body_parts=body_parts)
-        if len(body_part_collisions) > 0:
+        if len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:
             self.status = ActionStatus.collision
         elif self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
             self.status = ActionStatus.success

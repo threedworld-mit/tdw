@@ -18,8 +18,10 @@ def do_action(status: ActionStatus = ActionStatus.success):
     if replicant.action.status == ActionStatus.collision:
         print(replicant.dynamic.get_collision_enters(replicant.collision_detection))
         print(replicant.dynamic.held_objects)
-        print(replicant.static.body_parts_by_id)
-        print(replicant.dynamic.body_parts.keys())
+        print("")
+        print(replicant.static.body_parts)
+        print("")
+        print(replicant.dynamic.collisions)
     assert replicant.action.status == status, replicant.action.status
 
 

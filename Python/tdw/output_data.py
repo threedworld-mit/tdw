@@ -1538,7 +1538,7 @@ class Replicants(OutputData):
         self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
         self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
-        self._collision_states: np.ndarray = self.data.CollisionStatesAsNumpy().reshape(-1, 14, 10)
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, 14, 10)
 
     def get_data(self) -> Repl.Replicants:
         return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)
@@ -1582,8 +1582,8 @@ class Replicants(OutputData):
     def get_held_right(self, index: int) -> int:
         return int(self._held[index][1][1])
 
-    def get_collision_state(self, index: int, body_part_index: int, collision_index: int) -> int:
-        return int(self._collision_states[index][body_part_index][collision_index])
+    def get_is_collision(self, index: int, body_part_index: int, collision_index: int) -> bool:
+        return self._is_collisions[index][body_part_index][collision_index]
 
     def get_collision_id(self, index: int, body_part_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][body_part_index][collision_index])

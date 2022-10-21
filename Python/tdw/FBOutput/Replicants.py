@@ -151,22 +151,22 @@ class Replicants(object):
         return 0
 
     # Replicants
-    def CollisionStates(self, j):
+    def IsCollisions(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             a = self._tab.Vector(o)
-            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+            return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
         return 0
 
     # Replicants
-    def CollisionStatesAsNumpy(self):
+    def IsCollisionsAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
-            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
         return 0
 
     # Replicants
-    def CollisionStatesLength(self):
+    def IsCollisionsLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return self._tab.VectorLen(o)
@@ -185,6 +185,6 @@ def ReplicantsAddHeld(builder, held): builder.PrependUOffsetTRelativeSlot(4, tdw
 def ReplicantsStartHeldVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ReplicantsAddCollisionIds(builder, collisionIds): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(collisionIds), 0)
 def ReplicantsStartCollisionIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddCollisionStates(builder, collisionStates): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(collisionStates), 0)
-def ReplicantsStartCollisionStatesVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ReplicantsAddIsCollisions(builder, isCollisions): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(isCollisions), 0)
+def ReplicantsStartIsCollisionsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def ReplicantsEnd(builder): return builder.EndObject()

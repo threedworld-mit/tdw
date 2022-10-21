@@ -56,11 +56,6 @@ class ReplicantStatic:
         self.hands: Dict[Arm, int] = {Arm.left: self.body_parts[ReplicantBodyPart.hand_l],
                                       Arm.right: self.body_parts[ReplicantBodyPart.hand_r]}
         """:field
-        The Replicant's lower arms. This is used for collision detection with held objects. Key = [`Arm`](arm.md). Value = Lower arm ID.
-        """
-        self.lower_arms: Dict[Arm, int] = {Arm.left: self.body_parts[ReplicantBodyPart.lowerarm_l],
-                                           Arm.right: self.body_parts[ReplicantBodyPart.lowerarm_r]}
-        """:field
         Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
         """
         self.body_parts_by_id: Dict[int, ReplicantBodyPart] = {v: k for k, v in self.body_parts.items()}

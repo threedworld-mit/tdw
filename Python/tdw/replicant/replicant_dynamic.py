@@ -32,19 +32,7 @@ class ReplicantDynamic:
         """
         self.held_objects: Dict[Arm, int] = dict()
         """:field
-        A dictionary of collisions between one of this replicant's [body parts](replicant_static.md) and the environment (floors, walls, etc.).
-        Key = The ID of the body part.
-        Value = A list of [environment collision data.](../../object_data/collision_obj_env.md)
-        """
-        """:field
         The images rendered by the robot as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
-
-        | Pass | Image | Description |
-        | --- | --- | --- |
-        | `"img"` | ![](images/pass_masks/img_0.jpg) | The rendered image. |
-        | `"id"` | ![](images/pass_masks/id_0.png) | The object color segmentation pass. See `Magnebot.segmentation_color_to_id` and `Magnebot.objects_static` to map segmentation colors to object IDs. |
-        | `"depth"` | ![](images/pass_masks/depth_0.png) | The depth values per pixel as a numpy array. Depth values are encoded into the RGB image; see `SceneState.get_depth_values()`. Use the camera matrices to interpret this data. |
-
         """
         self.images: Dict[str, np.array] = dict()
         """:field

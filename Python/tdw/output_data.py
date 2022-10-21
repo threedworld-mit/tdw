@@ -1538,7 +1538,7 @@ class Replicants(OutputData):
         self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
         self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
-        self._collision_states: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
+        self._collision_states: np.ndarray = self.data.CollisionStatesAsNumpy().reshape(-1, 14, 10)
 
     def get_data(self) -> Repl.Replicants:
         return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)

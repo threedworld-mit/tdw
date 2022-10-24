@@ -49,6 +49,16 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 There are additional constructor parameters that will be covered in subsequent documents.
 
+## Future development
+
+**The Replicant is usable but unfinished.** This version of the Replicant can be thought of as "Phase 1" and there are known limitations to it. These include:
+
+- The Replicant's pose won't blend between [animations](animations.md), meaning that it will always snap back to a neutral pose at the start of an animation. 
+- The Replicant's [turn action](movement.md) doesn't have an animation.
+- The Replicant can't bend its fingers to achieve a realistic grasp action.
+
+**All of these limitations will be resolved in future phases of Replicant development.** Additionally, more features will be added to the Replicant over time.
+
 ***
 
 **Next: [Actions](actions.md)**

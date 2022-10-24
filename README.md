@@ -221,7 +221,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 5. Arm articulation
 6. Grasp and drop objects
 7. Head movement
-8. Navigation
+8. Animations
+9. Navigation
 
 ### 11.3 Virtual Reality (VR)
 

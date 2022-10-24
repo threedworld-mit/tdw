@@ -1,10 +1,6 @@
 ##### Replicants
 
-# The `Replicant` add-on
-
-
-
-## Actions
+# Actions
 
 The `Replicant` has a pre-defined action space, divided into separate function calls. Calling one of these action functions will *start* the action but won't actually *do* the action. This means that Replicants can move concurrently in a [multi-agent simulation](../multi_agent/overview.md).
 
@@ -104,6 +100,8 @@ A more significant problem with the initial action is the loop we're using; we'r
 
 In the case of `move_by(distance)`, the action can end in success (the Replicant walked the target distance), or failure ([a collision or near-collision](movement.md)).
 
+Within the add-on, every action is a data object: `replicant.action`. This is a subclass of [`Action`](../../python/replicant/actions/action.md).
+
 When we call `replicant.move_by(distance)`, we actually set the `replicant.action` field, like this:
 
 ```
@@ -119,7 +117,7 @@ When we call `replicant.move_by(distance)`, we actually set the `replicant.actio
 
 The [`Action`](../../python/replicant/actions/action.md) (in this case, a [`MoveBy`](../../python/replicant/actions/move_by.md) action), has a `status` field. While the action is ongoing, `action.status == ActionStatus.ongoing`. If it is ever something else, we know that the action is done.
 
-This example replaces the `for i in range(100):` loop with a `while` loop that continuously checks the action's status for completion:
+This example replaces the `for i in range(100):` loop with a `while` loop that continuously checks the action's status for completion. Note that there is an additional, `c.communicate([])` call at the end; this is to send commands that end the action.
 
 ```python
 from tdw.controller import Controller
@@ -148,6 +146,8 @@ replicant.move_by(2)
 # Continue walking until the action ends.
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+# End the action.
+c.communicate([])
 print(replicant.action.status)
 c.communicate({"$type": "terminate"})
 ```
@@ -159,3 +159,25 @@ ActionStatus.success
 ```
 
 It is *not* necessary to wrap all Replicant actions in a loop like this. For example, in the context of a multi-agent simulation you won't want to loop like this because you'll want to be checking multiple agent actions at the same time. For the sake of subsequent example code, we know we have only one agent, so this simple loop is good enough for showcasing the rest of the Replicant's behavior.
+
+***
+
+**Next: [Output data](output_data.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [move_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_by.py) Move a Replicant by a target distance and print its status.
+
+Commands API:
+
+- [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
+
+Python API:
+
+- [`Replicant`](../../python/add_ons/replicant.md)
+-  [`Action`](../../python/replicant/actions/action.md)
+-  [`MoveBy`](../../python/replicant/actions/move_by.md)

@@ -28,5 +28,6 @@ replicant.move_by(2)
 # Continue walking until the action ends.
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
+c.communicate([])
 print(replicant.action.status)
 c.communicate({"$type": "terminate"})

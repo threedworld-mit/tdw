@@ -212,6 +212,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
+### 11.3 Replicants
+
+1. [Overview](Documentation/lessons/replicants/overview.md)
+2. [Actions](Documentation/lessons/replicants/actions.md)
+3. [Output data](Documentation/lessons/replicants/output_data.md)
+4. Movement
+5. Arm articulation
+6. Grasp and drop objects
+7. Head movement
+8. Navigation
+
 ### 11.3 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)

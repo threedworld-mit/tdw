@@ -140,10 +140,155 @@ Output:
 False
 ```
 
-### Images
-
-By default, a Replicant captures images at the end of every [action](actions.md).
-
 - `dynamic.got_images` is a boolean that indicates whether there is image data.
-- `dynamic.images` is a dictionary of image data. The key is the [pass mask as a string](../core_concepts/images.md). The Replicant always captures `_img`, [`_id`](../visual_perception/id.md), and [`_depth`](../visual_perception/depth.md) images.
+- `dynamic.images` is a dictionary of image data. The key is the [pass mask as a string](../core_concepts/images.md). See below for more information:
 
+## Images
+
+Images, as noted above, are stored in `dynamic.images`. 
+
+### Image frequency
+
+**By default, images are captured at the end of every [action](actions.md).** If there is no image data, `dynamic.images` is an empty dictionary:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.replicant.action_status import ActionStatus
+
+c = Controller()
+replicant = Replicant()
+c.add_ons.append(replicant)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+# Walk forward 0.5 meters.
+replicant.move_by(0.5)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+    # This will be an empty dictionary.
+    print(replicant.dynamic.images.keys())
+c.communicate([])
+# This will print the image pass mask labels.
+print(replicant.dynamic.images.keys())
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys([])
+dict_keys(['img', 'id', 'depth'])
+```
+
+If  you want to capture images on every `communicate()` call, or never capture images, set the `image_frequency` parameter in the Replicant constructor, which accepts an [`ImageFrequency`](../../python/replicant/image_frequency.md) value:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.image_frequency import ImageFrequency
+
+c = Controller()
+# Request image data on every `communicate()` call.
+replicant = Replicant(image_frequency=ImageFrequency.always)
+c.add_ons.append(replicant)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+replicant.move_by(0.5)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+    print(replicant.dynamic.images.keys())
+c.communicate([])
+print(replicant.dynamic.images.keys())
+c.communicate({"$type": "terminate"})
+```
+
+Output:
+
+```
+dict_keys([])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+dict_keys(['img', 'id', 'depth'])
+```
+
+### Save images
+
+To save images, call `replicant.dynamic.save_images` after a `communicate()` call:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.image_frequency import ImageFrequency
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_egocentric")
+print(f"Images will be saved to: {path}")
+c = Controller()
+# Request image data on every `communicate()` call.
+replicant = Replicant(image_frequency=ImageFrequency.always)
+c.add_ons.append(replicant)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+replicant.move_by(2)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+    # Save the images.
+    replicant.dynamic.save_images(output_directory=path)
+c.communicate([])
+# Save the images.
+replicant.dynamic.save_images(output_directory=path)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/move_by_egocentric.gif)
+
+### `_depth` and `_id` passes
+
+In addition to the the `_img` pass, the Replicant will capture `_id` and `_depth` passes. The `_id` pass is `dynamic.images["id"]` and the `_depth` pass is `dynamic.images["depth"]` (assuming that `dynamic.images` isn't empty).
+
+- [To learn more about the `_id` pass, read  this.](../visual_perception/id.md)
+- [To learn more about the `_depth` pass, including how to interpret it as a point cloud, read this.](../visual_perception/depth.md)
+
+***
+
+**Next: [Movement](movement.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [egocentric_images.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/egocentric_images.py) Capture image data from the Replicant per `communicate()` call and save it to disk.
+
+Python API:
+
+- [`Replicant`](../../python/add_ons/replicant.md)
+- [`ReplicantStatic`](../../python/replicant/replicant_static.md)
+- [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md)
+- [`Arm`](../../python/replicant/arm.md)
+- [`ReplicantBodyPart`](../../python/replicant/replicant_body_part.md)
+- [`ImageFrequency`](../../python/replicant/image_frequency.md)
+- [`Transform`](../../python/object_data/transform.md)

@@ -1,4 +1,3 @@
-from io import BytesIO
 from typing import List, Dict, Optional, Union
 import numpy as np
 from pathlib import Path
@@ -150,46 +149,6 @@ class ReplicantDynamic:
             else:
                 with p.open("wb") as f:
                     f.write(self.images[pass_name])
-
-    def get_pil_images(self) -> Dict[str, Image.Image]:
-        """
-        Convert each image pass from the robot camera to PIL images.
-
-        :return: A dictionary of PIL images. Key = the pass name (img, id, depth); Value = The PIL image (can be None)
-        """
-
-        images = dict()
-        for pass_name in self.images:
-            if pass_name == "depth":
-                images[pass_name] = Image.fromarray(self.images[pass_name])
-            else:
-                images[pass_name] = Image.open(BytesIO(self.images[pass_name]))
-        return images
-
-    def get_depth_values(self) -> np.array:
-        """
-        Convert the depth pass to depth values. Can be None if there is no depth image data.
-
-        :return: A decoded depth pass as a numpy array of floats.
-        """
-
-        if "depth" in self.images:
-            return TDWUtils.get_depth_values(self.images["depth"])
-        else:
-            return None
-
-    def get_point_cloud(self) -> np.array:
-        """
-        Returns a point cloud from the depth pass. Can be None if there is no depth image data.
-
-        :return: A decoded depth pass as a numpy array of floats.
-        """
-
-        if "depth" in self.images:
-            return TDWUtils.get_point_cloud(depth=TDWUtils.get_depth_values(self.images["depth"]),
-                                            camera_matrix=self.camera_matrix, far_plane=100, near_plane=1)
-        else:
-            return None
 
     def get_collision_enters(self, collision_detection: CollisionDetection) -> List[int]:
         """

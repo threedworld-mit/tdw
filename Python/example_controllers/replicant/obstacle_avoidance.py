@@ -10,8 +10,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 class ObstacleAvoidance(Controller):
     """
-    Create a humanoid that walks across the room, knocks over a chair and reaches for
-    a randomly-positioned object multiple times.
+    A very simple method for navigating around obstacles.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):

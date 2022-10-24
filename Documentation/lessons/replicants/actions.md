@@ -2,7 +2,21 @@
 
 # Actions
 
-The `Replicant` has a pre-defined action space, divided into separate function calls. Calling one of these action functions will *start* the action but won't actually *do* the action. This means that Replicants can move concurrently in a [multi-agent simulation](../multi_agent/overview.md).
+The `Replicant` has a pre-defined action space, divided into separate function calls:
+
+- `turn_by(angle)`
+- `turn_to(target)`
+- `move_by(distance)`
+- `move_to(target)`
+- `reach_for(target, arm)`
+- `reset_arm(arm)`
+- `grasp(target, arm)`
+- `drop(arm)`
+- `animate(animation)`
+- `look_at(target)`
+- `reset_head()`
+
+Calling one of these action functions will *start* the action but won't actually *do* the action. This means that Replicants can move concurrently in a [multi-agent simulation](../multi_agent/overview.md).
 
 This example doesn't actually do anything:
 

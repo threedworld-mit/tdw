@@ -341,7 +341,7 @@ class Replicant(AddOn):
 
         self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames)
 
-    def animate(self, animation: str, forward: bool = True, library: str = "humanoid_animations.json") -> None:
+    def animate(self, animation: str, library: str = "humanoid_animations.json") -> None:
         """
         Play an animation.
 
@@ -351,13 +351,12 @@ class Replicant(AddOn):
         - If `self.collision_detection.previous_was_same == True`, and it was the same animation, and it ended in a collision, this action ends immediately.
 
         :param animation: The name of the animation.
-        :param forward: If True, play the animation forwards. If False, play the animation backwards.
         :param library: The animation library.
         """
 
         self.action = Animate(animation=animation,
                               collision_detection=self.collision_detection,
-                              forward=forward,
+                              forward=True,
                               library=library,
                               previous=self._previous_action)
 

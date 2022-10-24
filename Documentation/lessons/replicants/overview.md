@@ -49,6 +49,10 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 There are additional constructor parameters that will be covered in subsequent documents.
 
+## Replicant asset bundles
+
+Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes.md), Replicants are **asset bundles** stored on a remote S3 server that must be downloaded before they can be added to the scene. This means that when you first add a Replicant to the scene, there will be a brief pause while it is downloaded and loaded into memory. For subsequent scene resets, the Replicant will already in memory and will appear immediately.
+
 ## Future development
 
 **The Replicant is usable but unfinished.** This version of the Replicant can be thought of as "Phase 1" and there are known limitations to it. These include:

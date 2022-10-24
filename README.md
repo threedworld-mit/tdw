@@ -217,26 +217,28 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/replicants/overview.md)
 2. [Actions](Documentation/lessons/replicants/actions.md)
 3. [Output data](Documentation/lessons/replicants/output_data.md)
-4. Movement
-5. Arm articulation
-6. Grasp and drop objects
-7. Head movement
-8. Animations
-9. Navigation
+4. [Movement](Documentation/lessons/replicants/movement.md)
+5. Animations
+6. Arm articulation
+7. Collision detection
+8. Grasp and drop objects
+9. Head movement
+10. Navigation
+11. Reset
 
-### 11.3 Virtual Reality (VR)
+### 11.4 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 11.4 Keyboard and Mouse
+### 11.5 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.5 Embodied avatars
+### 11.6 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 

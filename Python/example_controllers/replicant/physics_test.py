@@ -10,6 +10,10 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class PhysicsTest(Controller):
+    """
+    Pick up a table and walk around.
+    """
+
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         # Set the Replicant in the constructor so that it can be referenced by multiple functions.

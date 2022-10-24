@@ -15,13 +15,6 @@ Grasp a basket containing an object.
 def do_action(status: ActionStatus = ActionStatus.success):
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
-    if replicant.action.status == ActionStatus.collision:
-        print(replicant.dynamic.get_collision_enters(replicant.collision_detection))
-        print(replicant.dynamic.held_objects)
-        print("")
-        print(replicant.static.body_parts)
-        print("")
-        print(replicant.dynamic.collisions)
     assert replicant.action.status == status, replicant.action.status
 
 

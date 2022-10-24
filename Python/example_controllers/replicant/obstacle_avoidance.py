@@ -30,13 +30,8 @@ class ObstacleAvoidance(Controller):
         print(f"Images will be saved to: {path}")
         capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
         self.add_ons.extend([self.replicant, camera, capture])
-        # Create an empty room. Set the screen size and render quality.
-        commands = [TDWUtils.create_empty_room(12, 20),
-                    {"$type": "set_screen_size",
-                     "width": 1920,
-                     "height": 1080},
-                    {"$type": "set_render_quality",
-                     "render_quality": 5}]
+        # Create an empty room.
+        commands = [TDWUtils.create_empty_room(12, 20)]
         # Add some objects.
         commands.extend(Controller.get_add_physics_object(model_name="chair_billiani_doll",
                                                           object_id=Controller.get_unique_id(),

@@ -6,7 +6,6 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.action import Action
 from tdw.replicant.arm import Arm
 from tdw.replicant.image_frequency import ImageFrequency
-from tdw.output_data import OutputData, Containment
 
 
 class Drop(Action):
@@ -14,6 +13,8 @@ class Drop(Action):
     Drop a held object.
 
     The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
+
+    When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
     def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int):
@@ -53,24 +54,6 @@ class Drop(Action):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        # Unparent all contained objects.
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "cont":
-                containment = Containment(resp[i])
-                object_id = containment.get_object_id()
-                if object_id == self.object_id:
-                    overlap_ids = containment.get_overlap_ids()
-                    for overlap_id in overlap_ids:
-                        # Ignore the Replicant.
-                        if overlap_id == static.replicant_id:
-                            continue
-                        commands.extend([{"$type": "unparent_object",
-                                          "id": int(overlap_id)},
-                                         {"$type": "set_kinematic_state",
-                                          "id": int(overlap_id),
-                                          "is_kinematic": False,
-                                          "use_gravity": True}])
         commands.append({"$type": "replicant_drop_object",
                          "id": static.replicant_id,
                          "arm": self.arm.name})

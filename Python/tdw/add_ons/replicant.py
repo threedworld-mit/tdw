@@ -88,12 +88,14 @@ class Replicant(AddOn):
         [The collision detection rules.](../replicant/collision_detection.md) This determines whether the Replicant will immediately stop moving or turning when it collides with something.
         """
         self.collision_detection: CollisionDetection = CollisionDetection()
+        # This is used for collision detection. If the previous action is the "same" as this one, this action fails.
         self._previous_action: Optional[Action] = None
+        # This is used when saving images.
         self._frame_count: int = 0
         # Initialize the Replicant metdata library.
         if Replicant.LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
             Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME] = HumanoidLibrarian(Replicant.LIBRARY_NAME)
-        # Get the metdata record.
+        # The Replicant metadata record.
         self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME].get_record(name)
 
     def get_initialization_commands(self) -> List[dict]:
@@ -103,13 +105,12 @@ class Replicant(AddOn):
         :return: A list of commands that will initialize this add-on.
         """
 
+        # Add the replicant. Send output data: Replicants, Transforms, Bounds, Containment.
         commands = [{"$type": "add_replicant",
                      "name": self._record.name,
                      "position": self.initial_position,
                      "rotation": self.initial_rotation,
                      "url": self._record.get_url(),
-                     "id": self.replicant_id},
-                    {"$type": "add_replicant_rigidbody",
                      "id": self.replicant_id},
                     {"$type": "send_replicants",
                      "frequency": "always"},

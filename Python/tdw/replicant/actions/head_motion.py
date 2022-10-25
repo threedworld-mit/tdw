@@ -27,6 +27,7 @@ class HeadMotion(Action, ABC):
 
     @final
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        if self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
-            self.status = ActionStatus.success
+        # Check if the motion is done.
+        if dynamic.output_data_status != ActionStatus.ongoing:
+            self.status = dynamic.output_data_status
         return []

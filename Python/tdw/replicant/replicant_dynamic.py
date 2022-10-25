@@ -7,6 +7,7 @@ from tdw.output_data import OutputData, Images, CameraMatrices, Replicants
 from tdw.object_data.transform import Transform
 from tdw.replicant.replicant_body_part import BODY_PARTS
 from tdw.replicant.collision_detection import CollisionDetection
+from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
 
 
@@ -48,17 +49,21 @@ class ReplicantDynamic:
         If True, we got images from the output data.
         """
         self.got_images: bool = False
-        self._frame_count: int = frame_count
-        avatar_id = str(replicant_id)
         """:field
         Transform data for each body part. Key = Body part ID. Value = [`Transform`](../object_data/transform.md).
         """
         self.body_parts: Dict[int, Transform] = dict()
-        """
+        """:field
         Collision data per body part. Key = Body part ID. Value = A list of object IDs that the body part collided with.
         """
         self.collisions: Dict[int, List[int]] = dict()
+        """:field
+        This is meant for internal use only. For certain actions, the build will update the Replicant's `ActionStatus`. *Do not use this field to check the Replicant's status.* Always check `replicant.action.status` instead. 
+        """
+        self.output_data_status: ActionStatus = ActionStatus.ongoing
+        self._frame_count: int = frame_count
         self._replicant_id: int = replicant_id
+        avatar_id = str(replicant_id)
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -86,9 +91,10 @@ class ReplicantDynamic:
                             for m in range(10):
                                 if replicants.get_is_collision(j, k, m):
                                     self.collisions[body_part_id].append(replicants.get_collision_id(j, k, m))
-                        self.transform = Transform(position=replicants.get_position(0),
-                                                   rotation=replicants.get_rotation(0),
-                                                   forward=replicants.get_forward(0))
+                        self.transform = Transform(position=replicants.get_position(j),
+                                                   rotation=replicants.get_rotation(j),
+                                                   forward=replicants.get_forward(j))
+                        self.output_data_status = replicants.get_status(j)
                         # Get collision data.
                         got_data = True
                         break

@@ -7,7 +7,6 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.actions.action import Action
 from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
 from tdw.replicant.image_frequency import ImageFrequency
 
@@ -94,9 +93,7 @@ class ReachFor(ArmMotion):
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        # Check if we can't reach the target.
-        status: Optional[ActionStatus] = self._get_status(replicant_id=static.replicant_id, resp=resp)
-        if status is not None:
-            self.status = status
+        # Check if we can't reach the target or if the action is done.
+        self.status = dynamic.output_data_status
         # Continue the action, checking for collisions.
         return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)

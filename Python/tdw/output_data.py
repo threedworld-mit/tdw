@@ -57,8 +57,6 @@ from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
-from tdw.FBOutput import ReplicantStatus as ReplStat
-from tdw.FBOutput import HumanoidMotionComplete as HumanMotion
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1539,6 +1537,7 @@ class Replicants(OutputData):
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
         self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
         self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, 14, 10)
+        self._statuses: np.ndarray = self.data.StatusesAsNumpy()
 
     def get_data(self) -> Repl.Replicants:
         return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)
@@ -1588,21 +1587,5 @@ class Replicants(OutputData):
     def get_collision_id(self, index: int, body_part_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][body_part_index][collision_index])
 
-
-class ReplicantStatus(OutputData):
-    def get_data(self) -> ReplStat.ReplicantStatus:
-        return ReplStat.ReplicantStatus.GetRootAsReplicantStatus(self.bytes, 0)
-
-    def get_id(self) -> int:
-        return int(self.data.Id())
-
-    def get_status(self) -> ActionStatus:
-        return ActionStatus(self.data.Status())
-
-
-class HumanoidMotionComplete(OutputData):
-    def get_data(self) -> HumanMotion.HumanoidMotionComplete:
-        return HumanMotion.HumanoidMotionComplete.GetRootAsHumanoidMotionComplete(self.bytes, 0)
-
-    def get_id(self) -> int:
-        return int(self.data.Id())
+    def get_status(self, index: int) -> ActionStatus:
+        return ActionStatus(self._statuses[index])

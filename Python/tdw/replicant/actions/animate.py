@@ -70,9 +70,9 @@ class Animate(Action):
         # If there was a collision, stop the animation.
         if len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:
             self.status = ActionStatus.collision
-        # Continue the animation.
-        elif self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
-            self.status = ActionStatus.success
+        # Check if the animation is done.
+        elif dynamic.output_data_status != ActionStatus.ongoing:
+            self.status = dynamic.output_data_status
         return []
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,

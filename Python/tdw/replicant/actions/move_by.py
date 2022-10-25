@@ -145,7 +145,7 @@ class MoveBy(Animate):
                                         self.status = ActionStatus.detected_obstacle
                                         return commands
                 # We're at the end of the walk cycle. Continue the animation.
-                if self._get_motion_complete(replicant_id=static.replicant_id, resp=resp):
+                if dynamic.output_data_status == ActionStatus.success:
                     commands.append({"$type": "play_humanoid_animation",
                                      "name": self.record.name,
                                      "id": static.replicant_id,

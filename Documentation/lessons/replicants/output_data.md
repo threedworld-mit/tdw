@@ -271,6 +271,18 @@ In addition to the the `_img` pass, the Replicant will capture `_id` and `_depth
 - [To learn more about the `_id` pass, read  this.](../visual_perception/id.md)
 - [To learn more about the `_depth` pass, including how to interpret it as a point cloud, read this.](../visual_perception/depth.md)
 
+## Low-level description
+
+When the `Replicant` add-on initializes, it sends [`send_replicants`](../../api/command_api.md#send_replicants) in order to receive [`Replicants`](../../api/output_data.md#Replicants) output data per `communicate()` call. This data has been optimized for speed, not human usage; this one of many reasons that we recommend using the `Replicant` add-on instead of low-level TDW commands and output data. Both `ReplicantStatic` and `ReplicantDynamic` parse`Replicants` output data. 
+
+Some [actions](actions.md) require additional output data. When the `Replicant` add-on initializes, it also sends [`send_transforms`](../../api/command_api.md#send_transforms), [`send_bounds`](../../api/command_api.md#send_bounds), and [`send_containment`](../../api/command_api.md#send_containment) to receive  [`Transforms`](../../api/output_data.md#Transforms),  [`Bounds`](../../api/output_data.md#Bounds), and  [`Containment`](../../api/output_data.md#Containment) respectively per `communicate()` call.
+
+The `Replicant`'s `static` and `dynamic` data are initially `None`. Both are set *after* the first `communicate()` call (because the Replicant needs one `communicate()` call to start requesting output data).
+
+On the *second* `communicate()` call (i.e. one call after initialization), the `Replicant` add-on sends [`create_avatar`](../../api/command_api.md#create_avatar) and [`parent_avatar_to_replicant`](../../api/command_api.md#parent_avatar_to_replicant) to attach an [avatar (camera)](../core_concepts.md) to its head. This is how it receives image data.
+
+The `Replicant` sends [`send_images`](../../api/command_api.md#send_images) and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) to receive [`Images`](../../api/output_data.md#Images) and [`CameraMatrices`](../../api/output_data.md#CameraMatrices) output data, respectively. The frequency at which this data is sent depends on the value of the `image_frequency` value in the constructor. By default, these commands are only sent when an action ends; accordingly, they are actually pass from the `action`, to the `Replicant`, to the controller.
+
 ***
 
 **Next: [Movement](movement.md)**
@@ -282,6 +294,26 @@ In addition to the the `_img` pass, the Replicant will capture `_id` and `_depth
 Example controllers:
 
 - [egocentric_images.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/egocentric_images.py) Capture image data from the Replicant per `communicate()` call and save it to disk.
+
+Command API:
+
+- [`send_replicants`](../../api/command_api.md#send_replicants)
+- [`send_transforms`](../../api/command_api.md#send_transforms)
+- [`send_bounds`](../../api/command_api.md#send_bounds)
+- [`send_containment`](../../api/command_api.md#send_containment)
+- [`create_avatar`](../../api/command_api.md#create_avatar)
+- [`parent_avatar_to_replicant`](../../api/command_api.md#parent_avatar_to_replicant)
+- [`send_images`](../../api/command_api.md#send_images)
+- [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices)
+
+Output Data API:
+
+- [`Replicants`](../../api/output_data.md#Replicants)
+- [`Transforms`](../../api/output_data.md#Transforms)
+- [`Bounds`](../../api/output_data.md#Bounds)
+- [`Containment`](../../api/output_data.md#Containment)
+- [`Images`](../../api/output_data.md#Images)
+- [`CameraMatrices`](../../api/output_data.md#CameraMatrices)
 
 Python API:
 

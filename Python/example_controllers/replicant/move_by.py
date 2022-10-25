@@ -21,7 +21,7 @@ capture = ImageCapture(avatar_ids=["a"],
                        path=path)
 # Note the order in which the add-ons are added. The replicant needs to be first so that the camera can look at it.
 c.add_ons.extend([replicant, camera, capture])
-# Create the scene. Set the framerate.
+# Create the scene.
 c.communicate(TDWUtils.create_empty_room(12, 12))
 # Start walking.
 replicant.move_by(2)

@@ -145,6 +145,185 @@ Result:
 
 ![](images/move_to.gif)
 
+## Physics and collision detection
+
+*For more information regarding collision detection, [read this.](collision_detection.md)*
+
+### Turn actions
+
+The `turn_by(angle)` and `turn_to(angle)` aren't expected to every end in collisions; they always succeed and ignore `replicant.collision_detection`.
+
+### Obstacle avoidance
+
+By default, `move_by(distance)` and `move_to(target)` will try to *avoid* obstacles *before* colliding with them.
+
+In this example, the Replicant will start to walk to a wall and stop before it hits it:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.replicant.action_status import ActionStatus
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_avoid_wall")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+c.add_ons.extend([replicant, camera, capture])
+c.communicate(TDWUtils.create_empty_room(8, 8))
+replicant.move_by(10)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+print(replicant.action.status)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/avoid_wall.gif)
+
+Output:
+
+```
+ActionStatus.detected_obstacle
+```
+
+This also works with any objects in the Replicant's path:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.replicant.action_status import ActionStatus
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_avoid_object")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+c.add_ons.extend([replicant, camera, capture])
+c.communicate([TDWUtils.create_empty_room(8, 8),
+               Controller.get_add_object(model_name="rh10",
+                                         object_id=Controller.get_unique_id(),
+                                         position={"x": 0, "y": 0, "z": 2})])
+replicant.move_by(10)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+print(replicant.action.status)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/avoid_object.gif)
+
+Output:
+
+```
+ActionStatus.detected_obstacle
+```
+
+**To disable obstacle avoidance, set `replicant.collision_detection.avoid = False`.** If you do this:
+
+- The Replicant will walk until it collides with non-kinematic objects.
+- The Replicant will walk through kinematic objects.
+- The Replicant will walk through walls.
+
+### Collisions with objects
+
+Even if you set `replicant.collision_detection.avoid = False`, a Replicant will stop walking when it *collides* with a non-kinematic object. There are two ways to toggle this off:
+
+1. **Set `replicant.collision_detection.objects = False` to ignore *all* collisions with objects.** The Replicant will still physically interact with non-kinematic objects.
+2. **Append an object ID to the `replicant.collision_detection.exclude_objects` list.** The Replicant will ignore collisions with this specific object (and will still physically interact with it).
+
+In this example, we've disabled obstacle avoidance and object avoidance; notice how the Replicant collides with the sofa and pushes it out of the way:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.replicant.action_status import ActionStatus
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+camera = ThirdPersonCamera(position={"x": -0.5, "y": 1.175, "z": 6},
+                           look_at={"x": 0.5, "y": 1, "z": 0},
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_crash")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+replicant = Replicant(position={"x": 0, "y": 0, "z": 4})
+# Don't try to avoid obstacles.
+replicant.collision_detection.avoid = False
+replicant.collision_detection.objects = False
+# Append the add-ons.
+c.add_ons.extend([replicant, camera, capture])
+# Create a scene. Add a sofa. The sofa will be implausibly light.
+commands = [TDWUtils.create_empty_room(12, 20),
+            c.get_add_object(model_name="arflex_strips_sofa",
+                             position={"x": 0, "y": 0, "z": 0},
+                             object_id=Controller.get_unique_id())]
+# Add the target object.
+ball_id = Controller.get_unique_id()
+commands.extend(c.get_add_physics_object(model_name="prim_sphere",
+                                         object_id=ball_id,
+                                         position={"x": 0, "y": 0, "z": -4.0},
+                                         scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
+                                         kinematic=True,
+                                         gravity=False,
+                                         library="models_special.json"))
+# Send the commands.
+c.communicate(commands)
+replicant.move_to(target=ball_id)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+![](images/crash.gif)
+
+### Collision detection and previous actions
+
+By default, the Replicant will fail a move action depending on the result of the *previous* action. If the previous action was a move action, and it was in the same direction, and it ended in a collision, the current move action will immediately fail (because it's assumed that it would also end in a collision).
+
+To override this behavior, set `replicant.collision_detection.previous_was_same = False`.
+
+## Low-level description
+
+### Turning
+
+`replicant.turn_by(angle)` sets `replicant.action` to a [`TurnBy`](../../python/replicant/actions/turn_by.md) action. `replicant.turn_to(target)` sets `replicant.action` to a [`TurnTo`](../../python/replicant/actions/turn_to.md).
+
+In addition to the usual [the usual `Action` initialization commands](actions.md), `TurnBy` sends [`rotate_object_by`](../../api/command_api.md#rotate_object_by), while `TurnTo` sends either [`object_look_at`](../../api/command_api.md#object_look_at) or [`object_look_at_position`](../../api/command_api.md#object_look_at_position).
+
+### Moving
+
+`replicant.move_by(distance)` sets `replicant.action` to a [`MoveBy`](../../python/replicant/actions/move_by.md) action. `replicant.move_to(target)` sets `replicant.action` to a [`MoveTo`](../../python/replicant/actions/move_to.md) action.
+
+In addition to the usual [the usual `Action` initialization commands](actions.md),  `MoveBy` and `MoveTo` send [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation) for the walk animation. Every `communicate()` call, these actions check for collisions and the distance traversed to determine if the action has ended. The action checks if the walk animation is done by checking `replicant.dynamic.output_action_status` (which will indicate that the build has signaled that an animation ended), and replay the walk animation as needed.
+
+Obstacle avoidance is achieved via overlap shapes. Per `communicate()` call, the action sends [`send_overlap_box`](../../api/command_api.md#send_overlap_box), which returns [`Overlap`](../../api/output_data.md#Overlap) data. The overlap box is cast in front or behind the Replicant, depending on whether it is walking forwards or backwards. If the `Overlap` data includes walls or object IDs, the Replicant stops walking.
+
+In addition to [the usual `Action` end commands](actions.md), `MoveBy` and `MoveTo` send [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation).
+
 ***
 
 **Next: [Animations](animations.md)**
@@ -157,7 +336,26 @@ Example controllers:
 
 - [move_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_by.py) Tell the Replicant to walk a target distance.
 - [move_to.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_to.py) Tell the Replicant to walk to a target position.
+- [crash.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/crash.py) Collide with an obstacle.
+
+Command API:
+
+- [`rotate_object_by`](../../api/command_api.md#rotate_object_by)
+- [`object_look_at`](../../api/command_api.md#object_look_at)
+- [`object_look_at_position`](../../api/command_api.md#object_look_at_position)
+- [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation)
+- [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)
+- [`send_overlap_box`](../../api/command_api.md#send_overlap_box)
+- [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation)
+
+Output Data API:
+
+- [`Overlap`](../../api/output_data.md#Overlap)
 
 Python API:
 
 - [`Replicant`](../../python/add_ons/replicant.md)
+- [`TurnBy`](../../python/replicant/actions/turn_by.md)
+- [`TurnTo`](../../python/replicant/actions/turn_to.md)
+- [`MoveBy`](../../python/replicant/actions/move_by.md)
+- [`MoveTo`](../../python/replicant/actions/move_to.md)

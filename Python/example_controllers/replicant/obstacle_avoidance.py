@@ -92,6 +92,7 @@ class ObstacleAvoidance(Controller):
 
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])
+        self.communicate([])
 
 
 if __name__ == "__main__":

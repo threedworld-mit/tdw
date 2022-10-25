@@ -285,7 +285,7 @@ The `Replicant` sends [`send_images`](../../api/command_api.md#send_images) and 
 
 ***
 
-**Next: [Movement](movement.md)**
+**Next: [Collision detection](collision_detection.md)**
 
 [Return to the README](../../../README.md)
 

@@ -217,14 +217,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/replicants/overview.md)
 2. [Actions](Documentation/lessons/replicants/actions.md)
 3. [Output data](Documentation/lessons/replicants/output_data.md)
-4. [Movement](Documentation/lessons/replicants/movement.md)
-5. Animations
-6. Arm articulation
-7. Collision detection
-8. Grasp and drop objects
-9. Head movement
-10. Navigation
-11. Reset
+4. [Collision detection](Documentation/lessons/replicants/collision_detection.md)
+5. [Movement](Documentation/lessons/replicants/movement.md)
+6. [Animations](Documentation/lessons/replicants/animations.md)
+7. Arm articulation
+9. Grasp and drop objects
+10. Head movement
+11. Navigation
+12. Reset
 
 ### 11.4 Virtual Reality (VR)
 

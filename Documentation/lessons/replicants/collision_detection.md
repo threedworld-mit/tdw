@@ -2,13 +2,49 @@
 
 # Collision Detection
 
-The Replicant will stop a [walk motion](movement.md), [arm motion](arm_articulation.md), or [animation](animation.md) if it detects a collision with an obstacle.
+The Replicant will stop a motion if it detects a collision with an obstacle. It can also physically interact with objects in the scene.
 
-## How Replicant collision detection works
+## How Replicant physics works
 
-Collision detection works very differently for Replicants than for other objects in TDW, for three reasons:
+If a Replicant collides with an object, by default its [action](actions.md) will ended. This behavior can be overridden (see below). Assuming that the Replicant is *allowed* to collide with an object, it will physically an object.
 
-1. The Replicant has a kinematic Rigidbody, meaning that it wouldn't normally interact with other kinematic Rigidbodies such as kitchen counters.
-2. The Replicant's body parts don't have Rigidbodies, meaning that ordinarily it wouldn't be possible to distinguish them. For example, a collision between the left upper arm and an object would look the same in the output data as a collision between the right lower arm and an object.
-3. We only need a small amount of collision metadata to control the Replicant; it is faster for the build to send only this information rather than generic TDW collision output data.
+In most respects, the Replicant will interact within the [physics engine](../physx/physx.md) like any other object. There are two significant exceptions:
 
+1. The Replicant is non-kinematic. It won't interact with other kinematic objects or environment objects. This means that with, barring additional collision detection rules, the Replicant can move through kinematic objects and walls.
+2. The Replicant is massless. If an object is thrown at a Replicant, the object will bounce off the Replicant but the Replicant's position, speed, etc. won't be affected.
+
+## `replicant.collision_detection`
+
+The Replicant has a set of collision detection rules stored in `replicant.collision_detection`, which is a [`CollisionDetection`](../../python/replicant/collision_detection.md) data object.
+
+These are *rules* that don't actually affect the physics behavior. They are just booleans that are referenced in the Python code to decide how to respond to physics events. For example, if `replicant.collision_detection.objects == True`, the Replicant will stop an action if it collides with an object. This *doesn't* affect whether a Replicant *can* collide with objects; it always can collide with objects.
+
+Exactly how this works, and how to adjust the Replicant's behavior, differs between actions; see [Movement](movement.md), [Animation](animation.md), and [Arm articulation](arm_articulation.md) for more information.
+
+## Enabling and disabling collision detection rules
+
+`replicant.collision_detection` is designed to be adjusted during a simulation. You can, for example, tell the Replicant to ignore objects while walking and, once it is at its destination,  you can start an animation but tell the Replicant to stop the animation on object collisions.
+
+## Low-level description
+
+Replicant collision data isn't actually [the standard collision data](../physx/collisions.md). Instead, collision data is send within [`Replicants`](../../api/output_data.md#Replicants), stored in [replicant_dynamic.collisions](../../python/replicant/replicant_dynamic.md). This data includes the body part ID and a list of object IDs that that body part collided with.
+
+Within the build, the Replicant will [cast overlaps](https://docs.unity3d.com/ScriptReference/Physics.OverlapCapsule.html) rather than rely on standard collision detection.  This allows it to detect collisions with kinematic objects and objects without Rigidbodies and it also allows the Replicant to differentiate between body parts. The tradeoff is that there is no data for relative velocity, contact points, etc. (which in this case aren't actually needed).
+
+***
+
+**Next: [Movement](movement.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Output Data API:
+
+- [`Replicants`](../../api/output_data.md#Replicants)
+
+Python API:
+
+- [`Replicant`](../../python/add_ons/replicant.md)
+- [`CollisionDetection`](../../python/replicant/collision_detection.md)
+- [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md)

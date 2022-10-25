@@ -210,11 +210,15 @@ ActionStatus.success
 
 Animation asset bundles are actually the same as those used by [non-physics humanoids](../non_physics_humanoids/overview.md). The same animation can be applied both to a non-physics humanoid and to a Replicant and, under the hood, the commands used are exactly the same. The only difference is that the Replicant add-on is structured to treat the animation as an action, automatically downloading and playing the animation while continuously checking for collisions.
 
-## Low-level commands
+## Low-level description
 
-`replicant.animate(animation)` sets `replicant.action` to an [`Animate`](../../python/replicant/actions/animate.md) action.
+`replicant.animate(animation)` sets `replicant.action` to an [`Animate`](../../python/replicant/actions/animate.md) action. 
 
-The `Animate` action initializes by sending [the usual `Action` initialization commands](actions.md) plus [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation).
+In addition to [the usual `Action` initialization commands](actions.md), `Animate` sends [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation).
+
+The action continues until there is a collision or until `replicant.dynamic.output_action_status == ActionStatus.success` (meaning that the build has signaled that the animation ended).
+
+In addition to [the usual `Action` end commands](actions.md), `Animate` sends [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation).
 
 ***
 
@@ -233,6 +237,7 @@ Command API:
 
 - [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation)
 - [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)
+- [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation)
 
 Python API:
 

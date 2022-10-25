@@ -111,9 +111,11 @@ Result:
 
 Each animation is stored as a [humanoid animation asset bundle](../non_physics_humanoids/overview.md). The first time you call `animate(animation)`, the animation needs to be downloaded and loaded into memory, hence the delay at the start of the action. Like all asset bundles, this is a one-time requirement. If you call the same `animate(animation)` again, it will be begin immediately.
 
-## Collision detection
+## Physics and collision detection
 
 *For more information regarding collision detection, [read this.](collision_detection.md)*
+
+The `animate(animation)` action is responsive to physics in the scene. If the Replicant bumps into an object while moving, the object will move (assuming that the object is non-kinematic and that the Replicant's collision detection isn't actively avoiding objects).
 
 The `animate(animation)` action succeeds if the animation reaches its end. The action fails if the Replicant collides with an object during the animation, in which case `replicant.action.status` will be `ActionStatus.collision`.
 
@@ -121,7 +123,7 @@ The `animate(animation)` action succeeds if the animation reaches its end. The a
 - To ignore a specific object, add its ID to `replicant.collision_detection.exclude_objects` (a list of integers).
 - To ignore all objects, set `replicant.collision_detection.objects = False`.
 
-This example controller demonstrates how collision detection settings can affect an animation:
+This example controller demonstrates how physics and collision detection settings can affect an animation:
 
  ```python
  from tdw.controller import Controller
@@ -155,13 +157,15 @@ This example controller demonstrates how collision detection settings can affect
          self.communicate([TDWUtils.create_empty_room(12, 12),
                            Controller.get_add_object(model_name="rh10",
                                                      object_id=self.object_id_0,
-                                                     position={"x": 0, "y": 0, "z": 0.5}),
+                                                     position={"x": -0.6, "y": 0, "z": 0.01}),
                            Controller.get_add_object(model_name="chair_billiani_doll",
                                                      object_id=self.object_id_1,
-                                                     position={"x": 0.5, "y": 0, "z": 0.5})])
+                                                     position={"x": -1.5, "y": 0, "z": -0.1},
+                                                     rotation={"x": 0, "y": 30, "z": 0})])
+         self.camera.look_at(target=self.replicant.replicant_id)
  
      def dance(self):
-         self.replicant.animate(animation="dancing_1")
+         self.replicant.animate(animation="dancing_3")
          while self.replicant.action.status == ActionStatus.ongoing:
              self.communicate([])
          self.communicate([])
@@ -192,6 +196,7 @@ Result:
 Output:
 
 ```Trying to dance with default collision detection:
+Trying to dance with default collision detection:
 ActionStatus.collision
 Trying to ignore the rh10 model:
 ActionStatus.collision
@@ -204,3 +209,34 @@ ActionStatus.success
 ## Animations and non-physics humanoids
 
 Animation asset bundles are actually the same as those used by [non-physics humanoids](../non_physics_humanoids/overview.md). The same animation can be applied both to a non-physics humanoid and to a Replicant and, under the hood, the commands used are exactly the same. The only difference is that the Replicant add-on is structured to treat the animation as an action, automatically downloading and playing the animation while continuously checking for collisions.
+
+## Low-level commands
+
+`replicant.animate(animation)` sets `replicant.action` to an [`Animate`](../../python/replicant/actions/animate.md) action.
+
+The `Animate` action initializes by sending [the usual `Action` initialization commands](actions.md) plus [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation).
+
+***
+
+**Next: [Arm articulation](arm_articulation.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [animate.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/animate.py) Minimal example of how to play an animation.
+- [animate_collision_detection.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/animate_collision_detection.py) A minimal demo of how collision detection parameters affect animations.
+
+Command API:
+
+- [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation)
+- [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)
+
+Python API:
+
+- [`Replicant`](../../python/add_ons/replicant.md)
+- [`CollisionDetection`](../../python/replicant/collision_detection.md)
+- [`HumanoidAnimationLibrarian`](../../python/librarian/humanoid_animation_librarian.md)
+- [`Animate`](../../python/replicant/actions/animate.md)

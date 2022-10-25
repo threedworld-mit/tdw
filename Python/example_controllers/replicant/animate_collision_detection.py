@@ -29,13 +29,15 @@ class AnimateCollisionDetection(Controller):
         self.communicate([TDWUtils.create_empty_room(12, 12),
                           Controller.get_add_object(model_name="rh10",
                                                     object_id=self.object_id_0,
-                                                    position={"x": 0, "y": 0, "z": 0.5}),
+                                                    position={"x": -0.6, "y": 0, "z": 0.01}),
                           Controller.get_add_object(model_name="chair_billiani_doll",
                                                     object_id=self.object_id_1,
-                                                    position={"x": 0.5, "y": 0, "z": 0.5})])
+                                                    position={"x": -1.5, "y": 0, "z": -0.1},
+                                                    rotation={"x": 0, "y": 30, "z": 0})])
+        self.camera.look_at(target=self.replicant.replicant_id)
 
     def dance(self):
-        self.replicant.animate(animation="dancing_1")
+        self.replicant.animate(animation="dancing_3")
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])
         self.communicate([])

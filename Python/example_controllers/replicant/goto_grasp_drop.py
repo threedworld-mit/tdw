@@ -23,6 +23,7 @@ class GoToGraspDrop(Controller):
     def do_action(self, status: ActionStatus = ActionStatus.success) -> None:
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])
+        self.communicate([])
         assert status == self.replicant.action.status, (self.replicant.action.__class__.__name__,
                                                         self.replicant.action.status)
 

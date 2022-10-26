@@ -244,7 +244,7 @@ ActionStatus.detected_obstacle
 - The Replicant will walk through kinematic objects.
 - The Replicant will walk through walls.
 
-### Collisions with objects
+### Collisions with non-kinematic objects
 
 Even if you set `replicant.collision_detection.avoid = False`, a Replicant will stop walking when it *collides* with a non-kinematic object. There are two ways to toggle this off:
 
@@ -300,6 +300,60 @@ c.communicate({"$type": "terminate"})
 
 ![](images/crash.gif)
 
+### Collisions with kinematic objects and walls
+
+Because the Replicant's Rigidbody is kinematic (non-physics), **the Replicant won't collide with other kinematic objects.** Assuming that `collision_detection.avoid = False` and `collision_detection.objects = False`, the Replicant will walk through kinematic objects without interacting with them.
+
+Walls are environment objects that don't have Rigidbodies. If `collision_detection.avoid = False`, the Replicant will walk through walls without interact with them.
+
+In this example, the Replicant will walk through an object and a wall:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.replicant.action_status import ActionStatus
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_non_kinematic")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"],
+                       path=path)
+c.add_ons.extend([replicant, camera, capture])
+# Create the scene.
+commands = [TDWUtils.create_empty_room(12, 12)]
+# Add a kinematic object to the scene.
+commands.extend(Controller.get_add_physics_object(model_name="trunck",
+                                                  object_id=Controller.get_unique_id(),
+                                                  position={"x": 0, "y": 0, "z": 3},
+                                                  kinematic=True))
+c.communicate(commands)
+# Look at the Replicant.
+camera.look_at(replicant.replicant_id)
+# Disable obstacle avoidance.
+replicant.collision_detection.avoid = False
+# Disable checks for object collisions.
+replicant.collision_detection.objects = False
+# Start walking.
+replicant.move_by(20)
+# Continue walking until the action ends.
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/non_kinematic.gif)
+
 ### Collision detection and previous actions
 
 By default, the Replicant will fail a move action depending on the result of the *previous* action. If the previous action was a move action, and it was in the same direction, and it ended in a collision, the current move action will immediately fail (because it's assumed that it would also end in a collision).
@@ -339,6 +393,8 @@ Example controllers:
 - [move_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_by.py) Tell the Replicant to walk a target distance.
 - [move_to.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_to.py) Tell the Replicant to walk to a target position.
 - [crash.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/crash.py) Collide with an obstacle.
+- [collision_detection_tests.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/collision_detection_tests.py) Tests for collision detection while walking.
+- [non_kinematic.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/non_kinematic.py) Walk through an object and a wall.
 
 Command API:
 

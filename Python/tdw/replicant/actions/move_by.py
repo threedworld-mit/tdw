@@ -71,7 +71,7 @@ class MoveBy(Animate):
                          library="humanoid_animations.json",
                          previous=previous,
                          forward=self.distance > 0)
-        self._destination_arr: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
+        self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
         """:field
         The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
@@ -87,17 +87,21 @@ class MoveBy(Animate):
         # Ignore collision detection for held items.
         self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
         self.collision_detection.exclude_objects.extend(self.__held_objects)
+        self._initial_position: np.ndarray = np.zeros(shape=3)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        # Reset the arms.
+        self._initial_position = dynamic.transform.position
+        # Reset the arms and head.
         if self.reset_arms:
             commands.extend([{"$type": "replicant_reset_arm",
                               "id": static.replicant_id,
                               "duration": self.reset_arms_duration,
                               "arm": arm.name} for arm in Arm])
+            commands.append({"$type": "replicant_reset_head",
+                             "id": static.replicant_id})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
@@ -108,8 +112,10 @@ class MoveBy(Animate):
         if self.status != ActionStatus.ongoing:
             return commands
         else:
-            d = np.linalg.norm(dynamic.transform.position - self._destination_arr)
-            if d < self.arrived_at:
+            distance_to_target = np.linalg.norm(dynamic.transform.position - self._destination)
+            distance_traversed = np.linalg.norm(dynamic.transform.position - self._initial_position)
+            # We arrived at the target.
+            if distance_to_target < self.arrived_at or distance_traversed > abs(self.distance):
                 self.status = ActionStatus.success
             # Stop walking if there is a collision.
             elif len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:

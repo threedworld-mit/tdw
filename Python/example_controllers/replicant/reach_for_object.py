@@ -8,32 +8,27 @@ from tdw.replicant.arm import Arm
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Reach for a target that is too far away.
+Reach for a target object.
 """
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 3.2, "y": 3, "z": 3.5},
+camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_too_far")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_object")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
 c.add_ons.extend([replicant, camera, capture])
-c.communicate([TDWUtils.create_empty_room(12, 12)])
-target = {"x": 3, "y": 0.9, "z": 6}
-# The target is too far away.
-replicant.reach_for(target=target, arm=Arm.right)
+# Set the object ID.
+object_id = Controller.get_unique_id()
+commands = [TDWUtils.create_empty_room(12, 12)]
+commands.extend(Controller.get_add_physics_object(model_name="basket_18inx18inx12iin_wicker",
+                                                  object_id=object_id,
+                                                  position={"x": -0.1, "y": 0, "z": 0.6}))
+c.communicate(commands)
+replicant.reach_for(target=object_id, arm=Arm.right)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
-print(replicant.action.status)
-# Try to reach the target anyway.
-replicant.reach_for(target=target,
-                    arm=Arm.right,
-                    max_distance=8)
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-c.communicate([])
-print(replicant.action.status)
 c.communicate({"$type": "terminate"})

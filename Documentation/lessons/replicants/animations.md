@@ -195,7 +195,7 @@ Result:
 
 Output:
 
-```Trying to dance with default collision detection:
+```
 Trying to dance with default collision detection:
 ActionStatus.collision
 Trying to ignore the rh10 model:

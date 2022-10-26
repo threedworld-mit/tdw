@@ -25,7 +25,7 @@ replicant.reach_for(target={"x": 0.8, "y": 0.9, "z": 0.3}, arm=Arm.right)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
-replicant.move_by(3)
+replicant.move_by(distance=3)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])

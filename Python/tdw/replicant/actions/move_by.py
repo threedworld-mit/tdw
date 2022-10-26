@@ -94,14 +94,15 @@ class MoveBy(Animate):
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         self._initial_position = dynamic.transform.position
-        # Reset the arms and head.
+        # Reset the arms.
         if self.reset_arms:
             commands.extend([{"$type": "replicant_reset_arm",
                               "id": static.replicant_id,
                               "duration": self.reset_arms_duration,
                               "arm": arm.name} for arm in Arm])
-            commands.append({"$type": "replicant_reset_head",
-                             "id": static.replicant_id})
+        # Reset the head.
+        commands.append({"$type": "replicant_reset_head",
+                         "id": static.replicant_id})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

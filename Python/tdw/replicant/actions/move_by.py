@@ -155,6 +155,13 @@ class MoveBy(Animate):
                     self.walk_cycle += 1
                     if self.walk_cycle >= self.max_walk_cycles:
                         self.status = ActionStatus.failed_to_move
+            # Try to resolve collider intersections.
+            collider_intersections_direction = dynamic.transform.forward
+            if self.distance < 0:
+                collider_intersections_direction = -collider_intersections_direction
+            commands.append({"$type": "replicant_resolve_collider_intersections",
+                             "id": static.replicant_id,
+                             "direction": TDWUtils.array_to_vector3(collider_intersections_direction)})
             return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,

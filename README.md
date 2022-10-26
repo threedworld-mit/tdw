@@ -220,7 +220,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 4. [Collision detection](Documentation/lessons/replicants/collision_detection.md)
 5. [Movement](Documentation/lessons/replicants/movement.md)
 6. [Animations](Documentation/lessons/replicants/animations.md)
-7. Arm articulation
+7. [Arm articulation](Documentation/lessons/replicants/arm_articulation.md)
 9. Grasp and drop objects
 10. Head movement
 11. Navigation

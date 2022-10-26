@@ -468,10 +468,6 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
-"""
-Reach for a target position and then move forward, resetting the arm.
-"""
-
 c = Controller()
 replicant = Replicant()
 camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
@@ -514,6 +510,7 @@ Example controllers:
 - [reach_for_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_object.py) Reach for a target object.
 - [reach_too_far.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_too_far.py) Reach for a target that is too far away.
 - [reset_arm.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reset_arm.py) Reach for a target position and then reset the arm.
+- [reach_for_move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_move.py) Reach for a target position and then move forward, resetting the arm.
 
 Command API:
 

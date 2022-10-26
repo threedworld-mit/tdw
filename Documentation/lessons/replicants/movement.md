@@ -320,6 +320,8 @@ In addition to the usual [the usual `Action` initialization commands](actions.md
 
 In addition to the usual [the usual `Action` initialization commands](actions.md),  `MoveBy` and `MoveTo` send [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation) for the walk animation. Every `communicate()` call, these actions check for collisions and the distance traversed to determine if the action has ended. The action checks if the walk animation is done by checking `replicant.dynamic.output_action_status` (which will indicate that the build has signaled that an animation ended), and replay the walk animation as needed.
 
+Due to certain low-level features in the Replicant's implementation, collision detection can be glitchy while the Replicant is walking. On every `communicate()` call, the `MoveBy` and `MoveTo` actions will send [`replicant_resolve_collider_intersections`](../../api/command_api.md#replicant_resolve_collider_intersections); this command will attempt to push forward any objects intersecting with the Replicant.
+
 Obstacle avoidance is achieved via overlap shapes. Per `communicate()` call, the action sends [`send_overlap_box`](../../api/command_api.md#send_overlap_box), which returns [`Overlap`](../../api/output_data.md#Overlap) data. The overlap box is cast in front or behind the Replicant, depending on whether it is walking forwards or backwards. If the `Overlap` data includes walls or object IDs, the Replicant stops walking.
 
 In addition to [the usual `Action` end commands](actions.md), `MoveBy` and `MoveTo` send [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation).
@@ -345,6 +347,7 @@ Command API:
 - [`object_look_at_position`](../../api/command_api.md#object_look_at_position)
 - [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation)
 - [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)
+- [`replicant_resolve_collider_intersections`](../../api/command_api.md#replicant_resolve_collider_intersections)
 - [`send_overlap_box`](../../api/command_api.md#send_overlap_box)
 - [`stop_humanoid_animation`](../../api/command_api.md#stop_humanoid_animation)
 

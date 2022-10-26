@@ -174,6 +174,35 @@ ActionStatus.success
 
 It is *not* necessary to wrap all Replicant actions in a loop like this. For example, in the context of a multi-agent simulation you won't want to loop like this because you'll want to be checking multiple agent actions at the same time. For the sake of subsequent example code, we know we have only one agent, so this simple loop is good enough for showcasing the rest of the Replicant's behavior.
 
+## Low-level description
+
+Actions are very similar to add-ons in that they have a list of commands that can be returned. Actions are handled within `replicant.on_send(resp)`. Thus, the full sequence of how commands are injected into the controller is:
+
+- The `Action` returns a list of commands to the `Replicant`.
+- The `Replicant` returns that list of commands to the `Controller`.
+- The `Controller` appends the `Replicant`'s commands to the rest of the commands it's about to send.
+- The `Controller` sends all of its commands to the build.
+
+Thus, in the remainder of this description, `communicate()` (from the Controller) should be understood as equivalent to `replicant.on_send(resp)`.
+
+Each [`Action`](../../python/replicant/actions/action.md) has an `initialized` boolean. In most cases, this is initially set to False but sometimes will be True, usually because the action fails before it's allowed to begin.
+
+If `action.initialized = False`, the action is initialized on the first `replicant.on_send(resp)` call. The action sets `initialized = True` and then returns `get_initialization_commands(resp, static, dynamic, image_frequency)`. - 
+
+- Depending on the [`image_frequency`](../../python/replicant/image_frequency.md) value,`get_initialization_commands(resp, static, dynamic, image_frequency)` may return [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and/or  [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
+- Most actions' `get_initialization_commands(resp, static, dynamic, image_frequency)` will include additional commands, e.g. commands to download and play an animation.
+
+Actions have a `status` parameter. An action is ongoing if `status == ActionStatus.ongoing`. An action has  ended if `status` is anything else.
+
+It is possible for an `Action` to immediately after initialization, in which case its end commands are appended to the list of initialization commands (see below).
+
+If the `Action` is ongoing after initialization, then on every *subsequent* `replicant.on_send(resp)` call, it will return `get_ongoing_commands(resp, static, dynamic)`. The commands returned by this function vary depending on the action. In most cases, the action will read `resp` and `dynamic` to decide which commands to send, whether the action is done, etc.
+
+When the action ends, it returns `get_end_commands(resp, static, dynamic, image_frequency)`. 
+
+- If `image_frequency == ImageFrequency.once`, this returns [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
+- Most actions' `get_end_commands(resp, static, dynamic, image_frequency)` will include additional commands, e.g. commands to stop an animation.
+
 ***
 
 **Next: [Output data](output_data.md)**
@@ -189,6 +218,9 @@ Example controllers:
 Commands API:
 
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
+- [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor)
+- [`send_images`](../../api/command_api.md#send_images)
+- [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices)
 
 Python API:
 

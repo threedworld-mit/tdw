@@ -9,6 +9,10 @@ from tdw.replicant.image_frequency import ImageFrequency
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
+"""
+Tell the Replicant to reach backwards and grasp an object.
+"""
+
 c = Controller()
 replicant = Replicant( position={"x": -4, "y": 0, "z": -2},
                        image_frequency=ImageFrequency.never)

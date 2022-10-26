@@ -12,10 +12,14 @@ Grasp a basket containing an object.
 """
 
 
-def do_action(status: ActionStatus = ActionStatus.success):
+def do_action():
+    """
+    A helper function to handle the basic Replicant action loop.
+    """
+
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
-    assert replicant.action.status == status, replicant.action.status
+    c.communicate([])
 
 
 c = Controller()
@@ -28,10 +32,7 @@ print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
 c.add_ons.extend([replicant, camera, capture])
 object_id = Controller.get_unique_id()
-# Create the room. Set a target framerate.
-commands = [TDWUtils.create_empty_room(12, 12),
-            {"$type": "set_target_framerate",
-             "framerate": 60}]
+commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(Controller.get_add_physics_object(model_name="basket_18inx18inx12iin_wicker",
                                                   object_id=object_id,
                                                   position={"x": -2, "y": 0, "z": 3}))
@@ -39,19 +40,12 @@ commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=Controller.get_unique_id(),
                                                   position={"x": -2, "y": 0.1, "z": 3}))
 c.communicate(commands)
-for i in range(len(commands)):
-    if commands[i]["$type"] == "add_object":
-        print(commands[i]["id"])
 replicant.move_to(target=object_id)
-do_action(status=ActionStatus.detected_obstacle)
+do_action()
 replicant.reach_for(target=object_id, arm=Arm.right)
 do_action()
 replicant.grasp(target=object_id, arm=Arm.right)
 do_action()
-replicant.move_by(-2, reset_arms=False)
-do_action()
-replicant.drop(arm=Arm.right)
-do_action()
-replicant.reset_arm(arm=Arm.right)
+replicant.move_by(distance=-2)
 do_action()
 c.communicate({"$type": "terminate"})

@@ -278,7 +278,8 @@ class Replicant(AddOn):
                              bounds_position=bounds_position)
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
-                  arrived_at: float = 0.01, max_distance: float = 1.5, duration: float = 0.25) -> None:
+                  offhand_follows: bool = False, arrived_at: float = 0.02, max_distance: float = 1.5,
+                  duration: float = 0.25) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -295,6 +296,7 @@ class Replicant(AddOn):
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
@@ -304,6 +306,7 @@ class Replicant(AddOn):
                                arms=Replicant._arms_to_list(arm),
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
+                               offhand_follows=offhand_follows,
                                arrived_at=arrived_at,
                                previous=self._previous_action,
                                duration=duration,

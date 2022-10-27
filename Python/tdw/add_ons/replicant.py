@@ -23,6 +23,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
 
 
 class Replicant(AddOn):
@@ -278,8 +279,8 @@ class Replicant(AddOn):
                              bounds_position=bounds_position)
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
-                  offhand_follows: bool = False, arrived_at: float = 0.02, max_distance: float = 1.5,
-                  duration: float = 0.25) -> None:
+                  absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.02,
+                  max_distance: float = 1.5, duration: float = 0.25) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -296,12 +297,19 @@ class Replicant(AddOn):
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         """
 
+        # Convert the relative position to an absolute position.
+        if not isinstance(target, int) and not absolute:
+            if isinstance(target, np.ndarray):
+                target = self.dynamic.transform.position + target
+            elif isinstance(target, dict):
+                target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
         self.action = ReachFor(target=target,
                                arms=Replicant._arms_to_list(arm),
                                dynamic=self.dynamic,

@@ -24,7 +24,7 @@ def do_action():
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 0.3},
+camera = ThirdPersonCamera(position={"x": -2.4, "y": 2, "z": 3.2},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_grasp_basket_with_object")
@@ -35,10 +35,10 @@ object_id = Controller.get_unique_id()
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(Controller.get_add_physics_object(model_name="basket_18inx18inx12iin_wicker",
                                                   object_id=object_id,
-                                                  position={"x": -2, "y": 0, "z": 3}))
+                                                  position={"x": -2, "y": 0, "z": 2}))
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=Controller.get_unique_id(),
-                                                  position={"x": -2, "y": 0.1, "z": 3}))
+                                                  position={"x": -2, "y": 0.1, "z": 2}))
 c.communicate(commands)
 replicant.move_to(target=object_id)
 do_action()
@@ -46,6 +46,6 @@ replicant.reach_for(target=object_id, arm=Arm.right)
 do_action()
 replicant.grasp(target=object_id, arm=Arm.right)
 do_action()
-replicant.move_by(distance=-2)
+replicant.reach_for(target={"x": 0.4, "y": 1.1, "z": 0.4}, arm=Arm.right, absolute=False)
 do_action()
 c.communicate({"$type": "terminate"})

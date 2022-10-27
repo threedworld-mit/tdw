@@ -254,6 +254,10 @@ Output:
 ActionStatus.success
 ```
 
+### The `absolute` parameter
+
+If `target` is a position (a dictionary or a numpy array, as opposed to a position), it defaults to a world space position. It's often useful, however, to set `absolute=False`, which defines `target` as being relative to the Replicant's position (but *not* the Replicant's rotation).
+
 ### The `offhand_follows` parameter
 
 If the `arm` parameter is a single value (e.g. `Arm.left`, not `[Arm.left, Arm.right]`), you can set the optional parameter `offhand_follows=True`. This will make the offhand (the opposite of whatever `arm` is set to) follow the primary hand:

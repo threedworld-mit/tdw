@@ -71,5 +71,10 @@ class Grasp(Action):
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        self.status = ActionStatus.success
+        # The build might've signaled that the action ended in failure.
+        if dynamic.output_data_status != ActionStatus.ongoing:
+            self.status = dynamic.output_data_status
+        # If the build didn't signal anything, assume that we grasped the object.
+        else:
+            self.status = ActionStatus.success
         return []

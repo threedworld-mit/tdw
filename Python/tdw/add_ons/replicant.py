@@ -309,7 +309,7 @@ class Replicant(AddOn):
                                duration=duration,
                                max_distance=max_distance)
 
-    def grasp(self, target: int, arm: Arm, orient_to_floor: bool = True) -> None:
+    def grasp(self, target: int, arm: Arm, orient_to_floor: bool = False) -> None:
         """
         Grasp a target object.
 

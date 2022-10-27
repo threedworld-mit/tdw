@@ -61,6 +61,10 @@ class Drop(Action):
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        # The build might've signaled that the action ended in failure.
+        if dynamic.output_data_status != ActionStatus.ongoing:
+            self.status = dynamic.output_data_status
+            return []
         position = self._get_object_position(object_id=self.object_id, resp=resp)
         # The object stopped moving or fell through the floor.
         if np.linalg.norm(position - self.object_position) < 0.001 or position[1] < -0.1:

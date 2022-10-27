@@ -18,3 +18,4 @@ class ActionStatus(Enum):
     detected_obstacle = 9  # Detected an obstacle in its path.
     already_holding = 10  # Already holding the object.
     still_dropping = 11  # Dropped an object but, after many `communicate()` calls, the object is still moving.
+    cannot_grasp = 12  # Didn't try to grasp the object because it's of an invalid type (e.g. a kinematic object).

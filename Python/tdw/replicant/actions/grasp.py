@@ -17,12 +17,12 @@ class Grasp(Action):
     When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
-    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, orient_to_floor: bool):
+    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, rotate: bool):
         """
         :param target: The target object ID.
         :param arm: The [`Arm`](../arm.md) value for the hand that will grasp the target object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
-        :param orient_to_floor: If True, rotate the grasped object to be level with the floor.
+        :param rotate: If True, rotate the grasped object to match the rotation of the hand. If False, the grasped object will maintain its initial rotation.
         """
 
         super().__init__()
@@ -35,9 +35,9 @@ class Grasp(Action):
         """
         self.arm: Arm = arm
         """:field
-        If True, rotate the grasped object to be level with the floor.
+        If True, rotate the grasped object to match the rotation of the hand. If False, the grasped object will maintain its initial rotation.
         """
-        self.orient_to_floor: bool = orient_to_floor
+        self.rotate: bool = rotate
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
@@ -67,7 +67,7 @@ class Grasp(Action):
                           "id": static.replicant_id,
                           "arm": self.arm.name,
                           "object_id": self.target,
-                          "orient_to_floor": self.orient_to_floor}])
+                          "rotate": self.rotate}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

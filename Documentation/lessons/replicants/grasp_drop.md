@@ -270,3 +270,46 @@ A grasped object is *not* parented to its hand or connected to the object in any
 
 `drop(arm)` will drop any object held by the hand corresponding to `arm`:
 
+### The `max_num_frames` parameter
+
+Certain objects such as spheres tend to roll for a long time after being dropped. To prevent the `drop(arm)` action from continuing indefinitely, the action includes a `max_num_frames` parameter. The action will always end after this many `communicate()` calls.
+
+### Low-level description
+
+`replicant.drop(arm)` sets `replicant.action` to a [`Drop`](../../python/replicant/actions/drop.md) action. 
+
+In addition to [the usual `Action` initialization commands](actions.md), `Drop` sends [`replicant_drop_object`](../../api/command_api.md#replicant_drop_object).
+
+Per `communicate()` call, the `Drop` action checks if the object has stopped moving using [`Transforms`](../../api/output_data.md#Transforms) output data. If so, the action succeeds.
+
+***
+
+**Next: [Arm articulation](arm_articulation.md)**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [grasp_basket_with_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/grasp_basket_with_object.py) Grasp a basket containing an object.
+- [grasp_basket_with_object_both_hands.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/grasp_basket_with_object_both_hands.py) Grasp a basket containing an object with both hands.
+
+Command API:
+
+- [`replicant_grasp_object`](../../api/command_api.md#replicant_grasp_object)
+- [`parent_object_to_object`](../../api/command_api.md#parent_object_to_object)
+- [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
+- [`replicant_set_grasped_object_rotation`](../../api/command_api.md#replicant_set_grasped_object_rotation)
+- [`replicant_drop_object`](../../api/command_api.md#replicant_drop_object)
+
+Output Data API:
+
+- [`Containment`](../../api/output_data.md#Containment)
+- [`Transforms`](../../api/output_data.md#Transforms)
+
+Python API:
+
+- [`Replicant`](../../python/add_ons/replicant.md)
+- [`Grasp`](../../python/replicant/actions/grasp.md)
+- [`Drop`](../../python/replicant/actions/drop.md)

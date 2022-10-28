@@ -8,7 +8,7 @@ from tdw.replicant.arm import Arm
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
-class GoToGraspDrop(Controller):
+class MoveGraspDrop(Controller):
     """
     Walk to an object, grasp it, walk away, and drop it.
     """
@@ -20,18 +20,16 @@ class GoToGraspDrop(Controller):
         self.trunk_id = 1
         self.mug_id = 2
 
-    def do_action(self, status: ActionStatus = ActionStatus.success) -> None:
+    def do_action(self) -> None:
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])
         self.communicate([])
-        assert status == self.replicant.action.status, (self.replicant.action.__class__.__name__,
-                                                        self.replicant.action.status)
 
     def run(self) -> None:
         camera = ThirdPersonCamera(position={"x": -1.5, "y": 1.175, "z": 5.25},
                                    look_at={"x": 0.5, "y": 1, "z": 0},
                                    avatar_id="a")
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_go_to_grasp")
+        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_move_grasp_drop")
         print(f"Images will be saved to: {path}")
         capture = ImageCapture(avatar_ids=["a"], path=path)
         self.add_ons.extend([self.replicant, camera, capture])
@@ -43,24 +41,23 @@ class GoToGraspDrop(Controller):
                                                           kinematic=True))
         commands.extend(Controller.get_add_physics_object(model_name="coffeemug",
                                                           object_id=self.mug_id,
-                                                          position={"x": 0, "y": 0.9888946, "z": 3}))
+                                                          position={"x": 0, "y": 0.9888946, "z": 2.7}))
         self.communicate(commands)
         self.replicant.move_to(target=self.trunk_id)
-        self.do_action(status=ActionStatus.detected_obstacle)
+        self.do_action()
         # Ignore the trunk.
         self.replicant.collision_detection.exclude_objects.append(self.trunk_id)
         self.replicant.reach_for(target=self.mug_id, arm=Arm.right)
         self.do_action()
-        self.replicant.grasp(target=self.mug_id, arm=Arm.right, orient_to_floor=False)
+        self.replicant.grasp(target=self.mug_id, arm=Arm.right)
         self.do_action()
         self.replicant.move_by(-4)
         self.do_action()
-        self.replicant.collision_detection.exclude_objects.clear()
         self.replicant.drop(arm=Arm.right)
         self.do_action()
         self.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":
-    c = GoToGraspDrop()
+    c = MoveGraspDrop()
     c.run()

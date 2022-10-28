@@ -89,7 +89,7 @@ class PyImpact(CollisionManager):
     """:class_var
     The maximum velocity allowed for a scrape.
     """
-    SCRAPE_MAX_VELOCITY: float = 1
+    SCRAPE_MAX_VELOCITY: float =5
     """:class_var
     Meters per pixel on the scrape surface.
     """
@@ -140,6 +140,8 @@ class PyImpact(CollisionManager):
     FLOOR_MASS: int = 100
     # Visual material librarian used for scrape surfaces.
     __VISUAL_MATERIAL_LIBRARIAN: MaterialLibrarian = MaterialLibrarian("materials_high.json")
+
+    
 
     def __init__(self, initial_amp: float = 0.5, prevent_distortion: bool = True, logging: bool = False,
                  static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
@@ -256,10 +258,15 @@ class PyImpact(CollisionManager):
         self._scrape_events_count: Dict[Tuple[int, int], int] = dict()
         # Ignore collisions that include these object IDs.
         self._excluded_objects: List[int] = list()
+        
+        # impulse responses per object
+        self._scrape_impulse_responses: Dict[Tuple[int, int], float] = dict()
 
         # Ongoing impact audio events. Key = Audio source ID. Value = Time of event.
         self._impact_events: Dict[int, float] = dict()
         self._min_time_between_impact_events: float = min_time_between_impact_events
+
+        self.scraping_ir = np.zeros(5)
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_bounds"},
@@ -752,10 +759,23 @@ class PyImpact(CollisionManager):
         scrape_key: Tuple[int, int] = (primary_id, secondary_id)
         if scrape_key not in self._scrape_previous_indices:
             self._scrape_previous_indices[scrape_key] = 0
+            self.scraping_ir, min_mode_freq = self._get_impulse_response(velocity=velocity,
+                                                                    contact_normals=contact_normals,
+                                                                    primary_id=primary_id,
+                                                                    primary_material=primary_material,
+                                                                    primary_amp=primary_amp,
+                                                                    primary_mass=primary_mass,
+                                                                    secondary_id=secondary_id,
+                                                                    secondary_material=secondary_material,
+                                                                    secondary_amp=secondary_amp,
+                                                                    secondary_mass=secondary_mass,
+                                                                    primary_resonance=primary_resonance,
+                                                                    secondary_resonance=secondary_resonance)
 
         # Initialize scrape variables; if this is an in=process scrape, these will be replaced bu te stored values.
-        summed_master = AudioSegment.silent(duration=4000, frame_rate=SAMPLE_RATE)
+        #summed_master = AudioSegment.silent(duration=1, frame_rate=SAMPLE_RATE)
         scrape_event_count = 0
+        summed_master =np.zeros(SAMPLE_RATE*10)
 
         # Is this a new scrape?
         if scrape_key in self._scrape_summed_masters:
@@ -766,41 +786,34 @@ class PyImpact(CollisionManager):
             self._scrape_summed_masters[scrape_key] = summed_master
             self._scrape_events_count[scrape_key] = scrape_event_count
 
-        # Get magnitude of velocity of the scraping object.
-        mag = min(np.linalg.norm(velocity), PyImpact.SCRAPE_MAX_VELOCITY)
-        vel = np.linalg.norm(velocity)
+        # self._scrape_summed_masters[scrape_key] = summed_master
+        # self._scrape_events_count[scrape_key] = scrape_event_count
 
-        fr_r  = 50
-        fr_r = fr_r
+        # Get magnitude of velocity of the scraping object.
+        vel_mag = np.linalg.norm(velocity)
+        mag = min(vel_mag, PyImpact.SCRAPE_MAX_VELOCITY)
+       
+        print(mag)
 
         # Cache the starting velocity.
         if scrape_event_count == 0:
             self._scrape_start_velocities[scrape_key] = mag
 
         # Map magnitude to gain level -- decrease in velocity = rise in negative dB, i.e. decrease in gain.
-        db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 10
-        db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 55
+        # db2 = 40 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 6
+        # db1 = 20 * np.log10(mag / PyImpact.SCRAPE_MAX_VELOCITY) - 45
 
         # Get impulse response of the colliding objects. Amp values would normally come from objects.csv.
         # We also get the lowest-frequency IR mode, which we use to set the high-pass filter cutoff below.
-        scraping_ir, min_mode_freq = self._get_impulse_response(velocity=velocity,
-                                                                contact_normals=contact_normals,
-                                                                primary_id=primary_id,
-                                                                primary_material=primary_material,
-                                                                primary_amp=primary_amp,
-                                                                primary_mass=primary_mass,
-                                                                secondary_id=secondary_id,
-                                                                secondary_material=secondary_material,
-                                                                secondary_amp=secondary_amp,
-                                                                secondary_mass=secondary_mass,
-                                                                primary_resonance=primary_resonance,
-                                                                secondary_resonance=secondary_resonance)
+        # if scrape_event_count == 0:
+            
         # Cache the scrape material.
         # Don't do this when PyImpact is initialized because scrape surfaces are large files!
         # We don't want them in memory all the time and they can be a bit slow to load.
         if scrape_material not in self.scrape_surface_data:
             scrape_surface = np.load(str(
-                Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
+                # Path(resource_filename(__name__, f"py_impact/scrape_surfaces/{scrape_material.name}.npy")).resolve()))
+                Path(resource_filename(__name__, f"py_impact/scrape_surfaces/acrylic.npy")).resolve()))
             for i in range(2):
                 scrape_surface = np.append(scrape_surface, scrape_surface)
             #   Load the surface texture as a 1D vector
@@ -810,16 +823,19 @@ class PyImpact(CollisionManager):
             #   Apply a variable Gaussian average
             #   Calculate the horizontal and vertical forces
             #   Convolve the force with the impulse response
-            scrape_surface = gaussian_filter1d(scrape_surface, 5)
+            scrape_surface = gaussian_filter1d(scrape_surface,2)
             dsdx = (scrape_surface[1:] - scrape_surface[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
             d2sdx2 = (dsdx[1:] - dsdx[0:-1]) / PyImpact.SCRAPE_M_PER_PIXEL
-            rough_ratio = (np.std(scrape_surface) / (3 * 10 ** -4)) ** 1
+            rough_ratio = (np.std(scrape_surface) / (6 * 10 ** -4)) ** 0.85
             r_gain = 20 * np.log10(rough_ratio)
             self.scrape_surface_data[scrape_material] = {"dsdx": dsdx,
                                                          "d2sdx2": d2sdx2,
                                                          "surface": scrape_surface,
-                                                         "r_gain": r_gain}
-        dist = (vel) / fr_r
+                                                         "r_gain": r_gain,
+                                                         "rough_ratio": rough_ratio}
+        frame_rate=49
+        dist = (vel_mag / frame_rate)/10
+        # print(vel_mag)
         num_pts = int(np.floor(dist / PyImpact.SCRAPE_M_PER_PIXEL) + 1)
         # No scrape.
         if num_pts < 1:
@@ -829,7 +845,7 @@ class PyImpact(CollisionManager):
         final_ind = self._scrape_previous_indices[scrape_key] + num_pts
 
         vect1 = np.linspace(0, 1, num_pts)
-        vect2 = np.linspace(0, 1, int(44100/fr_r)+1)
+        vect2 = np.linspace(0, 1, int(SAMPLE_RATE/frame_rate))
 
         if final_ind > len(self.scrape_surface_data[scrape_material]["surface"]) - 1:
             self._scrape_previous_indices[scrape_key] = 0
@@ -840,50 +856,70 @@ class PyImpact(CollisionManager):
                                             self._scrape_previous_indices[scrape_key]:final_ind])
         self._scrape_previous_indices[scrape_key] = final_ind
 
-        curve_int_tan = np.tanh(curve_int / (100 * primary_mass))
-
-        
+        curve_int_tan = np.tanh(curve_int / (10 * primary_mass))
 
         d2_section = uniform_filter1d(curve_int_tan, 5)
 
-        vert_force = d2_section -np.mean(d2_section)
-        hor_force = slope_int-np.mean(slope_int)
+        vert_force = 0.5*d2_section * (mag / PyImpact.SCRAPE_MAX_VELOCITY)**2
+        hor_force = 0.05*slope_int * mag / PyImpact.SCRAPE_MAX_VELOCITY
 
-        t_force2 = vert_force / max(np.abs(vert_force))
+        #t_force2 = vert_force  / max(np.abs(vert_force))
+        t_force2 = vert_force 
         t_force1 = hor_force[:len(vert_force)]
+        t_force = 1*(t_force1 +1*t_force2)
 
-        conv1 = sg.fftconvolve(scraping_ir, t_force1)
-        conv2 = sg.fftconvolve(scraping_ir, t_force2)
+       # print(len(t_force))
+
+        # conv1 = sg.fftconvolve(scraping_ir, t_force1)
+        # conv2 = sg.fftconvolve(scraping_ir, t_force2)
+        #conv_s = sg.fftconvolve(self.scraping_ir, t_force)
+        conv_s = sg.convolve(self.scraping_ir, t_force,mode='full', method ='direct')
+        #conv_s = conv_s/np.max(np.abs(conv_s))
+        #print(np.max(conv_s))
+        t_force = 0*t_force
+        conv_s = conv_s*self.scrape_surface_data[scrape_material]["rough_ratio"]
+        if np.max(np.abs(conv_s))>1:
+            conv_s = conv_s/np.max(np.abs(conv_s))
+            print("Watch out for clipping sounds")
+            print(vel_mag)
+            exit(0)
 
         # Again, we need this as an AudioSegment for overlaying with the previous frame's segment.
         # Convert to 16-bit integers for Unity, normalizing to make sure to minimize loss of precision from truncating floating values.
-        normalized_noise_ints_conv1 = PyImpact._normalize_16bit_int(conv1)
-        noise_seg_conv1 = AudioSegment(normalized_noise_ints_conv1.tobytes(),
-                                       frame_rate=SAMPLE_RATE,
-                                       sample_width=SAMPLE_WIDTH,
-                                       channels=CHANNELS)
+        # normalized_noise_ints_conv1 = PyImpact._normalize_16bit_int(conv1)
+        # noise_seg_conv1 = AudioSegment(normalized_noise_ints_conv1.tobytes(),
+        #                                frame_rate=SAMPLE_RATE,
+        #                                sample_width=SAMPLE_WIDTH,
+        #                                channels=CHANNELS)
 
-        normalized_noise_ints_conv2 = PyImpact._normalize_16bit_int(conv2)
-        noise_seg_conv2 = AudioSegment(normalized_noise_ints_conv2.tobytes(),
-                                       frame_rate=SAMPLE_RATE,
-                                       sample_width=SAMPLE_WIDTH,
-                                       channels=CHANNELS)
-
+        # normalized_noise_ints_conv2 = PyImpact._normalize_16bit_int(conv2)
+        # noise_seg_conv2 = AudioSegment(normalized_noise_ints_conv2.tobytes(),
+        #                                frame_rate=SAMPLE_RATE,
+        #                                sample_width=SAMPLE_WIDTH,
+        #                                channels=CHANNELS)
+        #noise_seg_conv = PyImpact._normalize_16bit_int(conv_s)
+        noise_seg_conv =conv_s
+        #print("noise:    ",len(noise_seg_conv))
         # Gain-adjust the convolved segment using db value computed earlier.
-        noise_seg_conv1 = noise_seg_conv1.apply_gain(db1)
-        noise_seg_conv2 = noise_seg_conv2.apply_gain(db2)
+        # noise_seg_conv1 = noise_seg_conv1.apply_gain(db1)
+        # noise_seg_conv2 = noise_seg_conv2.apply_gain(db2)
 
-        noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
+        #noise_seg_conv = noise_seg_conv1.overlay(noise_seg_conv2)
         # Apply roughness gain.
-        noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
+        #noise_seg_conv = noise_seg_conv.apply_gain(self.scrape_surface_data[scrape_material]["r_gain"])
 
         # Pad the end of master with 100ms of silence, the start of the current segment with (n * 100ms) of silence, and overlay.
-        summed_master = summed_master + PyImpact.SILENCE_100MS
-        summed_master = summed_master.overlay(noise_seg_conv, position=np.rint(1000/fr_r * scrape_event_count))
+        delta_frame = int(SAMPLE_RATE/frame_rate)
+        # if scrape_event_count%50==0:
+        #     summed_master = np.concatenate([summed_master, np.zeros(SAMPLE_RATE)])
+        # summed_master = summed_master.overlay(noise_seg_conv, position=(delta_t) * scrape_event_count)
+        summed_master[scrape_event_count*delta_frame:(scrape_event_count*delta_frame+len(noise_seg_conv))] = summed_master[scrape_event_count*delta_frame:(scrape_event_count*delta_frame+len(noise_seg_conv))] +noise_seg_conv
         # Extract 100ms "chunk" of sound to send over to Unity.
-        start_idx = np.rint(1000/fr_r * scrape_event_count)
-        end_idx = np.rint(1000/fr_r *(scrape_event_count+1))
-        unity_chunk = summed_master[start_idx:end_idx]
+        # Extract 1000/frame_rate "chunk" of sound to send over to Unity
+        # start_idx = (delta_t)* scrape_event_count
+        unity_chunk = summed_master[scrape_event_count*delta_frame:(scrape_event_count+1)*delta_frame]
+        #print("scrape_event_count  :  ",scrape_event_count)
+        #print("summed_master  :  ",scrape_event_count)
         # Update stored summed waveform.
         self._scrape_summed_masters[scrape_key] = summed_master
 
@@ -891,11 +927,12 @@ class PyImpact(CollisionManager):
         scrape_event_count += 1
         self._scrape_events_count[scrape_key] = scrape_event_count
         # Scrape data is handled differently than impact data, so we'll create a dummy object first.
-        sound = Base64Sound(np.array([0]))
+        # sound = Base64Sound(np.array([0]))
+        sound = Base64Sound(unity_chunk)
         # Set the audio data.
-        sound.wav_str = base64.b64encode(unity_chunk.raw_data).decode()
-        sound.length = len(unity_chunk.raw_data)
-        sound.bytes = unity_chunk.raw_data
+        # sound.wav_str = base64.b64encode(unity_chunk).decode()
+        # sound.length = len(unity_chunk)
+        # sound.bytes = unity_chunk
         return sound
 
     @staticmethod
@@ -1183,7 +1220,8 @@ class PyImpact(CollisionManager):
         :return: The converted numpy array.
         """
 
-        normalized_floats = PyImpact._normalize_floats(arr)
+        #normalized_floats = PyImpact._normalize_floats(arr)
+        normalized_floats = arr
 
         return (normalized_floats * 32767).astype(np.int16)
 

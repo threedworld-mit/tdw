@@ -10,26 +10,19 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 Look at an object and a position, then reset the head.
 """
 
-def do_action(status: ActionStatus = ActionStatus.success):
+def do_action():
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
-    assert replicant.action.status == status, replicant.action.status
 
 
 c = Controller()
 replicant = Replicant(image_frequency=ImageFrequency.always)
 c.add_ons.append(replicant)
 object_id = Controller.get_unique_id()
-# Create the room. Set a target target.
-commands = [TDWUtils.create_empty_room(12, 12),
-            {"$type": "set_target_framerate",
-             "framerate": 60}]
+commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend(Controller.get_add_physics_object(model_name="basket_18inx18inx12iin_wicker",
                                                   object_id=object_id,
                                                   position={"x": -2, "y": 0, "z": 3}))
-commands.extend(Controller.get_add_physics_object(model_name="rh10",
-                                                  object_id=Controller.get_unique_id(),
-                                                  position={"x": 2, "y": 0, "z": 3}))
 c.communicate(commands)
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_look_at")
 print(f"Images will be saved to: {path}")

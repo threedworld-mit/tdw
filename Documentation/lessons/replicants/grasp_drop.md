@@ -356,7 +356,7 @@ Per `communicate()` call, the `Drop` action checks if the object has stopped mov
 
 ***
 
-**Next: [Head movement](head_movement.md)**
+**Next: [Head rotation](head_rotation.md)**
 
 [Return to the README](../../../README.md)
 

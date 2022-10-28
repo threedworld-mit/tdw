@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
@@ -17,12 +17,13 @@ class Grasp(Action):
     When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
-    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, rotate: bool):
+    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, angle: float, axis: Optional[str]):
         """
         :param target: The target object ID.
         :param arm: The [`Arm`](../arm.md) value for the hand that will grasp the target object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
-        :param rotate: If True, rotate the grasped object to match the rotation of the hand. If False, the grasped object will maintain its initial rotation.
+        :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
+        :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
         """
 
         super().__init__()
@@ -35,9 +36,13 @@ class Grasp(Action):
         """
         self.arm: Arm = arm
         """:field
-        If True, rotate the grasped object to match the rotation of the hand. If False, the grasped object will maintain its initial rotation.
+        Continuously (per `communicate()` call, including after this action ends), rotate the grasped object by this many degrees. If None, the grasped object will maintain its initial rotation.
         """
-        self.rotate: bool = rotate
+        self.angle: Optional[float] = angle
+        """:field
+        Continuously (per `communicate()` call, including after this action ends), rotate the grasped object around this axis. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
+        """
+        self.axis: Optional[str] = axis
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
@@ -63,11 +68,18 @@ class Grasp(Action):
                                           "is_kinematic": True,
                                           "use_gravity": False}])
         # Grasp the object.
-        commands.extend([{"$type": "replicant_grasp_object",
-                          "id": static.replicant_id,
-                          "arm": self.arm.name,
-                          "object_id": self.target,
-                          "rotate": self.rotate}])
+        commands.append({"$type": "replicant_grasp_object",
+                         "id": static.replicant_id,
+                         "arm": self.arm.name,
+                         "object_id": self.target})
+        # Set the object's rotation.
+        rotate = self.angle is not None and self.axis is not None
+        if rotate:
+            commands.append({"$type": "replicant_set_grasped_object_rotation",
+                             "id": static.replicant_id,
+                             "arm": self.arm.name,
+                             "angle": self.angle,
+                             "axis": self.axis})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

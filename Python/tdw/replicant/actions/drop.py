@@ -49,6 +49,7 @@ class Drop(Action):
         The current frame.
         """
         self.frame_count: int = 0
+        self._first_frame: bool = True
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -62,7 +63,8 @@ class Drop(Action):
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # The build might've signaled that the action ended in failure.
-        if dynamic.output_data_status != ActionStatus.ongoing:
+        if dynamic.output_data_status != ActionStatus.ongoing or self._first_frame:
+            self._first_frame = False
             self.status = dynamic.output_data_status
             return []
         position = self._get_object_position(object_id=self.object_id, resp=resp)

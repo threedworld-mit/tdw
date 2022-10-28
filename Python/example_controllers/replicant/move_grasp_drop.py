@@ -26,9 +26,9 @@ class MoveGraspDrop(Controller):
         self.communicate([])
 
     def run(self) -> None:
-        camera = ThirdPersonCamera(position={"x": -1.5, "y": 1.175, "z": 5.25},
-                                   look_at={"x": 0.5, "y": 1, "z": 0},
-                                   avatar_id="a")
+        camera = ThirdPersonCamera(position={"x": -3.5, "y": 1.175, "z": 3},
+                                   avatar_id="a",
+                                   look_at=self.replicant.replicant_id)
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_move_grasp_drop")
         print(f"Images will be saved to: {path}")
         capture = ImageCapture(avatar_ids=["a"], path=path)
@@ -49,9 +49,9 @@ class MoveGraspDrop(Controller):
         self.replicant.collision_detection.exclude_objects.append(self.trunk_id)
         self.replicant.reach_for(target=self.mug_id, arm=Arm.right)
         self.do_action()
-        self.replicant.grasp(target=self.mug_id, arm=Arm.right)
+        self.replicant.grasp(target=self.mug_id, arm=Arm.right, angle=None)
         self.do_action()
-        self.replicant.move_by(-4)
+        self.replicant.move_by(-2)
         self.do_action()
         self.replicant.drop(arm=Arm.right)
         self.do_action()

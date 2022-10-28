@@ -223,9 +223,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 7. [Arm articulation](Documentation/lessons/replicants/arm_articulation.md)
 8. [Grasp and drop objects](Documentation/lessons/replicants/grasp_drop.md)
 9. [Head rotation](Documentation/lessons/replicants/head_rotation.md)
-10. Navigation
+10. [Navigation](Documentation/lessons/replicants/navigation.md)
 11. Custom actions
-12. Reset
+12. Multiple Replicants
+13. Reset
 
 ### 11.4 Virtual Reality (VR)
 

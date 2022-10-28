@@ -58,7 +58,6 @@ do_action()
 replicant.reach_for(target={"x": 0.4, "y": 1.1, "z": 0.4}, arm=Arm.right, absolute=False)
 do_action()
 c.communicate({"$type": "terminate"})
-
 ```
 
 Result:
@@ -258,4 +257,16 @@ Result:
 ![](images/grasp_basket_with_object_no_rotate.gif)
 
 ### Low-level description
+
+`replicant.grasp(target, arm)` sets `replicant.action` to a [`Grasp`](../../python/replicant/actions/grasp.md) action. 
+
+In addition to [the usual `Action` initialization commands](actions.md), `Grasp` sends [`replicant_grasp_object`](../../api/command_api.md#replicant_grasp_object). An object can be grasped only if it has a non-kinematic Rigidbody that isn't held by another Replicant. If grasped, the object will become kinematic. The action additionally reads [`Containment`](../../api/output_data.md#Containment) for any objects [contained by the target object](../semantic_states/containment.md). Every contained object is parented to the grasped object via [`parent_object_to_object`](../../api/command_api.md#parent_object_to_object) and made kinematic via [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state). If `angle` is not None and `axis` is not None, the action initializes object rotation via [`replicant_set_grasped_object_rotation`](../../api/command_api.md#replicant_set_grasped_object_rotation).
+
+Assuming that the object can be grasped, the `Grasp` action always succeeds (i.e. there is no physics-related failure state).
+
+A grasped object is *not* parented to its hand or connected to the object in any way. This is do to how the underlying FinalIK system updates per frame vs. how TDW updates per frame. Instead, the grasped object moves and rotates itself to the Replicant's hand per `communicate()` call.
+
+## The `drop(arm)` action
+
+`drop(arm)` will drop any object held by the hand corresponding to `arm`:
 

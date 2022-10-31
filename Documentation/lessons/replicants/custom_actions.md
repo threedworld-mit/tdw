@@ -511,120 +511,6 @@ If the *motion* ends and the *state* is `coming_together`, then it's time to pul
 
 If the *motion* ends and the *state* is `pulling_apart`, then the action is done.
 
-**This is a completed `Clap` action:**
-
-```python
-from typing import List
-from enum import Enum
-import numpy as np
-from tdw.replicant.actions.arm_motion import ArmMotion
-from tdw.replicant.action_status import ActionStatus
-from tdw.replicant.replicant_static import ReplicantStatic
-from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.arm import Arm
-from tdw.replicant.image_frequency import ImageFrequency
-
-
-class ClapState(Enum):
-    raising_hands = 1
-    coming_together = 2
-    pulling_apart = 4
-
-
-class Clap(ArmMotion):
-    """
-    Clap your hands.
-    """
-
-    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection):
-        super().__init__(arms=[Arm.left, Arm.right], dynamic=dynamic, collision_detection=collision_detection,
-                         duration=0.1, previous=None)
-        self.clap_state: ClapState = ClapState.raising_hands
-
-    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
-                                    image_frequency: ImageFrequency) -> List[dict]:
-        # Get the standard initialization commands.
-        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
-                                                       image_frequency=image_frequency)
-        # Get the initial position of each hand.
-        commands.extend(self.get_initial_position_commands(static=static, dynamic=dynamic))
-        return commands
-    
-    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        # Continue the action, checking for collisions.
-        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
-        # The motion ended. Decide if we need to do more motions.
-        # It's ok in this case if the motion ends in failed_to_reach because we don't need it to be precise.
-        if self.status == ActionStatus.success or self.status == ActionStatus.failed_to_reach:
-            # We're done raising the hands. Bring the hands together.
-            if self.clap_state == ClapState.raising_hands:
-                # The action is ongoing.
-                self.status = ActionStatus.ongoing
-                # The state is coming together.
-                self.clap_state = ClapState.coming_together
-                # Get a position in front of the Replicant.
-                position = self.get_clap_position(dynamic=dynamic)
-                # Tell both hands to reach for the target position.
-                commands = []
-                for arm in self.arms:
-                    commands.append({"$type": "replicant_reach_for_position",
-                                     "id": static.replicant_id,
-                                     "position": TDWUtils.array_to_vector3(position),
-                                     "duration": self.duration,
-                                     "arm": arm.name})
-            # We're done moving the hands together. Bring the hands apart again.
-            elif self.clap_state == ClapState.coming_together:
-                # The action is ongoing.
-                self.status = ActionStatus.ongoing
-                # The state is pulling apart.
-                self.clap_state = ClapState.pulling_apart
-                # Reach for the initial positions.
-                commands.extend(self.get_initial_position_commands(static=static, dynamic=dynamic))
-            # If the motion is successful and the state is `pulling_apart`, then we're done.
-            elif self.clap_state == ClapState.pulling_apart:
-                self.status = ActionStatus.success
-        return commands
-
-    @staticmethod
-    def get_clap_position(dynamic: ReplicantDynamic) -> np.ndarray:
-        # Get a position in front of the Replicant.
-        position = dynamic.transform.position.copy()
-        # Move the position in front of the Replicant.
-        position += dynamic.transform.forward * 0.4
-        # Set the height of the position.
-        position[1] = 1.5
-        return position
-
-    def get_initial_position_commands(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        # Get the position.
-        position = Clap.get_clap_position(dynamic=dynamic)
-        origin = dynamic.transform.position.copy()
-        origin[1] = position[1]
-        forward = dynamic.transform.forward * 0.4
-        # Rotate the position to the side.
-        left = TDWUtils.rotate_position_around(position=position,
-                                               origin=origin,
-                                               angle=-90)
-        # Move the position forward.
-        left += forward
-        # Rotate the position to the side.
-        right = TDWUtils.rotate_position_around(position=position,
-                                                origin=origin,
-                                                angle=90)
-        # Move the position forward.
-        right += forward
-        commands = []
-        # Reach for the initial positions.
-        for arm, position in zip(self.arms, [left, right]):
-            commands.append({"$type": "replicant_reach_for_position",
-                             "id": static.replicant_id,
-                             "position": TDWUtils.array_to_vector3(position),
-                             "duration": self.duration,
-                             "arm": arm.name})
-        return commands
-```
-
 ### 2.6 Use `Clap` in a controller
 
 We'll assign and run `Clap` the same way we assigned and ran `DoNothing`:
@@ -772,7 +658,15 @@ Result:
 
 ## 4. How to perform actions within actions and create a `Navigate` action
 
-It's often useful to perform existing actions within actions. [`MoveTo`](../../python/replicant/actions/move_to.md), for example, first does a [`TurnTo`](../../python/replicant/actions/turn_to.md)  action followed by a [`MoveBy`](../../python/replicant/actions/move_by.md) action (and it uses a state machine to decide which action to perform).
+It's often useful to perform existing actions within actions. [`MoveTo`](../../python/replicant/actions/move_to.md), for example, first does a [`TurnTo`](../../python/replicant/actions/turn_to.md)  action followed by a [`MoveBy`](../../python/replicant/actions/move_by.md) action (and it uses a state machine to decide which action to perform). For the sake of clarity, we'll differentiate between the "parent action" and "child action" but these are informal terms. The parent action is the one being assigned to `replicant.action` and the child action is being referenced within the parent action. There can be multiple child actions in a list but only one should be referenced per `communicate()` call.
+
+Referencing a child action within a parent action is simple:
+
+- Within the parent action's `get_initialization_commands()`, function, append the commands from `child.get_initialization_commands()`. 
+- Within the parent action's `get_ongoing_commands()`, function, append the commands from `child.get_ongoing_commands()`.  If needed, reference `child.status` as well.
+- If needed, within the parent action's `get_end_commands()`, function, append the commands from `child.get_end_commands()`.
 
 In this example, we'll define a `Navigate` action. This will be similar to [the previous NavMesh example](navigation.md) but with one big difference: by handling the motion in an action, we can detach it from the standard `do_action()` loop, meaning that the action can be interrupted and that it can be used in a [multi-agent simulation](multiple_replicants.md).
+
+Once again, we'll define a state machine:
 

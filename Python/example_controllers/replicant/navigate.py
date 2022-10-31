@@ -27,25 +27,25 @@ class Navigate(Action):
     Navigate using a NavMeshPath and multiple MoveTo child actions.
     """
 
-    def __init__(self, destination: Union[Dict[str, float], np.ndarray], collision_detection: CollisionDetection):
+    def __init__(self, target: Union[Dict[str, float], np.ndarray], collision_detection: CollisionDetection):
         super().__init__()
+        # My collision detection. This will be used to instantiate MoveTo child actions.
+        self.collision_detection: CollisionDetection = collision_detection
+        # Convert the target position to a dictionary if needed.
+        if isinstance(target, np.ndarray):
+            self.target: Dict[str, float] = TDWUtils.array_to_vector3(target)
+        elif isinstance(target, dict):
+            self.target = target
+        else:
+            raise Exception(target)
         # We are getting the path.
         self.navigate_state: NavigateState = NavigateState.getting_path
-        # Convert the destination to a dictionary if needed.
-        if isinstance(destination, np.ndarray):
-            self.destination: Dict[str, float] = TDWUtils.array_to_vector3(destination)
-        elif isinstance(destination, dict):
-            self.destination = destination
-        else:
-            raise Exception(destination)
         # My path.
         self.path: np.ndarray = np.zeros(shape=0)
         # The index of the current waypoint in the path. The point at index=0 is the current position.
         self.path_index: int = 1
         # My MoveTo action.
         self.move_to: Optional[MoveTo] = None
-        # My collision detection. This will be used to instantiate MoveTo child actions.
-        self.collision_detection: CollisionDetection = collision_detection
         # The ImageFrequency. This will be used to instantiate MoveTo child actions.
         # This will be set in get_initialization_commands()
         self.image_frequency: ImageFrequency = ImageFrequency.once
@@ -63,7 +63,7 @@ class Navigate(Action):
         # Request a NavMeshPath. Set the path's ID to the Replicant's ID so we know whose path this is.
         commands.append({"$type": "send_nav_mesh_path",
                          "origin": TDWUtils.array_to_vector3(dynamic.transform.position),
-                         "destination": self.destination,
+                         "destination": self.target,
                          "id": static.replicant_id})
         return commands
 
@@ -136,7 +136,6 @@ class Navigate(Action):
         self.path_index += 1
         # Return the initialization commands.
         return self.move_to.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
-
                                                         image_frequency=self.image_frequency)
 
 
@@ -210,7 +209,7 @@ if __name__ == "__main__":
     # Initialize the scene.
     c.init_scene()
     # Navigate to a destination.
-    c.replicant.action = Navigate(destination={"x": 0, "y": 0, "z": 4},
+    c.replicant.action = Navigate(target={"x": 0, "y": 0, "z": 4},
                                   collision_detection=c.replicant.collision_detection)
     c.do_action()
     print(c.replicant.action.status)

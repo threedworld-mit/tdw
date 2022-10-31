@@ -224,7 +224,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 8. [Grasp and drop objects](Documentation/lessons/replicants/grasp_drop.md)
 9. [Head rotation](Documentation/lessons/replicants/head_rotation.md)
 10. [Navigation](Documentation/lessons/replicants/navigation.md)
-11. Custom actions
+11. [Custom actions](Documentation/lessons/replicants/custom_actions.md)
 12. Multiple Replicants
 13. Reset
 

@@ -869,7 +869,7 @@ class NavMeshPath(OutputData):
         return self.data.PathAsNumpy().view(dtype=np.float32).reshape(-1, 3)
 
     def get_id(self) -> int:
-        return self.data.Id()
+        return int(self.data.Id())
 
 
 class StaticRobot(OutputData):

@@ -33,7 +33,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/dance.gif)
+![](images/animations/dance.gif)
 
 ## Animation asset bundles and metadata records
 
@@ -105,7 +105,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/idle_to_crouch.gif)
+![](images/animations/idle_to_crouch.gif)
 
 ## Why there is a brief pause at the start of the animation
 
@@ -191,7 +191,7 @@ This example controller demonstrates how physics and collision detection setting
 
 Result:
 
-![](images/animate_collision_detection.gif)
+![](images/animations/animate_collision_detection.gif)
 
 Output:
 

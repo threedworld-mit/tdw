@@ -40,31 +40,27 @@ class Replicant(AddOn):
     """
     LIBRARY_NAME: str = "replicants.json"
 
-    def __init__(self, replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None,
+    def __init__(self, replicant_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
+                 rotation: Union[Dict[str, float], np.ndarray] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
         """
         :param replicant_id: The ID of the Replicant.
-        :param position: The position of the Replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The rotation of the Replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param image_frequency: An [`ImageFrequency`](../agents/image_frequency.md) value that sets how often images are captured.
         :param name: The name of the Replicant model.
         """
 
         super().__init__()
-        if position is None:
-            """:field
-            The initial position of the Replicant.
-            """
-            self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
-        else:
-            self.initial_position: Dict[str, float] = position
-        if rotation is None:
-            """:field
-            The initial rotation of the Replicant.
-            """
-            self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
-        else:
-            self.initial_rotation: Dict[str, float] = rotation
+        """:field
+        The initial position of the Replicant.
+        """
+        self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+        """:field
+        The initial rotation of the Replicant.
+        """
+        self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+        self._set_initial_position_and_rotation(position=position, rotation=rotation)
         """:field
         The [`ReplicantStatic`](../replicant/replicant_static.md) data.
         """
@@ -415,12 +411,13 @@ class Replicant(AddOn):
 
         self.action = ResetHead(duration=duration)
 
-    def reset(self, position: Dict[str, float] = None, rotation: Dict[str, float] = None,) -> None:
+    def reset(self, position: Union[Dict[str, float], np.ndarray] = None,
+              rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
         """
         Reset the Replicant. Call this when you reset the scene.
 
-        :param position: The position of the replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The rotation of the replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         """
 
         self.initialized = False
@@ -430,14 +427,32 @@ class Replicant(AddOn):
         self._previous_action = None
         self._frame_count: int = 0
         self.collision_detection = CollisionDetection()
+        self._set_initial_position_and_rotation(position=position, rotation=rotation)
+        self.commands.clear()
+
+    def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
+                                           rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+        """
+        Set the intial position and rotation.
+
+        :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        """
+
         if position is None:
             self.initial_position = {"x": 0, "y": 0, "z": 0}
-        else:
+        elif isinstance(position, dict):
             self.initial_position = position
+        elif isinstance(position, np.ndarray):
+            self.initial_position = TDWUtils.array_to_vector3(position)
+        else:
+            raise Exception(position)
         if rotation is None:
             self.initial_rotation = {"x": 0, "y": 0, "z": 0}
-        else:
+        elif isinstance(rotation, dict):
             self.initial_rotation = rotation
+        elif isinstance(rotation, np.ndarray):
+            self.initial_rotation = TDWUtils.array_to_vector3(rotation)
 
     def _cache_static_data(self, resp: List[bytes]) -> None:
         """

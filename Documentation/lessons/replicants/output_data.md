@@ -262,7 +262,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/move_by_egocentric.gif)
+![](images/output_data/move_by_egocentric.gif)
 
 ### `_depth` and `_id` passes
 

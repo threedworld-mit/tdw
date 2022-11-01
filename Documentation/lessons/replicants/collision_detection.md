@@ -8,10 +8,11 @@ The Replicant will stop a motion if it detects a collision with an obstacle. It 
 
 If a Replicant collides with an object, by default its [action](actions.md) will ended. This behavior can be overridden (see below). Assuming that the Replicant is *allowed* to collide with an object, it will physically an object.
 
-In most respects, the Replicant will interact within the [physics engine](../physx/physx.md) like any other object. There are two significant exceptions:
+In most respects, the Replicant will interact within the [physics engine](../physx/physx.md) like any other object. There is a significant difference, however: The Replicant is non-kinematic.
 
-1. The Replicant is non-kinematic. It won't interact with other kinematic objects or environment objects. This means that with, barring additional collision detection rules, the Replicant can move through kinematic objects and walls.
-2. The Replicant is massless. If an object is thrown at a Replicant, the object will bounce off the Replicant but the Replicant's position, speed, etc. won't be affected.
+The Replicant won't interact with other kinematic objects or environment objects. This means that with, barring additional collision detection rules, the Replicant can move through kinematic objects and walls.
+
+The Replicant can induce forces (by pushing an object, throwing an object, etc.) but won't respond to forces. If an object is thrown at a Replicant, the object will bounce off the Replicant but the Replicant's position, speed, etc. won't be affected.
 
 ## `replicant.collision_detection`
 

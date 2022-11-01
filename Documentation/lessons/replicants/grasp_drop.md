@@ -62,7 +62,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/grasp_basket_with_object.gif)
+![](images/grasp_drop/grasp_basket_with_object.gif)
 
 ### The target position
 
@@ -127,7 +127,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/grasp_object_both_hands.gif)
+![](images/grasp_drop/grasp_object_both_hands.gif)
 
 ### The `angle` and `axis` parameters
 
@@ -192,7 +192,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/grasp_object_roll.gif)
+![](images/grasp_drop/grasp_object_roll.gif)
 
 If you set either `angle` *or* `axis` to None, the object will maintain its initial rotation even as the hand rotates:
 
@@ -254,7 +254,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/grasp_basket_with_object_no_rotate.gif)
+![](images/grasp_drop/grasp_basket_with_object_no_rotate.gif)
 
 ### Low-level description
 
@@ -341,6 +341,10 @@ if __name__ == "__main__":
     c = MoveGraspDrop()
     c.run()
 ```
+
+Result:
+
+![](images/grasp_drop/move_to_grasp_drop.gif)
 
 ### The `max_num_frames` parameter
 

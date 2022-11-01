@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
 Result:
 
-![](images/obstacle_avoidance.gif)
+![](images/navigation/obstacle_avoidance.gif)
 
 ### NavMesh pathfinding
 
@@ -257,7 +257,7 @@ if __name__ == "__main__":
 
 Result:
 
-![](images/pathfind.gif)
+![](images/navigation/pathfind.gif)
 
 ***
 

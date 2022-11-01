@@ -46,7 +46,7 @@ c.communicate({"$type": "terminate"})
 
 Result (these images are captured from the Replicant's camera, as opposed to a third-person camera):
 
-![](images/look_at.gif)
+![](images/head_rotation/look_at.gif)
 
 ### The `duration` parameter
 
@@ -92,7 +92,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/look_at_slow.gif)
+![](images/head_rotation/look_at_slow.gif)
 
 ### Low-level description
 
@@ -146,7 +146,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/look_at_reset.gif)
+![](images/head_rotation/look_at_reset.gif)
 
 ### The `duration` parameter
 

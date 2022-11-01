@@ -654,7 +654,7 @@ if __name__ == "__main__":
 
 Result:
 
-![](images/clap.gif)
+![](images/custom_actions/clap.gif)
 
 ## 3. How to perform actions within actions and create a `Navigate` action
 
@@ -1463,7 +1463,7 @@ if __name__ == "__main__":
 
 Result:
 
-![](images/pathfind.gif)
+![](images/navigation/pathfind.gif)
 
 ### 3.8 Room for improvement?
 

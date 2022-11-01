@@ -143,7 +143,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/move_to.gif)
+![](images/movement/move_to.gif)
 
 ## Physics and collision detection
 
@@ -188,7 +188,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/avoid_wall.gif)
+![](images/movement/avoid_wall.gif)
 
 Output:
 
@@ -230,7 +230,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/avoid_object.gif)
+![](images/movement/avoid_object.gif)
 
 Output:
 
@@ -352,7 +352,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/non_kinematic.gif)
+![](images/movement/non_kinematic.gif)
 
 ### Collision detection and previous actions
 

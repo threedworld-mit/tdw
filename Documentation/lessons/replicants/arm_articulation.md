@@ -41,7 +41,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_position.gif)
+![](images/arm_articulation/reach_for_position.gif)
 
 The Replicant can reach with both hands at the same time. To do this, set  `arm` to a list of arms:
 
@@ -72,7 +72,7 @@ c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
 
-![](images/reach_for_position_both_hands.gif)
+![](images/arm_articulation/reach_for_position_both_hands.gif)
 
 ### Reach for a target object
 
@@ -113,7 +113,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_object.gif)
+![](images/arm_articulation/reach_for_object.gif)
 
 **Notice that the Replicant does *not* reach for the center of the object.** This is intentional.
 
@@ -173,7 +173,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_object_both_hands.gif)
+![](images/arm_articulation/reach_for_object_both_hands.gif)
 
 ### Action success and collision detection
 
@@ -246,7 +246,7 @@ if __name__ == "__main__":
 
 Result:
 
-![](images/go_to_reach_for.gif)
+![](images/arm_articulation/go_to_reach_for.gif)
 
 Output:
 
@@ -302,7 +302,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_follow.gif)
+![](images/arm_articulation/reach_for_follow.gif)
 
 ### The `duration` parameter
 
@@ -345,7 +345,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_object_slow.gif)
+![](images/arm_articulation/reach_for_object_slow.gif)
 
 ### The `arrived_at` parameter
 
@@ -395,7 +395,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_too_far.gif)
+![](images/arm_articulation/reach_too_far.gif)
 
 Output:
 
@@ -403,14 +403,6 @@ Output:
 ActionStatus.cannot_reach
 ActionStatus.failed_to_reach
 ```
-
-### Low-level description
-
-`replicant.reach_for(target, arm)` sets `replicant.action` to an [`ReachFor`](../../python/replicant/actions/reach_for.md) action. 
-
-In addition to [the usual `Action` initialization commands](actions.md), `ReachFor` sends [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position) or [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object).
-
-The action continues until there is a collision or until `replicant.dynamic.output_action_status != ActionStatus.ongoing` (meaning that the build has signaled that the animation ended).
 
 ## The `reset_arm(arm)` action
 
@@ -449,7 +441,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reset_arm.gif)
+![](images/arm_articulation/reset_arm.gif)
 
 The `arm` parameter can be a single value such as `Arm.right` or a list of values, such as `[Arm.left, Arm.right]`, in which case both arms are reset.
 
@@ -462,14 +454,6 @@ The `arm` parameter can be a single value such as `Arm.right` or a list of value
 The action succeeds when the arm(s) finish resetting. The action can end in `ActionStatus.collision`. The collision detection rules for `reset_arm(arm)` are the same as those for `reach_for(target, arm)`; see above for more information.
 
 The action can't end in `ActionStatus.cannot_reach` or `ActionStatus.failed_to_reach` because the Replicant isn't reaching for a target.
-
-### Low-level description
-
-`replicant.reset_arm(arm)` sets `replicant.action` to an [`ResetArm`](../../python/replicant/actions/reset_arm.md) action. 
-
-In addition to [the usual `Action` initialization commands](actions.md), `ResetArm` sends [`replicant_reset_arm`](../../api/command_api.md#replicant_reset_arm).
-
-The action continues until there is a collision or until `replicant.dynamic.output_action_status == ActionStatus.success` (meaning that the build has signaled that the animation ended).
 
 ## Movement and arm resets
 
@@ -509,7 +493,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_move.gif)
+![](images/arm_articulation/reach_for_move.gif)
 
 You might want the Replicant to hold a pose with its arms while walking (for example, if it is [holding an object](grasp_and_drop.md)). If so, you can set the optional parameter `reset_arms=False` for `move_by` or `move_to`:
 
@@ -547,9 +531,27 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/reach_for_move_no_reset.gif)
+![](images/arm_articulation/reach_for_move_no_reset.gif)
 
 You can control the speed at which the arms reset by setting the `reset_arms_duration` parameter in `move_by` or `move_to`.
+
+## Low-level description
+
+### The `reach_for(target, arm)` action
+
+`replicant.reach_for(target, arm)` sets `replicant.action` to an [`ReachFor`](../../python/replicant/actions/reach_for.md) action. 
+
+In addition to [the usual `Action` initialization commands](actions.md), `ReachFor` sends [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position) or [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object).
+
+The action continues until there is a collision or until `replicant.dynamic.output_action_status != ActionStatus.ongoing` (meaning that the build has signaled that the animation ended).
+
+### The `reset_arm(arm)` action
+
+`replicant.reset_arm(arm)` sets `replicant.action` to an [`ResetArm`](../../python/replicant/actions/reset_arm.md) action. 
+
+In addition to [the usual `Action` initialization commands](actions.md), `ResetArm` sends [`replicant_reset_arm`](../../api/command_api.md#replicant_reset_arm).
+
+The action continues until there is a collision or until `replicant.dynamic.output_action_status == ActionStatus.success` (meaning that the build has signaled that the animation ended).
 
 ***
 

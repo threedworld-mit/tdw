@@ -225,8 +225,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 9. [Head rotation](Documentation/lessons/replicants/head_rotation.md)
 10. [Navigation](Documentation/lessons/replicants/navigation.md)
 11. [Custom actions](Documentation/lessons/replicants/custom_actions.md)
-12. Multiple Replicants
-13. Reset
+12. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
+13. [Reset](Documentation/lessons/replicants/reset.md)
 
 ### 11.4 Virtual Reality (VR)
 

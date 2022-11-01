@@ -75,7 +75,3 @@ class SensorInterfaceBase(AddOn, ABC):
         return {"$type": "send_arduino_command",
                          "arduino_command_name": command_name}
 
-    def get_send_haptic_waveform_command(self, command_name: str, wave_id: int) -> Optional[dict]:
-        return {"$type": "send_arduino_command",
-                         "arduino_command_name": command_name,
-                         "waveform_id": wave_id}

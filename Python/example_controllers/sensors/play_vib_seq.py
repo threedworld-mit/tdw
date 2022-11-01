@@ -17,11 +17,11 @@ which sends the requested vibration waveform to the haptic motor.
 """
 
 c = Controller(launch_build=False)
-sensor = SensorInterface()
-c.add_ons.append(sensor)
+glove = HapticGlove()
+c.add_ons.append(glove)
 c.communicate(TDWUtils.create_empty_room(12, 12))
 while True:
-    c.communicate(sensor.get_send_haptic_waveform_command(command_name="playSequence", wave_id=84))
+    c.communicate(glove.get_send_haptic_waveform_command(command_name="playSequence", wave_id=84))
     # Add a small delay between sends.
     for i in range(50):
         c.communicate([])

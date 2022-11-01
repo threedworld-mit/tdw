@@ -39,7 +39,7 @@ class Action(ABC):
         :param resp: The response from the build.
         :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
-        :param image_frequency: An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured.
+        :param image_frequency: An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured.
 
         :return: A list of commands to initialize this action.
         """
@@ -82,7 +82,7 @@ class Action(ABC):
         :param resp: The response from the build.
         :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
-        :param image_frequency: An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured.
+        :param image_frequency: An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured.
 
         :return: A list of commands that must be sent to end any action.
         """

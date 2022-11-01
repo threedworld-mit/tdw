@@ -6,6 +6,8 @@ Drop a held object.
 
 The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
 
+When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
+
 ***
 
 ## Fields
@@ -50,7 +52,7 @@ The action ends when the object stops moving or the number of consecutive `commu
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands to initialize this action.
 
@@ -79,6 +81,6 @@ _Returns:_  A list of commands to send to the build to continue the action.
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands that must be sent to end any action.

@@ -32,7 +32,7 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 
 - `action` The Replicant's current [action](../replicant/actions/action.md). Can be None (no ongoing action).
 
-- `image_frequency` An [`ImageFrequency`](../agents/image_frequency.md) value that sets how often images are captured.
+- `image_frequency` An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
 
 - `collision_detection` [The collision detection rules.](../replicant/collision_detection.md) This determines whether the Replicant will immediately stop moving or turning when it collides with something.
 
@@ -42,16 +42,16 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 
 #### \_\_init\_\_
 
-**`Replicant()`**
+**`Replicant(position, rotation)`**
 
-**`Replicant(replicant_id=0, position=None, rotation=None, image_frequency=ImageFrequency.once, name="replicant_0")`**
+**`Replicant(replicant_id=0, position, rotation, image_frequency=ImageFrequency.once, name="replicant_0")`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | replicant_id |  int  | 0 | The ID of the Replicant. |
-| position |  Dict[str, float] | None | The position of the Replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Dict[str, float] | None | The rotation of the Replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| image_frequency |  ImageFrequency  | ImageFrequency.once | An [`ImageFrequency`](../agents/image_frequency.md) value that sets how often images are captured. |
+| position |  Union[Dict[str, float] |  | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Union[Dict[str, float] |  | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| image_frequency |  ImageFrequency  | ImageFrequency.once | An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured. |
 | name |  str  | "replicant_0" | The name of the Replicant model. |
 
 ***
@@ -153,9 +153,9 @@ These actions move and bend the joints of the Replicant's arms.
 
 #### reach_for
 
-**`self.reach_for(target, arms)`**
+**`self.reach_for(target, arm)`**
 
-**`self.reach_for(target, arms, arrived_at=0.01, max_distance=1.5, duration=0.25)`**
+**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.02, max_distance=1.5, duration=0.25)`**
 
 Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -173,16 +173,18 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
-| arms |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
-| arrived_at |  float  | 0.01 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
+| arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
+| absolute |  bool  | True | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
+| offhand_follows |  bool  | False | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int. |
+| arrived_at |  float  | 0.02 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
 | max_distance |  float  | 1.5 | The maximum distance from the hand to the target position. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
 
 #### reset_arm
 
-**`self.reset_arm(arms)`**
+**`self.reset_arm(arm)`**
 
-**`self.reset_arm(arms, duration=0.25)`**
+**`self.reset_arm(arm, duration=0.25)`**
 
 Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
 
@@ -193,7 +195,7 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| arms |  Union[Arm, List[Arm] |  | The [`Arm`](../replicants/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
+| arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
 
 ***
@@ -206,17 +208,20 @@ These actions involve interaction with other objects, e.g. grasping or dropping.
 
 **`self.grasp(target, arm)`**
 
-**`self.grasp(target, arm, orient_to_floor=True)`**
+**`self.grasp(target, arm, angle=90, axis="pitch")`**
 
 Grasp a target object.
 
 The action fails if the hand is already holding an object. Otherwise, the action succeeds.
 
+When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../lessons/semantic_states/containment.md).
+
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  int |  | The target object ID. |
 | arm |  Arm |  | The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object. |
-| orient_to_floor |  bool  | True | If True, rotate the grasped object to be level with the floor. |
+| angle |  Optional[float] | 90 | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
+| axis |  Optional[str] | "pitch" | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
 
 #### drop
 
@@ -227,6 +232,8 @@ The action fails if the hand is already holding an object. Otherwise, the action
 Drop a held target object.
 
 The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
+
+When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../lessons/semantic_states/containment.md).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -278,7 +285,7 @@ These actions play arbitrary humanoid animations.
 
 **`self.animate(animation)`**
 
-**`self.animate(animation, forward=True, library="humanoid_animations.json")`**
+**`self.animate(animation, library="humanoid_animations.json")`**
 
 Play an animation.
 
@@ -290,7 +297,6 @@ The animation will end either when the animation clip is finished or if the Repl
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | animation |  str |  | The name of the animation. |
-| forward |  bool  | True | If True, play the animation forwards. If False, play the animation backwards. |
 | library |  str  | "humanoid_animations.json" | The animation library. |
 
 ***
@@ -322,16 +328,14 @@ Any commands in the `self.commands` list will be sent on the *next* `Controller.
 
 #### reset
 
-**`self.reset()`**
-
-**`self.reset(position=None, rotation=None)`**
+**`self.reset(position, rotation)`**
 
 Reset the Replicant. Call this when you reset the scene.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| position |  Dict[str, float] | None | The position of the replicant. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Dict[str, float] | None | The rotation of the replicant in Euler angles (degrees). If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| position |  Union[Dict[str, float] |  | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Union[Dict[str, float] |  | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 
 ***
 

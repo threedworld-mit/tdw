@@ -53,7 +53,7 @@ Duration an arm motion, the Replicant's arm(s) will continuously over multiple `
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands to initialize this action.
 
@@ -82,6 +82,6 @@ _Returns:_  A list of commands to send to the build to continue the action.
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands that must be sent to end any action.

@@ -67,7 +67,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
 | [FieldOfView](#FieldOfView) | An avatar's camera field of view and focal length. | `fofv` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
-| [HumanoidMotionComplete](#HumanoidMotionComplete) | An announcement that a humanoid motion ended. | `humc` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
 | [IdPassSegmentationColors](#IdPassSegmentationColors) | All segmentation colors in an _id pass. | `ipsc` |
 | [Images](#Images) | The images and associated metadata that were captured by an avatar. | `imag` |
@@ -89,8 +88,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
-| [Replicants](#Replicants) | Data about the Transform component of Replicants (position and rotation). | `repl` |
-| [ReplicantStatus](#ReplicantStatus) | The status of a Replicant. | `rest` |
+| [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
@@ -400,18 +398,6 @@ NVIDIA Flex data.
 | `get_particles(index)` | The Flex particle positions and inverse mass. | `np.array` |
 | `get_velocities(index)` | The Flex particle velocities. | `np.array` |
 | `get_id(index)` | The unique ID of the object. | `int` |
-
-## HumanoidMotionComplete
-
-`h = HumanoidMotionComplete(byte_array)`
-
-**Identifier:** `humc`
-
-An announcement that a humanoid motion ended.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_id()` | The ID of the humanoid. | `int` |
 
 ## IdPassGrayscale
 
@@ -751,32 +737,26 @@ A ray cast from an origin to a destination and what, if anything, it hit.
 
 **Identifier:** `repl`
 
-Data about the Transform component of Replicants (position and rotation).
+Data about each Replicant in the scene.
 
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.array` |
-| `get_forward(index)` | The forward. | `np.array` |
-| `get_rotation(index)` | The rotation. | `np.array` |
+| `get_position(index)` | The position. | `np.ndarray` |
+| `get_forward(index)` | The forward. | `np.ndarray` |
+| `get_rotation(index)` | The rotation. | `np.ndarray` |
+| `get_body_part_id(index, body_part_index)` | The ID of the body part. | `int` |
+| `get_body_part_position(index, body_part_index)` | The position of the body part. | `np.ndarray` |
+| `get_body_part_rotation(index, body_part_index)` | The rotation of the body part. | `np.ndarray` |
+| `get_body_part_forward(index, body_part_index)` | The forward of the body part. | `np.ndarray` |
 | `get_is_holding_left(index)` | The left of the is holding. | `bool` |
 | `get_held_left(index)` | The left of the held. | `int` |
 | `get_is_holding_right(index)` | The right of the is holding. | `bool` |
 | `get_held_right(index)` | The right of the held. | `int` |
-
-## ReplicantStatus
-
-`r = ReplicantStatus(byte_array)`
-
-**Identifier:** `rest`
-
-The status of a Replicant.
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_id()` | The ID of the Replicant. | `int` |
-| `get_status()` | The Replicant's status. | `ActionStatus` |
+| `get_is_collision(index, body_part_index, collision_index)` | The collision of the is. | `bool` |
+| `get_collision_id(index, body_part_index, collision_index)` | The ID of the collision. | `int` |
+| `get_status(index)` | The status. | `ActionStatus` |
 
 ## Rigidbodies
 

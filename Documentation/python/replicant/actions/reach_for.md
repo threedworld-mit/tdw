@@ -25,6 +25,8 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 - `max_distance` If the target is further away from this distance at the start of the action, the action fails.
 
+- `offhand_follows` If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
+
 - `arms` A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
 
 - `collision_detection` The [`CollisionDetection`](../collision_detection.md) rules.
@@ -51,11 +53,12 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 #### \_\_init\_\_
 
-**`ReachFor(target, arrived_at, max_distance, arms, dynamic, collision_detection, duration, previous)`**
+**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, duration, previous)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| offhand_follows |  bool |  | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID. |
 | arrived_at |  float |  | If the motion ends and the hand is this distance or less from the target, the action succeeds. |
 | max_distance |  float |  | If the target is further away from this distance at the start of the action, the action fails. |
 | arms |  List[Arm] |  | A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`. |
@@ -74,7 +77,7 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands to initialize this action.
 
@@ -103,6 +106,6 @@ _Returns:_  A list of commands to send to the build to continue the action.
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands that must be sent to end any action.

@@ -36,7 +36,7 @@ replicant.move_by(2)
 
 All actions require multiple `communicate()` calls to complete.
 
-In this example, we'll tell the Replicant to walk 2 meters forward. We'll also add a [camera](../core_concepts/add_ons/md) to the scene and enable [image capture](../core_concepts/images.md). Note that this example is *not* an optimal way to use a Replicant and that subsequent examples will fix some naïve assumptions we're making. 
+In this example, we'll tell the Replicant to walk 2 meters forward. We'll also add a [camera](../core_concepts/add_ons.md) to the scene and enable [image capture](../core_concepts/images.md). Note that this example is *not* an optimal way to use a Replicant and that subsequent examples will fix some naïve assumptions we're making. 
 
 ```python
 from tdw.controller import Controller

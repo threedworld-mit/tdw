@@ -6,6 +6,8 @@ Grasp a target object.
 
 The action fails if the hand is already holding an object. Otherwise, the action succeeds.
 
+When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
+
 ***
 
 ## Fields
@@ -14,7 +16,9 @@ The action fails if the hand is already holding an object. Otherwise, the action
 
 - `arm` The [`Arm`](../arm.md) value for the hand that will grasp the target object.
 
-- `orient_to_floor` If True, rotate the grasped object to be level with the floor.
+- `angle` Continuously (per `communicate()` call, including after this action ends), rotate the grasped object by this many degrees. If None, the grasped object will maintain its initial rotation.
+
+- `axis` Continuously (per `communicate()` call, including after this action ends), rotate the grasped object around this axis. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
 
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
@@ -28,14 +32,15 @@ The action fails if the hand is already holding an object. Otherwise, the action
 
 #### \_\_init\_\_
 
-**`Grasp(target, arm, dynamic, orient_to_floor)`**
+**`Grasp(target, arm, dynamic, angle, axis)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  int |  | The target object ID. |
 | arm |  Arm |  | The [`Arm`](../arm.md) value for the hand that will grasp the target object. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| orient_to_floor |  bool |  | If True, rotate the grasped object to be level with the floor. |
+| angle |  Optional[float] |  | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
+| axis |  Optional[str] |  | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
 
 #### get_initialization_commands
 
@@ -47,7 +52,7 @@ The action fails if the hand is already holding an object. Otherwise, the action
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands to initialize this action.
 
@@ -76,6 +81,6 @@ _Returns:_  A list of commands to send to the build to continue the action.
 | resp |  List[bytes] |  | The response from the build. |
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../../image_frequency.md) value describing how often image data will be captured. |
+| image_frequency |  ImageFrequency |  | An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured. |
 
 _Returns:_  A list of commands that must be sent to end any action.

@@ -18,3 +18,4 @@ The status of the Replicant after doing an action.
 | `detected_obstacle` | Detected an obstacle in its path. |
 | `already_holding` | Already holding the object. |
 | `still_dropping` | Dropped an object but, after many `communicate()` calls, the object is still moving. |
+| `cannot_grasp` | Didn't try to grasp the object because it's of an invalid type (e.g. a kinematic object). |

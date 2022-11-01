@@ -22,7 +22,6 @@
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
-| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
@@ -367,6 +366,7 @@
 | --- | --- |
 | [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
 | [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant. |
+| [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 
 **Replicant Arm Command**
 
@@ -374,6 +374,7 @@
 | --- | --- |
 | [`replicant_drop_object`](#replicant_drop_object) | Drop a held object. |
 | [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object at the current reach position. Grsap at object pivot point, or optional affordance point as represented by the ID of an attached empty game object. |
+| [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped. |
 
 **Replicant Arm Motion Command**
 
@@ -561,6 +562,10 @@
 | [`set_spherical_angles`](#set_spherical_angles) | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot.  |
 
 **Send Multiple Data Once Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 
 **Send Overlap Command**
 
@@ -1010,31 +1015,6 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. Rotate around the pitch axis to set the elevation of the sun. Rotate around the yaw axis to set the angle of the sun. | |
-
-***
-
-## **`send_nav_mesh_path`**
-
-Tell the build to send data of a path on the NavMesh from the origin to the destination. 
-
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
-
-```python
-{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the path. | |
-| `"destination"` | Vector3 | The destination of the path. | |
-| `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
 
 ***
 
@@ -5156,6 +5136,22 @@ Parent an avatar to a Replicant. The avatar's position and rotation will always 
 | `"position"` | Vector3 | The position of the avatar relative to the Replicant's head. | |
 | `"id"` | int | The unique object ID. | |
 
+***
+
+## **`replicant_resolve_collider_intersections`**
+
+Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector.
+
+
+```python
+{"$type": "replicant_resolve_collider_intersections", "direction": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"direction"` | Vector3 | The direction along which objects should be moved. | |
+| `"id"` | int | The unique object ID. | |
+
 # ReplicantArmCommand
 
 These commands involve a Replicant's arm.
@@ -5171,8 +5167,13 @@ Drop a held object.
 {"$type": "replicant_drop_object", "arm": "left", "id": 1}
 ```
 
+```python
+{"$type": "replicant_drop_object", "arm": "left", "id": 1, "offset_distance": 0.1}
+```
+
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"offset_distance"` | float | Prior to being dropped, the object will be moved by this distance along its forward directional vector. | 0.1 |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -5197,13 +5198,13 @@ Grasp a target object at the current reach position. Grsap at object pivot point
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "orient_to_floor": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "rotate": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The target object ID. | |
-| `"orient_to_floor"` | bool | If True, rotate the grasped object to level it with the floor. | True |
+| `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -5215,6 +5216,43 @@ A left or right arm.
 | --- | --- |
 | `"left"` |  |
 | `"right"` |  |
+
+***
+
+## **`replicant_set_grasped_object_rotation`**
+
+Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped.
+
+
+```python
+{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | Rotate the object by this many degrees relative to the hand's rotation. | |
+| `"axis"` | Axis | Rotate the object around this axis relative to the hand's rotation. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
 
 # ReplicantArmMotionCommand
 
@@ -5262,14 +5300,14 @@ Instruct a Replicant to start to reach for a target object. The Replicant will t
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.01}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The target object ID. | |
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
-| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.01 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -5295,14 +5333,14 @@ Instruct a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.01}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The target position. | |
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
-| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.01 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -7019,6 +7057,33 @@ Instantaneously set the angles of a spherical joint. Only use this command to se
 # SendMultipleDataOnceCommand
 
 These commands send data exactly once to the controller (not per-frame). Unlike most output data such as Tranforms, there can be more than one output data object of this type in the build's response. For example, the build can send multiple Raycast objects in the same list.
+
+***
+
+## **`send_nav_mesh_path`**
+
+Tell the build to send data of a path on the NavMesh from the origin to the destination. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the path. | |
+| `"destination"` | Vector3 | The destination of the path. | |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 # SendOverlapCommand
 

@@ -495,7 +495,7 @@ Result:
 
 ![](images/arm_articulation/reach_for_move.gif)
 
-You might want the Replicant to hold a pose with its arms while walking (for example, if it is [holding an object](grasp_and_drop.md)). If so, you can set the optional parameter `reset_arms=False` for `move_by` or `move_to`:
+You might want the Replicant to hold a pose with its arms while walking (for example, if it is [holding an object](grasp_drop.md)). If so, you can set the optional parameter `reset_arms=False` for `move_by` or `move_to`:
 
 ```python
 from tdw.controller import Controller

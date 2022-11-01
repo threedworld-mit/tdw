@@ -372,29 +372,29 @@
 | Command | Description |
 | --- | --- |
 | [`replicant_drop_object`](#replicant_drop_object) | Drop a held object. |
-| [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object at the current reach position. Grsap at object pivot point, or optional affordance point as represented by the ID of an attached empty game object. |
+| [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object. |
 | [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped. |
 
 **Replicant Arm Motion Command**
 
 | Command | Description |
 | --- | --- |
-| [`replicant_reset_arm`](#replicant_reset_arm) | Reset the arm on a humanoid to its rest position. |
+| [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm on a humanoid to its neutral position.  |
 
 **Replicant Reach For Command**
 
 | Command | Description |
 | --- | --- |
-| [`replicant_reach_for_object`](#replicant_reach_for_object) | Instruct a Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. |
-| [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position. |
+| [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
+| [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
 
 **Replicant Look At Command**
 
 | Command | Description |
 | --- | --- |
-| [`replicant_look_at_object`](#replicant_look_at_object) | Tell a Replicant to start to look at a position. |
-| [`replicant_look_at_position`](#replicant_look_at_position) | Tell a Replicant to start to look at a position. |
-| [`replicant_reset_head`](#replicant_reset_head) | Tell a Replicant to start to reset its head to its neutral position. |
+| [`replicant_look_at_object`](#replicant_look_at_object) | Tell the Replicant to start to look at an object.  |
+| [`replicant_look_at_position`](#replicant_look_at_position) | Tell the Replicant to start to look at a position.  |
+| [`replicant_reset_head`](#replicant_reset_head) | Tell the Replicant to start to reset its head to its neutral position.  |
 
 **Sub Object Command**
 
@@ -624,7 +624,7 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
-| [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send data each empty object in the scene.  |
+| [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send the positions of each empty object in the scene.  |
 | [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
@@ -5173,7 +5173,7 @@ A left or right arm.
 
 ## **`replicant_grasp_object`**
 
-Grasp a target object at the current reach position. Grsap at object pivot point, or optional affordance point as represented by the ID of an attached empty game object.
+Grasp a target object.
 
 
 ```python
@@ -5245,8 +5245,9 @@ These commands involve the motion of a Replicant's arm.
 
 ## **`replicant_reset_arm`**
 
-Reset the arm on a humanoid to its rest position.
+Tell the Replicant to start to reset the arm on a humanoid to its neutral position. 
 
+- <font style="color:green">**Replicant motion motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 
 ```python
 {"$type": "replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1}
@@ -5275,8 +5276,9 @@ These commands instruct a replicant to start to reach for a target.
 
 ## **`replicant_reach_for_object`**
 
-Instruct a Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.
+Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
 
+- <font style="color:green">**Replicant motion motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 
 ```python
 {"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1}
@@ -5308,8 +5310,9 @@ A left or right arm.
 
 ## **`replicant_reach_for_position`**
 
-Instruct a Replicant to start to reach for a target position.
+Instruct a Replicant to start to reach for a target position. 
 
+- <font style="color:green">**Replicant motion motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 
 ```python
 {"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
@@ -5345,8 +5348,9 @@ These commands tell a Replicant to look at a target position or object.
 
 ## **`replicant_look_at_object`**
 
-Tell a Replicant to start to look at a position.
+Tell the Replicant to start to look at an object. 
 
+- <font style="color:green">**Replicant motion motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 
 ```python
 {"$type": "replicant_look_at_object", "object_id": 1, "id": 1}
@@ -5367,8 +5371,9 @@ Tell a Replicant to start to look at a position.
 
 ## **`replicant_look_at_position`**
 
-Tell a Replicant to start to look at a position.
+Tell the Replicant to start to look at a position. 
 
+- <font style="color:green">**Replicant motion motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 
 ```python
 {"$type": "replicant_look_at_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
@@ -5388,8 +5393,9 @@ Tell a Replicant to start to look at a position.
 
 ## **`replicant_reset_head`**
 
-Tell a Replicant to start to reset its head to its neutral position.
+Tell the Replicant to start to reset its head to its neutral position. 
 
+- <font style="color:green">**Replicant motion motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 
 ```python
 {"$type": "replicant_reset_head", "id": 1}
@@ -7986,7 +7992,7 @@ Options for when to send data.
 
 ## **`send_dynamic_empty_objects`**
 
-Send data each empty object in the scene. 
+Send the positions of each empty object in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 

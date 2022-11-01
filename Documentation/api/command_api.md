@@ -290,7 +290,6 @@
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
-| [`set_ik_graspable`](#set_ik_graspable) | Make an object graspable for use with the FinalIK Interaction System (in other words, make this object graspable by a Replicant). |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
@@ -4077,21 +4076,6 @@ Set the albedo RGBA color of an object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"color"` | Color | The new albedo RGBA color of the object. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`set_ik_graspable`**
-
-Make an object graspable for use with the FinalIK Interaction System (in other words, make this object graspable by a Replicant).
-
-
-```python
-{"$type": "set_ik_graspable", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 ***

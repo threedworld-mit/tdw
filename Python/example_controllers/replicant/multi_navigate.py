@@ -140,21 +140,80 @@ class Navigate(Action):
                                                         image_frequency=self.image_frequency)
 
 
-class Pathfind(Controller):
+class NavigatorState(Enum):
+    navigating = 1
+    moving_backward = 2
+    turning = 3
+    moving_forward = 4
+    done = 5
+
+
+class Navigator(Replicant):
     """
-    An example of how to utilize the NavMesh to pathfind.
+    A Replicant trying to navigate to a target position.
+    """
+
+    def __init__(self, target: Dict[str, float], replicant_id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None):
+        super().__init__(replicant_id=replicant_id, position=position, rotation=rotation)
+        # Set the initial target, the initial state, and the action.
+        self.target = target
+        self.navigator_state: NavigatorState = NavigatorState.navigating
+        self.navigate(target=self.target)
+        # We don't care if the previous action ended in a collision.
+        self.collision_detection.previous_was_same = False
+
+    def navigate(self, target: Union[Dict[str, float], np.ndarray]) -> None:
+        self.action = Navigate(target=target, collision_detection=self.collision_detection)
+
+    def on_send(self, resp: List[bytes]) -> None:
+        # Process the Replicant's action, commands, etc. as normal.
+        super().on_send(resp=resp)
+        # The action is ongoing. Do nothing extra.
+        if self.action.status == ActionStatus.ongoing:
+            return
+        # The action succeeded. Check if we're done navigating.
+        elif self.action.status == ActionStatus.success:
+            # We're done!
+            if self.navigator_state == NavigatorState.navigating:
+                self.navigator_state = NavigatorState.done
+            # The Replicant finished moving backwards. Start turning.
+            elif self.navigator_state == NavigatorState.moving_backward:
+                self.navigator_state = NavigatorState.turning
+                self.turn_by(35)
+            # The Replicant finished turning. Start moving forward.
+            elif self.navigator_state == NavigatorState.turning:
+                self.move_by(distance=0.75)
+                self.navigator_state = NavigatorState.moving_forward
+            # The Replicant finished moving forward. Start navigating to the target again.
+            elif self.navigator_state == NavigatorState.moving_forward:
+                self.navigate(target=self.target)
+                self.navigator_state = NavigatorState.navigating
+        # The action ended in failure. Start backing up.
+        else:
+            self.navigator_state = NavigatorState.moving_backward
+            self.move_by(distance=-0.5)
+
+
+class MultiNavigate(Controller):
+    """
+    An example of how to utilize the NavMesh to pathfind in a multi-Replicant simulation.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.replicant = Replicant(position={"x": 0.1, "y": 0, "z": -5})
+        self.replicant_0 = Navigator(replicant_id=0,
+                                     position={"x": 0, "y": 0, "z": -5},
+                                     target={"x": 0, "y": 0, "z": 4})
+        self.replicant_1 = Navigator(replicant_id=1,
+                                     position={"x": 0, "y": 0, "z": 5},
+                                     target={"x": 0, "y": 0, "z": -4})
         self.camera: ThirdPersonCamera = ThirdPersonCamera(position={"x": 0, "y": 13.8, "z": 0},
                                                            look_at={"x": 0, "y": 0, "z": 0},
                                                            avatar_id="a")
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_navigate")
+        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("multi_replicant_navigate")
         print(f"Images will be saved to: {path}")
         self.capture: ImageCapture = ImageCapture(avatar_ids=["a"], path=path)
-        self.add_ons.extend([self.replicant, self.camera, self.capture])
+        self.add_ons.extend([self.replicant_0, self.replicant_1, self.camera, self.capture])
         # Set the object IDs.
         self.trunk_id = Controller.get_unique_id()
         self.chair_id = Controller.get_unique_id()
@@ -162,9 +221,6 @@ class Pathfind(Controller):
         self.rocking_horse_id = Controller.get_unique_id()
 
     def init_scene(self):
-        # Load the scene.
-        # Bake the NavMesh.
-        # Add objects to the scene and add NavMesh obstacles.
         self.communicate([{"$type": "load_scene",
                            "scene_name": "ProcGenScene"},
                           TDWUtils.create_empty_room(12, 12),
@@ -196,23 +252,14 @@ class Pathfind(Controller):
                            "id": self.rocking_horse_id,
                            "carve_type": "stationary"}])
 
-    def do_action(self) -> None:
-        while self.replicant.action.status == ActionStatus.ongoing:
+    def run(self) -> None:
+        self.init_scene()
+        # Wait until both Replicants are done navigating.
+        while self.replicant_0.navigator_state != NavigatorState.done or self.replicant_1.navigator_state != NavigatorState.done:
             self.communicate([])
-        self.communicate([])
-
-    def end(self) -> None:
         self.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":
-    c = Pathfind()
-    # Initialize the scene.
-    c.init_scene()
-    # Navigate to a destination.
-    c.replicant.action = Navigate(target={"x": 0, "y": 0, "z": 4},
-                                  collision_detection=c.replicant.collision_detection)
-    c.do_action()
-    print(c.replicant.action.status)
-    # End the simulation.
-    c.end()
+    c = MultiNavigate()
+    c.run()

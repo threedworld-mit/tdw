@@ -90,7 +90,6 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
-| [Robot](#Robot) | Data for a robot in the scene. See also: `StaticRobot` | `robo` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
@@ -773,26 +772,6 @@ Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scen
 | `get_velocity(index)` | The velocity. | `np.array` |
 | `get_angular_velocity(index)` | The angular velocity. | `np.array` |
 | `get_sleeping(index)` | The sleeping. | `bool` |
-
-## Robot
-
-`r = Robot(byte_array)`
-
-**Identifier:** `robo`
-
-Data for a robot in the scene. See also: `StaticRobot`
-
-| Function | Description | Return type |
-| --- | --- | --- |
-| `get_id()` | The ID of the robot. | `int` |
-| `get_position()` | The (x, y, z) position of this body part. | `Tuple[float, float, float]` |
-| `get_rotation()` | The rotation. | `Tuple[float, float, float, float]` |
-| `get_forward()` | The forward. | `Tuple[float, float, float]` |
-| `get_num_joints()` | The number of joints. | `int` |
-| `get_joint_id(index)` | The ID of the joint. | `int` |
-| `get_joint_position(index)` | The position of the joint. | `np.array` |
-| `get_joint_positions(index)` | The positions of the joint. | `np.array` |
-| `get_immovable()` | True if the root object of the robot is currently immovable. | `bool` |
 
 ## RobotJointVelocities
 

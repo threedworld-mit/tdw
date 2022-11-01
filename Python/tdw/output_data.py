@@ -29,7 +29,6 @@ from tdw.FBOutput import Overlap as Over
 from tdw.FBOutput import Containment as Cont
 from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import StaticRobot as StRobo
-from tdw.FBOutput import Robot as Robo
 from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
@@ -955,38 +954,6 @@ class StaticRobot(OutputData):
 
     def get_robot_index(self) -> int:
         return self.data.Index()
-
-
-class Robot(OutputData):
-    def get_data(self) -> Robo.Robot:
-        return Robo.Robot.GetRootAsRobot(self.bytes, 0)
-
-    def get_id(self) -> int:
-        return self.data.Id()
-
-    def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Transform().Position)
-
-    def get_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Transform().Rotation)
-
-    def get_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Transform().Forward)
-
-    def get_num_joints(self) -> int:
-        return self.data.JointsLength()
-
-    def get_joint_id(self, index: int) -> int:
-        return self.data.Joints(index).Id()
-
-    def get_joint_position(self, index: int) -> np.array:
-        return self.data.Joints(index).PositionAsNumpy()
-
-    def get_joint_positions(self, index: int) -> np.array:
-        return np.degrees(self.data.Joints(index).PositionsAsNumpy())
-
-    def get_immovable(self) -> bool:
-        return self.data.Immovable()
 
 
 class RobotJointVelocities(OutputData):

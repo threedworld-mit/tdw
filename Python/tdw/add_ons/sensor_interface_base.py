@@ -6,6 +6,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
 from tdw.sensors_data.analog_pin import AnalogPin
 from tdw.sensors_data.pin_mode import PinMode
+from tdw.sensors_data.finger import Finger
 
 
 class SensorInterfaceBase(AddOn, ABC):
@@ -49,13 +50,13 @@ class SensorInterfaceBase(AddOn, ABC):
 
     def get_digital_read_command(self, pin: int) -> Optional[dict]:
         return {"$type": "digital_read",
-                              "digital_pin": pin}
+                "digital_pin": pin}
 
     def get_digital_write_command(self, pin: int, pin_mode: PinMode, value: int) -> Optional[dict]:
         return {"$type": "digital_write",
-                              "digital_pin": pin,
-                              "pin_mode": pin_mode,
-                              "value": value}
+                "digital_pin": pin,
+                "pin_mode": pin_mode,
+                "value": value}
 
     def get_analog_read_command(self, pin: AnalogPin) -> Optional[dict]:
         return{"$type": "analog_read",
@@ -68,14 +69,18 @@ class SensorInterfaceBase(AddOn, ABC):
 
     def get_analog_servo_write_command(self, pin: int, value: int):
         return {"$type": "analog_servo_write",
-                          "digital_pin": pin,
-                          "value": value}
+                "digital_pin": pin,
+                "value": value}
 
     def get_send_arduino_command(self, command_name: str) -> Optional[dict]:
         return {"$type": "send_arduino_command",
-                         "arduino_command_name": command_name}
-
-    def get_send_haptic_waveform_command(self, command_name: str, wave_id: int) -> Optional[dict]:
-        return {"$type": "send_arduino_command",
-                         "arduino_command_name": command_name,
-                         "waveform_id": wave_id}
+                "arduino_command_name": command_name}
+    """
+    def get_send_haptic_glove_command(self, wave_id: int, fingers: List[str]) -> Optional[dict]:
+        return {"$type": "send_haptic_glove_command",
+                "waveform_id": wave_id,
+                "fingers": fingers}
+    """
+    def get_send_haptic_glove_command(self, wave_id: int) -> Optional[dict]:
+        return {"$type": "send_haptic_glove_command",
+                "waveform_id": wave_id}

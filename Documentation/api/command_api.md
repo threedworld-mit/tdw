@@ -633,7 +633,7 @@
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
-| [`send_replicants`](#send_replicants) | Send Transform (position and rotation) data of Replicant and their body parts.  |
+| [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
@@ -8285,7 +8285,7 @@ Options for when to send data.
 
 ## **`send_replicants`**
 
-Send Transform (position and rotation) data of Replicant and their body parts. 
+Send data of each Replicant in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 

@@ -55,6 +55,7 @@ class ContainerManager(AddOn):
                         s = CompositeObjectStatic(static_composite_objects, j)
                         self._excluded_objects.extend(s.sub_object_ids)
                     break
+        self.events.clear()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Use the model names from SegmentationColors output data to add container shapes.

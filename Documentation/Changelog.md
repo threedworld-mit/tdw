@@ -99,7 +99,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ### Model Library
 
-- Added affordance points for: basket_18inx18inx12iin_bamboo, basket_18inx18inx12iin_plastic_lattice, basket_18inx18inx12iin_wicker, basket_18inx18inx12iin_wood_mesh, coffeemug, rh10
+- Added affordance points for: basket_18inx18inx12iin_bamboo, basket_18inx18inx12iin_plastic_lattice, basket_18inx18inx12iin_wicker, basket_18inx18inx12iin_wood_mesh, coffeemug, rh10, alivar_tech_bench_sofa, arflex_strips_sofa
 
 ### Replicants Library
 
@@ -111,6 +111,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - Added Replicant example controllers:
     - replicant/animate.py
     - replicant/animate_collision_detection.py
+    - replicants/carry_couch.py
     - replicant/clap.py
     - replicant/collision_detection_tests.py
     - replicant/crash.py
@@ -147,6 +148,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | ------------------------------------------------------------ | ---------------------------------------------------- |
 | `lessons/replicants/overview.md`<br/>`lessons/replicants/actions.md`<br/>`lessons/replicants/output_data.md`<br/>`lessons/replicants/collision_detection.md`<br/>`lessons/replicants/movement.md`<br/>`lessons/replicants/animations.md`<br/>`lessons/replicants/arm_articulation.md`<br/>`lessons/replicants/grasp_drop.md`<br/>`lessons/replicants/head_rotation.md`<br/>`lessons/replicants/navigation.md`<br/>`lessons/replicants/custom_actions.md`<br/>`lessons/replicants/multiple_replicants.md`<br/>`lessons/replicants/reset.md` | Tutorial documentation for how to use the Replicant. |
 | `python/add_ons/replicant.md`<br/>`python/replicant/action_status.md`<br/>`python/replicant/arm.md`<br/>`python/replicant/collision_detection.md`<br/>`python/replicant/image_frequency.md`<br/>`python/replicant/replicant_body_part.md`<br/>`python/replicant/replicant_dynamic.md`<br/>`python/replicant/replicant_static.md`<br/>`python/replicant/actions/action.md`<br/>`python/replicant/actions/animate.md`<br/>`python/replicant/actions/arm_motion.md`<br/>`python/replicant/actions/drop.md`<br/>`python/replicant/actions/grasp.md`<br/>`python/replicant/actions/head_motion.md`<br/>`python/replicant/actions/look_at.md`<br/>`python/replicant/actions/move_by.md`<br/>`python/replicant/actions/move_to.md`<br/>`python/replicant/actions/reach_for.md`<br/>`python/replicant/actions/reset_arm.md`<br/>`python/replicant/actions/reset_head.md`<br/>`python/replicant/actions/turn_by.md`<br/>`python/replicant/actions/turn_to.md` | API documentation for how to use the Replicant.      |
+
+#### Modified Documentation
+
+| Document                                 | Modification                                  |
+| ---------------------------------------- | --------------------------------------------- |
+| `lessons/semantic_states/containment.md` | Updated explanation of how containment works. |
 
 # v1.10.x
 

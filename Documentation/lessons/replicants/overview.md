@@ -6,7 +6,7 @@ A **Replicant** is a human-like [agent](../agents/overview.md).
 
 Replicants move via a combination of inverse kinematics (IK) for actions such as reaching for an object; the combined joint movement is fluid and plausible. Replicants can also perform arbitrary pre-recorded animations, meaning that specific complex actions are far easier to achieve than in a robotics simulation.
 
-Replicants are visually similar to [non-physics humanoids](../non_physics_humanoids/overview.md) but *do* exist in a physics context. Replicants are massless but will generate physics events. For example, if a Replicant walks into an object, it will push the object aside. Non-physics humanoids, on the other hand, will move through objects without interacting with them.
+Replicants are visually similar to [non-physics humanoids](../non_physics_humanoids/overview.md) but *do* exist in a physics context. Replicants can *cause* physics events but won't *respond* to physics events. For example, if a Replicant walks into an object, it will push the object aside. Non-physics humanoids, on the other hand, will move through objects without interacting with them.
 
 ![](images/crash.gif)
 

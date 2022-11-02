@@ -154,6 +154,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | Document                                 | Modification                                  |
 | ---------------------------------------- | --------------------------------------------- |
 | `lessons/semantic_states/containment.md` | Updated explanation of how containment works. |
+| `lessons/agents/overview.md`             | Added a section for Replicants.               |
 
 # v1.10.x
 

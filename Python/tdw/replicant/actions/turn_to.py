@@ -28,19 +28,18 @@ class TurnTo(Action):
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         if isinstance(self._target, int):
-            commands.append({"$type": "object_look_at",
-                             "other_object_id": int(self._target),
-                             "id": static.replicant_id})
+            position = self._get_object_position(object_id=self._target, resp=resp)
         elif isinstance(self._target, np.ndarray):
-            commands.append({"$type": "object_look_at_position",
-                             "position": TDWUtils.array_to_vector3(self._target),
-                             "id": static.replicant_id})
+            position = TDWUtils.array_to_vector3(self._target)
         elif isinstance(self._target, dict):
-            commands.append({"$type": "object_look_at_position",
-                             "position": self._target,
-                             "id": static.replicant_id})
+            position = {k: v for k, v in self._target}
         else:
             raise Exception(f"Invalid target: {self._target}")
+        # Set the y value to match the Replicant's y value.
+        position["y"] = float(dynamic.transform.position[1])
+        commands.append({"$type": "object_look_at_position",
+                         "position": position,
+                         "id": static.replicant_id})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

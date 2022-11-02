@@ -366,7 +366,7 @@ To override this behavior, set `replicant.collision_detection.previous_was_same 
 
 `replicant.turn_by(angle)` sets `replicant.action` to a [`TurnBy`](../../python/replicant/actions/turn_by.md) action. `replicant.turn_to(target)` sets `replicant.action` to a [`TurnTo`](../../python/replicant/actions/turn_to.md).
 
-In addition to the usual [the usual `Action` initialization commands](actions.md), `TurnBy` sends [`rotate_object_by`](../../api/command_api.md#rotate_object_by), while `TurnTo` sends either [`object_look_at`](../../api/command_api.md#object_look_at) or [`object_look_at_position`](../../api/command_api.md#object_look_at_position).
+In addition to the usual [the usual `Action` initialization commands](actions.md), `TurnBy` sends [`rotate_object_by`](../../api/command_api.md#rotate_object_by), while `TurnTo` sends [`object_look_at_position`](../../api/command_api.md#object_look_at_position).
 
 ### Moving
 
@@ -399,7 +399,6 @@ Example controllers:
 Command API:
 
 - [`rotate_object_by`](../../api/command_api.md#rotate_object_by)
-- [`object_look_at`](../../api/command_api.md#object_look_at)
 - [`object_look_at_position`](../../api/command_api.md#object_look_at_position)
 - [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation)
 - [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation)

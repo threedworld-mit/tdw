@@ -10,9 +10,9 @@
 | `inside`         | An object in a basket    |
 | `enclosed`       | An object in a microwave |
 
-## The `ContainerManager` add-on
+## Container shapes
 
-[`ContainerManager`](../../python/add_ons/container_manager.md) is an add-on that adds semantic containment listeners to objects. Every [model record](../../python/librarian/model_librarian.md) has a `container_shapes` field. Each `ContainerShape` defines a 3D space and includes a semantic tag.
+Every [model record](../../python/librarian/model_librarian.md) has a `container_shapes` field, a list of JSON data that deserializes to [`ContainerShape`](../../python/container_data/container_shape.md). Each `ContainerShape` defines a 3D space and includes a semantic tag.
 
 Only a subset of objects in TDW that could be containers have these predefined container shapes; more will be added over time. To print the current full list:
 
@@ -24,6 +24,14 @@ for record in librarian.records:
     if not record.do_not_use and len(record.container_shapes) > 0:
         print(record.name)
 ```
+
+Container shapes need to be added to the object's metadata in the build in order to function; in other words, they are defined both in the JSON metadata and in the build's C# code.
+
+**Container shapes are only added if you call `Controller.get_add_physics_object()`, *not* `Controller.get_add_object()`.** This is because container shapes are each added in a separate command. If  you call `Controller.get_add_physics_object()`, you will receive a list of commands, including commands to add container shapes. Conversely, `Controller.get_add_object()` returns a single command.
+
+## The `ContainerManager` add-on
+
+[`ContainerManager`](../../python/add_ons/container_manager.md) is an add-on that adds semantic containment listeners to objects. 
 
 To use the `ContainerManager` you must add it to `c.add_ons`:
 
@@ -305,7 +313,7 @@ You may wish to record the raw containment data and then further filter it for c
 
 ## Low-level API
 
-Per object in the scene, `ContainerManager` tries to find a corresponding `ModelRecord` and then checks its `container_shapes` list. For each container shape, `ContainerManager` sends the following:
+Calling `Controller.get_add_physics_object()` will automatically check the object's metadata record and add container shape commands as needed:
 
 | Container Shape                                              | Command                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -313,7 +321,7 @@ Per object in the scene, `ContainerManager` tries to find a corresponding `Model
 | [`CylinderContainer`](../../python/container_data/cylinder_container.md) | [`add_cylinder_container`](../../api/command_api.md#add_cylinder_container) |
 | [`SphereContainer`](../../python/container_data/sphere_container.md) | [`add_sphere_container`](../../api/command_api.md#add_sphere_container) |
 
-`ContainerManager` then sends [`send_containment`](../../api/command_api.md#send_containment) which, per `communicate()` call, sends [`Overlap`](../../api/output_data.md#Overlap) data for all container shapes that have overlapping objects (other than the parent object). `Overlap` data is *not* sent if there are no overlapping objects.
+`ContainerManager` then sends [`send_containment`](../../api/command_api.md#send_containment) which, per `communicate()` call, sends [`Containment`](../../api/output_data.md#Containment) data for all container shapes that have overlapping objects (other than the parent object).
 
 ***
 
@@ -346,4 +354,4 @@ Command API:
 
 Output Data:
 
-- [`Overlap`](../../api/output_data.md#Overlap)
+- [`Containment`](../../api/output_data.md#Containment)

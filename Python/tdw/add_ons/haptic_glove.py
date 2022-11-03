@@ -1,9 +1,9 @@
 from tdw.add_ons.sensor_interface_base import SensorInterfaceBase
-from typing import List, Dict
+from typing import List, Optional, Dict
 
 class HapticGlove(SensorInterfaceBase):
     """
-    Basic haptic glove nterface using haptic motors and DRV2605 haptic motor controllers.
+    Basic haptic glove interface using haptic motors and DRV2605 haptic motor controllers.
 
     """
 
@@ -22,10 +22,15 @@ class HapticGlove(SensorInterfaceBase):
     def on_send(self, resp: List[bytes]) -> None:
         return
 
+    """
+    def get_send_haptic_glove_command(self, wave_id: int, fingers: List[str]) -> Optional[dict]:
+        return {"$type": "send_haptic_glove_command",
+                "waveform_id": wave_id,
+                "fingers": fingers}
+    """
 
-    def get_send_haptic_waveform_command(self, command_name: str, wave_id: int) -> Optional[dict]:
-        return {"$type": "send_arduino_command",
-                         "arduino_command_name": command_name,
-                         "waveform_id": wave_id}
+    def get_send_haptic_glove_command(self, wave_id: int) -> Optional[dict]:
+        return {"$type": "send_haptic_glove_command",
+                "waveform_id": wave_id}
 
 

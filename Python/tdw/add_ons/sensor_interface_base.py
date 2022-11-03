@@ -11,7 +11,10 @@ from tdw.sensors_data.finger import Finger
 
 class SensorInterfaceBase(AddOn, ABC):
     """
-    Abstract base class for sensor or haptic interface add-ons.
+    Abstract base class for sensor or haptic interface add-ons, based on external
+    microcontrollers (e.g. Arduino or equivalent). This add-on uses C# commands and
+    depends on the Uduino Unity plugin that handles the bi-directional communication
+    between TDW and the microcontroller.
     """
 
     def __init__(self, board_type: str = "Arduino Uno"):
@@ -75,12 +78,5 @@ class SensorInterfaceBase(AddOn, ABC):
     def get_send_arduino_command(self, command_name: str) -> Optional[dict]:
         return {"$type": "send_arduino_command",
                 "arduino_command_name": command_name}
-    """
-    def get_send_haptic_glove_command(self, wave_id: int, fingers: List[str]) -> Optional[dict]:
-        return {"$type": "send_haptic_glove_command",
-                "waveform_id": wave_id,
-                "fingers": fingers}
-    """
-    def get_send_haptic_glove_command(self, wave_id: int) -> Optional[dict]:
-        return {"$type": "send_haptic_glove_command",
-                "waveform_id": wave_id}
+
+

@@ -32,7 +32,7 @@ class TurnTo(Action):
         elif isinstance(self._target, np.ndarray):
             position = TDWUtils.array_to_vector3(self._target)
         elif isinstance(self._target, dict):
-            position = {k: v for k, v in self._target}
+            position = {k: v for k, v in self._target.items()}
         else:
             raise Exception(f"Invalid target: {self._target}")
         # Set the y value to match the Replicant's y value.

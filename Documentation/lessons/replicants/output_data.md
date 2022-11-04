@@ -190,7 +190,7 @@ dict_keys([])
 dict_keys(['img', 'id', 'depth'])
 ```
 
-If  you want to capture images on every `communicate()` call, or never capture images, set the `image_frequency` parameter in the Replicant constructor, which accepts an [`ImageFrequency`](../../python/replicant/image_frequency.md) value:
+If you want to capture images on every `communicate()` call, or never capture images, set the `image_frequency` parameter in the Replicant constructor, which accepts an [`ImageFrequency`](../../python/replicant/image_frequency.md) value:
 
 ```python
 from tdw.controller import Controller
@@ -281,7 +281,7 @@ The `Replicant`'s `static` and `dynamic` data are initially `None`. Both are set
 
 On the *second* `communicate()` call (i.e. one call after initialization), the `Replicant` add-on sends [`create_avatar`](../../api/command_api.md#create_avatar) and [`parent_avatar_to_replicant`](../../api/command_api.md#parent_avatar_to_replicant) to attach an [avatar (camera)](../core_concepts/avatars.md) to its head. This is how it receives image data.
 
-The `Replicant` sends [`send_images`](../../api/command_api.md#send_images) and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) to receive [`Images`](../../api/output_data.md#Images) and [`CameraMatrices`](../../api/output_data.md#CameraMatrices) output data, respectively. The frequency at which this data is sent depends on the value of the `image_frequency` value in the constructor. By default, these commands are only sent when an action ends; accordingly, they are actually pass from the `action`, to the `Replicant`, to the controller.
+The `Replicant` sends [`send_images`](../../api/command_api.md#send_images) and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) to receive [`Images`](../../api/output_data.md#Images) and [`CameraMatrices`](../../api/output_data.md#CameraMatrices) output data, respectively. The frequency at which this data is sent depends on the value of the `image_frequency` value in the constructor. By default, these commands are only sent when an action ends; accordingly, they are actually passed from the `action`, to the `Replicant`, to the controller.
 
 ***
 

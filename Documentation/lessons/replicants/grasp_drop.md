@@ -6,7 +6,7 @@ The Replicant can grasp and drop objects. Each hand can grasp exactly one object
 
 ## The `grasp(target, arm)` action
 
-`grasp(target, arm)` will tell the Replicant to grasp an object. **This is a non-physics, non-motion. The Replicant WILL NOT bend its arm towards the target.** To properly grasp, first call [`reach_for(target, arm)`](arm_articulation.md), *then* `grasp(target, arm)`.
+`grasp(target, arm)` will tell the Replicant to grasp an object. **This is a non-physics, non-motion action. The Replicant WILL NOT bend its arm towards the target.** To properly grasp, first call [`reach_for(target, arm)`](arm_articulation.md), *then* `grasp(target, arm)`.
 
 When a Replicant grasps an object, the object becomes kinematic and continuously tracks the Replicant's hand. If the object [contains other objects](../semantic_states/containment.md), those objects will also become kinematic and will be parented to the root grasped object:
 
@@ -264,7 +264,7 @@ In addition to [the usual `Action` initialization commands](actions.md), `Grasp`
 
 Assuming that the object can be grasped, the `Grasp` action always succeeds (i.e. there is no physics-related failure state).
 
-A grasped object is *not* parented to its hand or connected to the object in any way. This is do to how the underlying FinalIK system updates per frame vs. how TDW updates per frame. Instead, the grasped object moves and rotates itself to the Replicant's hand per `communicate()` call.
+A grasped object is *not* parented to its hand or connected to the object in any way. This is due to how the underlying FinalIK system updates per frame vs. how TDW updates per frame. Instead, the grasped object moves and rotates itself to the Replicant's hand per `communicate()` call.
 
 ## The `drop(arm)` action
 

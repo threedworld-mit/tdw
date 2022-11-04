@@ -194,7 +194,7 @@ If `action.initialized = False`, the action is initialized on the first `replica
 
 Actions have a `status` parameter. An action is ongoing if `status == ActionStatus.ongoing`. An action has  ended if `status` is anything else.
 
-It is possible for an `Action` to immediately after initialization, in which case its end commands are appended to the list of initialization commands (see below).
+It is possible for an `Action` to end immediately after initialization, in which case its end commands are appended to the list of initialization commands (see below).
 
 If the `Action` is ongoing after initialization, then on every *subsequent* `replicant.on_send(resp)` call, it will return `get_ongoing_commands(resp, static, dynamic)`. The commands returned by this function vary depending on the action. In most cases, the action will read `resp` and `dynamic` to decide which commands to send, whether the action is done, etc.
 

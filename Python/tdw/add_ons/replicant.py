@@ -402,7 +402,7 @@ class Replicant(AddOn):
 
     def reset_head(self, duration: float = 0.1):
         """
-        Look at a target object or position.
+        Reset the head to its neutral rotation.
 
         The head will continuously move over multiple `communicate()` calls until it is at its neutral rotation.
 

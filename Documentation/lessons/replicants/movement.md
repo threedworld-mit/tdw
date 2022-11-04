@@ -151,7 +151,7 @@ Result:
 
 ### Turn actions
 
-The `turn_by(angle)` and `turn_to(angle)` aren't expected to every end in collisions; they always succeed and ignore `replicant.collision_detection`.
+The `turn_by(angle)` and `turn_to(angle)` actions always succeed and ignore `replicant.collision_detection`.
 
 ### Obstacle avoidance
 
@@ -304,7 +304,7 @@ c.communicate({"$type": "terminate"})
 
 Because the Replicant's Rigidbody is kinematic (non-physics), **the Replicant won't collide with other kinematic objects.** Assuming that `collision_detection.avoid = False` and `collision_detection.objects = False`, the Replicant will walk through kinematic objects without interacting with them.
 
-Walls are environment objects that don't have Rigidbodies. If `collision_detection.avoid = False`, the Replicant will walk through walls without interact with them.
+Walls are environment objects that don't have Rigidbodies. If `collision_detection.avoid = False`, the Replicant will walk through walls without interacting with them.
 
 In this example, the Replicant will walk through an object and a wall:
 
@@ -366,13 +366,13 @@ To override this behavior, set `replicant.collision_detection.previous_was_same 
 
 `replicant.turn_by(angle)` sets `replicant.action` to a [`TurnBy`](../../python/replicant/actions/turn_by.md) action. `replicant.turn_to(target)` sets `replicant.action` to a [`TurnTo`](../../python/replicant/actions/turn_to.md).
 
-In addition to the usual [the usual `Action` initialization commands](actions.md), `TurnBy` sends [`rotate_object_by`](../../api/command_api.md#rotate_object_by), while `TurnTo` sends [`object_look_at_position`](../../api/command_api.md#object_look_at_position).
+In addition to [the usual `Action` initialization commands](actions.md), `TurnBy` sends [`rotate_object_by`](../../api/command_api.md#rotate_object_by), while `TurnTo` sends [`object_look_at_position`](../../api/command_api.md#object_look_at_position).
 
 ### Moving
 
 `replicant.move_by(distance)` sets `replicant.action` to a [`MoveBy`](../../python/replicant/actions/move_by.md) action. `replicant.move_to(target)` sets `replicant.action` to a [`MoveTo`](../../python/replicant/actions/move_to.md) action.
 
-In addition to the usual [the usual `Action` initialization commands](actions.md),  `MoveBy` and `MoveTo` send [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation) for the walk animation. Every `communicate()` call, these actions check for collisions and the distance traversed to determine if the action has ended. The action checks if the walk animation is done by checking `replicant.dynamic.output_action_status` (which will indicate that the build has signaled that an animation ended), and replay the walk animation as needed.
+In addition to [the usual `Action` initialization commands](actions.md),  `MoveBy` and `MoveTo` send [`add_humanoid_animation`](../../api/command_api.md#add_humanoid_animation) and [`play_humanoid_animation`](../../api/command_api.md#play_humanoid_animation) for the walk animation. Every `communicate()` call, these actions check for collisions and the distance traversed to determine if the action has ended. The action checks if the walk animation is done by checking `replicant.dynamic.output_action_status` (which will indicate that the build has signaled that an animation ended), and replay the walk animation as needed.
 
 Due to certain low-level features in the Replicant's implementation, collision detection can be glitchy while the Replicant is walking. On every `communicate()` call, the `MoveBy` and `MoveTo` actions will send [`replicant_resolve_collider_intersections`](../../api/command_api.md#replicant_resolve_collider_intersections); this command will attempt to push forward any objects intersecting with the Replicant.
 

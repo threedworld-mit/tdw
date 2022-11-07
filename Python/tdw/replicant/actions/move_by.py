@@ -19,7 +19,7 @@ class MoveBy(Animate):
 
     The Replicant will continuously play a walk cycle animation until the action ends.
 
-    The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
+    The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
 
     - If the Replicant walks the target distance, the action succeeds.
     - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.

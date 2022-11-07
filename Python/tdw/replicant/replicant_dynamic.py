@@ -28,7 +28,7 @@ class ReplicantDynamic:
         """
         self.transform: Transform = Transform(np.zeros(shape=3), np.zeros(shape=4), np.zeros(shape=3))
         """:field
-        A dictionary of objects held in each hand. Key = [`Arm`](../agents/arm.md). Value = Object ID.
+        A dictionary of objects held in each hand. Key = [`Arm`](arm.md). Value = Object ID.
         """
         self.held_objects: Dict[Arm, int] = dict()
         """:field

@@ -10,7 +10,7 @@ Dynamic data for a replicant that can change per `communicate()` call (such as t
 
 - `transform` The [`Transform`](../object_data/transform.md) of the Replicant.
 
-- `held_objects` A dictionary of objects held in each hand. Key = [`Arm`](../agents/arm.md). Value = Object ID.
+- `held_objects` A dictionary of objects held in each hand. Key = [`Arm`](arm.md). Value = Object ID.
 
 - `images` The images rendered by the robot as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
 

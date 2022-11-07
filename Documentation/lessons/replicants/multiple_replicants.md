@@ -548,7 +548,7 @@ Result:
 
 ## Example D: Carry a Couch
 
-In this example, two Replicants will move to opposite ends of a couch, lift it, carry it, and drop it. As we've already learned, [only one Replicant can grasp an object at a time](grasp_drop.md), so a lot of these motions *look* like cooperation without actually *being* cooperation.
+In this example, two Replicants will move to opposite ends of a couch, lift it, carry it, and drop it. As we've already learned, [only one Replicant can grasp an object at a time](grasp_drop.md), so technically the Replicants are moving synchronously rather than carrying the object together.
 
 Because we want to coordinate most of the movements of these Replicants, we're going to use a NavMesh but we don't need or want a `Navigate` action; we'll handle the multiple `move_to(target)` actions manually.
 

@@ -7,6 +7,7 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidAnimationRecord
 
 
@@ -73,7 +74,15 @@ class Animate(Action):
         # Check if the animation is done.
         elif dynamic.output_data_status != ActionStatus.ongoing:
             self.status = dynamic.output_data_status
-        return []
+        # Try to resolve collider intersections.
+        commands = []
+        collider_intersections_direction = dynamic.transform.forward
+        if not self.forward:
+            collider_intersections_direction = -collider_intersections_direction
+        commands.append({"$type": "replicant_resolve_collider_intersections",
+                         "id": static.replicant_id,
+                         "direction": TDWUtils.array_to_vector3(collider_intersections_direction)})
+        return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:

@@ -18,13 +18,13 @@ replicant = Replicant()
 camera = ThirdPersonCamera(position={"x": -0.5, "y": 1.175, "z": 3},
                            look_at={"x": 0, "y": 1, "z": 0},
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_dance")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_animate")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], path=path)
 c.add_ons.extend([replicant, camera, capture])
 c.communicate(TDWUtils.create_empty_room(12, 12))
 # Play an animation.
-replicant.animate(animation="dancing_3")
+replicant.animate(animation="kitchen_refrigerator_f")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
@@ -33,7 +33,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/animations/dance.gif)
+![](images/animations/animate.gif)
 
 ## Animation asset bundles and metadata records
 
@@ -142,7 +142,8 @@ This example controller demonstrates how physics and collision detection setting
  
      def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
          super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-         self.replicant = Replicant()
+         self.replicant = Replicant(position={"x": -2, "y": 0, "z": 0},
+                                    rotation={"x": 0, "y": 90, "z": 0})
          self.camera = ThirdPersonCamera(position={"x": -0.5, "y": 1.175, "z": 3},
                                          look_at={"x": 0, "y": 1, "z": 0},
                                          avatar_id="a")
@@ -160,12 +161,12 @@ This example controller demonstrates how physics and collision detection setting
                                                      position={"x": -0.6, "y": 0, "z": 0.01}),
                            Controller.get_add_object(model_name="chair_billiani_doll",
                                                      object_id=self.object_id_1,
-                                                     position={"x": -1.5, "y": 0, "z": -0.1},
+                                                     position={"x": -1.5, "y": 0, "z": 0},
                                                      rotation={"x": 0, "y": 30, "z": 0})])
          self.camera.look_at(target=self.replicant.replicant_id)
  
-     def dance(self):
-         self.replicant.animate(animation="dancing_3")
+     def animate(self):
+         self.replicant.animate(animation="wading_through_water")
          while self.replicant.action.status == ActionStatus.ongoing:
              self.communicate([])
          self.communicate([])
@@ -175,17 +176,17 @@ This example controller demonstrates how physics and collision detection setting
  if __name__ == "__main__":
      c = AnimateCollisionDetection()
      c.initialize_scene()
-     print("Trying to dance with default collision detection:")
-     c.dance()
+     print("Trying to animate with default collision detection:")
+     c.animate()
      print("Trying to ignore the rh10 model:")
      c.replicant.collision_detection.exclude_objects.append(c.object_id_0)
-     c.dance()
+     c.animate()
      print("Trying to ignore the previous animation:")
      c.replicant.collision_detection.previous_was_same = False
-     c.dance()
+     c.animate()
      print("Trying to ignore all objects:")
      c.replicant.collision_detection.objects = False
-     c.dance()
+     c.animate()
      c.communicate({"$type": "terminate"})
  ```
 
@@ -196,7 +197,7 @@ Result:
 Output:
 
 ```
-Trying to dance with default collision detection:
+Trying to animate with default collision detection:
 ActionStatus.collision
 Trying to ignore the rh10 model:
 ActionStatus.collision

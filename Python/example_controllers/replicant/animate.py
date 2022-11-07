@@ -15,13 +15,13 @@ replicant = Replicant()
 camera = ThirdPersonCamera(position={"x": -0.5, "y": 1.175, "z": 3},
                            look_at={"x": 0, "y": 1, "z": 0},
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_dance")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_animate")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], path=path)
 c.add_ons.extend([replicant, camera, capture])
-c.communicate(TDWUtils.create_empty_room(12, 12))
+c.communicate([TDWUtils.create_empty_room(12, 12)])
 # Play an animation.
-replicant.animate(animation="dancing_3")
+replicant.animate(animation="kitchen_refrigerator_f")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])

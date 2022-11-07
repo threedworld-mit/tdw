@@ -275,7 +275,7 @@ class Replicant(AddOn):
                              bounds_position=bounds_position)
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
-                  absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.02,
+                  absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
                   max_distance: float = 1.5, duration: float = 0.25) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.

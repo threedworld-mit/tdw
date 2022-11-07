@@ -24,7 +24,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.1},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_position")
@@ -57,15 +57,15 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.1},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_position")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_position_both_hands")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
 c.add_ons.extend([replicant, camera, capture])
 c.communicate(TDWUtils.create_empty_room(12, 12))
-replicant.reach_for(target={"x": 0.8, "y": 0.9, "z": 0.3}, arm=Arm.right)
+replicant.reach_for(target={"x": 0.8, "y": 0.9, "z": 0.3}, arm=[Arm.left, Arm.right])
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
@@ -90,7 +90,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.5},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_object")
@@ -150,7 +150,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.5},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_object_two_hands")
@@ -274,7 +274,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.5},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_follow")
@@ -293,7 +293,7 @@ while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
 # Reach for a target with the right hand and have the left hand follow.
-replicant.reach_for(target={"x": 0.2, "y": 1.8, "z": 0.2}, arm=Arm.right, offhand_follows=True)
+replicant.reach_for(target={"x": 0.8, "y": 0.8, "z": 0.3}, arm=Arm.right, offhand_follows=True)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])

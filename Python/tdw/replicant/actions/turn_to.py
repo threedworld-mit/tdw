@@ -28,7 +28,7 @@ class TurnTo(Action):
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         if isinstance(self._target, int):
-            position = self._get_object_position(object_id=self._target, resp=resp)
+            position = TDWUtils.array_to_vector3(self._get_object_position(object_id=self._target, resp=resp))
         elif isinstance(self._target, np.ndarray):
             position = TDWUtils.array_to_vector3(self._target)
         elif isinstance(self._target, dict):

@@ -13,7 +13,7 @@ Reach for a target position and have the offhand follow the main hand.
 
 c = Controller()
 replicant = Replicant()
-camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.5},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_follow")
@@ -32,7 +32,7 @@ while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
 # Reach for a target with the right hand and have the left hand follow.
-replicant.reach_for(target={"x": 0.2, "y": 1.8, "z": 0.2}, arm=Arm.right, offhand_follows=True)
+replicant.reach_for(target={"x": 0.8, "y": 0.8, "z": 0.3}, arm=Arm.right, offhand_follows=True)
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])

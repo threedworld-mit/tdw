@@ -163,7 +163,7 @@ replicant = Replicant()
 camera = ThirdPersonCamera(position={"x": -2.4, "y": 2, "z": 3.2},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_grasp_basket_with_object_roll")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_grasp_basket_with_object_yaw")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
 c.add_ons.extend([replicant, camera, capture])
@@ -192,7 +192,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/grasp_drop/grasp_object_roll.gif)
+![](images/grasp_drop/grasp_object_yaw.gif)
 
 If you set either `angle` *or* `axis` to None, the object will maintain its initial rotation even as the hand rotates:
 

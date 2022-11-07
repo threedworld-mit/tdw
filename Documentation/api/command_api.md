@@ -364,7 +364,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
-| [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant. |
+| [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 
 **Replicant Arm Command**
@@ -5075,7 +5075,7 @@ Stop a motion capture animation on a humanoid.
 
 # ReplicantCommand
 
-These commands affect replicants currently in the scene.
+These commands affect a Replicant currently in the scene.
 
 ***
 
@@ -5102,7 +5102,7 @@ Add a Rigidbody to a Replicant.
 
 ## **`parent_avatar_to_replicant`**
 
-Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant.
+Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant.
 
 
 ```python

@@ -6,9 +6,9 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
 from os import environ
-# Note we need to set the environment variable BEFORE we try to import the "board" library!
+# Note we need to set the environment variables BEFORE we try to import the "board" library!
 environ["BLINKA_FT232H"] = "1"
-
+environ["BLINKA_MCP2221"] = "1"
 import board
 import busio
 import digitalio

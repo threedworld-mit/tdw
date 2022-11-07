@@ -155,7 +155,7 @@ These actions move and bend the joints of the Replicant's arms.
 
 **`self.reach_for(target, arm)`**
 
-**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.02, max_distance=1.5, duration=0.25)`**
+**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25)`**
 
 Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -176,7 +176,7 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
 | absolute |  bool  | True | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | offhand_follows |  bool  | False | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int. |
-| arrived_at |  float  | 0.02 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
+| arrived_at |  float  | 0.09 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
 | max_distance |  float  | 1.5 | The maximum distance from the hand to the target position. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
 

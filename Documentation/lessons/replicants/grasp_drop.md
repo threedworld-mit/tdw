@@ -254,7 +254,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/grasp_drop/grasp_basket_with_object_no_rotate.gif)
+![](images/grasp_drop/grasp_object_no_rotate.gif)
 
 ### Low-level description
 

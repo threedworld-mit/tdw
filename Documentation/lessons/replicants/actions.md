@@ -97,7 +97,7 @@ c.add_ons.extend([replicant, camera, capture])
 # Create the scene. Set the framerate.
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "set_target_framerate",
-                "framerate": 60}])
+                "framerate": 30}])
 # Start walking.
 replicant.move_by(2)
 # Loop for a while.

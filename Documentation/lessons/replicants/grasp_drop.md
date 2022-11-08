@@ -55,7 +55,7 @@ replicant.reach_for(target=object_id, arm=Arm.right)
 do_action()
 replicant.grasp(target=object_id, arm=Arm.right)
 do_action()
-replicant.reach_for(target={"x": 0.4, "y": 1.1, "z": 0.4}, arm=Arm.right, absolute=False)
+replicant.reach_for(target={"x": 0.1, "y": 1.1, "z": 0.6}, arm=Arm.right, absolute=False)
 do_action()
 c.communicate({"$type": "terminate"})
 ```
@@ -185,7 +185,7 @@ replicant.grasp(target=object_id,
                 angle=45,
                 axis="yaw")
 do_action()
-replicant.reach_for(target={"x": 0.4, "y": 1.1, "z": 0.4}, arm=Arm.right, absolute=False)
+replicant.reach_for(target={"x": 0.1, "y": 1.1, "z": 0.6}, arm=Arm.right, absolute=False)
 do_action()
 c.communicate({"$type": "terminate"})
 ```
@@ -205,10 +205,6 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
-"""
-Grasp a basket containing an object.
-"""
 
 
 def do_action():
@@ -247,7 +243,7 @@ replicant.grasp(target=object_id,
                 arm=Arm.right,
                 angle=None)
 do_action()
-replicant.reach_for(target={"x": 0.4, "y": 1.1, "z": 0.4}, arm=Arm.right, absolute=False)
+replicant.reach_for(target={"x": 0.1, "y": 1.1, "z": 0.6}, arm=Arm.right, absolute=False)
 do_action()
 c.communicate({"$type": "terminate"})
 ```

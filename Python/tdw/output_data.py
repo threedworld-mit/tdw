@@ -26,9 +26,9 @@ from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
 from tdw.FBOutput import Raycast as Ray
 from tdw.FBOutput import Overlap as Over
+from tdw.FBOutput import Containment as Cont
 from tdw.FBOutput import NavMeshPath as Path
 from tdw.FBOutput import StaticRobot as StRobo
-from tdw.FBOutput import Robot as Robo
 from tdw.FBOutput import Keyboard as Key
 from tdw.FBOutput import Magnebot as Mag
 from tdw.FBOutput import ScreenPosition as Screen
@@ -42,19 +42,23 @@ from tdw.FBOutput import Lights as Lites
 from tdw.FBOutput import Categories as Cats
 from tdw.FBOutput import StaticRigidbodies as StatRig
 from tdw.FBOutput import RobotJointVelocities as RoJoVe
-from tdw.FBOutput import EmptyObjects as Empty
+from tdw.FBOutput import StaticEmptyObjects as StaticEmpty
+from tdw.FBOutput import DynamicEmptyObjects as DynamicEmpty
 from tdw.FBOutput import OculusTouchButtons as OculusTouch
 from tdw.FBOutput import StaticOculusTouch as StatOc
 from tdw.FBOutput import StaticCompositeObjects as StatComp
 from tdw.FBOutput import DynamicCompositeObjects as DynComp
 from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.FBOutput import ObiParticles as ObiP
-from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
+from tdw.FBOutput import Replicants as Repl
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.container_data.container_tag import ContainerTag
+from tdw.replicant.action_status import ActionStatus
 import numpy as np
 from typing import Tuple, Optional, List
 
@@ -822,6 +826,33 @@ class Overlap(OutputData):
         return self.data.Walls()
 
 
+class Containment(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+
+    def get_data(self):
+        return Cont.Containment.GetRootAsContainment(self.bytes, 0)
+
+    def get_object_id(self) -> int:
+        return int(self._ids[0])
+
+    def get_container_id(self) -> int:
+        return int(self._ids[1])
+
+    def get_tag(self) -> ContainerTag:
+        return ContainerTag(self.data.Tag())
+
+    def get_overlap_ids(self) -> np.array:
+        return self.data.OverlapIdsAsNumpy()
+
+    def get_env(self) -> bool:
+        return self.data.Env()
+
+    def get_walls(self) -> bool:
+        return self.data.Walls()
+
+
 class NavMeshPath(OutputData):
     _STATES = {PathState.PathState.complete: "complete",
                PathState.PathState.invalid: "invalid",
@@ -837,7 +868,7 @@ class NavMeshPath(OutputData):
         return self.data.PathAsNumpy().view(dtype=np.float32).reshape(-1, 3)
 
     def get_id(self) -> int:
-        return self.data.Id()
+        return int(self.data.Id())
 
 
 class StaticRobot(OutputData):
@@ -923,38 +954,6 @@ class StaticRobot(OutputData):
 
     def get_robot_index(self) -> int:
         return self.data.Index()
-
-
-class Robot(OutputData):
-    def get_data(self) -> Robo.Robot:
-        return Robo.Robot.GetRootAsRobot(self.bytes, 0)
-
-    def get_id(self) -> int:
-        return self.data.Id()
-
-    def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Transform().Position)
-
-    def get_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self.data.Transform().Rotation)
-
-    def get_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self.data.Transform().Forward)
-
-    def get_num_joints(self) -> int:
-        return self.data.JointsLength()
-
-    def get_joint_id(self, index: int) -> int:
-        return self.data.Joints(index).Id()
-
-    def get_joint_position(self, index: int) -> np.array:
-        return self.data.Joints(index).PositionAsNumpy()
-
-    def get_joint_positions(self, index: int) -> np.array:
-        return np.degrees(self.data.Joints(index).PositionsAsNumpy())
-
-    def get_immovable(self) -> bool:
-        return self.data.Immovable()
 
 
 class RobotJointVelocities(OutputData):
@@ -1206,22 +1205,36 @@ class Categories(OutputData):
         return OutputData._get_rgb(self.data.CategoryData(index).Color())
 
 
-class EmptyObjects(OutputData):
+class StaticEmptyObjects(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy().view(dtype=int)
-        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, 2)
 
-    def get_data(self) -> Empty.EmptyObjects:
-        return Empty.EmptyObjects.GetRootAsEmptyObjects(self.bytes, 0)
+    def get_data(self) -> StaticEmpty.StaticEmptyObjects:
+        return StaticEmpty.StaticEmptyObjects.GetRootAsStaticEmptyObjects(self.bytes, 0)
 
     def get_num(self) -> int:
-        return len(self._ids)
+        return int(self._ids.shape[0])
 
-    def get_id(self, index: int) -> int:
-        return int(self._ids[index])
+    def get_object_id(self, index: int) -> int:
+        return int(self._ids[index][0])
 
-    def get_position(self, index: int) -> np.array:
+    def get_empty_object_id(self, index: int) -> int:
+        return int(self._ids[index][1])
+
+
+class DynamicEmptyObjects(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions = self.data.PositionsAsNumpy().view(dtype=np.float32).reshape(-1, 3)
+
+    def get_data(self) -> DynamicEmpty.DynamicEmptyObjects:
+        return DynamicEmpty.DynamicEmptyObjects.GetRootAsDynamicEmptyObjects(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return int(self._positions.shape[0])
+
+    def get_position(self, index: int) -> np.ndarray:
         return self._positions[index]
 
 
@@ -1479,3 +1492,67 @@ class FieldOfView(OutputData):
 
     def get_focal_length(self) -> float:
         return self.data.FocalLength()
+
+
+class Replicants(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy().reshape(-1, 15)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 15, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 15, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
+        self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
+        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, 14, 10)
+        self._statuses: np.ndarray = self.data.StatusesAsNumpy()
+
+    def get_data(self) -> Repl.Replicants:
+        return Repl.Replicants.GetRootAsReplicants(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index][0])
+
+    def get_position(self, index: int) -> np.ndarray:
+        return self._positions[index][0]
+
+    def get_forward(self, index: int) -> np.ndarray:
+        return self._forwards[index][0]
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index][0]
+
+    def get_body_part_id(self, index: int, body_part_index: int) -> int:
+        return int(self._ids[index][body_part_index + 1])
+
+    def get_body_part_position(self, index: int, body_part_index: int) -> np.ndarray:
+        return self._positions[index][body_part_index + 1]
+
+    def get_body_part_rotation(self, index: int, body_part_index: int) -> np.ndarray:
+        return self._rotations[index][body_part_index + 1]
+
+    def get_body_part_forward(self, index: int, body_part_index: int) -> np.ndarray:
+        return self._forwards[index][body_part_index + 1]
+
+    def get_is_holding_left(self, index: int) -> bool:
+        return self._held[index][0][0] == 1
+
+    def get_held_left(self, index: int) -> int:
+        return int(self._held[index][0][1])
+
+    def get_is_holding_right(self, index: int) -> bool:
+        return self._held[index][1][0] == 1
+
+    def get_held_right(self, index: int) -> int:
+        return int(self._held[index][1][1])
+
+    def get_is_collision(self, index: int, body_part_index: int, collision_index: int) -> bool:
+        return self._is_collisions[index][body_part_index][collision_index]
+
+    def get_collision_id(self, index: int, body_part_index: int, collision_index: int) -> int:
+        return int(self._collision_ids[index][body_part_index][collision_index])
+
+    def get_status(self, index: int) -> ActionStatus:
+        return ActionStatus(self._statuses[index])

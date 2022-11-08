@@ -212,19 +212,35 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Magnebot API (external repo)](https://github.com/alters-mit/magnebot)
 
-### 11.3 Virtual Reality (VR)
+### 11.3 Replicants
+
+1. [Overview](Documentation/lessons/replicants/overview.md)
+2. [Actions](Documentation/lessons/replicants/actions.md)
+3. [Output data](Documentation/lessons/replicants/output_data.md)
+4. [Collision detection](Documentation/lessons/replicants/collision_detection.md)
+5. [Movement](Documentation/lessons/replicants/movement.md)
+6. [Animations](Documentation/lessons/replicants/animations.md)
+7. [Arm articulation](Documentation/lessons/replicants/arm_articulation.md)
+8. [Grasp and drop objects](Documentation/lessons/replicants/grasp_drop.md)
+9. [Head rotation](Documentation/lessons/replicants/head_rotation.md)
+10. [Navigation](Documentation/lessons/replicants/navigation.md)
+11. [Custom actions](Documentation/lessons/replicants/custom_actions.md)
+12. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
+13. [Reset](Documentation/lessons/replicants/reset.md)
+
+### 11.4 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 11.4 Keyboard and Mouse
+### 11.5 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.5 Embodied avatars
+### 11.6 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
@@ -320,6 +336,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
 - [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
+- [Replicant](Documentation/python/add_ons/replicant.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
 - [RobotArm](Documentation/python/add_ons/robot_arm.md)
@@ -492,6 +509,33 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [Build](Documentation/python/release/build.md)
 - [PyPi](Documentation/python/release/pypi.md)
+
+**tdw.replicant**
+
+- [ActionStatus](Documentation/python/replicant/action_status.md)
+- [Arm](Documentation/python/replicant/arm.md)
+- [CollisionDetection](Documentation/python/replicant/collision_detection.md)
+- [ImageFrequency](Documentation/python/replicant/image_frequency.md)
+- [ReplicantBodyPart](Documentation/python/replicant/replicant_body_part.md)
+- [ReplicantDynamic](Documentation/python/replicant/replicant_dynamic.md)
+- [ReplicantStatic](Documentation/python/replicant/replicant_static.md)
+
+**tdw.replicant.actions**
+
+- [Action](Documentation/python/replicant/actions/action.md)
+- [Animate](Documentation/python/replicant/actions/animate.md)
+- [ArmMotion](Documentation/python/replicant/actions/arm_motion.md)
+- [Drop](Documentation/python/replicant/actions/drop.md)
+- [Grasp](Documentation/python/replicant/actions/grasp.md)
+- [HeadMotion](Documentation/python/replicant/actions/head_motion.md)
+- [LookAt](Documentation/python/replicant/actions/look_at.md)
+- [MoveBy](Documentation/python/replicant/actions/move_by.md)
+- [MoveTo](Documentation/python/replicant/actions/move_to.md)
+- [ReachFor](Documentation/python/replicant/actions/reach_for.md)
+- [ResetArm](Documentation/python/replicant/actions/reset_arm.md)
+- [ResetHead](Documentation/python/replicant/actions/reset_head.md)
+- [TurnBy](Documentation/python/replicant/actions/turn_by.md)
+- [TurnTo](Documentation/python/replicant/actions/turn_to.md)
 
 **tdw.robot_data**
 

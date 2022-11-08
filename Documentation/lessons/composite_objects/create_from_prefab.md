@@ -10,7 +10,7 @@ When you are editing the prefab, it should be located within the [Asset Bundle C
 
 ## Requirements
 
-See requirements for using the [`ModelCreator`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/3d_models/custom_models.md). 
+See requirements for using the [`ModelCreator`](../custom_models/custom_models.md). 
 
 ## Step 1: Create the prefab
 

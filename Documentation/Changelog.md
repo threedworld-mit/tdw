@@ -1,5 +1,162 @@
 # CHANGELOG
 
+# v1.11.x
+
+To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+
+### Command API
+
+#### New Commands
+
+| Command                                    | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `add_replicant`                            | Add a Replicant to the scene.                                |
+| `teleport_empty_object`                    | Teleport an empty object to a new position.                  |
+| `add_replicant_rigidbody`                  | Add a Rigidbody to a Replicant.                              |
+| `parent_avatar_to_replicant`               | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant. |
+| `replicant_resolve_collider_intersections` | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
+| `replicant_drop_object`                    | Drop a held object.                                          |
+| `replicant_grasp_object`                   | Grasp a target object.                                       |
+| `replicant_set_grasped_object_rotation`    | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped. |
+| `replicant_reset_arm`                      | Tell the Replicant to start to reset the arm on a humanoid to its neutral position. |
+| `replicant_reach_for_object`               | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. |
+| `replicant_reach_for_position`             | Tell the Replicant to start to reach for a target position.  |
+| `replicant_look_at_object`                 | Tell the Replicant to start to look at an object.            |
+| `replicant_look_at_position`               | Tell the Replicant to start to look at a position.           |
+| `replicant_reset_head`                     | Tell the Replicant to start to reset its head to its neutral position. |
+| `send_dynamic_empty_objects`               | Send the positions of each empty object in the scene.        |
+| `send_replicants`                          | Send data of each Replicant in the scene.                    |
+| `send_static_empty_objects`                | Send the IDs of each empty object and the IDs of their parent objects. |
+| `teleport_object_by`                       | Translate an object by an amount, optionally in local or world space. |
+
+### Modified Commands
+
+| Command                                                      | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `add_object`                                                 | Added optional parameter `affordance_points`.  A list of affordance points. Can be empty. |
+| `add_model_report`                                           | Added optional parameter `affordance_points`.  A list of affordance points. Can be empty. |
+| `teleport_object`                                            | Add optional parameter `absolute`. If True, set the position in world coordindate space. If False, set the position in local coordinate space. |
+| `add_box_container`<br>`add_cylinder_container`<br>`add_sphere_container` | Added parameter `tag`. The semantic container tag.           |
+| `play_humanoid_animation`                                    | Added optional parameter `forward`. If True, play the animation normally. If False, play the naimation in reverse. |
+| `send_containment`                                           | Sends `Containment` data instead of `Overlap` data.          |
+
+### Removed Commands
+
+| Command              | Reason                                                       |
+| -------------------- | ------------------------------------------------------------ |
+| `send_robots`        | Obsolete; the `Robot` add-on sends `send_dynamic_robots` instead. |
+| `send_empty_objects` | Replaced with `send_static_empty_objects` and `send_dynamic_empty_objects` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data           | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `Containment`         | The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag. |
+| `DynamicEmptyObjects` | The position of each empty object in the scene.              |
+| `Replicants`          | Data about each Replicant in the scene.                      |
+| `StaticEmptyObjects`  | Static data for empty objects in the scene.                  |
+
+#### Removed Output Data
+
+| Output Data    | Reason                                                       |
+| -------------- | ------------------------------------------------------------ |
+| `EmptyObjects` | Replaced with `DynamicEmptyObjects` and `StaticEmptyObjects` |
+| `Robot`        | Replaced with `DynamicRobots`                                |
+
+### `tdw` module
+
+- **Added: `Replicant` add-on.** A Replicant is a human-like agent that can interact with the scene with pseudo-physics behavior.
+  - Added Replicant action classes:
+    - `Action`
+    - `Animate`
+    - `ArmMotion`
+    - `Drop`
+    - `Grasp`
+    - `HeadMotion`
+    - `LookAt`
+    - `MoveBy`
+    - `MoveTo`
+    - `ReachFor`
+    - `ResetArm`
+    - `ResetHead`
+    - `TurnBy`
+    - `TurnTo`
+
+  - Added helper data classes and enum classes:
+    - `ActionStatus`
+    - `Arm`
+    - `CollisionDetection`
+    - `ImageFrequency`
+    - `ReplicantBodyPart`
+    - `ReplicantDynamic`
+    - `ReplicantStatic`
+
+- Removed from `ContainerManager`:  `add_box()`, `add_cylinder()`, `add_sphere()`
+- `Controller.get_add_object()` automatically adds affordance points from the model record.
+- `Controller.get_add_physics_object()` automatically adds affordance points from the model record. It also adds container shapes.
+
+### Model Library
+
+- Added affordance points for: basket_18inx18inx12iin_bamboo, basket_18inx18inx12iin_plastic_lattice, basket_18inx18inx12iin_wicker, basket_18inx18inx12iin_wood_mesh, coffeemug, rh10, alivar_tech_bench_sofa, arflex_strips_sofa
+
+### Replicants Library
+
+- Added: replicants.json library
+
+### Example Controllers
+
+- Moved composite object example controllers to `composite_objects/`
+- Added Replicant example controllers:
+    - replicant/animate.py
+    - replicant/animate_collision_detection.py
+    - replicants/carry_couch.py
+    - replicant/clap.py
+    - replicant/collision_detection_tests.py
+    - replicant/crash.py
+    - replicant/egocentric_images.py
+    - replicant/grasp_basket_with_object.py
+    - replicant/grasp_basket_with_object_both_hands.py
+    - replicant/look_at.py
+    - replicant/minimal_custom_action.py
+    - replicant/move_by.py
+    - replicant/move_grasp_drop.py
+    - replicant/move_to.py
+    - replicant/multi_navigate.py
+    - replicant/multi_replicant.py
+    - replicant/multi_replicant_state_machine.py
+    - replicant/navigate.py
+    - replicant/non_kinematic.py
+    - replicant/obstacle_avoidance.py
+    - replicant/pathfind.py
+    - replicant/physics_test.py
+    - replicant/reach_for_follow.py
+    - replicant/reach_for_move.py
+    - replicant/reach_for_object.py
+    - replicant/reach_for_position.py
+    - replicant/reach_too_far.py
+    - replicant/reset.py
+    - replicant/reset_arm.py
+    - replicant/smpl_animate.py
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                          |
+| ------------------------------------------------------------ | ---------------------------------------------------- |
+| `upgrade_guides/v1.10_to_v1.11.md`                           | Upgrade guide.                                       |
+| `lessons/replicants/overview.md`<br/>`lessons/replicants/actions.md`<br/>`lessons/replicants/output_data.md`<br/>`lessons/replicants/collision_detection.md`<br/>`lessons/replicants/movement.md`<br/>`lessons/replicants/animations.md`<br/>`lessons/replicants/arm_articulation.md`<br/>`lessons/replicants/grasp_drop.md`<br/>`lessons/replicants/head_rotation.md`<br/>`lessons/replicants/navigation.md`<br/>`lessons/replicants/custom_actions.md`<br/>`lessons/replicants/multiple_replicants.md`<br/>`lessons/replicants/reset.md` | Tutorial documentation for how to use the Replicant. |
+| `python/add_ons/replicant.md`<br/>`python/replicant/action_status.md`<br/>`python/replicant/arm.md`<br/>`python/replicant/collision_detection.md`<br/>`python/replicant/image_frequency.md`<br/>`python/replicant/replicant_body_part.md`<br/>`python/replicant/replicant_dynamic.md`<br/>`python/replicant/replicant_static.md`<br/>`python/replicant/actions/action.md`<br/>`python/replicant/actions/animate.md`<br/>`python/replicant/actions/arm_motion.md`<br/>`python/replicant/actions/drop.md`<br/>`python/replicant/actions/grasp.md`<br/>`python/replicant/actions/head_motion.md`<br/>`python/replicant/actions/look_at.md`<br/>`python/replicant/actions/move_by.md`<br/>`python/replicant/actions/move_to.md`<br/>`python/replicant/actions/reach_for.md`<br/>`python/replicant/actions/reset_arm.md`<br/>`python/replicant/actions/reset_head.md`<br/>`python/replicant/actions/turn_by.md`<br/>`python/replicant/actions/turn_to.md` | API documentation for how to use the Replicant.      |
+
+#### Modified Documentation
+
+| Document                                 | Modification                                  |
+| ---------------------------------------- | --------------------------------------------- |
+| `lessons/semantic_states/containment.md` | Updated explanation of how containment works. |
+| `lessons/agents/overview.md`             | Added a section for Replicants.               |
+
 # v1.10.x
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).

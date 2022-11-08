@@ -9,6 +9,7 @@ Unlike most simulation platforms, TDW has a very loose definition for "agent". S
 - [Avatars](../core_concepts/avatars.md) have image sensors but are often not embodied.
 - [Objects](../core_concepts/objects.md) don't have image sensors but [it is possible to directly apply forces to objects](../physx/forces.md) and thereby make them act as if they are embodied agents.
 - [Robots](../robots/overview.md) can act as agents but don't have image sensors by default.
+- [Replicants](../replicants/overview.md) are humanoid agents that don't have image sensors by default.
 
 TDW includes higher-level add-ons to effectively "create" agents from lower-level functionality. The [`Robot` add-on](../../python/add_ons/robot.md), for example, is a robotics wrapper class that has been designed assuming that the user wants to use robots as agents.
 
@@ -41,6 +42,16 @@ c.move_by(2)
 **Trade-offs:** The Magnebot doesn't exist in real life. It uses a grasp system that, while *physically responsive* to the environment, isn't possible in real life.
 
 ![](images/reach_high.gif)
+
+### [Replicant](../replicants/overview.md)
+
+[Replicants](../replicants/overview.md) are humanoid agents that are partially physics-driven. Replicants can cause physics events (for example, they can push other objects). Replicant hands can be procedurally animated using inverse kinematics (IK) and pre-recorded animation.
+
+The Replicant API is a high-level action space API very similar to the Magnebot API.
+
+![](../replicants/images/crash.gif)
+
+**Trade-offs:** Replicants can *cause* physics events (e.g. pushing objects) but won't *respond* to physics events (e.g. getting pushed by objects). The Replicant is incomplete, and will be improved and extended in the near future.
 
 ### [Virtual reality (VR)](../vr/overview.md)
 

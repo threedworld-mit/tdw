@@ -29,8 +29,9 @@ class HapticGlove(SensorInterfaceBase):
                 "fingers": fingers}
     """
 
-    def get_send_haptic_glove_command(self, wave_id: int) -> Optional[dict]:
+    def get_send_haptic_glove_command(self, wave_id: int, fingers: List[int]) -> Optional[dict]:
         return {"$type": "send_haptic_glove_command",
-                "waveform_id": wave_id}
+                "waveform_id": wave_id,
+                "fingers": fingers}
 
 

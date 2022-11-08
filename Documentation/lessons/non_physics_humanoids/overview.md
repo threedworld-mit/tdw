@@ -237,7 +237,7 @@ Non-physics humanoids [receive segmentation color](../visual_perception/id.md). 
 
 ## `humanoid_video.py` example controller
 
-The [humanoid_video.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/non_physics/humanoid_video/humanoid_video.py) example controller generates a dataset of humanoid animation videos.
+The [humanoid_video.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/non_physics_humanoids/humanoid_video/humanoid_video.py) example controller generates a dataset of humanoid animation videos.
 
 ![](images/humanoids/humanoid_video.gif)
 

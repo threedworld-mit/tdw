@@ -118,7 +118,7 @@ class Clap(ArmMotion):
 if __name__ == "__main__":
     c = Controller()
     replicant = Replicant()
-    camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+    camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.5},
                                look_at=replicant.replicant_id,
                                avatar_id="a")
     path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_clap")

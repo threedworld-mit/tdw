@@ -2413,12 +2413,13 @@ Add a visual camera mesh to the sensor container. The visual mesh won't have col
 ```
 
 ```python
-{"$type": "add_visual_camera_mesh", "position": {"x": 0, "y": 0, "z": -0.06}, "sensor_name": "SensorContainer", "avatar_id": "a"}
+{"$type": "add_visual_camera_mesh", "position": {"x": 0, "y": 0, "z": -0.06}, "scale": {"x": 1, "y": 1, "z": 1}, "sensor_name": "SensorContainer", "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The position of the visual camera mesh relative to the sensor container. | {"x": 0, "y": 0, "z": -0.06} |
+| `"scale"` | Vector3 | The scale of the visual camera mesh. | {"x": 1, "y": 1, "z": 1} |
 | `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 

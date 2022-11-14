@@ -56,6 +56,7 @@ from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import LeapMotion as Leap
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1556,3 +1557,35 @@ class Replicants(OutputData):
 
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
+
+
+class LeapMotion(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, 15, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, 15, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, 15, 3)
+        self._max_num_collisions: int = int(self.data.MaxNumCollisions())
+        self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy().reshape(2, 16, self._max_num_collisions)
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(2, 16, self._max_num_collisions)
+
+    def get_data(self) -> Leap.LeapMotion:
+        return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)
+
+    def get_num_collisions_per_bone(self) -> int:
+        return self._max_num_collisions
+
+    def get_position(self, index: int, bone_index: int) -> np.ndarray:
+        return self._positions[index][bone_index]
+
+    def get_rotation(self, index: int, bone_index: int) -> np.ndarray:
+        return self._rotations[index][bone_index]
+
+    def get_forward(self, index: int, bone_index: int) -> np.ndarray:
+        return self._forwards[index][bone_index]
+
+    def get_is_collision(self, index: int, bone_index: int, collision_index: int) -> bool:
+        return bool(self._is_collisions[index][bone_index][collision_index])
+
+    def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
+        return int(self._collision_ids[index][bone_index][collision_index])

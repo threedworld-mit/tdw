@@ -9,6 +9,7 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.replicant_body_part import ReplicantBodyPart
 from tdw.replicant.arm import Arm
 from tdw.output_data import OutputData, Overlap
 
@@ -36,6 +37,10 @@ class MoveBy(Animate):
     While walking, the Replicant will cast an overlap shape in front of or behind it, depending on whether it is walking forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
     """
     OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
+    # The body parts which will maintain IK positions and rotations, assuming `self.reset_arms == False`.
+    _ARM_BODY_PARTS: List[str] = [ReplicantBodyPart.hand_l.name, ReplicantBodyPart.hand_r.name,
+                                  ReplicantBodyPart.lowerarm_l.name, ReplicantBodyPart.lowerarm_r.name,
+                                  ReplicantBodyPart.upperarm_l.name, ReplicantBodyPart.upperarm_r.name]
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float, arrived_at: float, max_walk_cycles: int):
@@ -87,6 +92,9 @@ class MoveBy(Animate):
         # Ignore collision detection for held items.
         self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
         self.collision_detection.exclude_objects.extend(self.__held_objects)
+        # The command used to maintain an IK pose while walking. This is set in `get_initialization_commands()`.
+        self._ik_pose_command: dict = {"$type": "do_nothing"}
+        # The initial position. This is used to determine the distance traversed. This is set in `get_initialization_commands()`.
         self._initial_position: np.ndarray = np.zeros(shape=3)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -100,6 +108,12 @@ class MoveBy(Animate):
                               "id": static.replicant_id,
                               "duration": self.reset_arms_duration,
                               "arm": arm.name} for arm in Arm])
+        # Maintain the IK pose for the arms.
+        else:
+            self._ik_pose_command = {"$type": "replicant_set_body_parts_to_ik",
+                                     "id": static.replicant_id,
+                                     "body_parts": MoveBy._ARM_BODY_PARTS}
+            commands.append(self._ik_pose_command)
         # Reset the head.
         commands.append({"$type": "replicant_reset_head",
                          "id": static.replicant_id})
@@ -107,6 +121,9 @@ class MoveBy(Animate):
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        # Maintain the IK pose for the arms.
+        if not self.reset_arms:
+            commands.append(self._ik_pose_command)
         # Reset the action status because we want to loop the animation.
         if self.status == ActionStatus.success:
             self.status = ActionStatus.ongoing
@@ -169,4 +186,7 @@ class MoveBy(Animate):
         # Stop excluding held objects.
         for object_id in self.__held_objects:
             self.collision_detection.exclude_objects.remove(object_id)
-        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        if not self.reset_arms:
+            commands.append(self._ik_pose_command)
+        return commands

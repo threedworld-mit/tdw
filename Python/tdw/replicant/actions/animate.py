@@ -6,6 +6,7 @@ from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.replicant_body_part import ReplicantBodyPart
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import HumanoidAnimationLibrarian, HumanoidAnimationRecord
@@ -22,13 +23,14 @@ class Animate(Action):
     """
 
     def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool, library: str,
-                 previous: Optional[Action]):
+                 previous: Optional[Action], ik_body_parts: List[ReplicantBodyPart]):
         """
         :param animation: The name of the animation.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param forward: If True, play the animation forwards. If False, play the animation backwards.
         :param library: The name animation library.
         :param previous: The previous action. Can be None.
+        :param ik_body_parts: Maintain the IK positions of these body parts.
         """
 
         super().__init__()
@@ -51,6 +53,10 @@ class Animate(Action):
         If True, play the animation forwards. If False, play the animation backwards.
         """
         self.forward: bool = forward
+        """:field
+        Maintain the IK positions of these body parts.
+        """
+        self.ik_body_parts: List[str] = [b.name for b in ik_body_parts]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -60,11 +66,12 @@ class Animate(Action):
         commands.extend([{"$type": "add_humanoid_animation",
                           "name": self.record.name,
                           "url": self.record.get_url()},
-                         {"$type": "play_humanoid_animation",
+                         {"$type": "play_replicant_animation",
                           "name": self.record.name,
                           "id": static.replicant_id,
                           "framerate": self.record.framerate,
-                          "forward": self.forward}])
+                          "forward": self.forward,
+                          "ik_body_parts": self.ik_body_parts}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

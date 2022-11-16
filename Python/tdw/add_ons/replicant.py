@@ -367,7 +367,8 @@ class Replicant(AddOn):
                               collision_detection=self.collision_detection,
                               forward=True,
                               library=library,
-                              previous=self._previous_action)
+                              previous=self._previous_action,
+                              ik_body_parts=[])
 
     def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25) -> None:
         """

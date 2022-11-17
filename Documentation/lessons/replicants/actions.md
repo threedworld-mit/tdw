@@ -185,23 +185,31 @@ Actions are very similar to add-ons in that they have a list of commands that ca
 
 Thus, in the remainder of this description, `communicate()` (from the Controller) should be understood as equivalent to `replicant.on_send(resp)`.
 
+### Initialization
+
 Each [`Action`](../../python/replicant/actions/action.md) has an `initialized` boolean. In most cases, this is initially set to False but sometimes will be True, usually because the action fails before it's allowed to begin.
 
-If `action.initialized = False`, the action is initialized on the first `replicant.on_send(resp)` call. The action sets `initialized = True` and then returns `get_initialization_commands(resp, static, dynamic, image_frequency)`. - 
+If `action.initialized = False`, the action is initialized on the first `replicant.on_send(resp)` call. The action sets `initialized = True` and then returns `get_initialization_commands(resp, static, dynamic, image_frequency)`, a list of commands which includes the following:
 
-- Depending on the [`image_frequency`](../../python/replicant/image_frequency.md) value,`get_initialization_commands(resp, static, dynamic, image_frequency)` may return [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and/or  [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
-- Most actions' `get_initialization_commands(resp, static, dynamic, image_frequency)` will include additional commands, e.g. commands to download and play an animation.
+- [`replicant_step`](../../api/command_api.md#replicant_step)
+- Depending on the [`image_frequency`](../../python/replicant/image_frequency.md) value, [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and/or  [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
+- Most actions will include additional commands, e.g. commands to download and play an animation.
+
+### Ongoing
 
 Actions have a `status` parameter. An action is ongoing if `status == ActionStatus.ongoing`. An action has  ended if `status` is anything else.
 
 It is possible for an `Action` to end immediately after initialization, in which case its end commands are appended to the list of initialization commands (see below).
 
-If the `Action` is ongoing after initialization, then on every *subsequent* `replicant.on_send(resp)` call, it will return `get_ongoing_commands(resp, static, dynamic)`. The commands returned by this function vary depending on the action. In most cases, the action will read `resp` and `dynamic` to decide which commands to send, whether the action is done, etc.
+If the `Action` is ongoing after initialization, then on every *subsequent* `replicant.on_send(resp)` call, it will return `get_ongoing_commands(resp, static, dynamic)`. The commands returned by this function vary depending on the action but always include [`replicant_step`](../../api/command_api.md#replicant_step). In most cases, the action will read `resp` and `dynamic` to decide which commands to send, whether the action is done, etc.
 
-When the action ends, it returns `get_end_commands(resp, static, dynamic, image_frequency)`. 
+### End
 
-- If `image_frequency == ImageFrequency.once`, this returns [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
-- Most actions' `get_end_commands(resp, static, dynamic, image_frequency)` will include additional commands, e.g. commands to stop an animation.
+When the action ends, it returns `get_end_commands(resp, static, dynamic, image_frequency)`, a list of commands which includes the following:
+
+- [`replicant_step`](../../api/command_api.md#replicant_step)
+- Depending on the [`image_frequency`](../../python/replicant/image_frequency.md) value, [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and/or  [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
+- Some actions will include additional commands, e.g. commands to stop an animation.
 
 ***
 
@@ -218,6 +226,7 @@ Example controllers:
 Commands API:
 
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
+- [`replicant_step`](../../api/command_api.md#replicant_step)
 - [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor)
 - [`send_images`](../../api/command_api.md#send_images)
 - [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices)

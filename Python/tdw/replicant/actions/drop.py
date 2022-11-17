@@ -77,4 +77,4 @@ class Drop(Action):
             self.frame_count += 1
             if self.frame_count >= self.max_num_frames:
                 self.status = ActionStatus.still_dropping
-        return []
+        return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)

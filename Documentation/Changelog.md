@@ -4,6 +4,43 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.1
+
+### Command API
+
+#### New Commands
+
+| Command                    | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `replicant_step`           | Advance the Replicant's IK solvers by 1 frame.               |
+| `play_replicant_animation` | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
+
+### `tdw` module
+
+- In `Replicant` actions, all three functions returning lists of commands (`get_initialization_commands()`, `get_ongoing_commands()`, and `get_end_commands()`) must now always append a `replicant_step` command.
+  - (Backend) Added `ik_body_parts` constructor parameter to `Animate`. This is used internally by `MoveBy` to optionally maintain the position of the Replicant's arms. The `ik_body_parts` parameter isn't included in `replicant.animate()` or `replicant.move_by()`; it is handled implicitly and invisible to frontend users.
+  - (Backend) Adjusted most Replicant commands to always include `replicant_step`.
+
+### Build
+
+- Fixed: Lots of issues with the Replicant glitching and appearing to "flicker". This was mostly due to the Replicant's IK step falling out of sync with the TDW time step. Now, the IK step is handled manually and always synced with the TDW step.
+- Fixed: Replicant IK problems over the course of multiple IK actions, causing arm motion to either occur instantly or to glitch. A side effect of this is that IK motions will appear noticeably slower than animations (e.g. `move_by()`) in simulations running faster than 30-60 FPS. You can compensate for this by decreasing the `duration` value.
+
+### Example Controllers
+
+- Fixed Replicant example controllers: clap.py, minimal_custom_action.py, move_grasp_drop.py, multi_navigate.py, navigate.py, pathfind.py
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                   | Modification                                                 |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/replicant/actions.md`             | Included better explanations of when and which commands get sent. |
+| `lessons/replicant/custom_actions.md`      | Fixed example code.<br>Included an explanation of what `replicant_step` does. |
+| `lessons/replicant/multiple_replicants.md` | Fixed example code.                                          |
+| `lessons/replicant/navigation.md`          | Fixed example code.                                          |
+
 ## v1.11.0
 
 ### Command API

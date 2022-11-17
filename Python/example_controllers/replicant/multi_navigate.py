@@ -83,7 +83,7 @@ class Navigate(Action):
                         # We failed to pathfind to this destination.
                         if path.get_state() != "complete":
                             self.status = ActionStatus.failed_to_move
-                            return []
+                            return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
                         # This is a valid path.
                         else:
                             self.path = path.get_path()

@@ -44,4 +44,4 @@ class TurnTo(Action):
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         self.status = ActionStatus.success
-        return []
+        return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)

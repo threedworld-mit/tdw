@@ -9,6 +9,7 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.replicant_body_part import ReplicantBodyPart
 from tdw.replicant.arm import Arm
 from tdw.output_data import OutputData, Overlap
 
@@ -36,6 +37,10 @@ class MoveBy(Animate):
     While walking, the Replicant will cast an overlap shape in front of or behind it, depending on whether it is walking forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
     """
     OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
+    # The body parts which will maintain IK positions and rotations, assuming `self.reset_arms == False`.
+    _ARM_BODY_PARTS: List[str] = [ReplicantBodyPart.hand_l, ReplicantBodyPart.hand_r,
+                                  ReplicantBodyPart.lowerarm_l, ReplicantBodyPart.lowerarm_r,
+                                  ReplicantBodyPart.upperarm_l, ReplicantBodyPart.upperarm_r]
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float, arrived_at: float, max_walk_cycles: int):
@@ -70,7 +75,8 @@ class MoveBy(Animate):
                          collision_detection=collision_detection,
                          library="humanoid_animations.json",
                          previous=previous,
-                         forward=self.distance > 0)
+                         forward=self.distance > 0,
+                         ik_body_parts=[] if self.reset_arms else MoveBy._ARM_BODY_PARTS)
         self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
         """:field
         The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
@@ -87,6 +93,7 @@ class MoveBy(Animate):
         # Ignore collision detection for held items.
         self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
         self.collision_detection.exclude_objects.extend(self.__held_objects)
+        # The initial position. This is used to determine the distance traversed. This is set in `get_initialization_commands()`.
         self._initial_position: np.ndarray = np.zeros(shape=3)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -153,11 +160,12 @@ class MoveBy(Animate):
                                         return commands
                 # We're at the end of the walk cycle. Continue the animation.
                 if dynamic.output_data_status == ActionStatus.success:
-                    commands.append({"$type": "play_humanoid_animation",
+                    commands.append({"$type": "play_replicant_animation",
                                      "name": self.record.name,
                                      "id": static.replicant_id,
                                      "framerate": self.record.framerate,
-                                     "forward": self.distance > 0})
+                                     "forward": self.distance > 0,
+                                     "ik_body_parts": [] if self.reset_arms else MoveBy._ARM_BODY_PARTS})
                     # Too many walk cycles. End the action.
                     self.walk_cycle += 1
                     if self.walk_cycle >= self.max_walk_cycles:

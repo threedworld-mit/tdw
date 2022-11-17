@@ -82,7 +82,7 @@ class Animate(Action):
         elif dynamic.output_data_status != ActionStatus.ongoing:
             self.status = dynamic.output_data_status
         # Try to resolve collider intersections.
-        commands = []
+        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
         collider_intersections_direction = dynamic.transform.forward
         if not self.forward:
             collider_intersections_direction = -collider_intersections_direction

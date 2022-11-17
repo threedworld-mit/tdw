@@ -196,6 +196,7 @@ class Pathfind(Controller):
     def navigate(self, destination: Dict[str, float]) -> bool:
         # Don't handle collision detection (it will interfere with NavMesh pathfinding).
         self.replicant.collision_detection.avoid = False
+        self.replicant.collision_detection.objects = False
         # The origin of the path is the current position of the Replicant.
         origin = TDWUtils.array_to_vector3(self.replicant.dynamic.transform.position)
         # Request a NavMeshPath.
@@ -214,6 +215,7 @@ class Pathfind(Controller):
                     # We failed to get a valid path.
                     if nav_mesh_path.get_state() != "complete":
                         self.replicant.collision_detection.avoid = True
+                        self.replicant.collision_detection.objects = True
                         return False
                     # Get the path.
                     path = nav_mesh_path.get_path()
@@ -230,9 +232,11 @@ class Pathfind(Controller):
             # If the Replicant failed to reach the waypoint, end here.
             if self.replicant.action.status != ActionStatus.success:
                 self.replicant.collision_detection.avoid = True
+                self.replicant.collision_detection.objects = True
                 return False
         # We arrived at the destination. Re-enable obstacle detection and return True.
         self.replicant.collision_detection.avoid = True
+        self.replicant.collision_detection.objects = True
         return True
 
     def do_action(self) -> None:

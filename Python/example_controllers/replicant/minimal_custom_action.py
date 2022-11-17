@@ -16,18 +16,18 @@ class DoNothing(Action):
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Get the standard initialization commands.
-        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
-                                                       image_frequency=image_frequency)
+        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         self.status = ActionStatus.success
-        return []
+        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
-        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        return commands
 
 
 if __name__ == "__main__":

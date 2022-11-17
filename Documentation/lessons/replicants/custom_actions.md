@@ -20,25 +20,24 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 
 class DoNothing(Action):
-    """
-    A minimal custom action.
-    """
-
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Get the standard initialization commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         self.status = ActionStatus.success
-        return []
+        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        return commands
 ```
 
 - In both functions, `resp` is the latest response from the build. Many actions need this to parse arbitrary output data. `static` is the Replicant's [`ReplicantStatic`](../../python/replicant/replicant_static.md) and `dynamic` is the Replicant's [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md); these will be handled within the `Replicant` add-on.
-- *Always* add `commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)`. This will set up the camera and image capture correctly.
-- In `self.ongoing_commands(resp, static, dynamic)`, we want the command to end immediately in success, so we added `self.status = ActionStatus.success`.
+- *Always* add `commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)`. This will set up the camera, image capture, and "Replicant step" correctly.
+- *Always* add `commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)`. This will set up "Replicant step" correctly.
+- In `ongoing_commands(resp, static, dynamic)`, we want the command to end immediately in success, so we added `self.status = ActionStatus.success`.
+
+The "Replicant step" refers to a command that always gets sent from every action on every `communicate()` call: [`replicant_step`](../../api/command_api.md). This command forces the Replicant's underling [IK system](arm_articulation.md) to sync with its [animation system](animations.md). If you don't call `commands = super().get_initialization_commands()`, `commands = super().get_ongoing_commands()`, etc., your action won't send `replicant_step` and there will likely be bugs due to the IK system desyncing.
 
 You can optionally add `get_end_commands(resp, static, dynamic, image_frequency)`. *This is not necessary.* You only need to add it if you need the action to send extra commands when it ends. This function always gets called when an action ends, regardless of whether it succeeds:
 
@@ -52,24 +51,21 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 
 class DoNothing(Action):
-    """
-    A minimal custom action.
-    """
-
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Get the standard initialization commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         self.status = ActionStatus.success
-        return []
+        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        return commands
     
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
-        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        return commands
 ```
 
 To add this action do a controller, simply manually assign `replicant.action = DoNothing()`:
@@ -87,24 +83,21 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 
 class DoNothing(Action):
-    """
-    A minimal custom action.
-    """
-
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Get the standard initialization commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         self.status = ActionStatus.success
-        return []
+        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        return commands
     
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
-        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        return commands
 
 
 if __name__ == "__main__":
@@ -141,24 +134,21 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 
 class DoNothing(Action):
-    """
-    A minimal custom action.
-    """
-
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Get the standard initialization commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         self.status = ActionStatus.success
-        return []
-
+        commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
+        return commands
+    
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
-        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+        return commands
     
 
 class MyReplicant(Replicant):
@@ -956,6 +946,7 @@ If the state is `getting_path`, cache the NavMeshPath path data and instantiate 
                         # We failed to pathfind to this destination.
                         if path.get_state() != "complete":
                             self.status = ActionStatus.failed_to_move
+                            return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
                         # This is a valid path.
                         else:
                             self.path = path.get_path()
@@ -1052,6 +1043,7 @@ class Navigate(Action):
                         # We failed to pathfind to this destination.
                         if path.get_state() != "complete":
                             self.status = ActionStatus.failed_to_move
+                            return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
                         # This is a valid path.
                         else:
                             self.path = path.get_path()
@@ -1486,6 +1478,7 @@ Example controllers:
 
 Command API:
 
+- [`replicant_step`](../../api/command_api.md)
 - [`bake_nav_mesh`](../../api/command_api.md#bake_nav_mesh)
 - [`make_nav_mesh_obstacle`](../../api/command_api.md#make_nav_mesh_obstacle)
 - [`send_nav_mesh_path`](../../api/command_api.md#send_nav_mesh_path)

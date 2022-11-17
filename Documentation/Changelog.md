@@ -23,7 +23,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ### Build
 
-- Fixed lots of issues with the Replicant glitching and appearing to "flicker". This was mostly due to the Replicant's IK step falling out of sync with the TDW time step. Now, the IK step is handled manually and always synced with the TDW step.
+- Fixed: Lots of issues with the Replicant glitching and appearing to "flicker". This was mostly due to the Replicant's IK step falling out of sync with the TDW time step. Now, the IK step is handled manually and always synced with the TDW step.
+- Fixed: Replicant IK problems over the course of multiple IK actions, causing arm motion to either occur instantly or to glitch. A side effect of this is that IK motions will appear noticeably slower than animations (e.g. `move_by()`) in simulations running faster than 30-60 FPS. You can compensate for this by decreasing the `duration` value.
 
 ### Example Controllers
 

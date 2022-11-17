@@ -53,10 +53,8 @@ class Animate(Action):
         If True, play the animation forwards. If False, play the animation backwards.
         """
         self.forward: bool = forward
-        """:field
-        Maintain the IK positions of these body parts.
-        """
-        self.ik_body_parts: List[str] = [b.name for b in ik_body_parts]
+        # Maintain the IK positions of these body parts.
+        self._ik_body_parts: List[str] = [b.name for b in ik_body_parts]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -71,7 +69,7 @@ class Animate(Action):
                           "id": static.replicant_id,
                           "framerate": self.record.framerate,
                           "forward": self.forward,
-                          "ik_body_parts": self.ik_body_parts}])
+                          "ik_body_parts": self._ik_body_parts}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

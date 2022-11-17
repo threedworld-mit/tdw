@@ -365,7 +365,9 @@
 | --- | --- |
 | [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
 | [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant. |
+| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
+| [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
 
 **Replicant Arm Command**
 
@@ -5054,7 +5056,7 @@ Play a motion capture animation on a humanoid. The animation must already be in 
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"name"` | string | Name of the animation clip to play. | |
+| `"name"` | string | The name of the animation clip to play. | |
 | `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
 | `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
 | `"id"` | int | The unique object ID. | |
@@ -5122,6 +5124,29 @@ Parent an avatar to a Replicant. The avatar's position and rotation will always 
 
 ***
 
+## **`play_replicant_animation`**
+
+Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
+
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1}
+```
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
+| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`replicant_resolve_collider_intersections`**
 
 Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector.
@@ -5134,6 +5159,21 @@ Try to resolve intersections between the Replicant's colliders and any other col
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"direction"` | Vector3 | The direction along which objects should be moved. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_step`**
+
+Advance the Replicant's IK solvers by 1 frame.
+
+
+```python
+{"$type": "replicant_step", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 # ReplicantArmCommand

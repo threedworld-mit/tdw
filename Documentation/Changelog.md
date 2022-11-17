@@ -14,6 +14,13 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | -------------------------- | ------------------------------------------------------------ |
 | `replicant_step`           | Advance the Replicant's IK solvers by 1 frame.               |
 | `play_replicant_animation` | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
+| `set_focal_length`         | Set the focal length of the avatar's camera. This will automatically set the field of view. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `set_field_of_view` | Default value for `field_of_view` is now 54.43223, which matches the actual default camera field of view. |
 
 ### `tdw` module
 

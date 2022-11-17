@@ -95,7 +95,8 @@
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
-| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
+| [`set_field_of_view`](#set_field_of_view) | Set the field of view of the avatar's camera. This will automatically set the focal length (see: set_focal_length).  |
+| [`set_focal_length`](#set_focal_length) | Set the focal length of the avatar's camera. This will automatically set the field of view (see: set_field_of_view).  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
 | [`teleport_avatar_by`](#teleport_avatar_by) | Teleport the avatar by a position offset.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
@@ -1970,7 +1971,7 @@ Set the near and far clipping planes of the avatar's camera.
 
 ## **`set_field_of_view`**
 
-Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
+Set the field of view of the avatar's camera. This will automatically set the focal length (see: set_focal_length). 
 
 - <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
@@ -1979,12 +1980,33 @@ Set the field of view of all active cameras of the avatar. If you don't want cer
 ```
 
 ```python
-{"$type": "set_field_of_view", "field_of_view": 35, "avatar_id": "a"}
+{"$type": "set_field_of_view", "field_of_view": 54.43223, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"field_of_view"` | float | The field of view. | 35 |
+| `"field_of_view"` | float | The field of view. | 54.43223 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`set_focal_length`**
+
+Set the focal length of the avatar's camera. This will automatically set the field of view (see: set_field_of_view). 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
+
+```python
+{"$type": "set_focal_length"}
+```
+
+```python
+{"$type": "set_focal_length", "focal_length": 35, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"focal_length"` | float | The focal length. | 35 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***

@@ -15,7 +15,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                                 position={"x": 0, "y": 0, "z": 0.5})])
 while True:
     c.communicate([])
-    for f in vr.left_hand_collisions:
-        for b in vr.left_hand_collisions[f]:
-            if len(vr.left_hand_collisions[f][b]) > 0:
-                print(f, b, vr.left_hand_collisions[f][b])
+    for finger in vr.left_hand_collisions:
+        for bone in vr.left_hand_collisions[finger]:
+            if len(vr.left_hand_collisions[finger][bone]) > 0:
+                print(finger, bone, vr.left_hand_collisions[finger][bone])

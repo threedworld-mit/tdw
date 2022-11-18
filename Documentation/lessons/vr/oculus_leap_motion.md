@@ -54,7 +54,19 @@ Result:
 Set the initial position and rotation of the VR rig by setting `position` and `rotation` in the constructor or in `vr.reset()`:
 
 ```python
-TODO
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion(position={"x": 1, "y": 0, "z": 0}, rotation=30)
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+while True:
+    c.communicate([])
 ```
 
 ### Teleport and rotate the VR rig
@@ -79,20 +91,115 @@ TODO
 
 ### Output data
 
-**TODO**
-
-The `OculusLeapMotion` add-on saves the head, rig base, and hands data per-frame as [`Transform` objects](../../python/object_data/transform.md). `vr.held_left` and `vr.held_right` are arrays of IDs of objects held in the left and right hands:
+- The `OculusLeapMotion` add-on saves the head, rig base, and hands data per-frame as [`Transform` objects](../../python/object_data/transform.md):
 
 ```python
-TODO
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion()
+c.add_ons.append(vr)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while True:
+    c.communicate([])
+    print(vr.rig.position)
+    print(vr.head.position)
+    print(vr.left_hand.position)
+    print(vr.right_hand.position)
+    print("")
 ```
 
-**TODO bones and collisions**
+- The transforms of every finger bone are saved in `vr.left_hand_transforms` and `vr.right_hand_transforms`. These are dictionaries where the key is a [`Finger`](../../python/vr_data/finger.md) value and the value is another dictionary: The key is a [`FingerBone`](../../python/vr_data/finger_bone.md) value and the value is a [`Transform`](../../python/object_data/transform.md):
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion()
+c.add_ons.append(vr)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while True:
+    c.communicate([])
+    for finger in vr.left_hand_transforms:
+        for bone in vr.left_hand_transforms[finger]:
+            position = vr.left_hand_transforms[finger][bone]
+            print(finger, bone, position)
+    print("")
+```
+
+- `vr.held_left` and `vr.held_right` are arrays of IDs of objects held in the left and right hands.
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion()
+c.add_ons.append(vr)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while True:
+    c.communicate([])
+    print(vr.held_left, vr.held_right)
+    print("")
+```
+
+- Per-finger bone collision data is stored in `vr.left_hand_collisions` and `vr.right_hand_collisions`. These are dictionaries where the key is a [`Finger`](../../python/vr_data/finger.md) value and the value is another dictionary: The key is a [`FingerBone`](../../python/vr_data/finger_bone.md) value and the value is a list of IDs of objects that are in contact with the finger bone (in other words, in either an `enter` or `stay` state):
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion()
+c.add_ons.append(vr)
+c.communicate([TDWUtils.create_empty_room(12, 12),
+               c.get_add_object(model_name="rh10",
+                                object_id=Controller.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 0.5})])
+while True:
+    c.communicate([])
+    for finger in vr.left_hand_collisions:
+        for b in vr.left_hand_collisions[f]:
+            if len(vr.left_hand_collisions[f][b]) > 0:
+                print(f, b, vr.left_hand_collisions[f][b])
+```
+
+- Collision data for each palm is stored in `vr.left_palm_collisions` and `vr.right_palm_collisions`. These are lists of IDs of objects s that are in contact with the finger bone (in other words, in either an `enter` or `stay` state):
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion()
+c.add_ons.append(vr)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while True:
+    c.communicate([])
+    if len(vr.left_palm_collisions) > 0:
+        print(vr.left_palm_collisions)
+```
 
 You can disable output data by setting `output_data=False` in the constructor:
 
 ```python
-TODO
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion(output_data=False)
+c.add_ons.append(vr)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while True:
+    c.communicate([])
 ```
 
 ### Image capture
@@ -100,7 +207,16 @@ TODO
 VR rig cameras are not [avatars](../core_concepts/avatars.md).  You can attach an avatar to a VR rig by setting `attach_avatar=True` in the constructor:
 
 ```python
-TODO
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+c = Controller()
+vr = OculusLeapMotion(attach_avatar=True)
+c.add_ons.append(vr)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while True:
+    c.communicate([])
 ```
 
 You can then adjust the camera and capture image data like with any other avatar. The ID of this avatar is always `"vr"`.

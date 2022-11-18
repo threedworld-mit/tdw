@@ -1566,7 +1566,7 @@ class LeapMotion(OutputData):
         self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, 15, 4)
         self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, 15, 3)
         self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy()
-        self._max_num_collisions: int = self._collision_ids.shape[0] // 30
+        self._max_num_collisions: int = self._collision_ids.shape[0] // 32
         self._collision_ids = self._collision_ids.reshape((2, 16, self._max_num_collisions))
         self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, 16, self._max_num_collisions))
 

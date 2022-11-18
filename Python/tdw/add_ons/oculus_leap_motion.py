@@ -54,21 +54,29 @@ class OculusLeapMotion(VR):
         """:field
         A dictionary of [`Transform`](../object_data/transform.md) for each bone in the left hand. Key = [`Finger`](../vr_data/finger.md). Value = A dictionary. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = [`Transform`](../object_data/transform.md).
         """
-        self.left_finger_transforms: Dict[Finger, Dict[FingerBone, Transform]] = dict()
+        self.left_hand_transforms: Dict[Finger, Dict[FingerBone, Transform]] = dict()
         """:field
         A dictionary of [`Transform`](../object_data/transform.md) for each bone in the right hand. Key = [`Finger`](../vr_data/finger.md). Value = A dictionary. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = [`Transform`](../object_data/transform.md).
         """
-        self.right_finger_transforms: Dict[Finger, Dict[FingerBone, Transform]] = dict()
+        self.right_hand_transforms: Dict[Finger, Dict[FingerBone, Transform]] = dict()
         """:field
         A dictionary of object IDs for each bone in the left hand. Key = [`Finger`](../vr_data/finger.md). Value = A dictionary. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
         """
-        self.left_finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]] = dict()
+        self.left_hand_collisions: Dict[Finger, Dict[FingerBone, List[int]]] = dict()
         """:field
         A dictionary of object IDs for each bone in the right hand. Key = [`Finger`](../vr_data/finger.md). Value = A dictionary. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
         """
         self.right_finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]] = dict()
-        self._initialize_fingers(transforms=self.left_finger_transforms, collisions=self.left_finger_collisions)
-        self._initialize_fingers(transforms=self.right_finger_transforms, collisions=self.right_finger_collisions)
+        self._initialize_fingers(transforms=self.left_hand_transforms, collisions=self.left_hand_collisions)
+        self._initialize_fingers(transforms=self.right_hand_transforms, collisions=self.right_finger_collisions)
+        """:field
+        A list of object IDs that the left palm is colliding with.
+        """
+        self.left_palm_collisions: List[int] = list()
+        """:field
+        A list of object IDs that the right palm is colliding with.
+        """
+        self.right_palm_collisions: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -106,12 +114,14 @@ class OculusLeapMotion(VR):
                 leap_motion = LeapMotion(resp[i])
                 self._set_hand(leap_motion=leap_motion,
                                hand_index=0,
-                               finger_transforms=self.left_finger_transforms,
-                               finger_collisions=self.left_finger_collisions)
+                               finger_transforms=self.left_hand_transforms,
+                               finger_collisions=self.left_hand_collisions,
+                               palm_collisions=self.left_palm_collisions)
                 self._set_hand(leap_motion=leap_motion,
                                hand_index=1,
-                               finger_transforms=self.right_finger_transforms,
-                               finger_collisions=self.right_finger_collisions)
+                               finger_transforms=self.right_hand_transforms,
+                               finger_collisions=self.right_finger_collisions,
+                               palm_collisions=self.right_palm_collisions)
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
@@ -151,7 +161,8 @@ class OculusLeapMotion(VR):
     def _set_hand(leap_motion: LeapMotion,
                   hand_index: int,
                   finger_transforms: Dict[Finger, Dict[FingerBone, Transform]],
-                  finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]]) -> None:
+                  finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]],
+                  palm_collisions: List[int]) -> None:
         """
         :param leap_motion: The `LeapMotion` output data.
         :param hand_index: The index of the hand.
@@ -173,3 +184,8 @@ class OculusLeapMotion(VR):
                     if leap_motion.get_is_collision(hand_index, b, k):
                         finger_collisions[OculusLeapMotion.FINGERS[i]][OculusLeapMotion.BONES[j]].append(leap_motion.get_collision_id(hand_index, b, k))
                 b += 1
+        # Set the palm collision data.
+        palm_collisions.clear()
+        for i in range(max_num_collisions):
+            if leap_motion.get_is_collision(hand_index, 15, i):
+                palm_collisions.append(leap_motion.get_collision_id(hand_index, 15, i))

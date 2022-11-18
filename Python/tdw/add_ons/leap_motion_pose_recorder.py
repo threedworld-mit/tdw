@@ -85,3 +85,10 @@ class LeapMotionPoseRecorder(AddOn):
         self._recording = True
         # Make sure the order of the hands is always the same.
         self._hands = list(sorted(hands, key=lambda h: h.value))
+
+    def is_recording(self) -> bool:
+        """
+        :return: True if this is recording a pose.
+        """
+
+        return self._recording

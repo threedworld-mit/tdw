@@ -51,7 +51,7 @@ class MoveGraspDrop(Controller):
         self.do_action()
         self.replicant.grasp(target=self.mug_id, arm=Arm.right, angle=None)
         self.do_action()
-        self.replicant.move_by(-2)
+        self.replicant.move_by(-2, reset_arms=False)
         self.do_action()
         self.replicant.drop(arm=Arm.right)
         self.do_action()

@@ -31,7 +31,7 @@ The animation will end either when the animation clip is finished or if the Repl
 
 #### \_\_init\_\_
 
-**`Animate(animation, collision_detection, forward, library, previous)`**
+**`Animate(animation, collision_detection, forward, library, previous, ik_body_parts)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -40,6 +40,7 @@ The animation will end either when the animation clip is finished or if the Repl
 | forward |  bool |  | If True, play the animation forwards. If False, play the animation backwards. |
 | library |  str |  | The name animation library. |
 | previous |  Optional[Action] |  | The previous action. Can be None. |
+| ik_body_parts |  List[ReplicantBodyPart] |  | Maintain the IK positions of these body parts. |
 
 #### get_initialization_commands
 

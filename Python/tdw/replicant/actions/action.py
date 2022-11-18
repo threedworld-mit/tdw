@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import List
 from overrides import final
 import numpy as np
@@ -44,25 +44,26 @@ class Action(ABC):
         :return: A list of commands to initialize this action.
         """
 
+        commands = [{"$type": "replicant_step",
+                     "id": static.replicant_id}]
         # If we only want images at the start of the action or never, disable the camera now.
         if image_frequency == ImageFrequency.once or image_frequency == ImageFrequency.never:
-            commands = [{"$type": "enable_image_sensor",
-                         "enable": False,
-                         "avatar_id": static.avatar_id}]
+            commands.extend([{"$type": "enable_image_sensor",
+                              "enable": False,
+                              "avatar_id": static.avatar_id}])
         # If we want images per frame, enable image capture now.
         elif image_frequency == ImageFrequency.always:
-            commands = [{"$type": "enable_image_sensor",
-                         "enable": True,
-                         "avatar_id": static.avatar_id},
-                        {"$type": "send_images",
-                         "frequency": "always"},
-                        {"$type": "send_camera_matrices",
-                         "frequency": "always"}]
+            commands.extend([{"$type": "enable_image_sensor",
+                              "enable": True,
+                              "avatar_id": static.avatar_id},
+                             {"$type": "send_images",
+                              "frequency": "always"},
+                             {"$type": "send_camera_matrices",
+                              "frequency": "always"}])
         else:
             raise Exception(f"Invalid image capture option: {image_frequency}")
         return commands
 
-    @abstractmethod
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         """
         Evaluate an action per-frame to determine whether it's done.
@@ -74,7 +75,8 @@ class Action(ABC):
         :return: A list of commands to send to the build to continue the action.
         """
 
-        raise Exception()
+        return [{"$type": "replicant_step",
+                 "id": static.replicant_id}]
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
@@ -87,7 +89,8 @@ class Action(ABC):
         :return: A list of commands that must be sent to end any action.
         """
 
-        commands: List[dict] = list()
+        commands: List[dict] = [{"$type": "replicant_step",
+                                 "id": static.replicant_id}]
         # Enable image capture on this frame only.
         if image_frequency == ImageFrequency.once:
             commands.extend([{"$type": "enable_image_sensor",

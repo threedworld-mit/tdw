@@ -95,7 +95,8 @@
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
-| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
+| [`set_field_of_view`](#set_field_of_view) | Set the field of view of the avatar's camera. This will automatically set the focal length (see: set_focal_length).  |
+| [`set_focal_length`](#set_focal_length) | Set the focal length of the avatar's camera. This will automatically set the field of view (see: set_field_of_view).  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
 | [`teleport_avatar_by`](#teleport_avatar_by) | Teleport the avatar by a position offset.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
@@ -365,7 +366,9 @@
 | --- | --- |
 | [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
 | [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant. |
+| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
+| [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
 
 **Replicant Arm Command**
 
@@ -1968,7 +1971,7 @@ Set the near and far clipping planes of the avatar's camera.
 
 ## **`set_field_of_view`**
 
-Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
+Set the field of view of the avatar's camera. This will automatically set the focal length (see: set_focal_length). 
 
 - <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
@@ -1977,12 +1980,33 @@ Set the field of view of all active cameras of the avatar. If you don't want cer
 ```
 
 ```python
-{"$type": "set_field_of_view", "field_of_view": 35, "avatar_id": "a"}
+{"$type": "set_field_of_view", "field_of_view": 54.43223, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"field_of_view"` | float | The field of view. | 35 |
+| `"field_of_view"` | float | The field of view. | 54.43223 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`set_focal_length`**
+
+Set the focal length of the avatar's camera. This will automatically set the field of view (see: set_field_of_view). 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
+
+```python
+{"$type": "set_focal_length"}
+```
+
+```python
+{"$type": "set_focal_length", "focal_length": 35, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"focal_length"` | float | The focal length. | 35 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
@@ -5054,7 +5078,7 @@ Play a motion capture animation on a humanoid. The animation must already be in 
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"name"` | string | Name of the animation clip to play. | |
+| `"name"` | string | The name of the animation clip to play. | |
 | `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
 | `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
 | `"id"` | int | The unique object ID. | |
@@ -5122,6 +5146,29 @@ Parent an avatar to a Replicant. The avatar's position and rotation will always 
 
 ***
 
+## **`play_replicant_animation`**
+
+Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
+
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1}
+```
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
+| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`replicant_resolve_collider_intersections`**
 
 Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector.
@@ -5134,6 +5181,21 @@ Try to resolve intersections between the Replicant's colliders and any other col
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"direction"` | Vector3 | The direction along which objects should be moved. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_step`**
+
+Advance the Replicant's IK solvers by 1 frame.
+
+
+```python
+{"$type": "replicant_step", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 # ReplicantArmCommand

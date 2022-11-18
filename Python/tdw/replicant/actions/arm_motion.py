@@ -62,7 +62,7 @@ class ArmMotion(Action, ABC):
         # Check if the motion is done.
         elif dynamic.output_data_status != ActionStatus.ongoing:
             self.status = dynamic.output_data_status
-        return []
+        return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:

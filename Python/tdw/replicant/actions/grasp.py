@@ -88,4 +88,4 @@ class Grasp(Action):
         # If the build didn't signal anything, assume that we grasped the object.
         else:
             self.status = ActionStatus.success
-        return []
+        return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)

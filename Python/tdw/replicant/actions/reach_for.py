@@ -88,12 +88,6 @@ class ReachFor(ArmMotion):
             raise Exception(f"Invalid target: {self.target}")
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        # Check if we can't reach the target or if the action is done.
-        self.status = dynamic.output_data_status
-        # Continue the action, checking for collisions.
-        return super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
-
     def _get_reach_for_position(self, target: Dict[str, float], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = [{"$type": "replicant_reach_for_position",
                      "id": static.replicant_id,

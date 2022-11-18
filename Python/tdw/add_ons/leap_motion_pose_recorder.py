@@ -84,4 +84,4 @@ class LeapMotionPoseRecorder(AddOn):
         self._t0 = time()
         self._recording = True
         # Make sure the order of the hands is always the same.
-        self._hands = list(sorted(hands))
+        self._hands = list(sorted(hands, key=lambda h: h.value))

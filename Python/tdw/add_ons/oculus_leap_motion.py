@@ -69,14 +69,6 @@ class OculusLeapMotion(VR):
         self.right_finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]] = dict()
         self._initialize_fingers(transforms=self.left_finger_transforms, collisions=self.left_finger_collisions)
         self._initialize_fingers(transforms=self.right_finger_transforms, collisions=self.right_finger_collisions)
-        """:field
-        A list of object IDs that the left palm is colliding with.
-        """
-        self.left_palm_collisions: List[int] = list()
-        """:field
-        A list of object IDs that the right palm is colliding with.
-        """
-        self.right_palm_collisions: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -99,7 +91,7 @@ class OculusLeapMotion(VR):
                         object_id = static_rigidbodies.get_id(j)
                         # Make all non-kinematic objects graspable unless they are in `self._non_graspable`.
                         if object_id not in self._non_graspable:
-                            self.commands.append({"$type": "set_leap_motion",
+                            self.commands.append({"$type": "set_leap_motion_graspable",
                                                   "id": object_id})
                         # Set "discrete" collision detection mode for all non-kinematic objects.
                         if self._discrete_collision_detection_mode:
@@ -115,13 +107,11 @@ class OculusLeapMotion(VR):
                 self._set_hand(leap_motion=leap_motion,
                                hand_index=0,
                                finger_transforms=self.left_finger_transforms,
-                               finger_collisions=self.left_finger_collisions,
-                               palm_collisions=self.left_palm_collisions)
+                               finger_collisions=self.left_finger_collisions)
                 self._set_hand(leap_motion=leap_motion,
                                hand_index=1,
                                finger_transforms=self.right_finger_transforms,
-                               finger_collisions=self.right_finger_collisions,
-                               palm_collisions=self.right_palm_collisions)
+                               finger_collisions=self.right_finger_collisions)
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
@@ -143,7 +133,7 @@ class OculusLeapMotion(VR):
     def _initialize_fingers(transforms: Dict[Finger, Dict[FingerBone, Transform]],
                             collisions: Dict[Finger, Dict[FingerBone, List[int]]]) -> None:
         """
-        Initialize the fingers dictionarys.
+        Initialize the fingers dictionaries.
 
         :param transforms: The dictionary of bone transforms.
         :param collisions: The dictionary of collisions per bone.
@@ -161,8 +151,7 @@ class OculusLeapMotion(VR):
     def _set_hand(leap_motion: LeapMotion,
                   hand_index: int,
                   finger_transforms: Dict[Finger, Dict[FingerBone, Transform]],
-                  finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]],
-                  palm_collisions: List[int]) -> None:
+                  finger_collisions: Dict[Finger, Dict[FingerBone, List[int]]]) -> None:
         """
         :param leap_motion: The `LeapMotion` output data.
         :param hand_index: The index of the hand.
@@ -184,8 +173,3 @@ class OculusLeapMotion(VR):
                     if leap_motion.get_is_collision(hand_index, b, k):
                         finger_collisions[OculusLeapMotion.FINGERS[i]][OculusLeapMotion.BONES[j]].append(leap_motion.get_collision_id(hand_index, b, k))
                 b += 1
-        # Set the palm collision data.
-        palm_collisions.clear()
-        for i in range(max_num_collisions):
-            if leap_motion.get_is_collision(hand_index, 16, i):
-                palm_collisions.append(leap_motion.get_collision_id(hand_index, 16, i))

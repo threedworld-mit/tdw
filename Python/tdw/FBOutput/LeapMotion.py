@@ -128,14 +128,7 @@ class LeapMotion(object):
             return self._tab.VectorLen(o)
         return 0
 
-    # LeapMotion
-    def MaxNumCollisions(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-def LeapMotionStart(builder): builder.StartObject(6)
+def LeapMotionStart(builder): builder.StartObject(5)
 def LeapMotionAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
 def LeapMotionStartPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def LeapMotionAddRotations(builder, rotations): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotations), 0)
@@ -146,5 +139,4 @@ def LeapMotionAddCollisionsIds(builder, collisionsIds): builder.PrependUOffsetTR
 def LeapMotionStartCollisionsIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def LeapMotionAddIsCollisions(builder, isCollisions): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(isCollisions), 0)
 def LeapMotionStartIsCollisionsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def LeapMotionAddMaxNumCollisions(builder, maxNumCollisions): builder.PrependInt32Slot(5, maxNumCollisions, 0)
 def LeapMotionEnd(builder): return builder.EndObject()

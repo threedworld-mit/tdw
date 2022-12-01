@@ -28,7 +28,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
   - (Backend) Added `ik_body_parts` constructor parameter to `Animate`. This is used internally by `MoveBy` to optionally maintain the position of the Replicant's arms. The `ik_body_parts` parameter isn't included in `replicant.animate()` or `replicant.move_by()`; it is handled implicitly and invisible to frontend users.
   - (Backend) Adjusted most Replicant commands to always include `replicant_step`.
 - The Replicant now has a default initialization action. After initialization, the Replicant captures an initial image.
-- Added: `replicant.get_pil_image(pass_mask)` Convert raw image data to a PIL Image.
+- Added: `replicant.dynamic.get_pil_image(pass_mask)` Convert raw image data to a PIL Image.
 - Fixed: Broken link for the `replicant_0` OS X asset bundle.
 
 ### Build

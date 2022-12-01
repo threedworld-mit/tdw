@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import List, Dict, Optional, Union
 import numpy as np
 from pathlib import Path
@@ -156,6 +157,22 @@ class ReplicantDynamic:
                 with p.open("wb") as f:
                     f.write(self.images[pass_name])
 
+    def get_pil_image(self, pass_mask: str = "img") -> Image.Image:
+        """
+        Convert raw image data to a PIL image.
+        Use this function to read and analyze an image in memory.
+        Do NOT use this function to save image data to disk; `save_image` is much faster.
+
+        :param pass_mask: The pass mask. Options: `"img"`, `"id"`, `"depth"`.
+
+        :return A PIL image.
+        """
+
+        if pass_mask == "depth":
+            return Image.fromarray(self.images[pass_mask])
+        else:
+            return Image.open(BytesIO(self.images[pass_mask]))
+
     def get_collision_enters(self, collision_detection: CollisionDetection) -> List[int]:
         """
         :param collision_detection: The [`CollisionDetection`](collision_detection.md) rules.
@@ -179,3 +196,4 @@ class ReplicantDynamic:
                     continue
                 enters.append(object_id)
         return enters
+

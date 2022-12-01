@@ -54,6 +54,23 @@ The `img` pass is either a .jpg. The `id` and `depth` passes are .png files.
 | --- | --- | --- | --- |
 | output_directory |  Union[str, Path] |  | The directory that the images will be saved to. |
 
+#### get_pil_image
+
+**`self.get_pil_image()`**
+
+**`self.get_pil_image(pass_mask="img")`**
+
+Convert raw image data to a PIL image.
+Use this function to read and analyze an image in memory.
+Do NOT use this function to save image data to disk; `save_image` is much faster.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| pass_mask |  str  | "img" | The pass mask. Options: `"img"`, `"id"`, `"depth"`. |
+
+_Returns:_  A PIL image.
+
 #### get_collision_enters
 
 **`self.get_collision_enters(collision_detection)`**

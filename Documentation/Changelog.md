@@ -42,6 +42,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ### Documentation
 
+#### New Documentation
+
+| Document                                 | Description                                              |
+| ---------------------------------------- | -------------------------------------------------------- |
+| `python/replicant/actions/do_nothing.md` | API Documentation for the initial Replicant null-action. |
+
 #### Modified Documentation
 
 | Document                                   | Modification                                                 |

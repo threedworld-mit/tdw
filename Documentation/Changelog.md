@@ -27,6 +27,9 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - In `Replicant` actions, all three functions returning lists of commands (`get_initialization_commands()`, `get_ongoing_commands()`, and `get_end_commands()`) must now always append a `replicant_step` command.
   - (Backend) Added `ik_body_parts` constructor parameter to `Animate`. This is used internally by `MoveBy` to optionally maintain the position of the Replicant's arms. The `ik_body_parts` parameter isn't included in `replicant.animate()` or `replicant.move_by()`; it is handled implicitly and invisible to frontend users.
   - (Backend) Adjusted most Replicant commands to always include `replicant_step`.
+- The Replicant now has a default initialization action. After initialization, the Replicant captures an initial image.
+- Added: `replicant.dynamic.get_pil_image(pass_mask)` Convert raw image data to a PIL Image.
+- Fixed: Broken link for the `replicant_0` OS X asset bundle.
 
 ### Build
 
@@ -39,6 +42,12 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ### Documentation
 
+#### New Documentation
+
+| Document                                 | Description                                              |
+| ---------------------------------------- | -------------------------------------------------------- |
+| `python/replicant/actions/do_nothing.md` | API Documentation for the initial Replicant null-action. |
+
 #### Modified Documentation
 
 | Document                                   | Modification                                                 |
@@ -47,6 +56,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | `lessons/replicant/custom_actions.md`      | Fixed example code.<br>Included an explanation of what `replicant_step` does. |
 | `lessons/replicant/multiple_replicants.md` | Fixed example code.                                          |
 | `lessons/replicant/navigation.md`          | Fixed example code.                                          |
+| `lessons/replicant/output_data.md`         | Added a section for `get_pil_image()`.                       |
 
 ## v1.11.0
 

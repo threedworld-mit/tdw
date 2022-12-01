@@ -264,9 +264,30 @@ Result:
 
 ![](images/output_data/move_by_egocentric.gif)
 
+### Convert image to PIL images
+
+To convert raw image data to PIL Image objects, call `replicant.get_pil_image(pass_mask)` where `pass_mask` is a string: `"img"`, `"id"`, or `"depth"`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.replicant.action_status import ActionStatus
+
+
+c = Controller()
+r = Replicant()
+c.add_ons.append(r)
+c.communicate(TDWUtils.create_empty_room(12, 12))
+while r.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+r.dynamic.get_pil_image("img").show()
+```
+
 ### `_depth` and `_id` passes
 
-In addition to the the `_img` pass, the Replicant will capture `_id` and `_depth` passes. The `_id` pass is `dynamic.images["id"]` and the `_depth` pass is `dynamic.images["depth"]` (assuming that `dynamic.images` isn't empty).
+In addition to the the `_img` pass, the Replicant will capture `_id` and `_depth` passes. The `_id` pass is `dynamic.images["id"]` and the `_depth` pass is `dynamic.images["depth"]` (assuming that `dynamic.images` isn't empty). 
 
 - [To learn more about the `_id` pass, read  this.](../visual_perception/id.md)
 - [To learn more about the `_depth` pass, including how to interpret it as a point cloud, read this.](../visual_perception/depth.md)

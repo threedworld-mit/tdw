@@ -19,6 +19,7 @@ from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
 from tdw.replicant.actions.look_at import LookAt
 from tdw.replicant.actions.reset_head import ResetHead
+from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
@@ -463,6 +464,8 @@ class Replicant(AddOn):
         """
 
         self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
+        # Set an initial action.
+        self.action = DoNothing()
         # Add an avatar and set up its camera.
         self.commands.extend([{"$type": "create_avatar",
                                "type": "A_Img_Caps_Kinematic",

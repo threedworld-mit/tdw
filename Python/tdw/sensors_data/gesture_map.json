@@ -1,0 +1,20 @@
+{
+  "poke": {
+    "waveform_ID": 84,
+  },
+  "tap": {
+    "waveform_ID": 84,
+  },
+  "grasp": {
+    "waveform_ID": 84,
+  },
+  "stroke": {
+    "waveform_ID": 84,
+  },
+  "finger_push": {
+    "waveform_ID": 84,
+  },
+  "hand_push": {
+    "waveform_ID": 84,
+  }
+}

@@ -106,10 +106,12 @@ class MoveBy(Animate):
             commands.extend([{"$type": "replicant_reset_arm",
                               "id": static.replicant_id,
                               "duration": self.reset_arms_duration,
-                              "arm": arm.name} for arm in Arm])
+                              "arm": arm.name,
+                              "set_status": False} for arm in Arm])
         # Reset the head.
         commands.append({"$type": "replicant_reset_head",
-                         "id": static.replicant_id})
+                         "id": static.replicant_id,
+                         "set_status": False})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

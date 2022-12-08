@@ -913,8 +913,11 @@ class PyImpact(CollisionManager):
         if len(h) == 0:
             return None
         # Convolve with force, with contact time scaled by the object mass.
-        max_t = 0.001 * mass if self._max_contact_time is None else self._max_contact_time
-        # A contact time over 2ms is unphysically long.
+        if self._max_contact_time is not None:
+            max_t = self._max_contact_time
+        else:
+            max_t = 0.001 * mass
+            # A contact time over 2ms is unphysically long.
         max_t = np.min([max_t, 2e-3])
         n_pts = int(np.ceil(max_t * 44100))
         tt = np.linspace(0, np.pi, n_pts)

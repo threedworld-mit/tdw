@@ -3,27 +3,16 @@ from typing import List
 from overrides import final
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.actions.action import Action
+from tdw.replicant.actions.ik_motion import IkMotion
 from tdw.replicant.action_status import ActionStatus
 
 
-class HeadMotion(Action, ABC):
+class HeadMotion(IkMotion, ABC):
     """
     Abstract base class for actions that rotate the Replicant's head.
 
-    Duration an head motion, the Replicant's head will continuously move over multiple `communicate()` calls until either the motion is complete.
+    During a head motion, the Replicant's head will continuously move over multiple `communicate()` calls until either the motion is complete.
     """
-
-    def __init__(self, duration: float):
-        """
-        :param duration: The duration of the motion in seconds.
-        """
-
-        super().__init__()
-        """:field
-        The duration of the motion in seconds.
-        """
-        self.duration: float = duration
 
     @final
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

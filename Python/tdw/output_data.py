@@ -56,6 +56,7 @@ from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import Framerate as Frame
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1556,3 +1557,17 @@ class Replicants(OutputData):
 
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
+
+
+class Framerate(OutputData):
+    def get_data(self) -> Frame.Framerate:
+        return Frame.Framerate.GetRootAsFramerate(self.bytes, 0)
+
+    def get_target_framerate(self) -> int:
+        return int(self.data.TargetFramerate())
+
+    def get_render_time_step(self) -> float:
+        return float(self.data.RenderTimeStep())
+
+    def get_physics_timestep(self) -> float:
+        return float(self.data.PhysicsTimeStep())

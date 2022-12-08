@@ -145,7 +145,8 @@ class PyImpact(CollisionManager):
                  static_audio_data_overrides: Dict[int, ObjectAudioStatic] = None,
                  resonance_audio: bool = False, floor: AudioMaterial = AudioMaterial.wood_medium,
                  rng: np.random.RandomState = None, auto: bool = True, scrape: bool = True,
-                 scrape_objects: Dict[int, ScrapeModel] = None, min_time_between_impact_events: float = 0.25):
+                 scrape_objects: Dict[int, ScrapeModel] = None, min_time_between_impact_events: float = 0.25,
+                 max_contact_time: Optional[float] = None):
         """
         :param initial_amp: The initial amplitude, i.e. the "master volume". Must be > 0 and < 1.
         :param prevent_distortion: If True, clamp amp values to <= 0.99
@@ -158,6 +159,7 @@ class PyImpact(CollisionManager):
         :param scrape: If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS`
         :param scrape_objects: If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md).
         :param min_time_between_impact_events: The minimum time in seconds between two impact events that involve the same primary object.
+        :param max_contact_time: The maximum impact contact time in seconds. If None, this value is automatically scaled to the colliding object's mass.
         """
 
         super().__init__()
@@ -260,6 +262,7 @@ class PyImpact(CollisionManager):
         # Ongoing impact audio events. Key = Audio source ID. Value = Time of event.
         self._impact_events: Dict[int, float] = dict()
         self._min_time_between_impact_events: float = min_time_between_impact_events
+        self._max_contact_time: Optional[float] = max_contact_time
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_bounds"},
@@ -541,7 +544,7 @@ class PyImpact(CollisionManager):
             modes_2 = self.object_modes[secondary_id][primary_id].obj2_modes
             modes_1.powers = modes_1.powers + self.rng.normal(0, 2, len(modes_1.powers))
             modes_2.powers = modes_2.powers + self.rng.normal(0, 2, len(modes_2.powers))
-            sound = PyImpact._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
+            sound = self._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
             self.object_modes[secondary_id][primary_id].obj1_modes = modes_1
             self.object_modes[secondary_id][primary_id].obj2_modes = modes_2
 
@@ -639,7 +642,7 @@ class PyImpact(CollisionManager):
         modes_2 = self.object_modes[id2][id1].obj2_modes
         # Scale the two sounds as specified.
         modes_2.decay_times = modes_2.decay_times + 20 * np.log10(amp2re1)
-        snth = PyImpact._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
+        snth = self._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
         return snth, modes_1, modes_2
 
     def _get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
@@ -891,8 +894,7 @@ class PyImpact(CollisionManager):
         sound.bytes = unity_chunk.raw_data
         return sound
 
-    @staticmethod
-    def _synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, primary_resonance: float, secondary_resonance: float) -> np.array:
+    def _synth_impact_modes(self, modes1: Modes, modes2: Modes, mass: float, primary_resonance: float, secondary_resonance: float) -> np.array:
         """
         Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
 
@@ -911,7 +913,7 @@ class PyImpact(CollisionManager):
         if len(h) == 0:
             return None
         # Convolve with force, with contact time scaled by the object mass.
-        max_t = 0.001 * mass
+        max_t = 0.001 * mass if self._max_contact_time is None else self._max_contact_time
         # A contact time over 2ms is unphysically long.
         max_t = np.min([max_t, 2e-3])
         n_pts = int(np.ceil(max_t * 44100))

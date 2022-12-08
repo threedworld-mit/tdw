@@ -111,7 +111,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 **`PyImpact()`**
 
-**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None, min_time_between_impact_events=0.25)`**
+**`PyImpact(initial_amp=0.5, prevent_distortion=True, logging=False, static_audio_data_overrides=None, resonance_audio=False, floor=AudioMaterial.wood_medium, rng=None, auto=True, scrape=True, scrape_objects=None, min_time_between_impact_events=0.25, max_contact_time=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -126,6 +126,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | scrape |  bool  | True | If True, initialize certain objects as scrape surfaces: Change their visual material(s) and enable them for scrape audio. See: `tdw.physics_audio.scrape_model.DEFAULT_SCRAPE_MODELS` |
 | scrape_objects |  Dict[int, ScrapeModel] | None | If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md). |
 | min_time_between_impact_events |  float  | 0.25 | The minimum time in seconds between two impact events that involve the same primary object. |
+| max_contact_time |  Optional[float] | None | The maximum impact contact time in seconds. If None, this value is automatically scaled to the colliding object's mass. |
 
 #### get_initialization_commands
 

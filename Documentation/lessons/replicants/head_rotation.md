@@ -94,6 +94,10 @@ Result:
 
 ![](images/head_rotation/look_at_slow.gif)
 
+### The `scale_duration` parameter
+
+`duration` is measured in seconds. If the simulation is running faster than real life, this will appear too slow. To handle this, the `ReachFor` action dynamically scales the `duration` value in proportion to the actual framerate: `duration *= 60 / (1 / framerate)`. This is usually desirable, but can be suppressed by setting `scale_duration=False`.
+
 ### Low-level description
 
 `replicant.look_at(target)` sets `replicant.action` to a [`LookAt`](../../python/replicant/actions/look_at.md) action. 
@@ -151,6 +155,10 @@ Result:
 ### The `duration` parameter
 
 The optional `duration` parameter controls the speed in seconds at which the head turns; it works exactly the same was as it does in `look_at(target)`.
+
+### The `scale_duration` parameter
+
+The optional `scale_duration` parameter works the same way as it does in `look_at(target)`.
 
 ### Low-level description
 

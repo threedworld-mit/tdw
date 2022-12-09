@@ -35,6 +35,16 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
   - Added optional parameter `scale_reset_arms_duration` to `move_by()` and `move_to()`.
   - Added optional parameter `scale_duration` to `reach_for()`, `reset_arm()`, `look_at()`, and `reset_head()`.
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation.md` | Added a section regarding `scale_duration`. Removed the section regarding movement (see below). |
+| `lessons/replicants/head_rotation.md`    | Added a section regarding `scale_duration`.                  |
+| `lessons/replicants/movement.md`         | Added a section about resetting arms while moving.           |
+
 ## v1.11.1
 
 ### Command API

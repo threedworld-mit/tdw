@@ -410,7 +410,7 @@ Framerate data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_target_framerate()` | The target framerate. | `int` |
-| `get_render_time_step()` | The render time step (Time.deltaTime). | `float` |
+| `get_frame_dt()` | The time elapsed for this frame in seconds. | `float` |
 | `get_physics_timestep()` | The timestep of the physics. | `float` |
 
 ## IdPassGrayscale

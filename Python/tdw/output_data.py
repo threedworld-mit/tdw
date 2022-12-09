@@ -1566,8 +1566,8 @@ class Framerate(OutputData):
     def get_target_framerate(self) -> int:
         return int(self.data.TargetFramerate())
 
-    def get_render_time_step(self) -> float:
-        return float(self.data.RenderTimeStep())
+    def get_frame_dt(self) -> float:
+        return float(self.data.FrameDt())
 
     def get_physics_timestep(self) -> float:
         return float(self.data.PhysicsTimeStep())

@@ -135,5 +135,5 @@ class Action(ABC):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "fram":
                 framerate = Framerate(resp[i])
-                return duration * ((1 / framerate.get_render_time_step()) / 60)
+                return duration * (60 / (1 / framerate.get_frame_dt()))
         raise Exception("Framerate output data not found")

@@ -26,7 +26,7 @@ class Framerate(object):
         return 0
 
     # Framerate
-    def RenderTimeStep(self):
+    def FrameDt(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
@@ -41,6 +41,6 @@ class Framerate(object):
 
 def FramerateStart(builder): builder.StartObject(3)
 def FramerateAddTargetFramerate(builder, targetFramerate): builder.PrependInt32Slot(0, targetFramerate, 0)
-def FramerateAddRenderTimeStep(builder, renderTimeStep): builder.PrependFloat32Slot(1, renderTimeStep, 0.0)
+def FramerateAddFrameDt(builder, frameDt): builder.PrependFloat32Slot(1, frameDt, 0.0)
 def FramerateAddPhysicsTimeStep(builder, physicsTimeStep): builder.PrependFloat32Slot(2, physicsTimeStep, 0.0)
 def FramerateEnd(builder): return builder.EndObject()

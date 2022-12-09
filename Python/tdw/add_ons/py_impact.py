@@ -138,6 +138,10 @@ class PyImpact(CollisionManager):
     The mass of the floor.
     """
     FLOOR_MASS: int = 100
+    """:class_var
+    If True, clamp the maximum contact time to a minimum value.
+    """
+    CLAMP_CONTACT_TIME: bool = True
     # Visual material librarian used for scrape surfaces.
     __VISUAL_MATERIAL_LIBRARIAN: MaterialLibrarian = MaterialLibrarian("materials_high.json")
 
@@ -912,8 +916,9 @@ class PyImpact(CollisionManager):
             return None
         # Convolve with force, with contact time scaled by the object mass.
         max_t = 0.001 * mass
-        # A contact time over 2ms is unphysically long.
-        max_t = np.min([max_t, 2e-3])
+        if PyImpact.CLAMP_CONTACT_TIME:
+            # A contact time over 2ms is unphysically long.
+            max_t = np.min([max_t, 2e-3])
         n_pts = int(np.ceil(max_t * 44100))
         tt = np.linspace(0, np.pi, n_pts)
         frc = np.sin(tt)

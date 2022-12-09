@@ -72,6 +72,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | `FLOOR_AMP` | float | The amp value for the floor. | `0.5` |
 | `FLOOR_SIZE` | int | The size "bucket" for the floor. | `4` |
 | `FLOOR_MASS` | int | The mass of the floor. | `100` |
+| `CLAMP_CONTACT_TIME` | bool | If True, clamp the maximum contact time to a minimum value. | `True` |
 
 ***
 

@@ -5209,7 +5209,7 @@ These commands involve a Replicant's arm.
 
 Drop a held object. 
 
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_drop_object", "arm": "left", "id": 1}
@@ -5241,7 +5241,7 @@ A left or right arm.
 
 Grasp a target object. 
 
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
@@ -5274,7 +5274,7 @@ A left or right arm.
 
 Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped. 
 
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1}
@@ -5322,7 +5322,7 @@ These commands involve the motion of a Replicant's arm.
 Tell the Replicant to start to reset the arm on a humanoid to its neutral position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1}
@@ -5359,7 +5359,7 @@ These commands instruct a replicant to start to reach for a target.
 Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1}
@@ -5395,7 +5395,7 @@ A left or right arm.
 Instruct a Replicant to start to reach for a target position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
@@ -5435,7 +5435,7 @@ These commands tell a Replicant to look at a target position or object.
 Tell the Replicant to start to look at an object. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_look_at_object", "object_id": 1, "id": 1}
@@ -5460,7 +5460,7 @@ Tell the Replicant to start to look at an object.
 Tell the Replicant to start to look at a position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_look_at_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
@@ -5484,7 +5484,7 @@ Tell the Replicant to start to look at a position.
 Tell the Replicant to start to reset its head to its neutral position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
-- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicantin the `Replicant` output data. This is usually desirable.In some cases, namely when you're calling several of these commandsin sequence, you might want only the last command to set the status.See the `set_status` parameter, below.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
 {"$type": "replicant_reset_head", "id": 1}

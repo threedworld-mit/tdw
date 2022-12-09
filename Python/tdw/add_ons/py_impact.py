@@ -139,7 +139,7 @@ class PyImpact(CollisionManager):
     """
     FLOOR_MASS: int = 100
     """:class_var
-    If True, clamp the maximum contact time to a minimum value.
+    If True, clamp the contact time to a minimum value.
     """
     CLAMP_CONTACT_TIME: bool = True
     # Visual material librarian used for scrape surfaces.

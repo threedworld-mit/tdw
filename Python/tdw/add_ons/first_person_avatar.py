@@ -1,3 +1,4 @@
+from os import urandom
 from base64 import b64encode
 from io import BytesIO
 from secrets import token_urlsafe
@@ -61,6 +62,7 @@ class FirstPersonAvatar(Mouse):
         self._look_x_limit: float = look_x_limit
         self._framerate: int = framerate
         self._reticule_size: int = reticule_size
+        self._raycast_id: int = int.from_bytes(urandom(3), byteorder='big')
         """:field
         The [`Transform`](../object_data/transform.md) of the avatar.
         """

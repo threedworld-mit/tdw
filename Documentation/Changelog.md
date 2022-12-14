@@ -31,6 +31,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - Added: `replicant.dynamic.get_pil_image(pass_mask)` Convert raw image data to a PIL Image.
 - Fixed: Broken link for the `replicant_0` OS X asset bundle.
 - Added: `PyImpact.CLAMP_CONTACT_TIME`
+- Fixed: `FirstPersonAvatar` crashes due to missing `_raycast_id` parameter.
 
 ### Build
 

@@ -42,14 +42,14 @@ class ArduinoGloveDemo(Controller):
         # We can use from 1 to 8 of the defined waveforms in sequence.
         wave = Waveform.short_double_click_strong.value
         # Which fingers do we want to vibrate?
-        fingers = [Finger.pinky.value, Finger.index.value]
+        fingers = [Finger.thumb.value, Finger.index.value]
         self.communicate(self.glove.get_send_haptic_glove_command(wave_id=wave, fingers=fingers))
 
     def wave_2(self):      
         # We can use from 1 to 8 of the defined waveforms in sequence.
         wave = Waveform.pulsing_strong.value
         # Which fingers do we want to vibrate?
-        fingers = [Finger.pinky.value, Finger.index.value]
+        fingers = [Finger.thumb.value, Finger.index.value]
         self.communicate(self.glove.get_send_haptic_glove_command(wave_id=wave, fingers=fingers))
 
     def wave_3(self):      
@@ -61,7 +61,7 @@ class ArduinoGloveDemo(Controller):
 
     def wave_4(self):      
         # We can use from 1 to 8 of the defined waveforms in sequence.
-        wave = Waveform.long_double_sharp_click_strong.value 
+        wave = Waveform.transition_ramp_up_medium_smooth.value 
         # Which fingers do we want to vibrate?
         fingers = [Finger.pinky.value, Finger.ring.value, Finger.middle.value, Finger.index.value, Finger.thumb.value]
         self.communicate(self.glove.get_send_haptic_glove_command(wave_id=wave, fingers=fingers))

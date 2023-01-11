@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.2
+
+### Build
+
+- (Backend) Updated the Oculus Touch rig's AutoHand system from 2.1.0 to 3.1.3, which improves performance, physics behavior, and hand poses.
+
 ## v1.11.1
 
 ### Command API

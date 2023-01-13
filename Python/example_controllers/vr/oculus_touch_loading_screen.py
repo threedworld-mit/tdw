@@ -17,10 +17,10 @@ class LoadingScreen(Controller):
         # Add a VR rig.
         self.vr: OculusTouch = OculusTouch()
         self.done: bool = False
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # Go to the next scene when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.next_trial)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # Go to the next scene when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.next_trial)
         self.add_ons.append(self.vr)
         # Load the first scene.
         self.next_trial()

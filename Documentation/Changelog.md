@@ -14,13 +14,13 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 - Standardized the Oculus Touch input mapping in all examples in `vr/`: Click the left control stick to quit and press Y for a new trial/scene.
 
-### Documentaiton
+### Documentation
+
+#### Modified Documentation
 
 | Document                     | Modification                                                 |
 | ---------------------------- | ------------------------------------------------------------ |
 | `lessons/vr/oculus_touch.md` | Fixed the example code to standardize Oculus Touch input mapping: Click the left control stick to quit and press Y for a new trial/scene. |
-
-
 
 ## v1.11.1
 

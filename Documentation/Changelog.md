@@ -10,6 +10,18 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 - (Backend) Updated the Oculus Touch rig's AutoHand system from 2.1.0 to 3.1.3, which improves performance, physics behavior, and hand poses.
 
+### Example Controllers
+
+- Standardized the Oculus Touch input mapping in all examples in `vr/`: Click the left control stick to quit and press Y for a new trial/scene.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/oculus_touch.md` | Fixed the example code to standardize Oculus Touch input mapping: Click the left control stick to quit and press Y for a new trial/scene. |
+
 ## v1.11.1
 
 ### Command API

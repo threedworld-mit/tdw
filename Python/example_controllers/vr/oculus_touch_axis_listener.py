@@ -21,8 +21,8 @@ class OculusTouchAxisListener(Controller):
         # Move the robot joints with the control sticks.
         self.vr.listen_to_axis(is_left=True, function=self.left_axis)
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.extend([self.robot, self.vr])
         self.done: bool = False
 

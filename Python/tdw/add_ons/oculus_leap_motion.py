@@ -42,7 +42,7 @@ class OculusLeapMotion(VR):
         :param discrete_collision_detection_mode: If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW).
         """
 
-        super().__init__(rig_type=RigType.oculus_leap_motion_teleport, output_data=output_data, position=position,
+        super().__init__(rig_type=RigType.oculus_leap_motion_teleport_physics_hands, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable

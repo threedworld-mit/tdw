@@ -10,3 +10,4 @@ class RigType(Enum):
     oculus_touch_human_hands = 2  # Oculus Touch controller. Hands are rendered as human hands.
     oculus_leap_motion = 3  # Oculus rig with Leap Motion hand tracking.
     oculus_leap_motion_teleport = 4  # Oculus rig with Leap Motion hand tracking.
+    oculus_leap_motion_teleport_physics_hands = 5  # Oculus rig with Leap Motion hand tracking and physics-based hands.

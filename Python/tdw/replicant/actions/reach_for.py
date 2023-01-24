@@ -29,7 +29,8 @@ class ReachFor(ArmMotion):
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, duration: float, previous: Optional[Action]):
+                 collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
+                 scale_duration: bool):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
@@ -38,12 +39,13 @@ class ReachFor(ArmMotion):
         :param arms: A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
-        :param duration: The duration of the motion in seconds.
         :param previous: The previous action. Can be None.
+        :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
-                         duration=duration)
+                         duration=duration, scale_duration=scale_duration)
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """

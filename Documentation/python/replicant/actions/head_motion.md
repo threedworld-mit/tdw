@@ -4,13 +4,15 @@
 
 Abstract base class for actions that rotate the Replicant's head.
 
-Duration an head motion, the Replicant's head will continuously move over multiple `communicate()` calls until either the motion is complete.
+During a head motion, the Replicant's head will continuously move over multiple `communicate()` calls until either the motion is complete.
 
 ***
 
 ## Fields
 
 - `duration` The duration of the motion in seconds.
+
+- `scale_duration` If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
 
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
@@ -24,11 +26,14 @@ Duration an head motion, the Replicant's head will continuously move over multip
 
 #### \_\_init\_\_
 
-**`HeadMotion(duration)`**
+\_\_init\_\_
+
+**`HeadMotion(duration, scale_duration)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | duration |  float |  | The duration of the motion in seconds. |
+| scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 #### get_initialization_commands
 

@@ -1,23 +1,12 @@
-# ArmMotion
+# IkMotion
 
-`from tdw.replicant.actions.arm_motion import ArmMotion`
+`from tdw.replicant.actions.ik_motion import IkMotion`
 
-Abstract base class for actions related to Replicant arm motion.
-
-Duration an arm motion, the Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
-
-- The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
-- If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
+Abstract base class for actions driving by inverse kinematics (IK).
 
 ***
 
 ## Fields
-
-- `arms` A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
-
-- `collision_detection` The [`CollisionDetection`](../collision_detection.md) rules.
-
-- `collisions` If the action fails in a collision, this is a list of arms that collided with something.
 
 - `duration` The duration of the motion in seconds.
 
@@ -35,14 +24,10 @@ Duration an arm motion, the Replicant's arm(s) will continuously over multiple `
 
 #### \_\_init\_\_
 
-**`ArmMotion(arms, dynamic, collision_detection, previous, duration, scale_duration)`**
+**`IkMotion(duration, scale_duration)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| arms |  List[Arm] |  | A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`. |
-| dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| collision_detection |  CollisionDetection |  | The [`CollisionDetection`](../collision_detection.md) rules. |
-| previous |  Optional[Action] |  | The previous action. Can be None. |
 | duration |  float |  | The duration of the motion in seconds. |
 | scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 

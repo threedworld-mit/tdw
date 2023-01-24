@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.2
+## v1.11.3
 
 ### Command API
 
@@ -45,6 +45,24 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | `lessons/replicants/head_rotation.md`    | Added a section regarding `scale_duration`.                  |
 | `lessons/replicants/movement.md`         | Added a section about resetting arms while moving.           |
 
+## v1.11.2
+
+### Build
+
+- (Backend) Updated the Oculus Touch rig's AutoHand system from 2.1.0 to 3.1.3, which improves performance, physics behavior, and hand poses.
+
+### Example Controllers
+
+- Standardized the Oculus Touch input mapping in all examples in `vr/`: Click the left control stick to quit and press Y for a new trial/scene.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/oculus_touch.md` | Fixed the example code to standardize Oculus Touch input mapping: Click the left control stick to quit and press Y for a new trial/scene. |
+
 ## v1.11.1
 
 ### Command API
@@ -71,6 +89,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - The Replicant now has a default initialization action. After initialization, the Replicant captures an initial image.
 - Added: `replicant.dynamic.get_pil_image(pass_mask)` Convert raw image data to a PIL Image.
 - Fixed: Broken link for the `replicant_0` OS X asset bundle.
+- Fixed: `FirstPersonAvatar` crashes due to missing `_raycast_id` parameter.
 
 ### Build
 

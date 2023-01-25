@@ -34,7 +34,7 @@ class OculusTouchProcGen(Controller):
 
         # Add the VR rig.
         #self.vr = OculusTouch(human_hands=False, output_data=True, attach_avatar=False, set_graspable=True, non_graspable=[12132217])
-        self.vr = OculusLeapMotion(attach_avatar=False, set_graspable=True, non_graspable=[12132217])
+        self.vr = OculusLeapMotion(attach_avatar=False, set_graspable=False)
         # Quit when the left menu button is pressed.
         #self.vr.listen_to_button(button=OculusTouchButton.primary_button, is_left=True, function=self.quit)
 

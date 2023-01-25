@@ -16,7 +16,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                                 position={"x": 0, "y": 0, "z": 0.5}),
                {"$type": "set_object_collision_detection_mode", 
                 "id": obj_id, 
-                "mode": "discrete"}])
+                "mode": "continuous_speculative"}])
 c.communicate({"$type": "set_teleportation_area"})
 while True:
     c.communicate([])

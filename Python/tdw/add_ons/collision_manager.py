@@ -56,6 +56,7 @@ class CollisionManager(AddOn):
                 # Get the pair of IDs in this collision and use it as a key.
                 ids = IntPair(int1=collision.get_collider_id(), int2=collision.get_collidee_id())
                 coo = CollisionObjObj(collision=collision)
+                print(ids, coo.impulse, "!")
                 self.obj_collisions[ids] = coo
             elif r_id == "enco":
                 collision = EnvironmentCollision(resp[i])

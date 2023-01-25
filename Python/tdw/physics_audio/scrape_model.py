@@ -1,10 +1,11 @@
 from pkg_resources import resource_filename
 from json import loads
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Union
 from tdw.physics_audio.scrape_sub_object import ScrapeSubObject
 from tdw.physics_audio.scrape_material import ScrapeMaterial
 from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.physics_audio.impact_material import ImpactMaterial
 
 
 class ScrapeModel:
@@ -13,7 +14,7 @@ class ScrapeModel:
     """
 
     def __init__(self, model_name: str, sub_objects: List[ScrapeSubObject], visual_material: str,
-                 audio_material: AudioMaterial, scrape_material: ScrapeMaterial):
+                 audio_material: Union[AudioMaterial, ImpactMaterial], scrape_material: ScrapeMaterial):
         """
         :param model_name: The name of the model.
         :param sub_objects: A list of [sub-objects that will be used as scrape surfaces](scrape_sub_object.md).
@@ -30,10 +31,15 @@ class ScrapeModel:
         A list of [sub-objects that will be used as scrape surfaces](scrape_sub_object.md).
         """
         self.sub_objects: List[ScrapeSubObject] = sub_objects
-        """:field
-        The [audio material](audio_material.md).
-        """
-        self.audio_material: AudioMaterial = audio_material
+        if isinstance(audio_material, AudioMaterial):
+            """:field
+            The [audio material](audio_material.md).
+            """
+            self.audio_material: AudioMaterial = audio_material
+        elif isinstance(audio_material, ImpactMaterial):
+            self.audio_material = AudioMaterial[audio_material.name]
+        else:
+            raise Exception(audio_material)
         """:field
         The [scrape material](scrape_material.md).
         """

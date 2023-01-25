@@ -2,6 +2,10 @@
 
 # `PyImpact` (dynamic impact sounds)
 
+**PyImpact has been deprecated. [Use Clatter instead.](../clatter/overview.md)** This documentation is here only for users with ongoing projects that include PyImpact.
+
+***
+
 *PyImpact uses data from the PhysX physics engine to generate audio. If you haven't done so already, we strongly recommend you read the [physics tutorial](../physx/overview.md).*
 
 `PyImpact` can synthesize novel plausible impact sounds for any object. Upon every call the sound resonant modes will be randomly sampled and the impacts will sound slightly different.  Thus, two different objects in the same scene with the same material will create similar but unique sounds.  And the same scene run repeatedly will generate similar but unique sounds at every run.  This is designed to emulate the real world, where tapping the same object repeatedly yields slightly different sounds on each impact.
@@ -471,17 +475,9 @@ if __name__ == "__main__":
 
 ***
 
-**Next: [Recording audio](record_audio.md)**
-
 [Return to the README](../../../README.md)
 
 ***
-
-Example controllers:
-
-- [py_impact.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/py_impact.py) A minimal implementation of `PyImpact`.
-- [robot_impact_sound.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/robot_impact_sound.py) Create an impact sound between an object and a robot.
-- [reset_py_impact.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/robot_impact_sound.py) Reset PyImpact after every trial.
 
 Python API:
 

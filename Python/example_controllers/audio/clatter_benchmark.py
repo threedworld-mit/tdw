@@ -89,12 +89,14 @@ class ClatterBenchmark(Controller):
 
     def run(self) -> float:
         times = 0
-        for i in range(100):
+        num_trials = 10
+        for i in range(num_trials):
             times += self.trial()
         self.communicate({"$type": "terminate"})
-        return times
+        return times / num_trials
 
 
 if __name__ == "__main__":
     c = ClatterBenchmark()
-    c.run()
+    t = c.run()
+    print(t)

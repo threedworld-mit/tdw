@@ -158,7 +158,7 @@ Clatter doesn't need to serialize or deserialize anything. It also handles each 
 | PyImpact generates 100 impact sounds and plays them in a controller. Each impact sound is sent on a separate communicate() call. | 1.75                   |
 | Clatter generates 100 impact sounds without a controller and without threading. | 0.54                   |
 | Clatter generates 100 impact sounds without a controller and with threading. | 0.10                   |
-| Clatter generates 100 impact sounds with threading and plays them in a controller. |                        |
+| Clatter generates 100 impact sounds with threading and plays them in a controller. | 0.30*                  |
 
 \* Time elapsed in this case is the sum of the time elapsed only for the frames in which collisions occurred.
 

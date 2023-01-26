@@ -32,13 +32,14 @@ class MoveTo(Action):
     """
 
     def __init__(self, target: Union[int, Dict[str, float], np.ndarray], collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float, arrived_at: float,
-                 max_walk_cycles: int, bounds_position: str):
+                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
+                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int, bounds_position: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
@@ -61,6 +62,10 @@ class MoveTo(Action):
         The speed at which the arms are reset in seconds.
         """
         self.reset_arms_duration: float = reset_arms_duration
+        """:field
+        If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        """
+        self.scale_reset_arms_duration: bool = scale_reset_arms_duration
         """:field
         If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         """
@@ -124,8 +129,9 @@ class MoveTo(Action):
                                    previous=self._previous_action,
                                    reset_arms=self.reset_arms,
                                    reset_arms_duration=self.reset_arms_duration,
+                                   scale_reset_arms_duration=self.scale_reset_arms_duration,
                                    arrived_at=self.arrived_at,
-                                   max_walk_cycles=self.max_walk_cycles)
+                                   max_walk_cycles=self.max_walk_cycles,)
             commands = self._move_by.get_initialization_commands(resp=resp,
                                                                  static=static,
                                                                  dynamic=dynamic,

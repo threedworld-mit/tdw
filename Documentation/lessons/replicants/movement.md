@@ -39,6 +39,85 @@ The action can end in failure due to a [collision](collision_detection.md) or be
 
 The Replicant's walk animation is stored as a [humanoid animation asset bundle](../non_physics_humanoids/overview.md). The first time you call `move_by()` or `move_to()`, the animation needs to be downloaded and loaded into memory, hence the delay at the start of the action. Like all asset bundles, this is a one-time requirement. If you call `move_by()` and `move_to()` more than once, subsequent calls will begin immediately.
 
+### Resetting the arms
+
+By default, the Replicant's arms reset at the start of a `move_by(distance)` action. The arms reset while the Replicant is walking, rather than before. For more information regarding arm movement, [read this](arm_articulation.md).
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.arm import Arm
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_move")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
+c.add_ons.extend([replicant, camera, capture])
+c.communicate(TDWUtils.create_empty_room(12, 12))
+replicant.reach_for(target={"x": 0.8, "y": 0.9, "z": 0.3}, arm=Arm.right)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+replicant.move_by(3)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/movement/reach_for_move.gif)
+
+You might want the Replicant to hold a pose with its arms while walking (for example, if it is [holding an object](grasp_drop.md)). If so, you can set the optional parameter `reset_arms=False`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.arm import Arm
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_move")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
+c.add_ons.extend([replicant, camera, capture])
+c.communicate(TDWUtils.create_empty_room(12, 12))
+replicant.reach_for(target={"x": 0.8, "y": 0.9, "z": 0.3}, arm=Arm.right)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+replicant.move_by(distance=3,
+                  reset_arms=False)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/movement/reach_for_move_no_reset.gif)
+
+The duration of the reset arm motion is controlled by the optional parameter `reset_arms_duration`, which by default is 0.25 seconds. This is then scaled dynamically with the actual framerate: `reset_arms_duration *= 60 / (1 / framerate)`. This is usually desireable as it will match the arm speed relative to the walk animation speed. To suppress this, set `scale_reset_arms_duration=False`.
+
 ## The `turn_by(angle)` action
 
 Call [`replicant.turn_by(angle)`](../../python/add_ons/replicant.md) to turn the Replicant by an angle in degrees.
@@ -144,6 +223,10 @@ c.communicate({"$type": "terminate"})
 Result:
 
 ![](images/movement/move_to.gif)
+
+### Resetting the arms
+
+Resetting the arms is controlled exactly the same as in `move_by(distance)` and can be adjusted with the same optional parameters.
 
 ## Physics and collision detection
 
@@ -395,6 +478,7 @@ Example controllers:
 - [crash.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/crash.py) Collide with an obstacle.
 - [collision_detection_tests.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/collision_detection_tests.py) Tests for collision detection while walking.
 - [non_kinematic.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/non_kinematic.py) Walk through an object and a wall.
+- [reach_for_move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_move.py) Reach for a target position and then move forward, resetting the arm.
 
 Command API:
 

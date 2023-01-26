@@ -30,6 +30,8 @@ The action can end for several reasons depending on the collision detection rule
 
 - `reset_arms_duration` The speed at which the arms are reset in seconds.
 
+- `scale_reset_arms_duration` If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+
 - `arrived_at` If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
 
 - `max_walk_cycles` The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.

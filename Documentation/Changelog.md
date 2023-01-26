@@ -4,6 +4,65 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.3
+
+### Command API
+
+#### New Commands
+
+| Command          | Description                             |
+| ---------------- | --------------------------------------- |
+| `send_framerate` | Send the build's framerate information. |
+
+#### Modified Commands
+
+| Command                                                      | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `replicant_drop_object`<br>`replicant_grasp_object`<br>`replicant_set_grasped_object_rotation`<br>`replicant_reset_arm`<br>`replicant_reach_for_object`<br>`replicant_reach_for_position`<br>`replicant_look_at_object`<br>`replicant_look_at_position`<br>`replicant_reset_head` | Added optional `set_status` parameter. These commands will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want to set `set_status` to `False`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description     |
+| ----------- | --------------- |
+| `Framerate` | Framerate data. |
+
+### `tdw` module
+
+- Fixed: Various strange behaviors in Replicant that vary between machines. This was caused by some commands within previous actions setting the Replicant's status before the current action finished. Now, these commands will never set the Replicant's status; only commands actually driving the current action will set the status (see Command API modifications, above).
+- Fixed: At speeds greater than 60 FPS, the Replicant will appear move its arms and head much slower than its animations. This is due to arm and head motion being driven by a separate system. Now, the `duration` parameter of these actions is scaled via optional parameters, resulting in much more even motions. The value of these parameters defaults to True; if False, `duration` won't be scaled.
+  - Added optional parameter `scale_reset_arms_duration` to `move_by()` and `move_to()`.
+  - Added optional parameter `scale_duration` to `reach_for()`, `reset_arm()`, `look_at()`, and `reset_head()`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation.md` | Added a section regarding `scale_duration`. Removed the section regarding movement (see below). |
+| `lessons/replicants/head_rotation.md`    | Added a section regarding `scale_duration`.                  |
+| `lessons/replicants/movement.md`         | Added a section about resetting arms while moving.           |
+
+## v1.11.2
+
+### Build
+
+- (Backend) Updated the Oculus Touch rig's AutoHand system from 2.1.0 to 3.1.3, which improves performance, physics behavior, and hand poses.
+
+### Example Controllers
+
+- Standardized the Oculus Touch input mapping in all examples in `vr/`: Click the left control stick to quit and press Y for a new trial/scene.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/oculus_touch.md` | Fixed the example code to standardize Oculus Touch input mapping: Click the left control stick to quit and press Y for a new trial/scene. |
+
 ## v1.11.1
 
 ### Command API

@@ -57,6 +57,7 @@ from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import LeapMotion as Leap
+from tdw.FBOutput import Framerate as Frame
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1559,6 +1560,7 @@ class Replicants(OutputData):
         return ActionStatus(self._statuses[index])
 
 
+<<<<<<< HEAD
 class LeapMotion(OutputData):
     def __init__(self, b):
         super().__init__(b)
@@ -1590,3 +1592,17 @@ class LeapMotion(OutputData):
 
     def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][bone_index][collision_index])
+
+
+class Framerate(OutputData):
+    def get_data(self) -> Frame.Framerate:
+        return Frame.Framerate.GetRootAsFramerate(self.bytes, 0)
+
+    def get_target_framerate(self) -> int:
+        return int(self.data.TargetFramerate())
+
+    def get_frame_dt(self) -> float:
+        return float(self.data.FrameDt())
+
+    def get_physics_timestep(self) -> float:
+        return float(self.data.PhysicsTimeStep())

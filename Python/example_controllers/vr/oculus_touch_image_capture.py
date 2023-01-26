@@ -20,8 +20,8 @@ class OculusTouchImageCapture(Controller):
         self.done = False
         # Add the VR rig.
         self.vr = OculusTouch(human_hands=False, output_data=True, attach_avatar=True, set_graspable=False)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         # Enable image capture.
         self.image_capture = ImageCapture(avatar_ids=[OculusTouch.AVATAR_ID], pass_masks=["_id"],
                                           path=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("vr_observed_objects"))

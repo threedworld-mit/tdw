@@ -67,6 +67,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
 | [FieldOfView](#FieldOfView) | An avatar's camera field of view and focal length. | `fofv` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
+| [Framerate](#Framerate) | Framerate data. | `fram` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
 | [IdPassSegmentationColors](#IdPassSegmentationColors) | All segmentation colors in an _id pass. | `ipsc` |
 | [Images](#Images) | The images and associated metadata that were captured by an avatar. | `imag` |
@@ -397,6 +398,20 @@ NVIDIA Flex data.
 | `get_particles(index)` | The Flex particle positions and inverse mass. | `np.array` |
 | `get_velocities(index)` | The Flex particle velocities. | `np.array` |
 | `get_id(index)` | The unique ID of the object. | `int` |
+
+## Framerate
+
+`f = Framerate(byte_array)`
+
+**Identifier:** `fram`
+
+Framerate data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_target_framerate()` | The target framerate. | `int` |
+| `get_frame_dt()` | The time elapsed for this frame in seconds. | `float` |
+| `get_physics_timestep()` | The timestep of the physics. | `float` |
 
 ## IdPassGrayscale
 

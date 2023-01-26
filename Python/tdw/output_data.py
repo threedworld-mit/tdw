@@ -1560,7 +1560,6 @@ class Replicants(OutputData):
         return ActionStatus(self._statuses[index])
 
 
-<<<<<<< HEAD
 class LeapMotion(OutputData):
     def __init__(self, b):
         super().__init__(b)

@@ -48,9 +48,8 @@ class OculusTouchProcGen(Controller):
         # Set the position of the rig and hide the loading screen.
         self.vr.set_position(rig_position)
         self.vr.show_loading_screen(show=False)
-        self.communicate({"$type": "set_teleportation_area"})
 
 
 if __name__ == "__main__":
-    c = OculusTouchProcGen(launch_build=False)
+    c = OculusTouchProcGen()
     c.run()

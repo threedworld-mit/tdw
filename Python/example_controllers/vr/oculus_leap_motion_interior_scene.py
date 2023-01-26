@@ -51,7 +51,6 @@ class OculusTouchProcGen(Controller):
         self.communicate(self.init_commands)
         # Start by the table.
         self.vr.set_position({"x": 0.7, "y": 0.0, "z": 1.0})
-        self.communicate({"$type": "set_teleportation_area"})
         while not self.done:
             self.communicate([])
         self.communicate({"$type": "terminate"})
@@ -61,7 +60,7 @@ class OculusTouchProcGen(Controller):
 
 
 if __name__ == "__main__":
-    c = OculusTouchProcGen(launch_build=False)
+    c = OculusTouchProcGen()
     c.run()
         
 

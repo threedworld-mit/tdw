@@ -39,7 +39,6 @@ class OculusTouchOutputData(Controller):
                                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2}))
         # Send the commands.
         self.communicate(commands)
-        self.communicate({"$type": "set_teleportation_area"})
         # Loop until the Escape key is pressed.
         while not self.done:
             print("Position", self.vr.rig.position)
@@ -51,5 +50,5 @@ class OculusTouchOutputData(Controller):
 
 
 if __name__ == "__main__":
-    c = OculusTouchOutputData(launch_build=False)
+    c = OculusTouchOutputData()
     c.run()

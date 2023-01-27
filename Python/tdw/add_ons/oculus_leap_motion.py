@@ -1,9 +1,12 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
+from pathlib import Path
+from pkg_resources import resource_filename
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.finger_bone import FingerBone
 from tdw.vr_data.finger import Finger
+from tdw.replicant.arm import Arm
 from tdw.object_data.transform import Transform
 from tdw.output_data import OutputData, StaticRigidbodies, LeapMotion
 
@@ -77,6 +80,26 @@ class OculusLeapMotion(VR):
         A list of object IDs that the right palm is colliding with.
         """
         self.right_palm_collisions: List[int] = list()
+        """:field
+        A dictionary of predefined poses. Key = An [`Arm`](../replicant/arm.md) value for the hand. Value = A dictionary. Key = The name of the pose as a string. Value = A numpy array of the pose.
+        """
+        self.poses: Dict[Arm, Dict[str, np.ndarray]] = dict()
+        # Load the poses.
+        pose_directory = Path(resource_filename(__name__, "")).joinpath("../vr_data/leap_motion_poses").resolve()
+        for arm in [Arm.left, Arm.right]:
+            self.poses[arm] = dict()
+            pose_hand_directory = pose_directory.joinpath(arm.name)
+            if not pose_hand_directory.exists():
+                continue
+            for f in pose_hand_directory.iterdir():
+                if f.is_file() and f.suffix == ".npy":
+                    self.poses[arm][f.stem] = np.load(f)
+        """:field
+        A dictionary of ongoing poses. Key = An [`Arm`](../replicant/arm.md) value for the hand. Value = The name of the pose (can be None).
+        """
+        self.ongoing_poses: Dict[Arm, Optional[str]] = {Arm.left: None, Arm.right: None}
+        # Local rotations are used for hand poses.
+        self._finger_bone_angles: np.ndarray = np.zeros(shape=1)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -87,6 +110,15 @@ class OculusLeapMotion(VR):
             commands.append({"$type": "send_leap_motion",
                              "frequency": "always"})
         commands.append({"$type": "set_teleportation_area"})
+        # TODO remove this.
+        commands.extend([{"$type": "add_ui_canvas"},
+                         {"$type": "attach_ui_canvas_to_vr_rig"},
+                         {"$type": "add_ui_text",
+                          "text": "",
+                          "id": 0,
+                          "font_size": 22,
+                          "color": {"r": 1, "g": 0, "b": 0, "a": 1},
+                          "raycast_target": False}])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -124,6 +156,28 @@ class OculusLeapMotion(VR):
                                transforms=self.right_hand_transforms,
                                collisions=self.right_finger_collisions,
                                palm_collisions=self.right_palm_collisions)
+                self._finger_bone_angles = leap_motion._finger_bone_angles
+        # Check poses.
+        if self._finger_bone_angles.shape[0] == 2:
+            poses: Dict[Arm, str] = dict()
+            for arm in self.poses:
+                for pose in self.poses[arm]:
+                    d = np.linalg.norm(self._finger_bone_angles[arm.value] - self.poses[arm][pose])
+                    if d < 35:
+                        poses[arm] = pose
+                        break
+            # Check for poses that have ended.
+            for arm in self.ongoing_poses:
+                if self.ongoing_poses[arm] is None and arm in poses:
+                    self.ongoing_poses[arm] = poses[arm]
+                    self.commands.append({"$type": "set_ui_text",
+                                          "id": 0,
+                                          "text": poses[arm] + " started"})
+                if self.ongoing_poses[arm] is not None and arm not in poses:
+                    self.commands.append({"$type": "set_ui_text",
+                                          "id": 0,
+                                          "text": self.ongoing_poses[arm][:] + " ended"})
+                    self.ongoing_poses[arm] = None
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
@@ -150,6 +204,7 @@ class OculusLeapMotion(VR):
         :param transforms: The dictionary of bone transforms.
         :param collisions: The dictionary of collisions per bone.
         """
+
         for f in OculusLeapMotion.FINGERS:
             transforms.update({f: dict()})
             collisions.update({f: dict()})

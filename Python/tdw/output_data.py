@@ -543,63 +543,50 @@ class FlexParticles(OutputData):
 
 
 class VRRig(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(4, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(4, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(4, 3)
+
     def get_data(self) -> VR.VRRig:
         return VR.VRRig.GetRootAsVRRig(self.bytes, 0)
 
-    def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Position())
+    def get_position(self) -> np.ndarray:
+        return self._positions[0]
 
-    def get_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_xyzw(self.data.Rotation())
+    def get_rotation(self) -> np.ndarray:
+        return self._positions[1]
 
-    def get_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Forward())
+    def get_forward(self) -> np.ndarray:
+        return self._positions[2]
 
-    def _get_simple_transform(self, t: int) -> SimpleTransform:
-        if t == 0:
-            return self.data.LeftHand()
-        elif t == 1:
-            return self.data.RightHand()
-        elif t == 2:
-            return self.data.Head()
-        else:
-            raise Exception("Not defined: " + str(t))
+    def get_left_hand_position(self) -> np.ndarray:
+        return self._positions[1]
 
-    def _get_hand_position(self, is_left: bool) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(0 if is_left else 1).Position)
+    def get_left_hand_rotation(self) -> np.ndarray:
+        return self._rotations[1]
 
-    def _get_hand_rotation(self, is_left: bool) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self._get_simple_transform(0 if is_left else 1).Rotation)
+    def get_left_hand_forward(self) -> np.ndarray:
+        return self._forwards[1]
 
-    def _get_hand_forward(self, is_left: bool) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(0 if is_left else 1).Forward)
+    def get_right_hand_position(self) -> np.ndarray:
+        return self._positions[2]
 
-    def get_left_hand_position(self) -> Tuple[float, float, float]:
-        return self._get_hand_position(True)
+    def get_right_hand_rotation(self) -> np.ndarray:
+        return self._rotations[2]
 
-    def get_left_hand_rotation(self) -> Tuple[float, float, float, float]:
-        return self._get_hand_rotation(True)
+    def get_right_hand_forward(self) -> np.ndarray:
+        return self._forwards[2]
 
-    def get_left_hand_forward(self) -> Tuple[float, float, float]:
-        return self._get_hand_forward(True)
+    def get_head_position(self) -> np.ndarray:
+        return self._positions[3]
 
-    def get_right_hand_position(self) -> Tuple[float, float, float]:
-        return self._get_hand_position(False)
+    def get_head_rotation(self) -> np.ndarray:
+        return self._rotations[3]
 
-    def get_right_hand_rotation(self) -> Tuple[float, float, float, float]:
-        return self._get_hand_rotation(False)
-
-    def get_right_hand_forward(self) -> Tuple[float, float, float]:
-        return self._get_hand_forward(False)
-
-    def get_head_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(2).Position)
-
-    def get_head_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self._get_simple_transform(2).Rotation)
-
-    def get_head_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(2).Forward)
+    def get_head_forward(self) -> np.ndarray:
+        return self._forwards[3]
 
     def get_held_left(self) -> np.array:
         return self.data.HeldLeftAsNumpy()
@@ -1566,6 +1553,7 @@ class LeapMotion(OutputData):
         self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, 15, 3)
         self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, 15, 4)
         self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, 15, 3)
+        self._finger_bone_angles: np.ndarray = self.data.FingerBoneAnglesAsNumpy().reshape(2, 15)
         self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy()
         self._max_num_collisions: int = self._collision_ids.shape[0] // 32
         self._collision_ids = self._collision_ids.reshape((2, 16, self._max_num_collisions))

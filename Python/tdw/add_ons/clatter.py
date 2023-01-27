@@ -200,7 +200,10 @@ class Clatter(AddOn):
                         categories[object_id] = segm.get_object_category(j)
                         # Enable a scrape surface.
                         if model_name in DEFAULT_SCRAPE_MODELS or (object_id in self.objects and self.objects[object_id].scrape_model is not None):
-                            scrape_model = self.objects[object_id].scrape_model
+                            if model_name in DEFAULT_SCRAPE_MODELS:
+                                scrape_model = DEFAULT_SCRAPE_MODELS[model_name]
+                            else:
+                                scrape_model = self.objects[object_id].scrape_model
                             # Add the visual material.
                             material_record = Clatter.__VISUAL_MATERIAL_LIBRARIAN.get_record(name=scrape_model.visual_material)
                             self.commands.append({"$type": "add_material",
@@ -378,6 +381,7 @@ class Clatter(AddOn):
         """
 
         self.initialized = False
+        self._initialized_clatter = False
         self.objects.clear()
         if objects is not None:
             self.objects.update(objects)
@@ -415,7 +419,6 @@ class Clatter(AddOn):
         self.robot_material = robot_material
         self.human_material = human_material
         self.resonance_audio = resonance_audio
-        self._initialized_clatter = False
 
     @staticmethod
     def get_size(model: Union[np.ndarray, ModelRecord]) -> int:

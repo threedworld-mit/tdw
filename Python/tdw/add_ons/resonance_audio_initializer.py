@@ -3,7 +3,7 @@ from json import loads
 from pathlib import Path
 from typing import List, Dict
 from tdw.add_ons.audio_initializer_base import AudioInitializerBase
-from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.physics_audio.impact_material import ImpactMaterial
 
 
 class ResonanceAudioInitializer(AudioInitializerBase):
@@ -14,9 +14,9 @@ class ResonanceAudioInitializer(AudioInitializerBase):
     """
 
     """:class_var
-    A dictionary. Key = A Resonance Audio material string. Value = An [`AudioMaterial`](../physics_audio/audio_material.md).
+    A dictionary. Key = A Resonance Audio material string. Value = An [`ImpactMaterial`](../physics_audio/impact_material.md).
     """
-    AUDIO_MATERIALS: Dict[str, AudioMaterial] = {k: AudioMaterial[v] for k, v in loads(Path(resource_filename(__name__, "../physics_audio/resonance_audio_materials.json")).read_text()).items()}
+    IMPACT_MATERIALS: Dict[str, ImpactMaterial] = {k: ImpactMaterial[v] for k, v in loads(Path(resource_filename(__name__, "../physics_audio/resonance_audio_materials.json")).read_text()).items()}
 
     def __init__(self, avatar_id: str = "a", region_id: int = -1, floor: str = "parquet", ceiling: str = "acousticTile",
                  front_wall: str = "smoothPlaster", back_wall: str = "smoothPlaster", left_wall: str = "smoothPlaster",

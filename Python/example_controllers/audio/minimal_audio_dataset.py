@@ -1,10 +1,11 @@
 from pathlib import Path
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.physics_audio.clatter_object import ClatterObject
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
@@ -36,14 +37,19 @@ class MinimalAudioDataset(Controller):
                                                            left_wall=wall,
                                                            right_wall=wall)
         # Add PyImpact.
-        self.initial_amp = 0.9
-        self.py_impact: PyImpact = PyImpact(initial_amp=self.initial_amp,
-                                            resonance_audio=True,
-                                            floor=ResonanceAudioInitializer.AUDIO_MATERIALS[floor])
+        self.simulation_amp = 0.9
+        self.environment: ClatterObject = ClatterObject(impact_material=ResonanceAudioInitializer.IMPACT_MATERIALS[floor],
+                                                        size=4,
+                                                        amp=0.5,
+                                                        resonance=0.1,
+                                                        fake_mass=100)
+        self.clatter: Clatter = Clatter(simulation_amp=self.simulation_amp,
+                                        resonance_audio=True,
+                                        environment=self.environment)
         # Add an audio recorder.
         self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder(max_frames=1000)
 
-        self.add_ons.extend([camera, self.audio_initializer, self.py_impact, self.recorder])
+        self.add_ons.extend([camera, self.audio_initializer, self.clatter, self.recorder])
         # Initialize the scene.
         self.communicate(TDWUtils.create_empty_room(8, 8))
 
@@ -67,8 +73,9 @@ class MinimalAudioDataset(Controller):
         """
 
         # Reset the audio.
-        self.py_impact.reset(initial_amp=self.initial_amp)
-
+        self.clatter.reset(simulation_amp=self.simulation_amp,
+                           resonance_audio=True,
+                           environment=self.environment)
         # Add the object.
         object_id = self.get_unique_id()
         self.communicate(self.get_add_physics_object(model_name=name,

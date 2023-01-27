@@ -5,27 +5,25 @@ from argparse import ArgumentParser
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import ModelLibrarian
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.physics_audio.object_audio_static import ObjectAudioStatic, DEFAULT_OBJECT_AUDIO_STATIC_DATA
+from tdw.physics_audio.clatter_object import ClatterObject, DEFAULT_OBJECTS
 
 
 class RubeGoldbergDemo(Controller):
     """
     Create a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.
+
     Impact sounds are generated for each collision.
 
     Scene setup is handled through a json file -- rube_goldberg_object.json -- which defines the id number, position,
     rotation and scale for every object in the scene. For some objects, it also has non-default physics values.
     All other objects use default physics/audio values.
 
-    This controller will output two files per trial:
-
-    1. A log of the mode properties from PyImpact
-    2. A .wav file of the trial
+    This controller will output a .wav file of the trial.
     """
 
     BALL_ID: int = 0
@@ -38,7 +36,7 @@ class RubeGoldbergDemo(Controller):
         # Cached commands to destroy the objects.
         self.destroy_object_commands: List[dict] = list()
         # Cached audio override data.
-        self.static_audio_data_overrides: Dict[int, ObjectAudioStatic] = dict()
+        self.clatter_objects: Dict[int, ClatterObject] = dict()
         # Get commands to initialize the objects.
         object_setup_data = json.loads(Path("rube_goldberg_objects.json").read_text())
         for o in object_setup_data:
@@ -61,10 +59,10 @@ class RubeGoldbergDemo(Controller):
                                                                              dynamic_friction=object_setup_data[o]["physics"]["dynamic_friction"],
                                                                              static_friction=object_setup_data[o]["physics"]["static_friction"],
                                                                              bounciness=object_setup_data[o]["physics"]["bounciness"]))
-                object_audio = DEFAULT_OBJECT_AUDIO_STATIC_DATA[object_setup_data[o]["model_name"]]
+                object_audio: ClatterObject = DEFAULT_OBJECTS[object_setup_data[o]["model_name"]]
                 object_audio.mass = object_setup_data[o]["physics"]["mass"]
                 object_audio.bounciness = object_setup_data[o]["physics"]["bounciness"]
-                self.static_audio_data_overrides[object_id] = object_audio
+                self.clatter_objects[object_id] = object_audio
             # Use default physics values.
             else:
                 self.init_object_commands.extend(self.get_add_physics_object(model_name=object_setup_data[o]["model_name"],
@@ -108,19 +106,14 @@ class RubeGoldbergDemo(Controller):
         # Initialize audio.
         audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
 
-        # Add PyImpact.
-        # Here we have a large number of closely-occuring collisions resulting in a rapid series of "clustered"
-        # impact sounds, as opposed to a single object falling from a height.
-        # Using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant
-        # distortion of the audio.
-        # Note that logging is also enabled.
-        self.py_impact = PyImpact(initial_amp=0.25, logging=True,
-                                  static_audio_data_overrides=self.static_audio_data_overrides, scrape=False)
-
+        # Add Clatter.
+        # Here we have a large number of closely-occuring collisions resulting in a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height.
+        # Using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant distortion of the audio.
+        self.clatter: Clatter = Clatter(objects=self.clatter_objects, simulation_amp=0.25)
         # Add a recorder.
         self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder()
         # Add the add-ons.
-        self.add_ons.extend([camera, audio_initializer, self.py_impact, self.recorder])
+        self.add_ons.extend([camera, audio_initializer, self.clatter, self.recorder])
 
         # Keep track of the current trial number, for logging purposes.
         self.current_trial_num = 0
@@ -173,7 +166,7 @@ class RubeGoldbergDemo(Controller):
         if not dest_dir.exists():
             dest_dir.mkdir(parents=True)
         # Reset PyImpact.
-        self.py_impact.reset(initial_amp=0.25, static_audio_data_overrides=self.static_audio_data_overrides)
+        self.clatter.reset(simulation_amp=0.25, objects=self.clatter_objects)
         # Initialize the objects.
         self.communicate(self.init_object_commands)
         # Start recording audio.
@@ -181,8 +174,6 @@ class RubeGoldbergDemo(Controller):
         # Record audio.
         while not self.recorder.done:
             self.communicate([])
-        # Save the log.
-        dest_dir.joinpath("mode_properties_log.json").write_text(json.dumps(self.py_impact.mode_properties_log, indent=2))
         # Destroy the objects.
         self.communicate(self.destroy_object_commands)
 

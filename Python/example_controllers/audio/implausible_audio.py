@@ -41,7 +41,7 @@ audio = AudioInitializer(avatar_id="a")
 floor_material = ImpactMaterial.metal
 # Initialize Clatter.
 clatter = Clatter(simulation_amp=0.9, objects={object_id: object_audio},
-                  environment=ClatterObject(floor_material, 4, 0.5, 0.1, 100))
+                  environment=floor_material)
 # Add a recorder.
 recorder = PhysicsAudioRecorder()
 c.add_ons.extend([camera, audio, clatter, recorder])

@@ -13,13 +13,14 @@ class ClatterObject:
     """
 
     def __init__(self, impact_material: ImpactMaterial, size: int, amp: float, resonance: float,
-                 fake_mass: float = None, scrape_model: ScrapeModel = None):
+                 fake_mass: float = None, scrape_model: ScrapeModel = None, is_robot: bool = False):
         self.impact_material: ImpactMaterial = impact_material
         self.size: int = size
         self.amp: float = amp
         self.resonance: float = resonance
         self.fake_mass: Optional[float] = fake_mass
         self.scrape_model: Optional[ScrapeModel] = scrape_model
+        self.is_robot: bool = is_robot
 
 
 def __get_default_objects() -> Dict[str, ClatterObject]:

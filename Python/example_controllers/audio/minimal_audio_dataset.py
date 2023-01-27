@@ -5,7 +5,7 @@ from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.physics_audio.clatter_object import ClatterObject
+from tdw.physics_audio.impact_material import ImpactMaterial
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
@@ -38,11 +38,7 @@ class MinimalAudioDataset(Controller):
                                                            right_wall=wall)
         # Add PyImpact.
         self.simulation_amp = 0.9
-        self.environment: ClatterObject = ClatterObject(impact_material=ResonanceAudioInitializer.IMPACT_MATERIALS[floor],
-                                                        size=4,
-                                                        amp=0.5,
-                                                        resonance=0.1,
-                                                        fake_mass=100)
+        self.environment: ImpactMaterial = ResonanceAudioInitializer.IMPACT_MATERIALS[floor]
         self.clatter: Clatter = Clatter(simulation_amp=self.simulation_amp,
                                         resonance_audio=True,
                                         environment=self.environment)

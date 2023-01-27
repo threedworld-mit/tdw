@@ -62,12 +62,7 @@ camera = ThirdPersonCamera(avatar_id="a",
 # Initialize audio.
 audio = AudioInitializer(avatar_id=camera.avatar_id)
 # Create the Clatter add-on. Add the object data overrides and set the environment parameters.
-clatter = Clatter(objects=clatter_objects,
-                  environment=ClatterObject(impact_material=ImpactMaterial.metal,
-                                            size=4,
-                                            amp=0.5,
-                                            resonance=0.4,
-                                            fake_mass=100))
+clatter = Clatter(objects=clatter_objects, environment=ImpactMaterial.metal)
 # Add the add-ons.
 c.add_ons.extend([camera, audio, clatter])
 # Send the commands.

@@ -3,15 +3,15 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
-from tdw.add_ons.py_impact import PyImpact
-from tdw.physics_audio.object_audio_static import ObjectAudioStatic
-from tdw.physics_audio.audio_material import AudioMaterial
-from tdw.physics_audio.audio_material_constants import DYNAMIC_FRICTION, STATIC_FRICTION
+from tdw.add_ons.clatter import Clatter
+from tdw.physics_audio.clatter_object import ClatterObject
+from tdw.physics_audio.impact_material import ImpactMaterial
+from tdw.physics_audio.impact_material_constants import DYNAMIC_FRICTION, STATIC_FRICTION
 
 
-class ResetPyImpact(Controller):
+class ResetClatter(Controller):
     """
-    Reset `PyImpact` between trials.
+    Reset `Clatter` between trials.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
@@ -23,13 +23,17 @@ class ResetPyImpact(Controller):
                                    look_at={"x": 0, "y": 0.5, "z": 0},
                                    avatar_id="a")
         resonance_audio_floor = "parquet"
-        py_impact_floor = ResonanceAudioInitializer.AUDIO_MATERIALS[resonance_audio_floor]
+        floor_material = ResonanceAudioInitializer.IMPACT_MATERIALS[resonance_audio_floor]
         # Initialize audio.
         audio_initializer = ResonanceAudioInitializer(avatar_id="a", floor=resonance_audio_floor)
-        # Initialize PyImpact, using the controller's RNG.
-        self.py_impact = PyImpact(initial_amp=0.5, floor=py_impact_floor, rng=self.rng, resonance_audio=True)
+        # Initialize Clatter, using the controller's RNG.
+        self.clatter = Clatter(simulation_amp=0.5,
+                               environment=floor_material,
+                               random_seed=0,
+                               resonance_audio=True,
+                               min_time_between_impacts=0.25)
         # Initialize the scene.
-        self.add_ons.extend([camera, audio_initializer, self.py_impact])
+        self.add_ons.extend([camera, audio_initializer, self.clatter])
         self.communicate(TDWUtils.create_empty_room(7, 7))
 
     def trial(self) -> None:
@@ -38,17 +42,17 @@ class ResetPyImpact(Controller):
         object_name: str = "vase_02"
         object_mass: float = float(self.rng.uniform(0.5, 0.8))
         object_bounciness: float = float(self.rng.uniform(0.5, 0.7))
-        object_material = AudioMaterial.wood_soft
-        static_audio_data = ObjectAudioStatic(name=object_name,
-                                              object_id=object_id,
-                                              mass=object_mass,
-                                              bounciness=object_bounciness,
-                                              amp=0.6,
-                                              resonance=0.45,
-                                              size=1,
-                                              material=object_material)
-        # Reset PyImpact.
-        self.py_impact.reset(static_audio_data_overrides={object_id: static_audio_data})
+        object_material = ImpactMaterial.wood_soft
+        clatter_object = ClatterObject(impact_material=object_material,
+                                       size=1,
+                                       amp=0.6,
+                                       resonance=0.45)
+        # Reset Clatter.
+        self.clatter.reset(simulation_amp=0.5,
+                           objects={object_id: clatter_object},
+                           resonance_audio=True,
+                           min_time_between_impacts=0.25,
+                           random_seed=None)
         # Add the object.
         self.communicate(self.get_add_physics_object(model_name=object_name,
                                                      position={"x": 0, "y": float(self.rng.uniform(3, 4)), "z": 0},
@@ -72,5 +76,5 @@ class ResetPyImpact(Controller):
 
 
 if __name__ == "__main__":
-    c = ResetPyImpact()
+    c = ResetClatter()
     c.run()

@@ -36,6 +36,8 @@ The action can end for several reasons depending on the collision detection rule
 
 - `reset_arms_duration` The speed at which the arms are reset in seconds.
 
+- `scale_reset_arms_duration` If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+
 - `arrived_at` If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
 
 - `max_walk_cycles` The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
@@ -66,7 +68,7 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, arrived_at, max_walk_cycles)`**
+**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, max_walk_cycles)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -76,6 +78,7 @@ The action can end for several reasons depending on the collision detection rule
 | previous |  Optional[Action] |  | The previous action, if any. |
 | reset_arms |  bool |  | If True, reset the arms to their neutral positions while beginning the walk cycle. |
 | reset_arms_duration |  float |  | The speed at which the arms are reset in seconds. |
+| scale_reset_arms_duration |  bool |  | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
 | max_walk_cycles |  int |  | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 

@@ -1,11 +1,11 @@
 from copy import copy
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Optional
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, SegmentationColors, Bounds, StaticRigidbodies, StaticRobot, StaticOculusTouch
 from tdw.physics_audio.impact_material import ImpactMaterial
-from tdw.physics_audio.scrape_model import DEFAULT_SCRAPE_MODELS
+from tdw.physics_audio.scrape_model import ScrapeModel, DEFAULT_SCRAPE_MODELS
 from tdw.physics_audio.clatter_object import ClatterObject, DEFAULT_OBJECTS
 from tdw.librarian import MaterialLibrarian, ModelRecord
 
@@ -190,6 +190,7 @@ class Clatter(AddOn):
             object_masses: Dict[int, float] = dict()
             extents: Dict[int, np.ndarray] = dict()
             vr_nodes: Dict[int, ClatterObject] = dict()
+            scrape_models: Dict[int, Optional[ScrapeModel]] = dict()
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "boun":
@@ -209,6 +210,7 @@ class Clatter(AddOn):
                                 scrape_model = DEFAULT_SCRAPE_MODELS[model_name]
                             else:
                                 scrape_model = self.objects[object_id].scrape_model
+                            scrape_models[object_id] = scrape_model
                             # Add the visual material.
                             material_record = Clatter.__VISUAL_MATERIAL_LIBRARIAN.get_record(name=scrape_model.visual_material)
                             self.commands.append({"$type": "add_material",
@@ -221,6 +223,8 @@ class Clatter(AddOn):
                                                       "material_name": material_record.name,
                                                       "object_name": sub_object.name,
                                                       "id": object_id})
+                        else:
+                            scrape_models[object_id] = None
                 elif r_id == "srob":
                     srob = StaticRobot(resp[i])
                     for j in range(srob.get_num_joints()):
@@ -255,6 +259,7 @@ class Clatter(AddOn):
                 # Use default audio data.
                 elif name in DEFAULT_OBJECTS:
                     self.objects[object_id] = copy(DEFAULT_OBJECTS[name])
+                    self.objects[object_id].scrape_model = scrape_models[object_id]
                 else:
                     need_to_derive.append(object_id)
             current_values = self.objects.values()
@@ -291,7 +296,8 @@ class Clatter(AddOn):
                 derived_data[object_id] = ClatterObject(impact_material=material,
                                                         size=Clatter.get_size(model=extents[object_id]),
                                                         amp=amp,
-                                                        resonance=resonance)
+                                                        resonance=resonance,
+                                                        scrape_model=scrape_models[object_id])
             # Add the derived data.
             for object_id in derived_data:
                 self.objects[object_id] = derived_data[object_id]
@@ -322,7 +328,7 @@ class Clatter(AddOn):
                                            "resonance": float(clatter_object.resonance),
                                            "has_scrape_material": has_scrape_material})
                 if has_scrape_material:
-                    clatterize_command["scrape_material"] = clatter_object.scrape_model.scrape_material
+                    clatterize_command["scrape_material"] = clatter_object.scrape_model.scrape_material.name
                 if clatter_object.fake_mass is not None:
                     clatterize_command["has_fake_mass"] = True
                     clatterize_command["fake_mass"] = float(clatter_object.fake_mass)

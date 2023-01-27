@@ -313,15 +313,15 @@ class VRayExport(AddOn):
                         object_id = transform_matrices.get_id(j) 
                         # Get the matrix and convert it.
                         # Equivalent to: handedness * object_matrix * handedness.
-                        matrix = np.matmul(self.anim_fix, np.matmul(transform_matrices.get_matrix(j), self.anim_fix))
+                        matrix = np.matmul(np.matmul(self.anim_fix, transform_matrices.get_matrix(j)), self.anim_fix)
                         # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
                         pos_x = (matrix[3][0] * 100)
                         pos_y = (matrix[3][1] * 100)
                         pos_z = -(matrix[3][2] * 100)
-                        mat_struct = matrix_data_struct(column_one = str(matrix[0][0]) + "," + str(matrix[0][1]) + "," + str(matrix[0][2]), 
-                                                        column_two = str(matrix[1][0]) + "," + str(matrix[1][1]) + "," + str(matrix[1][2]), 
-                                                        column_three = str(matrix[2][0]) + "," + str(matrix[2][1]) + "," + str(matrix[2][2]),  
-                                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+                        mat_struct = matrix_data_struct(column_one = '{:f}'.format(matrix[0][0]) + "," + '{:f}'.format(matrix[0][1]) + "," + '{:f}'.format(-matrix[0][2]), 
+                                                        column_two = '{:f}'.format(matrix[1][0]) + "," + '{:f}'.format(matrix[1][1]) + "," + '{:f}'.format(-matrix[1][2]), 
+                                                        column_three = '{:f}'.format(-matrix[2][0]) + "," + '{:f}'.format(-matrix[2][1]) + "," + '{:f}'.format(matrix[2][2]),  
+                                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
                         # Get the model name for this ID
                         model_name = self.object_names[object_id]
                         self.write_static_node_data(model_name, mat_struct)

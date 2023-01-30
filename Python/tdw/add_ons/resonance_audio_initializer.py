@@ -20,7 +20,7 @@ class ResonanceAudioInitializer(AudioInitializerBase):
 
     def __init__(self, avatar_id: str = "a", region_id: int = -1, floor: str = "parquet", ceiling: str = "acousticTile",
                  front_wall: str = "smoothPlaster", back_wall: str = "smoothPlaster", left_wall: str = "smoothPlaster",
-                 right_wall: str = "smoothPlaster", framerate: int = 60):
+                 right_wall: str = "smoothPlaster", framerate: int = 30, physics_time_step: float = 0.02):
         """
         :param avatar_id: The ID of the avatar.
         :param region_id: The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
@@ -31,9 +31,10 @@ class ResonanceAudioInitializer(AudioInitializerBase):
         :param left_wall: The left wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param right_wall: The right wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple)
         :param framerate: The target simulation framerate.
+        :param physics_time_step: The physics timestep.
         """
 
-        super().__init__(avatar_id=avatar_id, framerate=framerate)
+        super().__init__(avatar_id=avatar_id, framerate=framerate, physics_time_step=physics_time_step)
         """:field
         The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
         """

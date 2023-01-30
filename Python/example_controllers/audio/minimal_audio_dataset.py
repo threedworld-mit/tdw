@@ -69,9 +69,7 @@ class MinimalAudioDataset(Controller):
         """
 
         # Reset the audio.
-        self.clatter.reset(simulation_amp=self.simulation_amp,
-                           resonance_audio=True,
-                           environment=self.environment)
+        self.clatter.reset()
         # Add the object.
         object_id = self.get_unique_id()
         self.communicate(self.get_add_physics_object(model_name=name,

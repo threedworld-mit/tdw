@@ -17,7 +17,7 @@ camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": 1, "y": 1, "z": -1},
                            look_at={"x": 0, "y": 0.5, "z": 0})
 audio_initializer = ResonanceAudioInitializer(avatar_id="a")
-clatter = Clatter(resonance_audio=True, min_time_between_impacts=0.25)
+clatter = Clatter(resonance_audio=True)
 c.add_ons.extend([camera, audio_initializer, clatter])
 c.communicate(commands)
 for i in range(200):

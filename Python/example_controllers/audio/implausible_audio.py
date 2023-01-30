@@ -1,4 +1,3 @@
-import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
@@ -13,7 +12,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 Generate audio using physics parameters that don't match the object's actual physics parameters.
 """
 
-rng = np.random.RandomState(0)
+
 c = Controller()
 floor_visual_material = "parquet_long_horizontal_clean"
 commands = [TDWUtils.create_empty_room(12, 12),
@@ -26,11 +25,11 @@ commands.extend(c.get_add_physics_object(model_name=model_name,
                                          object_id=object_id,
                                          position={"x": 0, "y": 2, "z": 0}))
 # Set random static audio data values.
-object_audio = ClatterObject(fake_mass=float(rng.uniform(4, 40)),
-                             impact_material=rng.choice([a for a in ImpactMaterial]),
-                             amp=float(rng.uniform(0.1, 1)),
-                             resonance=float(rng.uniform(0.1, 1)),
-                             size=int(rng.randint(1, 6)))
+object_audio = ClatterObject(fake_mass=30,
+                             impact_material=ImpactMaterial.wood_soft,
+                             amp=0.7,
+                             resonance=0.1,
+                             size=4)
 # Add a listener.
 camera = ThirdPersonCamera(avatar_id="a",
                            position={"x": 1, "y": 1.6, "z": -2},
@@ -40,8 +39,7 @@ audio = AudioInitializer(avatar_id="a")
 # Set a non-wood floor material.
 floor_material = ImpactMaterial.metal
 # Initialize Clatter.
-clatter = Clatter(simulation_amp=0.9, objects={object_id: object_audio},
-                  environment=floor_material)
+clatter = Clatter(simulation_amp=0.9, objects={object_id: object_audio}, environment=floor_material)
 # Add a recorder.
 recorder = PhysicsAudioRecorder()
 c.add_ons.extend([camera, audio, clatter, recorder])

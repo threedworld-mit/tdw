@@ -18,16 +18,17 @@ class Clatter(AddOn):
     # The visual material librarian used for scrape surfaces.
     __VISUAL_MATERIAL_LIBRARIAN: MaterialLibrarian = MaterialLibrarian("materials_high.json")
 
-    def __init__(self, objects: Dict[int, ClatterObject] = None, random_seed: int = None,
-                 simulation_amp: float = 0.5,
+    def __init__(self, objects: Dict[int, ClatterObject] = None, random_seed: int = None, simulation_amp: float = 0.5,
                  min_collision_speed: float = 0.00001, area_new_collision: float = 1e-5, scrape_angle: float = 80,
-                 impact_area_ratio: float = 5, roll_angular_speed: float = 0.5, max_contact_separation: float = 1e-8,
+                 impact_area_ratio: float = 5, roll_angular_speed: float = 1, max_contact_separation: float = 1e-8,
                  filter_duplicates: bool = True, max_num_contacts: int = 16, sound_timeout: float = 0.1,
                  prevent_impact_distortion: bool = True, clamp_impact_contact_time: bool = True,
-                 min_time_between_impacts: float = 0.05, max_time_between_impacts: float = 3,
+                 min_time_between_impacts: float = 0.25, max_time_between_impacts: float = 3,
                  max_scrape_speed: float = 5, loop_scrape_audio: bool = True, default_object: ClatterObject = None,
-                 environment: Union[ImpactMaterial, ClatterObject] = None, robot_material: ImpactMaterial = ImpactMaterial.metal,
-                 human_material: ImpactMaterial = ImpactMaterial.cardboard, resonance_audio: bool = False, dsp_buffer_size: int = 256):
+                 environment: Union[ImpactMaterial, ClatterObject] = None,
+                 robot_material: ImpactMaterial = ImpactMaterial.metal,
+                 human_material: ImpactMaterial = ImpactMaterial.cardboard,
+                 resonance_audio: bool = False, dsp_buffer_size: int = 256, roll_substitute: str = "impact"):
         """
         :param objects: A dictionary of [`ClatterObject`](../physics_audio/clatter_object.md) overrides. Key = object ID. If None, the list is empty. If an object is in the scene but not in this list, TDW will try to automatically create a `ClatterObject` for it, either using pre-calculated data or by deriving parameter values.
         :param random_seed: The random seed. If None, the seed is randomly selected within the build.
@@ -53,6 +54,7 @@ class Clatter(AddOn):
         :param human_material: The [`ImpactMaterial`](../physics_audio/impact_material.md) used for human body parts in VR.
         :param resonance_audio: If True, use [Resonance Audio](../../lessons/audio/resonance_audio.md) to play audio.
         :param dsp_buffer_size: The DSP buffer size. In TDW, the default is 1024. In Clatter, the default is 256 which reduces latency.
+        :param roll_substitute: Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. Options: `"impact"`, `"scrape"`, `"roll"`, `"none"`.
         """
 
         super().__init__()
@@ -99,6 +101,7 @@ class Clatter(AddOn):
         self._human_material: ImpactMaterial = human_material
         self._resonance_audio: bool = resonance_audio
         self._dsp_buffer_size: int = dsp_buffer_size
+        self._roll_substitute: str = roll_substitute
         self._initialized_clatter: bool = False
 
     def get_initialization_commands(self) -> List[dict]:
@@ -248,9 +251,6 @@ class Clatter(AddOn):
                 if not clatter_object.is_robot:
                     clatterize_command = {"$type": "clatterize_object",
                                           "id": int(object_id)}
-                    self.commands.append({"$type": "set_object_collision_detection_mode",
-                                          "id": int(object_id),
-                                          "mode": "discrete"})
                 else:
                     clatterize_command = {"$type": "clatterize_robot_joint",
                                           "id": int(robot_joints[object_id]["robot_id"]),
@@ -295,6 +295,7 @@ class Clatter(AddOn):
                                    "environment_amp": self._environment.amp,
                                    "environment_resonance": self._environment.resonance,
                                    "environment_mass": self._environment.fake_mass,
+                                   "roll_substitute": self._roll_substitute,
                                    "resonance_audio": self._resonance_audio}])
 
     def reset(self, objects: Dict[int, ClatterObject] = None, random_seed: int = None):

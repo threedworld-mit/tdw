@@ -19,7 +19,7 @@ camera = ThirdPersonCamera(position={"x": 1.3, "y": 2.1, "z": -1.1},
                            avatar_id="a")
 audio = AudioInitializer(avatar_id="a")
 # Initialized Clatter with a hardcoded random seed.
-clatter = Clatter(random_seed=0)
+clatter = Clatter(random_seed=0, simulation_amp=0.9)
 recorder = PhysicsAudioRecorder()
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("scrape")
 print(f"Audio will be saved to: {path}")
@@ -29,7 +29,7 @@ lib_core = ModelLibrarian("models_core.json")
 lib_flex = ModelLibrarian("models_flex.json")
 cube_mass = 1
 cube_bounciness = 0.4
-for scrape_surface_model_name in ["quatre_dining_table", "small_table_green_marble"]:
+for scrape_surface_model_name in ["glass_table", "quatre_dining_table", "small_table_green_marble"]:
     surface_record = lib_core.get_record(scrape_surface_model_name)
     for cube_audio_material, cube_visual_material in zip([ImpactMaterial.wood_medium, ImpactMaterial.ceramic, ImpactMaterial.metal],
                                                          ["wood_beech_natural", "ceramic_raw_striped", "metal_cast_iron"]):
@@ -67,13 +67,7 @@ for scrape_surface_model_name in ["quatre_dining_table", "small_table_green_marb
                                        resonance=0.25,
                                        size=1)
             # Reset Clatter.
-            clatter.reset(simulation_amp=0.9,
-                          objects={cube_id: cube_audio},
-                          scrape_angle=0,
-                          impact_area_ratio=100,
-                          roll_angular_speed=100,
-                          max_contact_separation=1,
-                          random_seed=0)
+            clatter.reset(objects={cube_id: cube_audio}, random_seed=0)
             c.communicate(commands)
             recorder.start(path=path.joinpath(f"{scrape_surface_model_name}_{cube_audio_material.name}_{force}.wav"))
             # Apply a lateral force to start scraping.

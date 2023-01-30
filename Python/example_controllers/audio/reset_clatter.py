@@ -30,8 +30,7 @@ class ResetClatter(Controller):
         self.clatter = Clatter(simulation_amp=0.5,
                                environment=floor_material,
                                random_seed=0,
-                               resonance_audio=True,
-                               min_time_between_impacts=0.25)
+                               resonance_audio=True,)
         # Initialize the scene.
         self.add_ons.extend([camera, audio_initializer, self.clatter])
         self.communicate(TDWUtils.create_empty_room(7, 7))
@@ -48,11 +47,7 @@ class ResetClatter(Controller):
                                        amp=0.6,
                                        resonance=0.45)
         # Reset Clatter.
-        self.clatter.reset(simulation_amp=0.5,
-                           objects={object_id: clatter_object},
-                           resonance_audio=True,
-                           min_time_between_impacts=0.25,
-                           random_seed=None)
+        self.clatter.reset(objects={object_id: clatter_object})
         # Add the object.
         self.communicate(self.get_add_physics_object(model_name=object_name,
                                                      position={"x": 0, "y": float(self.rng.uniform(3, 4)), "z": 0},

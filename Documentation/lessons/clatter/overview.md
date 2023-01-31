@@ -59,10 +59,6 @@ c.communicate({"$type": "terminate"})
 
 The `Clatter` add-on has *many* constructor parameters, all of which are optional. You can, for example, set the overall simulation volume (`simulation_amp`), include object-specific override data (`objects`), set the random seed (`random_seed`), and so on. [Read the API documentation for a full list of constructor parameters.](../../python/add_ons/clatter.md)
 
-## How to record Clatter audio
-
-You can record Clatter audio just like you would record any other audio in TDW. [This document explains how to record audio in TDW and includes some examples that use Clatter.](../audio/record_audio.md)
-
 ## Clatter and PyImpact
 
 Clatter is an upgrade and replacement of PyImpact. If you're new to TDW, you should always use Clatter instead of PyImpact. If you want to upgrade from PyImpact to Clatter, [read this.](../py_impact/py_impact_and_clatter.md)

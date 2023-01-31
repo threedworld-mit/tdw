@@ -17,6 +17,10 @@ class ResonanceAudioInitializer(AudioInitializerBase):
     A dictionary. Key = A Resonance Audio material string. Value = An [`ImpactMaterial`](../physics_audio/impact_material.md).
     """
     IMPACT_MATERIALS: Dict[str, ImpactMaterial] = {k: ImpactMaterial[v] for k, v in loads(Path(resource_filename(__name__, "../physics_audio/resonance_audio_materials.json")).read_text()).items()}
+    """:class_var
+    A dictionary. Key = An [`ImpactMaterial`](../physics_audio/impact_material.md). Value = A Resonance Audio material string.
+    """
+    RESONANCE_AUDIO_MATERIALS: Dict[ImpactMaterial, str] = {v: k for k, v in IMPACT_MATERIALS.items()}
 
     def __init__(self, avatar_id: str = "a", region_id: int = -1, floor: str = "parquet", ceiling: str = "acousticTile",
                  front_wall: str = "smoothPlaster", back_wall: str = "smoothPlaster", left_wall: str = "smoothPlaster",

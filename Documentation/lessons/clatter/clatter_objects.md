@@ -235,7 +235,7 @@ Clatter will only assign a `ScrapeModel` to a user-defined object if the user ex
 
 ***
 
-**Next: [Record Clatter audio](record_clatter.md)**
+**Next: [Recording Clatter audio with the `PhysicsAudioRecorder` add-on](record_clatter.md)**
 
 [Return to the README](../../../README.md)
 

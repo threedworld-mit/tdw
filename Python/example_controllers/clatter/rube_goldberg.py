@@ -160,13 +160,12 @@ class RubeGoldbergDemo(Controller):
     def do_trial(self):
         # Keep track of trial number.
         self.current_trial_num += 1
-
         # Create folder for this trial's logging info.
         dest_dir = self.output_directory.joinpath(str(self.current_trial_num))
         if not dest_dir.exists():
             dest_dir.mkdir(parents=True)
-        # Reset PyImpact.
-        self.clatter.reset(simulation_amp=0.25, objects=self.clatter_objects)
+        # Reset Clatter.
+        self.clatter.reset(objects=self.clatter_objects)
         # Initialize the objects.
         self.communicate(self.init_object_commands)
         # Start recording audio.

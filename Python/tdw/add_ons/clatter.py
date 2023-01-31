@@ -12,7 +12,7 @@ from tdw.librarian import MaterialLibrarian, ModelRecord
 
 class Clatter(AddOn):
     """
-    (TODO)
+    Initialize [Clatter](../../lessons/clatter/overview.md) in TDW.
     """
 
     # The visual material librarian used for scrape surfaces.

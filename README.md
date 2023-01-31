@@ -184,16 +184,18 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 ### 9.1 Clatter (Physically-derived audio)
 
 1. Overview
-2. Object audio data (ClatterObjects)
+2. Object audio data
 3. Impacts
 4. Scrapes
-5. Create .wav files without running TDW (Clatter CLI)
+5. Clatter and Resonance Audio
+6. Reset Clatter
+7. Manually generate audio (Clatter CLI)
 
 ### 9.2 PyImpact (obsolete predecessor to Clatter)
 
-1. [PyImpact](Documentation/lessons/py_impact.md)
-2. [PyImpact advanced](Documentation/lessons/py_impact_advanced.md)
-3. [PyImpact and Clatter](Documentation/lessons/py_impact_and_clatter.md)
+1. [PyImpact](Documentation/lessons/py_impact/py_impact.md)
+2. [PyImpact advanced](Documentation/lessons/py_impact/py_impact_advanced.md)
+3. [PyImpact and Clatter](Documentation/lessons/py_impact/py_impact_and_clatter.md)
 
 ## 10. Video Recording
 

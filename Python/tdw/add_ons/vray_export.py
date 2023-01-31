@@ -9,6 +9,7 @@ import re
 import zipfile
 import subprocess
 import numpy as np
+import boto3
 
 
 class matrix_data_struct(NamedTuple):
@@ -45,6 +46,8 @@ class VRayExport(AddOn):
                                   [0, 0, -1, 0],
                                   [0, -1, 0, 0],
                                   [0, 0, 0, 1]])
+        # List of vray-ready models
+        self.vray_model_list = []
         # Dictionary of model names by ID
         self.object_names: Dict[int, str] = dict()
         # Dictionary of model IDs by name
@@ -71,7 +74,19 @@ class VRayExport(AddOn):
                        "frequency": "always"}]
         return commands
 
+    def vray_model_exists(self, model_name: str) -> bool:
+        if model_name in self.vray_model_list:
+            return True
+        else:
+            return False
+
     def rebuild_object_list(self, resp: List[bytes]) -> None:
+        # Build up-to-date vray model list
+        s3 = boto3.resource('s3')
+        bucket = s3.Bucket('tdw-public')
+        for obj in bucket.objects.filter(Prefix='vray_models/'):
+            self.vray_model_list.append(obj.key.replace("vray_models/", "").replace(".zip", ""))
+        # Rebuild the object list.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get segmentation color output data.
@@ -81,8 +96,10 @@ class VRayExport(AddOn):
                     # Cache the object names and IDs.
                     object_id = segm.get_object_id(j)
                     object_name = segm.get_object_name(j)
-                    self.object_names[object_id] = object_name
-                    self.model_ids[object_name] = object_id
+                    # Make sure we have a vray model for this object.
+                    if vray_model_exists(object_name):
+                        self.object_names[object_id] = object_name
+                        self.model_ids[object_name] = object_id
 
     def on_send(self, resp: List[bytes]) -> None:
         """

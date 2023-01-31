@@ -347,7 +347,7 @@ class PyImpact(CollisionManager):
                                                             contact_normals=self.collision_events[object_id].collision.normals,
                                                             primary_id=target_audio.object_id,
                                                             primary_amp=target_audio.amp,
-                                                            primary_material=self._scrape_objects[scrape_surface_id].audio_material.name + "_" + str(target_audio.size),
+                                                            primary_material=target_audio.material.name + "_" + str(target_audio.size),
                                                             primary_mass=target_audio.mass,
                                                             secondary_id=other_audio.object_id,
                                                             secondary_amp=other_audio.amp,

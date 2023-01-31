@@ -178,10 +178,22 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/audio/overview.md)
 2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
 3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
-4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
-6. [Recording audio](Documentation/lessons/audio/record_audio.md)
-6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
-7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+4. [Recording audio](Documentation/lessons/audio/record_audio.md)
+5. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+
+### 9.1 Clatter (Physically-derived audio)
+
+1. Overview
+2. Object audio data (ClatterObjects)
+3. Impacts
+4. Scrapes
+5. Create .wav files without running TDW (Clatter CLI)
+
+### 9.2 PyImpact (obsolete predecessor to Clatter)
+
+1. [PyImpact](Documentation/lessons/py_impact.md)
+2. [PyImpact advanced](Documentation/lessons/py_impact_advanced.md)
+3. [PyImpact and Clatter](Documentation/lessons/py_impact_and_clatter.md)
 
 ## 10. Video Recording
 
@@ -282,7 +294,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
-2. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
+3. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
 
 # API Documentation
 

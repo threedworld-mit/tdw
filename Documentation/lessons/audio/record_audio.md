@@ -53,23 +53,23 @@
 - `AudioUtils.stop()` Stop an ongoing recording.
 - `AudioUtils.is_recording()` Returns True if the fmedia process is running.
 
-In this example controller, an object will fall. TDW will create audio using [`PyImpact`](py_impact.md) and record audio using `AudioUtils`:
+In this example controller, an object will fall. TDW will create audio using [`Clatter`](../clatter/overivew.md) and record audio using `AudioUtils`:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.audio_utils import AudioUtils
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-py_impact = PyImpact()
+camera = ThirdPersonCamera(position={"x": 0, "y": 1, "z": -1.5}, avatar_id="a")
+clatter = Clatter()
 audio = AudioInitializer(avatar_id="a")
-c.add_ons.extend([audio, py_impact])
+c.add_ons.extend([audio, camera, clatter])
 commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(TDWUtils.create_avatar(position={"x": 0, "y": 1, "z": -1.5},
-                                       avatar_id="a"))
 commands.extend(c.get_add_physics_object(model_name="vase_02",
                                          object_id=0,
                                          position={"x": 0, "y": 2, "z": 0}))
@@ -98,7 +98,7 @@ AudioUtils.start(output_path=path, device_name="Headset Microphone")
 
 ## Record audio with `PhysicsAudioRecorder`
 
-[`PhysicsAudioRecorder`](../../python/add_ons/physics_audio_recorder.md) is an add-on that augments `AudioUtils` for generating audio clips of sounds created via [`PyImpact`](py_impact.md). This is most convenient when generating audio datasets.
+[`PhysicsAudioRecorder`](../../python/add_ons/physics_audio_recorder.md) is an add-on that augments `AudioUtils` for generating audio clips of sounds created via [`Clatter`](../clatter/overview.md). This is most convenient when generating audio datasets.
 
 So far, we've ended audio recordings and audio trials by just waiting a certain number of frames, i.e. `for i in range(200):`. It's possible to end the trial when the audio events are actually finished. `PhysicsAudioRecorder` starts recording when you call `start(path)` and automatically stops recording when no objects are moving and the TDW build isn't outputting any audio.
 
@@ -107,19 +107,19 @@ This example is similar to the previous example except that it uses a `PhysicsAu
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 c = Controller()
-py_impact = PyImpact()
+camera = ThirdPersonCamera(position={"x": 0, "y": 1, "z": -1.5}, avatar_id="a")
+clatter = Clatter()
 audio = AudioInitializer(avatar_id="a")
 recorder = PhysicsAudioRecorder()
-c.add_ons.extend([audio, py_impact, recorder])
+c.add_ons.extend([audio, camera, clatter, recorder])
 commands = [TDWUtils.create_empty_room(12, 12)]
-commands.extend(TDWUtils.create_avatar(position={"x": 0, "y": 1, "z": -1.5},
-                                       avatar_id="a"))
 commands.extend(c.get_add_physics_object(model_name="vase_02",
                                          object_id=0,
                                          position={"x": 0, "y": 2, "z": 0}))
@@ -137,15 +137,15 @@ In some cases, audio events may continue for a long time (such as a ball that is
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 
 c = Controller()
-py_impact = PyImpact()
+clatter = Clatter()
 audio = AudioInitializer(avatar_id="a")
 recorder = PhysicsAudioRecorder(max_frames=1000)
-c.add_ons.extend([audio, py_impact, recorder])
+c.add_ons.extend([audio, clatter, recorder])
 ```
 
 You can optionally choose to make `PhysicsAudioRecorder` listen to audio events without actually saving .wav data by setting `record_audio=False` in the constructor:
@@ -164,7 +164,7 @@ c.add_ons.extend([audio, recorder])
 
 ## "Rube Goldberg" example controller
 
-[rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/rube_goldberg.py) combines a [photorealistic environment](../photorealism/overview.md), a [physics simulation](../physx/physx.md), and PyImpact. It creates a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.
+[rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/rube_goldberg.py) combines a [photorealistic environment](../photorealism/overview.md), a [physics simulation](../physx/physx.md), and Clatter. It creates a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.
 
 Usage: `python3 rube_goldberg.py [ARGUMENTS]` 
 
@@ -179,16 +179,13 @@ Scene setup, including the setup for all object components of the "Rube Goldberg
 
 Note that the `initial_amp` value is relatively low. This is because we have a large number of closely-occuring collisions resulting in a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height. Using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant distortion of the audio.
 
-The controller supports the running of multiple sequential runs (trials), primarily to illustrate an important aspect of PyImpact's synthesis model -- stochastic sampling. Every call to PyImpact, the sound resonant modes will be randomly sampled and the impacts will sound slightly different. Thus, two different objects in the same scene with the same material will create similar but unique sounds, and running the same scene repeatedly will generate similar but unique sounds each time.
+The controller supports the running of multiple sequential runs (trials), primarily to illustrate an important aspect of Clatter's synthesis model -- stochastic sampling. Every call to Clatter, the sound resonant modes will be randomly sampled and the impacts will sound slightly different. Thus, two different objects in the same scene with the same material will create similar but unique sounds, and running the same scene repeatedly will generate similar but unique sounds each time.
 
-This controller will output two files per trial:
-
-1. A log of the mode properties from PyImpact
-2. A .wav file of the trial
+This controller will output a .wav file per trial.
 
 ***
 
-**Next: [`PyImpact` (advanced API)](py_impact_advanced.md)**
+**Next: [Audio perception](audio_perception.md)**
 
 [Return to the README](../../../README.md)
 
@@ -196,7 +193,7 @@ This controller will output two files per trial:
 
 Example controllers:
 
-- [minimal_audio_dataset.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/minimal_audio_dataset.py) A minimal example of how to record a physics audio dataset using `AudioInitializer`, `PyImpact`, and `PhysicsAudioRecorder`.
+- [minimal_audio_dataset.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/minimal_audio_dataset.py) A minimal example of how to record a physics audio dataset using `AudioInitializer`, `Clatter`, and `PhysicsAudioRecorder`.
 - [scrape.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape.py) Record scrape sounds.
 - [rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/rube_goldberg.py)
 
@@ -205,4 +202,4 @@ Python API:
 - [`AudioUtils`](../../python/audio_utils.md)
 - [`PhysicsAudioRecorder`](../../python/add_ons/physics_audio_recorder.md)
 - [`AudioInitializer`](../../python/add_ons/audio_initializer.md)
-- [`PyImpact`](../../python/add_ons/py_impact.md)
+- [`Clatter`](../../python/add_ons/clatter.md)

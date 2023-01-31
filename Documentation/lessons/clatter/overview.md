@@ -9,13 +9,7 @@ Audio data is very different than [image](../visual_perception/overview.md) or [
 - Unlike all other data in TDW, audio output is strictly in realtime. It isn't possible for the underlying Unity engine to process audio at a faster rate.
 - Strictly speaking, it isn't possible to directly capture audio data from the build. It must be recorded with an external program. TDW includes several useful wrapper functions to make this easy and reliable.
 
-In this tutorial, you'll learn how to initialize audio, play pre-recorded audio, and how to record audio.
-
-## Physically-derived audio (Clatter)
-
-It is possible in TDW to generate and play audio from physical properties of two objects and the properties of a collision between them. This is handled via the C# Clatter library and the Python `Clatter` add-on. [Read this for more information.](../clatter/overview.md)
-
-Past versions of TDW used PyImpact instead of Clatter. Clatter is an upgrade replacement of PyImpact. If you're new to TDW, you should always use Clatter instead of PyImpact. If you want to upgrade from PyImpact to Clatter, [read this.](../py_impact/py_impact_and_clatter.md)
+In this tutorial, you'll learn how to initialize audio, play pre-recorded audio, generate dynamic audio from physics collision events, and how to record audio.
 
 ***
 

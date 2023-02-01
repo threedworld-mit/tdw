@@ -475,9 +475,8 @@ class VRayExport(AddOn):
 
     def export_animation(self, resp: List[bytes]):
         """
-        
+        Open the master scene file, so we can output the dynamic data for any moving objects and/or a moving camera.
         """
-        # Open the master scene file, so we can output the dynamic data for any moving objects and/or a moving camera.
         path = self.get_scene_file_path()      
         with open(path, "a") as f:                
             for i in range(len(resp) - 1):
@@ -526,8 +525,8 @@ class VRayExport(AddOn):
         output_path = str(self.output_path) + self.scene_name + ".png"
         #os.chmod("C://Program Files//Chaos Group//Vantage//vantage_console.exe", 0o777)
         if self.frame_count > 0:
-            # Write out to the master scene file the final frame_count as the end of the animation sequence.
-            self.export_animation_settings(self.frame_count)
+            # Write out to the master scene file the animation settings, including final frame_count, as the end of the animation sequence.
+            self.export_animation_settings()
             # Launch vantage in appropriate mode.
             subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
                         "-sceneFile=" + scene_path, 

@@ -13,7 +13,7 @@ class PhotorealVRay(Controller):
     """
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.frame_range = 100
+        self.frame_range = 150
         self.chair_id = self.get_unique_id()
         self.table_id = self.get_unique_id()
 
@@ -23,15 +23,12 @@ class PhotorealVRay(Controller):
                                    position={"x": -3, "y": 1, "z": 0},
                                    look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
-        """
         export = VRayExport(image_width=1280, 
                             image_height=720, 
                             scene_name="tdw_room", 
                             output_path="D:/VE2020_output/", 
                             animate=True,
                             local_render=False)
-        self.add_ons.extend([camera, export])
-        """
         self.add_ons.append(camera)
         # Set the resolution to 720p.
         # Set render quality to maximum.
@@ -72,7 +69,7 @@ class PhotorealVRay(Controller):
                                               rotation={"x": 0, "y": 35, "z": 0}),
                          self.get_add_object(model_name="chair_eames_plastic_armchair",
                                               object_id=self.chair_id,
-                                              position={"x": 0.9, "y": 0, "z": -1.25},
+                                              position={"x": 0.1, "y": 0, "z": 1.85},
                                               rotation={"x": 0, "y": 63.25, "z": 0}),
                          self.get_add_object(model_name="vase_05",
                                               object_id=self.get_unique_id(),
@@ -82,13 +79,15 @@ class PhotorealVRay(Controller):
                                               object_id=self.get_unique_id(),
                                               position={"x": 1.8, "y": 0.303, "z": -0.517},
                                               rotation={"x": 0, "y": 70, "z": 0})])
-        # Apply a force and run simulation for 100 frames.
-        self.communicate([{"$type": "apply_force_to_object",
+        for step in range(15):
+            resp = self.communicate([])
+        self.add_ons.append(export)
+        for step in range(15):
+            resp = self.communicate([])
+        # Apply a force and run simulation for 150 frames.
+        self.communicate({"$type": "apply_force_to_object",
                            "id": self.chair_id,
-                           "force": {"x": 0, "y": 0.5, "z": -10}},
-                          {"$type": "apply_force_to_object",
-                           "id": self.table_id,
-                           "force": {"x": 0, "y": 10.5, "z": 20}}])
+                           "force": {"x": 0, "y": 0.5, "z": -35}})
         for step in range(self.frame_range):
             resp = self.communicate([])
         

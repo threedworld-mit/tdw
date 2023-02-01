@@ -75,7 +75,8 @@ class VRayExport(AddOn):
         return commands
 
     def vray_model_exists(self, model_name: str) -> bool:
-        if model_name in self.vray_model_list:
+        # Make sure we test names in lower case, to match S3 naming. 
+        if model_name.lower() in self.vray_model_list:
             return True
         else:
             return False
@@ -97,7 +98,7 @@ class VRayExport(AddOn):
                     object_id = segm.get_object_id(j)
                     object_name = segm.get_object_name(j)
                     # Make sure we have a vray model for this object.
-                    if vray_model_exists(object_name):
+                    if self.vray_model_exists(object_name):
                         self.object_names[object_id] = object_name
                         self.model_ids[object_name] = object_id
 
@@ -354,7 +355,7 @@ class VRayExport(AddOn):
         """
         # Get the matrix and convert it.
         # Equivalent to: handedness * object_matrix * handedness.
-        matrix = np.matmul(np.matmul(self.handedness, transform_matrices.get_matrix(j)), self.handedness)
+        matrix = np.matmul(np.matmul(self.handedness, mat), self.handedness)
         # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
         pos_x = (matrix[3][0] * 100)
         pos_y = (matrix[3][1] * 100)
@@ -363,7 +364,7 @@ class VRayExport(AddOn):
                                         column_two = '{:f}'.format(matrix[1][0]) + "," + '{:f}'.format(matrix[1][1]) + "," + '{:f}'.format(-matrix[1][2]), 
                                         column_three = '{:f}'.format(-matrix[2][0]) + "," + '{:f}'.format(-matrix[2][1]) + "," + '{:f}'.format(matrix[2][2]),  
                                         column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
-        # Get the model name for this ID
+        # Get node ID from cached dictionary
         node_id_string = self.node_ids[model_name]
         # Form interpolation string.
         node_string = ("\n" + node_id_string + 

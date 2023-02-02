@@ -134,7 +134,7 @@ class MoveBy(Animate):
             distance_to_target = np.linalg.norm(dynamic.transform.position - self._destination)
             distance_traversed = np.linalg.norm(dynamic.transform.position - self._initial_position)
             # We arrived at the target.
-            if distance_to_target < self.arrived_at or distance_traversed > abs(self.distance):
+            if distance_to_target < self.arrived_at or distance_traversed > abs(self.distance) - self.arrived_at:
                 self.status = ActionStatus.success
             # Stop walking if there is a collision.
             elif len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:

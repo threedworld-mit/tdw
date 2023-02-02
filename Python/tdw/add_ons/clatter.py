@@ -27,8 +27,8 @@ class Clatter(AddOn):
                  max_scrape_speed: float = 5, loop_scrape_audio: bool = True, default_object: ClatterObject = None,
                  environment: Union[ImpactMaterial, ClatterObject] = None,
                  robot_material: ImpactMaterial = ImpactMaterial.metal,
-                 human_material: ImpactMaterial = ImpactMaterial.cardboard,
-                 resonance_audio: bool = False, dsp_buffer_size: int = 256, roll_substitute: str = "impact"):
+                 human_material: ImpactMaterial = ImpactMaterial.cardboard, resonance_audio: bool = False,
+                 max_num_events: int = 200, dsp_buffer_size: int = 256, roll_substitute: str = "impact"):
         """
         :param objects: A dictionary of [`ClatterObject`](../physics_audio/clatter_object.md) overrides. Key = object ID. If None, the list is empty. If an object is in the scene but not in this list, TDW will try to automatically create a `ClatterObject` for it, either using pre-calculated data or by deriving parameter values.
         :param random_seed: The random seed. If None, the seed is randomly selected within the build.
@@ -53,6 +53,7 @@ class Clatter(AddOn):
         :param robot_material: The [`ImpactMaterial`](../physics_audio/impact_material.md) used for robots.
         :param human_material: The [`ImpactMaterial`](../physics_audio/impact_material.md) used for human body parts in VR.
         :param resonance_audio: If True, use [Resonance Audio](../../lessons/audio/resonance_audio.md) to play audio.
+        :param max_num_events: The maximum number of impacts, scrapes, and rolls that can be processed on a single communicate() call.
         :param dsp_buffer_size: The DSP buffer size. In TDW, the default is 1024. In Clatter, the default is 256 which reduces latency.
         :param roll_substitute: Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. Options: `"impact"`, `"scrape"`, `"roll"`, `"none"`.
         """
@@ -100,6 +101,7 @@ class Clatter(AddOn):
         self._robot_material: ImpactMaterial = robot_material
         self._human_material: ImpactMaterial = human_material
         self._resonance_audio: bool = resonance_audio
+        self._max_num_events: int = max_num_events
         self._dsp_buffer_size: int = dsp_buffer_size
         self._roll_substitute: str = roll_substitute
         self._initialized_clatter: bool = False
@@ -296,7 +298,8 @@ class Clatter(AddOn):
                                    "environment_resonance": self._environment.resonance,
                                    "environment_mass": self._environment.fake_mass,
                                    "roll_substitute": self._roll_substitute,
-                                   "resonance_audio": self._resonance_audio}])
+                                   "resonance_audio": self._resonance_audio,
+                                   "max_num_events": self._max_num_events}])
 
     def reset(self, objects: Dict[int, ClatterObject] = None, random_seed: int = None):
         """

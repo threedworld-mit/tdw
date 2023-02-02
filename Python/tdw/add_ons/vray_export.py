@@ -46,7 +46,7 @@ class VRayExport(AddOn):
                                   [0, 0, -1, 0],
                                   [0, -1, 0, 0],
                                   [0, 0, 0, 1]])
-        # List of vray-ready models
+        # List of vray-ready models, compiled dynamically from Amazon S3 bucket.
         self.vray_model_list = []
         # Dictionary of model names by ID
         self.object_names: Dict[int, str] = dict()
@@ -57,6 +57,7 @@ class VRayExport(AddOn):
         # The current frame count.
         self.frame_count: int = 0
         self.downloaded_data = False;
+
 
 
     def get_initialization_commands(self) -> List[dict]:
@@ -101,6 +102,8 @@ class VRayExport(AddOn):
                     if self.vray_model_exists(object_name):
                         self.object_names[object_id] = object_name
                         self.model_ids[object_name] = object_id
+                    else:
+                        raise Exception("Model " + object_name + " does not have a V-Ray-ready equivalent; cannot continue processing scene.")
 
     def on_send(self, resp: List[bytes]) -> None:
         """
@@ -123,10 +126,6 @@ class VRayExport(AddOn):
         # Process object or camera movement.
         if self.animate:
             self.export_animation(resp=resp)
-            self.export_animation_settings()
-        # Launch the Vantage render job.
-        if self.local_render:
-            self.launch_render()
         
     def get_scene_file_path(self) -> str:
         """
@@ -471,7 +470,6 @@ class VRayExport(AddOn):
                          ");\n" + 
                          "}\n")
             f.write(out_string)
-
 
     def export_animation(self, resp: List[bytes]):
         """

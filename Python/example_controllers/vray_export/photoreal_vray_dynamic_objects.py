@@ -28,7 +28,7 @@ class PhotorealVRay(Controller):
                             scene_name="tdw_room", 
                             output_path="D:/VE2020_output/", 
                             animate=True,
-                            local_render=False)
+                            local_render=True)
         self.add_ons.append(camera)
         # Set the resolution to 720p.
         # Set render quality to maximum.
@@ -90,6 +90,8 @@ class PhotorealVRay(Controller):
                            "force": {"x": 0, "y": 0.5, "z": -35}})
         for step in range(self.frame_range):
             resp = self.communicate([])
+        # Launch the render in headless mode; it will run to completion and automatically close.
+        export.launch_render()
         
 
 if __name__ == "__main__":

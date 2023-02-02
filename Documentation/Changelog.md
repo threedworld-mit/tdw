@@ -34,6 +34,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - Fixed: At speeds greater than 60 FPS, the Replicant will appear move its arms and head much slower than its animations. This is due to arm and head motion being driven by a separate system. Now, the `duration` parameter of these actions is scaled via optional parameters, resulting in much more even motions. The value of these parameters defaults to True; if False, `duration` won't be scaled.
   - Added optional parameter `scale_reset_arms_duration` to `move_by()` and `move_to()`.
   - Added optional parameter `scale_duration` to `reach_for()`, `reset_arm()`, `look_at()`, and `reset_head()`.
+- Fixed: The `arrived_at` parameter in `replicant.move_by()` and `replicant.move_to()` sometimes doesn't get applied when checking if the Replicant arrived at the target.
 
 ### Documentation
 

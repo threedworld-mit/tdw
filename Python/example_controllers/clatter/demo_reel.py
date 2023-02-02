@@ -1,4 +1,3 @@
-from os import chdir
 from time import sleep
 from io import BytesIO
 from typing import Dict
@@ -25,16 +24,17 @@ class DemoReel(Controller):
     Controller.MODEL_LIBRARIANS["models_flex.json"] = ModelLibrarian("models_flex.json")
     Controller.MODEL_LIBRARIANS["models_core.json"] = ModelLibrarian("models_core.json")
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True,
+                 width: int = 1920, height: int = 1080):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.communicate([{"$type": "set_render_quality",
                            "render_quality": 5},
                           {"$type": "set_screen_size",
-                           "width": 1920,
-                           "height": 1080}])
+                           "width": width,
+                           "height": height}])
         self.audio_device: str = self.get_audio_device()
-        self.window_position: Dict[str, float] = TDWUtils.get_expected_window_position(window_width=1920,
-                                                                                       window_height=1080,
+        self.window_position: Dict[str, float] = TDWUtils.get_expected_window_position(window_width=width,
+                                                                                       window_height=height,
                                                                                        monitor_index=1,
                                                                                        title_bar_height=12)
         self.output_directory: Path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("clatter_demo_reel").resolve()
@@ -408,8 +408,7 @@ class DemoReel(Controller):
         self.communicate({"$type": "start_video_capture_windows",
                           "output_path": str(self.output_directory.joinpath(f"{self.filename}.mp4")),
                           "position": self.window_position,
-                          "audio_device": self.audio_device,
-                          "qp": 0})
+                          "audio_device": self.audio_device})
         self.filename += 1
 
     def play(self, frames: int, delay: float = 0) -> None:
@@ -419,18 +418,6 @@ class DemoReel(Controller):
         for i in range(frames):
             self.communicate([])
         self.communicate({"$type": "stop_video_capture"})
-
-    def concat(self) -> None:
-        text = ""
-        chdir(str(self.output_directory))
-        for f in self.output_directory.iterdir():
-            fixed_filename = f"{f.stem}_fixed.mp4"
-            text += f"file '{fixed_filename}'\n"
-            run(["ffmpeg", "-y", "-itsoffset", "00:00:00.2", "-i", f.name, fixed_filename],
-                stderr=DEVNULL)
-        self.output_directory.joinpath("videos.txt").write_text(text.strip())
-        run(["ffmpeg", "-f", "concat", "-i", "videos.txt", "-c", "copy", "demo_reel.mp4"],
-            stderr=DEVNULL)
 
 
 if __name__ == "__main__":
@@ -443,5 +430,4 @@ if __name__ == "__main__":
     c.scrape_wood()
     c.crash()
     c.intro_splash()
-    c.concat()
     c.communicate({"$type": "terminate"})

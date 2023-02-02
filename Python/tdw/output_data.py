@@ -844,7 +844,7 @@ class Containment(OutputData):
     def get_tag(self) -> ContainerTag:
         return ContainerTag(self.data.Tag())
 
-    def get_overlap_ids(self) -> np.array:
+    def get_overlap_ids(self) -> np.ndarray:
         return self.data.OverlapIdsAsNumpy()
 
     def get_env(self) -> bool:

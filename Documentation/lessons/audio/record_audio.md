@@ -35,7 +35,7 @@
 1. [Download fmedia.](https://stsaz.github.io/fmedia/)
 2. Unpack archive to the directory of your choice.
 3. [Add the location of the fmedia directory to the $PATH variable.](https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion/)
-4. Download [iShowU Audio Capture](https://support.shinywhitebox.com).
+4. Download [iShowU Audio Capture](https://support.shinywhitebox.com) or [BlackHole](https://github.com/ExistentialAudio/BlackHole).
 5. Go to “Audio MIDI Setup” on your Mac and create a new device with multiple output channels that should include the “iShowU Audio Capture” and the usual device that you use for audio output in your computer.
 
 #### Linux
@@ -127,7 +127,7 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("physics_audio_recorder/audio.wav
 print(f"Audio will be saved to: {path}")
 recorder.start(path=path)
 c.communicate(commands)
-while recorder.done:
+while not recorder.done:
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```

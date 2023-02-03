@@ -17,10 +17,10 @@ class OculusTouchButtonListener(Controller):
         self.simulation_done = False
         self.trial_done = False
         self.vr = OculusTouch()
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # End the trial when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.end_trial)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # End the trial when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.end_trial)
         self.add_ons.extend([self.vr])
         self.communicate(TDWUtils.create_empty_room(12, 12))
 

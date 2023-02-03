@@ -27,4 +27,4 @@ In each test, there are 100 objects in the scene. There is no camera or image da
 
 **Next: [Command deserialization](command_deserialization.md)**
 
-[Return to the README](../../../README.md)
+[Return to the README](../../README.md)

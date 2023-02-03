@@ -1428,6 +1428,188 @@
             "wcategory": "incline",
             "wnid": "n09999999"
         },
+        "spider": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 127027,
+                "Linux": 175351,
+                "Windows": 121569
+            },
+            "bounds": {
+                "back": {
+                    "x": 1735.95068,
+                    "y": -236.493164,
+                    "z": -10669.1211
+                },
+                "bottom": {
+                    "x": 1735.95068,
+                    "y": -4223.38232,
+                    "z": -1000.0
+                },
+                "center": {
+                    "x": 1735.95068,
+                    "y": -236.493164,
+                    "z": -1000.0
+                },
+                "front": {
+                    "x": 1735.95068,
+                    "y": -236.493164,
+                    "z": 8669.121
+                },
+                "left": {
+                    "x": -5793.622,
+                    "y": -236.493164,
+                    "z": -1000.0
+                },
+                "right": {
+                    "x": 9265.523,
+                    "y": -236.493164,
+                    "z": -1000.0
+                },
+                "top": {
+                    "x": 1735.95068,
+                    "y": 3750.396,
+                    "z": -1000.0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": true,
+            "do_not_use_reason": "This model is used to test backend model pipeline functionality.",
+            "flex": false,
+            "name": "spider",
+            "physics_quality": 0.6651088836167821,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Augentex"
+                    ],
+                    "name": "Auge"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein1Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein1Re"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein2Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein2Re"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein3Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein3Re"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein4Li"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Bein4Re"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "Brust"
+                },
+                {
+                    "materials": [
+                        "Augentex"
+                    ],
+                    "name": "Duplicate05"
+                },
+                {
+                    "materials": [
+                        "HLeibTex"
+                    ],
+                    "name": "HLeib01"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "klZahn"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "klZahn2"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "Kopf"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "Kopf2"
+                },
+                {
+                    "materials": [
+                        "Skin"
+                    ],
+                    "name": "OK"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Zahn"
+                },
+                {
+                    "materials": [
+                        "BeinTex"
+                    ],
+                    "name": "Zahn2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/spider",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/spider",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/spider"
+            },
+            "volume": 493250500000.0,
+            "wcategory": "test",
+            "wnid": "n00791078"
+        },
         "stairs_one": {
             "asset_bundle_sizes": {
                 "Darwin": 1582800,

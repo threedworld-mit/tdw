@@ -105,13 +105,15 @@ c.communicate([{"$type": "set_revolute_target",
 
 ## Get dynamic robot data and check if the joints are still moving
 
-To determine whether the robot's joints are still moving, you'll need to send [`send_robots`](../../api/command_api.md#send_robots) which will return [`Robot`](../../api/output_data.md#Robot) output data. In this example, we'll get the starting position of the joints. Per frame, we'll then parse `Robot` output data and compare it to the previous positions. If all of the joints have stopped moving or nearly stopped moving, the controller ends:
+To determine whether the robot's joints are still moving, you'll need to send [`send_dynamic_robots`](../../api/command_api.md#send_dynamic_robots) which will return [`DynamicRobotS`](../../api/output_data.md#DynamicRobots) output data. In this example, we'll get the starting position of the joints. Per frame, we'll then parse `DynamicRobots` output data and compare it to the previous positions. If all of the joints have stopped moving or nearly stopped moving, the controller ends. 
+
+Note that we need to use `StaticRobots`  to know how to read `DynamicRobots`. `DynamicRobots` doesn't sort data by ID like most TDW output data and as a result is somewhat difficult to use; on the other hand, it is optimized for speed.
 
 ```python
 import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import OutputData, StaticRobot, Robot
+from tdw.output_data import OutputData, StaticRobot, DynamicRobots
 
 c = Controller()
 robot_id = c.get_unique_id()
@@ -119,10 +121,11 @@ resp = c.communicate([TDWUtils.create_empty_room(12, 12),
                       c.get_add_robot(name="ur5",
                                       robot_id=robot_id),
                       {"$type": "send_static_robots"},
-                      {"$type": "send_robots",
+                      {"$type": "send_dynamic_robots",
                        "frequency": "always"}])
 joint_names_and_ids = dict()
-joint_positions_0 = dict()
+joint_indices = np.array([0])
+joint_angles_0 = list()
 for i in range(len(resp) - 1):
     r_id = OutputData.get_data_type_id(resp[i])
     if r_id == "srob":
@@ -131,12 +134,11 @@ for i in range(len(resp) - 1):
             joint_id = srob.get_joint_id(j)
             joint_name = srob.get_joint_name(j)
             joint_names_and_ids[joint_name] = joint_id
-    elif r_id == "robo":
-        robo = Robot(resp[i])
-        for j in range(robo.get_num_joints()):
-            joint_id = robo.get_joint_id(j)
-            joint_position = robo.get_joint_position(j)
-            joint_positions_0[joint_id] = np.array(joint_position)
+            joint_indices = srob.get_joint_indices()
+    elif r_id == "drob":
+        dynamic_robots = DynamicRobots(resp[i])
+        for index in joint_indices:
+            joint_angles_0.append(dynamic_robots.get_joint_angles(index[1]))
 
 resp = c.communicate([{"$type": "set_revolute_target",
                        "id": robot_id,
@@ -150,21 +152,19 @@ done = False
 while not done:
     done = True
     # Get the current joint positions.
-    joint_positions_1 = dict()
+    joint_angles_1 = list()
     for i in range(len(resp) - 1):
         r_id = OutputData.get_data_type_id(resp[i])
-        if r_id == "robo":
-            robo = Robot(resp[i])
-            for j in range(robo.get_num_joints()):
-                joint_id = robo.get_joint_id(j)
-                joint_position = robo.get_joint_position(j)
-                joint_positions_1[joint_id] = np.array(joint_position)
+        if r_id == "drob":
+            dynamic_robots = DynamicRobots(resp[i])
+            for index in joint_indices:
+                joint_angles_1.append(dynamic_robots.get_joint_angles(index[1]))
     # Check if any of the joints are still moving.
-    for j0, j1 in zip(joint_positions_0, joint_positions_1):
-        if np.linalg.norm(joint_positions_0[j0] - joint_positions_1[j1]) > 0.001:
+    for j0, j1 in zip(joint_angles_0, joint_angles_1):
+        if np.linalg.norm(j0 - j1) > 0.001:
             done = False
             break
-    joint_positions_0 = joint_positions_1
+    joint_angles_0 = joint_angles_1[:]
     resp = c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
@@ -318,7 +318,7 @@ Command API:
 
 - [`add_robot`](../../api/command_api.md#add_robot)
 - [`send_static_robots`](../../api/command_api.md#send_static_robots)
-- [`send_robots`](../../api/command_api.md#send_robots)
+- [`send_dynamic_robots`](../../api/command_api.md#send_dynamic_robots)
 - [`set_revolute_target`](../../api/command_api.md#set_revolute_target)
 - [`set_prismatic_target`](../../api/command_api.md#set_prismatic_target)
 - [`set_spherical_target`](../../api/command_api.md#set_spherical_target)
@@ -335,4 +335,4 @@ Command API:
 Output Data API:
 
 - [`StaticRobot`](../../api/output_data.md#StaticRobot)
-- [`Robot`](../../api/output_data.md#Robot)
+- [`DynamicRobots`](../../api/output_data.md#DynamicRobots)

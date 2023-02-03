@@ -131,7 +131,7 @@ You can run [`screenshotter.py --type models_full`](../core_concepts/objects.md)
 
 ***
 
-**Next: [Add your own models to TDW](custom_models.md)**
+**This is the last document in the "3D model libraries" tutorial.**
 
 [Return to the README](../../../README.md)
 

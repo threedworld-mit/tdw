@@ -133,6 +133,28 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/hammering"
             }
         },
+        "idle_251087": {
+            "duration": 17.65,
+            "framerate": 60,
+            "loop": false,
+            "name": "idle_251087",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/idle_251087",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/idle_251087",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/idle_251087"
+            }
+        },
+        "idle_251105": {
+            "duration": 15.33333,
+            "framerate": 60,
+            "loop": false,
+            "name": "idle_251105",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/idle_251105",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/idle_251105",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/idle_251105"
+            }
+        },
         "kick_ball": {
             "duration": 6.733,
             "framerate": 120,
@@ -142,6 +164,50 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/kick_ball",
                 "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/kick_ball",
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/kick_ball"
+            }
+        },
+        "kitchen_bendoverandopendrawer_f": {
+            "duration": 8.25,
+            "framerate": 60,
+            "loop": false,
+            "name": "kitchen_bendoverandopendrawer_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_bendoverandopendrawer_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_bendoverandopendrawer_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_bendoverandopendrawer_f"
+            }
+        },
+        "kitchen_cooking_f": {
+            "duration": 11.33333,
+            "framerate": 60,
+            "loop": false,
+            "name": "kitchen_cooking_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_cooking_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_cooking_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_cooking_f"
+            }
+        },
+        "kitchen_microwave_m": {
+            "duration": 11.83333,
+            "framerate": 60,
+            "loop": false,
+            "name": "kitchen_microwave_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_microwave_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_microwave_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_microwave_m"
+            }
+        },
+        "kitchen_refrigerator_f": {
+            "duration": 12.53333,
+            "framerate": 60,
+            "loop": false,
+            "name": "kitchen_refrigerator_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_refrigerator_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_refrigerator_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_refrigerator_f"
             }
         },
         "kneeling": {

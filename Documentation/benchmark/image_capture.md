@@ -53,4 +53,4 @@ Performance benchmark to compare `Images` data to alternative observation data.
 
 **Next: [Object data](object_data.md)**
 
-[Return to the README](../../../README.md)
+[Return to the README](../../README.md)

@@ -46,10 +46,10 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 **`self.on_send(resp)`**
 
-This is called after commands are sent to the build and a response is received.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -59,7 +59,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ This is called before sending commands to the build. By default, this function d
 
 **`self.add_text(text, font_size, position)`**
 
-**`self.add_text(text, font_size, position, anchor=None, pivot=None, color=None)`**
+**`self.add_text(text, font_size, position, anchor=None, pivot=None, color=None, raycast_target=True)`**
 
 Add UI text to the scene.
 
@@ -82,6 +82,7 @@ Add UI text to the scene.
 | anchor |  Dict[str, float] | None | The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
 | pivot |  Dict[str, float] | None | The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
 | color |  Dict[str, float] | None | The color of the text. If None, defaults to `{"r": 1, "g": 1, "b": 1, "a": 1}`. |
+| raycast_target |  bool  | True | If True, raycasts will hit the UI element. |
 
 _Returns:_  The ID of the new UI element.
 
@@ -89,7 +90,7 @@ _Returns:_  The ID of the new UI element.
 
 **`self.add_image(image, position, size)`**
 
-**`self.add_image(image, position, size, rgba=True, scale_factor=None, anchor=None, pivot=None, color=None)`**
+**`self.add_image(image, position, size, rgba=True, scale_factor=None, anchor=None, pivot=None, color=None, raycast_target=True)`**
 
 Add a UI image to the scene.
 
@@ -104,6 +105,7 @@ Add a UI image to the scene.
 | anchor |  Dict[str, float] | None | The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
 | pivot |  Dict[str, float] | None | The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
 | color |  Dict[str, float] | None | The color of the text. If None, defaults to `{"r": 1, "g": 1, "b": 1, "a": 1}`. |
+| raycast_target |  bool  | True | If True, raycasts will hit the UI element. |
 
 _Returns:_  The ID of the new UI element.
 

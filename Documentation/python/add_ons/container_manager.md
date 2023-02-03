@@ -44,10 +44,10 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 **`self.on_send(resp)`**
 
-This is called after commands are sent to the build and a response is received.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -57,62 +57,11 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
-
-#### add_box
-
-**`self.add_box(object_id, position, tag, half_extents, rotation)`**
-
-Add a box container shape to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the box relative to the parent object. |
-| tag |  ContainerTag |  | The box's semantic [`ContainerTag`](../container_data/container_tag.md). |
-| half_extents |  Dict[str, float] |  | The half-extents (half the scale) of the box. |
-| rotation |  Dict[str, float] |  | The rotation of the box in Euler angles relative to the parent object. |
-
-_Returns:_  The ID of the container shape.
-
-#### add_cylinder
-
-**`self.add_cylinder(object_id, position, tag, radius, height, rotation)`**
-
-Add a cylinder container shape to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the cylinder relative to the parent object. |
-| tag |  ContainerTag |  | The cylinder's semantic [`ContainerTag`](../container_data/container_tag.md). |
-| radius |  float |  | The radius of the cylinder. |
-| height |  float |  | The height of the cylinder. |
-| rotation |  Dict[str, float] |  | The rotation of the cylinder in Euler angles relative to the parent object. |
-
-_Returns:_  The ID of the container shape.
-
-#### add_sphere
-
-**`self.add_sphere(object_id, position, tag, radius)`**
-
-Add a sphere container shape to an object.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| object_id |  int |  | The ID of the object. |
-| position |  Dict[str, float] |  | The position of the sphere relative to the parent object. |
-| tag |  ContainerTag |  | The sphere's semantic [`ContainerTag`](../container_data/container_tag.md). |
-| radius |  float |  | The radius of the sphere. |
-
-_Returns:_  The ID of the container shape.
 
 #### reset
 

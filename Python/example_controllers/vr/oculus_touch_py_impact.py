@@ -18,10 +18,10 @@ class OculusTouchPyImpact(Controller):
         self.simulation_done = False
         self.trial_done = False
         self.vr = OculusTouch(set_graspable=True)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # End the trial when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.end_trial)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # End the trial when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.end_trial)
         # Enable PyImpact.
         self.py_impact = PyImpact()
         self.add_ons.extend([self.vr, self.py_impact])

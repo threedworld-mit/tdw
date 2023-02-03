@@ -20,8 +20,8 @@ class BoxContainer(ContainerShape):
         """:field
         The half extents of the box.
         """
-        self.half_extents: Dict[str, float] = half_extents
+        self.half_extents: Dict[str, float] = {k: float(v) for k, v in half_extents.items()}
         """:field
         The rotation of the box relative to the parent object in Euler angles.
         """
-        self.rotation: Dict[str, float] = rotation
+        self.rotation: Dict[str, float] = {k: float(v) for k, v in rotation.items()}

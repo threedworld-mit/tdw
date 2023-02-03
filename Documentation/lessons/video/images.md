@@ -2,11 +2,9 @@
 
 # Image-only video
 
-## Option A: Capture images and convert them to a video
-
 The simplest way to record video in TDW is to capture image data per-frame, save it to disk, and convert the images to a video using [ffmpeg](https://www.ffmpeg.org/).
 
-### 1. Capture image data
+## 1. Capture image data
 
 This example controller will:
 
@@ -45,54 +43,12 @@ for i in range(100):
 c.communicate({"$type": "terminate"})
 ```
 
-### 2. Convert image data to a video file
+## 2. Convert image data to a video file
 
 1. `cd ~/tdw_example_controller_output/image_only_video`
 2.  `ffmpeg -i img_%04d.jpg -vcodec libx264 -pix_fmt yuv420p image_only_video.mp4`
 
 If you saved png files instead of jpg files, replace `img_%04d.jpg` with `img_%04d.png`
-
-If you're using Windows and get an error, make sure that ffmpeg is in your [path environment variable](https://www.geeksforgeeks.org/how-to-install-ffmpeg-on-windows/).
-
-## Option B: Record using ffmpeg
-
-It's possible to record directly with ffmpeg, though this requires a little more setup.
-
-### Linux
-
-If you're using a Linux server, you can record the screen using [x11grab](https://trac.ffmpeg.org/wiki/Capture/Desktop). 
-
-- Make sure that xpra isn't running.
-- Use **x11grab** (run this outside of a Docker container):
-
-```bash
-DISPLAY=:0 ffmpeg -video_size 256x256 -f x11grab -i :0.0+0,0 output.mp4
-```
-
-- `DISPLAY` must have a valid display number.
-- `-video_size` must be the display size.
-- The TDW screen size must be less than or equal to the display size.
-- `:0.0+0,0` is the display number (which should match `DISPLAY`) and `+(x,y)` pixel offset. You can get the coordinates of the window with:
-
-```bash
-xwininfo -tree -root
-```
-
-### Windows:
-
-```bash
-ffmpeg -f dshow -i video="screen-capture-recorder" output.mp4
-```
-
-### OS X:
-
-```bash
-ffmpeg -f avfoundation -list_devices true -i ""
-```
-
-## Option C:  Record with OBS
-
-[OBS](https://obsproject.com) is an excellent screen recorder for personal computers. Unfortunately, it has very limited command line options. If you want to automatically generate many videos, you should use Option A. (TDW image capture) or Option B. (ffmpeg). OBS is best used for one-shot videos, especially if you want to fine-tune the input/output settings.
 
 ***
 

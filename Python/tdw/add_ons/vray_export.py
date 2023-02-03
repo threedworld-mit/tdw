@@ -525,7 +525,7 @@ class VRayExport(AddOn):
             # Write out to the master scene file the animation settings, including final frame_count, as the end of the animation sequence.
             self.export_animation_settings()
             # Launch vantage in appropriate mode.
-            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
+            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe", 
                         "-sceneFile=" + scene_path, 
                         "-outputFile=" + output_path,  
                         "-outputWidth=" + str(self.image_width), 
@@ -534,7 +534,7 @@ class VRayExport(AddOn):
                         "-quiet",
                         "-autoClose=true"])
         else:
-            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage.exe", 
+            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe", 
                         "-sceneFile=" + scene_path, 
                         "-outputFile=" + output_path,  
                         "-outputWidth=" + str(self.image_width), 

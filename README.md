@@ -189,6 +189,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 4. [Clatter and Resonance Audio](Documentation/lessons/clatter/resonance_audio.md)
 5. [Reset Clatter](Documentation/lessons/clatter/reset.md)
 6. [Manually generate audio (Clatter CLI)](Documentation/lessons/clatter/cli.md)
+7. [Troubleshooting Clatter](Documentation/lessons/clatter/troubleshooting.md)
 
 ### 9.2 PyImpact (obsolete predecessor to Clatter)
 

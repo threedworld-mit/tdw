@@ -104,7 +104,7 @@ c.communicate({"$type": "terminate"})
 
 ***
 
-**This is the last document in the "Clatter" tutorial.**
+**Next: [Troubleshooting Clatter](troubleshooting.md)**
 
 [Return to the README](../../../README.md)
 

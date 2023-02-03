@@ -12,10 +12,6 @@ This is a general problem with Clatter that we intend to correct by recording la
 
 This is a known problem that we will fix.
 
-## Impact sounds are distorted
-
-Try setting `dsp_buffer_size` in the constructor to 1024 instead of the default 256.
-
 ## There are extra impact sounds
 
 Usually, this is because roll sounds are being interpreted as impacts. Try setting `roll_substitute` in the `Clatter` constructor to `"scrape"` or `"none"`.

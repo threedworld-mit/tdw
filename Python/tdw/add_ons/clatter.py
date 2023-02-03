@@ -28,7 +28,7 @@ class Clatter(AddOn):
                  environment: Union[ImpactMaterial, ClatterObject] = None,
                  robot_material: ImpactMaterial = ImpactMaterial.metal,
                  human_material: ImpactMaterial = ImpactMaterial.cardboard, resonance_audio: bool = False,
-                 max_num_events: int = 200, dsp_buffer_size: int = 256, roll_substitute: str = "impact"):
+                 max_num_events: int = 200, dsp_buffer_size: int = 1024, roll_substitute: str = "impact"):
         """
         :param objects: A dictionary of [`ClatterObject`](../physics_audio/clatter_object.md) overrides. Key = object ID. If None, the list is empty. If an object is in the scene but not in this list, TDW will try to automatically create a `ClatterObject` for it, either using pre-calculated data or by deriving parameter values.
         :param random_seed: The random seed. If None, the seed is randomly selected within the build.
@@ -55,7 +55,7 @@ class Clatter(AddOn):
         :param human_material: The [`ImpactMaterial`](../physics_audio/impact_material.md) used for human body parts in VR.
         :param resonance_audio: If True, use [Resonance Audio](../../lessons/audio/resonance_audio.md) to play audio.
         :param max_num_events: The maximum number of impacts, scrapes, and rolls that can be processed on a single communicate() call.
-        :param dsp_buffer_size: The DSP buffer size. In TDW, the default is 1024. In Clatter, the default is 256 which reduces latency.
+        :param dsp_buffer_size: The DSP buffer size. Reduce this to 512 or 256 for reduced latency, but potentially more distortion.
         :param roll_substitute: Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. Options: `"impact"`, `"scrape"`, `"roll"`, `"none"`.
         """
 

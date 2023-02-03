@@ -27,8 +27,7 @@ class PhotorealVRay(Controller):
                             image_height=720, 
                             scene_name="tdw_room", 
                             output_path="D:/VE2020_output/", 
-                            animate=True,
-                            local_render=True)
+                            animate=True)
         self.add_ons.append(camera)
         # Set the resolution to 720p.
         # Set render quality to maximum.

@@ -22,7 +22,7 @@ class matrix_data_struct(NamedTuple):
 class VRayExport(AddOn):
 
     def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: str, 
-                 animate: bool = False, local_render: bool = True):
+                 animate: bool = False):
         super().__init__()
         self.output_path = output_path
         if not os.path.exists(self.output_path):
@@ -35,7 +35,6 @@ class VRayExport(AddOn):
         self.image_height: int = image_height
         self.animate = animate
         self.scene_name = scene_name
-        self.local_render = local_render
         # Conversion matrix for camera.
         self.camera_handedness = np.array([[1, 0, 0, 0],
                                            [0, 0, 1, 0],

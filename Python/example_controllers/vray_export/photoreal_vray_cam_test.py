@@ -18,8 +18,8 @@ class Photoreal(Controller):
     def run(self):
         # Add a camera and enable image capture.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": -3, "y": 1, "z": 2},
-                                   look_at={"x": 0, "y": 1, "z": 2},
+                                   position={"x": -1, "y": 2.5, "z": -1},
+                                   look_at={"x": 2, "y": 1, "z": 2},
                                    field_of_view=55)
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("photoreal")
         print(f"Image will be saved to: {path}")

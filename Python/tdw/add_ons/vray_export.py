@@ -36,9 +36,9 @@ class VRayExport(AddOn):
         self.animate = animate
         self.scene_name = scene_name
         # Conversion matrix for camera.
-        self.camera_handedness = np.array([[1, 0, 0, 0],
-                                           [0, 0, 1, 0],
+        self.camera_handedness = np.array([[-1, 0, 0, 0],
                                            [0, -1, 0, 0],
+                                           [0, 0, -1, 0],
                                            [0, 0, 0, 1]])
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
         self.handedness = np.array([[-1, 0, 0, 0],
@@ -379,16 +379,18 @@ class VRayExport(AddOn):
                     sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
                     # Get the matrix and convert it.
                     # Equivalent to: handedness * object_matrix * handedness.
-                    pos_matrix = np.matmul(self.camera_handedness, np.matmul(avatar_matrix, self.camera_handedness))
-                    rot_matrix = np.matmul(sensor_matrix, self.camera_handedness)
+                    pos_matrix = np.matmul(np.matmul(self.handedness, avatar_matrix), self.handedness)
+                    print(pos_matrix)
+                    rot_matrix = np.matmul(np.matmul(self.handedness, sensor_matrix), self.handedness)
+                    print(rot_matrix)
                     # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
                     # We also need to negate the X value, to complete the handedness conversion.
-                    pos_x = -(pos_matrix[3][0] * 100)
+                    pos_x = (pos_matrix[3][0] * 100)
                     pos_y = (pos_matrix[3][1] * 100)
-                    pos_z = (pos_matrix[3][2] * 100)
-                    mat_struct = matrix_data_struct(column_one = '{:f}'.format(rot_matrix[0][0]) + "," + '{:f}'.format(rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]), 
-                                                    column_two = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(rot_matrix[1][2]), 
-                                                    column_three = '{:f}'.format(rot_matrix[2][0]) + "," + '{:f}'.format(rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),  
+                    pos_z = -(pos_matrix[3][2] * 100)
+                    mat_struct = matrix_data_struct(column_one = '{:f}'.format(-rot_matrix[0][0]) + "," + '{:f}'.format(-rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]),
+                                                    column_two = '{:f}'.format(-rot_matrix[2][0]) + "," + '{:f}'.format(-rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),   
+                                                    column_three = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(-rot_matrix[1][2]), 
                                                     column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
         self.write_camera_param_data(mat_struct, focal)
 

@@ -33,15 +33,11 @@ When using Clatter, please cite  [Traer,Cusimano and McDermott, A perceptually i
 
 ## Architecture
 
-Clatter is a C# library. [Documentation for the C# library can be found here](TODO.html). The Clatter C# library is embedded within the TDW build. There are several TDW commands for interfacing from Python to Clatter.
+In nearly all cases, you will use the TDW [`Clatter`](../../python/add_ons/clatter.md) add-on to interface with the Clatter library. As with everything else in TDW, the `Clatter` add-on sends commands to the build. Among these, there are three Clatter-specific commands: [`initialize_clatter`](../../api/command_api.md#initialize_clatter), [`clatterize_object`](../../api/command_api.md#clatterize_object), and [`clatterize_robot_joint`](../../api/command_api.md#clatterize_robot_joint). 
 
-The `tdw` Python module includes a [`Clatter`](../../python/add_ons/clatter.md) add-on that calls the TDW commands to initialize Clatter in TDW. 
+These three commands access code from the underlying Clatter C# library, which is embedded in the TDW build. [Documentation for the Clatter library can be found here](https://alters-mit.github.io/clatter/index.html). In TDW, you can't access the Clatter library directly, but it may be helpful to read through the documentation to better understand how Clatter works.
 
-Additionally, Clatter can be used as a [command-line executable](cli.md), which can be used to write .wav files without needing to reference TDW, or to manually generate audio to play in TDW.
-
-In most cases, you'll use the `Clatter` add-on. You might occasionally the command-line executable. It's unlikely you'll ever need to reference the C# codebase or API directly but it may be helpful to read through if you want to better understand how Clatter works.
-
-The rest of this documentation will refer to Clatter interchangeably as either the `Clatter` Python code or the underlying Clatter library.
+Additionally, Clatter can be used as a [command-line executable](cli.md), to write .wav files without needing to reference TDW, or to manually generate audio to play in TDW.
 
 ## Minimal example
 
@@ -100,6 +96,12 @@ Example controllers:
 
 - [clatter_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/clatter/clatter_minimal.py) A minimal example of Clatter.
 - [clatter_benchmark.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/clatter/clatter_benchmark.py) A simple performance benchmark controller.
+
+Command API:
+
+- [`initialize_clatter`](../../api/command_api.md#initialize_clatter)
+- [`clatterize_object`](../../api/command_api.md#clatterize_object)
+- [`clatterize_robot_joint`](../../api/command_api.md#clatterize_robot_joint)
 
 Python API:
 

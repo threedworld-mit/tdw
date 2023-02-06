@@ -185,7 +185,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Overview](Documentation/lessons/clatter/overview.md)
 2. [Object audio data](Documentation/lessons/clatter/clatter_objects.md)
-3. [Recording Clatter audio with the `PhysicsAudioRecorder` add-on](Documentation/lessons/clatter/record_audio.md)
+3. [Recording Clatter audio with the `PhysicsAudioRecorder` add-on](Documentation/lessons/clatter/record_clatter.md)
 4. [Clatter and Resonance Audio](Documentation/lessons/clatter/resonance_audio.md)
 5. [Reset Clatter](Documentation/lessons/clatter/reset.md)
 6. [Manually generate audio (Clatter CLI)](Documentation/lessons/clatter/cli.md)

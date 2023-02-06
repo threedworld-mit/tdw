@@ -7,11 +7,11 @@ So far, this documentation has covered how to *automatically* generate audio usi
 1. You want to use Clatter without having to use a controller or run the build. Usually, the objective is to write .wav files for future usage.
 2. You want to use Clatter in TDW but without having to define objects to generate the audio.
 
-In both cases, you can use the Clatter command-line interface (CLI) executable. This executable is not included in TDW; you must download it separately. [Download links and documentation are here.](TODO.html)
+In both cases, you can use the Clatter command-line interface (CLI) executable. This executable is not included in TDW; you must download it separately. [Download links and documentation are here.](https://alters-mit.github.io/clatter/cli_overview.html)
 
 ## How to use the Clatter CLI executable *without* a controller
 
-[Read the Clatter CLI documentation.](TODO.html) By default, you *don't* need TDW to run the Clatter CLI executable. 
+[Read the Clatter CLI documentation.](https://alters-mit.github.io/clatter/cli_overview.html) By default, you *don't* need TDW to run the Clatter CLI executable. 
 
 ## How to use the Clatter CLI executable *with* a controller
 

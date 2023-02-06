@@ -42,9 +42,9 @@ class VRayExport(AddOn):
                                            [0, 0, 0, 1]])
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
         self.handedness = np.array([[-1, 0, 0, 0],
-                                  [0, 0, -1, 0],
-                                  [0, -1, 0, 0],
-                                  [0, 0, 0, 1]])
+                                    [0, 0, -1, 0],
+                                    [0, -1, 0, 0],
+                                    [0, 0, 0, 1]])
         # List of vray-ready models, compiled dynamically from Amazon S3 bucket.
         self.vray_model_list = []
         # Dictionary of model names by ID
@@ -249,21 +249,6 @@ class VRayExport(AddOn):
                       "Vector(" + mat.column_two + "), " +
                       "Vector(" + mat.column_three + ")), " +
                       "Vector(" + mat.column_four + "));\n")
-        """
-        node_string = ("\n" + node_id_string + 
-                       "transform=interpolate(\n" +
-                       "(0, Transform(Matrix" + 
-                       "(Vector(" + mat.column_one + "), " +
-                       "Vector(" + mat.column_two + "), " +
-                       "Vector(" + mat.column_three + ")), " +
-                       "Vector(" + mat.column_four + "))),\n" +
-                       "(1, Transform(Matrix" + 
-                       "(Vector(" + mat.column_one + "), " +
-                       "Vector(" + mat.column_two + "), " +
-                       "Vector(" + mat.column_three + ")), " +
-                       "Vector(" + mat.column_four + ")))\n" +
-                       ");\n}\n")
-        """
         line_number = 0
         num = 0
         with open(path, "r", encoding="utf-8") as in_file:
@@ -396,17 +381,15 @@ class VRayExport(AddOn):
                     # Equivalent to: handedness * object_matrix * handedness.
                     pos_matrix = np.matmul(self.camera_handedness, np.matmul(avatar_matrix, self.camera_handedness))
                     rot_matrix = np.matmul(sensor_matrix, self.camera_handedness)
-                    #rot_matrix = np.matmul(self.camera_handedness, np.matmul(sensor_matrix, self.camera_handedness))
-                    #rot_matrix = np.matmul(rot_matrix, self.camera_fix)
                     # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
                     # We also need to negate the X value, to complete the handedness conversion.
                     pos_x = -(pos_matrix[3][0] * 100)
                     pos_y = (pos_matrix[3][1] * 100)
                     pos_z = (pos_matrix[3][2] * 100)
-                    mat_struct = matrix_data_struct(column_one = str(rot_matrix[0][0]) + "," + str(rot_matrix[0][1]) + "," + str(rot_matrix[0][2]), 
-                                                    column_two = str(rot_matrix[1][0]) + "," + str(rot_matrix[1][1]) + "," + str(rot_matrix[1][2]), 
-                                                    column_three = str(rot_matrix[2][0]) + "," + str(rot_matrix[2][1]) + "," + str(rot_matrix[2][2]),  
-                                                    column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+                    mat_struct = matrix_data_struct(column_one = '{:f}'.format(rot_matrix[0][0]) + "," + '{:f}'.format(rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]), 
+                                                    column_two = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(rot_matrix[1][2]), 
+                                                    column_three = '{:f}'.format(rot_matrix[2][0]) + "," + '{:f}'.format(rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),  
+                                                    column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
         self.write_camera_param_data(mat_struct, focal)
 
 

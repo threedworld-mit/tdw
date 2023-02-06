@@ -19,15 +19,14 @@ class PhotorealVRay(Controller):
     def run(self):
         # Add a camera and enable export.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": 3.4, "y": 1.25, "z": -0.5},
-                                   look_at={"x": 0, "y": 0, "z": 0},
+                                   position={"x": -3, "y": 1.5, "z": -2},
+                                   look_at={"x": -1, "y": 1, "z": 0},
                                    field_of_view=55)
         export = VRayExport(image_width=1280, 
                             image_height=720, 
                             scene_name="tdw_room", 
                             output_path="D:/VE2020_output/", 
-                            animate=True,
-                            local_render=False)
+                            animate=False)
         self.add_ons.extend([camera, export])
         # Set the resolution to 720p.
         # Set render quality to maximum.
@@ -36,7 +35,8 @@ class PhotorealVRay(Controller):
         # Adjust post-processing parameters to achieve a suitable depth of field and exposure.
         # Also adjust the ambient occlusion parameters for realistic shadowing in corners and under furniture objects.
         # Set shadow strength to near-full.
-        self.communicate([{"$type": "set_screen_size",
+        commands = []
+        commands.extend([{"$type": "set_screen_size",
                            "width": 1280,
                            "height": 720},
                           {"$type": "set_render_quality",
@@ -56,30 +56,32 @@ class PhotorealVRay(Controller):
                           self.get_add_scene(scene_name="tdw_room"),
                           self.get_add_object(model_name="coffee_table_glass_round",
                                               object_id=self.get_unique_id(),
-                                              position={"x":-0.5, "y": 0, "z": 0.37},
+                                              position={"x":0, "y": 0, "z": 0},
                                               rotation={"x": 0, "y": 45, "z": 0}),
                          self.get_add_object(model_name="live_edge_coffee_table",
                                               object_id=self.get_unique_id(),
-                                              position={"x": -2.25, "y": 0, "z": -0.47},
+                                              position={"x": 2.25, "y": 0, "z": -0.47},
                                               rotation={"x": 0, "y": -90, "z": 0}),
                          self.get_add_object(model_name="bastone_floor_lamp",
                                               object_id=self.get_unique_id(),
-                                              position={"x": -2.35, "y": 0, "z": 1},
+                                              position={"x": 2.35, "y": 0, "z": 1},
                                               rotation={"x": 0, "y": 35, "z": 0}),
                          self.get_add_object(model_name="chair_eames_plastic_armchair",
                                               object_id=self.chair_id,
-                                              position={"x": -1.5, "y": 0, "z": -1.615},
+                                              position={"x": 1.5, "y": 0, "z": -1.615},
                                               rotation={"x": 0, "y": 63.25, "z": 0}),
                          self.get_add_object(model_name="vase_05",
                                               object_id=self.get_unique_id(),
-                                              position={"x": -0.5, "y": 0.3960, "z": 0.37},
+                                              position={"x": 0, "y": 0.3960, "z": 0},
                                               rotation={"x": 0, "y": 63.25, "z": 0}),
                          self.get_add_object(model_name="zenblocks",
                                               object_id=self.get_unique_id(),
-                                              position={"x": -2.25, "y": 0.303, "z": -0.517},
+                                              position={"x": 2.25, "y": 0.303, "z": -0.517},
                                               rotation={"x": 0, "y": 70, "z": 0})])
-
-        
+        self.communicate(commands)
+        self.communicate([])
+        # Launch Vantage render.
+        #export.launch_render()
 
 if __name__ == "__main__":
     PhotorealVRay(launch_build=False).run()

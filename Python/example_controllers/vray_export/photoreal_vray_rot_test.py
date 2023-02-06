@@ -18,7 +18,7 @@ class Photoreal(Controller):
     def run(self):
         # Add a camera and enable image capture.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": 3, "y": 1, "z": 0},
+                                   position={"x": 3, "y": 1, "z": 1},
                                    look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("photoreal")
@@ -28,7 +28,7 @@ class Photoreal(Controller):
         lamp_id = self.get_unique_id()
         capture = ImageCapture(avatar_ids=["a"], path=path)
         self.add_ons.extend([camera, capture])
-        export = VRayExport(image_width=1920, image_height=1080, scene_name="tdw_room", output_path="D:/VE2020_output/", local_render=False)
+        export = VRayExport(image_width=1920, image_height=1080, scene_name="tdw_room", output_path="D:/VE2020_output/")
         self.add_ons.append(export)
         # Set the resolution to 1080p.
         # Set render quality to maximum.
@@ -51,7 +51,7 @@ class Photoreal(Controller):
                          self.get_add_object(model_name="buddah",
                                               object_id=statue_id,
                                               position={"x": -2.25, "y": 0, "z": 2},
-                                              rotation={"x": 180, "y": 90, "z": 90}),
+                                              rotation={"x": 0, "y": 90, "z": 0}),
                          self.get_add_object(model_name="bastone_floor_lamp",
                                               object_id=lamp_id,
                                               position={"x": -2.5, "y": 0, "z": -1.5},

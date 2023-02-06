@@ -10,7 +10,7 @@ Data for a sub-object of a model being used as a scrape surface.
 
 - `name` The name of the sub-object.
 
-- `material_index` The index of the material.
+- `material_index` The index of the material. If you're not sure what this should be, try 0.
 
 ***
 
@@ -23,5 +23,5 @@ Data for a sub-object of a model being used as a scrape surface.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the sub-object. |
-| material_index |  int |  | The index of the material. |
+| material_index |  int |  | The index of the material. If you're not sure what this should be, try 0. |
 

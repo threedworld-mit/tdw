@@ -283,7 +283,7 @@ The IDs of every object that a shape overlaps plus parent IDs and the semantic c
 | `get_object_id()` | The ID of the object. | `int` |
 | `get_container_id()` | The ID of the container. | `int` |
 | `get_tag()` | The semantic tag. | `ContainerTag` |
-| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.ndarray` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 

@@ -1,0 +1,110 @@
+# Clatter
+
+`from tdw.add_ons.clatter import Clatter`
+
+Initialize [Clatter](../../lessons/clatter/overview.md) in TDW.
+
+***
+
+## Fields
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
+***
+
+## Functions
+
+#### \_\_init\_\_
+
+**`Clatter()`**
+
+**`Clatter(objects=None, random_seed=None, simulation_amp=0.5, min_collision_speed=0.00001, area_new_collision=1e-5, scrape_angle=80, impact_area_ratio=5, roll_angular_speed=1, max_contact_separation=1e-8, filter_duplicates=True, max_num_contacts=16, sound_timeout=0.1, prevent_impact_distortion=True, clamp_impact_contact_time=True, min_time_between_impacts=0.25, max_time_between_impacts=3, scrape_amp=1, max_scrape_speed=5, loop_scrape_audio=True, default_object=None, environment=None, robot_material=ImpactMaterial.metal, human_material=ImpactMaterial.cardboard, resonance_audio=False, max_num_events=200, dsp_buffer_size=1024, roll_substitute="impact")`**
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| objects |  Dict[int, ClatterObject] | None | A dictionary of [`ClatterObject`](../physics_audio/clatter_object.md) overrides. Key = object ID. If None, the list is empty. If an object is in the scene but not in this list, TDW will try to automatically create a `ClatterObject` for it, either using pre-calculated data or by deriving parameter values. |
+| random_seed |  int  | None | The random seed. If None, the seed is randomly selected within the build. |
+| simulation_amp |  float  | 0.5 | The overall amplitude of the simulation. The amplitude of generated audio is scaled by this factor. Must be between 0 and 0.99 |
+| min_collision_speed |  float  | 0.00001 | The minimum collision speed in meters per second. If a collision has a speed less than this, it is ignored. |
+| area_new_collision |  float  | 1e-5 | On a collision stay event, if the previous area is None and the current area is greater than this, the audio event is either an impact or a scrape; see `scrape_angle`. |
+| scrape_angle |  float  | 80 | On a collision stay event, there is a large new contact area (see area_new_collision), if the angle in degrees between Vector3.up and the normalized relative velocity of the collision is greater than this value, then the audio event is a scrape. Otherwise, it's an impact. |
+| impact_area_ratio |  float  | 5 | On a collision stay event, if the area of the collision increases by at least this factor, the audio event is an impact. |
+| roll_angular_speed |  float  | 1 | On a collision stay event, if the angular speed in meters per second is greater than or equal to this value, the audio event is a roll; otherwise, it's a scrape. |
+| max_contact_separation |  float  | 1e-8 | On a collision stay event, if we think the collision is an impact but any of the contact points are this far away or greater, the audio event is none. |
+| filter_duplicates |  bool  | True | Each object in Clatter tries to filter duplicate collision events in two ways. First, it will remove any reciprocal pairs of objects, i.e. it will accept a collision between objects 0 and 1 but not objects 1 and 0. Second, it will register only the first collision between objects per main-thread update (multiple collisions can be registered because there are many physics fixed update calls in between). To allow duplicate events, set this field to False. |
+| max_num_contacts |  int  | 16 | The maximum number of contact points that will be evaluated when setting the contact area and speed. A higher number can mean somewhat greater precision but at the cost of performance. |
+| sound_timeout |  float  | 0.1 | Timeout and destroy a Sound if it hasn't received new samples data after this many seconds. |
+| prevent_impact_distortion |  bool  | True | If True, clamp impact audio amplitude values to less than or equal to 0.99, preventing distortion. |
+| clamp_impact_contact_time |  bool  | True | If True, clamp impact contact time values to a plausible value. Set this to False if you want to generate impacts with unusually long contact times. |
+| min_time_between_impacts |  float  | 0.25 | The minimum time in seconds between impacts. If an impact occurs an this much time hasn't yet elapsed, the impact will be ignored. This can prevent strange "droning" sounds caused by too many impacts in rapid succession. |
+| max_time_between_impacts |  float  | 3 | The maximum time in seconds between impacts. After this many seconds, this impact series will end and a subsequent impact collision will start a new Impact. |
+| scrape_amp |  float  | 1 | When setting the amplitude for a scrape, multiply simulation_amp by this factor. |
+| max_scrape_speed |  float  | 5 | For the purposes of scrape audio generation, the collision speed is clamped to this maximum value. |
+| loop_scrape_audio |  bool  | True | If True, fill in silences while scrape audio is being generated by continuously looping the current chunk of scrape audio until either there is new scrape audio or the scrape event ends. |
+| default_object |  ClatterObject  | None | The [`ClatterObject`](../physics_audio/clatter_object.md) values used when none can be found or derived. If None, defaults to: `ClatterObject(ImpactMaterial.plastic_hard, 1, 0.2, 0.45, None)`. |
+| environment |  Union[ImpactMaterial, ClatterObject] | None | Either the [`ClatterObject`](../physics_audio/clatter_object.md) used for the environment (floors, walls, etc.), an [`ImpactMaterial`](../physics_audio/impact_material.md), or None. If an `ImpactMaterial`, defaults to: `ClatterObject(environment, 4, 0.5, 0.1, 100)`. If None, defaults to: `ClatterObject(ImpactMaterial.wood_medium, 4, 0.5, 0.1, 100)`. |
+| robot_material |  ImpactMaterial  | ImpactMaterial.metal | The [`ImpactMaterial`](../physics_audio/impact_material.md) used for robots. |
+| human_material |  ImpactMaterial  | ImpactMaterial.cardboard | The [`ImpactMaterial`](../physics_audio/impact_material.md) used for human body parts in VR. |
+| resonance_audio |  bool  | False | If True, use [Resonance Audio](../../lessons/audio/resonance_audio.md) to play audio. |
+| max_num_events |  int  | 200 | The maximum number of impacts, scrapes, and rolls that can be processed on a single communicate() call. |
+| dsp_buffer_size |  int  | 1024 | The DSP buffer size. Reduce this to 512 or 256 for reduced latency, but potentially more distortion. |
+| roll_substitute |  str  | "impact" | Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. Options: `"impact"`, `"scrape"`, `"roll"`, `"none"`. |
+
+#### get_initialization_commands
+
+**`self.get_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### on_send
+
+**`self.on_send(resp)`**
+
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| resp |  List[bytes] |  | The response from the build. |
+
+#### before_send
+
+**`self.before_send(commands)`**
+
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(objects=None, random_seed=None)`**
+
+Reset Clatter.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| objects |  Dict[int, ClatterObject] | None | A dictionary of [`ClatterObject`](../physics_audio/clatter_object.md) overrides. Key = object ID. If None, the list is empty. If an object is in the scene but not in this list, TDW will try to automatically create a `ClatterObject` for it, either using pre-calculated data or by deriving parameter values. |
+| random_seed |  int  | None | The random seed. If None, the seed is randomly selected within the build. |
+
+#### get_size
+
+**`Clatter.get_size(model)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| model |  Union[np.ndarray, ModelRecord] |  | Either the extents of an object or a model record. |
+
+_Returns:_  The `size` integer of the object.

@@ -6,7 +6,7 @@ PyImpact was added to TDW in 2019, version 1.5.0. Clatter is an upgraded version
 
 ### Audio initialization
 
-Audio initialization is the same in PyImpact and in Clatter; [read this for more information.](../initialize_audio.md)
+Audio initialization is the same in PyImpact and in Clatter; [read this for more information.](../audio/initialize_audio.md)
 
 ### Replaced `AudioMaterial` with `ImpactMaterial`
 
@@ -127,6 +127,9 @@ Clatter also contains additional constructor parameters:
 - clamp_impact_contact_time
 - max_time_between_impacts
 - loop_scrape_audio
+- max_num_events
+- dsp_buffer_size
+- rolll_substitute
 
 ### Collisions
 
@@ -138,7 +141,7 @@ Clatter's algorithm for converting collision states (enter, stay, exit) into aud
 
 In PyImpact, it is possible to write a Python script that generates audio without a controller.
 
-In Clatter, you can use the command-line executable (clatter.exe on Windows) to generate wav files. You can call this executable from Python using subprocess. For more information, [read this.](TODO.md)
+In Clatter, you can use the command-line executable (clatter.exe on Windows) to generate wav files. You can call this executable from Python using subprocess. For more information, [read this.](../clatter/cli.md)
 
 ## Backend
 
@@ -146,7 +149,7 @@ The most significant difference between PyImpact and Clatter is the backend arch
 
 PyImpact's audio synthesis is handled in Python, in the `tdw` module. Once audio samples are generated, they are serialized into a base64 string, sent to the build within a command dictionary, deserialized, and played. The process of serializiation, sending data over the wire, and deserialization is slow. Additionally, PyImpact can only generate audio sequentially.
 
-Clatter exists mostly within the build and all of its audio synthesis is handled in C# libraries. It is not part of the private TDW backend C# repo (TDWBase); instead, Clatter exists in its own publicly available repo. [Read the backend documentation here.](TODO.md)
+Clatter exists mostly within the build and all of its audio synthesis is handled in C# libraries. It is not part of the private TDW backend C# repo (TDWBase); instead, Clatter exists in its own publicly available repo. [Read the backend documentation here.](https://alters-mit.github.io/clatter/index.html)
 
 Clatter doesn't need to serialize or deserialize anything. It also handles each audio event on a separate thread, making it by far faster than PyImpact in cases where there is concurrent audio.
 

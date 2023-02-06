@@ -17,6 +17,7 @@
 | [`destroy_all_objects`](#destroy_all_objects) | Destroy all objects and avatars in the scene.  |
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
+| [`initialize_clatter`](#initialize_clatter) | Initialize Clatter. This command must be sent after each ClatterizeObject command has been sent (though it can be in the same list of commands). |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`parent_audio_source_to_object`](#parent_audio_source_to_object) | Parent an audio source to an object. When the object moves, the audio source will move with it. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
@@ -25,6 +26,7 @@
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
+| [`set_dsp_buffer_size`](#set_dsp_buffer_size) | Set the DSP buffer size. A lower value will result in less latency. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
@@ -277,6 +279,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
+| [`clatterize_object`](#clatterize_object) | Make an object respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each object prior to sending InitializeClatter (though they can all be in the same list of commands). |
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
@@ -539,6 +542,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`clatterize_robot_joint`](#clatterize_robot_joint) | Make a robot respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each robot prior to sending InitializeClatter (though they can all be in the same list of commands). |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
 | [`set_robot_joint_friction`](#set_robot_joint_friction) | Set the friction coefficient of a robot joint. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
@@ -919,6 +923,51 @@ Enable or disable the reflection probes in the scene. By default, the reflection
 
 ***
 
+## **`initialize_clatter`**
+
+Initialize Clatter. This command must be sent after each ClatterizeObject command has been sent (though it can be in the same list of commands).
+
+
+```python
+{"$type": "initialize_clatter"}
+```
+
+```python
+{"$type": "initialize_clatter", "generate_random_seed": True, "random_seed": 0, "simulation_amp": 0.5, "min_collision_speed": 0.00001, "area_new_collision": 1e-5, "scrape_angle": 80, "impact_area_ratio": 5, "roll_angular_speed": 1, "max_contact_separation": 1e-8, "filter_duplicates": True, "max_num_contacts": 16, "sound_timeout": 0.1, "prevent_impact_distortion": True, "clamp_impact_contact_time": True, "min_time_between_impacts": 0.25, "max_time_between_impacts": 3, "scrape_amp": 1, "max_scrape_speed": 5, "loop_scrape_audio": True, "environment_impact_material": "wood_medium", "environment_size": 4, "environment_amp": 0.5, "environment_resonance": 0.1, "environment_mass": 100, "resonance_audio": False, "max_num_events": 200, "roll_substitute": "impact"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"generate_random_seed"` | bool | If True, the random seed will be explicitly set. | True |
+| `"random_seed"` | int | The random seed. Ignored if generate_random_seed == False. | 0 |
+| `"simulation_amp"` | float | The overall amplitude of the simulation. The amplitude of generated audio is scaled by this factor. Must be between 0 and 0.99 | 0.5 |
+| `"min_collision_speed"` | float | The minimum collision speed in meters per second. If a <computeroutput>CollisionEvent</computeroutput> has a speed less than this, it is ignored. | 0.00001 |
+| `"area_new_collision"` | float | On a collision stay event, if the previous area is None and the current area is greater than this, the audio event is either an impact or a scrape; see scrape_angle. | 1e-5 |
+| `"scrape_angle"` | float | On a collision stay event, there is a large new contact area (see area_new_collision), if the angle in degrees between Vector3.up and the normalized relative velocity of the collision is greater than this value, then the audio event is a scrape. Otherwise, it's an impact. | 80 |
+| `"impact_area_ratio"` | float | On a collision stay event, if the area of the collision increases by at least this factor, the audio event is an impact. | 5 |
+| `"roll_angular_speed"` | float | On a collision stay event, if the angular speed in meters per second is greater than or equal to this value, the audio event is a roll; otherwise, it's a scrape. | 1 |
+| `"max_contact_separation"` | float | On a collision stay event, if we think the collision is an impact but any of the contact points are this far away or greater, the audio event is none. | 1e-8 |
+| `"filter_duplicates"` | bool | Each object in Clatter tries to filter duplicate collision events in two ways. First, it will remove any reciprocal pairs of objects, i.e. it will accept a collision between objects 0 and 1 but not objects 1 and 0. Second, it will register only the first collision between objects per main-thread update (multiple collisions can be registered because there are many physics fixed update calls in between). To allow duplicate events, set this field to False. | True |
+| `"max_num_contacts"` | int | The maximum number of contact points that will be evaluated when setting the contact area and speed. A higher number can mean somewhat greater precision but at the cost of performance. | 16 |
+| `"sound_timeout"` | float | Timeout and destroy a Sound if it hasn't received new samples data after this many seconds. | 0.1 |
+| `"prevent_impact_distortion"` | bool | If True, clamp impact audio amplitude values to less than or equal to 0.99, preventing distortion. | True |
+| `"clamp_impact_contact_time"` | bool | If True, clamp impact contact time values to a plausible value. Set this to False if you want to generate impacts with unusually long contact times. | True |
+| `"min_time_between_impacts"` | float | The minimum time in seconds between impacts. If an impact occurs an this much time hasn't yet elapsed, the impact will be ignored. This can prevent strange "droning" sounds caused by too many impacts in rapid succession. | 0.25 |
+| `"max_time_between_impacts"` | float | The maximum time in seconds between impacts. After this many seconds, this impact series will end and a subsequent impact collision will start a new Impact. | 3 |
+| `"scrape_amp"` | float | When setting the amplitude for a scrape, multiply simulation_amp by this factor. | 1 |
+| `"max_scrape_speed"` | float | For the purposes of scrape audio generation, the collision speed is clamped to this maximum value. | 5 |
+| `"loop_scrape_audio"` | bool | If True, fill in silences while scrape audio is being generated by continuously looping the current chunk of scrape audio until either there is new scrape audio or the scrape event ends. | True |
+| `"environment_impact_material"` | ImpactMaterialUnsized | The impact material for the environment (floors, walls, etc.). | "wood_medium" |
+| `"environment_size"` | int | The impact material size bucket for the environment (floors, walls, etc.). | 4 |
+| `"environment_amp"` | float | The amp value for the environment (floors, walls, etc.). | 0.5 |
+| `"environment_resonance"` | float | The resonance value for the environment (floors, walls, etc.). | 0.1 |
+| `"environment_mass"` | float | For the purposes of audio generation, this is the mass of the environment (floors, walls, etc.). | 100 |
+| `"resonance_audio"` | bool | If True, use Resonance Audio to play audio. | False |
+| `"max_num_events"` | int | The maximum number of impacts, scrapes, and rolls that can be processed on a single communicate() call. | 200 |
+| `"roll_substitute"` | AudioEventType | Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. | "impact" |
+
+***
+
 ## **`load_scene`**
 
 Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command.
@@ -1076,6 +1125,25 @@ Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry
 | --- | --- | --- | --- |
 | `"timeout"` | int | The time in seconds until the asset bundle download request will timeout. | 1800 |
 | `"retry"` | bool | If true, if a download times out, the build will try to download it again. | True |
+
+***
+
+## **`set_dsp_buffer_size`**
+
+Set the DSP buffer size. A lower value will result in less latency.
+
+
+```python
+{"$type": "set_dsp_buffer_size"}
+```
+
+```python
+{"$type": "set_dsp_buffer_size", "size": 1024}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | int | The DSP buffer size. | 1024 |
 
 ***
 
@@ -3797,6 +3865,33 @@ The shape of the trigger collider.
 | `"cube"` |  |
 | `"sphere"` |  |
 | `"cylinder"` |  |
+
+***
+
+## **`clatterize_object`**
+
+Make an object respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each object prior to sending InitializeClatter (though they can all be in the same list of commands).
+
+
+```python
+{"$type": "clatterize_object", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "id": 1}
+```
+
+```python
+{"$type": "clatterize_object", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "id": 1, "has_scrape_material": False, "scrape_material": "ceramic", "set_fake_mass": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"impact_material"` | ImpactMaterialUnsized | The impact material. See: tdw.physics_audio.audio_material (which is the same thing as an impact material). | |
+| `"size"` | int | The size bucket value (0-5); smaller objects should use smaller values. | |
+| `"amp"` | float | The audio amplitude (0-1). | |
+| `"resonance"` | float | The resonance value (0-1). | |
+| `"has_scrape_material"` | bool | If true, the object has a scrape material. | False |
+| `"scrape_material"` | ScrapeMaterial | The object's scrape material. Ignored if has_scrape_material == False. See: tdw.physics_audio.scrape_material | "ceramic" |
+| `"set_fake_mass"` | bool | If True, set a fake audio mass (see below). | False |
+| `"fake_mass"` | float | If set_fake_mass == True, this is the fake mass, which will be used for audio synthesis instead of the true mass. | |
+| `"id"` | int | The unique object ID. | |
 
 ***
 
@@ -6830,6 +6925,34 @@ These commands set joint targets or parameters for a robot in the scene.
 
 ***
 
+## **`clatterize_robot_joint`**
+
+Make a robot respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each robot prior to sending InitializeClatter (though they can all be in the same list of commands).
+
+
+```python
+{"$type": "clatterize_robot_joint", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "clatterize_robot_joint", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "joint_id": 1, "has_scrape_material": False, "scrape_material": "ceramic", "set_fake_mass": False, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"impact_material"` | ImpactMaterialUnsized | The impact material. See: tdw.physics_audio.audio_material (which is the same thing as an impact material). | |
+| `"size"` | int | The size bucket value (0-5); smaller objects should use smaller values. | |
+| `"amp"` | float | The audio amplitude (0-1). | |
+| `"resonance"` | float | The resonance value (0-1). | |
+| `"has_scrape_material"` | bool | If true, the object has a scrape material. | False |
+| `"scrape_material"` | ScrapeMaterial | The object's scrape material. Ignored if has_scrape_material == False. See: tdw.physics_audio.scrape_material | "ceramic" |
+| `"set_fake_mass"` | bool | If True, set a fake audio mass (see below). | False |
+| `"fake_mass"` | float | If set_fake_mass == True, this is the fake mass, which will be used for audio synthesis instead of the true mass. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
 ## **`set_robot_joint_drive`**
 
 Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are.
@@ -7518,6 +7641,7 @@ Send velocity data for each joint of each robot in the scene. This is separate f
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
     - <font style="color:red">**Use this command instead:** `send_dynamic_robots`</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_robot_joint_velocities"}

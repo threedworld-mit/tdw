@@ -42,14 +42,3 @@ You can fix this in several ways:
 **This is the last document in the "Clatter" tutorial.**
 
 [Return to the README](../../../README.md)
-
-***
-
-Example controllers:
-
-- [reset_clatter.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/clatter/reset_clatter.py) A minimal example of how to reset Clatter.
-
-Python API:
-
-- [`ResonanceAudioInitializer`](../../python/add_ons/resonance_audio_intializer.md)
-- [`Clatter`](../../python/add_ons/clatter.md)

@@ -37,7 +37,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 ## Requirements
 
-- [See requirements for audio playback.](overview.md) 
+- [See requirements for audio playback.](../audio/overview.md) 
 - If you add to a script `from tdw.py_impact import PyImpact`, your script might print a warning about ffmpeg  when you run it. This is because ffmpeg isn't installed on  your machine. The warning can be ignored (`PyImpact` doesn't actually use ffmpeg). If you want to suppress it, install ffmpeg:
   - Windows: [Download from here](https://ffmpeg.org/download.html#build-windows) and then [add ffmpeg to your system path](https://windowsloop.com/install-ffmpeg-windows-10/).
   - OS X: [Install via brew](https://formulae.brew.sh/formula/ffmpeg)
@@ -48,7 +48,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 1. [Create a scene.](../core_concepts/scenes.md)
 2. [Add an avatar.](../core_concepts/avatars.md)
-3. [Initialize audio.](initialize_audio.md) (Optionally, initialize [Resonance Audio](resonance_audio.md) instead.)
+3. [Initialize audio.](../audioinitialize_audio.md) (Optionally, initialize [Resonance Audio](../audio/../audio/resonance_audio.md) instead.)
 4. [Add an object.](../core_concepts/objects.md)
 5. Add a [`PyImpact`](../../python/add_ons/py_impact.md) add-on.
 
@@ -107,7 +107,7 @@ py_impact.floor = AudioMaterial.metal
 
 ## Resonance audio materials
 
-An `AudioMaterial` is not quite the same thing as a [Resonance Audio material](resonance_audio.md); the latter is defined by third-party software. However, TDW does include a dictionary to map `AudioMaterial` to Resonance Audio material.
+An `AudioMaterial` is not quite the same thing as a [Resonance Audio material](../audio/resonance_audio.md); the latter is defined by third-party software. However, TDW does include a dictionary to map `AudioMaterial` to Resonance Audio material.
 
 Note that when using Resonance Audio, you must set `resonance_audio=True` in the `PyImpact` constructor.
 

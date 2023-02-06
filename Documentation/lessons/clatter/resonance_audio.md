@@ -53,6 +53,6 @@ Example controllers:
 
 Python API:
 
-- [`ResonanceAudioInitializer`](../../python/add_ons/resonance_audio_intializer.md)
+- [`ResonanceAudioInitializer`](../../python/add_ons/resonance_audio_initializer.md)
 - [`Clatter`](../../python/add_ons/clatter.md)
 

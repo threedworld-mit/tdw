@@ -252,4 +252,4 @@ Python API:
 - [`ImpactMaterial`](../../python/physics_audio/impact_material.md)
 - [`ScrapeModel`](../../python/physics_audio/scrape_model.md)
 - [`ScrapeSubObject`](../../python/physics_audio/scrape_sub_object.md)
-- [`ScrapeSurface`](../../python/physics_audio/scrape_surface.md)
+- [`ScrapeMaterial`](../../python/physics_audio/scrape_material.md)

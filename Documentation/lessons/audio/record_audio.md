@@ -2,7 +2,7 @@
 
 # Recording audio
 
-*To learn how to record physically-derived audio using Clatter, [read this.](../clatter/record_audio.md)*
+*To learn how to record physically-derived audio using Clatter, [read this.](../clatter/record_clatter.md)*
 
 *If you want to record audio AND video, [read this](../video/audio.md). It's difficult to align audio recorded with one program with video recorded with another program; they should both be captured with the same program. This document describes how to record audio-only data.*
 
@@ -55,7 +55,7 @@
 - `AudioUtils.stop()` Stop an ongoing recording.
 - `AudioUtils.is_recording()` Returns True if the fmedia process is running.
 
-In this example controller, an object will fall. TDW will create audio using [`Clatter`](../clatter/overivew.md) and record audio using `AudioUtils` (the Clatter documentation includes a somewhat more sophisticated example, using a [`PhysicsAudioRecorder`](../clatter/record_audio.md)).
+In this example controller, an object will fall. TDW will create audio using [`Clatter`](../clatter/overview.md) and record audio using `AudioUtils` (the Clatter documentation includes a somewhat more sophisticated example, using a [`PhysicsAudioRecorder`](../clatter/record_clatter.md)).
 
 ```python
 from tdw.controller import Controller
@@ -100,7 +100,7 @@ AudioUtils.start(output_path=path, device_name="Headset Microphone")
 
 ## Use a `PhysicsAudioRecorder`
 
-`PhysicsAudioRecorder` is an add-on meant to be used in conjunction with Clatter that simplifies physics-driven audio recording. [Read this for more information.](../clatter/record_audio.md)
+`PhysicsAudioRecorder` is an add-on meant to be used in conjunction with Clatter that simplifies physics-driven audio recording. [Read this for more information.](../clatter/record_clatter.md)
 
 #### Arguments
 

@@ -12,6 +12,17 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/archery"
             }
         },
+        "birdcage_251067": {
+            "duration": 8.983334,
+            "framerate": 60,
+            "loop": false,
+            "name": "birdcage_251067",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/birdcage_251067",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/birdcage_251067",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/birdcage_251067"
+            }
+        },
         "bowling": {
             "duration": 18.133,
             "framerate": 30,
@@ -134,25 +145,25 @@
             }
         },
         "idle_251087": {
-            "duration": 17.65,
+            "duration": 17.6500015,
             "framerate": 60,
             "loop": false,
             "name": "idle_251087",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/idle_251087",
-                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/idle_251087",
-                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/idle_251087"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/idle_251087",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/idle_251087",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/idle_251087"
             }
         },
         "idle_251105": {
-            "duration": 15.33333,
+            "duration": 15.333334,
             "framerate": 60,
             "loop": false,
             "name": "idle_251105",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/idle_251105",
-                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/idle_251105",
-                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/idle_251105"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/idle_251105",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/idle_251105",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/idle_251105"
             }
         },
         "kick_ball": {
@@ -172,42 +183,64 @@
             "loop": false,
             "name": "kitchen_bendoverandopendrawer_f",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_bendoverandopendrawer_f",
-                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_bendoverandopendrawer_f",
-                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_bendoverandopendrawer_f"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kitchen_bendoverandopendrawer_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kitchen_bendoverandopendrawer_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kitchen_bendoverandopendrawer_f"
+            }
+        },
+        "kitchen_cleantable_m": {
+            "duration": 13.7833338,
+            "framerate": 60,
+            "loop": false,
+            "name": "kitchen_cleantable_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kitchen_cleantable_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kitchen_cleantable_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kitchen_cleantable_m"
             }
         },
         "kitchen_cooking_f": {
-            "duration": 11.33333,
+            "duration": 11.333334,
             "framerate": 60,
             "loop": false,
             "name": "kitchen_cooking_f",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_cooking_f",
-                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_cooking_f",
-                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_cooking_f"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kitchen_cooking_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kitchen_cooking_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kitchen_cooking_f"
             }
         },
         "kitchen_microwave_m": {
-            "duration": 11.83333,
+            "duration": 11.833334,
             "framerate": 60,
             "loop": false,
             "name": "kitchen_microwave_m",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_microwave_m",
-                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_microwave_m",
-                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_microwave_m"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kitchen_microwave_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kitchen_microwave_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kitchen_microwave_m"
             }
         },
         "kitchen_refrigerator_f": {
-            "duration": 12.53333,
+            "duration": 12.5333338,
             "framerate": 60,
             "loop": false,
             "name": "kitchen_refrigerator_f",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2020.3/kitchen_refrigerator_f",
-                "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2020.3/kitchen_refrigerator_f",
-                "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2020.3/kitchen_refrigerator_f"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kitchen_refrigerator_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kitchen_refrigerator_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kitchen_refrigerator_f"
+            }
+        },
+        "kitchen_refrigerator_m": {
+            "duration": 6.98333359,
+            "framerate": 60,
+            "loop": false,
+            "name": "kitchen_refrigerator_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/kitchen_refrigerator_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/kitchen_refrigerator_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/kitchen_refrigerator_m"
             }
         },
         "kneeling": {
@@ -230,6 +263,61 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/limping",
                 "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/limping",
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/limping"
+            }
+        },
+        "livingroom_dochores_f": {
+            "duration": 11.0333338,
+            "framerate": 60,
+            "loop": false,
+            "name": "livingroom_dochores_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/livingroom_dochores_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/livingroom_dochores_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/livingroom_dochores_f"
+            }
+        },
+        "market_customercart_walking_f": {
+            "duration": 5.1833334,
+            "framerate": 60,
+            "loop": false,
+            "name": "market_customercart_walking_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/market_customercart_walking_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/market_customercart_walking_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/market_customercart_walking_f"
+            }
+        },
+        "market_customercart_walking_m": {
+            "duration": 5.05,
+            "framerate": 60,
+            "loop": false,
+            "name": "market_customercart_walking_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/market_customercart_walking_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/market_customercart_walking_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/market_customercart_walking_m"
+            }
+        },
+        "market_customercart_walktostop_f": {
+            "duration": 7.10000038,
+            "framerate": 60,
+            "loop": false,
+            "name": "market_customercart_walktostop_f",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/market_customercart_walktostop_f",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/market_customercart_walktostop_f",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/market_customercart_walktostop_f"
+            }
+        },
+        "market_customercart_walktostop_m": {
+            "duration": 5.08333349,
+            "framerate": 60,
+            "loop": false,
+            "name": "market_customercart_walktostop_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/market_customercart_walktostop_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/market_customercart_walktostop_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/market_customercart_walktostop_m"
             }
         },
         "mop_floor": {
@@ -263,6 +351,17 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/rollerblading",
                 "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/rollerblading",
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/rollerblading"
+            }
+        },
+        "room_ironclothes_m": {
+            "duration": 19.1333351,
+            "framerate": 60,
+            "loop": false,
+            "name": "room_ironclothes_m",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/room_ironclothes_m",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/room_ironclothes_m",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/room_ironclothes_m"
             }
         },
         "running_fast": {
@@ -307,6 +406,17 @@
                 "Darwin": "https://tdw-public.s3.amazonaws.com/humanoid_animations/osx/2019.2/searching",
                 "Linux": "https://tdw-public.s3.amazonaws.com/humanoid_animations/linux/2019.2/searching",
                 "Windows": "https://tdw-public.s3.amazonaws.com/humanoid_animations/windows/2019.2/searching"
+            }
+        },
+        "server_fooddelivery_295482": {
+            "duration": 8.183333,
+            "framerate": 60,
+            "loop": false,
+            "name": "server_fooddelivery_295482",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2020.3/server_fooddelivery_295482",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2020.3/server_fooddelivery_295482",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2020.3/server_fooddelivery_295482"
             }
         },
         "sit_read_drink": {

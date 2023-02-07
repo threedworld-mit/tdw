@@ -8,13 +8,10 @@ from tdw.add_ons.vray_export import VRayExport
 
 class PhotorealVRay(Controller):
     """
-    Create a photorealistic scene, focusing on post-processing and other effects.
-    The "archviz_house" environment is used due to its maximal photorealistic lighting.
+    Create a typical TDW scene, then export using V-Ray add-on for maximum photorealism.
     """
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.frame_range = 100
-        self.chair_id = self.get_unique_id()
 
     def run(self):
         # Add a camera and enable export.
@@ -67,7 +64,7 @@ class PhotorealVRay(Controller):
                                               position={"x": -3.35, "y": 0, "z": 1},
                                               rotation={"x": 0, "y": 35, "z": 0}),
                          self.get_add_object(model_name="chair_eames_plastic_armchair",
-                                              object_id=self.chair_id,
+                                              object_id=self.get_unique_id(),
                                               position={"x": -2.5, "y": 0, "z": -1.615},
                                               rotation={"x": 0, "y": 30, "z": 0}),
                          self.get_add_object(model_name="vase_05",
@@ -84,7 +81,7 @@ class PhotorealVRay(Controller):
                                               rotation={"x": 0, "y": 70, "z": 0})])
         self.communicate(commands)
         # Launch Vantage render.
-        #export.launch_render()
+        export.launch_render()
 
 if __name__ == "__main__":
     PhotorealVRay(launch_build=False).run()

@@ -92,9 +92,9 @@
       "name": "floorplan_1a",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1a",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1a",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1a"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1a"
       }
     },
     "floorplan_1b": {
@@ -104,9 +104,9 @@
       "name": "floorplan_1b",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1b",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1b",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1b"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1b"
       }
     },
     "floorplan_1c": {
@@ -116,9 +116,9 @@
       "name": "floorplan_1c",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_1c",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_1c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_1c"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1c"
       }
     },
     "floorplan_2a": {
@@ -128,9 +128,9 @@
       "name": "floorplan_2a",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2a",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2a",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2a"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2a"
       }
     },
     "floorplan_2b": {
@@ -140,9 +140,9 @@
       "name": "floorplan_2b",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2b",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2b",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2b"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2b"
       }
     },
     "floorplan_2c": {
@@ -152,9 +152,9 @@
       "name": "floorplan_2c",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_2c",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_2c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_2c"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2c"
       }
     },
     "floorplan_3a": {
@@ -164,9 +164,9 @@
       "name": "floorplan_3a",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3a",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3a",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3a"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_3a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_3a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_3a"
       }
     },
     "floorplan_3b": {
@@ -176,9 +176,9 @@
       "name": "floorplan_3b",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3b",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3b",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3b"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_3b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_3b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_3b"
       }
     },
     "floorplan_3c": {
@@ -188,9 +188,9 @@
       "name": "floorplan_3c",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_3c",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_3c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_3c"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_3c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_3c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_3c"
       }
     },
     "floorplan_4a": {
@@ -200,9 +200,9 @@
       "name": "floorplan_4a",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4a",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4a",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4a"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4a"
       }
     },
     "floorplan_4b": {
@@ -212,9 +212,9 @@
       "name": "floorplan_4b",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4b",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4b",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4b"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4b"
       }
     },
     "floorplan_4c": {
@@ -224,9 +224,9 @@
       "name": "floorplan_4c",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_4c",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_4c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_4c"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4c"
       }
     },
     "floorplan_5a": {
@@ -236,9 +236,9 @@
       "name": "floorplan_5a",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5a",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5a",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5a"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5a"
       }
     },
     "floorplan_5b": {
@@ -248,9 +248,9 @@
       "name": "floorplan_5b",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5b",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5b",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5b"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5b"
       }
     },
     "floorplan_5c": {
@@ -260,9 +260,9 @@
       "name": "floorplan_5c",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/floorplan_5c",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/floorplan_5c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/floorplan_5c"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5c"
       }
     },
     "iceland_beach": {

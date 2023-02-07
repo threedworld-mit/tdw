@@ -57,8 +57,6 @@ class VRayExport(AddOn):
         self.frame_count: int = 0
         self.downloaded_data = False;
 
-
-
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "send_transform_matrices",
                        "frequency": "always"},
@@ -119,7 +117,7 @@ class VRayExport(AddOn):
             for model_name in self.object_names.values():
                 self.download_model(model_name)
             # Update model files to reflect initial scene object transforms.
-            self.export_static_node_data(resp=resp)
+            self.export_model_node_data(resp=resp)
             # Update V-Ray camera to reflect TDW camera position and orientation.
             self.export_static_camera_view_data(resp=resp)
         # Process object or camera movement.
@@ -233,7 +231,43 @@ class VRayExport(AddOn):
                     focal_line_number = num + 3
                     return focal_line_number
                 else:
-                    num = num + 1
+                    num = num + 1 
+
+    def get_converted_node_matrix(self, mat) -> matrix_data_struct:
+        # Get the matrix and convert it.
+        # Equivalent to: handedness * object_matrix * handedness.
+        matrix = np.matmul(np.matmul(self.handedness, mat), self.handedness)
+        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+        pos_x = (matrix[3][0] * 100)
+        pos_y = (matrix[3][1] * 100)
+        pos_z = -(matrix[3][2] * 100)
+        return matrix_data_struct(column_one = '{:f}'.format(matrix[0][0]) + "," + '{:f}'.format(matrix[0][1]) + "," + '{:f}'.format(-matrix[0][2]), 
+                                        column_two = '{:f}'.format(matrix[1][0]) + "," + '{:f}'.format(matrix[1][1]) + "," + '{:f}'.format(-matrix[1][2]), 
+                                        column_three = '{:f}'.format(-matrix[2][0]) + "," + '{:f}'.format(-matrix[2][1]) + "," + '{:f}'.format(matrix[2][2]),  
+                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
+    
+    def export_model_node_data(self, resp: List[bytes]):
+        """
+        For each model in the scene, update the position and orientation data in the model's .vrscene file as Node data.
+        Then append an #include reference to the model file at the end of the main scene file.
+        """
+        self.rebuild_object_list(resp)
+        path = self.get_scene_file_path()
+        with open(path, "a") as f: 
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "trma":
+                    transform_matrices = TransformMatrices(resp[i])
+                    # Iterate through the objects.
+                    for j in range(transform_matrices.get_num()):
+                        # Get the object ID.
+                        object_id = transform_matrices.get_id(j) 
+                        # Get the converted matrix.
+                        mat_struct = self.get_converted_node_matrix(transform_matrices.get_matrix(j))
+                        # Get the model name for this ID
+                        model_name = self.object_names[object_id]
+                        self.write_static_node_data(model_name, mat_struct)
+                        f.write("#include \"" + model_name + ".vrscene\"\n\n")
 
     def write_static_node_data(self, model_name: str, mat: matrix_data_struct):
         """
@@ -268,6 +302,93 @@ class VRayExport(AddOn):
         with open(path, 'w', encoding="utf-8") as out_file:
            out_file.writelines(data)
 
+    def get_dynamic_node_data_string(self, mat, model_name: str, frame_count: int) -> str:
+        """
+        For each model in the scene, compute the position and orientation data for one frame, as Node data.
+        Return a per-frame interpolated Node data string of the form:
+        Node Box102@node_9701 {
+          transform=interpolate(
+          (2, Transform(Matrix(Vector(1, 0, 0), Vector(0, 1, 0), Vector(0, 0, 1)), Vector(-152.2906646728516, -145.2715454101563, 0)))
+          );
+        }
+        For each frame in the object's motion, we will output one of these strings that interpolates from the previous frame
+        to the new frame's transform matrix values.
+        """
+        mat_struct = self.get_converted_node_matrix(mat)
+        # Get node ID from cached dictionary
+        node_id_string = self.node_ids[model_name]
+        # Form interpolation string.
+        node_string = ("\n" + node_id_string + 
+                      "transform=interpolate(\n" +
+                      "(" + str(frame_count) + ", " +
+                      "Transform(Matrix" + 
+                      "(Vector(" + mat_struct.column_one + "), " +
+                      "Vector(" + mat_struct.column_two + "), " +
+                      "Vector(" + mat_struct.column_three + ")), " +
+                      "Vector(" + mat_struct.column_four + ")))\n" +
+                      ");\n}\n")
+        return node_string
+
+    def get_converted_camera_matrix(self, avatar_matrix, sensor_matrix) -> matrix_data_struct:
+        # Get the matrix and convert it.
+        # Equivalent to: handedness * object_matrix * handedness.
+        pos_matrix = np.matmul(np.matmul(self.handedness, avatar_matrix), self.handedness)
+        rot_matrix = np.matmul(np.matmul(self.handedness, sensor_matrix), self.handedness)
+        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
+        # We also need to negate the Z value, to complete the handedness conversion.
+        pos_x = (pos_matrix[3][0] * 100)
+        pos_y = (pos_matrix[3][1] * 100)
+        pos_z = -(pos_matrix[3][2] * 100)
+        return matrix_data_struct(column_one = '{:f}'.format(-rot_matrix[0][0]) + "," + '{:f}'.format(-rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]),
+                                        column_two = '{:f}'.format(-rot_matrix[2][0]) + "," + '{:f}'.format(-rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),   
+                                        column_three = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(-rot_matrix[1][2]), 
+                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
+
+    def export_static_camera_view_data(self, resp: List[bytes]):
+        """
+        Output the position and orientation of the camera to the scene .vrscene file as Transform data.
+        """	
+        focal = 0
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "fofv":
+                field_of_view = FieldOfView(resp[i])
+                focal = field_of_view.get_focal_length()
+            if r_id == "atrm":
+                avatar_transform_matrices = AvatarTransformMatrices(resp[i])
+                for j in range(avatar_transform_matrices.get_num()):
+                    avatar_id = avatar_transform_matrices.get_id(j)
+                    avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
+                    sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
+                    mat_struct = self.get_converted_camera_matrix(avatar_matrix, sensor_matrix)
+        self.write_camera_param_data(mat_struct, focal)
+
+    def get_dynamic_camera_data_string(self, avatar_matrix, sensor_matrix, frame_count: int) -> str:
+        """
+        Compute the position and orientation of the moving camera for one frame, as Node data.
+        Return a per-frame interpolated Node data string of the form:
+        Node Box102@node_9701 {
+          transform=interpolate(
+          (2, Transform(Matrix(Vector(1, 0, 0), Vector(0, 1, 0), Vector(0, 0, 1)), Vector(-152.2906646728516, -145.2715454101563, 0)))
+          );
+        }
+        For each frame in the camera's motion, we will output one of these strings that interpolates from the previous frame
+        to the new frame's transform matrix values.
+        """
+        mat_struct = self.get_converted_camera_matrix(avatar_matrix, sensor_matrix)
+        node_id_string = self.get_renderview_id_string()
+        # Form interpolation string.
+        node_string = ("\n" + node_id_string + 
+                      "transform=interpolate(\n" +
+                      "(" + str(frame_count) + ", " +
+                      "Transform(Matrix" + 
+                      "(Vector(" + mat_struct.column_one + "), " +
+                      "Vector(" + mat_struct.column_two + "), " +
+                      "Vector(" + mat_struct.column_three + ")), " +
+                      "Vector(" + mat_struct.column_four + ")))\n" +
+                      ");\n}\n")
+        return node_string
+
     def write_camera_param_data(self, mat: matrix_data_struct, focal: float):
         """
         Replace the camera transform line in the scene file with the converted TDW camera pos/ori data.
@@ -291,148 +412,7 @@ class VRayExport(AddOn):
         # Write everything back
         with open(path, 'w', encoding="utf-8") as out_file:
            out_file.writelines(data)
-
-    def export_static_node_data(self, resp: List[bytes]):
-        """
-        For each model in the scene, export the position and orientation data to the model's .vrscene file as Node data.
-        Then append an #include reference to the model file at the end of the main scene file.
-        """
-        self.rebuild_object_list(resp)
-        path = self.get_scene_file_path()
-        with open(path, "a") as f: 
-            for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i])
-                if r_id == "trma":
-                    transform_matrices = TransformMatrices(resp[i])
-                    # Iterate through the objects.
-                    for j in range(transform_matrices.get_num()):
-                        # Get the object ID.
-                        object_id = transform_matrices.get_id(j) 
-                        # Get the matrix and convert it.
-                        # Equivalent to: handedness * object_matrix * handedness.
-                        matrix = np.matmul(np.matmul(self.handedness, transform_matrices.get_matrix(j)), self.handedness)
-                        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
-                        pos_x = (matrix[3][0] * 100)
-                        pos_y = (matrix[3][1] * 100)
-                        pos_z = -(matrix[3][2] * 100)
-                        mat_struct = matrix_data_struct(column_one = '{:f}'.format(matrix[0][0]) + "," + '{:f}'.format(matrix[0][1]) + "," + '{:f}'.format(-matrix[0][2]), 
-                                                        column_two = '{:f}'.format(matrix[1][0]) + "," + '{:f}'.format(matrix[1][1]) + "," + '{:f}'.format(-matrix[1][2]), 
-                                                        column_three = '{:f}'.format(-matrix[2][0]) + "," + '{:f}'.format(-matrix[2][1]) + "," + '{:f}'.format(matrix[2][2]),  
-                                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
-                        # Get the model name for this ID
-                        model_name = self.object_names[object_id]
-                        self.write_static_node_data(model_name, mat_struct)
-                        f.write("#include \"" + model_name + ".vrscene\"\n\n")
-
-    def get_dynamic_node_data(self, mat, model_name: str, frame_count: int) -> str:
-        """
-        For each model in the scene, compute the position and orientation data for one frame, as Node data.
-        Return a per-frame interpolated Node data string of the form:
-        Node Box102@node_9701 {
-          transform=interpolate(
-          (2, Transform(Matrix(Vector(1, 0, 0), Vector(0, 1, 0), Vector(0, 0, 1)), Vector(-152.2906646728516, -145.2715454101563, 0)))
-          );
-        }
-        For each frame in the object's motion, we will output one of these strings that interpolates from the previous frame
-        to the new frame's transform matrix values.
-        """
-        # Get the matrix and convert it.
-        # Equivalent to: handedness * object_matrix * handedness.
-        matrix = np.matmul(np.matmul(self.handedness, mat), self.handedness)
-        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
-        pos_x = (matrix[3][0] * 100)
-        pos_y = (matrix[3][1] * 100)
-        pos_z = -(matrix[3][2] * 100)
-        mat_struct = matrix_data_struct(column_one = '{:f}'.format(matrix[0][0]) + "," + '{:f}'.format(matrix[0][1]) + "," + '{:f}'.format(-matrix[0][2]), 
-                                        column_two = '{:f}'.format(matrix[1][0]) + "," + '{:f}'.format(matrix[1][1]) + "," + '{:f}'.format(-matrix[1][2]), 
-                                        column_three = '{:f}'.format(-matrix[2][0]) + "," + '{:f}'.format(-matrix[2][1]) + "," + '{:f}'.format(matrix[2][2]),  
-                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
-        # Get node ID from cached dictionary
-        node_id_string = self.node_ids[model_name]
-        # Form interpolation string.
-        node_string = ("\n" + node_id_string + 
-                      "transform=interpolate(\n" +
-                      "(" + str(frame_count) + ", " +
-                      "Transform(Matrix" + 
-                      "(Vector(" + mat_struct.column_one + "), " +
-                      "Vector(" + mat_struct.column_two + "), " +
-                      "Vector(" + mat_struct.column_three + ")), " +
-                      "Vector(" + mat_struct.column_four + ")))\n" +
-                      ");\n}\n")
-        return node_string
-
-    def export_static_camera_view_data(self, resp: List[bytes]):
-        """
-        Export the position and orientation of the camera to the scene .vrscene file as Transform data.
-        """	
-        focal = 0
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "fofv":
-                field_of_view = FieldOfView(resp[i])
-                focal = field_of_view.get_focal_length()
-            if r_id == "atrm":
-                avatar_transform_matrices = AvatarTransformMatrices(resp[i])
-                for j in range(avatar_transform_matrices.get_num()):
-                    avatar_id = avatar_transform_matrices.get_id(j)
-                    avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
-                    sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
-                    # Get the matrix and convert it.
-                    # Equivalent to: handedness * object_matrix * handedness.
-                    pos_matrix = np.matmul(np.matmul(self.handedness, avatar_matrix), self.handedness)
-                    print(pos_matrix)
-                    rot_matrix = np.matmul(np.matmul(self.handedness, sensor_matrix), self.handedness)
-                    print(rot_matrix)
-                    # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
-                    # We also need to negate the X value, to complete the handedness conversion.
-                    pos_x = (pos_matrix[3][0] * 100)
-                    pos_y = (pos_matrix[3][1] * 100)
-                    pos_z = -(pos_matrix[3][2] * 100)
-                    mat_struct = matrix_data_struct(column_one = '{:f}'.format(-rot_matrix[0][0]) + "," + '{:f}'.format(-rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]),
-                                                    column_two = '{:f}'.format(-rot_matrix[2][0]) + "," + '{:f}'.format(-rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),   
-                                                    column_three = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(-rot_matrix[1][2]), 
-                                                    column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
-        self.write_camera_param_data(mat_struct, focal)
-
-
-    def get_dynamic_camera_data(self, avatar_matrix, sensor_matrix, frame_count: int) -> str:
-        """
-        Compute the position and orientation of the camera for one frame, as Node data.
-        Return a per-frame interpolated Node data string of the form:
-        Node Box102@node_9701 {
-          transform=interpolate(
-          (2, Transform(Matrix(Vector(1, 0, 0), Vector(0, 1, 0), Vector(0, 0, 1)), Vector(-152.2906646728516, -145.2715454101563, 0)))
-          );
-        }
-        For each frame in the camera's motion, we will output one of these strings that interpolates from the previous frame
-        to the new frame's transform matrix values.
-        """
-        # Get the matrix and convert it.
-        # Equivalent to: handedness * object_matrix * handedness.
-        pos_matrix = np.matmul(np.matmul(self.handedness, avatar_matrix), self.handedness)
-        rot_matrix = np.matmul(np.matmul(self.handedness, sensor_matrix), self.handedness)
-        # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
-        # We also need to negate the X value, to complete the handedness conversion.
-        pos_x = (pos_matrix[3][0] * 100)
-        pos_y = (pos_matrix[3][1] * 100)
-        pos_z = -(pos_matrix[3][2] * 100)
-        mat_struct = matrix_data_struct(column_one = '{:f}'.format(-rot_matrix[0][0]) + "," + '{:f}'.format(-rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]),
-                                        column_two = '{:f}'.format(-rot_matrix[2][0]) + "," + '{:f}'.format(-rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),   
-                                        column_three = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(-rot_matrix[1][2]), 
-                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
-        node_id_string = self.get_renderview_id_string()
-        # Form interpolation string.
-        node_string = ("\n" + node_id_string + 
-                      "transform=interpolate(\n" +
-                      "(" + str(frame_count) + ", " +
-                      "Transform(Matrix" + 
-                      "(Vector(" + mat_struct.column_one + "), " +
-                      "Vector(" + mat_struct.column_two + "), " +
-                      "Vector(" + mat_struct.column_three + ")), " +
-                      "Vector(" + mat_struct.column_four + ")))\n" +
-                      ");\n}\n")
-        return node_string
-   
+  
     def export_animation_settings(self):
         """
         Write out the output settings with the end frame of any animation in the scene.
@@ -470,7 +450,7 @@ class VRayExport(AddOn):
                         avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
                         sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
                         # Convert matrices to V-Ray format and output to master scene file as frame-by-frame interpolations.
-                        node_data_string = self.get_dynamic_camera_data(avatar_matrix, sensor_matrix, self.frame_count)
+                        node_data_string = self.get_dynamic_camera_data_string(avatar_matrix, sensor_matrix, self.frame_count)
                         f.write(node_data_string)
                 if r_id == "trma":
                     transform_matrices = TransformMatrices(resp[i])
@@ -479,24 +459,9 @@ class VRayExport(AddOn):
                         # Get the object ID.
                         object_id = transform_matrices.get_id(j)
                         mat = transform_matrices.get_matrix(j)
-                        node_data_string = self.get_dynamic_node_data(mat, self.object_names[object_id], self.frame_count)
+                        node_data_string = self.get_dynamic_node_data_string(mat, self.object_names[object_id], self.frame_count)
                         f.write(node_data_string)
             self.frame_count += 1
-
-
-    def assemble_render_file(self):
-        """
-        If Node and/or Lights dynamic data was exported, append to the end of the master scene file.
-        """
-        scene_path = self.get_scene_file_path()
-        with open(scene_path, "a") as f:  
-            #f.write("#include models.vrscene\n")
-            #f.write("#include views.vrscene\n")
-            # Append nodes and lights files also, if either one exists
-            if os.path.exists("nodes.vrscene"):
-                f.write("#include nodes.vrscene\n")
-            if os.path.exists("lights.vrscene"):
-                f.write("#include lights.vrscene\n")
 
     def launch_render(self):
         """

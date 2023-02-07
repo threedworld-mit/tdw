@@ -11,8 +11,7 @@ from random import uniform
 
 class PhotorealVRayDynamicCamera(Controller):
     """
-    Create a photorealistic scene, focusing on post-processing and other effects.
-    The "archviz_house" environment is used due to its maximal photorealistic lighting.
+    Create a typical TDW scene, randomize a sequence of camera positions and aimpoints, then export using V-Ray add-on for maximum photorealism.
     """
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
@@ -24,7 +23,11 @@ class PhotorealVRayDynamicCamera(Controller):
                                    position={"x": -3, "y": 1, "z": 0},
                                    look_at={"x": 0, "y": 1, "z": 0},
                                    field_of_view=55)
-        export = VRayExport(image_width=1280, image_height=720, scene_name="tdw_room", output_path="D:/VE2020_output/", animate=True)
+        export = VRayExport(image_width=1280, 
+                            image_height=720, 
+                            scene_name="tdw_room", 
+                            output_path="D:/VE2020_output/", 
+                            animate=True)
         self.add_ons.extend([camera, export])
         # Set the resolution to 1080p.
         # Set render quality to maximum.
@@ -97,10 +100,10 @@ class PhotorealVRayDynamicCamera(Controller):
                           {"$type": "set_shadow_strength",
                            "strength": 0.85}])
         for i in range(self.frame_range):
-            # Randomely reposition camera.
+            # Randomly reposition camera.
             resp = self.communicate([{"$type": "teleport_avatar_to", "position": {"x": uniform(-3.5, 2.5), "y": uniform(0.5, 2.5), "z": uniform(-2.5, 2.5)}, "avatar_id": "a"},
                                      {"$type": "look_at_position", "position": {"x": uniform(-3.5, 3.0), "y": uniform(0, 1.0), "z": uniform(-3, 3)}, "avatar_id": "a"}])
-        # Launch Vantage render.
+        # Launch Vantage render in headless mode; it will run to completion and automatically close.
         export.launch_render()
         self.communicate({"$type": "terminate"})
         

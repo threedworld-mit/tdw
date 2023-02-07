@@ -8,8 +8,7 @@ from tdw.add_ons.vray_export import VRayExport
 
 class PhotorealVRay(Controller):
     """
-    Create a photorealistic scene, focusing on post-processing and other effects.
-    The "archviz_house" environment is used due to its maximal photorealistic lighting.
+    Create a typical TDW scene. Apply a force to the chair, then export using V-Ray add-on for maximum photorealism.
     """
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
@@ -78,10 +77,12 @@ class PhotorealVRay(Controller):
                                               object_id=self.get_unique_id(),
                                               position={"x": 1.8, "y": 0.303, "z": -0.517},
                                               rotation={"x": 0, "y": 70, "z": 0})])
+        # Let physics settle.       
         for step in range(15):
             resp = self.communicate([])
         self.add_ons.append(export)
-        for step in range(15):
+        # Ten frame hold before moving chair.
+        for step in range(10):
             resp = self.communicate([])
         # Apply a force and run simulation for 150 frames.
         self.communicate({"$type": "apply_force_to_object",
@@ -89,7 +90,7 @@ class PhotorealVRay(Controller):
                            "force": {"x": 0, "y": 0.5, "z": -35}})
         for step in range(self.frame_range):
             resp = self.communicate([])
-        # Launch the render in headless mode; it will run to completion and automatically close.
+        # Launch Vantage render in headless mode; it will run to completion and automatically close.
         export.launch_render()
         
 

@@ -80,7 +80,7 @@ class PhotorealVRay(Controller):
                                               position={"x": -3.25, "y": 0.3, "z": -0.517},
                                               rotation={"x": 0, "y": 70, "z": 0})])
         self.communicate(commands)
-        # Launch Vantage render.
+        # Launch Vantage render in headless mode; it will run to completion and automatically close.
         export.launch_render()
 
 if __name__ == "__main__":

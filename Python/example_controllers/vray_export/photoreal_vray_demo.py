@@ -19,8 +19,8 @@ class PhotorealVRay(Controller):
     def run(self):
         # Add a camera and enable export.
         camera = ThirdPersonCamera(avatar_id="a",
-                                   position={"x": -3, "y": 1.5, "z": -2},
-                                   look_at={"x": -1, "y": 1, "z": 0},
+                                   position={"x": 2.5, "y": 2.0, "z": 2},
+                                   look_at={"x": 0, "y": 0, "z": 0},
                                    field_of_view=55)
         export = VRayExport(image_width=1280, 
                             image_height=720, 

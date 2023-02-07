@@ -409,17 +409,17 @@ class VRayExport(AddOn):
         """
         # Get the matrix and convert it.
         # Equivalent to: handedness * object_matrix * handedness.
-        pos_matrix = np.matmul(self.camera_handedness, np.matmul(avatar_matrix, self.camera_handedness))
-        rot_matrix = np.matmul(sensor_matrix, self.camera_handedness)
+        pos_matrix = np.matmul(np.matmul(self.handedness, avatar_matrix), self.handedness)
+        rot_matrix = np.matmul(np.matmul(self.handedness, sensor_matrix), self.handedness)
         # Note that V-Ray units are in centimeters while Unity's are in meters, so we need to multiply the position values by 100.
         # We also need to negate the X value, to complete the handedness conversion.
-        pos_x = -(pos_matrix[3][0] * 100)
+        pos_x = (pos_matrix[3][0] * 100)
         pos_y = (pos_matrix[3][1] * 100)
-        pos_z = (pos_matrix[3][2] * 100)
-        mat_struct = matrix_data_struct(column_one = str(rot_matrix[0][0]) + "," + str(rot_matrix[0][1]) + "," + str(rot_matrix[0][2]), 
-                                        column_two = str(rot_matrix[1][0]) + "," + str(rot_matrix[1][1]) + "," + str(rot_matrix[1][2]), 
-                                        column_three = str(rot_matrix[2][0]) + "," + str(rot_matrix[2][1]) + "," + str(rot_matrix[2][2]),  
-                                        column_four = str(pos_x) + "," + str(pos_y) + "," + str(pos_z))
+        pos_z = -(pos_matrix[3][2] * 100)
+        mat_struct = matrix_data_struct(column_one = '{:f}'.format(-rot_matrix[0][0]) + "," + '{:f}'.format(-rot_matrix[0][1]) + "," + '{:f}'.format(rot_matrix[0][2]),
+                                        column_two = '{:f}'.format(-rot_matrix[2][0]) + "," + '{:f}'.format(-rot_matrix[2][1]) + "," + '{:f}'.format(rot_matrix[2][2]),   
+                                        column_three = '{:f}'.format(rot_matrix[1][0]) + "," + '{:f}'.format(rot_matrix[1][1]) + "," + '{:f}'.format(-rot_matrix[1][2]), 
+                                        column_four = '{:f}'.format(pos_x) + "," + '{:f}'.format(pos_y) + "," + '{:f}'.format(pos_z))
         node_id_string = self.get_renderview_id_string()
         # Form interpolation string.
         node_string = ("\n" + node_id_string + 

@@ -15,8 +15,6 @@ In this tutorial, you'll learn how to initialize audio, play pre-recorded audio,
 
 It is possible in TDW to generate and play audio from physical properties of two objects and the properties of a collision between them. This is handled via the C# Clatter library and the Python `Clatter` add-on. [Read this for more information.](../clatter/overview.md)
 
-Past versions of TDW used PyImpact instead of Clatter. Clatter is an upgrade replacement of PyImpact. If you're new to TDW, you should always use Clatter instead of PyImpact. If you want to upgrade from PyImpact to Clatter, [read this.](../py_impact/py_impact_and_clatter.md)
-
 ***
 
 **Next: [Initialize audio and play .wav files](initialize_audio.md)**

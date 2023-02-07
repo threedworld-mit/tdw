@@ -167,23 +167,38 @@ Clatter doesn't need to serialize or deserialize anything. It also handles each 
 
 ### Data classes
 
-Both PyImpact and Clatter use many data classes in addition to the add-on classes. In Clatter, most of these have been moved to the C# repo. PyImpact and Clatter share only a few classes. 
+Both PyImpact and Clatter use many data classes in addition to the add-on classes. In Clatter, most of these have been moved to the C# repo. PyImpact and Clatter share only a few classes:
 
-In this table, PyImpact classes are always located in `tdw.physics_audio` (i.e. within the `tdw` Python repo) and Clatter classes are located in the Clatter repo unless otherwise noted.
+| PyImpact            | Clatter (Python) | Clatter (C#)                                                 |
+| ------------------- | ---------------- | ------------------------------------------------------------ |
+| PyImpact            | Clatter          | AudioGenerator<br>Impact<br>ImpactMaterialData<br>Scrape<br>ScrapeMaterialData<br>ClatterManager |
+| AudioMaterial       | ImpactMaterial   | ImpactMaterialUnsized                                        |
+| Base64Sound         |                  | Samples                                                      |
+| CollisionAudioEvent |                  | CollisionEvent<br>ClatterObject                              |
+| CollisionAudioInfo  |                  | AudioEvent                                                   |
+| CollisionAudioType  |                  | AudioEventType                                               |
+| Modes               |                  | Modes                                                        |
+| ObjectAudioStatic   | ClatterObject    | ClatterObjectData                                            |
+| ScrapeMaterial      | ScrapeMaterial   | ScrapeMaterial                                               |
+| ScrapeModel         | ScrapeModel      |                                                              |
+| ScrapeSubObject     | ScrapeSubObject  |                                                              |
 
-This table shows *Python* classes in PyImpact and Clatter. A blank cell indicates that the code has been moved to the Clatter C# repo; in many cases, the class has been renamed, refactored, split across several classes, etc.
+## Audio synthesis algorithms
 
-| PyImpact            | Clatter         |
-| ------------------- | --------------- |
-| AudioMaterial       | ImpactMaterial* |
-| Base64Sound         |                 |
-| CollisionAudioEvent |                 |
-| CollisionAudioInfo  |                 |
-| CollisionAudioType  |                 |
-| Modes               |                 |
-| ObjectAudioStatic   | ClatterObject   |
-| ScrapeMaterial      | ScrapeMaterial* |
-| ScrapeModel         | ScrapeModel     |
-| ScrapeSubObject     | ScrapeSubObject |
+Clatter's audio synthesis algorithms have, in general, been written to match PyImpact's as closely as possible.
 
-\* These enum types also exist in the Clatter repo.
+In many cases, an exact 1:1 porting of a PyImpact algorithm isn't possible; usually this is because PyImpact is using numpy code that is difficult to rewrite in C#. Clatter uses code snippets originally found in .NET math libraries (and then optimized for Clatter).
+
+### Converting collision events to audio events
+
+Clatter and PyImpact have *similar* algorithms for converting collision events (enter, stay, exit) into audio events (impact, scrape, roll, none). Clatter's algorithm is more sophisticated and eliminates some prevalent bugs that would be difficult to fix in PyImpact. Clatter also reorganizes and expands upon the static variables you can use to control this algorithm (notably, there is a better system for differentiating between an impact and a scrape, and a user-end variable for deciding how to handle roll events).
+
+### Modes, impulse responses, and impacts
+
+The algorithms used by modes, impulse response synthesis, and impact audio synthesis are nearly the same in Clatter and PyImpact.
+
+### Scrapes
+
+Clatter's scrape algorithm is different from PyImpact's. It's actually a port of [this unmerged pull request](https://github.com/threedworld-mit/tdw/pull/509). This is because the pull request algorithm works better and is much faster than the algorithm used in the master branch version of PyImpact. There is one major difference between Clatter's scrape implementation at the implementation in the PyImpact pull request: Clatter doesn't try, or need to, scale arrays by the simulator framerate.
+
+In PyImpact, scrape audio is sent in chunks to Unity. If the framerate is too slow, there will be gaps of silence between the gaps. If the framerate is too fast, the audio chunks will overlap. In Clatter, scrape audio chunks are stored internally in a queue. There can still be gaps of silence in Clatter while new scrape audio is being generated. To solve this, Clatter plays each scrape audio chunk in a loop until a new audio chunk is available. This is not "realistic" per se but tends to work well (and isn't any worse than the overlapping audio in PyImpact). This behavior can optionally be disabled by setting `loop_scrape_audio=False` in the `Clatter` add-on constructor.

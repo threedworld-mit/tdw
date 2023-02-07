@@ -10,6 +10,8 @@ from tdw.physics_audio.object_audio_static import ObjectAudioStatic
 
 class CollisionAudioEvent:
     """
+    This class is used only in PyImpact, which has been deprecated. See: [`Clatter`](../add_ons/clatter.md).
+
     Data for a collision audio event.
     Includes collision data as well as the "primary" and "secondary" objects and the type of audio event.
     """

@@ -48,7 +48,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 1. [Create a scene.](../core_concepts/scenes.md)
 2. [Add an avatar.](../core_concepts/avatars.md)
-3. [Initialize audio.](../audioinitialize_audio.md) (Optionally, initialize [Resonance Audio](../audio/../audio/resonance_audio.md) instead.)
+3. [Initialize audio.](../audio/initialize_audio.md) (Optionally, initialize [Resonance Audio](../audio/../audio/resonance_audio.md) instead.)
 4. [Add an object.](../core_concepts/objects.md)
 5. Add a [`PyImpact`](../../python/add_ons/py_impact.md) add-on.
 

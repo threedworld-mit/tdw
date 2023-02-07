@@ -36,6 +36,14 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
   - Added optional parameter `scale_duration` to `reach_for()`, `reset_arm()`, `look_at()`, and `reset_head()`.
 - Fixed: The `arrived_at` parameter in `replicant.move_by()` and `replicant.move_to()` sometimes doesn't get applied when checking if the Replicant arrived at the target.
 
+### Scene Library
+
+- Fixed: Floorplan scenes (floorplan_1a, floorplan_1b, etc.) don't have floors set up correctly such that various commands will treat them as walls.
+
+### Humanoid Animation Library
+
+- Added: birdcage_251067, kitchen_cleantable_m, kitchen_refrigerator_m, livingroom_dochores_f, market_customercart_walking_f, market_customercart_walking_m, market_customercart_walktostop_f, market_customercart_walktostop_m, room_ironclothes_m, server_fooddelivery_295482
+
 ### Documentation
 
 #### Modified Documentation

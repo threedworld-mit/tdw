@@ -10,6 +10,7 @@ import zipfile
 import subprocess
 import numpy as np
 import boto3
+from fabric import Connection
 
 
 class matrix_data_struct(NamedTuple):
@@ -22,7 +23,7 @@ class matrix_data_struct(NamedTuple):
 class VRayExport(AddOn):
 
     def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: str, 
-                 animate: bool = False):
+                 animate: bool = False, host:str = "localhost"):
         super().__init__()
         self.output_path = output_path
         if not os.path.exists(self.output_path):
@@ -34,6 +35,7 @@ class VRayExport(AddOn):
         self.image_width: int = image_width
         self.image_height: int = image_height
         self.animate = animate
+        self.host = host
         self.scene_name = scene_name
         # Conversion matrix for camera.
         self.camera_handedness = np.array([[-1, 0, 0, 0],
@@ -475,21 +477,23 @@ class VRayExport(AddOn):
             # Write out to the master scene file the animation settings, including final frame_count, as the end of the animation sequence.
             self.export_animation_settings()
             # Launch vantage in appropriate mode.
-            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe", 
-                        "-sceneFile=" + scene_path, 
-                        "-outputFile=" + output_path,  
-                        "-outputWidth=" + str(self.image_width), 
-                        "-outputHeight=" + str(self.image_height),
-                        "-frames=0" + "-" + str(self.frame_count),
-                        "-quiet",
-                        "-autoClose=true"])
+            #subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
+            arglist = "-sceneFile=" + scene_path + " "\
+                      + "-outputFile=" + output_path + " "\
+                      + "-outputWidth=" + str(self.image_width) + " "\
+                      + "-outputHeight=" + str(self.image_height) + " "\
+                      + "-frames=0" + "-" + str(self.frame_count) + " "\
+                      + "-quiet" + " "\
+                      + "-autoClose=true"
+            Connection(self.host).run("Start-Process -FilePath \"C:/Program Files/Chaos Group/Vantage/vantage_console.exe\" -ArgumentList " + arglist)
         else:
-            subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe", 
-                        "-sceneFile=" + scene_path, 
-                        "-outputFile=" + output_path,  
-                        "-outputWidth=" + str(self.image_width), 
-                        "-outputHeight=" + str(self.image_height),
-                        "-quiet",
-                        "-autoClose=true"])
+            #subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
+            arglist = "-sceneFile=" + scene_path + " "\
+                      + "-outputFile=" + output_path + " "\
+                      + "-outputWidth=" + str(self.image_width) + " "\
+                      + "-outputHeight=" + str(self.image_height) + " "\
+                      + "-quiet" + " "\
+                      + "-autoClose=true"
+            Connection(self.host).run("Start-Process -FilePath \"C:/Program Files/Chaos Group/Vantage/vantage_console.exe\" -ArgumentList " + arglist)
 
 	

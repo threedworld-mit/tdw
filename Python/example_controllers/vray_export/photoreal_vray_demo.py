@@ -10,8 +10,10 @@ class PhotorealVRay(Controller):
     """
     Create a typical TDW scene, then export using V-Ray add-on for maximum photorealism.
     """
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, output_path: str, host: str = "localhost", port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.host = host
+        self.output_path = output_path
 
     def run(self):
         # Add a camera and enable export.
@@ -22,9 +24,9 @@ class PhotorealVRay(Controller):
         export = VRayExport(image_width=1280, 
                             image_height=720, 
                             scene_name="tdw_room", 
-                            output_path="/Users/jeremy/Desktop/VE2020_output", 
+                            output_path=self.output_path, 
                             animate=False,
-                            host="192.168.1.15")
+                            host=self.host)
         self.add_ons.extend([camera, export])
         # Set the resolution to 720p.
         # Set render quality to maximum.
@@ -85,4 +87,9 @@ class PhotorealVRay(Controller):
         export.launch_render()
 
 if __name__ == "__main__":
-    PhotorealVRay(launch_build=False).run()
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument("--host", type=str, default="localhost", help="Host to render on.")
+    parser.add_argument("--output_path", type=str, help="Folder location to output rendered images.")
+    args = parser.parse_args()
+    PhotorealVRay(launch_build=False, host=args.host, output_path=args.output_path).run()

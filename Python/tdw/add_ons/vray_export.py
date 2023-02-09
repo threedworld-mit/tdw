@@ -472,23 +472,41 @@ class VRayExport(AddOn):
             # Write out to the master scene file the animation settings, including final frame_count, as the end of the animation sequence.
             self.export_animation_settings()
             # Launch vantage in appropriate mode.
-            #subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
-            arglist = "-sceneFile=" + scene_path + " "\
+            if self.host == "localhost":
+                subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
+                                "-sceneFile=" + scene_path,
+                                "-outputFile=" + output_path,
+                                "-outputWidth=" + str(self.image_width),
+                                "-outputHeight=" + str(self.image_height),
+                                "-frames=0" + "-" + str(self.frame_count),
+                                "-quiet",
+                                "-autoClose=true"])
+            else:
+                # Rendering on a remote machine.
+                arglist = "-sceneFile=" + scene_path + " "\
                       + "-outputFile=" + output_path + " "\
                       + "-outputWidth=" + str(self.image_width) + " "\
                       + "-outputHeight=" + str(self.image_height) + " "\
                       + "-frames=0" + "-" + str(self.frame_count) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-            Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
+                Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
         else:
-            #subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
-            arglist = "-sceneFile=" + scene_path + " "\
+            if self.host == "localhost":
+                subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
+                                "-sceneFile=" + scene_path,
+                                "-outputFile=" + output_path,
+                                "-outputWidth=" + str(self.image_width),
+                                "-outputHeight=" + str(self.image_height),
+                                "-quiet",
+                                "-autoClose=true"])
+            else:
+                arglist = "-sceneFile=" + scene_path + " "\
                       + "-outputFile=" + output_path + " "\
                       + "-outputWidth=" + str(self.image_width) + " "\
                       + "-outputHeight=" + str(self.image_height) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-            Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
+                Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
 
 	

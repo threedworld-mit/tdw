@@ -30,7 +30,7 @@ class OccupancyMap(AddOn):
         """
         self.occupancy_map: Optional[np.ndarray] = None
         """:field
-        A 3D numpy array of the occupancy map worldspace positions where the shape is `(width, length, 2)` where the last axis is (x, z) worldspace coordinates. The lengths of the first two axes of this array are the same as in `self.map`, meaning that `self.map[0][1]` is the occupancy status of `self.positions[0][1]`. This array is `None` until you call `generate()` followed by `controller.communicate(commands)`. 
+        A 3D numpy array of the occupancy map worldspace positions where the shape is `(width, length, 2)` where the last axis is (x, z) worldspace coordinates. The lengths of the first two axes of this array are the same as in `self.occupancy_map`, meaning that `self.occupancy_map[0][1]` is the occupancy status of `self.positions[0][1]`. This array is `None` until you call `generate()` followed by `controller.communicate(commands)`. 
         """
         self.positions: Optional[np.ndarray] = None
         self._cell_size: float = 0

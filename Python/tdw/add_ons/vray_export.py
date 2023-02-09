@@ -37,11 +37,6 @@ class VRayExport(AddOn):
         self.animate = animate
         self.host = host
         self.scene_name = scene_name
-        # Conversion matrix for camera.
-        self.camera_handedness = np.array([[-1, 0, 0, 0],
-                                           [0, -1, 0, 0],
-                                           [0, 0, -1, 0],
-                                           [0, 0, 0, 1]])
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
         self.handedness = np.array([[-1, 0, 0, 0],
                                     [0, 0, -1, 0],

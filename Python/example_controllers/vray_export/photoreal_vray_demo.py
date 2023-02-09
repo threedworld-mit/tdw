@@ -22,8 +22,9 @@ class PhotorealVRay(Controller):
         export = VRayExport(image_width=1280, 
                             image_height=720, 
                             scene_name="tdw_room", 
-                            output_path="D:/VE2020_output/", 
-                            animate=False)
+                            output_path="/Users/jeremy/Desktop/VE2020_output", 
+                            animate=False,
+                            host="192.168.1.15")
         self.add_ons.extend([camera, export])
         # Set the resolution to 720p.
         # Set render quality to maximum.

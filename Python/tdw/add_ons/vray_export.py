@@ -485,7 +485,7 @@ class VRayExport(AddOn):
                       + "-frames=0" + "-" + str(self.frame_count) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-            Connection(self.host).run("Start-Process -FilePath \"C:/Program Files/Chaos Group/Vantage/vantage_console.exe\" -ArgumentList " + arglist)
+            Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
         else:
             #subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
             arglist = "-sceneFile=" + scene_path + " "\
@@ -494,6 +494,6 @@ class VRayExport(AddOn):
                       + "-outputHeight=" + str(self.image_height) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-            Connection(self.host).run("Start-Process -FilePath \"C:/Program Files/Chaos Group/Vantage/vantage_console.exe\" -ArgumentList " + arglist)
+            Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
 
 	

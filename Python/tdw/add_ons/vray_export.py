@@ -25,17 +25,18 @@ class VRayExport(AddOn):
     def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: str, 
                  animate: bool = False, host:str = "localhost"):
         super().__init__()
+        self.host = host
         self.output_path = output_path
-        if not os.path.exists(self.output_path):
+        if (host == "localhost") and (not os.path.exists(self.output_path)):
             os.mkdir(self.output_path)
         self.S3_ROOT = "https://tdw-public.s3.amazonaws.com/"
+        # Path to location of all downloaded and exported .vrscene files, maps etc.
         self.VRAY_EXPORT_RESOURCES_PATH = Path.home().joinpath("vray_export_resources")
         if not self.VRAY_EXPORT_RESOURCES_PATH.exists():
             self.VRAY_EXPORT_RESOURCES_PATH.mkdir(parents=True)
         self.image_width: int = image_width
         self.image_height: int = image_height
         self.animate = animate
-        self.host = host
         self.scene_name = scene_name
         # Conversion matrix from Y-up to Z-up, and left-hand to right-hand.
         self.handedness = np.array([[-1, 0, 0, 0],
@@ -493,6 +494,7 @@ class VRayExport(AddOn):
                 Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
         else:
             if self.host == "localhost":
+                print(output_path)
                 subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
                                 "-sceneFile=" + scene_path,
                                 "-outputFile=" + output_path,

@@ -491,7 +491,8 @@ class VRayExport(AddOn):
                       + "-frames=0" + "-" + str(self.frame_count) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-                Connection(self.render_host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
+                with Connection(host=self.render_host, port=1071) as c:
+                    c.run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
         else:
             if self.render_host == "localhost":
                 print(output_path)
@@ -509,6 +510,7 @@ class VRayExport(AddOn):
                       + "-outputHeight=" + str(self.image_height) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-                Connection(self.render_host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
+                with Connection(host=self.render_host, port=1071) as c:
+                    c.run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
 
 	

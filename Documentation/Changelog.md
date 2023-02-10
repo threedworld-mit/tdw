@@ -10,11 +10,34 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 #### New Commands
 
-| Command              | Description                         |
-| -------------------- | ----------------------------------- |
-| `send_occupancy_map` | Request `OccupancyMap` output data. |
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `send_occupancy_map` | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free. |
 
+### Output Data
 
+#### New Output Data
+
+| Output Data    | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `OccupancyMap` | A grid of positions denoting whether a space is occupied, free, or out of bounds. |
+
+### `tdw` module
+
+- Updated the `OccupancyMap` add-on. Previously, it required two communicate() calls to initialize and used a combination of `Raycast` and `Overlap` output data to generate the occupancy map. Now, the add-on uses `OccupancyMap` output data, which requires only one communicate() call and is overall faster.
+  - Changed the values of the occupancy map. Previously, `1` meant "occupied" or "in an isolated island", and `-1` meant "out of bounds". Now, `1` means "occupied", `2` means "out of bounds", and `3` means "in an isolated island". As a result of this change, occupancy maps can be expressed as arrays of unsigned bytes, meaning that there is less output data to send and therefore that the output data is faster.
+  - Added `occupancy_map.positions`, a numpy array of worldspace positions per grid position. Removed `OccupancyMap.get_occupancy_position()`.
+  - Removed `occupancy_map.scene_bounds`.
+  - Removed `cell_size` from the constructor and moved it to `generate()`.
+  - Added parameters to `generate()`: `raycast_y` and `once`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                              | Modification                                 |
+| ------------------------------------- | -------------------------------------------- |
+| `lessons/navigation/occupancy_map.md` | Updated to explain the new OccupancyMap API. |
 
 ## v1.11.3
 

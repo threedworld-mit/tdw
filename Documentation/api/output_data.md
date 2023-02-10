@@ -85,6 +85,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
 | [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
+| [OccupancyMap](#OccupancyMap) | A grid of positions denoting whether a space is occupied, free, or out of bounds. | `occu` |
 | [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
@@ -283,7 +284,7 @@ The IDs of every object that a shape overlaps plus parent IDs and the semantic c
 | `get_object_id()` | The ID of the object. | `int` |
 | `get_container_id()` | The ID of the container. | `int` |
 | `get_tag()` | The semantic tag. | `ContainerTag` |
-| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.ndarray` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
@@ -685,6 +686,20 @@ To what extent parts of the scene environment (such as walls) are occluding obje
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
+
+## OccupancyMap
+
+`o = OccupancyMap(byte_array)`
+
+**Identifier:** `occu`
+
+A grid of positions denoting whether a space is occupied, free, or out of bounds.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_shape()` | Reshape the occupancy map array to this shape. | `np.ndarray` |
+| `get_map()` | The occupancy map. | `np.ndarray` |
+| `get_positions()` | An array of (x, z) positions on the occupancy map. | `np.ndarray` |
 
 ## OculusTouchButtons
 

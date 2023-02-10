@@ -17,7 +17,7 @@ You can use an occupancy map for several purposes:
 
 ## The `OccupancyMap` add-on
 
-To generate an occupancy map, you can use the [`OccupancyMap`](../../python/add_ons/occupancy_map.md) add-on:
+To generate an occupancy map, you can use the [`OccupancyMap`](../../python/add_ons/occupancy_map.md) add-on, call `generate()`, and then call `controller.communicate(commands)`:
 
 ```python
 from tdw.controller import Controller
@@ -25,14 +25,13 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.occupancy_map import OccupancyMap
 
 c = Controller()
-occupancy_map = OccupancyMap(cell_size=0.5)
+occupancy_map = OccupancyMap()
 c.add_ons.append(occupancy_map)
+occupancy_map.generate(cell_size=0.5)
 c.communicate([TDWUtils.create_empty_room(6, 6),
                c.get_add_object(model_name="trunck",
                                 object_id=c.get_unique_id(),
                                 position={"x": 0, "y": 0, "z": 1.5})])
-occupancy_map.generate()
-c.communicate([])
 print(occupancy_map.occupancy_map)
 c.communicate({"$type": "terminate"})
 ```
@@ -40,50 +39,64 @@ c.communicate({"$type": "terminate"})
 Output:
 
 ```
-[[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  1  1  1 -1]
- [-1  0  0  0  0  0  0  1  1  1 -1]
- [-1  0  0  0  0  0  0  1  1  1 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]]
+[[1 1 1 1 1 1 1 1 1 1 1]
+ [1 0 0 0 0 0 0 0 0 0 1]
+ [1 0 0 0 0 0 0 0 0 0 1]
+ [1 0 0 0 0 0 0 0 0 0 1]
+ [1 0 0 0 0 0 0 0 0 0 1]
+ [1 0 0 0 0 0 0 0 0 0 1]
+ [1 0 0 0 0 0 0 0 0 0 1]
+ [1 0 0 0 1 1 1 0 0 0 1]
+ [1 0 0 0 1 1 1 0 0 0 1]
+ [1 0 0 0 1 1 1 0 0 0 1]
+ [1 1 1 1 1 1 1 1 1 1 1]]
 ```
 
-Note that it takes two `communicate()` calls to create the occupancy map; the first gets the bounds of the scene and the second divides the bounds into cells and requests [`Raycast`](../semantic_states/raycast.md) and [`Overlap`](../semantic_states/overlap.md) data per cell.
+## Occupancy map statuses
 
-`occupancy_map.generate()` prepares to send commands to the build but doesn't actually send commands to the build (only a controller can do that). You always need to send `occupancy_map.generate()` *then* `c.communicate(commands)`.
+| Value | Meaning                                                      |
+| ----- | ------------------------------------------------------------ |
+| 0     | The cell is unoccupied.                                      |
+| 1     | The cell is occupied by at least one object or occupied by an environment object (such as a wall). |
+| 2    | The cell is out of bounds (there is no floor).               |
+| 3    | The cell is free, but it's in an isolated island. |
 
-## Convert occupancy map coordinates to world space coordinates
+## Occupancy map positions
 
-To convert occupancy map coordinates to world space coordinates, call `occupancy_map.get_occupancy_position(i, j)`:
+`occupancy_map.positions` is a 3D array where the first two axes correspond to `occupancy_map.occupancy_map`.
+
+For example, `occupancy_map.positions[0][1]` might return `[-2.  -2.5]` and its occupancy status is `occupancy_map.occupancy_map[0][1]`, which in the above example returns `1` (occupied).
+
+## Cell Size
+
+Set the `cell_size` parameter in `generate()` to adjust the size of each cell:
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.occupancy_map import OccupancyMap
 
-"""
-Minimal example of generating an occupancy map.
-"""
-
 c = Controller()
-occupancy_map = OccupancyMap(cell_size=0.5)
+occupancy_map = OccupancyMap()
 c.add_ons.append(occupancy_map)
-c.communicate([TDWUtils.create_empty_room(6, 6)])
-occupancy_map.generate()
-c.communicate([])
-print(occupancy_map.get_occupancy_position(0, 0))
+occupancy_map.generate(cell_size=1)
+c.communicate([TDWUtils.create_empty_room(6, 6),
+               c.get_add_object(model_name="trunck",
+                                object_id=c.get_unique_id(),
+                                position={"x": 0, "y": 0, "z": 1.5})])
+print(occupancy_map.occupancy_map)
 c.communicate({"$type": "terminate"})
 ```
 
-Output:
+Output (note that this map is smaller than the previous example, despite having the scene being exactly the same):
 
 ```
-(-2.5, -2.5)
+[[1 1 1 1 1 1]
+ [1 0 0 0 0 1]
+ [1 0 0 0 0 1]
+ [1 0 0 0 0 1]
+ [1 0 1 1 0 1]
+ [1 1 1 1 1 1]]
 ```
 
 ## Ignore objects
@@ -101,15 +114,14 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.occupancy_map import OccupancyMap
 
 c = Controller()
-occupancy_map = OccupancyMap(cell_size=0.5)
+occupancy_map = OccupancyMap()
 c.add_ons.append(occupancy_map)
-object_id = c.get_unique_id()
+object_id = Controller.get_unique_id()
+occupancy_map.generate(cell_size=1, ignore_objects=[object_id])
 c.communicate([TDWUtils.create_empty_room(6, 6),
                c.get_add_object(model_name="trunck",
                                 object_id=object_id,
                                 position={"x": 0, "y": 0, "z": 1.5})])
-occupancy_map.generate(ignore_objects=[object_id])
-c.communicate([])
 print(occupancy_map.occupancy_map)
 c.communicate({"$type": "terminate"})
 ```
@@ -117,82 +129,23 @@ c.communicate({"$type": "terminate"})
 Output:
 
 ```
-[[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]]
+[[1 1 1 1 1 1]
+ [1 0 0 0 0 1]
+ [1 0 0 0 0 1]
+ [1 0 0 0 0 1]
+ [1 0 0 0 0 1]
+ [1 1 1 1 1 1]]
 ```
 
-## Scene reset
+## Regenerate every communicate() call
 
-When [resetting a scene](../scene_setup_high_level/reset_scene.md), call `occupancy_map.reset()`:
+**Occupancy maps are static.** If an object in the scene moves, `occupancy_map.occupancy_map` won't update.
 
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.occupancy_map import OccupancyMap
+You can optionally regenerate the occupancy map on every communicate() call by setting `generate(once=False)`. In general, it is relatively expensive to generate occupancy maps. If you need to continuously update your occupancy map, setting `once=False` is faster than calling `generate()` every communicate() call because the build will be able to use cached data.
 
-c = Controller()
-occupancy_map = OccupancyMap(cell_size=0.5)
-c.add_ons.append(occupancy_map)
-object_id = c.get_unique_id()
-c.communicate([TDWUtils.create_empty_room(6, 6)])
-occupancy_map.generate()
-c.communicate([])
-print(occupancy_map.occupancy_map)
-occupancy_map.reset()
-c.communicate([{"$type": "load_scene",
-                "scene_name": "ProcGenScene"},
-               TDWUtils.create_empty_room(8, 4)])
-occupancy_map.generate()
-c.communicate([])
-print(occupancy_map.occupancy_map)
-c.communicate({"$type": "terminate"})
-```
+## Reset
 
-Output:
-
-```
-[[-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1  0  0  0  0  0  0  0  0  0 -1]
- [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]]
- 
-[[-1 -1 -1 -1 -1 -1 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1  0  0  0  0  0 -1]
- [-1 -1 -1 -1 -1 -1 -1]]
-```
-
-## Limitations
-
-- Occupancy maps are static. If an object in the scene moves, `occupancy_map.occupancy_map` won't update until you call `occupancy_map.generate()` again.
-- Generating an occupancy map can slow down the build. We recommend generating occupancy maps only as needed (not per-frame).
+You don't need to reset an `OccupancyMap` add-on. Simply call `generate()` followed by `controller.communicate(commands)` to create a new occupancy map.
 
 ***
 

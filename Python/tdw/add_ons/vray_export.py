@@ -23,11 +23,11 @@ class matrix_data_struct(NamedTuple):
 class VRayExport(AddOn):
 
     def __init__(self, image_width: int, image_height: int, scene_name: str, output_path: str, 
-                 animate: bool = False, host:str = "localhost"):
+                 animate: bool = False, render_host:str = "localhost"):
         super().__init__()
-        self.host = host
+        self.render_host = render_host
         self.output_path = output_path
-        if (host == "localhost") and (not os.path.exists(self.output_path)):
+        if (render_host == "localhost") and (not os.path.exists(self.output_path)):
             os.mkdir(self.output_path)
         self.S3_ROOT = "https://tdw-public.s3.amazonaws.com/"
         # Path to location of all downloaded and exported .vrscene files, maps etc.
@@ -473,7 +473,7 @@ class VRayExport(AddOn):
             # Write out to the master scene file the animation settings, including final frame_count, as the end of the animation sequence.
             self.export_animation_settings()
             # Launch vantage in appropriate mode.
-            if self.host == "localhost":
+            if self.render_host == "localhost":
                 subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
                                 "-sceneFile=" + scene_path,
                                 "-outputFile=" + output_path,
@@ -491,9 +491,9 @@ class VRayExport(AddOn):
                       + "-frames=0" + "-" + str(self.frame_count) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-                Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
+                Connection(self.render_host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
         else:
-            if self.host == "localhost":
+            if self.render_host == "localhost":
                 print(output_path)
                 subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
                                 "-sceneFile=" + scene_path,
@@ -509,6 +509,6 @@ class VRayExport(AddOn):
                       + "-outputHeight=" + str(self.image_height) + " "\
                       + "-quiet" + " "\
                       + "-autoClose=true"
-                Connection(self.host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
+                Connection(self.render_host).run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\""  + arglist)
 
 	

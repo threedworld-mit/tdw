@@ -600,7 +600,7 @@
 | [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
 | [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
-| [`send_occupancy_map`](#send_occupancy_map) |  |
+| [`send_occupancy_map`](#send_occupancy_map) | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free.  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
@@ -7511,8 +7511,12 @@ Options for when to send data.
 
 ## **`send_occupancy_map`**
 
+Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free. 
 
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
+    - <font style="color:green">**Type:** [`OccupancyMap`](output_data.md#OccupancyMap)</font>
 
 ```python
 {"$type": "send_occupancy_map"}

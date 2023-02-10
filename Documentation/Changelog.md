@@ -4,6 +4,18 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.4
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                         |
+| -------------------- | ----------------------------------- |
+| `send_occupancy_map` | Request `OccupancyMap` output data. |
+
+
+
 ## v1.11.3
 
 ### Command API

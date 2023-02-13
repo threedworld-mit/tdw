@@ -112,7 +112,12 @@ class VRayExporter(AddOn):
                     c.run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\"" + arglist)
 
     def get_initialization_commands(self) -> List[dict]:
-        commands = [{"$type": "send_transform_matrices",
+        commands = [{"$type": "set_screen_size",
+                     "width": self.image_width,
+                     "height": self.image_height},
+                    {"$type": "set_render_quality",
+                     "render_quality": 5},
+                    {"$type": "send_transform_matrices",
                      "frequency": "always"},
                     {"$type": "send_segmentation_colors",
                      "frequency": "once"},

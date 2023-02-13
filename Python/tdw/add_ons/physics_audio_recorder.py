@@ -79,11 +79,12 @@ class PhysicsAudioRecorder(AddOn):
         if sleeping and not playing_audio:
             self.stop()
 
-    def start(self, path: Union[str, Path] = None) -> None:
+    def start(self, path: Union[str, Path] = None, device_name: str = None) -> None:
         """
         Start recording.
 
         :param path: The path to the output .wav file. If None, defaults to the current working directory.
+        :param device_name: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
         """
 
         # Don't start a new recording if one is ongoing.
@@ -104,7 +105,7 @@ class PhysicsAudioRecorder(AddOn):
         self._frame = 0
         # Start listening.
         if self._record_audio:
-            AudioUtils.start(output_path=self.path)
+            AudioUtils.start(output_path=self.path, device_name=device_name)
         self.commands.extend([{"$type": "send_audio_sources",
                                "frequency": "always"},
                               {"$type": "send_rigidbodies",

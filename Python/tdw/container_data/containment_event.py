@@ -7,7 +7,7 @@ class ContainmentEvent:
     Data describing a containment event i.e. when a container shape overlaps with one or more objects.
     """
 
-    def __init__(self, container_id: int, object_ids: np.array, tag: ContainerTag):
+    def __init__(self, container_id: int, object_ids: np.ndarray, tag: ContainerTag):
         """
         :param container_id: The ID of the container.
         :param object_ids: The IDs of the contained objects as a numpy array.
@@ -21,7 +21,7 @@ class ContainmentEvent:
         """:field
         The IDs of the contained objects as a numpy array
         """
-        self.object_ids: np.array = object_ids
+        self.object_ids: np.ndarray = object_ids
         """:field
         A semantic [`ContainerTag`](container_tag.md) describing the semantic nature of the event.
         """

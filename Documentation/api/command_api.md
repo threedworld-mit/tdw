@@ -22,7 +22,6 @@
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
 | [`perlin_noise_terrain`](#perlin_noise_terrain) | Initialize a scene environment with procedurally generated "terrain" using Perlin noise. This command will return Meshes output data which will contain the mesh data of the terrain.  |
 | [`rotate_hdri_skybox_by`](#rotate_hdri_skybox_by) | Rotate the HDRI skybox by a given value and the sun light by the same value in the opposite direction, to maintain alignment. |
-| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
@@ -63,6 +62,7 @@
 | Command | Description |
 | --- | --- |
 | [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
+| [`add_replicant`](#add_replicant) | Add a Replicant to the scene.  |
 | [`add_smpl_humanoid`](#add_smpl_humanoid) | Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters.  |
 
 **Add Material Command**
@@ -95,8 +95,10 @@
 | [`set_avatar_color`](#set_avatar_color) | Set the color of an avatar. To allow transparency (the "alpha" channel, or "a" value in the color), first send enable_avatar_transparency |
 | [`set_avatar_forward`](#set_avatar_forward) | Set the forward directional vector of the avatar.  |
 | [`set_camera_clipping_planes`](#set_camera_clipping_planes) | Set the near and far clipping planes of the avatar's camera. |
-| [`set_field_of_view`](#set_field_of_view) | Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again.  |
+| [`set_field_of_view`](#set_field_of_view) | Set the field of view of the avatar's camera. This will automatically set the focal length (see: set_focal_length).  |
+| [`set_focal_length`](#set_focal_length) | Set the focal length of the avatar's camera. This will automatically set the field of view (see: set_field_of_view).  |
 | [`set_pass_masks`](#set_pass_masks) | Set which types of images the avatar will render. By default, the avatar will render, but not send, these images. See send_images in the Command API.  |
+| [`teleport_avatar_by`](#teleport_avatar_by) | Teleport the avatar by a position offset.  |
 | [`teleport_avatar_to`](#teleport_avatar_to) | Teleport the avatar to a position.  |
 
 **Add Audio Sensor Command**
@@ -142,6 +144,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_visual_camera_mesh`](#add_visual_camera_mesh) | Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics. |
 | [`enable_image_sensor`](#enable_image_sensor) | Turn a sensor on or off. The command set_pass_masks will override this command (i.e. it will turn on a camera that has been turned off), |
 | [`look_at`](#look_at) | Look at an object (rotate the image sensor to center the object in the frame). |
 | [`look_at_avatar`](#look_at_avatar) | Look at another avatar (rotate the image sensor to center the avatar in the frame). |
@@ -274,7 +277,6 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
-| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
@@ -293,6 +295,7 @@
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
+| [`teleport_object_by`](#teleport_object_by) | Translate an object by an amount, optionally in local or world space. |
 | [`unparent_object`](#unparent_object) | Unparent an object from an object. If the textured quad doesn't have a parent, this command doesn't do anything. |
 
 **Add Container Shape Command**
@@ -302,6 +305,13 @@
 | [`add_box_container`](#add_box_container) | Add a box container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 | [`add_cylinder_container`](#add_cylinder_container) | Add a cylindrical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
 | [`add_sphere_container`](#add_sphere_container) | Add a spherical container shape to an object. The object will send output data whenever other objects overlap with this volume.  |
+
+**Empty Object Command**
+
+| Command | Description |
+| --- | --- |
+| [`attach_empty_object`](#attach_empty_object) | Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects |
+| [`teleport_empty_object`](#teleport_empty_object) | Teleport an empty object to a new position. |
 
 **Flex Object Command**
 
@@ -347,8 +357,47 @@
 | Command | Description |
 | --- | --- |
 | [`destroy_humanoid`](#destroy_humanoid) | Destroy a humanoid.  |
-| [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command. |
+| [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.  |
 | [`stop_humanoid_animation`](#stop_humanoid_animation) | Stop a motion capture animation on a humanoid. |
+
+**Replicant Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
+| [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant. |
+| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
+| [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
+| [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
+
+**Replicant Arm Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_drop_object`](#replicant_drop_object) | Drop a held object.  |
+| [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object.  |
+| [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped.  |
+
+**Replicant Arm Motion Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm on a humanoid to its neutral position.  |
+
+**Replicant Reach For Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
+| [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
+
+**Replicant Look At Command**
+
+| Command | Description |
+| --- | --- |
+| [`replicant_look_at_object`](#replicant_look_at_object) | Tell the Replicant to start to look at an object.  |
+| [`replicant_look_at_position`](#replicant_look_at_position) | Tell the Replicant to start to look at a position.  |
+| [`replicant_reset_head`](#replicant_reset_head) | Tell the Replicant to start to reset its head to its neutral position.  |
 
 **Sub Object Command**
 
@@ -462,6 +511,7 @@
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`set_robot_joint_id`](#set_robot_joint_id) | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique. |
 | [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
@@ -505,7 +555,19 @@
 | [`set_revolute_target`](#set_revolute_target) | Set the target angle of a revolute robot joint. Per frame, the joint will revolve towards the target until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angle. |
 | [`set_spherical_target`](#set_spherical_target) | Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint will revolve towards the targets until it is either no longer possible to do so (i.e. due to physics) or because it has reached the target angles. |
 
+**Set Robot Joint Position Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_prismatic_position`](#set_prismatic_position) | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot.  |
+| [`set_revolute_angle`](#set_revolute_angle) | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot.  |
+| [`set_spherical_angles`](#set_spherical_angles) | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot.  |
+
 **Send Multiple Data Once Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_nav_mesh_path`](#send_nav_mesh_path) | Tell the build to send data of a path on the NavMesh from the origin to the destination.  |
 
 **Send Overlap Command**
 
@@ -538,8 +600,8 @@
 | [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
 | [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
-| [`send_robots`](#send_robots) | Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots  |
-| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations.  |
+| [`send_occupancy_map`](#send_occupancy_map) | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free.  |
+| [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
@@ -551,6 +613,7 @@
 | [`send_avatars`](#send_avatars) | Send data for avatars in the scene.  |
 | [`send_avatar_segmentation_colors`](#send_avatar_segmentation_colors) | Send avatar segmentation color data.  |
 | [`send_camera_matrices`](#send_camera_matrices) | Send camera matrix data for each camera.  |
+| [`send_field_of_view`](#send_field_of_view) | Send field of view for each camera.  |
 | [`send_id_pass_grayscale`](#send_id_pass_grayscale) | Send the average grayscale value of an _id pass.  |
 | [`send_id_pass_segmentation_colors`](#send_id_pass_segmentation_colors) | Send all unique colors in an _id pass.  |
 | [`send_images`](#send_images) | Send images and metadata.  |
@@ -565,7 +628,9 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
-| [`send_empty_objects`](#send_empty_objects) | Send data each empty object in the scene. See: attach_empty_object  |
+| [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send the positions of each empty object in the scene.  |
+| [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
+| [`send_framerate`](#send_framerate) | Send the build's framerate information.  |
 | [`send_humanoids`](#send_humanoids) | Send transform (position, rotation, etc.) data for humanoids in the scene.  |
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
@@ -573,8 +638,10 @@
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
+| [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
+| [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
@@ -643,6 +710,20 @@
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
+**Video Capture Command**
+
+| Command | Description |
+| --- | --- |
+| [`stop_video_capture`](#stop_video_capture) | Stop ongoing video capture. |
+
+**Start Video Capture Command**
+
+| Command | Description |
+| --- | --- |
+| [`start_video_capture_linux`](#start_video_capture_linux) | Start video capture using ffmpeg. This command can only be used on Linux. |
+| [`start_video_capture_osx`](#start_video_capture_osx) | Start video capture using ffmpeg. This command can only be used on OS X. |
+| [`start_video_capture_windows`](#start_video_capture_windows) | Start video capture using ffmpeg. This command can only be used on Windows. |
+
 **Vr Command**
 
 | Command | Description |
@@ -651,6 +732,7 @@
 | [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
+| [`set_vr_loading_screen`](#set_vr_loading_screen) | Show or hide the VR rig's loading screen.  |
 | [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
@@ -936,31 +1018,6 @@ Rotate the HDRI skybox by a given value and the sun light by the same value in t
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The value to rotate the HDRI skybox by. Skyboxes are always rotated in a positive direction; values are clamped between 0 and 360, and any negative values are forced positive. Rotate around the pitch axis to set the elevation of the sun. Rotate around the yaw axis to set the angle of the sun. | |
-
-***
-
-## **`send_nav_mesh_path`**
-
-Tell the build to send data of a path on the NavMesh from the origin to the destination. 
-
-- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
-
-```python
-{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"origin"` | Vector3 | The origin of the path. | |
-| `"destination"` | Vector3 | The destination of the path. | |
-| `"id"` | int | The ID of the path. The output data will contain a matching ID. | 0 |
 
 ***
 
@@ -1469,6 +1526,30 @@ Add a humanoid model to the scene.
 
 ***
 
+## **`add_replicant`**
+
+Add a Replicant to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/replicant_librarian.md`</font>
+
+```python
+{"$type": "add_replicant", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_replicant", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the humanoid. | |
+| `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
 ## **`add_smpl_humanoid`**
 
 Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters. 
@@ -1587,7 +1668,7 @@ Add a single object from a model library or from a local asset bundle to the sce
 ```
 
 ```python
-{"$type": "add_object", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "scale_factor": 1, "category": ""}
+{"$type": "add_object", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "scale_factor": 1, "category": "", "affordance_points": []}
 ```
 
 | Parameter | Type | Description | Default |
@@ -1597,6 +1678,7 @@ Add a single object from a model library or from a local asset bundle to the sce
 | `"id"` | int | The unique ID of the object. | |
 | `"scale_factor"` | float | The default scale factor of a model. | 1 |
 | `"category"` | string | The model category. | "" |
+| `"affordance_points"` | Vector3 [] | A list of affordance points. Can be empty. | [] |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -1619,7 +1701,7 @@ Tell the build to send a report of a model asset bundle. Each report will be a s
 ```
 
 ```python
-{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": ""}
+{"$type": "send_model_report", "flex": True, "id": 1, "name": "string", "url": "string", "scale_factor": 1, "category": "", "affordance_points": []}
 ```
 
 | Parameter | Type | Description | Default |
@@ -1628,6 +1710,7 @@ Tell the build to send a report of a model asset bundle. Each report will be a s
 | `"id"` | int | The unique ID of the object. | |
 | `"scale_factor"` | float | The default scale factor of a model. | 1 |
 | `"category"` | string | The model category. | "" |
+| `"affordance_points"` | Vector3 [] | A list of affordance points. Can be empty. | [] |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -1890,7 +1973,7 @@ Set the near and far clipping planes of the avatar's camera.
 
 ## **`set_field_of_view`**
 
-Set the field of view of all active cameras of the avatar. If you don't want certain cameras to be modified: Send enable_image_sensor to deactivate the associated ImageSensor component. Then send this command. Then send enable_image_sensor again. 
+Set the field of view of the avatar's camera. This will automatically set the focal length (see: set_focal_length). 
 
 - <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
 
@@ -1899,12 +1982,33 @@ Set the field of view of all active cameras of the avatar. If you don't want cer
 ```
 
 ```python
-{"$type": "set_field_of_view", "field_of_view": 35, "avatar_id": "a"}
+{"$type": "set_field_of_view", "field_of_view": 54.43223, "avatar_id": "a"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"field_of_view"` | float | The field of view. | 35 |
+| `"field_of_view"` | float | The field of view. | 54.43223 |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
+
+***
+
+## **`set_focal_length`**
+
+Set the focal length of the avatar's camera. This will automatically set the field of view (see: set_field_of_view). 
+
+- <font style="color:darkcyan">**Depth of Field**: This command modifies the post-processing depth of field. See: [Depth of Field and Image Blurriness](../lessons/photorealism/depth_of_field.md).</font>
+
+```python
+{"$type": "set_focal_length"}
+```
+
+```python
+{"$type": "set_focal_length", "focal_length": 35, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"focal_length"` | float | The focal length. | 35 |
 | `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
@@ -1941,6 +2045,27 @@ Set which types of images the avatar will render. By default, the avatar will re
 | `_normals` | ![](images/pass_masks/normals_0.png) Surfaces are colored according to their orientation in relation to the camera. |
 | `_flow` | ![](images/pass_masks/flow_0.png) Pixels are colored according to their motion in relation to the camera. |
 | `_albedo` | ![](images/pass_masks/albedo_0.png) Only color and texture, as if lit with only ambient light. |
+
+***
+
+## **`teleport_avatar_by`**
+
+Teleport the avatar by a position offset. 
+
+- <font style="color:orange">**Non-physics motion**: This command ignores the build's physics engine. If you send this command during a physics simulation (i.e. to a non-kinematic avatar), the physics might glitch.</font>
+
+```python
+{"$type": "teleport_avatar_by", "position": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "teleport_avatar_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position offset to teleport by. | |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 
@@ -2301,6 +2426,28 @@ Move the avatar towards the target position.
 # SensorContainerCommand
 
 These commands adjust an avatar's image sensor container. All avatars have at least one sensor, which is named "SensorContainer". Sticky Mitten Avatars have an additional sensor named "FollowCamera". For a list of all image sensors attached to an avatar, send send_image_sensors.
+
+***
+
+## **`add_visual_camera_mesh`**
+
+Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics.
+
+
+```python
+{"$type": "add_visual_camera_mesh"}
+```
+
+```python
+{"$type": "add_visual_camera_mesh", "position": {"x": 0, "y": 0, "z": -0.06}, "scale": {"x": 1, "y": 1, "z": 1}, "sensor_name": "SensorContainer", "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the visual camera mesh relative to the sensor container. | {"x": 0, "y": 0, "z": -0.06} |
+| `"scale"` | Vector3 | The scale of the visual camera mesh. | {"x": 1, "y": 1, "z": 1} |
+| `"sensor_name"` | string | The name of the target sensor. | "SensorContainer" |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 
 ***
 
@@ -3654,23 +3801,6 @@ The shape of the trigger collider.
 
 ***
 
-## **`attach_empty_object`**
-
-Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
-
-
-```python
-{"$type": "attach_empty_object", "empty_object_id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
-| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`create_obi_colliders`**
 
 Create Obi colliders for an object if there aren't any. 
@@ -3880,8 +4010,8 @@ Rotate an object by a given angle around a given axis.
 | --- | --- | --- | --- |
 | `"axis"` | Axis | The axis of rotation. | "yaw" |
 | `"angle"` | float | The angle of rotation in degrees. | |
-| `"is_world"` | bool | If true, the object will rotate via "global" directions and angles. If false, the object will rotate locally. | True |
-| `"use_centroid"` | bool | If false, rotate around the bottom-center position of the object. If true, rotate around the bottom-center position of the object and then teleport the object to its centroid (such that it rotates around the centroid). This overrides is_world | False |
+| `"is_world"` | bool | If True, the object will rotate around global axes. If False, the object will around local axes. Ignored if use_centroid == False. | True |
+| `"use_centroid"` | bool | If True, rotate around the object's centroid. If False, rotate around the bottom-center position of the object. | False |
 | `"id"` | int | The unique object ID. | |
 
 #### Axis
@@ -4063,13 +4193,35 @@ Teleport an object to a new position.
 ```
 
 ```python
-{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False}
+{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False, "absolute": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the object. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches. | False |
+| `"absolute"` | bool | If True, set the position in world coordindate space. If False, set the position in local coordinate space. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`teleport_object_by`**
+
+Translate an object by an amount, optionally in local or world space.
+
+
+```python
+{"$type": "teleport_object_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "teleport_object_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "absolute": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The positional offset. | |
+| `"absolute"` | bool | If True, set the position in world coordindate space. If False, set the position in local coordinate space. | True |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4102,11 +4254,11 @@ Add a box container shape to an object. The object will send output data wheneve
     - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
 
 ```python
-{"$type": "add_box_container", "id": 1}
+{"$type": "add_box_container", "tag": "on", "id": 1}
 ```
 
 ```python
-{"$type": "add_box_container", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+{"$type": "add_box_container", "tag": "on", "id": 1, "half_extents": {"x": 1, "y": 1, "z": 1}, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4115,7 +4267,18 @@ Add a box container shape to an object. The object will send output data wheneve
 | `"rotation"` | Vector3 | The rotation of the box in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
 | `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
 | `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"tag"` | ContainerTag | The container tag. | |
 | `"id"` | int | The unique object ID. | |
+
+#### ContainerTag
+
+A tag for a container shape.
+
+| Value | Description |
+| --- | --- |
+| `"on"` | An object on top of a surface, for example a plate on a table. |
+| `"inside"` | An object inside a cavity or basin, for example a toy in a basket or a plate in a sink. |
+| `"enclosed"` | An object inside an enclosed cavity, for example a pan in an oven. |
 
 ***
 
@@ -4128,11 +4291,11 @@ Add a cylindrical container shape to an object. The object will send output data
     - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
 
 ```python
-{"$type": "add_cylinder_container", "id": 1}
+{"$type": "add_cylinder_container", "tag": "on", "id": 1}
 ```
 
 ```python
-{"$type": "add_cylinder_container", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+{"$type": "add_cylinder_container", "tag": "on", "id": 1, "radius": 0.5, "height": 1, "rotation": {"x": 0, "y": 0, "z": 0}, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4142,7 +4305,18 @@ Add a cylindrical container shape to an object. The object will send output data
 | `"rotation"` | Vector3 | The rotation of the cylinder in Euler angles relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
 | `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
 | `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"tag"` | ContainerTag | The container tag. | |
 | `"id"` | int | The unique object ID. | |
+
+#### ContainerTag
+
+A tag for a container shape.
+
+| Value | Description |
+| --- | --- |
+| `"on"` | An object on top of a surface, for example a plate on a table. |
+| `"inside"` | An object inside a cavity or basin, for example a toy in a basket or a plate in a sink. |
+| `"enclosed"` | An object inside an enclosed cavity, for example a pan in an oven. |
 
 ***
 
@@ -4155,11 +4329,11 @@ Add a spherical container shape to an object. The object will send output data w
     - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
 
 ```python
-{"$type": "add_sphere_container", "id": 1}
+{"$type": "add_sphere_container", "tag": "on", "id": 1}
 ```
 
 ```python
-{"$type": "add_sphere_container", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
+{"$type": "add_sphere_container", "tag": "on", "id": 1, "radius": 0.5, "container_id": 0, "position": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -4167,6 +4341,61 @@ Add a spherical container shape to an object. The object will send output data w
 | `"radius"` | float | The radius of the sphere. | 0.5 |
 | `"container_id"` | int | The ID of this container shape. This can be used to differentiate between multiple container shapes belonging to the same object. | 0 |
 | `"position"` | Vector3 | The position of the container shape relative to the parent object. | {"x": 0, "y": 0, "z": 0} |
+| `"tag"` | ContainerTag | The container tag. | |
+| `"id"` | int | The unique object ID. | |
+
+#### ContainerTag
+
+A tag for a container shape.
+
+| Value | Description |
+| --- | --- |
+| `"on"` | An object on top of a surface, for example a plate on a table. |
+| `"inside"` | An object inside a cavity or basin, for example a toy in a basket or a plate in a sink. |
+| `"enclosed"` | An object inside an enclosed cavity, for example a pan in an oven. |
+
+# EmptyObjectCommand
+
+These commands add or adjust an empty object attached to an object.
+
+***
+
+## **`attach_empty_object`**
+
+Attach an empty object to an object in the scene. This is useful for tracking local space positions as the object rotates. See: send_empty_objects
+
+
+```python
+{"$type": "attach_empty_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "empty_object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the empty object relative to the parent object, in the parent object's local coordinate space. | |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`teleport_empty_object`**
+
+Teleport an empty object to a new position.
+
+
+```python
+{"$type": "teleport_empty_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "empty_object_id": 1, "id": 1}
+```
+
+```python
+{"$type": "teleport_empty_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "empty_object_id": 1, "id": 1, "rotation": {"w": 1, "x": 0, "y": 0, "z": 0}, "absolute": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The location to teleport to. | |
+| `"rotation"` | Quaternion | The new local rotation of the empty object. | {"w": 1, "x": 0, "y": 0, "z": 0} |
+| `"absolute"` | bool | If True, teleport the empty object in world coordinate space. If False, teleport the empty object in local coordinate space. | True |
+| `"empty_object_id"` | int | The ID of the empty object. This doesn't have to be the same as the object ID. | |
 | `"id"` | int | The unique object ID. | |
 
 # FlexObjectCommand
@@ -4833,21 +5062,27 @@ Destroy a humanoid.
 
 ## **`play_humanoid_animation`**
 
-Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.
+Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command. 
 
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`HumanoidMotionComplete`](output_data.md#HumanoidMotionComplete)</font>
 
 ```python
 {"$type": "play_humanoid_animation", "name": "string", "id": 1}
 ```
 
 ```python
-{"$type": "play_humanoid_animation", "name": "string", "id": 1, "framerate": -1}
+{"$type": "play_humanoid_animation", "name": "string", "id": 1, "framerate": -1, "forward": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"name"` | string | Name of the animation clip to play. | |
+| `"name"` | string | The name of the animation clip to play. | |
 | `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -4863,6 +5098,407 @@ Stop a motion capture animation on a humanoid.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+# ReplicantCommand
+
+These commands affect a Replicant currently in the scene.
+
+***
+
+## **`add_replicant_rigidbody`**
+
+Add a Rigidbody to a Replicant.
+
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1}
+```
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1, "is_kinematic": True, "use_gravity": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | True |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`parent_avatar_to_replicant`**
+
+Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant.
+
+
+```python
+{"$type": "parent_avatar_to_replicant", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_replicant", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"position"` | Vector3 | The position of the avatar relative to the Replicant's head. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`play_replicant_animation`**
+
+Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
+
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1}
+```
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
+| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_resolve_collider_intersections`**
+
+Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector.
+
+
+```python
+{"$type": "replicant_resolve_collider_intersections", "direction": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"direction"` | Vector3 | The direction along which objects should be moved. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_step`**
+
+Advance the Replicant's IK solvers by 1 frame.
+
+
+```python
+{"$type": "replicant_step", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+# ReplicantArmCommand
+
+These commands involve a Replicant's arm.
+
+***
+
+## **`replicant_drop_object`**
+
+Drop a held object. 
+
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_drop_object", "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_drop_object", "arm": "left", "id": 1, "offset_distance": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"offset_distance"` | float | Prior to being dropped, the object will be moved by this distance along its forward directional vector. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_grasp_object`**
+
+Grasp a target object. 
+
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The target object ID. | |
+| `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_set_grasped_object_rotation`**
+
+Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped. 
+
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | Rotate the object by this many degrees relative to the hand's rotation. | |
+| `"axis"` | Axis | Rotate the object around this axis relative to the hand's rotation. | |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+# ReplicantArmMotionCommand
+
+These commands involve the motion of a Replicant's arm.
+
+***
+
+## **`replicant_reset_arm`**
+
+Tell the Replicant to start to reset the arm on a humanoid to its neutral position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# ReplicantReachForCommand
+
+These commands instruct a replicant to start to reach for a target.
+
+***
+
+## **`replicant_reach_for_object`**
+
+Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The target object ID. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_reach_for_position`**
+
+Instruct a Replicant to start to reach for a target position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# ReplicantLookAtCommand
+
+These commands tell a Replicant to look at a target position or object.
+
+***
+
+## **`replicant_look_at_object`**
+
+Tell the Replicant to start to look at an object. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_look_at_object", "object_id": 1, "id": 1}
+```
+
+```python
+{"$type": "replicant_look_at_object", "object_id": 1, "id": 1, "use_centroid": True, "duration": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the target object. | |
+| `"use_centroid"` | bool | If True, look at the centroid of the object. If False, look at the position of the object (y=0). | True |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_look_at_position`**
+
+Tell the Replicant to start to look at a position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_look_at_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "replicant_look_at_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "duration": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position. | |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_reset_head`**
+
+Tell the Replicant to start to reset its head to its neutral position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reset_head", "id": 1}
+```
+
+```python
+{"$type": "replicant_reset_head", "id": 1, "duration": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"id"` | int | The unique object ID. | |
 
 # SubObjectCommand
@@ -5940,6 +6576,27 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 
 ***
 
+## **`set_robot_joint_id`**
+
+Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.
+
+
+```python
+{"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1}
+```
+
+```python
+{"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"joint_name"` | string | The exected name of the joint. | |
+| `"joint_id"` | int | The new ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
 ## **`set_robot_obi_collision_material`**
 
 Set the Obi collision material of a robot. 
@@ -6401,9 +7058,112 @@ Set the target angles (x, y, z) of a spherical robot joint. Per frame, the joint
 | `"joint_id"` | int | The ID of the joint. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
+# SetRobotJointPositionCommand
+
+These commands instantaneously set the robot joint angles and positions. These commands SHOULD NOT be used in place of physics-based motion. Unity will interpret these commands as a VERY fast motion. These commands should only be used when a robot is first created in order to set an initial pose.
+
+***
+
+## **`set_prismatic_position`**
+
+Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_prismatic_target`</font>
+
+```python
+{"$type": "set_prismatic_position", "position": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_prismatic_position", "position": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | float | The position in meters. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_revolute_angle`**
+
+Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_revolute_target`</font>
+
+```python
+{"$type": "set_revolute_angle", "angle": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "set_revolute_angle", "angle": 0.125, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_spherical_angles`**
+
+Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `set_spherical_target`</font>
+
+```python
+{"$type": "set_spherical_angles", "angles": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1}
+```
+
+```python
+{"$type": "set_spherical_angles", "angles": {"x": 1.1, "y": 0.0, "z": 0}, "joint_id": 1, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angles"` | Vector3 | The angles in degrees. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
 # SendMultipleDataOnceCommand
 
 These commands send data exactly once to the controller (not per-frame). Unlike most output data such as Tranforms, there can be more than one output data object of this type in the build's response. For example, the build can send multiple Raycast objects in the same list.
+
+***
+
+## **`send_nav_mesh_path`**
+
+Tell the build to send data of a path on the NavMesh from the origin to the destination. 
+
+- <font style="color:blue">**Requires a NavMesh**: This command requires a NavMesh.Scenes created via [add_scene](#add_scene) already have NavMeshes.Proc-gen scenes don't; send [bake_nav_mesh](#bake_nav_mesh) to create one.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Exactly once**</font>
+
+    - <font style="color:green">**Type:** [`NavMeshPath`](output_data.md#NavMeshPath)</font>
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}}
+```
+
+```python
+{"$type": "send_nav_mesh_path", "origin": {"x": 1.1, "y": 0.0, "z": 0}, "destination": {"x": 1.1, "y": 0.0, "z": 0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"origin"` | Vector3 | The origin of the path. | |
+| `"destination"` | Vector3 | The destination of the path. | |
+| `"id"` | int | The ID of the output data object. This can be used to match the output data back to the command that created it. | 0 |
 
 # SendOverlapCommand
 
@@ -6690,7 +7450,7 @@ Send containment data using container shapes. See: <computeroutput>add_box_conta
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`Overlap`](output_data.md#Overlap)</font>
+    - <font style="color:green">**Type:** [`Containment`](output_data.md#Containment)</font>
 
 ```python
 {"$type": "send_containment"}
@@ -6749,24 +7509,28 @@ Options for when to send data.
 
 ***
 
-## **`send_robots`**
+## **`send_occupancy_map`**
 
-Send dynamic data of each robot and each robot's body parts in the scene. See also: send_static_robots 
+Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free. 
 
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`Robot`](output_data.md#Robot)</font>
+    - <font style="color:green">**Type:** [`OccupancyMap`](output_data.md#OccupancyMap)</font>
 
 ```python
-{"$type": "send_robots"}
+{"$type": "send_occupancy_map"}
 ```
 
 ```python
-{"$type": "send_robots", "frequency": "once"}
+{"$type": "send_occupancy_map", "cell_size": 0.5, "raycast_y": 2.5, "ignore_objects": [], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"cell_size"` | float | The size of each cell in meters. | 0.5 |
+| `"raycast_y"` | float | When calculating the occupancy map, rays will be cast from this height in meters. | 2.5 |
+| `"ignore_objects"` | int [] | Object IDs in this array won't cause a cell to be marked as occupied. | [] |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -6783,14 +7547,14 @@ Options for when to send data.
 
 ## **`send_robot_joint_velocities`**
 
-Send velocity data for each joint of each robot in the scene. This is separate from Robot output data for the sake of speed in certain simulations. 
+Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
     - <font style="color:green">**Type:** [`RobotJointVelocities`](output_data.md#RobotJointVelocities)</font>
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
-    - <font style="color:red">**Use this command instead:** `send_robots`</font>
+    - <font style="color:red">**Use this command instead:** `send_dynamic_robots`</font>
 
 ```python
 {"$type": "send_robot_joint_velocities"}
@@ -7000,6 +7764,39 @@ Send camera matrix data for each camera.
 
 ```python
 {"$type": "send_camera_matrices", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | string[] | The IDs of the avatars. If this list is undefined or empty, the build will return data for all avatars. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_field_of_view`**
+
+Send field of view for each camera. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`FieldOfView`](output_data.md#FieldOfView)</font>
+
+```python
+{"$type": "send_field_of_view"}
+```
+
+```python
+{"$type": "send_field_of_view", "ids": [], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7320,20 +8117,84 @@ Options for when to send data.
 
 ***
 
-## **`send_empty_objects`**
+## **`send_dynamic_empty_objects`**
 
-Send data each empty object in the scene. See: attach_empty_object 
+Send the positions of each empty object in the scene. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`EmptyObjects`](output_data.md#EmptyObjects)</font>
+    - <font style="color:green">**Type:** [`DynamicEmptyObjects`](output_data.md#DynamicEmptyObjects)</font>
 
 ```python
-{"$type": "send_empty_objects"}
+{"$type": "send_dynamic_empty_objects"}
 ```
 
 ```python
-{"$type": "send_empty_objects", "frequency": "once"}
+{"$type": "send_dynamic_empty_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_dynamic_robots`**
+
+Send dynamic robot data for each robot in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`DynamicRobots`](output_data.md#DynamicRobots)</font>
+
+```python
+{"$type": "send_dynamic_robots"}
+```
+
+```python
+{"$type": "send_dynamic_robots", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_framerate`**
+
+Send the build's framerate information. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Framerate`](output_data.md#Framerate)</font>
+
+```python
+{"$type": "send_framerate"}
+```
+
+```python
+{"$type": "send_framerate", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -7581,6 +8442,38 @@ Options for when to send data.
 
 ***
 
+## **`send_replicants`**
+
+Send data of each Replicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
+
+```python
+{"$type": "send_replicants"}
+```
+
+```python
+{"$type": "send_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_scene_regions`**
 
 Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
@@ -7627,6 +8520,38 @@ Send static data for every composite object in the scene.
 
 ```python
 {"$type": "send_static_composite_objects", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_empty_objects`**
+
+Send the IDs of each empty object and the IDs of their parent objects. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticEmptyObjects`](output_data.md#StaticEmptyObjects)</font>
+
+```python
+{"$type": "send_static_empty_objects"}
+```
+
+```python
+{"$type": "send_static_empty_objects", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8429,6 +9354,128 @@ Set the text of a Text object that is already on the screen.
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
+# VideoCaptureCommand
+
+These commands start and stop audio-visual capture using ffmpeg. These commands assume that you've already installed ffmpeg on your computer.
+
+***
+
+## **`stop_video_capture`**
+
+Stop ongoing video capture.
+
+
+```python
+{"$type": "stop_video_capture"}
+```
+
+# StartVideoCaptureCommand
+
+These commands start video capture using ffmpeg. Because ffmpeg arguments are platform-specific, you must use the platform-specific command, e.g. start_video_capture_windows
+
+***
+
+## **`start_video_capture_linux`**
+
+Start video capture using ffmpeg. This command can only be used on Linux.
+
+
+```python
+{"$type": "start_video_capture_linux", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_linux", "output_path": "string", "display": 0, "screen": 0, "audio_device": "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor", "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 1, "pixel_format": "yuv420p", "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"display"` | int | The X11 display index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"screen"` | int | The X11 screen index. To review your X11 setup: cat /etc/X11/xorg.conf | 0 |
+| `"audio_device"` | string | The pulseaudio device name. Ignored if audio == False. To get a list of devices: pactl list sources | grep output | "alsa_output.pci-0000_00_1f.3.analog-stereo.monitor" |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 1 |
+| `"pixel_format"` | string | The pixel format. You should almost never need to set this to anything other than the default value. | "yuv420p" |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
+***
+
+## **`start_video_capture_osx`**
+
+Start video capture using ffmpeg. This command can only be used on OS X.
+
+
+```python
+{"$type": "start_video_capture_osx", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_osx", "output_path": "string", "video_device": 1, "audio_device": 0, "size_scale_factor": 2, "position_scale_factor": 2, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 1, "pixel_format": "yuv420p", "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"video_device"` | int | The video device index. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 1 |
+| `"audio_device"` | int | The audio device index. Ignored if audio == False. To get a list of devices: ffmpeg -f avfoundation -list_devices true -i "" | 0 |
+| `"size_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture size. | 2 |
+| `"position_scale_factor"` | int | On retina screens, the actual window size is scaled. Set this scale factor to scale the video capture position. | 2 |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 1 |
+| `"pixel_format"` | string | The pixel format. You should almost never need to set this to anything other than the default value. | "yuv420p" |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
+***
+
+## **`start_video_capture_windows`**
+
+Start video capture using ffmpeg. This command can only be used on Windows.
+
+
+```python
+{"$type": "start_video_capture_windows", "output_path": "string"}
+```
+
+```python
+{"$type": "start_video_capture_windows", "output_path": "string", "audio_device": "", "audio_buffer_size": 5, "draw_mouse": False, "ffmpeg": "", "overwrite": True, "framerate": 60, "position": {"x": 0, "y": 0}, "audio": True, "audio_codec": "aac", "video_codec": "h264", "preset": "ultrafast", "qp": 1, "pixel_format": "yuv420p", "log_args": False, "override_args": ""}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"audio_device"` | string | The name of the audio device. Ignored if audio == False. To get a list of devices: ffmpeg -list_devices true -f dshow -i dummy | "" |
+| `"audio_buffer_size"` | int | The audio buffer size in ms. This should always be greater than 0. Adjust this if the audio doesn't sync with the video. See: <ulink url="https://ffmpeg.org/ffmpeg-devices.html">https://ffmpeg.org/ffmpeg-devices.html</ulink> (search for audio_buffer_size). | 5 |
+| `"draw_mouse"` | bool | If True, show the mouse in the video. | False |
+| `"output_path"` | string | The absolute path to the output file, e.g. /home/user/video.mp4 | |
+| `"ffmpeg"` | string | The path to the ffmpeg process. Set this parameter only if you're using a non-standard path. | "" |
+| `"overwrite"` | bool | If True, overwrite the video if it already exists. | True |
+| `"framerate"` | int | The framerate of the output video. | 60 |
+| `"position"` | Vector2Int | The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True. | {"x": 0, "y": 0} |
+| `"audio"` | bool | If True, audio will be captured. | True |
+| `"audio_codec"` | string | The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "aac" |
+| `"video_codec"` | string | The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink> | "h264" |
+| `"preset"` | string | H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink> | "ultrafast" |
+| `"qp"` | int | H.264 video encoding only. This controls the video quality. 0 is lossless. | 1 |
+| `"pixel_format"` | string | The pixel format. You should almost never need to set this to anything other than the default value. | "yuv420p" |
+| `"log_args"` | bool | If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command). | False |
+| `"override_args"` | string | If not empty, replace the ffmpeg arguments with this string. Usually, you won't want to set this. If you want to use ffmpeg for something other than screen recording, consider launching it from a Python script using subprocess.call(). | "" |
+
 # VrCommand
 
 These commands utilize VR in TDW.
@@ -8489,6 +9536,22 @@ Rotate the VR rig by an angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The angle of rotation in degrees. | |
+
+***
+
+## **`set_vr_loading_screen`**
+
+Show or hide the VR rig's loading screen. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vr_loading_screen", "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If true, show the loading screen. If false, hide it. | |
 
 ***
 

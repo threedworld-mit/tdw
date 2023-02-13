@@ -19,4 +19,4 @@ class SphereContainer(ContainerShape):
         """:field
         The radius of the sphere.
         """
-        self.radius: float = radius
+        self.radius: float = float(radius)

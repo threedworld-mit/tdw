@@ -24,8 +24,18 @@ class _Encoder(json.JSONEncoder):
             return obj.name
         elif isinstance(obj, TriggerColliderShape):
             return obj.name
-        elif isinstance(obj, BoxContainer) or isinstance(obj, SphereContainer) or isinstance(obj, CylinderContainer):
-            return obj.__dict__
+        elif isinstance(obj, BoxContainer):
+            c = {"shape": TriggerColliderShape.box.name}
+            c.update(obj.__dict__)
+            return c
+        elif isinstance(obj, SphereContainer):
+            c = {"shape": TriggerColliderShape.sphere.name}
+            c.update(obj.__dict__)
+            return c
+        elif isinstance(obj, CylinderContainer):
+            c = {"shape": TriggerColliderShape.cylinder.name}
+            c.update(obj.__dict__)
+            return c
         elif isinstance(obj, Room):
             return obj.__dict__
         elif isinstance(obj, InteriorRegion):
@@ -97,6 +107,7 @@ class ModelRecord(_Record):
             self.asset_bundle_sizes: Dict[str, int] = {"Windows": -1, "Darwin": -1, "Linux": -1}
             self.composite_object = False
             self.container_shapes: List[ContainerShape] = list()
+            self.affordance_points: List[Dict[str, float]] = list()
         else:
             self.wnid: str = data["wnid"]
             self.wcategory: str = data["wcategory"]
@@ -137,6 +148,9 @@ class ModelRecord(_Record):
                     else:
                         raise Exception(shape)
                     self.container_shapes.append(obj)
+            self.affordance_points: List[Dict[str, float]] = list()
+            if "affordance_points" in data:
+                self.affordance_points = data["affordance_points"]
 
 
 class MaterialRecord(_Record):

@@ -1,8 +1,653 @@
 # CHANGELOG
 
+# v1.11.x
+
+To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+
+## v1.11.4
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `send_occupancy_map` | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data    | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `OccupancyMap` | A grid of positions denoting whether a space is occupied, free, or out of bounds. |
+
+### `tdw` module
+
+- Updated the `OccupancyMap` add-on. Previously, it required two communicate() calls to initialize and used a combination of `Raycast` and `Overlap` output data to generate the occupancy map. Now, the add-on uses `OccupancyMap` output data, which requires only one communicate() call and is overall faster.
+  - Changed the values of the occupancy map. Previously, `1` meant "occupied" or "in an isolated island", and `-1` meant "out of bounds". Now, `1` means "occupied", `2` means "out of bounds", and `3` means "in an isolated island". As a result of this change, occupancy maps can be expressed as arrays of unsigned bytes, meaning that there is less output data to send and therefore that the output data is faster.
+  - Added `occupancy_map.positions`, a numpy array of worldspace positions per grid position. Removed `OccupancyMap.get_occupancy_position()`.
+  - Removed `occupancy_map.scene_bounds`.
+  - Removed `cell_size` from the constructor and moved it to `generate()`.
+  - Added parameters to `generate()`: `raycast_y` and `once`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                              | Modification                                 |
+| ------------------------------------- | -------------------------------------------- |
+| `lessons/navigation/occupancy_map.md` | Updated to explain the new OccupancyMap API. |
+
+## v1.11.3
+
+### Command API
+
+#### New Commands
+
+| Command          | Description                             |
+| ---------------- | --------------------------------------- |
+| `send_framerate` | Send the build's framerate information. |
+
+#### Modified Commands
+
+| Command                                                      | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `replicant_drop_object`<br>`replicant_grasp_object`<br>`replicant_set_grasped_object_rotation`<br>`replicant_reset_arm`<br>`replicant_reach_for_object`<br>`replicant_reach_for_position`<br>`replicant_look_at_object`<br>`replicant_look_at_position`<br>`replicant_reset_head` | Added optional `set_status` parameter. These commands will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want to set `set_status` to `False`. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description     |
+| ----------- | --------------- |
+| `Framerate` | Framerate data. |
+
+### `tdw` module
+
+- Fixed: Various strange behaviors in Replicant that vary between machines. This was caused by some commands within previous actions setting the Replicant's status before the current action finished. Now, these commands will never set the Replicant's status; only commands actually driving the current action will set the status (see Command API modifications, above).
+- Fixed: At speeds greater than 60 FPS, the Replicant will appear move its arms and head much slower than its animations. This is due to arm and head motion being driven by a separate system. Now, the `duration` parameter of these actions is scaled via optional parameters, resulting in much more even motions. The value of these parameters defaults to True; if False, `duration` won't be scaled.
+  - Added optional parameter `scale_reset_arms_duration` to `move_by()` and `move_to()`.
+  - Added optional parameter `scale_duration` to `reach_for()`, `reset_arm()`, `look_at()`, and `reset_head()`.
+- Fixed: The `arrived_at` parameter in `replicant.move_by()` and `replicant.move_to()` sometimes doesn't get applied when checking if the Replicant arrived at the target.
+
+### Scene Library
+
+- Fixed: Floorplan scenes (floorplan_1a, floorplan_1b, etc.) don't have floors set up correctly such that various commands will treat them as walls.
+
+### Humanoid Animation Library
+
+- Added: birdcage_251067, kitchen_cleantable_m, kitchen_refrigerator_m, livingroom_dochores_f, market_customercart_walking_f, market_customercart_walking_m, market_customercart_walktostop_f, market_customercart_walktostop_m, room_ironclothes_m, server_fooddelivery_295482
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation.md` | Added a section regarding `scale_duration`. Removed the section regarding movement (see below). |
+| `lessons/replicants/head_rotation.md`    | Added a section regarding `scale_duration`.                  |
+| `lessons/replicants/movement.md`         | Added a section about resetting arms while moving.           |
+
+## v1.11.2
+
+### Build
+
+- (Backend) Updated the Oculus Touch rig's AutoHand system from 2.1.0 to 3.1.3, which improves performance, physics behavior, and hand poses.
+
+### Example Controllers
+
+- Standardized the Oculus Touch input mapping in all examples in `vr/`: Click the left control stick to quit and press Y for a new trial/scene.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/oculus_touch.md` | Fixed the example code to standardize Oculus Touch input mapping: Click the left control stick to quit and press Y for a new trial/scene. |
+
+## v1.11.1
+
+### Command API
+
+#### New Commands
+
+| Command                    | Description                                                  |
+| -------------------------- | ------------------------------------------------------------ |
+| `replicant_step`           | Advance the Replicant's IK solvers by 1 frame.               |
+| `play_replicant_animation` | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
+| `set_focal_length`         | Set the focal length of the avatar's camera. This will automatically set the field of view. |
+
+#### Modified Commands
+
+| Command             | Modification                                                 |
+| ------------------- | ------------------------------------------------------------ |
+| `set_field_of_view` | Default value for `field_of_view` is now 54.43223, which matches the actual default camera field of view. |
+
+### `tdw` module
+
+- In `Replicant` actions, all three functions returning lists of commands (`get_initialization_commands()`, `get_ongoing_commands()`, and `get_end_commands()`) must now always append a `replicant_step` command.
+  - (Backend) Added `ik_body_parts` constructor parameter to `Animate`. This is used internally by `MoveBy` to optionally maintain the position of the Replicant's arms. The `ik_body_parts` parameter isn't included in `replicant.animate()` or `replicant.move_by()`; it is handled implicitly and invisible to frontend users.
+  - (Backend) Adjusted most Replicant commands to always include `replicant_step`.
+- The Replicant now has a default initialization action. After initialization, the Replicant captures an initial image.
+- Added: `replicant.dynamic.get_pil_image(pass_mask)` Convert raw image data to a PIL Image.
+- Fixed: Broken link for the `replicant_0` OS X asset bundle.
+- Fixed: `FirstPersonAvatar` crashes due to missing `_raycast_id` parameter.
+
+### Build
+
+- Fixed: Lots of issues with the Replicant glitching and appearing to "flicker". This was mostly due to the Replicant's IK step falling out of sync with the TDW time step. Now, the IK step is handled manually and always synced with the TDW step.
+- Fixed: Replicant IK problems over the course of multiple IK actions, causing arm motion to either occur instantly or to glitch. A side effect of this is that IK motions will appear noticeably slower than animations (e.g. `move_by()`) in simulations running faster than 30-60 FPS. You can compensate for this by decreasing the `duration` value.
+
+### Example Controllers
+
+- Fixed Replicant example controllers: clap.py, minimal_custom_action.py, move_grasp_drop.py, multi_navigate.py, navigate.py, pathfind.py
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                                              |
+| ---------------------------------------- | -------------------------------------------------------- |
+| `python/replicant/actions/do_nothing.md` | API Documentation for the initial Replicant null-action. |
+
+#### Modified Documentation
+
+| Document                                   | Modification                                                 |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/replicant/actions.md`             | Included better explanations of when and which commands get sent. |
+| `lessons/replicant/custom_actions.md`      | Fixed example code.<br>Included an explanation of what `replicant_step` does. |
+| `lessons/replicant/multiple_replicants.md` | Fixed example code.                                          |
+| `lessons/replicant/navigation.md`          | Fixed example code.                                          |
+| `lessons/replicant/output_data.md`         | Added a section for `get_pil_image()`.                       |
+
+## v1.11.0
+
+### Command API
+
+#### New Commands
+
+| Command                                    | Description                                                  |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `add_replicant`                            | Add a Replicant to the scene.                                |
+| `teleport_empty_object`                    | Teleport an empty object to a new position.                  |
+| `add_replicant_rigidbody`                  | Add a Rigidbody to a Replicant.                              |
+| `parent_avatar_to_replicant`               | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the replicant. |
+| `replicant_resolve_collider_intersections` | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
+| `replicant_drop_object`                    | Drop a held object.                                          |
+| `replicant_grasp_object`                   | Grasp a target object.                                       |
+| `replicant_set_grasped_object_rotation`    | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped. |
+| `replicant_reset_arm`                      | Tell the Replicant to start to reset the arm on a humanoid to its neutral position. |
+| `replicant_reach_for_object`               | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. |
+| `replicant_reach_for_position`             | Tell the Replicant to start to reach for a target position.  |
+| `replicant_look_at_object`                 | Tell the Replicant to start to look at an object.            |
+| `replicant_look_at_position`               | Tell the Replicant to start to look at a position.           |
+| `replicant_reset_head`                     | Tell the Replicant to start to reset its head to its neutral position. |
+| `send_dynamic_empty_objects`               | Send the positions of each empty object in the scene.        |
+| `send_replicants`                          | Send data of each Replicant in the scene.                    |
+| `send_static_empty_objects`                | Send the IDs of each empty object and the IDs of their parent objects. |
+| `teleport_object_by`                       | Translate an object by an amount, optionally in local or world space. |
+
+### Modified Commands
+
+| Command                                                      | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `add_object`                                                 | Added optional parameter `affordance_points`.  A list of affordance points. Can be empty. |
+| `add_model_report`                                           | Added optional parameter `affordance_points`.  A list of affordance points. Can be empty. |
+| `teleport_object`                                            | Add optional parameter `absolute`. If True, set the position in world coordindate space. If False, set the position in local coordinate space. |
+| `add_box_container`<br>`add_cylinder_container`<br>`add_sphere_container` | Added parameter `tag`. The semantic container tag.           |
+| `play_humanoid_animation`                                    | Added optional parameter `forward`. If True, play the animation normally. If False, play the naimation in reverse. |
+| `send_containment`                                           | Sends `Containment` data instead of `Overlap` data.          |
+
+### Removed Commands
+
+| Command              | Reason                                                       |
+| -------------------- | ------------------------------------------------------------ |
+| `send_robots`        | Obsolete; the `Robot` add-on sends `send_dynamic_robots` instead. |
+| `send_empty_objects` | Replaced with `send_static_empty_objects` and `send_dynamic_empty_objects` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data           | Description                                                  |
+| --------------------- | ------------------------------------------------------------ |
+| `Containment`         | The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag. |
+| `DynamicEmptyObjects` | The position of each empty object in the scene.              |
+| `Replicants`          | Data about each Replicant in the scene.                      |
+| `StaticEmptyObjects`  | Static data for empty objects in the scene.                  |
+
+#### Removed Output Data
+
+| Output Data    | Reason                                                       |
+| -------------- | ------------------------------------------------------------ |
+| `EmptyObjects` | Replaced with `DynamicEmptyObjects` and `StaticEmptyObjects` |
+| `Robot`        | Replaced with `DynamicRobots`                                |
+
+### `tdw` module
+
+- **Added: `Replicant` add-on.** A Replicant is a human-like agent that can interact with the scene with pseudo-physics behavior.
+  - Added Replicant action classes:
+    - `Action`
+    - `Animate`
+    - `ArmMotion`
+    - `Drop`
+    - `Grasp`
+    - `HeadMotion`
+    - `LookAt`
+    - `MoveBy`
+    - `MoveTo`
+    - `ReachFor`
+    - `ResetArm`
+    - `ResetHead`
+    - `TurnBy`
+    - `TurnTo`
+
+  - Added helper data classes and enum classes:
+    - `ActionStatus`
+    - `Arm`
+    - `CollisionDetection`
+    - `ImageFrequency`
+    - `ReplicantBodyPart`
+    - `ReplicantDynamic`
+    - `ReplicantStatic`
+
+- Removed from `ContainerManager`:  `add_box()`, `add_cylinder()`, `add_sphere()`
+- `Controller.get_add_object()` automatically adds affordance points from the model record.
+- `Controller.get_add_physics_object()` automatically adds affordance points from the model record. It also adds container shapes.
+
+### Model Library
+
+- Added affordance points for: basket_18inx18inx12iin_bamboo, basket_18inx18inx12iin_plastic_lattice, basket_18inx18inx12iin_wicker, basket_18inx18inx12iin_wood_mesh, coffeemug, rh10, alivar_tech_bench_sofa, arflex_strips_sofa
+
+### Replicants Library
+
+- Added: replicants.json library
+
+### Example Controllers
+
+- Moved composite object example controllers to `composite_objects/`
+- Added Replicant example controllers:
+    - replicant/animate.py
+    - replicant/animate_collision_detection.py
+    - replicants/carry_couch.py
+    - replicant/clap.py
+    - replicant/collision_detection_tests.py
+    - replicant/crash.py
+    - replicant/egocentric_images.py
+    - replicant/grasp_basket_with_object.py
+    - replicant/grasp_basket_with_object_both_hands.py
+    - replicant/look_at.py
+    - replicant/minimal_custom_action.py
+    - replicant/move_by.py
+    - replicant/move_grasp_drop.py
+    - replicant/move_to.py
+    - replicant/multi_navigate.py
+    - replicant/multi_replicant.py
+    - replicant/multi_replicant_state_machine.py
+    - replicant/navigate.py
+    - replicant/non_kinematic.py
+    - replicant/obstacle_avoidance.py
+    - replicant/pathfind.py
+    - replicant/physics_test.py
+    - replicant/reach_for_follow.py
+    - replicant/reach_for_move.py
+    - replicant/reach_for_object.py
+    - replicant/reach_for_position.py
+    - replicant/reach_too_far.py
+    - replicant/reset.py
+    - replicant/reset_arm.py
+    - replicant/smpl_animate.py
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                          |
+| ------------------------------------------------------------ | ---------------------------------------------------- |
+| `upgrade_guides/v1.10_to_v1.11.md`                           | Upgrade guide.                                       |
+| `lessons/replicants/overview.md`<br/>`lessons/replicants/actions.md`<br/>`lessons/replicants/output_data.md`<br/>`lessons/replicants/collision_detection.md`<br/>`lessons/replicants/movement.md`<br/>`lessons/replicants/animations.md`<br/>`lessons/replicants/arm_articulation.md`<br/>`lessons/replicants/grasp_drop.md`<br/>`lessons/replicants/head_rotation.md`<br/>`lessons/replicants/navigation.md`<br/>`lessons/replicants/custom_actions.md`<br/>`lessons/replicants/multiple_replicants.md`<br/>`lessons/replicants/reset.md` | Tutorial documentation for how to use the Replicant. |
+| `python/add_ons/replicant.md`<br/>`python/replicant/action_status.md`<br/>`python/replicant/arm.md`<br/>`python/replicant/collision_detection.md`<br/>`python/replicant/image_frequency.md`<br/>`python/replicant/replicant_body_part.md`<br/>`python/replicant/replicant_dynamic.md`<br/>`python/replicant/replicant_static.md`<br/>`python/replicant/actions/action.md`<br/>`python/replicant/actions/animate.md`<br/>`python/replicant/actions/arm_motion.md`<br/>`python/replicant/actions/drop.md`<br/>`python/replicant/actions/grasp.md`<br/>`python/replicant/actions/head_motion.md`<br/>`python/replicant/actions/look_at.md`<br/>`python/replicant/actions/move_by.md`<br/>`python/replicant/actions/move_to.md`<br/>`python/replicant/actions/reach_for.md`<br/>`python/replicant/actions/reset_arm.md`<br/>`python/replicant/actions/reset_head.md`<br/>`python/replicant/actions/turn_by.md`<br/>`python/replicant/actions/turn_to.md` | API documentation for how to use the Replicant.      |
+
+#### Modified Documentation
+
+| Document                                 | Modification                                  |
+| ---------------------------------------- | --------------------------------------------- |
+| `lessons/semantic_states/containment.md` | Updated explanation of how containment works. |
+| `lessons/agents/overview.md`             | Added a section for Replicants.               |
+
 # v1.10.x
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.9_to_v1.10.md).
+
+## v1.10.9
+
+### Build
+
+- Fixed: `scale_object_and_mass` calculates mass incorrectly.
+- Fixed: `send_volumes` always sends an array of zeros instead of an array of volumes.
+
+## v1.10.8
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `teleport_avatar_by`     | Teleport an avatar by a position offset.                     |
+| `add_visual_camera_mesh` | Add a visual camera mesh to the sensor container. The visual mesh won't have colliders and won't respond to physics. |
+
+#### Modified Commands
+
+| Command                                                      | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `start_video_capture_linux`<br>`start_video_capture_osx`<br>`start_video_capture_window` | Added an optional parameter `pixel_format` that defaults to `"yuv420p"` and set the default value of `qp` to 1 (was 0). Because of these changes, the generated .mp4 video is much more likely to be playable in programs other than VLC. |
+
+### `tdw` module
+
+- Fixed: Crash in `Volumes` output data constructor.
+
+## v1.10.7
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                         |
+| ----------------------- | ----------------------------------- |
+| `set_vr_loading_screen` | Show or hide the VR loading screen. |
+
+### `tdw` module
+
+- Added to  `OculusTouch` add-on: `show_loading_screen(show)`. Show or hide the VR loading screen. To use this correctly, call this function followed by `c.communicate(commands)`.
+
+### Example Controllers
+
+- Added: `vr/oculus_touch_loading_screen.py`
+
+### Build
+
+
+- Fixed: `set_screen_size` doesn't wait until the window is done resizing, resulting in occasional errors in video capture commands such as `start_video_capture_windows` as well as in `send_images`. 
+- Fixed: `start_video_capture_osx` fails if `"audio"` is set to `False`.
+- Fixed: Unloading the scene unloads XR subsystems, causing a VR rig to temporarily exit the simulation entirely and back into the generic Oculus 3D space. Now, VR scene reloads are seamless.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                     | Modification                                                 |
+| ---------------------------- | ------------------------------------------------------------ |
+`lessons/video/screen_record_linux.d`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | Clarified how to use `log_args` to check for ffmpeg errors and listed a few common errors plus their solutions. |
+| `lessons/vr/oculus_touch.md` | Added an explanation and example code of how to use a VR loading screen. |
+
+## v1.10.6
+
+### `tdw` module
+
+- **Complete re-write of the asset bundle creation process:**
+  - **If you have the asset_bundle_creator Unity project installed on your computer from a prior version of TDW, you need to delete it. A new asset_bundle_creator Unity project will be created.**
+  - The abstract base class `AssetBundleCreatorBase` is now named `AssetBundleCreator`. It has been moved to`tdw.asset_bundle_creator.asset_bundle_creator`.
+  - The class `AssetBundleCreator` is now named `ModelCreator`. It has been moved to `tdw.asset_bundle_creator.model_creator`. **`ModelCreator` has a completely new API.** Read the documentation.
+  - The class `RobotCreator` has been moved to `tdw.asset_bundle_creator.robot_creator` **`RobotCreator` has a completely new API.** Read the documentation.
+  - Added: `AnimationCreator`. Create animation asset bundles from .anim or .fbx files.
+  - Added: `CompositeObjectCreator`. Create composite object asset bundles from .urdf files.
+  - Added: `HumanoidCreator`. Create non-physics humanoid asset bundles from .fbx files.
+  - Added: `HumanoidCreatorBase`. Abstract base class for `AnimationCreator` and `HumanoidCreator`.
+  - **All asset bundle creators now reference a new Asset Bundle Creator Unity project**, which is located in a separate repo.
+    - Removed `asset_bundle_creator.unitypackage`, which was used create a model asset bundle creator Unity project.
+    - Removed all binaries located in `binaries/` such as VHACD and assimp. These are located in the new Unity project.
+- **Added: `LisdfReader`.** This add-on can import data from .sdf or .lisdf files into TDW as asset bundles and commands.
+  - Added: `LisdfRobotMetadata`. Metadata for how to read a robot referenced by a .lisdf file.
+- Added to `TDWUtils`:
+  - `get_path(path)` Returns the path as a `Path` object, as opposed to a string.
+  - `get_string_path(path)` Returns the path as a string, as opposed to a `Path`.
+- Added optional parameter `raycast_target` to `UI.add_text()` and `UI.add_image()`. If True, raycasts will hit the UI element. Default = True.
+- Exposed `Mouse.raycast_id` field.
+- Added: `ModelRecord.affordance_points`. A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on.
+
+### Example controllers
+
+- Moved examples of non-physics humanoids from `non_physics/` to `non_physics_humanoids/`
+- Revised `3d_models/local_object.py` to use the new `ModelCreator`.
+
+### Misc. Python
+
+- Revised  `shapenet/shapenet.py` to use the new `ModelCreator`.
+
+### Build
+
+- Fixed: NullReferenceException when requesting `Rigidbodies` output data if a Magnebot is grasping an object.
+
+### Model library
+
+- Added affordance points for coffeemug.
+
+### Robot library
+
+- Added: pr2
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/composite_objects/overview.md`                      | Overview of what composite objects are.                      |
+| `lessons/composite_objects/composite_objects.md`             | How to use composite objects in TDW. Most of this was previously in `semantic_states/composite_objects.md` (see below). |
+| `lessons/composite_objects/create_from_prefab.md`            | How to create composite objects in Unity Editor.             |
+| `lessons/composite_objects/create_from_urdf.md`              | How to create composite objects from a .urdf file.           |
+| `lessons/non_physics_humanoids/custom_animations.md`         | How to create custom humanoid animations.                    |
+| `lessons/non_physics_humanoids/custom_humanoids.md`          | How to create custom non-physics humanoids.                  |
+| `lessons/non_physics_humanoids/overview.md`                  | Overview of non-physics humanoids. Most of this was previously in `non_physics/humanoids.md` (see below). |
+| `lessons/non_physics_humanoids/smpl.md`                      | Description of how to use SMPL humanoids. Most of this was previously in `non_physics/humanoids.md` (see below). |
+| `lessons/read_write/lisdf.md`                                | How to read .sdf and .lisdf files.                           |
+| `python/add_ons/lisdf_reader.md`<br>`python/lisdf_data/lisdf_robot_metadata.md` | API documentation for .lisdf classes.                        |
+| `python/asset_bundle_creators/animation_creator.md`<br>`python/asset_bundle_creators/asset_bundle_creator.md`<br/>`python/asset_bundle_creators/composite_object_creator.md`<br/>`python/asset_bundle_creators/humanoid_creator.md`<br/>`python/asset_bundle_creators/humanoid_creator_base.md`<br/>`python/asset_bundle_creators/model_creator.md`<br/>`python/asset_bundle_creators/robot_creator.md` | API documentation for asset bundle creators.                 |
+
+#### Modified Documentation
+
+| Document                                                     | Modification                                                 |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `benchmark/benchmark.md`<br>`benchmark/command_deserialization.md`<br>`benchmark/image_capture.md`<br>`benchmark/object_data.md`<br>`lessons/remote/xpra.md` | Fixed broken links.                                          |
+| `lessons/3d_models/custom_models.md`                         | Moved to `lessons/custom_models/custom_models.md`<br>Rewritten to describe how to use `ModelCreator`. |
+| `lessons/3d_models/shapenet.md`                              | Moved to `lessons/custom_models/shapenet.md`<br>Revised to explain how to use the new version of shapenet.py |
+| `lessons/semantic_states/composite_objects.md`               | Split into two documents:<br>1. `lessons/semantic_states/openness.md`<br>2.`lessons/composite_objects/composite_objects.md` |
+| `lessons/non_physics/humanoids.md`                           | Moved to `lessons/non_physics_humanoids/overview.md` and `lessons/non_physics_humanoids/smpl.md` |
+| `lessons/robots/custom_robots.md`                            | Rewritten to explain how to use  the new `RobotCreator`.     |
+
+### Removed Documentation
+
+| Document                                                     | Reason    |
+| ------------------------------------------------------------ | --------- |
+| `python/asset_bundle_creator.md`<br>`python/asset_bundle_creator_base.md`<br>`python/robot_creator.md` | Obsolete. |
+
+## v1.10.5
+
+### Build
+
+- Fixed: AttributeError if `set_robot_joint_id` is sent and the new joint ID is the same as the old joint ID.
+
+## v1.10.4
+
+### Command API
+
+#### New Commands
+
+| Command                       | Description                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| `start_video_capture_linux`   | Start video capture using ffmpeg. This command can only be used on Linux. |
+| `start_video_capture_osx`     | Start video capture using ffmpeg. This command can only be used on OS X. |
+| `start_video_capture_windows` | Start video capture using ffmpeg. This command can only be used on Windows. |
+| `stop_video_capture`          | Stop ongoing video capture.     |
+
+### `tdw` module
+
+- Added `screeninfo` as a required module. To install: `pip3 install screeninfo`.
+- Refactored `Logger`: 
+  - Removed the `record` parameter and the `save()` function. The `Logger` add-on doesn't handle playback anymore.
+  - `Logger` automatically saves lists of commands per `communicate()` call rather than writing all of them to disk at once using `save()`.
+- Added `LogPlayback` option to play back logs of commands.
+- Fixed: `ContainerShape` classes don't sanitize numpy types e.g. converting `numpy.float32` to `float`.
+- Robot add-ons (such as `Robot`) send `set_robot_joint_id` to ensure that joint IDs are always the same, even when loading from a log file.
+
+### Humanoid animation library
+
+- Added: idle_251087, idle_251105, kitchen_bendoverandopendrawer_f, kitchen_cooking_f, kitchen_microwave_m, kitchen_refrigerator_f
+
+### Docker
+
+- Removed `record_audio_video.sh` and `start_container_audio_video.sh` (no longer needed)
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                               |
+| ------------------------------------------------------------ | ----------------------------------------- |
+| `lessons/video/screen_record_linux.md`<br>`lessons/video/screen_record_osx.md`<br>`lessons/video/screen_record_windows.md` | How to record audio and video on each OS. |
+| `python/add_ons/log_playback.md`                             | API document for `LogPlayback`.           |
+
+#### Modified Documentation
+
+| Document                       | Modification                                                 |
+| ------------------------------ | ------------------------------------------------------------ |
+| `lessons/video/audio.md`       | Removed most text; this is now an overview document for recording using ffmpeg. Added a section about OBS. |
+| `lessons/video/images.md`      | Removed sections regarding ffmpeg and OBS.                   |
+| `lessons/video/overview.md`    | Added a section about installing ffmpeg.                     |
+| `lessons/read_write/logger.md` | Updated for the removal of `Logger`'s playback functionality, and for the inclusion of the `LogPlayback` option. |
+
+## v1.10.3
+
+### Build
+
+- Fixed: `rotate_object_by` doesn't work as expected when `use_centroid == True`.
+
+## v1.10.2
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| `set_revolute_angle`     | Instantaneously set the angle of a revolute joint. Only use this command to set an initial pose for a robot. |
+| `set_prismatic_position` | Instantaneously set the position of a prismatic joint. Only use this command to set an initial pose for a robot. |
+| `set_spherical_angles`   | Instantaneously set the angles of a spherical joint. Only use this command to set an initial pose for a robot. |
+| `set_robot_joint_id` | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. |
+| `send_dynamic_robots` | Send dynamic robot data. |
+
+#### Deprecated Commands
+
+| Command       | Reason                              |
+| ------------- | ----------------------------------- |
+| `send_robots` | Replaced with `send_dynamic_robots` |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data     | Description                |
+| --------------- | -------------------------- |
+| `DynamicRobots` | Dynamic robot output data. |
+
+#### Modified Output Data
+
+| Output Data   | Modification                                               |
+| ------------- | ---------------------------------------------------------- |
+| `StaticRobot` | Added: `get_joint_indices()`<br>Added: `get_robot_index()` |
+
+#### Deprecated Output Data
+
+| Output Data | Reason                        |
+| ----------- | ----------------------------- |
+| `Robot`     | Replaced with `DynamicRobots` |
+
+### `tdw` module
+
+- Added: `JsonWriter` an add-on that serializes JSON data per-frame.
+- Added: `OutputDataWriter` an add-on that dumps raw output data per-frame.
+- Added: `Writer` abstract base class for per-frame writer add-ons.
+- Modified `JointDynamic` constructor parameters:
+  - Removed constructor parameters: `robot` and `joint_index`.
+  - Added constructor parameters: `joint_id`, `position`, `angles`, and `moving`.
+- Modified `JointStatic` constructor parameters and fields:
+  - Removed constructor parameter: `joint_index`
+  - Added constructor parameters: `static_index` and `dynamic_index`
+  - Added fields: `num_dof` and `dynamic_index`
+- Modified `RobotDynamic` constructor parameters:
+  - Removed constructor parameters: `robot_id`, `body_parts`, and `previous`.
+  - Added constructor parameters: `static` (of type `RobotStatic`)
+- Modified `RobotStatic` fields:
+  - Added: `robot_index`
+- Fixed: `TDWUtils.array_to_vector4(arr)` doesn't convert numpy float32 to pure-Python float.
+
+### Example Controllers
+
+- Updated `robots/robot_arm.py` to use new `DynamicRobots` output data.
+- Added: `read_write/object_data_json.py`
+- Added: `read_write/write_json.py`
+- Added: `read_write/write_multi_agent_json.py`
+- Added: `read_write/write_output_data.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                   | Description                               |
+| ------------------------------------------ | ----------------------------------------- |
+| `lessons/read_write/custom_writers.md`     | Tips for custom data writers.             |
+| `lessons/read_write/json.md`               | How to use `JsonWriter`.                  |
+| `lessons/read_write/output_data_writer.md` | How to use `OutputDataWriter`.            |
+| `lessons/read_write/overview.md`           | Overview of how to write data to disk.    |
+| `python/add_ons/json_writer.md`            | API documentation for `JsonWriter`.       |
+| `python/add_ons/output_data_writer.md`     | API documentation for `OutputDataWriter`. |
+| `python/add_ons/writer.md`                 | API documentation for `Writer`.           |
+
+#### Modified Documentation
+
+- Clarified in all of the API documents for `AddOn` subclasses how and when `on_send(resp)` gets called.
+
+| Document                            | Modification                                                 |
+| ----------------------------------- | ------------------------------------------------------------ |
+| `lessons/robots/low_level_api.md`   | Updated descriptions and example code to use `DynamicRobots` instead of `Robot`. |
+| `lessons/troubleshooting/logger.md` | Moved to `lessons/read_write/logger.md`                      |
+
+## v1.10.1
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                     |
+| -------------------- | ----------------------------------------------- |
+| `send_field_of_view` | Send the camera field of view and focal length. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                |
+| ------------- | ------------------------------------------ |
+| `FieldOfView` | The camera field of view and focal length. |
+
+### `tdw` module
+
+- Added optional parameter `device_name` to `PhysicsAudioRecorder.start()`.
+- Fixed: `AudioUtils.stop()` doesn't work on OS X.
+  - Replaced `AudioUtils.RECORDER_PID` with `AudioUtils.RECORDER_PROCESS`.
+  - `AudioUtils.DEVICE` is now an integer (was a string).
+
+
+### Model Library
+
+- Flagged b04_wallmounted_soap_dispenser_composite as do_not_use (missing asset bundles)
+
+### Example Controllers
+
+- Fixed audio example controllers that use `PhysicsAudioRecorder` and had `while record.done:` instead of `while not recorder.done:`
 
 ## v1.10.0
 

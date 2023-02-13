@@ -18,7 +18,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.audio_initializer import AudioInitializer
-from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
+from tdw.add_ons.physics_audio_recorder importnot  PhysicsAudioRecorder
 from tdw.add_ons.py_impact import PyImpact
 from tdw.physics_audio.audio_material import AudioMaterial
 from tdw.physics_audio.object_audio_static import ObjectAudioStatic
@@ -66,7 +66,7 @@ print(f"Audio will be saved to: {path}")
 if not path.parent.exists():
     path.parent.mkdir(parents=True)
 recorder.start(path=path)
-while recorder.recording:
+while not recorder.done:
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```

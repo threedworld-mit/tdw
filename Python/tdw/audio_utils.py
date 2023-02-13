@@ -2,9 +2,8 @@ from typing import Optional, Union, Tuple
 from pathlib import Path
 import os
 from platform import system
-from subprocess import check_output, Popen, call
+from subprocess import check_output, Popen
 import re
-from psutil import pid_exists
 
 
 class AudioUtils:
@@ -31,17 +30,21 @@ class AudioUtils:
     ```
     """
 
-    # The process ID of the audio recorder.
-    RECORDER_PID: Optional[int] = None
-    # The audio capture device.
-    DEVICE: Optional[str] = None
+    """:class_var
+    The current fmedia process.
+    """
+    RECORDER_PROCESS: Optional[Popen] = None
+    """:class_var
+    The index of the audio capture device.
+    """
+    DEVICE: Optional[int] = None
 
     @staticmethod
-    def get_system_audio_device(device_name: str = None) -> str:
+    def get_system_audio_device(device_name: str = None) -> int:
         """
         :param device_name: The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X).
 
-        :return: The audio device that can be used to capture system audio.
+        :return: The index audio device that can be used to capture system audio as a string.
         """
 
         # Set a default device name.
@@ -53,7 +56,7 @@ class AudioUtils:
         devices = check_output(["fmedia", "--list-dev"]).decode("utf-8").split("Capture:")[1]
         dev_search = re.search(f"device #(.*): {device_name}", devices, flags=re.MULTILINE)
         assert dev_search is not None, "No suitable audio capture device found:\n" + devices
-        return dev_search.group(1)
+        return int(dev_search.group(1))
 
     @staticmethod
     def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None, device_name: str = None) -> None:
@@ -86,8 +89,8 @@ class AudioUtils:
         if until is not None:
             fmedia_call.append(f"--until={str(until[0]).zfill(2)}:{str(until[1]).zfill(2)}")
         with open(os.devnull, "w+") as f:
-            AudioUtils.RECORDER_PID = Popen(fmedia_call,
-                                            stderr=f).pid
+            AudioUtils.RECORDER_PROCESS = Popen(fmedia_call,
+                                                stderr=f)
 
     @staticmethod
     def stop() -> None:
@@ -95,10 +98,9 @@ class AudioUtils:
         Stop recording audio (if any fmedia process is running).
         """
 
-        if AudioUtils.RECORDER_PID is not None:
-            with open(os.devnull, "w+") as f:
-                call(['fmedia', '--globcmd=quit'], stderr=f, stdout=f)
-            AudioUtils.RECORDER_PID = None
+        if AudioUtils.RECORDER_PROCESS is not None:
+            AudioUtils.RECORDER_PROCESS.kill()
+            AudioUtils.RECORDER_PROCESS = None
 
     @staticmethod
     def is_recording() -> bool:
@@ -106,4 +108,4 @@ class AudioUtils:
         :return: True if the fmedia recording process still exists.
         """
 
-        return AudioUtils.RECORDER_PID is not None and pid_exists(AudioUtils.RECORDER_PID)
+        return AudioUtils.RECORDER_PROCESS is not None

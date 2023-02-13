@@ -2,28 +2,25 @@
 
 `from tdw.add_ons.logger import Logger`
 
-Record and playback every command sent to the build.
+Log every command sent to the build.
 
 ```python
 from tdw.controller import Controller
 from tdw.add_ons.logger import Logger
 
 c = Controller()
-logger = Logger(record=True, path="log.json")
+logger = Logger(path="log.txt")
 c.add_ons.append(logger)
 # The logger add-on will log this command.
 c.communicate({"$type": "do_nothing"})
-# The logger add-on will log this command and generate a log.json file.
 c.communicate({"$type": "terminate"})
 ```
+
+The log file can be automatically re-loaded into another controller using the [`LogPlayback`](log_playback.md) add-on.
 
 ***
 
 ## Fields
-
-- `record` If True, record each command. If False, play back an existing record.
-
-- `playback` A record of each list of commands sent to the build.
 
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
@@ -35,14 +32,14 @@ c.communicate({"$type": "terminate"})
 
 #### \_\_init\_\_
 
-**`Logger(record, path)`**
+**`Logger(path)`**
 
-**`Logger(record, path, log_commands_in_build=False)`**
+**`Logger(path, overwrite=True, log_commands_in_build=False)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| record |  bool |  | If True, record each command. If False, play back an existing record. |
-| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
+| path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| overwrite |  bool  | True | If True and a log file already exists at `path`, overwrite the file. |
 | log_commands_in_build |  bool  | False | If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html). |
 
 #### get_initialization_commands
@@ -57,10 +54,10 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 **`self.on_send(resp)`**
 
-This is called after commands are sent to the build and a response is received.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
 
-Use this function to send commands to the build on the next frame, given the `resp` response.
-Any commands in the `self.commands` list will be sent on the next frame.
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -70,24 +67,21 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.before_send(commands)`**
 
-This is called before sending commands to the build. By default, this function doesn't do anything.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
-#### save
-
-**`self.save()`**
-
-Write the record of commands sent to the local disk.
-
 #### reset
 
 **`self.reset(path)`**
 
-Reset the logger. If `self.record == True`, this starts a new log. If `self.record == False`, this loads a playback file.
+**`self.reset(path, overwrite=True)`**
+
+Reset the logger.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to either save the record to or load the record from. |
+| path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| overwrite |  bool  | True | If True and a log file already exists at `path`, overwrite the file. |

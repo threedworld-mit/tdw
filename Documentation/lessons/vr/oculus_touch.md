@@ -103,8 +103,8 @@ class VirtualReality(Controller):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.done = False
         self.vr = OculusTouch()
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.extend([self.vr])
 
     def run(self) -> None:
@@ -150,8 +150,8 @@ class OculusTouchButtonListener(Controller):
         self.vr = OculusTouch()
         # Quit when the left trigger button is pressed.
         self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # End the trial when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.end_trial)
+        # End the trial when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.end_trial)
         self.add_ons.extend([self.vr])
         self.communicate(TDWUtils.create_empty_room(12, 12))
 
@@ -226,8 +226,8 @@ class OculusTouchAxisListener(Controller):
         # Move the robot joints with the control sticks.
         self.vr.listen_to_axis(is_left=True, function=self.left_axis)
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.extend([self.robot, self.vr])
         self.done: bool = False
 
@@ -294,7 +294,7 @@ while True:
 
 ### Composite objects
 
-It is possible to grasp [composite sub-objects](../semantic_states/composite_objects.md) such as the door of a microwave in VR. The VR system automatically finds 'affordance points' for the hands to grasp. The resulting motion may at times be jittery; this is due to the underlying hand tracking and object grasping system:
+It is possible to grasp [composite sub-objects](../composite_objects/overview.md) such as the door of a microwave in VR. The VR system automatically finds 'affordance points' for the hands to grasp. The resulting motion may at times be jittery; this is due to the underlying hand tracking and object grasping system:
 
 ```python
 from tdw.controller import Controller
@@ -314,8 +314,8 @@ class OculusTouchCompositeObject(Controller):
         self.done = False
         # Add the VR rig.
         self.vr = OculusTouch(human_hands=False, output_data=True, attach_avatar=True, set_graspable=False)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.append(self.vr)
 
     def run(self) -> None:
@@ -427,6 +427,76 @@ while True:
 You can then adjust the camera and capture image data like with any other avatar. The ID of this avatar is always `"vr"`.
 
 For performance reasons, the default width of the avatar's images is 512, which is lower than the resolution of the headset. The height is always scaled proportional to the width. To adjust the pixel width and height ratio, set `avatar_camera_width` and `headset_aspect_ratio` in the constructor.
+
+### Loading screen
+
+If you load a new scene, the VR rig will appear to act strangely while the scene is loading. This is harmless but can be unintuitive for new users.
+
+You can "solve" this by adding a loading screen to the VR rig. Call `vr.show_loading_screen(True)` followed by `c.communicate([])` to show the loading screen. The `communicate([])` call should be sent *before* loading the scene. After loading the scene, call `vr.show_loading_screen(False)` followed by `c.communicate([])`
+
+This is a minimal example of how to show and hide a loading screen (see `def next_trial(self):` for the loading screen code):
+
+```python
+from tdw.add_ons.oculus_touch import OculusTouch
+from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.controller import Controller
+
+
+class LoadingScreen(Controller):
+    """
+    A minimal example of how to use a VR loading screen.
+    """
+
+    SCENE_NAMES = ['mm_craftroom_2a', 'mm_craftroom_2b', 'mm_craftroom_3a', 'mm_craftroom_3b',
+                   'mm_kitchen_2a', 'mm_kitchen_2b', 'mm_kitchen_3a', 'mm_kitchen_3b']
+
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.scene_index: int = 0
+        # Add a VR rig.
+        self.vr: OculusTouch = OculusTouch()
+        self.done: bool = False
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # Go to the next scene when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.next_trial)
+        self.add_ons.append(self.vr)
+        # Load the first scene.
+        self.next_trial()
+
+    def run(self) -> None:
+        # Loop until the user quits.
+        while not self.done:
+            self.communicate([])
+        self.communicate({"$type": "terminate"})
+
+    def quit(self) -> None:
+        self.done = True
+
+    def next_trial(self) -> None:
+        # Enable the loading screen.
+        self.vr.show_loading_screen(show=True)
+        self.communicate([])
+        # Reset the VR rig.
+        self.vr.reset()
+        # Load the next scene.
+        self.communicate([Controller.get_add_scene(scene_name=LoadingScreen.SCENE_NAMES[self.scene_index]),
+                          Controller.get_add_object(model_name="rh10",
+                                                    object_id=Controller.get_unique_id(),
+                                                    position={"x": 0, "y": 0, "z": 0.5})])
+        # Hide the loading screen.
+        self.vr.show_loading_screen(show=False)
+        self.communicate([])
+        # Increment the scene index for the next scene.
+        self.scene_index += 1
+        if self.scene_index >= len(LoadingScreen.SCENE_NAMES):
+            self.scene_index = 0
+
+
+if __name__ == "__main__":
+    c = LoadingScreen()
+    c.run()
+```
 
 ### Hand models
 
@@ -544,10 +614,10 @@ class OculusTouchPyImpact(Controller):
         self.simulation_done = False
         self.trial_done = False
         self.vr = OculusTouch(set_graspable=False)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # End the trial when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.end_trial)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # End the trial when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.end_trial)
         # Enable PyImpact.
         self.py_impact = PyImpact()
         self.add_ons.extend([self.vr, self.py_impact])
@@ -631,6 +701,10 @@ Position and rotation:
 - [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
 - [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
 
+Loading screen:
+
+- [`set_vr_loading_screen`](../../api/command_api.md#set_vr_loading_screen)
+
 On the backend, the root body and hands are cached as objects with their own IDs (generated randomly by the build).
 
 ***
@@ -656,6 +730,7 @@ Example controllers:
 - [oculus_touch_image_capture.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_image_capture.py) Add several objects to the scene. Record which objects are visible to the VR agent.
 - [oculus_touch_py_impact.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_py_impact.py) Listen to audio generated by PyImpact.
 - [oculus_touch_axis_listener.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_axis_listener.py) Control a robot arm with the Oculus Touch control sticks.
+- [oculus_touch_loading_screen.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/vr/oculus_touch_loading_screen.py) A minimal example of how to use a VR loading screen.
 
 Command API:
 
@@ -671,6 +746,7 @@ Command API:
 - [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
 - [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
 - [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch)
+- [`set_vr_loading_screen`](../../api/command_api.md#set_vr_loading_screen)
 
 Output Data:
 

@@ -489,8 +489,9 @@ Data regarding whether a position is on the NavMesh. Invoked by first sending th
 
 | Function | Description | Return type |
 | --- | --- | --- |
-| `get_position()` | If is_on == False, this is (inf, inf inf). If is_on == True, this is a valid position on the NavMesh. | `Tuple[float, float, float]` |
+| `get_position()` | A valid position on the NavMesh. If is_on == False, this is (inf, inf inf). | `np.ndarray` |
 | `get_is_on()` | True if `position` is a valid position on the NavMesh. | `bool` |
+| `get_id()` | The ID of this output data object. | `int` |
 
 ## Keyboard
 

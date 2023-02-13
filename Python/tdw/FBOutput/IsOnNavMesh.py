@@ -19,15 +19,26 @@ class IsOnNavMesh(object):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
     # IsOnNavMesh
-    def Position(self):
+    def Position(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
-            x = o + self._tab.Pos
-            from .Vector3 import Vector3
-            obj = Vector3()
-            obj.Init(self._tab.Bytes, x)
-            return obj
-        return None
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # IsOnNavMesh
+    def PositionAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # IsOnNavMesh
+    def PositionLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
 
     # IsOnNavMesh
     def IsOn(self):
@@ -36,7 +47,16 @@ class IsOnNavMesh(object):
             return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
         return False
 
-def IsOnNavMeshStart(builder): builder.StartObject(2)
-def IsOnNavMeshAddPosition(builder, position): builder.PrependStructSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(position), 0)
+    # IsOnNavMesh
+    def Id(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+def IsOnNavMeshStart(builder): builder.StartObject(3)
+def IsOnNavMeshAddPosition(builder, position): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(position), 0)
+def IsOnNavMeshStartPositionVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def IsOnNavMeshAddIsOn(builder, isOn): builder.PrependBoolSlot(1, isOn, 0)
+def IsOnNavMeshAddId(builder, id): builder.PrependInt32Slot(2, id, 0)
 def IsOnNavMeshEnd(builder): return builder.EndObject()

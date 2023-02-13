@@ -59,6 +59,7 @@ from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import Framerate as Frame
+from tdw.FBOutput import OccupancyMap as Occ
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1613,3 +1614,23 @@ class Framerate(OutputData):
 
     def get_physics_timestep(self) -> float:
         return float(self.data.PhysicsTimeStep())
+
+
+class OccupancyMap(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._shape: np.ndarray = self.data.ShapeAsNumpy()
+        self._map: np.ndarray = self.data.MapAsNumpy().reshape(self._shape)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(self._shape[0], self._shape[1], 2)
+
+    def get_data(self) -> Occ.OccupancyMap:
+        return Occ.OccupancyMap.GetRootAsOccupancyMap(self.bytes, 0)
+
+    def get_shape(self) -> np.ndarray:
+        return self._shape
+
+    def get_map(self) -> np.ndarray:
+        return self._map
+
+    def get_positions(self) -> np.ndarray:
+        return self._positions

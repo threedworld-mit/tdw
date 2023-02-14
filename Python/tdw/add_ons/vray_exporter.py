@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Dict, Union, Optional
+from typing import List, Dict, Union
 import re
 import zipfile
 import subprocess
@@ -10,8 +10,8 @@ import boto3
 from fabric import Connection
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
+from tdw.version import __version__
 from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, AvatarTransformMatrices, FieldOfView
-from tdw.vray_data.vray_camera import VRayCamera
 from tdw.vray_data.vray_matrix import VRayMatrix, get_converted_node_matrix, get_converted_camera_matrix
 
 
@@ -44,7 +44,7 @@ class VRayExporter(AddOn):
         self.scene_name: str = scene_name
         self._scene_local_source_path: Path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{self.scene_name}.vrscene")
         self._scene_local_working_path: Path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{self.scene_name}_copy.vrscene")
-        self._vray_camera: Optional[VRayCamera] = None
+        self._render_view_str: str = ""
         """:field
         The list of each model that can be rendered with VRay. The first time you run this add-on, it will query the S3 server for a list of models and save the result to `~/vray_export_resources/models.txt`, which it will use for all subsequent runs.
         """
@@ -115,8 +115,6 @@ class VRayExporter(AddOn):
         commands = [{"$type": "set_screen_size",
                      "width": self.image_width,
                      "height": self.image_height},
-                    {"$type": "set_render_quality",
-                     "render_quality": 5},
                     {"$type": "send_transform_matrices",
                      "frequency": "always"},
                     {"$type": "send_segmentation_colors",
@@ -156,8 +154,9 @@ class VRayExporter(AddOn):
         """
 
         vray_models_path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath("models.txt")
+        version_path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath("version.txt")
         # Use an existing list.
-        if vray_models_path.exists():
+        if vray_models_path.exists() and version_path.exists() and version_path.read_text() == __version__:
             return vray_models_path.read_text(encoding="utf-8").split("\n")
         # Generate the list.
         else:
@@ -166,6 +165,9 @@ class VRayExporter(AddOn):
             bucket = s3.Bucket('tdw-public')
             for obj in bucket.objects.filter(Prefix='vray_models/'):
                 models.append(obj.key.replace("vray_models/", "").replace(".zip", ""))
+            # Write the list.
+            vray_models_path.write_text("\n".join(models), encoding="utf-8")
+            version_path.write_text(__version__)
             return models
 
     def _get_objects(self, resp: List[bytes]) -> None:
@@ -220,8 +222,8 @@ class VRayExporter(AddOn):
             self._scene_local_working_path.unlink()
         # Copy the scene file.
         copyfile(src=str(self._scene_local_source_path), dst=str(self._scene_local_working_path))
-        # Set the camera.
-        self._vray_camera = VRayCamera(self._scene_local_working_path)
+        text = self._scene_local_working_path.read_text(encoding="utf-8")
+        self._render_view_str = re.search(r"(RenderView(.*))", text, flags=re.MULTILINE).group(1)
 
     def _download(self, s3_suffix: str) -> None:
         name = s3_suffix.split("/")[1]
@@ -260,7 +262,8 @@ class VRayExporter(AddOn):
                         self._write_static_node_data(model_name, matrix)
                         f.write("#include \"" + model_name + ".vrscene\"\n\n")
 
-    def _write_static_node_data(self, model_name: str, matrix: VRayMatrix) -> None:
+    @staticmethod
+    def _write_static_node_data(model_name: str, matrix: VRayMatrix) -> None:
         """
         Replace the Node transform in a model's .vrscene file to match the object's position and orientation in the TDW scene.
 
@@ -268,33 +271,17 @@ class VRayExporter(AddOn):
         :param matrix: The `VRayMatrix` data.
         """
 
-        # get node ID from cached dictionary.
-        node_id_string = self.node_ids[model_name]
-        # Open model .vrscene file to append node data.
-        path = str(VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{model_name}.vrscene").resolve())
+        # Generate the node string.
         node_string = ("transform=Transform(Matrix" +
                        "(Vector(" + matrix.column_one + "), " +
                        "Vector(" + matrix.column_two + "), " +
                        "Vector(" + matrix.column_three + ")), " +
-                       "Vector(" + matrix.column_four + "));\n")
-        line_number = 0
-        num = 0
-        with open(path, "r", encoding="utf-8") as in_file:
-            pattern = re.compile(node_id_string)
-            for line in in_file:
-                if pattern.search(line):
-                    # We will want to replace the line following the "Node" line, with the transform data.
-                    line_number = num + 1
-                else:
-                    num = num + 1
-            # Read file lines into data.
-            in_file.seek(0)
-            data = in_file.readlines()
-            # Now change the Node Transform line.
-            data[line_number] = node_string
-        # Write everything back.
-        with open(path, 'w', encoding="utf-8") as out_file:
-            out_file.writelines(data)
+                       "Vector(" + matrix.column_four + "));")
+        # Open model .vrscene file to append node data.
+        path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{model_name}.vrscene").resolve()
+        text = path.read_text(encoding="utf-8")
+        text = re.sub(r"^\s+transform=(.*?);", f"  transform={node_string}", text, flags=re.MULTILINE)
+        path.write_text(text, encoding="utf-8")
 
     def _get_dynamic_node_data_string(self, matrix: np.ndarray, model_name: str, frame_count: int) -> str:
         """
@@ -382,8 +369,8 @@ class VRayExporter(AddOn):
 
         matrix: VRayMatrix = get_converted_camera_matrix(avatar_matrix, sensor_matrix)
         # Form interpolation string.
-        node_string = ("\n" + self._vray_camera.render_view_id_string +
-                       "transform=interpolate(\n" +
+        node_string = ("\n" + self._render_view_str +
+                       "\ntransform=interpolate(\n" +
                        "(" + str(frame_count) + ", " +
                        "Transform(Matrix" +
                        "(Vector(" + matrix.column_one + "), " +
@@ -402,21 +389,20 @@ class VRayExporter(AddOn):
         :param focal_length: The camera focal length.
         """
 
-        # Open model .vrscene file to append node data
+        # Create the node string.
         node_string = ("transform=Transform(Matrix" +
                        "(Vector(" + matrix.column_one + "), " +
                        "Vector(" + matrix.column_two + "), " +
                        "Vector(" + matrix.column_three + ")), " +
-                       "Vector(" + matrix.column_four + "));\n")
-        with open(str(self._scene_local_working_path), 'r', encoding="utf-8") as in_file:
-            # Read a list of lines into data
-            data = in_file.readlines()
-            # Now change the Renderview node line and the CameraPhysical focal_length line.
-            data[self._vray_camera.render_view_line_number] = node_string
-            data[self._vray_camera.focal_length_line_number] = "focal_length=" + str(focal_length) + ";\n"
-        # Write everything back.
-        with open(str(self._scene_local_working_path), 'w', encoding="utf-8") as out_file:
-            out_file.writelines(data)
+                       "Vector(" + matrix.column_four + "));")
+        # Open the file.
+        text = self._scene_local_working_path.read_text(encoding="utf-8")
+        # Replace the node string.
+        text = re.sub(r"RenderView (.*)((.|\n)*?)\s+transform=(.*?);", r"RenderView \1\n\n  transform=" + node_string, text, flags=re.MULTILINE)
+        # Replace the focal length.
+        text = re.sub(r"((CameraPhysical (.*?)@node(.*){)((.|\n)*?))focal_length=(.*?);", r"\1focal_length=" + str(focal_length) + ";", text, flags=re.MULTILINE)
+        # Save the file.
+        self._scene_local_working_path.write_text(text, encoding="utf-8")
   
     def _export_animation_settings(self) -> None:
         """

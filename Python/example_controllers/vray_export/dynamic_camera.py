@@ -75,6 +75,8 @@ class DynamicCamera(Controller):
                                              object_id=self.get_unique_id(),
                                              position={"x": 1.8, "y": 0.303, "z": -0.517},
                                              rotation={"x": 0, "y": 70, "z": 0}),
+                          {"$type": "set_render_quality",
+                           "render_quality": 5},
                           {"$type": "set_aperture",
                            "aperture": 4.0},
                           {"$type": "set_focus_distance",

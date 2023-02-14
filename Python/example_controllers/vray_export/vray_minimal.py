@@ -32,7 +32,9 @@ class VRayMinimal(Controller):
         # Also adjust the ambient occlusion parameters for realistic shadowing in corners and under furniture objects.
         # Set shadow strength to near-full.
         commands = []
-        commands.extend([{"$type": "set_aperture",
+        commands.extend([{"$type": "set_render_quality",
+                          "render_quality": 5},
+                         {"$type": "set_aperture",
                           "aperture": 4.0},
                          {"$type": "set_focus_distance",
                           "focus_distance": 2.25},

@@ -398,7 +398,7 @@ class VRayExporter(AddOn):
         # Open the file.
         text = self._scene_local_working_path.read_text(encoding="utf-8")
         # Replace the node string.
-        text = re.sub(r"RenderView (.*)((.|\n)*?)\s+transform=(.*?);", r"RenderView \1\n\n  transform=" + node_string, text, flags=re.MULTILINE)
+        text = re.sub(r"RenderView (.*)((.|\n)*?)\s+transform=(.*?);", r"RenderView \1\n\n  " + node_string, text, flags=re.MULTILINE)
         # Replace the focal length.
         text = re.sub(r"((CameraPhysical (.*?)@node(.*){)((.|\n)*?))focal_length=(.*?);", r"\1focal_length=" + str(focal_length) + ";", text, flags=re.MULTILINE)
         # Save the file.

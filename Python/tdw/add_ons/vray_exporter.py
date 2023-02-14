@@ -17,7 +17,11 @@ from tdw.vray_data.vray_matrix import VRayMatrix, get_converted_node_matrix, get
 
 class VRayExporter(AddOn):
     """
-    (TODO)
+    This add-on converts scene-state data in TDW per communicate() call and saves it as .vrscene data, which can then be rendered with Chaos Vantage.
+
+    Rendering is typically done after the scene or trial is done, via `self.launch_renderer(output_directory)`. The renderer can be a local or remote executable.
+
+    The VRay renderer, while slower than TDW's runtime renderer, will produce far more realistic images.
     """
 
     """:class_var
@@ -31,90 +35,105 @@ class VRayExporter(AddOn):
     if not VRAY_EXPORT_RESOURCES_PATH.exists():
         VRAY_EXPORT_RESOURCES_PATH.mkdir(parents=True)
 
-    def __init__(self, image_width: int, image_height: int, scene_name: str, output_directory: Union[str, Path],
-                 animate: bool = False, render_host: str = "localhost"):
+    def __init__(self, image_width: int, image_height: int, scene_name: str,  animate: bool = False):
+        """
+        :param image_width: The image width in pixels.
+        :param image_height: The image height in pixels.
+        :param scene_name: The scene name. This must match the scene being used in the TDW build, e.g. `"tdw_room"`.
+        :param animate: If True, render an animation of each frame.
+        """
+        
         super().__init__()
-        self.render_host: str = render_host
-        self.output_directory: Path = TDWUtils.get_path(output_directory)
-        if (self.render_host == "localhost") and (not self.output_directory.exists()):
-            self.output_directory.mkdir(parents=True)
-        self.image_width: int = image_width
-        self.image_height: int = image_height
-        self.animate: bool = animate
-        self.scene_name: str = scene_name
-        self._scene_local_source_path: Path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{self.scene_name}.vrscene")
-        self._scene_local_working_path: Path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{self.scene_name}_copy.vrscene")
+        self._image_width: int = image_width
+        self._image_height: int = image_height
+        self._animate: bool = animate
+        self._scene_name: str = scene_name
+        self._scene_local_source_path: Path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{self._scene_name}.vrscene")
+        self._scene_local_working_path: Path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{self._scene_name}_copy.vrscene")
         self._render_view_str: str = ""
         """:field
         The list of each model that can be rendered with VRay. The first time you run this add-on, it will query the S3 server for a list of models and save the result to `~/vray_export_resources/models.txt`, which it will use for all subsequent runs.
         """
         self.vray_model_list = self._get_vray_models()
-        # Dictionary of model names by ID
-        self.object_names: Dict[int, str] = dict()
-        # Dictionary of model IDs by name
-        self.model_ids: Dict[str, int] = dict()
-        # Dictionary of node IDs by model name
-        self.node_ids: Dict[str, str] = dict()
+        # Dictionary of model names by ID.
+        self._object_names: Dict[int, str] = dict()
+        # Dictionary of node IDs by model name.
+        self._node_ids: Dict[str, str] = dict()
         # The current frame count.
-        self.frame_count: int = 0
+        self._frame_count: int = 0
         self._downloaded_data: bool = False
 
-    def launch_renderer(self) -> None:
+    def launch_renderer(self, output_directory: Union[str, Path], render_host: str = "localhost", port: int = 1204, 
+                        renderer_path: str = "C:/Program Files/Chaos Group/Vantage/vantage_console.exe") -> None:
         """
         Launch Vantage in headless mode and render scene file, updating for animation if necessary.
+        
+        :param output_directory: The root output directory. If `render_host == "localhost"`, this directory will be created if it doesn't already exist. On a remote server, the directory must already exist.
+        :param render_host: The render host IP address.
+        :param port: The socket port for the render host. This is only used for remote SSHing.
+        :param renderer_path: The file path to the Vantage console executable.
         """
 
         # Open the master scene file.
-        output_path = str(self.output_directory.joinpath(f"{self.scene_name}.png").resolve())
+        if output_directory is None:
+            output_directory_path: Path = Path("").absolute()
+        else:
+            output_directory_path: Path = TDWUtils.get_path(output_directory)
+        if render_host == "localhost" and not output_directory_path.exists():
+            output_directory_path.mkdir(parents=True)
+        output_path = str(output_directory_path.joinpath(f"{self._scene_name}.png").resolve())
         scene_path = str(self._scene_local_working_path)
-        if self.frame_count > 0:
+        renderer_path = renderer_path.replace("\\", "/")
+        renderer_directory: str = str(Path(renderer_path).parent).replace("\\", "/")
+        vantage_filename: str = Path(renderer_path).name
+        vantage_remote: str = f'cd {renderer_directory} & "./{vantage_filename}"'
+        if self._frame_count > 0:
             # Write out to the master scene file the animation settings, including final frame_count, as the end of the animation sequence.
             self._export_animation_settings()
             # Launch vantage in appropriate mode.
-            if self.render_host == "localhost":
-                subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
+            if render_host == "localhost":
+                subprocess.run([renderer_path,
                                 "-sceneFile=" + scene_path,
                                 "-outputFile=" + output_path,
-                                "-outputWidth=" + str(self.image_width),
-                                "-outputHeight=" + str(self.image_height),
-                                "-frames=0" + "-" + str(self.frame_count),
+                                "-outputWidth=" + str(self._image_width),
+                                "-outputHeight=" + str(self._image_height),
+                                "-frames=0" + "-" + str(self._frame_count),
                                 "-quiet",
                                 "-autoClose=true"])
             else:
                 # Rendering on a remote machine.
                 arglist = "-sceneFile=" + scene_path + " " \
                           + "-outputFile=" + output_path + " " \
-                          + "-outputWidth=" + str(self.image_width) + " " \
-                          + "-outputHeight=" + str(self.image_height) + " " \
-                          + "-frames=0" + "-" + str(self.frame_count) + " " \
+                          + "-outputWidth=" + str(self._image_width) + " " \
+                          + "-outputHeight=" + str(self._image_height) + " " \
+                          + "-frames=0" + "-" + str(self._frame_count) + " " \
                           + "-quiet" + " " \
                           + "-autoClose=true"
-                with Connection(host=self.render_host, port=1071) as c:
-                    c.run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\"" + arglist)
+                with Connection(host=render_host, port=port) as c:
+                    c.run(f"{vantage_remote} {arglist}")
         else:
-            if self.render_host == "localhost":
-                print(output_path)
-                subprocess.run(["C:/Program Files/Chaos Group/Vantage/vantage_console.exe",
+            if render_host == "localhost":
+                subprocess.run([renderer_path,
                                 "-sceneFile=" + scene_path,
                                 "-outputFile=" + output_path,
-                                "-outputWidth=" + str(self.image_width),
-                                "-outputHeight=" + str(self.image_height),
+                                "-outputWidth=" + str(self._image_width),
+                                "-outputHeight=" + str(self._image_height),
                                 "-quiet",
                                 "-autoClose=true"])
             else:
                 arglist = "-sceneFile=" + scene_path + " " \
                           + "-outputFile=" + output_path + " " \
-                          + "-outputWidth=" + str(self.image_width) + " " \
-                          + "-outputHeight=" + str(self.image_height) + " " \
+                          + "-outputWidth=" + str(self._image_width) + " " \
+                          + "-outputHeight=" + str(self._image_height) + " " \
                           + "-quiet" + " " \
                           + "-autoClose=true"
-                with Connection(host=self.render_host, port=1071) as c:
-                    c.run("cd C:/Program Files/Chaos Group/Vantage & " + "\"./vantage_console.exe\"" + arglist)
+                with Connection(host=render_host, port=port) as c:
+                    c.run(f"{vantage_remote} {arglist}")
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "set_screen_size",
-                     "width": self.image_width,
-                     "height": self.image_height},
+                     "width": self._image_width,
+                     "height": self._image_height},
                     {"$type": "send_transform_matrices",
                      "frequency": "always"},
                     {"$type": "send_segmentation_colors",
@@ -137,14 +156,14 @@ class VRayExporter(AddOn):
             # Download and unzip scene file -- this will be the "master" file, that all model .vrscene files will be appended to.
             self._download_scene()
             # Download and unzip all object models in the scene.
-            for model_name in self.object_names.values():
+            for model_name in self._object_names.values():
                 self._download_model(model_name)
             # Update model files to reflect initial scene object transforms.
             self._export_model_node_data(resp=resp)
             # Update V-Ray camera to reflect TDW camera position and orientation.
             self._export_static_camera_view_data(resp=resp)
         # Process object or camera movement.
-        if self.animate:
+        if self._animate:
             self._export_animation(resp=resp)
 
     @staticmethod
@@ -172,13 +191,12 @@ class VRayExporter(AddOn):
 
     def _get_objects(self, resp: List[bytes]) -> None:
         """
-        Rebuild `self.object_names` and `self.model_ids`.
+        Rebuild `self._object_names` and `self.model_ids`.
 
         :param resp: The response from the build.
         """
 
-        self.object_names.clear()
-        self.model_ids.clear()
+        self._object_names.clear()
         # Rebuild the object list.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -191,8 +209,7 @@ class VRayExporter(AddOn):
                     object_name = segm.get_object_name(j).lower()
                     # Make sure we have a vray model for this object.
                     if object_name in self.vray_model_list:
-                        self.object_names[object_id] = object_name
-                        self.model_ids[object_name] = object_id
+                        self._object_names[object_id] = object_name
                     else:
                         raise Exception("Model " + object_name + " does not have a V-Ray-ready equivalent; cannot continue processing scene.")
 
@@ -206,8 +223,8 @@ class VRayExporter(AddOn):
         path = VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath(f"{model_name}.vrscene")
         if not path.exists():
             self._download(f"vray_models/{model_name}")
-        self.node_ids[model_name] = re.search(r"(Node (.*?)@node_(.*?){)", path.read_text(encoding="utf8"),
-                                              flags=re.MULTILINE).group(1)
+        self._node_ids[model_name] = re.search(r"(Node (.*?)@node_(.*?){)", path.read_text(encoding="utf8"),
+                                               flags=re.MULTILINE).group(1)
 
     def _download_scene(self) -> None:
         """
@@ -216,7 +233,7 @@ class VRayExporter(AddOn):
 
         # Download the scene.
         if not self._scene_local_source_path.exists():
-            self._download(f"vray_scenes/{self.scene_name}")
+            self._download(f"vray_scenes/{self._scene_name}")
         # Delete an existing local copy.
         if self._scene_local_working_path.exists():
             self._scene_local_working_path.unlink()
@@ -258,7 +275,7 @@ class VRayExporter(AddOn):
                         # Get the converted matrix.
                         matrix: VRayMatrix = get_converted_node_matrix(transform_matrices.get_matrix(j))
                         # Get the model name for this ID
-                        model_name = self.object_names[object_id]
+                        model_name = self._object_names[object_id]
                         self._write_static_node_data(model_name, matrix)
                         f.write("#include \"" + model_name + ".vrscene\"\n\n")
 
@@ -308,7 +325,7 @@ class VRayExporter(AddOn):
 
         m: VRayMatrix = get_converted_node_matrix(matrix)
         # Get node ID from cached dictionary
-        node_id_string = self.node_ids[model_name]
+        node_id_string = self._node_ids[model_name]
         # Form interpolation string.
         node_string = ("\n" + node_id_string +
                        "transform=interpolate(\n" +
@@ -411,17 +428,17 @@ class VRayExporter(AddOn):
 
         with open(str(self._scene_local_working_path), "a") as f:
             out_string = ("SettingsOutput output_settings {\n" +
-                          "img_width=" + str(self.image_width) + ";\n" +
-                          "img_height=" + str(self.image_height) + ";\n" +
+                          "img_width=" + str(self._image_width) + ";\n" +
+                          "img_height=" + str(self._image_height) + ";\n" +
                           "img_pixelAspect=1;\n" +
                           "img_file_needFrameNumber=1;\n" +
                           "img_clearMode=0;\n" +
                           "anim_start=0;\n" +
-                          "anim_end=" + str(self.frame_count) + ";\n" +
+                          "anim_end=" + str(self._frame_count) + ";\n" +
                           "frame_start=0;\n" +
                           "frames_per_second=1;\n" +
                           "frames=List(\n" +
-                          "List(0, " + str(self.frame_count) + ")\n" +
+                          "List(0, " + str(self._frame_count) + ")\n" +
                           ");\n" +
                           "}\n")
             f.write(out_string)
@@ -440,7 +457,7 @@ class VRayExporter(AddOn):
                         avatar_matrix = avatar_transform_matrices.get_avatar_matrix(j)
                         sensor_matrix = avatar_transform_matrices.get_sensor_matrix(j)
                         # Convert matrices to V-Ray format and output to master scene file as frame-by-frame interpolations.
-                        node_data_string = self._get_dynamic_camera_data_string(avatar_matrix, sensor_matrix, self.frame_count)
+                        node_data_string = self._get_dynamic_camera_data_string(avatar_matrix, sensor_matrix, self._frame_count)
                         f.write(node_data_string)
                 if r_id == "trma":
                     transform_matrices = TransformMatrices(resp[i])
@@ -449,6 +466,6 @@ class VRayExporter(AddOn):
                         # Get the object ID.
                         object_id = transform_matrices.get_id(j)
                         mat = transform_matrices.get_matrix(j)
-                        node_data_string = self._get_dynamic_node_data_string(mat, self.object_names[object_id], self.frame_count)
+                        node_data_string = self._get_dynamic_node_data_string(mat, self._object_names[object_id], self._frame_count)
                         f.write(node_data_string)
-            self.frame_count += 1
+            self._frame_count += 1

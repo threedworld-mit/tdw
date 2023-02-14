@@ -22,9 +22,7 @@ class VRayMinimal(Controller):
         exporter = VRayExporter(image_width=1280,
                                 image_height=720,
                                 scene_name="tdw_room",
-                                output_directory=self.output_path,
-                                animate=False,
-                                render_host=self.render_host)
+                                animate=False)
         self.add_ons.extend([camera, exporter])
         # Load the scene.
         # Add the objects.
@@ -77,7 +75,8 @@ class VRayMinimal(Controller):
                                              rotation={"x": 0, "y": 70, "z": 0})])
         self.communicate(commands)
         # Launch Vantage render in headless mode; it will run to completion and automatically close.
-        exporter.launch_renderer()
+        exporter.launch_renderer(output_directory="D:/VE2020_output/",
+                                 render_host=self.render_host)
 
 
 if __name__ == "__main__":

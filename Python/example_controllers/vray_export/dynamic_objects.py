@@ -8,11 +8,13 @@ class DynamicObjects(Controller):
     Create a typical TDW scene. Apply a force to the chair, then export using V-Ray add-on for maximum photorealism.
     """
 
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, output_path: str, render_host: str = "localhost", port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.frame_range = 150
         self.chair_id = self.get_unique_id()
         self.table_id = self.get_unique_id()
+        self.render_host = render_host
+        self.output_path = output_path
 
     def run(self):
         # Add a camera and enable export.
@@ -23,7 +25,6 @@ class DynamicObjects(Controller):
         exporter = VRayExporter(image_width=1280,
                                 image_height=720,
                                 scene_name="tdw_room",
-                                output_directory="D:/VE2020_output/",
                                 animate=True)
         self.add_ons.append(camera)
         # Load the scene.
@@ -84,8 +85,14 @@ class DynamicObjects(Controller):
         for step in range(self.frame_range):
             self.communicate([])
         # Launch Vantage render in headless mode; it will run to completion and automatically close.
-        exporter.launch_renderer()
+        exporter.launch_renderer(output_directory=self.output_path,
+                                 render_host=self.render_host)
         
 
 if __name__ == "__main__":
-    DynamicObjects().run()
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument("--render_host", type=str, default="localhost", help="Host to render on.")
+    parser.add_argument("--output_path", type=str, help="Folder location to output rendered images.")
+    args = parser.parse_args()
+    DynamicObjects(render_host=args.render_host, output_path=args.output_path).run()

@@ -8,9 +8,11 @@ class DynamicCamera(Controller):
     """
     Create a typical TDW scene, randomize a sequence of camera positions and aimpoints, then export using V-Ray add-on for maximum photorealism.
     """
-    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, output_path: str, render_host: str = "localhost", port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.frame_range = 120
+        self.render_host = render_host
+        self.output_path = output_path
 
     def run(self):
         # Add a camera and enable image capture.
@@ -21,7 +23,6 @@ class DynamicCamera(Controller):
         exporter = VRayExporter(image_width=1280,
                                 image_height=720,
                                 scene_name="tdw_room",
-                                output_directory="D:/VE2020_output/",
                                 animate=True)
         self.add_ons.extend([camera, exporter])
         # Load the scene.
@@ -98,9 +99,15 @@ class DynamicCamera(Controller):
                                "position": {"x": uniform(-3.5, 3.0), "y": uniform(0, 1.0), "z": uniform(-3, 3)},
                                "avatar_id": "a"}])
         # Launch Vantage render in headless mode; it will run to completion and automatically close.
-        exporter.launch_renderer()
+        exporter.launch_renderer(output_directory=self.output_path,
+                                 render_host=self.render_host)
         self.communicate({"$type": "terminate"})
         
 
 if __name__ == "__main__":
-    DynamicCamera().run()
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument("--render_host", type=str, default="localhost", help="Host to render on.")
+    parser.add_argument("--output_path", type=str, help="Folder location to output rendered images.")
+    args = parser.parse_args()
+    DynamicCamera(output_path=args.output_path, render_host=args.render_host).run()

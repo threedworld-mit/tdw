@@ -127,8 +127,9 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
 3. [Post-processing](Documentation/lessons/photorealism/post_processing.md)
-3. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
-4. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+4. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
+5. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+6. [V-Ray Rendering](Documentation/lessons/photorealism/vray.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
@@ -347,6 +348,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [UI](Documentation/python/add_ons/ui.md)
 - [VR](Documentation/python/add_ons/vr.md)
+- [VrayExporter](Documentation/python/add_ons/vray_exporter.md)
 - [Writer](Documentation/python/add_ons/writer.md)
 
 **tdw.asset_bundle_creator**
@@ -555,6 +557,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [RegionBounds](Documentation/python/scene_data/region_bounds.md)
 - [Room](Documentation/python/scene_data/room.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
+
+**tdw.vray_data**
+
+- [VrayMatrix](Documentation/python/vray_data/vray_matrix.md)
 
 **tdw.vr_data**
 

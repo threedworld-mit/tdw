@@ -626,6 +626,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
+| [`send_avatar_transform_matrices`](#send_avatar_transform_matrices) | Send 4x4 transform matrix data for all avatars in the scene.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send the positions of each empty object in the scene.  |
@@ -662,6 +663,7 @@
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
+| [`send_transform_matrices`](#send_transform_matrices) | Send 4x4 matrix data for each object, describing their positions and rotations.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
 
 **Textured Quad Command**
@@ -8053,6 +8055,41 @@ Options for when to send data.
 
 ***
 
+## **`send_avatar_transform_matrices`**
+
+Send 4x4 transform matrix data for all avatars in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`AvatarTransformMatrices`](output_data.md#AvatarTransformMatrices)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
+
+```python
+{"$type": "send_avatar_transform_matrices"}
+```
+
+```python
+{"$type": "send_avatar_transform_matrices", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_categories`**
 
 Send data for the category names and colors of each object in the scene. 
@@ -8894,6 +8931,42 @@ Send Transform (position and rotation) data of objects in the scene.
 
 ```python
 {"$type": "send_transforms", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_transform_matrices`**
+
+Send 4x4 matrix data for each object, describing their positions and rotations. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`TransformMatrices`](output_data.md#TransformMatrices)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_transform_matrices", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_transform_matrices", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

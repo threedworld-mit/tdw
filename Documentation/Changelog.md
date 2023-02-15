@@ -4,6 +4,47 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.5
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `send_avatar_transform_matrices` | Send 4x4 transform matrix data for all avatars in the scene. |
+| `send_transform_matrices`        | Send 4x4 matrix data for each object, describing their positions and rotations. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data               | Description                                               |
+| ------------------------- | --------------------------------------------------------- |
+| `AvatarTransformMatrices` | 4x4 transform matrices for avatars and sensor containers. |
+| `TransformMatrices`       | 4x4 transform matrices for each object in the scene.      |
+
+### `tdw` module
+
+- **Added the `VRayExporter` add-on.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+  - (Backend) Added `VRayMatrix` data class.
+
+### Example controllers
+
+- Added: photorealism/vray_dynamic_camera.py
+- Added: photorealism/vray_dynamic_objects.py
+- Added: photorealism/vray_minimal.py
+
+### Documentation
+
+#### New Documentation
+
+| Document                          | Description                                                 |
+| --------------------------------- | ----------------------------------------------------------- |
+| `lessons/photorealism/vray.md`    | How to render with V-Ray and use the `VRayExporter` add-on. |
+| `python/add_ons/vray_exporter.md` | API documentation for the `VRayExporter` add-on.            |
+| `python/vray_data/vray_matrix.md` | API documentation for the `VRayMatrix` data class.          |
+
 ## v1.11.4
 
 ### Command API

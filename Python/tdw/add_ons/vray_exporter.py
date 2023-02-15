@@ -17,11 +17,11 @@ from tdw.vray_data.vray_matrix import VRayMatrix, get_converted_node_matrix, get
 
 class VRayExporter(AddOn):
     """
+    Render TDW scenes offline using V-Ray for enhanced photorealism.
+
     This add-on converts scene-state data in TDW per communicate() call and saves it as .vrscene data, which can then be rendered with Chaos Vantage.
 
     Rendering is typically done after the scene or trial is done, via `self.launch_renderer(output_directory)`. The renderer can be a local or remote executable.
-
-    The VRay renderer, while slower than TDW's runtime renderer, will produce far more realistic images.
     """
 
     """:class_var
@@ -138,11 +138,7 @@ class VRayExporter(AddOn):
                      "frequency": "always"},
                     {"$type": "send_segmentation_colors",
                      "frequency": "once"},
-                    {"$type": "send_camera_matrices",
-                     "frequency": "always"},
                     {"$type": "send_avatar_transform_matrices",
-                     "frequency": "always"},
-                    {"$type": "send_transforms",
                      "frequency": "always"},
                     {"$type": "send_field_of_view",
                      "frequency": "always"}]
@@ -184,8 +180,11 @@ class VRayExporter(AddOn):
             bucket = s3.Bucket('tdw-public')
             for obj in bucket.objects.filter(Prefix='vray_models/'):
                 models.append(obj.key.replace("vray_models/", "").replace(".zip", ""))
-            # Write the list.
+            scenes: List[str] = list()
+            for obj in bucket.objects.filter(Prefix='vray_scenes/'):
+                scenes.append(obj.key.replace("vray_scenes/", "").replace(".zip", ""))
             vray_models_path.write_text("\n".join(models), encoding="utf-8")
+            VRayExporter.VRAY_EXPORT_RESOURCES_PATH.joinpath("scenes.txt").write_text("\n".join(scenes))
             version_path.write_text(__version__)
             return models
 

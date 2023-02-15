@@ -8,6 +8,7 @@ class DynamicCamera(Controller):
     """
     Create a typical TDW scene, randomize a sequence of camera positions and aimpoints, then export using V-Ray add-on for maximum photorealism.
     """
+
     def __init__(self, output_path: str, render_host: str = "localhost", port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.frame_range = 120

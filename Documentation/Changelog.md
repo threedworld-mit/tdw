@@ -4,6 +4,82 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.5
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `send_avatar_transform_matrices` | Send 4x4 transform matrix data for all avatars in the scene. |
+| `send_transform_matrices`        | Send 4x4 matrix data for each object, describing their positions and rotations. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data               | Description                                               |
+| ------------------------- | --------------------------------------------------------- |
+| `AvatarTransformMatrices` | 4x4 transform matrices for avatars and sensor containers. |
+| `TransformMatrices`       | 4x4 transform matrices for each object in the scene.      |
+
+### `tdw` module
+
+- **Added the `VRayExporter` add-on.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+  - (Backend) Added `VRayMatrix` data class.
+
+### Example controllers
+
+- Added: photorealism/vray_dynamic_camera.py
+- Added: photorealism/vray_dynamic_objects.py
+- Added: photorealism/vray_minimal.py
+
+### Documentation
+
+#### New Documentation
+
+| Document                          | Description                                                 |
+| --------------------------------- | ----------------------------------------------------------- |
+| `lessons/photorealism/vray.md`    | How to render with V-Ray and use the `VRayExporter` add-on. |
+| `python/add_ons/vray_exporter.md` | API documentation for the `VRayExporter` add-on.            |
+| `python/vray_data/vray_matrix.md` | API documentation for the `VRayMatrix` data class.          |
+
+## v1.11.4
+
+### Command API
+
+#### New Commands
+
+| Command              | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `send_occupancy_map` | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data    | Description                                                  |
+| -------------- | ------------------------------------------------------------ |
+| `OccupancyMap` | A grid of positions denoting whether a space is occupied, free, or out of bounds. |
+
+### `tdw` module
+
+- Updated the `OccupancyMap` add-on. Previously, it required two communicate() calls to initialize and used a combination of `Raycast` and `Overlap` output data to generate the occupancy map. Now, the add-on uses `OccupancyMap` output data, which requires only one communicate() call and is overall faster.
+  - Changed the values of the occupancy map. Previously, `1` meant "occupied" or "in an isolated island", and `-1` meant "out of bounds". Now, `1` means "occupied", `2` means "out of bounds", and `3` means "in an isolated island". As a result of this change, occupancy maps can be expressed as arrays of unsigned bytes, meaning that there is less output data to send and therefore that the output data is faster.
+  - Added `occupancy_map.positions`, a numpy array of worldspace positions per grid position. Removed `OccupancyMap.get_occupancy_position()`.
+  - Removed `occupancy_map.scene_bounds`.
+  - Removed `cell_size` from the constructor and moved it to `generate()`.
+  - Added parameters to `generate()`: `raycast_y` and `once`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                              | Modification                                 |
+| ------------------------------------- | -------------------------------------------- |
+| `lessons/navigation/occupancy_map.md` | Updated to explain the new OccupancyMap API. |
+
 ## v1.11.3
 
 ### Command API
@@ -35,6 +111,14 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
   - Added optional parameter `scale_reset_arms_duration` to `move_by()` and `move_to()`.
   - Added optional parameter `scale_duration` to `reach_for()`, `reset_arm()`, `look_at()`, and `reset_head()`.
 - Fixed: The `arrived_at` parameter in `replicant.move_by()` and `replicant.move_to()` sometimes doesn't get applied when checking if the Replicant arrived at the target.
+
+### Scene Library
+
+- Fixed: Floorplan scenes (floorplan_1a, floorplan_1b, etc.) don't have floors set up correctly such that various commands will treat them as walls.
+
+### Humanoid Animation Library
+
+- Added: birdcage_251067, kitchen_cleantable_m, kitchen_refrigerator_m, livingroom_dochores_f, market_customercart_walking_f, market_customercart_walking_m, market_customercart_walktostop_f, market_customercart_walktostop_m, room_ironclothes_m, server_fooddelivery_295482
 
 ### Documentation
 

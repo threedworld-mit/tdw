@@ -55,6 +55,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
 | [AvatarSegmentationColor](#AvatarSegmentationColor) | Color segmentation data for an avatar. | `avsc` |
 | [AvatarSimpleBody](#AvatarSimpleBody) | Data of a SimpleBodyAvatar. | `avsb` |
+| [AvatarTransformMatrices](#AvatarTransformMatrices) | 4x4 transform matrices for avatars and sensor containers. | `atrm` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
@@ -85,6 +86,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
 | [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
+| [OccupancyMap](#OccupancyMap) | A grid of positions denoting whether a space is occupied, free, or out of bounds. | `occu` |
 | [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
@@ -101,6 +103,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
+| [TransformMatrices](#TransformMatrices) | 4x4 transform matrices for each object in the scene. | `trma` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
 | [TriggerCollision](#TriggerCollision) | Data for a non-physics trigger collision event. | `trco` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
@@ -202,6 +205,21 @@ Data of a SimpleBodyAvatar.
 | `get_sleeping()` | True if the rigidbody is sleeping. | `bool` |
 | `get_visible_body()` | The name of the current visible body. | `str` |
 
+## AvatarTransformMatrices
+
+`a = AvatarTransformMatrices(byte_array)`
+
+**Identifier:** `atrm`
+
+4x4 transform matrices for avatars and sensor containers.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `str` |
+| `get_avatar_matrix(index)` | The matrix of the avatar. | `np.array` |
+| `get_sensor_matrix(index)` | The matrix of the sensor. | `np.array` |
+
 ## Bounds
 
 `b = Bounds(byte_array)`
@@ -283,7 +301,7 @@ The IDs of every object that a shape overlaps plus parent IDs and the semantic c
 | `get_object_id()` | The ID of the object. | `int` |
 | `get_container_id()` | The ID of the container. | `int` |
 | `get_tag()` | The semantic tag. | `ContainerTag` |
-| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.ndarray` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
@@ -686,6 +704,20 @@ To what extent parts of the scene environment (such as walls) are occluding obje
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
 
+## OccupancyMap
+
+`o = OccupancyMap(byte_array)`
+
+**Identifier:** `occu`
+
+A grid of positions denoting whether a space is occupied, free, or out of bounds.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_shape()` | Reshape the occupancy map array to this shape. | `np.ndarray` |
+| `get_map()` | The occupancy map. | `np.ndarray` |
+| `get_positions()` | An array of (x, z) positions on the occupancy map. | `np.ndarray` |
+
 ## OculusTouchButtons
 
 `o = OculusTouchButtons(byte_array)`
@@ -990,6 +1022,20 @@ The substructure of a model. This should be used mainly for backend debugging.
 | `get_sub_object_name(index)` | The name of the sub object. | `str` |
 | `get_num_sub_object_materials(index)` | The number of sub object materials. | `int` |
 | `get_sub_object_material(index, material_index)` | The material of the sub object. | `str` |
+
+## TransformMatrices
+
+`t = TransformMatrices(byte_array)`
+
+**Identifier:** `trma`
+
+4x4 transform matrices for each object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_matrix(index)` | The matrix. | `np.array` |
 
 ## Transforms
 

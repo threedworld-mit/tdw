@@ -600,6 +600,7 @@
 | [`send_collider_intersections`](#send_collider_intersections) | Send data for collider intersections between pairs of objects and between single objects and the environment (e.g. walls). Note that each intersection is a separate output data object, and that each pair of objects/environment meshes might intersect more than once because they might have more than one collider.  |
 | [`send_containment`](#send_containment) | Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.  |
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
+| [`send_occupancy_map`](#send_occupancy_map) | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free.  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
@@ -625,6 +626,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
+| [`send_avatar_transform_matrices`](#send_avatar_transform_matrices) | Send 4x4 transform matrix data for all avatars in the scene.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send the positions of each empty object in the scene.  |
@@ -661,6 +663,7 @@
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
+| [`send_transform_matrices`](#send_transform_matrices) | Send 4x4 matrix data for each object, describing their positions and rotations.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
 
 **Textured Quad Command**
@@ -7508,6 +7511,42 @@ Options for when to send data.
 
 ***
 
+## **`send_occupancy_map`**
+
+Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`OccupancyMap`](output_data.md#OccupancyMap)</font>
+
+```python
+{"$type": "send_occupancy_map"}
+```
+
+```python
+{"$type": "send_occupancy_map", "cell_size": 0.5, "raycast_y": 2.5, "ignore_objects": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"cell_size"` | float | The size of each cell in meters. | 0.5 |
+| `"raycast_y"` | float | When calculating the occupancy map, rays will be cast from this height in meters. | 2.5 |
+| `"ignore_objects"` | int [] | Object IDs in this array won't cause a cell to be marked as occupied. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_robot_joint_velocities`**
 
 Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations. 
@@ -7998,6 +8037,41 @@ Send data regarding whether each object in the scene is currently playing a soun
 
 ```python
 {"$type": "send_audio_sources", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_avatar_transform_matrices`**
+
+Send 4x4 transform matrix data for all avatars in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`AvatarTransformMatrices`](output_data.md#AvatarTransformMatrices)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
+
+```python
+{"$type": "send_avatar_transform_matrices"}
+```
+
+```python
+{"$type": "send_avatar_transform_matrices", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8857,6 +8931,42 @@ Send Transform (position and rotation) data of objects in the scene.
 
 ```python
 {"$type": "send_transforms", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_transform_matrices`**
+
+Send 4x4 matrix data for each object, describing their positions and rotations. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`TransformMatrices`](output_data.md#TransformMatrices)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_transform_matrices", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_transform_matrices", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

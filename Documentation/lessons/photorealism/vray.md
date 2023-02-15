@@ -8,7 +8,7 @@ With the proper hardware, it is possible to render TDW simulations offline using
 
 ## Render time
 
-**V-Ray rendering is not a real-time process.** Images are rendered when your simulation/trial ends using data that has been automatically cached on every communicate() call. At 1280x720 resolution and an RTX 4090 GPU, each image can be rendered in approximately 3-5 seconds.
+**V-Ray rendering is not a real-time process.** Images are rendered when your simulation/trial ends using data that has been automatically cached on every communicate() call. At 1280x720 resolution and an RTX 2080 GPU, each image can be rendered in approximately 3-5 seconds.
 
 ## Requirements
 

@@ -19,8 +19,10 @@ The machine responsible for V-Ray rendering can be the same machine as the one r
 These are the requirements for the machine running the V-Ray renderer:
 
 - Windows 10
-- [Chaos Vantage (the V-Ray renderer)](https://www.chaos.com/vantage)
+- [Chaos Vantage (the V-Ray renderer)](https://www.chaos.com/vantage) For pricing, [read this](https://www.chaos.com/education/licenses/academic-calculator). A free 30-day trial is available.
 - An NVidia RTX-type video card (RTX 3090 or newer)
+
+You can optionally render using any cloud rendering service that supports V-Ray rendering (e.g. Chaos Cloud, Rebus etc.); the cost structures for utilizing cloud rendering services vary by service, and users should refer to the specific service websites for additional information.
 
 ### TDW
 

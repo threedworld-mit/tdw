@@ -3560,13 +3560,14 @@ Given a position, try to get the nearest position on the NavMesh.
 ```
 
 ```python
-{"$type": "send_is_on_nav_mesh", "position": {"x": 1.1, "y": 0.0, "z": 0}, "max_distance": 1.0}
+{"$type": "send_is_on_nav_mesh", "position": {"x": 1.1, "y": 0.0, "z": 0}, "max_distance": 1.0, "id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The position being tested. Its y value will be normalized to the y value of the NavMesh at the (x, z) coordinate. | |
 | `"max_distance"` | float | Radius of the search for a valid point. A large value will result in an expensive calculation; try to keep the value below 5. | 1.0 |
+| `"id"` | int | The ID of this output data. This is useful if this command is sent more than once. | 0 |
 
 # ObiCommand
 

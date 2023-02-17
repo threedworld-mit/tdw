@@ -408,11 +408,14 @@ class IsOnNavMesh(OutputData):
     def get_data(self) -> IsNM.IsOnNavMesh:
         return IsNM.IsOnNavMesh.GetRootAsIsOnNavMesh(self.bytes, 0)
 
-    def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Position())
+    def get_position(self) -> np.ndarray:
+        return self.data.PositionAsNumpy()
 
     def get_is_on(self) -> bool:
         return self.data.IsOn()
+
+    def get_id(self) -> int:
+        return self.data.Id()
 
 
 class IdPassGrayscale(OutputData):

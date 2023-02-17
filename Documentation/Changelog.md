@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.5
+
+### Command API
+
+#### Modified Commands
+
+| Command               | Modification                                                 |
+| --------------------- | ------------------------------------------------------------ |
+| `send_is_on_nav_mesh` | Added parameter `id`.  The ID of this output data. This is useful if this command is sent more than once. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data   | Modification                                                 |
+| ------------- | ------------------------------------------------------------ |
+| `IsOnMavMesh` | `get_position()` returns a numpy array (was a tuple).<br>Added: `get_id()` Returns the ID of this output data. |
+
 ## v1.11.4
 
 ### Command API

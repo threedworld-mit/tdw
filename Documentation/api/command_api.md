@@ -4196,8 +4196,8 @@ Set the constraints of an object's Rigidbody.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"freeze_position_axes"` | Vector3Int | Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes motion along the Y-axis. | {"x": 0, "y": 0, "z": 0} |
-| `"freeze_rotation_axes"` | Vector3Int | Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector.. | {"x": 0, "y": 0, "z": 0} |
+| `"freeze_position_axes"` | Vector3Int | Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes motion along the Y-axis. | {"x": 0, "y": 0, "z": 0} |
+| `"freeze_rotation_axes"` | Vector3Int | Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector.. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 ***

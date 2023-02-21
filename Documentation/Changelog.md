@@ -14,7 +14,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | --------------------------- | ------------------------------------------------------------ |
 | `enable_nav_mesh_obstacle`  | Enable or disable an object's NavMeshObstacle.               |
 | `set_rigidbody_constraints` | Set the constraints of an object's Rigidbody.                |
-| `replicant_rotate_head`     | Rotate the Replicant's head by an angle in degrees around an axis. |
+| `replicant_rotate_head_by`  | Rotate the Replicant's head by an angle in degrees around an axis. |
 
 ### `tdw` module
 

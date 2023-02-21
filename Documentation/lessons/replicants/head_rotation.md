@@ -122,7 +122,7 @@ The `reset_head` action has the same optional parameters as `look_at`:
 
 `replicant.rotate_head(angle, axis)` sets `replicant.action` to a [`RotateHead`](../../python/replicant/actions/rotate_head.md) action. 
 
-In addition to [the usual `Action` initialization commands](actions.md), `RotateHead` sends [`replicant_rotate_head`](../../api/command_api.md#replicant_rotate_head).
+In addition to [the usual `Action` initialization commands](actions.md), `RotateHead` sends [`replicant_rotate_head_by`](../../api/command_api.md#replicant_rotate_head_by).
 
 The action ends when the head stops moving (as announced by the build in the output data).
 
@@ -204,7 +204,7 @@ Command API:
 
 - [`replicant_look_at_position`](../../api/command_api.md#replicant_look_at_position)
 - [`replicant_look_at_object`](../../api/command_api.md#replicant_look_at_object)
--  [`replicant_rotate_head`](../../api/command_api.md#replicant_rotate_head)
+-  [`replicant_rotate_head_by`](../../api/command_api.md#replicant_rotate_head_by)
 - [`replicant_reset_head`](../../api/command_api.md#replicant_reset_head)
 
 Python API:

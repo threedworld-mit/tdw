@@ -10,16 +10,27 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 #### New Commands
 
-| Command                     | Description                                    |
-| --------------------------- | ---------------------------------------------- |
-| `enable_nav_mesh_obstacle`  | Enable or disable an object's NavMeshObstacle. |
-| `set_rigidbody_constraints` | Set the constraints of an object's Rigidbody.  |
+| Command                     | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| `enable_nav_mesh_obstacle`  | Enable or disable an object's NavMeshObstacle.               |
+| `set_rigidbody_constraints` | Set the constraints of an object's Rigidbody.                |
+| `replicant_rotate_head`     | Rotate the Replicant's head by an angle in degrees around an axis. |
 
 ### `tdw` module
 
+- Added a new `Replicant` action: `rotate_head(angle, axis)`.
+- Fixed: The Replicant often ends IK actions (`reach_for`, `reset_arm`. `look_at`, and `reset_head`) too early if the framerate is faster than 60 FPS.
 - The Replicant's motion along the Y-axis is now frozen.
 - When the Replicant grasps an object, it will temporarily remove its NavMeshObstacle component (if the component exists). When the Replicant drops the object, the NavMeshObstacle component is re-enabled.
-- Fixed: The Replicant often ends IK actions (`reach_for`, `reset_arm`. `look_at`, and `reset_head`) too early if the framerate is faster than 60 FPS.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                  | Description                                                |
+| ----------------------------------------- | ---------------------------------------------------------- |
+| `python/replicant/actions/rotate_head.md` | API for the `RotateHead` action.                           |
+| `lessons/replicants/head_rotation.md`     | Added a section for the `rotate_head(angle, axis)` action. |
 
 ## v1.11.5
 

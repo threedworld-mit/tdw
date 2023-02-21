@@ -400,6 +400,7 @@
 | [`replicant_look_at_object`](#replicant_look_at_object) | Tell the Replicant to start to look at an object.  |
 | [`replicant_look_at_position`](#replicant_look_at_position) | Tell the Replicant to start to look at a position.  |
 | [`replicant_reset_head`](#replicant_reset_head) | Tell the Replicant to start to reset its head to its neutral position.  |
+| [`replicant_rotate_head_by`](#replicant_rotate_head_by) | Rotate the Replicant's head by an angle around an axis. |
 
 **Sub Object Command**
 
@@ -5540,6 +5541,39 @@ Tell the Replicant to start to reset its head to its neutral position.
 | `"duration"` | float | The duration of the motion. | 0.1 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_rotate_head_by`**
+
+Rotate the Replicant's head by an angle around an axis.
+
+
+```python
+{"$type": "replicant_rotate_head_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "replicant_rotate_head_by", "angle": 0.125, "id": 1, "axis": "yaw", "duration": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"id"` | int | The unique object ID. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
 
 # SubObjectCommand
 

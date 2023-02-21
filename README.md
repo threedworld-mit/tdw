@@ -536,6 +536,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ReachFor](Documentation/python/replicant/actions/reach_for.md)
 - [ResetArm](Documentation/python/replicant/actions/reset_arm.md)
 - [ResetHead](Documentation/python/replicant/actions/reset_head.md)
+- [RotateHead](Documentation/python/replicant/actions/rotate_head.md)
 - [TurnBy](Documentation/python/replicant/actions/turn_by.md)
 - [TurnTo](Documentation/python/replicant/actions/turn_to.md)
 

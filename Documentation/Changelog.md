@@ -4,6 +4,22 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.6
+
+### Command API
+
+#### New Commands
+
+| Command                     | Description                                    |
+| --------------------------- | ---------------------------------------------- |
+| `enable_nav_mesh_obstacle`  | Enable or disable an object's NavMeshObstacle. |
+| `set_rigidbody_constraints` | Set the constraints of an object's Rigidbody.  |
+
+### `tdw` module
+
+- The Replicant's motion along the Y-axis is now frozen.
+- When the Replicant grasps an object, it will temporarily remove its NavMeshObstacle component (if the component exists). When the Replicant drops the object, the NavMeshObstacle component is re-enabled.
+
 ## v1.11.5
 
 ### Command API

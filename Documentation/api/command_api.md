@@ -294,6 +294,7 @@
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
+| [`set_rigidbody_constraints`](#set_rigidbody_constraints) | Set the constraints of an object's Rigidbody. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
 | [`teleport_object_by`](#teleport_object_by) | Translate an object by an amount, optionally in local or world space. |
@@ -370,7 +371,6 @@
 | [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 | [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
-| [`set_replicant_rigibody_constraints`](#set_replicant_rigibody_constraints) | Set the constraints of a Replicant's Rigidbody. |
 
 **Replicant Arm Command**
 
@@ -4181,6 +4181,27 @@ Set the physic material of an object and apply friction and bounciness values to
 
 ***
 
+## **`set_rigidbody_constraints`**
+
+Set the constraints of an object's Rigidbody.
+
+
+```python
+{"$type": "set_rigidbody_constraints", "id": 1}
+```
+
+```python
+{"$type": "set_rigidbody_constraints", "id": 1, "freeze_position_axes": {"x": 0, "y": 0, "z": 0}, "freeze_rotation_axes": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"freeze_position_axes"` | Vector3Int | Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes motion along the Y-axis. | {"x": 0, "y": 0, "z": 0} |
+| `"freeze_rotation_axes"` | Vector3Int | Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector.. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_vr_graspable`**
 
 Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior. 
@@ -5217,27 +5238,6 @@ Advance the Replicant's IK solvers by 1 frame.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`set_replicant_rigibody_constraints`**
-
-Set the constraints of a Replicant's Rigidbody.
-
-
-```python
-{"$type": "set_replicant_rigibody_constraints", "id": 1}
-```
-
-```python
-{"$type": "set_replicant_rigibody_constraints", "id": 1, "freeze_position_axes": {"x": 0, "y": 0, "z": 0}, "freeze_rotation_axes": {"x": 0, "y": 0, "z": 0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"freeze_position_axes"` | Vector3Int | Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes motion along the Y-axis. | {"x": 0, "y": 0, "z": 0} |
-| `"freeze_rotation_axes"` | Vector3Int | Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector.. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 # ReplicantArmCommand

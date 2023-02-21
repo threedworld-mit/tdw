@@ -279,6 +279,7 @@
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
+| [`enable_nav_mesh_obstacle`](#enable_nav_mesh_obstacle) | Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing. |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
@@ -369,6 +370,7 @@
 | [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 | [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
+| [`set_replicant_rigibody_constraints`](#set_replicant_rigibody_constraints) | Set the constraints of a Replicant's Rigidbody. |
 
 **Replicant Arm Command**
 
@@ -3835,6 +3837,22 @@ Destroy an object.
 
 ***
 
+## **`enable_nav_mesh_obstacle`**
+
+Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing.
+
+
+```python
+{"$type": "enable_nav_mesh_obstacle", "enable": True, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"enable"` | bool | If True, enable the NavMeshObstacle. If False, disable the NavMeshObstacle. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`make_nav_mesh_obstacle`**
 
 Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command. 
@@ -5199,6 +5217,27 @@ Advance the Replicant's IK solvers by 1 frame.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_replicant_rigibody_constraints`**
+
+Set the constraints of a Replicant's Rigidbody.
+
+
+```python
+{"$type": "set_replicant_rigibody_constraints", "id": 1}
+```
+
+```python
+{"$type": "set_replicant_rigibody_constraints", "id": 1, "freeze_position_axes": {"x": 0, "y": 0, "z": 0}, "freeze_rotation_axes": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"freeze_position_axes"` | Vector3Int | Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes motion along the Y-axis. | {"x": 0, "y": 0, "z": 0} |
+| `"freeze_rotation_axes"` | Vector3Int | Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 1} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector.. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 # ReplicantArmCommand

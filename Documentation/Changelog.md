@@ -30,6 +30,11 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | Document                                  | Description                                                |
 | ----------------------------------------- | ---------------------------------------------------------- |
 | `python/replicant/actions/rotate_head.md` | API for the `RotateHead` action.                           |
+
+#### Modified Documentation
+
+| Document | Modification |
+| -------- | ------------ |
 | `lessons/replicants/head_rotation.md`     | Added a section for the `rotate_head(angle, axis)` action. |
 
 ## v1.11.5

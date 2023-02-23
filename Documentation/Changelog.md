@@ -20,6 +20,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 - Added a new `Replicant` action: `rotate_head(angle, axis)`.
 - Fixed: The Replicant often ends IK actions (`reach_for`, `reset_arm`. `look_at`, and `reset_head`) too early if the framerate is faster than 60 FPS.
+- Fixed:  `replicant.move_by()` and `replicant.move_to()` start without an initial object avoidance check.
 - The Replicant's motion along the Y-axis is now frozen.
 - When the Replicant grasps an object, it will temporarily remove its NavMeshObstacle component (if the component exists). When the Replicant drops the object, the NavMeshObstacle component is re-enabled.
 

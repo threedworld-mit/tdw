@@ -279,6 +279,7 @@
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
+| [`enable_nav_mesh_obstacle`](#enable_nav_mesh_obstacle) | Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing. |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
@@ -293,6 +294,7 @@
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
+| [`set_rigidbody_constraints`](#set_rigidbody_constraints) | Set the constraints of an object's Rigidbody. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
 | [`teleport_object`](#teleport_object) | Teleport an object to a new position. |
 | [`teleport_object_by`](#teleport_object_by) | Translate an object by an amount, optionally in local or world space. |
@@ -398,6 +400,7 @@
 | [`replicant_look_at_object`](#replicant_look_at_object) | Tell the Replicant to start to look at an object.  |
 | [`replicant_look_at_position`](#replicant_look_at_position) | Tell the Replicant to start to look at a position.  |
 | [`replicant_reset_head`](#replicant_reset_head) | Tell the Replicant to start to reset its head to its neutral position.  |
+| [`replicant_rotate_head_by`](#replicant_rotate_head_by) | Rotate the Replicant's head by an angle around an axis. |
 
 **Sub Object Command**
 
@@ -3835,6 +3838,22 @@ Destroy an object.
 
 ***
 
+## **`enable_nav_mesh_obstacle`**
+
+Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing.
+
+
+```python
+{"$type": "enable_nav_mesh_obstacle", "enable": True, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"enable"` | bool | If True, enable the NavMeshObstacle. If False, disable the NavMeshObstacle. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`make_nav_mesh_obstacle`**
 
 Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command. 
@@ -4159,6 +4178,27 @@ Set the physic material of an object and apply friction and bounciness values to
 | `"dynamic_friction"` | float | Friction when the object is already moving. A higher value means that the object will come to rest very quickly. Must be between 0 and 1. | |
 | `"static_friction"` | float | Friction when the object is not moving. A higher value means that a lot of force will be needed to make the object start moving. Must be between 0 and 1. | |
 | `"bounciness"` | float | The bounciness of the object. A higher value means that the object will bounce without losing much energy. Must be between 0 and 1. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_rigidbody_constraints`**
+
+Set the constraints of an object's Rigidbody.
+
+
+```python
+{"$type": "set_rigidbody_constraints", "id": 1}
+```
+
+```python
+{"$type": "set_rigidbody_constraints", "id": 1, "freeze_position_axes": {"x": 0, "y": 0, "z": 0}, "freeze_rotation_axes": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"freeze_position_axes"` | Vector3Int | Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes motion along the Y-axis. | {"x": 0, "y": 0, "z": 0} |
+| `"freeze_rotation_axes"` | Vector3Int | Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector.. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5501,6 +5541,39 @@ Tell the Replicant to start to reset its head to its neutral position.
 | `"duration"` | float | The duration of the motion. | 0.1 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"id"` | int | The unique object ID. | |
+
+***
+
+## **`replicant_rotate_head_by`**
+
+Rotate the Replicant's head by an angle around an axis.
+
+
+```python
+{"$type": "replicant_rotate_head_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "replicant_rotate_head_by", "angle": 0.125, "id": 1, "axis": "yaw", "duration": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"duration"` | float | The duration of the motion. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"id"` | int | The unique object ID. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
 
 # SubObjectCommand
 

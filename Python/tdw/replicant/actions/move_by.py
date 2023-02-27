@@ -121,6 +121,8 @@ class MoveBy(Animate):
         commands.append({"$type": "replicant_reset_head",
                          "id": static.replicant_id,
                          "set_status": False})
+        # Request an initial overlap.
+        commands.extend(self._overlap(static=static, dynamic=dynamic))
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
@@ -140,20 +142,9 @@ class MoveBy(Animate):
             elif len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:
                 self.status = ActionStatus.collision
             else:
-                # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
+                commands.extend(self._overlap(static=static, dynamic=dynamic))
+                # Try to avoid obstacles by detecting them ahead of time by requesting an overlap shape.
                 if self.collision_detection.avoid:
-                    # Check for overlap.
-                    overlap_z = 0.5
-                    if self.distance < 0:
-                        overlap_z *= -1
-                    overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
-                    overlap_position[1] += 1
-                    # Send the next overlap command.
-                    commands.append({"$type": "send_overlap_box",
-                                     "id": static.replicant_id,
-                                     "half_extents": MoveBy.OVERLAP_HALF_EXTENTS,
-                                     "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
-                                     "position": TDWUtils.array_to_vector3(overlap_position)})
                     for i in range(len(resp) - 1):
                         r_id = OutputData.get_data_type_id(resp[i])
                         if r_id == "over":
@@ -189,3 +180,26 @@ class MoveBy(Animate):
         for object_id in self.__held_objects:
             self.collision_detection.exclude_objects.remove(object_id)
         return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+
+    def _overlap(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        """
+        :param static: The static Replicant data.
+        :param dynamic: The dynamic Replicant data.
+
+        :return: A list of commands to send an overlap box.
+        """
+
+        if not self.collision_detection.avoid:
+            return []
+        # Get the position of the overlap shape.
+        overlap_z = 0.5
+        if self.distance < 0:
+            overlap_z *= -1
+        overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
+        overlap_position[1] += 1
+        # Send the next overlap command.
+        return [{"$type": "send_overlap_box",
+                 "id": static.replicant_id,
+                 "half_extents": MoveBy.OVERLAP_HALF_EXTENTS,
+                 "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
+                 "position": TDWUtils.array_to_vector3(overlap_position)}]

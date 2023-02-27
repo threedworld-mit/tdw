@@ -4,6 +4,50 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.6
+
+### Command API
+
+#### New Commands
+
+| Command                     | Description                                                  |
+| --------------------------- | ------------------------------------------------------------ |
+| `enable_nav_mesh_obstacle`  | Enable or disable an object's NavMeshObstacle.               |
+| `set_rigidbody_constraints` | Set the constraints of an object's Rigidbody.                |
+| `replicant_rotate_head_by`  | Rotate the Replicant's head by an angle in degrees around an axis. |
+
+### `tdw` module
+
+- Added a new `Replicant` action: `rotate_head(angle, axis)`.
+- Fixed: The Replicant often ends IK actions (`reach_for`, `reset_arm`. `look_at`, and `reset_head`) too early if the framerate is faster than 60 FPS.
+- Fixed:  `replicant.move_by()` and `replicant.move_to()` start without an initial object avoidance check.
+- The Replicant's motion along the Y-axis is now frozen.
+- When the Replicant grasps an object, it will temporarily remove its NavMeshObstacle component (if the component exists). When the Replicant drops the object, the NavMeshObstacle component is re-enabled.
+- Added: `NavMesh` add-on. This add-on automates NavMesh initialization.
+- Fixed: `make_nav_mesh_obstacle` calculates the carve shape's size using AABB bounds. Now, it uses rotated bounds.
+- Fixed: `bake_nav_mesh` adds NavMeshObstacles to the shapes defining room bounds in streamed scenes. Now, these shapes are ignored.
+- Fixed: `bake_nav_mesh` adds a NavMeshObstacle to the roof of a scene. Now, the roof is ignored.
+
+### Example Controllers
+
+- Refactored `navigation/nav_mesh.py` to use the `NavMesh` add-on.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                  | Description                      |
+| ----------------------------------------- | -------------------------------- |
+| `python/replicant/actions/rotate_head.md` | API for the `RotateHead` action. |
+| `python/add_ons/nav_mesh.md`              | API for the `NavMesh` add-on.    |
+
+#### Modified Documentation
+
+| Document                              | Modification                                                 |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/head_rotation.md` | Added a section for the `rotate_head(angle, axis)` action.   |
+| `lessons/navigation/nav_mesh.md`      | Rewrote most of the document in order to explain the `NavMesh` add-on instead of the lower-level commands. |
+
 ## v1.11.5
 
 ### Command API

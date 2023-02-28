@@ -79,8 +79,10 @@ class Photoreal(Controller):
                            "scale_factor": {"x": 0.5, "y": 0.25, "z": 0.5}})
         for i in range(200):
             self.communicate([])
-        self.communicate({"$type": "destroy_fire",
-                           "fire_id": fire_id})
+        self.communicate([{"$type": "destroy_fire",
+                           "fire_id": fire_id},
+                           {"$type": "get_burned_object",
+                            "burned_object_id":target_id}])
 
 
 if __name__ == "__main__":

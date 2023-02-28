@@ -949,8 +949,8 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
       }
     },
-	"suburb_scene_2023": {
-      "description": "A suburban scene using real-time lighting, no static objects on streets.",
+    "suburb_scene_2023": {
+      "description": "A suburban scene using real-time lighting. There are no static objects on streets.",
       "hdri": false,
       "location": "exterior",
       "name": "suburb_scene_2023",

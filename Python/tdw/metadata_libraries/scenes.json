@@ -949,6 +949,18 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
       }
     },
+    "suburb_scene_2023": {
+      "description": "A suburban scene using real-time lighting. There are no static objects on streets.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "suburb_scene_2023",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/suburb_scene_2023",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/suburb_scene_2023",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/suburb_scene_2023"
+      }
+    },
     "tdw_room": {
       "description": "An interior space lit by sunlight from outside.",
       "hdri": true,

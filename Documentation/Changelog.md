@@ -28,6 +28,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - Fixed: `bake_nav_mesh` adds NavMeshObstacles to the shapes defining room bounds in streamed scenes. Now, these shapes are ignored.
 - Fixed: `bake_nav_mesh` adds a NavMeshObstacle to the roof of a scene. Now, the roof is ignored.
 
+### Scene Library
+
+- Added: suburb_scene_2023. A suburban scene using real-time lighting. There are no static objects on streets.
+
 ### Example Controllers
 
 - Refactored `navigation/nav_mesh.py` to use the `NavMesh` add-on.

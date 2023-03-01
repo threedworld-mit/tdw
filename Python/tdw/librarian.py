@@ -273,6 +273,16 @@ class RobotRecord(_Record):
         self.ik: list = data["ik"]
 
 
+class NonPhysicsObjectRecord(_Record):
+    """
+    A record for a robot asset bundle.
+    """
+
+    def __init__(self, data: Optional[dict] = None):
+        super().__init__(data)
+        self.object_type: str = data["object_type"]
+
+
 T = TypeVar("T", bound=_Record)
 
 
@@ -634,3 +644,16 @@ class RobotLibrarian(_Librarian[RobotRecord]):
 
     def _generate_record(self, data: dict) -> T:
         return RobotRecord(data)
+
+
+class NonPhysicsObjectLibrarian(_Librarian[NonPhysicsObjectRecord]):
+    """
+    Librarian class for non-physic object metadata.
+    """
+
+    @staticmethod
+    def get_library_filenames() -> List[str]:
+        return ["non_physics_objects.json"]
+
+    def _generate_record(self, data: dict) -> T:
+        return NonPhysicsObjectRecord(data)

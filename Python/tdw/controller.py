@@ -4,7 +4,7 @@ import os
 from subprocess import Popen
 from typing import List, Union, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
-    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian
+    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, NonPhysicsObjectLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
 from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
@@ -39,6 +39,7 @@ class Controller:
     HUMANOID_LIBRARIANS: Dict[str, HumanoidLibrarian] = dict()
     HUMANOID_ANIMATION_LIBRARIANS: Dict[str, HumanoidAnimationLibrarian] = dict()
     ROBOT_LIBRARIANS: Dict[str, RobotLibrarian] = dict()
+    NON_PHYSICS_OBJECTS_LIBRARIANS: Dict[str, NonPhysicsObjectLibrarian] = dict()
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
@@ -399,8 +400,8 @@ class Controller:
         Returns a valid add_humanoid command.
 
         :param humanoid_name: The name of the humanoid.
-        :param position: The position of the humanoid.
-        :param rotation: The starting rotation of the humanoid, in Euler angles.
+        :param position: The position of the humanoid. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The starting rotation of the humanoid, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidLibrarian.get_library_filenames()` and `HumanoidLibrarian.get_default_library()`.
         :param object_id: The ID of the new object.
 
@@ -425,7 +426,7 @@ class Controller:
                 "id": object_id}
 
     @staticmethod
-    def get_add_humanoid_animation(humanoid_animation_name: str, library="") -> (dict, HumanoidAnimationRecord):
+    def get_add_humanoid_animation(humanoid_animation_name: str, library: str = "") -> (dict, HumanoidAnimationRecord):
         """
         Returns a valid add_humanoid_animation command and the record (which you will need to play an animation).
 
@@ -451,8 +452,8 @@ class Controller:
 
         :param name: The name of the robot.
         :param robot_id: A unique ID for the robot.
-        :param position: The initial position of the robot. If None, the position will be (0, 0, 0).
-        :param rotation: The initial rotation of the robot in Euler angles.
+        :param position: The initial position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the robot in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param library: The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`.
 
         :return An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
@@ -475,6 +476,37 @@ class Controller:
                 "position": position,
                 "rotation": rotation,
                 "name": name,
+                "url": record.get_url()}
+
+    @staticmethod
+    def get_add_non_physics_object(name: str, non_physics_object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+        """
+        Returns a valid add_non_physics_object command.
+
+        :param name: The name of the non-physics object.
+        :param non_physics_object_id: A unique ID for the robot.
+        :param position: The initial position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the robot in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`.
+
+        :return An add_non_physics_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
+        """
+
+        if library == "":
+            library = "non_physics_objects.json"
+        if library not in Controller.NON_PHYSICS_OBJECTS_LIBRARIANS:
+            Controller.NON_PHYSICS_OBJECTS_LIBRARIANS[library] = NonPhysicsObjectLibrarian(library)
+        if position is None:
+            position = {"x": 0, "y": 0, "z": 0}
+        if rotation is None:
+            rotation = {"x": 0, "y": 0, "z": 0}
+        record = Controller.NON_PHYSICS_OBJECTS_LIBRARIANS[library].get_record(name)
+        return {"$type": "add_non_physics_object",
+                "name": record.name,
+                "id": non_physics_object_id,
+                "type": record.object_type,
+                "position": position,
+                "rotation": rotation,
                 "url": record.get_url()}
 
     def get_version(self) -> Tuple[str, str]:

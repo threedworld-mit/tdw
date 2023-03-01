@@ -388,6 +388,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [HumanoidLibrarian](Documentation/python/librarian/humanoid_librarian.md)
 - [MaterialLibrarian](Documentation/python/librarian/material_librarian.md)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
+- [NonPhysicsObjectLibrarian](Documentation/python/librarian/non_physics_object_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
 

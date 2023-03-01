@@ -4,7 +4,7 @@ import os
 from subprocess import Popen
 from typing import List, Union, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
-    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, NonPhysicsObjectLibrarian
+    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, EffectLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
 from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
@@ -39,7 +39,7 @@ class Controller:
     HUMANOID_LIBRARIANS: Dict[str, HumanoidLibrarian] = dict()
     HUMANOID_ANIMATION_LIBRARIANS: Dict[str, HumanoidAnimationLibrarian] = dict()
     ROBOT_LIBRARIANS: Dict[str, RobotLibrarian] = dict()
-    NON_PHYSICS_OBJECTS_LIBRARIANS: Dict[str, NonPhysicsObjectLibrarian] = dict()
+    EFFECT_LIBRARIANS: Dict[str, EffectLibrarian] = dict()
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
@@ -479,32 +479,31 @@ class Controller:
                 "url": record.get_url()}
 
     @staticmethod
-    def get_add_non_physics_object(name: str, non_physics_object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
+    def get_add_effect(name: str, effect_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:
         """
-        Returns a valid add_non_physics_object command.
+        Returns a valid add_effect command.
 
-        :param name: The name of the non-physics object.
-        :param non_physics_object_id: A unique ID for the robot.
-        :param position: The initial position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The initial rotation of the robot in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param library: The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`.
+        :param name: The name of the effect
+        :param effect_id: A unique ID for the effect.
+        :param position: The initial position of the effect. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The initial rotation of the effect in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param library: The path to the records file. If left empty, the default library will be selected. See `EffectLibrarian.get_library_filenames()` and `EffectLibrarian.get_default_library()`.
 
-        :return An add_non_physics_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
+        :return An add_effect command that the controller can then send via [`self.communicate(commands)`](#communicate).
         """
 
         if library == "":
-            library = "non_physics_objects.json"
-        if library not in Controller.NON_PHYSICS_OBJECTS_LIBRARIANS:
-            Controller.NON_PHYSICS_OBJECTS_LIBRARIANS[library] = NonPhysicsObjectLibrarian(library)
+            library = "effects.json"
+        if library not in Controller.EFFECT_LIBRARIANS:
+            Controller.EFFECT_LIBRARIANS[library] = EffectLibrarian(library)
         if position is None:
             position = {"x": 0, "y": 0, "z": 0}
         if rotation is None:
             rotation = {"x": 0, "y": 0, "z": 0}
-        record = Controller.NON_PHYSICS_OBJECTS_LIBRARIANS[library].get_record(name)
-        return {"$type": "add_non_physics_object",
+        record = Controller.EFFECT_LIBRARIANS[library].get_record(name)
+        return {"$type": "add_effect",
                 "name": record.name,
-                "id": non_physics_object_id,
-                "type": record.object_type,
+                "id": effect_id,
                 "position": position,
                 "rotation": rotation,
                 "url": record.get_url()}

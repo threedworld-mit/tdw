@@ -383,12 +383,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.librarian**
 
+- [EffectLibrarian](Documentation/python/librarian/effect_librarian.md)
 - [HdriSkyboxLibrarian](Documentation/python/librarian/hdri_skybox_librarian.md)
 - [HumanoidAnimationLibrarian](Documentation/python/librarian/humanoid_animation_librarian.md)
 - [HumanoidLibrarian](Documentation/python/librarian/humanoid_librarian.md)
 - [MaterialLibrarian](Documentation/python/librarian/material_librarian.md)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
-- [NonPhysicsObjectLibrarian](Documentation/python/librarian/non_physics_object_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
 

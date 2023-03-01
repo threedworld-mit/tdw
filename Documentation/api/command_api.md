@@ -53,9 +53,9 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_effect`](#add_effect) | Add a non-physics effect object to the scene from an asset bundle.  |
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
-| [`add_non_physics_object`](#add_non_physics_object) | Add a non-physics object to the scene from an asset bundle.  |
 | [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md  |
 
 **Add Humanoid Command**
@@ -242,6 +242,19 @@
 | [`send_is_on_nav_mesh`](#send_is_on_nav_mesh) | Given a position, try to get the nearest position on the NavMesh.  |
 
 **Non Physics Object Command**
+
+**Effect Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_effect`](#destroy_effect) | Destroy a non-physical effect object. |
+
+**Adjust Effect Command**
+
+| Command | Description |
+| --- | --- |
+| [`parent_effect_to_object`](#parent_effect_to_object) | Parent a non-physics effect object to a standard TDW physically-embodied object. |
+| [`scale_effect`](#scale_effect) | Scale a non-physics effect object by a factor. |
 
 **Line Renderer Command**
 
@@ -1442,6 +1455,31 @@ These commands load an asset bundle with a specific object (model, material, etc
 
 ***
 
+## **`add_effect`**
+
+Add a non-physics effect object to the scene from an asset bundle. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/effect_librarian.md`</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_effect()`](../python/controller.md).</font>
+
+```python
+{"$type": "add_effect", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_effect", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of this effect object. This isn't the same as an object ID as used in most of the TDW API because this is a non-physics object, not a TDW object. | |
+| `"position"` | Vector3 | The initial position of the effect. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The initial rotation of the effect. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
 ## **`add_hdri_skybox`**
 
 Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange. 
@@ -1480,40 +1518,6 @@ Load an animation clip asset bundle into memory.
 | --- | --- | --- | --- |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
-
-***
-
-## **`add_non_physics_object`**
-
-Add a non-physics object to the scene from an asset bundle. 
-
-- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/non_physics_object_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_non_physics_object()`](../python/controller.md).</font>
-
-```python
-{"$type": "add_non_physics_object", "id": 1, "type": "transform", "name": "string", "url": "string"}
-```
-
-```python
-{"$type": "add_non_physics_object", "id": 1, "type": "transform", "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The ID of this non-physics object. This isn't the same as an object ID as used in most of the TDW API because this is a non-physics object, not a TDW object. | |
-| `"type"` | NonPhysicsObjectType | The type of this object. This determines which commands can be used with this object. | |
-| `"position"` | Vector3 | The initial position of the non-physics object. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | Vector3 | The initial rotation of the non-physics object in Euler angles. | {"x": 0, "y": 0, "z": 0} |
-| `"name"` | string | The name of the asset bundle. | |
-| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
-
-#### NonPhysicsObjectType
-
-The type of non-physics object in the asset bundle.
-
-| Value | Description |
-| --- | --- |
-| `"transform"` | A generic non-physics object with a transform component. |
 
 ***
 
@@ -3516,6 +3520,65 @@ Given a position, try to get the nearest position on the NavMesh.
 # NonPhysicsObjectCommand
 
 These commands add or affect non-physics objects.
+
+# EffectCommand
+
+These commands can be used for non-physical effect objects in the scene.
+
+***
+
+## **`destroy_effect`**
+
+Destroy a non-physical effect object.
+
+
+```python
+{"$type": "destroy_effect", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# AdjustEffectCommand
+
+These commands adjust non-physical effect objects.
+
+***
+
+## **`parent_effect_to_object`**
+
+Parent a non-physics effect object to a standard TDW physically-embodied object.
+
+
+```python
+{"$type": "parent_effect_to_object", "object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the physically-embodied TDW object. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`scale_effect`**
+
+Scale a non-physics effect object by a factor.
+
+
+```python
+{"$type": "scale_effect", "id": 1}
+```
+
+```python
+{"$type": "scale_effect", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the non-physics object. | |
 
 # LineRendererCommand
 

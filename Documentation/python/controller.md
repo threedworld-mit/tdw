@@ -207,26 +207,26 @@ Returns a valid add_robot command.
 
 _Returns:_  An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
-#### get_add_non_physics_object
+#### get_add_effect
 
-**`Controller.get_add_non_physics_object(name, non_physics_object_id)`**
+**`Controller.get_add_effect(name, effect_id)`**
 
-**`Controller.get_add_non_physics_object(name, non_physics_object_id, position=None, rotation=None, library="")`**
+**`Controller.get_add_effect(name, effect_id, position=None, rotation=None, library="")`**
 
 _(Static)_
 
-Returns a valid add_non_physics_object command.
+Returns a valid add_effect command.
 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| name |  str |  | The name of the non-physics object. |
-| non_physics_object_id |  int |  | A unique ID for the robot. |
-| position |  Dict[str, float] | None | The initial position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Dict[str, float] | None | The initial rotation of the robot in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
+| name |  str |  | The name of the effect |
+| effect_id |  int |  | A unique ID for the effect. |
+| position |  Dict[str, float] | None | The initial position of the effect. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The initial rotation of the effect in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `EffectLibrarian.get_library_filenames()` and `EffectLibrarian.get_default_library()`. |
 
-_Returns:_  An add_non_physics_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
+_Returns:_  An add_effect command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_version
 

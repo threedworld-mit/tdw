@@ -161,8 +161,8 @@ Returns a valid add_humanoid command.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | humanoid_name |  str |  | The name of the humanoid. |
-| position |  Dict[str, float] | None | The position of the humanoid. |
-| rotation |  Dict[str, float] | None | The starting rotation of the humanoid, in Euler angles. |
+| position |  Dict[str, float] | None | The position of the humanoid. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The starting rotation of the humanoid, in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidLibrarian.get_library_filenames()` and `HumanoidLibrarian.get_default_library()`. |
 | object_id |  int |  | The ID of the new object. |
 
@@ -182,7 +182,7 @@ Returns a valid add_humanoid_animation command and the record (which you will ne
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | humanoid_animation_name |  str |  | The name of the animation. |
-| library |  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
+| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
 
 _Returns:_  An add_humanoid_animation command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
@@ -201,11 +201,32 @@ Returns a valid add_robot command.
 | --- | --- | --- | --- |
 | name |  str |  | The name of the robot. |
 | robot_id |  int |  | A unique ID for the robot. |
-| position |  Dict[str, float] | None | The initial position of the robot. If None, the position will be (0, 0, 0). |
-| rotation |  Dict[str, float] | None | The initial rotation of the robot in Euler angles. |
+| position |  Dict[str, float] | None | The initial position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The initial rotation of the robot in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `RobotLibrarian.get_library_filenames()` and `RobotLibrarian.get_default_library()`. |
 
 _Returns:_  An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
+
+#### get_add_non_physics_object
+
+**`Controller.get_add_non_physics_object(name, non_physics_object_id)`**
+
+**`Controller.get_add_non_physics_object(name, non_physics_object_id, position=None, rotation=None, library="")`**
+
+_(Static)_
+
+Returns a valid add_non_physics_object command.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| name |  str |  | The name of the non-physics object. |
+| non_physics_object_id |  int |  | A unique ID for the robot. |
+| position |  Dict[str, float] | None | The initial position of the robot. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The initial rotation of the robot in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `HumanoidAnimationLibrarian.get_library_filenames()` and `HumanoidAnimationLibrarian.get_default_library()`. |
+
+_Returns:_  An add_non_physics_object command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
 #### get_version
 

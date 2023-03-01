@@ -4,6 +4,30 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.7
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                                                 |
+| ------------------------ | ----------------------------------------------------------- |
+| `add_non_physics_object` | Add a non-physics object to the scene from an asset bundle. |
+
+### `tdw` module
+
+- Added: `controller.get_add_non_physics_object(name, id, position, rotation, library)` A wrapper function for the `add_non_physics_object` command.
+
+- Added: `NonPhysicsObjectLibrarian` and `NonPhysicsObjectRecord`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                           | Description                         |
+| -------------------------------------------------- | ----------------------------------- |
+| `python/librarian/non_physics_object_librarian.md` | API for `NonPhysicsObjectLibrarian` |
+
 ## v1.11.6
 
 ### Command API

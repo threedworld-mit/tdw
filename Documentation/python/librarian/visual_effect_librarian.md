@@ -1,37 +1,37 @@
-# Effect ibrarian
+# Visual Effect ibrarian
 
-An **Effect Librarian** is a non-physics effect objects records database. Use this metadata in conjunction with effects.
+A **Visual Effect Librarian** is a non-physics visual effect records database.
 
 ## Default Libraries
 
-There is only one non-physics object library: `effects.json`. You can define it explicitly, or not.
+There is only one non-physics object library: `visual_effects.json`. You can define it explicitly, or not.
 
 ```python
-from tdw.librarian import EffectLibrarian
+from tdw.librarian import VisualEffectLibrarian
 
 # These constructors will load the same records database.
-lib = EffectLibrarian()
-lib = EffectLibrarian(library="effects.json")
+lib = VisualEffectLibrarian()
+lib = VisualEffectLibrarian(library="effects.json")
 ```
 
 ## Command API
 
-Send the `add_effect` command to add a robot to the scene or use the wrapper function `Controller.get_add_effect(name, id, position, rotation, library)`.
+Send the `add_visual_effect` command to add a visual effect to the scene or use the wrapper function `Controller.get_add_visual_effect(name, id, position, rotation, library)`.
 
-## EffectRecord API
+## VisualEffectRecord API
 
-A record of a non-physics effect object asset bundle.
+A record of a visual effect object asset bundle.
 
 ```python
-from tdw.librarian import EffectRecord 
+from tdw.librarian import VisualEffectRecord 
 
-record = EffectRecord() # Creates a record with blank or default values.
+record = VisualEffectRecord() # Creates a record with blank or default values.
 ```
 
 ```python
-from tdw.librarian import EffectRecord 
+from tdw.librarian import VisualEffectRecord 
 
-record = EffectRecord(data=data) # Creates a record from JSON data.
+record = VisualEffectRecord(data=data) # Creates a record from JSON data.
 ```
 
 ### Fields
@@ -40,7 +40,7 @@ record = EffectRecord(data=data) # Creates a record from JSON data.
 | ------------- | -------------- | ------------------------------------------------------------ |
 | `name`        | str            | The name of the record.                                      |
 | `object_type` | str            | The object type. This tells TDW how to load the object and which API commands are valid for this object. |
-| `urls`        | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `EffectRecord.get_url()` |
+| `urls`        | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `VisualEffectRecord.get_url()` |
 
 ### Functions
 
@@ -49,7 +49,7 @@ record = EffectRecord(data=data) # Creates a record from JSON data.
 Returns the URL of the asset bundle for this platform. This is a wrapper for `record.urls`.
 
 ```python
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 record = lib.records[0]
 
 print(record.get_url())
@@ -57,16 +57,16 @@ print(record.get_url())
 
 ***
 
-## EffectLibrarian API
+## VisualEffectLibrarian API
 
 ### Fields
 
-| Field         | Type               | Description                                                  |
-| ------------- | ------------------ | ------------------------------------------------------------ |
-| `library`     | str                | The path to the records database file.                       |
-| `data`        | dict               | The raw JSON dictionary loaded from the records database file. |
-| `description` | str                | A brief description of the library.                          |
-| `records`     | List[EffectRecord] | The list of non-physics object records.                      |
+| Field         | Type                     | Description                                                  |
+| ------------- | ------------------------ | ------------------------------------------------------------ |
+| `library`     | str                      | The path to the records database file.                       |
+| `data`        | dict                     | The raw JSON dictionary loaded from the records database file. |
+| `description` | str                      | A brief description of the library.                          |
+| `records`     | List[VisualEffectRecord] | The list of visual effect records.                           |
 
 ### Static Functions
 
@@ -75,7 +75,7 @@ print(record.get_url())
 Create a new library JSON file.
 
 ```python
-EffectLibrarian.create_library("My library", path="path/to/new/library.json")
+VisualEffectLibrarian.create_library("My library", path="path/to/new/library.json")
 ```
 
 | Parameter     | Type | Description                                               |
@@ -90,7 +90,7 @@ EffectLibrarian.create_library("My library", path="path/to/new/library.json")
 Returns a list of the filenames of the libraries of this type in the `tdw` module.
 
 ```python
-filenames = EffectLibrarian.get_library_filenames()
+filenames = VisualEffectLibrarian.get_library_filenames()
 
 print(filenames) # ['effects.json']
 ```
@@ -102,19 +102,19 @@ print(filenames) # ['effects.json']
 Returns the filename of the default library (which is always the first element in the list returned by `get_library_filenames()`.
 
 ```python
-default_library = EffectLibrarian.get_default_library()
+default_library = VisualEffectLibrarian.get_default_library()
 
 print(default_library) # effects.json
 ```
 
 ### Functions
 
-##### `def get_record(self, name: str) -> Optional[EffectRecord]:`
+##### `def get_record(self, name: str) -> Optional[VisualEffectRecord]:`
 
 Returns a record with the specified name. If that record can't be found, returns None.
 
 ```python
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 record = lib.get_record("burned_wood+0")
 
 print(record.name) # burned_wood_0
@@ -126,12 +126,12 @@ print(record.name) # burned_wood_0
 
 ***
 
-##### `def search_records(self, search: str) -> List[EffectRecord]:`
+##### `def search_records(self, search: str) -> List[VisualEffectRecord]:`
 
 Returns a list of records whose names include the search keyword.
 
 ```python
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 records = lib.search_records("wood")
 
 for record in records:
@@ -144,47 +144,47 @@ for record in records:
 
 ***
 
-##### `def add_or_update_record(self, record: EffectRecord, overwrite: bool, write bool  = True, quiet: bool = True) -> bool:`
+##### `def add_or_update_record(self, record: VisualEffectRecord, overwrite: bool, write bool  = True, quiet: bool = True) -> bool:`
 
 Add a new record or update an existing record.
 
 ```python
 record = define_record() # Provide your own code here.
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 
 lib.add_or_update_record(record, False, write=True, quiet=False)
 ```
 
-| Parameter   | Type         | Description                                                  |
-| ----------- | ------------ | ------------------------------------------------------------ |
-| `record`    | EffectRecord | The new or modified record.                                  |
-| `overwrite` | bool         | **If True:** If there is a record with the same name as this record, replace it with the new record and return True. Otherwise, return False.<br>**If False:** If there is a record with the same name as this record, don't add the record, and suggest a new name. |
-| `write`     | bool         | If true, write the library data to disk  (overwriting the existing file). |
-| `quiet`     | bool         | If true, don't print out messages to the console.            |
+| Parameter   | Type               | Description                                                  |
+| ----------- | ------------------ | ------------------------------------------------------------ |
+| `record`    | VisualEffectRecord | The new or modified record.                                  |
+| `overwrite` | bool               | **If True:** If there is a record with the same name as this record, replace it with the new record and return True. Otherwise, return False.<br>**If False:** If there is a record with the same name as this record, don't add the record, and suggest a new name. |
+| `write`     | bool               | If true, write the library data to disk  (overwriting the existing file). |
+| `quiet`     | bool               | If true, don't print out messages to the console.            |
 
 ***
 
-##### `def remove_record(self, record: Union[str, EffectRecord], write: bool = True) -> bool:`
+##### `def remove_record(self, record: Union[str, VisualEffectRecord], write: bool = True) -> bool:`
 
 Remove a record. Returns true if the record was removed.
 
 ```python
 record = define_record() # Provide your own code here.
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 
 lib.remove_record(record) # Returns False.
 ```
 
 ```python
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 
 lib.remove_record("burned_wood_0") # Returns True.
 ```
 
-| Parameter | Type                 | Description                                                  |
-| --------- | -------------------- | ------------------------------------------------------------ |
-| `record`  | EffectRecord_or_ str | The record or the name of the record.                        |
-| `write`   | bool                 | If true, write the library data to disk  (overwriting the existing file). |
+| Parameter | Type                       | Description                                                  |
+| --------- | -------------------------- | ------------------------------------------------------------ |
+| `record`  | VisualEffectRecord_or_ str | The record or the name of the record.                        |
+| `write`   | bool                       | If true, write the library data to disk  (overwriting the existing file). |
 
 ***
 
@@ -203,7 +203,7 @@ Write the library data to disk (overwriting the existing file).
 Generates a valid record name. Returns: true if the name is good as-is, the new name, and a list of problems with the old name.
 
 ```python
-lib = EffectLibrarian()
+lib = VisualEffectLibrarian()
 
 ok, name, problems = lib.get_valid_record_name("burned_wood_0", False)
 

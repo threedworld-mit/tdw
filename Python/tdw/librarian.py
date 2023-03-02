@@ -273,9 +273,9 @@ class RobotRecord(_Record):
         self.ik: list = data["ik"]
 
 
-class EffectRecord(_Record):
+class VisualEffectRecord(_Record):
     """
-    A record for a non-physical effect.
+    A record for a non-physical visual effect asset bundle.
     """
 
     def __init__(self, data: Optional[dict] = None):
@@ -645,14 +645,14 @@ class RobotLibrarian(_Librarian[RobotRecord]):
         return RobotRecord(data)
 
 
-class EffectLibrarian(_Librarian[EffectRecord]):
+class VisualEffectLibrarian(_Librarian[VisualEffectRecord]):
     """
-    Librarian class for non-physical effect objects.
+    Librarian class for non-physical visual effects.
     """
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["effects.json"]
+        return ["visual_effects.json"]
 
     def _generate_record(self, data: dict) -> T:
-        return EffectRecord(data)
+        return VisualEffectRecord(data)

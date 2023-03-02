@@ -10,26 +10,34 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 #### New Commands
 
-| Command                   | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| `add_effect`              | Add a non-physics effect object to the scene from an asset bundle. |
-| `destroy_effect`          | Destroy a non-physics effect object in the scene.            |
-| `scale_effect`            | Scale a non-physics effect object by a factor.               |
-| `parent_effect_to_object` | Parent a non-physics effect object to a standard TDW physically-embodied object. |
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `add_visual_effect`              | Add a non-physical visual effect to the scene from an asset bundle. |
+| `destroy_visual_effect`          | Destroy a visual effect in the scene.                        |
+| `scale_visual_effect`            | Scale a visual effect by a factor.                           |
+| `parent_visual_effect_to_object` | Parent a visual effect object to a standard TDW physically-embodied object. |
+| `unparent_visual_effect`         | Unparent a visual effect from a parent object.               |
+| `teleport_visual_effect`         | Teleport a visual effect to a new position.                  |
+| `rotate_visual_effect_by`        | Rotate a visual effect by a given angle around a given axis. |
+| `rotate_visual_effect_to`        | Set the rotation of a non-physical visual effect.            |
 
 ### `tdw` module
 
-- Added: `controller.get_add_effect(name, id, position, rotation, library)` A wrapper function for the `add_effect` command.
+- Added: `controller.get_add_visual_effect(name, id, position, rotation, library)` A wrapper function for the `add_visual_effect` command.
 
-- Added: `EffectLibrarian` and `EffectRecord`
+- Added: `VisualEffectLibrarian` and `VisualEffectRecord`
+
+### Visual Effects Library
+
+- Added: fire_0
 
 ### Documentation
 
 #### New Documentation
 
-| Document                               | Description               |
-| -------------------------------------- | ------------------------- |
-| `python/librarian/effect_librarian.md` | API for `EffectLibrarian` |
+| Document                                      | Description                     |
+| --------------------------------------------- | ------------------------------- |
+| `python/librarian/visual_effect_librarian.md` | API for `VisualEffectLibrarian` |
 
 ## v1.11.6
 

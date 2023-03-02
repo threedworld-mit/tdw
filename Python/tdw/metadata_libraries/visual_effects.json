@@ -1,0 +1,13 @@
+{
+    "description": "Visual Effects",
+    "records": {
+        "fire_0": {
+            "name": "fire_0",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fire_0",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fire_0",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fire_0"
+            }
+        }
+    }
+}

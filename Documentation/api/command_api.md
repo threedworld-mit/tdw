@@ -53,10 +53,10 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_effect`](#add_effect) | Add a non-physics effect object to the scene from an asset bundle.  |
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
 | [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md  |
+| [`add_visual_effect`](#add_visual_effect) | Add a non-physics visual effect to the scene from an asset bundle.  |
 
 **Add Humanoid Command**
 
@@ -243,19 +243,6 @@
 
 **Non Physics Object Command**
 
-**Effect Command**
-
-| Command | Description |
-| --- | --- |
-| [`destroy_effect`](#destroy_effect) | Destroy a non-physical effect object. |
-
-**Adjust Effect Command**
-
-| Command | Description |
-| --- | --- |
-| [`parent_effect_to_object`](#parent_effect_to_object) | Parent a non-physics effect object to a standard TDW physically-embodied object. |
-| [`scale_effect`](#scale_effect) | Scale a non-physics effect object by a factor. |
-
 **Line Renderer Command**
 
 | Command | Description |
@@ -297,6 +284,23 @@
 | [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
 | [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
 | [`unparent_textured_quad`](#unparent_textured_quad) | Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything. |
+
+**Visual Effect Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_visual_effect`](#destroy_visual_effect) | Destroy a non-physical effect object. |
+
+**Adjust Visual Effect Command**
+
+| Command | Description |
+| --- | --- |
+| [`parent_visual_effect_to_object`](#parent_visual_effect_to_object) | Parent a non-physical visual effect to a standard TDW physically-embodied object. |
+| [`rotate_visual_effect_by`](#rotate_visual_effect_by) | Rotate a non-physical visual effect by a given angle around a given axis. |
+| [`rotate_visual_effect_to`](#rotate_visual_effect_to) | Set the rotation of a non-physical visual effect. |
+| [`scale_visual_effect`](#scale_visual_effect) | Scale a non-physical visual effect by a factor. |
+| [`teleport_visual_effect`](#teleport_visual_effect) | Teleport a non-physical visual effect to a new position. |
+| [`unparent_visual_effect`](#unparent_visual_effect) | Unparent a non-physical visual effect from a parent object. If the visual effect doesn't have a parent object, this command doesn't do anything. |
 
 **Obi Command**
 
@@ -1455,31 +1459,6 @@ These commands load an asset bundle with a specific object (model, material, etc
 
 ***
 
-## **`add_effect`**
-
-Add a non-physics effect object to the scene from an asset bundle. 
-
-- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/effect_librarian.md`</font>
-- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_effect()`](../python/controller.md).</font>
-
-```python
-{"$type": "add_effect", "id": 1, "name": "string", "url": "string"}
-```
-
-```python
-{"$type": "add_effect", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The ID of this effect object. This isn't the same as an object ID as used in most of the TDW API because this is a non-physics object, not a TDW object. | |
-| `"position"` | Vector3 | The initial position of the effect. | {"x": 0, "y": 0, "z": 0} |
-| `"rotation"` | Vector3 | The initial rotation of the effect. | {"x": 0, "y": 0, "z": 0} |
-| `"name"` | string | The name of the asset bundle. | |
-| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
-
-***
-
 ## **`add_hdri_skybox`**
 
 Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange. 
@@ -1541,6 +1520,31 @@ Add a robot to the scene. For further documentation, see: Documentation/lessons/
 | `"id"` | int | The unique ID of the robot. | 0 |
 | `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_visual_effect`**
+
+Add a non-physics visual effect to the scene from an asset bundle. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/visual_effect_librarian.md`</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_visual_effect()`](../python/controller.md).</font>
+
+```python
+{"$type": "add_visual_effect", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_visual_effect", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of this visual effect. | |
+| `"position"` | Vector3 | The initial position of the visual effect. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The initial rotation of the visual effect. | {"x": 0, "y": 0, "z": 0} |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -3521,65 +3525,6 @@ Given a position, try to get the nearest position on the NavMesh.
 
 These commands add or affect non-physics objects.
 
-# EffectCommand
-
-These commands can be used for non-physical effect objects in the scene.
-
-***
-
-## **`destroy_effect`**
-
-Destroy a non-physical effect object.
-
-
-```python
-{"$type": "destroy_effect", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The ID of the non-physics object. | |
-
-# AdjustEffectCommand
-
-These commands adjust non-physical effect objects.
-
-***
-
-## **`parent_effect_to_object`**
-
-Parent a non-physics effect object to a standard TDW physically-embodied object.
-
-
-```python
-{"$type": "parent_effect_to_object", "object_id": 1, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"object_id"` | int | The ID of the physically-embodied TDW object. | |
-| `"id"` | int | The ID of the non-physics object. | |
-
-***
-
-## **`scale_effect`**
-
-Scale a non-physics effect object by a factor.
-
-
-```python
-{"$type": "scale_effect", "id": 1}
-```
-
-```python
-{"$type": "scale_effect", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
-| `"id"` | int | The ID of the non-physics object. | |
-
 # LineRendererCommand
 
 These commands show, remove, or adjust 3D lines in the scene.
@@ -3928,6 +3873,144 @@ Unparent a textured quad from a parent object. If the textured quad doesn't have
 
 ```python
 {"$type": "unparent_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# VisualEffectCommand
+
+These commands can be used for non-physical visual effects in the scene.
+
+***
+
+## **`destroy_visual_effect`**
+
+Destroy a non-physical effect object.
+
+
+```python
+{"$type": "destroy_visual_effect", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# AdjustVisualEffectCommand
+
+These commands adjust non-physical visual effects.
+
+***
+
+## **`parent_visual_effect_to_object`**
+
+Parent a non-physical visual effect to a standard TDW physically-embodied object.
+
+
+```python
+{"$type": "parent_visual_effect_to_object", "object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the physically-embodied TDW object. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`rotate_visual_effect_by`**
+
+Rotate a non-physical visual effect by a given angle around a given axis.
+
+
+```python
+{"$type": "rotate_visual_effect_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_visual_effect_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation. | |
+| `"is_world"` | bool | If True, the visual effect will rotate via "global" directions and angles. If False, the visual effect will rotate locally. | True |
+| `"id"` | int | The ID of the non-physics object. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_visual_effect_to`**
+
+Set the rotation of a non-physical visual effect.
+
+
+```python
+{"$type": "rotate_visual_effect_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`scale_visual_effect`**
+
+Scale a non-physical visual effect by a factor.
+
+
+```python
+{"$type": "scale_visual_effect", "id": 1}
+```
+
+```python
+{"$type": "scale_visual_effect", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`teleport_visual_effect`**
+
+Teleport a non-physical visual effect to a new position.
+
+
+```python
+{"$type": "teleport_visual_effect", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The new position of the visual effect. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`unparent_visual_effect`**
+
+Unparent a non-physical visual effect from a parent object. If the visual effect doesn't have a parent object, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_visual_effect", "id": 1}
 ```
 
 | Parameter | Type | Description | Default |

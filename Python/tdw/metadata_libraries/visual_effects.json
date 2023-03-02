@@ -1,12 +1,44 @@
 {
     "description": "Visual Effects",
     "records": {
-        "fire_0": {
-            "name": "fire_0",
+        "burned_wood_pile_1": {
+            "name": "burned_wood_pile_1",
             "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fire_0",
-                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fire_0",
-                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fire_0"
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/burned_wood_pile_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/burned_wood_pile_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/burned_wood_pile_1"
+            }
+        },
+        "burned_wood_pile_2": {
+            "name": "burned_wood_pile_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/burned_wood_pile_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/burned_wood_pile_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/burned_wood_pile_2"
+            }
+        },
+        "burned_wood_pile_3": {
+            "name": "burned_wood_pile_3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/burned_wood_pile_3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/burned_wood_pile_3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/burned_wood_pile_3"
+            }
+        },
+        "fire": {
+            "name": "fire",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fire",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fire",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fire"
+            }
+        },
+        "smoke": {
+            "name": "smoke",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/smoke",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/smoke",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/smoke"
             }
         }
     }

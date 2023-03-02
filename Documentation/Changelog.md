@@ -29,15 +29,16 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ### Visual Effects Library
 
-- Added: fire_0
+- Added: fire, smoke, burned_wood_pile_1, burned_wood_pile_2, burned_wood_pile_3
 
 ### Documentation
 
 #### New Documentation
 
-| Document                                      | Description                     |
-| --------------------------------------------- | ------------------------------- |
-| `python/librarian/visual_effect_librarian.md` | API for `VisualEffectLibrarian` |
+| Document                                      | Description                       |
+| --------------------------------------------- | --------------------------------- |
+| `python/librarian/visual_effect_librarian.md` | API for `VisualEffectLibrarian`   |
+| `lessons/non_physics/visual_effects.md`       | Documentation for visual effects. |
 
 ## v1.11.6
 

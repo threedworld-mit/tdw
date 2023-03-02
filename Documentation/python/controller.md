@@ -207,11 +207,11 @@ Returns a valid add_robot command.
 
 _Returns:_  An `add_robot` command that the controller can then send via [`self.communicate(commands)`](#communicate).
 
-#### get_add_effect
+#### get_add_visual_effect
 
-**`Controller.get_add_effect(name, effect_id)`**
+**`Controller.get_add_visual_effect(name, effect_id)`**
 
-**`Controller.get_add_effect(name, effect_id, position=None, rotation=None, library="")`**
+**`Controller.get_add_visual_effect(name, effect_id, position=None, rotation=None, library="")`**
 
 _(Static)_
 
@@ -220,11 +220,11 @@ Returns a valid add_effect command.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| name |  str |  | The name of the effect |
-| effect_id |  int |  | A unique ID for the effect. |
-| position |  Dict[str, float] | None | The initial position of the effect. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Dict[str, float] | None | The initial rotation of the effect in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `EffectLibrarian.get_library_filenames()` and `EffectLibrarian.get_default_library()`. |
+| name |  str |  | The name of the visual effect. |
+| effect_id |  int |  | A unique ID for the visual effect. |
+| position |  Dict[str, float] | None | The initial position of the visual effect. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  Dict[str, float] | None | The initial rotation of the visual effect in Euler angles. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| library |  str  | "" | The path to the records file. If left empty, the default library will be selected. See `VisualEffectLibrarian.get_library_filenames()` and `VisualEffectLibrarian.get_default_library()`. |
 
 _Returns:_  An add_effect command that the controller can then send via [`self.communicate(commands)`](#communicate).
 

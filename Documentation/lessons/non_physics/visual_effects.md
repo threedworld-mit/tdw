@@ -40,7 +40,6 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 for i in range(200):
     c.communicate([])
 c.communicate({"$type": "terminate"})
-
 ```
 
 Result:

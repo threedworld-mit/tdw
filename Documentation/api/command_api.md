@@ -55,7 +55,8 @@
 | --- | --- |
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
-| [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md  |
+| [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md  |
+| [`add_visual_effect`](#add_visual_effect) | Add a non-physics visual effect to the scene from an asset bundle.  |
 
 **Add Humanoid Command**
 
@@ -223,16 +224,6 @@
 | [`simulate_physics`](#simulate_physics) | Toggle whether to simulate physics per list of sent commands (i.e. per frame). If false, the simulation won't step the physics forward. Initial value = True (simulate physics per frame). |
 | [`use_pre_signed_urls`](#use_pre_signed_urls) | Toggle whether to download asset bundles (models, scenes, etc.) directly from byte streams of S3 objects, or from temporary URLs that expire after ten minutes. Only send this command and set this to True if you're experiencing segfaults when downloading models from models_full.json Initial value = On Linux: True (use temporary URLs). On Windows and OS X: False (download S3 objects directly, without using temporary URLs). |
 
-**Line Renderer Command**
-
-| Command | Description |
-| --- | --- |
-| [`add_line_renderer`](#add_line_renderer) | Add a 3D line to the scene. |
-| [`add_points_to_line_renderer`](#add_points_to_line_renderer) | Add points to an existing line in the scene. |
-| [`destroy_line_renderer`](#destroy_line_renderer) | Destroy an existing line in the scene from the scene. |
-| [`remove_points_from_line_renderer`](#remove_points_from_line_renderer) | Remove points from an existing line in the scene. |
-| [`simplify_line_renderer`](#simplify_line_renderer) | Simplify a 3D line to the scene by removing intermediate points. |
-
 **Load From Resources**
 
 **Load Game Object From Resources**
@@ -249,6 +240,67 @@
 | --- | --- |
 | [`bake_nav_mesh`](#bake_nav_mesh) | Bake the NavMesh, enabling Unity pathfinding. This must be sent before any other Nav Mesh Commands, and after creating the scene environment (e.g. the procedurally generated room).  |
 | [`send_is_on_nav_mesh`](#send_is_on_nav_mesh) | Given a position, try to get the nearest position on the NavMesh.  |
+
+**Non Physics Object Command**
+
+**Line Renderer Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_line_renderer`](#add_line_renderer) | Add a 3D line to the scene. |
+| [`destroy_line_renderer`](#destroy_line_renderer) | Destroy an existing line in the scene from the scene. |
+
+**Adjust Line Renderer Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_points_to_line_renderer`](#add_points_to_line_renderer) | Add points to an existing line in the scene. |
+| [`remove_points_from_line_renderer`](#remove_points_from_line_renderer) | Remove points from an existing line in the scene. |
+| [`simplify_line_renderer`](#simplify_line_renderer) | Simplify a 3D line to the scene by removing intermediate points. |
+
+**Position Marker Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_position_marker`](#add_position_marker) | Create a non-physics, non-interactive marker at a position in the scene.  |
+| [`remove_position_markers`](#remove_position_markers) | Remove all position markers from the scene.  |
+
+**Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`create_textured_quad`](#create_textured_quad) | Create a blank quad (a rectangular mesh with four vertices) in the scene. |
+| [`destroy_textured_quad`](#destroy_textured_quad) | Destroy an existing textured quad. |
+
+**Adjust Textured Quad Command**
+
+| Command | Description |
+| --- | --- |
+| [`parent_textured_quad_to_object`](#parent_textured_quad_to_object) | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
+| [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
+| [`rotate_textured_quad_to`](#rotate_textured_quad_to) | Set the rotation of a textured quad. |
+| [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
+| [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
+| [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
+| [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
+| [`unparent_textured_quad`](#unparent_textured_quad) | Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything. |
+
+**Visual Effect Command**
+
+| Command | Description |
+| --- | --- |
+| [`destroy_visual_effect`](#destroy_visual_effect) | Destroy a non-physical effect object. |
+
+**Adjust Visual Effect Command**
+
+| Command | Description |
+| --- | --- |
+| [`parent_visual_effect_to_object`](#parent_visual_effect_to_object) | Parent a non-physical visual effect to a standard TDW physically-embodied object. |
+| [`rotate_visual_effect_by`](#rotate_visual_effect_by) | Rotate a non-physical visual effect by a given angle around a given axis. |
+| [`rotate_visual_effect_to`](#rotate_visual_effect_to) | Set the rotation of a non-physical visual effect. |
+| [`scale_visual_effect`](#scale_visual_effect) | Scale a non-physical visual effect by a factor. |
+| [`teleport_visual_effect`](#teleport_visual_effect) | Teleport a non-physical visual effect to a new position. |
+| [`unparent_visual_effect`](#unparent_visual_effect) | Unparent a non-physical visual effect from a parent object. If the visual effect doesn't have a parent object, this command doesn't do anything. |
 
 **Obi Command**
 
@@ -445,13 +497,6 @@
 | --- | --- |
 | [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller. |
 | [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
-
-**Position Marker Command**
-
-| Command | Description |
-| --- | --- |
-| [`add_position_marker`](#add_position_marker) | Create a non-physics, non-interactive marker at a position in the scene.  |
-| [`remove_position_markers`](#remove_position_markers) | Remove all position markers from the scene.  |
 
 **Post Process Command**
 
@@ -666,26 +711,6 @@
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
-
-**Textured Quad Command**
-
-| Command | Description |
-| --- | --- |
-| [`create_textured_quad`](#create_textured_quad) | Create a blank quad (a rectangular mesh with four vertices) in the scene. |
-| [`destroy_textured_quad`](#destroy_textured_quad) | Destroy an existing textured quad. |
-
-**Adjust Textured Quad Command**
-
-| Command | Description |
-| --- | --- |
-| [`parent_textured_quad_to_object`](#parent_textured_quad_to_object) | Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object. |
-| [`rotate_textured_quad_by`](#rotate_textured_quad_by) | Rotate a textured quad by a given angle around a given axis. |
-| [`rotate_textured_quad_to`](#rotate_textured_quad_to) | Set the rotation of a textured quad. |
-| [`scale_textured_quad`](#scale_textured_quad) | Scale a textured quad by a factor. |
-| [`set_textured_quad`](#set_textured_quad) | Apply a texture to a pre-existing quad.  |
-| [`show_textured_quad`](#show_textured_quad) | Show or hide a textured quad. |
-| [`teleport_textured_quad`](#teleport_textured_quad) | Teleport a textured quad to a new position. |
-| [`unparent_textured_quad`](#unparent_textured_quad) | Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything. |
 
 **Ui Command**
 
@@ -1477,7 +1502,7 @@ Load an animation clip asset bundle into memory.
 
 ## **`add_robot`**
 
-Add a robot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md 
+Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md 
 
 - <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/robot_librarian.md`</font>
 - <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_robot()`](../python/controller.md).</font>
@@ -1495,6 +1520,31 @@ Add a robot to the scene. For further documentation, see: Documentation/misc_fro
 | `"id"` | int | The unique ID of the robot. | 0 |
 | `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_visual_effect`**
+
+Add a non-physics visual effect to the scene from an asset bundle. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/visual_effect_librarian.md`</font>
+- <font style="color:orange">**Wrapper function**: The controller class has a wrapper function for this command that is usually easier than using the command itself. See: [`Controller.get_add_visual_effect()`](../python/controller.md).</font>
+
+```python
+{"$type": "add_visual_effect", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_visual_effect", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of this visual effect. | |
+| `"position"` | Vector3 | The initial position of the visual effect. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The initial rotation of the visual effect. | {"x": 0, "y": 0, "z": 0} |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -3321,107 +3371,6 @@ Toggle whether to download asset bundles (models, scenes, etc.) directly from by
 | --- | --- | --- | --- |
 | `"value"` | bool | Boolean value. | |
 
-# LineRendererCommand
-
-These commands show, remove, or adjust 3D lines in the scene.
-
-***
-
-## **`add_line_renderer`**
-
-Add a 3D line to the scene.
-
-
-```python
-{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1}
-```
-
-```python
-{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1, "start_width": 1, "end_width": 1, "loop": False, "position": {"x": 0, "y": 0, "z": 0}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"points"` | Vector3 [] | The points or vertices along the line. This must have at least 2 elements. | |
-| `"start_color"` | Color | The start color of the line. | |
-| `"end_color"` | Color | The end color of the line. If it's different than start_color, the colors will have an even gradient along the line. | |
-| `"start_width"` | float | The start width of the line in meters. | 1 |
-| `"end_width"` | float | The end width of the line in meters. | 1 |
-| `"loop"` | bool | If True, the start and end positions of the line will connect together to form a continuous loop. | False |
-| `"position"` | Vector3 | The position of the line. | {"x": 0, "y": 0, "z": 0} |
-| `"id"` | int | The unique ID of the line. | |
-
-***
-
-## **`add_points_to_line_renderer`**
-
-Add points to an existing line in the scene.
-
-
-```python
-{"$type": "add_points_to_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"points"` | Vector3 [] | Additional points on the line. | |
-| `"id"` | int | The unique ID of the line. | |
-
-***
-
-## **`destroy_line_renderer`**
-
-Destroy an existing line in the scene from the scene.
-
-
-```python
-{"$type": "destroy_line_renderer", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of the line. | |
-
-***
-
-## **`remove_points_from_line_renderer`**
-
-Remove points from an existing line in the scene.
-
-
-```python
-{"$type": "remove_points_from_line_renderer", "id": 1}
-```
-
-```python
-{"$type": "remove_points_from_line_renderer", "id": 1, "count": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"count"` | int | Remove this many points from the end of the line. | 0 |
-| `"id"` | int | The unique ID of the line. | |
-
-***
-
-## **`simplify_line_renderer`**
-
-Simplify a 3D line to the scene by removing intermediate points.
-
-
-```python
-{"$type": "simplify_line_renderer", "id": 1}
-```
-
-```python
-{"$type": "simplify_line_renderer", "id": 1, "tolerance": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"tolerance"` | float | A value greater than 0 used to simplify the line. Points within the tolerance parameter will be removed. A value of 0 means that all points will be included. | 0 |
-| `"id"` | int | The unique ID of the line. | |
-
 # LoadFromResources
 
 Load something of type T from resources.
@@ -3571,6 +3520,502 @@ Given a position, try to get the nearest position on the NavMesh.
 | `"position"` | Vector3 | The position being tested. Its y value will be normalized to the y value of the NavMesh at the (x, z) coordinate. | |
 | `"max_distance"` | float | Radius of the search for a valid point. A large value will result in an expensive calculation; try to keep the value below 5. | 1.0 |
 | `"id"` | int | The ID of this output data. This is useful if this command is sent more than once. | 0 |
+
+# NonPhysicsObjectCommand
+
+These commands add or affect non-physics objects.
+
+# LineRendererCommand
+
+These commands show, remove, or adjust 3D lines in the scene.
+
+***
+
+## **`add_line_renderer`**
+
+Add a 3D line to the scene.
+
+
+```python
+{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1}
+```
+
+```python
+{"$type": "add_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "start_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "end_color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1, "start_width": 1, "end_width": 1, "loop": False, "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"points"` | Vector3 [] | The points or vertices along the line. This must have at least 2 elements. | |
+| `"start_color"` | Color | The start color of the line. | |
+| `"end_color"` | Color | The end color of the line. If it's different than start_color, the colors will have an even gradient along the line. | |
+| `"start_width"` | float | The start width of the line in meters. | 1 |
+| `"end_width"` | float | The end width of the line in meters. | 1 |
+| `"loop"` | bool | If True, the start and end positions of the line will connect together to form a continuous loop. | False |
+| `"position"` | Vector3 | The position of the line. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`destroy_line_renderer`**
+
+Destroy an existing line in the scene from the scene.
+
+
+```python
+{"$type": "destroy_line_renderer", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# AdjustLineRendererCommand
+
+These commands adjust rendered lines in the scene.
+
+***
+
+## **`add_points_to_line_renderer`**
+
+Add points to an existing line in the scene.
+
+
+```python
+{"$type": "add_points_to_line_renderer", "points": [{"x": 1.1, "y": 0.0, "z": 0}, {"x": 2, "y": 0, "z": -1}], "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"points"` | Vector3 [] | Additional points on the line. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`remove_points_from_line_renderer`**
+
+Remove points from an existing line in the scene.
+
+
+```python
+{"$type": "remove_points_from_line_renderer", "id": 1}
+```
+
+```python
+{"$type": "remove_points_from_line_renderer", "id": 1, "count": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"count"` | int | Remove this many points from the end of the line. | 0 |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`simplify_line_renderer`**
+
+Simplify a 3D line to the scene by removing intermediate points.
+
+
+```python
+{"$type": "simplify_line_renderer", "id": 1}
+```
+
+```python
+{"$type": "simplify_line_renderer", "id": 1, "tolerance": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tolerance"` | float | A value greater than 0 used to simplify the line. Points within the tolerance parameter will be removed. A value of 0 means that all points will be included. | 0 |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# PositionMarkerCommand
+
+These commands show or hide position markers. They can be useful for debugging.
+
+***
+
+## **`add_position_marker`**
+
+Create a non-physics, non-interactive marker at a position in the scene. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+```python
+{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}, "shape": "sphere"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | Add a marker at this position. | |
+| `"scale"` | float | The scale of the marker. If the scale is 1, a cube and square will be 1 meter wide and a sphere and circle will be 1 meter in diameter. | 0.05 |
+| `"color"` | Color | The color of the marker. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
+| `"shape"` | Shape | The shape of the position marker object. | "sphere" |
+| `"id"` | int | The ID of the non-physics object. | |
+
+#### Shape
+
+The shape of the marker.
+
+| Value | Description |
+| --- | --- |
+| `"cube"` |  |
+| `"sphere"` |  |
+| `"circle"` |  |
+| `"square"` |  |
+
+***
+
+## **`remove_position_markers`**
+
+Remove all position markers from the scene. 
+
+- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
+
+```python
+{"$type": "remove_position_markers", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# TexturedQuadCommand
+
+These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send [set_textured_quad](#set_textured_quad).
+
+***
+
+## **`create_textured_quad`**
+
+Create a blank quad (a rectangular mesh with four vertices) in the scene.
+
+
+```python
+{"$type": "create_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the quad. This will always be anchored in the bottom-center point of the object. | |
+| `"size"` | Vector2 | The width and height of the quad. | |
+| `"euler_angles"` | Vector3 | The orientation of the quad, in Euler angles. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`destroy_textured_quad`**
+
+Destroy an existing textured quad.
+
+
+```python
+{"$type": "destroy_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# AdjustTexturedQuadCommand
+
+These commands adjust an existing textured quad.
+
+***
+
+## **`parent_textured_quad_to_object`**
+
+Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object.
+
+
+```python
+{"$type": "parent_textured_quad_to_object", "object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the parent object in the scene. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`rotate_textured_quad_by`**
+
+Rotate a textured quad by a given angle around a given axis.
+
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation. | |
+| `"is_world"` | bool | If true, the quad will rotate via "global" directions and angles. If false, the quad will rotate locally. | True |
+| `"id"` | int | The ID of the non-physics object. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_textured_quad_to`**
+
+Set the rotation of a textured quad.
+
+
+```python
+{"$type": "rotate_textured_quad_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`scale_textured_quad`**
+
+Scale a textured quad by a factor.
+
+
+```python
+{"$type": "scale_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "scale_textured_quad", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the quad by this vector. (For example, if scale_factor is (2,2,2), then the quad's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`set_textured_quad`**
+
+Apply a texture to a pre-existing quad. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "set_textured_quad", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`show_textured_quad`**
+
+Show or hide a textured quad.
+
+
+```python
+{"$type": "show_textured_quad", "id": 1}
+```
+
+```python
+{"$type": "show_textured_quad", "id": 1, "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | If True, show the quad. If False, hide it. | True |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`teleport_textured_quad`**
+
+Teleport a textured quad to a new position.
+
+
+```python
+{"$type": "teleport_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | New position of the quad. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`unparent_textured_quad`**
+
+Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_textured_quad", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# VisualEffectCommand
+
+These commands can be used for non-physical visual effects in the scene.
+
+***
+
+## **`destroy_visual_effect`**
+
+Destroy a non-physical effect object.
+
+
+```python
+{"$type": "destroy_visual_effect", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
+
+# AdjustVisualEffectCommand
+
+These commands adjust non-physical visual effects.
+
+***
+
+## **`parent_visual_effect_to_object`**
+
+Parent a non-physical visual effect to a standard TDW physically-embodied object.
+
+
+```python
+{"$type": "parent_visual_effect_to_object", "object_id": 1, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The ID of the physically-embodied TDW object. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`rotate_visual_effect_by`**
+
+Rotate a non-physical visual effect by a given angle around a given axis.
+
+
+```python
+{"$type": "rotate_visual_effect_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_visual_effect_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation. | |
+| `"is_world"` | bool | If True, the visual effect will rotate via "global" directions and angles. If False, the visual effect will rotate locally. | True |
+| `"id"` | int | The ID of the non-physics object. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_visual_effect_to`**
+
+Set the rotation of a non-physical visual effect.
+
+
+```python
+{"$type": "rotate_visual_effect_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation quaternion. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`scale_visual_effect`**
+
+Scale a non-physical visual effect by a factor.
+
+
+```python
+{"$type": "scale_visual_effect", "id": 1}
+```
+
+```python
+{"$type": "scale_visual_effect", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`teleport_visual_effect`**
+
+Teleport a non-physical visual effect to a new position.
+
+
+```python
+{"$type": "teleport_visual_effect", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The new position of the visual effect. | |
+| `"id"` | int | The ID of the non-physics object. | |
+
+***
+
+## **`unparent_visual_effect`**
+
+Unparent a non-physical visual effect from a parent object. If the visual effect doesn't have a parent object, this command doesn't do anything.
+
+
+```python
+{"$type": "unparent_visual_effect", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The ID of the non-physics object. | |
 
 # ObiCommand
 
@@ -6014,56 +6459,6 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
-
-# PositionMarkerCommand
-
-These commands show or hide position markers. They can be useful for debugging.
-
-***
-
-## **`add_position_marker`**
-
-Create a non-physics, non-interactive marker at a position in the scene. 
-
-- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
-
-```python
-{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}}
-```
-
-```python
-{"$type": "add_position_marker", "position": {"x": 1.1, "y": 0.0, "z": 0}, "scale": 0.05, "color": {"r": 1, "g": 0, "b": 0, "a": 1}, "shape": "sphere"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | Add a marker at this position. | |
-| `"scale"` | float | The scale of the marker. If the scale is 1, a cube and square will be 1 meter wide and a sphere and circle will be 1 meter in diameter. | 0.05 |
-| `"color"` | Color | The color of the marker. The default color is red. | {"r": 1, "g": 0, "b": 0, "a": 1} |
-| `"shape"` | Shape | The shape of the position marker object. | "sphere" |
-
-#### Shape
-
-The shape of the marker.
-
-| Value | Description |
-| --- | --- |
-| `"cube"` |  |
-| `"sphere"` |  |
-| `"circle"` |  |
-| `"square"` |  |
-
-***
-
-## **`remove_position_markers`**
-
-Remove all position markers from the scene. 
-
-- <font style="color:magenta">**Debug-only**: This command is only intended for use as a debug tool or diagnostic tool. It is not compatible with ordinary TDW usage.</font>
-
-```python
-{"$type": "remove_position_markers"}
-```
 
 # PostProcessCommand
 
@@ -9019,200 +9414,6 @@ Options for when to send data.
 | `"once"` | Send the data for this frame only. |
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
-
-# TexturedQuadCommand
-
-These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send [set_textured_quad](#set_textured_quad).
-
-***
-
-## **`create_textured_quad`**
-
-Create a blank quad (a rectangular mesh with four vertices) in the scene.
-
-
-```python
-{"$type": "create_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "size": {"x": 1.1, "y": 0}, "euler_angles": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | The position of the quad. This will always be anchored in the bottom-center point of the object. | |
-| `"size"` | Vector2 | The width and height of the quad. | |
-| `"euler_angles"` | Vector3 | The orientation of the quad, in Euler angles. | |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`destroy_textured_quad`**
-
-Destroy an existing textured quad.
-
-
-```python
-{"$type": "destroy_textured_quad", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-# AdjustTexturedQuadCommand
-
-These commands adjust an existing textured quad.
-
-***
-
-## **`parent_textured_quad_to_object`**
-
-Parent a textured quad to an object in the scene. The textured quad will always be at a fixed local position and rotation relative to the object.
-
-
-```python
-{"$type": "parent_textured_quad_to_object", "object_id": 1, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"object_id"` | int | The ID of the parent object in the scene. | |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`rotate_textured_quad_by`**
-
-Rotate a textured quad by a given angle around a given axis.
-
-
-```python
-{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1}
-```
-
-```python
-{"$type": "rotate_textured_quad_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"axis"` | Axis | The axis of rotation. | "yaw" |
-| `"angle"` | float | The angle of rotation. | |
-| `"is_world"` | bool | If true, the quad will rotate via "global" directions and angles. If false, the quad will rotate locally. | True |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-#### Axis
-
-An axis of rotation.
-
-| Value | Description |
-| --- | --- |
-| `"pitch"` | Nod your head "yes". |
-| `"yaw"` | Shake your head "no". |
-| `"roll"` | Put your ear to your shoulder. |
-
-***
-
-## **`rotate_textured_quad_to`**
-
-Set the rotation of a textured quad.
-
-
-```python
-{"$type": "rotate_textured_quad_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"rotation"` | Quaternion | The rotation quaternion. | |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`scale_textured_quad`**
-
-Scale a textured quad by a factor.
-
-
-```python
-{"$type": "scale_textured_quad", "id": 1}
-```
-
-```python
-{"$type": "scale_textured_quad", "id": 1, "scale_factor": {"x": 1, "y": 1, "z": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale_factor"` | Vector3 | Multiply the scale of the quad by this vector. (For example, if scale_factor is (2,2,2), then the quad's current size will double.) | {"x": 1, "y": 1, "z": 1} |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`set_textured_quad`**
-
-Apply a texture to a pre-existing quad. 
-
-- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
-
-```python
-{"$type": "set_textured_quad", "dimensions": {"x": 0, "y": 1}, "image": "string", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"dimensions"` | GridPoint | The expected dimensions of the image in pixels. | |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`show_textured_quad`**
-
-Show or hide a textured quad.
-
-
-```python
-{"$type": "show_textured_quad", "id": 1}
-```
-
-```python
-{"$type": "show_textured_quad", "id": 1, "show": True}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"show"` | bool | If True, show the quad. If False, hide it. | True |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`teleport_textured_quad`**
-
-Teleport a textured quad to a new position.
-
-
-```python
-{"$type": "teleport_textured_quad", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"position"` | Vector3 | New position of the quad. | |
-| `"id"` | int | The unique ID of this textured quad. | |
-
-***
-
-## **`unparent_textured_quad`**
-
-Unparent a textured quad from a parent object. If the textured quad doesn't have a parent object, this command doesn't do anything.
-
-
-```python
-{"$type": "unparent_textured_quad", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique ID of this textured quad. | |
 
 # UiCommand
 

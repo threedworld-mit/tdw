@@ -273,6 +273,16 @@ class RobotRecord(_Record):
         self.ik: list = data["ik"]
 
 
+class VisualEffectRecord(_Record):
+    """
+    A record for a non-physical visual effect asset bundle.
+    """
+
+    def __init__(self, data: Optional[dict] = None):
+        super().__init__(data)
+        self.audio: bool = data["audio"]
+
+
 T = TypeVar("T", bound=_Record)
 
 
@@ -634,3 +644,16 @@ class RobotLibrarian(_Librarian[RobotRecord]):
 
     def _generate_record(self, data: dict) -> T:
         return RobotRecord(data)
+
+
+class VisualEffectLibrarian(_Librarian[VisualEffectRecord]):
+    """
+    Librarian class for non-physical visual effects.
+    """
+
+    @staticmethod
+    def get_library_filenames() -> List[str]:
+        return ["visual_effects.json"]
+
+    def _generate_record(self, data: dict) -> T:
+        return VisualEffectRecord(data)

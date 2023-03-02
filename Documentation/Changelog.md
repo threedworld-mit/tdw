@@ -4,6 +4,46 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.7
+
+### Command API
+
+#### New Commands
+
+| Command                          | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `add_visual_effect`              | Add a non-physical visual effect to the scene from an asset bundle. |
+| `destroy_visual_effect`          | Destroy a visual effect in the scene.                        |
+| `scale_visual_effect`            | Scale a visual effect by a factor.                           |
+| `parent_visual_effect_to_object` | Parent a visual effect object to a standard TDW physically-embodied object. |
+| `unparent_visual_effect`         | Unparent a visual effect from a parent object.               |
+| `teleport_visual_effect`         | Teleport a visual effect to a new position.                  |
+| `rotate_visual_effect_by`        | Rotate a visual effect by a given angle around a given axis. |
+| `rotate_visual_effect_to`        | Set the rotation of a non-physical visual effect.            |
+
+### `tdw` module
+
+- Added: `controller.get_add_visual_effect(name, id, position, rotation, library)` A wrapper function for the `add_visual_effect` command.
+
+- Added: `VisualEffectLibrarian` and `VisualEffectRecord`
+
+### Visual Effects Library
+
+- Added: fire, smoke, burned_wood_pile_1, burned_wood_pile_2, burned_wood_pile_3
+
+### Example Controllers
+
+- Added: `non_physics/visual_effects.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                      | Description                       |
+| --------------------------------------------- | --------------------------------- |
+| `python/librarian/visual_effect_librarian.md` | API for `VisualEffectLibrarian`   |
+| `lessons/non_physics/visual_effects.md`       | Documentation for visual effects. |
+
 ## v1.11.6
 
 ### Command API

@@ -280,6 +280,7 @@ class VisualEffectRecord(_Record):
 
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
+        self.audio: bool = data["audio"]
 
 
 T = TypeVar("T", bound=_Record)

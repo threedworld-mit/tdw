@@ -31,6 +31,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 - Added: fire, smoke, burned_wood_pile_1, burned_wood_pile_2, burned_wood_pile_3
 
+### Example Controllers
+
+- Added: `non_physics/visual_effects.py`
+
 ### Documentation
 
 #### New Documentation

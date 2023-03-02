@@ -36,11 +36,11 @@ record = VisualEffectRecord(data=data) # Creates a record from JSON data.
 
 ### Fields
 
-| Field         | Type           | Description                                                  |
-| ------------- | -------------- | ------------------------------------------------------------ |
-| `name`        | str            | The name of the record.                                      |
-| `object_type` | str            | The object type. This tells TDW how to load the object and which API commands are valid for this object. |
-| `urls`        | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `VisualEffectRecord.get_url()` |
+| Field   | Type           | Description                                                  |
+| ------- | -------------- | ------------------------------------------------------------ |
+| `name`  | str            | The name of the record.                                      |
+| `audio` | bool           | True if this visual effect includes audio.                   |
+| `urls`  | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `VisualEffectRecord.get_url()` |
 
 ### Functions
 

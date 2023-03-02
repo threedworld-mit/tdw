@@ -4,6 +4,8 @@
 
 A **visual effect** in TDW is a specialized object that can be visually rendered but is not physically embodied. Visual effects don't have colliders and won't respond to physics events. Visual effects are "objects" in that they have a position, rotation, and scale, but they aren't standard physically embodied TDW objects, which means that commands such as `add_object` or `teleport_object` won't work for a visual effect.
 
+Visual effects include fire, smoke and debris piles representing the burned remains of objects. We will be adding other types of visual effect in the near future.
+
 ## How to add a visual effect to a scene
 
 Visual effects are stored as asset bundles, just like [standard TDW objects](../core_concepts/objects.md). 

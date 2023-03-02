@@ -14,6 +14,7 @@ You can add a visual effect via the [`add_visual_effect`](../../api/command_api.
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
@@ -24,7 +25,8 @@ camera = ThirdPersonCamera(position={"x": 0.5, "y": 1.6, "z": -4.6},
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("visual_effects")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], path=path)
-c.add_ons.extend([camera, capture])
+audio = AudioInitializer()
+c.add_ons.extend([camera, capture, audio])
 c.communicate([TDWUtils.create_empty_room(12, 12),
                {"$type": "set_screen_size",
                 "width": 512,
@@ -38,6 +40,7 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
 for i in range(200):
     c.communicate([])
 c.communicate({"$type": "terminate"})
+
 ```
 
 Result:

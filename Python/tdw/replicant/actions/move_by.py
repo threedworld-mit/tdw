@@ -43,7 +43,8 @@ class MoveBy(Animate):
                                   ReplicantBodyPart.upperarm_l, ReplicantBodyPart.upperarm_r]
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float, arrived_at: float, max_walk_cycles: int):
+                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
+                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
@@ -51,6 +52,7 @@ class MoveBy(Animate):
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
+        :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
@@ -67,6 +69,10 @@ class MoveBy(Animate):
         The speed at which the arms are reset in seconds.
         """
         self.reset_arms_duration: float = reset_arms_duration
+        """:field
+        If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        """
+        self.scale_reset_arms_duration: bool = scale_reset_arms_duration
         """:field
         If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         """
@@ -101,15 +107,22 @@ class MoveBy(Animate):
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         self._initial_position = dynamic.transform.position
+        # Scale the reset arms motion duration.
+        if self.scale_reset_arms_duration:
+            self.reset_arms_duration = Action._get_scaled_duration(duration=self.reset_arms_duration, resp=resp)
         # Reset the arms.
         if self.reset_arms:
             commands.extend([{"$type": "replicant_reset_arm",
                               "id": static.replicant_id,
                               "duration": self.reset_arms_duration,
-                              "arm": arm.name} for arm in Arm])
+                              "arm": arm.name,
+                              "set_status": False} for arm in Arm])
         # Reset the head.
         commands.append({"$type": "replicant_reset_head",
-                         "id": static.replicant_id})
+                         "id": static.replicant_id,
+                         "set_status": False})
+        # Request an initial overlap.
+        commands.extend(self._overlap(static=static, dynamic=dynamic))
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
@@ -123,26 +136,15 @@ class MoveBy(Animate):
             distance_to_target = np.linalg.norm(dynamic.transform.position - self._destination)
             distance_traversed = np.linalg.norm(dynamic.transform.position - self._initial_position)
             # We arrived at the target.
-            if distance_to_target < self.arrived_at or distance_traversed > abs(self.distance):
+            if distance_to_target < self.arrived_at or distance_traversed > abs(self.distance) - self.arrived_at:
                 self.status = ActionStatus.success
             # Stop walking if there is a collision.
             elif len(dynamic.get_collision_enters(collision_detection=self.collision_detection)) > 0:
                 self.status = ActionStatus.collision
             else:
-                # Try to avoid obstacles by detecting them ahead of time with the Replicant's trigger collider.
+                commands.extend(self._overlap(static=static, dynamic=dynamic))
+                # Try to avoid obstacles by detecting them ahead of time by requesting an overlap shape.
                 if self.collision_detection.avoid:
-                    # Check for overlap.
-                    overlap_z = 0.5
-                    if self.distance < 0:
-                        overlap_z *= -1
-                    overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
-                    overlap_position[1] += 1
-                    # Send the next overlap command.
-                    commands.append({"$type": "send_overlap_box",
-                                     "id": static.replicant_id,
-                                     "half_extents": MoveBy.OVERLAP_HALF_EXTENTS,
-                                     "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
-                                     "position": TDWUtils.array_to_vector3(overlap_position)})
                     for i in range(len(resp) - 1):
                         r_id = OutputData.get_data_type_id(resp[i])
                         if r_id == "over":
@@ -178,3 +180,26 @@ class MoveBy(Animate):
         for object_id in self.__held_objects:
             self.collision_detection.exclude_objects.remove(object_id)
         return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+
+    def _overlap(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        """
+        :param static: The static Replicant data.
+        :param dynamic: The dynamic Replicant data.
+
+        :return: A list of commands to send an overlap box.
+        """
+
+        if not self.collision_detection.avoid:
+            return []
+        # Get the position of the overlap shape.
+        overlap_z = 0.5
+        if self.distance < 0:
+            overlap_z *= -1
+        overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
+        overlap_position[1] += 1
+        # Send the next overlap command.
+        return [{"$type": "send_overlap_box",
+                 "id": static.replicant_id,
+                 "half_extents": MoveBy.OVERLAP_HALF_EXTENTS,
+                 "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
+                 "position": TDWUtils.array_to_vector3(overlap_position)}]

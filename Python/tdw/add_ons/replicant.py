@@ -18,6 +18,7 @@ from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
 from tdw.replicant.actions.look_at import LookAt
+from tdw.replicant.actions.rotate_head import RotateHead
 from tdw.replicant.actions.reset_head import ResetHead
 from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.image_frequency import ImageFrequency
@@ -112,6 +113,9 @@ class Replicant(AddOn):
                      "id": self.replicant_id},
                     {"$type": "add_replicant_rigidbody",
                      "id": self.replicant_id},
+                    {"$type": "set_rigidbody_constraints",
+                     "id": self.replicant_id,
+                     "freeze_position_axes": {"x": 0, "y": 1, "z": 0}},
                     {"$type": "send_replicants",
                      "frequency": "always"},
                     {"$type": "send_transforms",
@@ -119,6 +123,8 @@ class Replicant(AddOn):
                     {"$type": "send_bounds",
                      "frequency": "always"},
                     {"$type": "send_containment",
+                     "frequency": "always"},
+                    {"$type": "send_framerate",
                      "frequency": "always"}]
         return commands
 
@@ -204,7 +210,7 @@ class Replicant(AddOn):
         self.action = TurnTo(target=target)
 
     def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                arrived_at: float = 0.1, max_walk_cycles: int = 100) -> None:
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100) -> None:
         """
         Walk a given distance.
 
@@ -225,6 +231,7 @@ class Replicant(AddOn):
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
+        :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         """
@@ -235,12 +242,13 @@ class Replicant(AddOn):
                              previous=self._previous_action,
                              reset_arms=reset_arms,
                              reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles)
 
     def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms: bool = True,
-                reset_arms_duration: float = 0.25, arrived_at: float = 0.1, max_walk_cycles: int = 100,
-                bounds_position: str = "center") -> None:
+                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 0.1,
+                max_walk_cycles: int = 100, bounds_position: str = "center") -> None:
         """
         Turn the Replicant to a target position or object and then walk to it.
 
@@ -261,6 +269,7 @@ class Replicant(AddOn):
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
+        :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
@@ -271,13 +280,14 @@ class Replicant(AddOn):
                              previous=self._previous_action,
                              reset_arms=reset_arms,
                              reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
-                  max_distance: float = 1.5, duration: float = 0.25) -> None:
+                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -299,6 +309,7 @@ class Replicant(AddOn):
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
         # Convert the relative position to an absolute position.
@@ -315,6 +326,7 @@ class Replicant(AddOn):
                                arrived_at=arrived_at,
                                previous=self._previous_action,
                                duration=duration,
+                               scale_duration=scale_duration,
                                max_distance=max_distance)
 
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch") -> None:
@@ -371,7 +383,7 @@ class Replicant(AddOn):
                               previous=self._previous_action,
                               ik_body_parts=[])
 
-    def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25) -> None:
+    def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25, scale_duration: bool = True) -> None:
         """
         Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
 
@@ -382,15 +394,18 @@ class Replicant(AddOn):
        
         :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
         self.action = ResetArm(arms=Replicant._arms_to_list(arm),
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                previous=self._previous_action,
-                               duration=duration)
+                               duration=duration,
+                               scale_duration=scale_duration)
 
-    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1):
+    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1,
+                scale_duration: bool = True):
         """
         Look at a target object or position.
 
@@ -398,20 +413,36 @@ class Replicant(AddOn):
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
-        self.action = LookAt(target=target, duration=duration)
+        self.action = LookAt(target=target, duration=duration, scale_duration=scale_duration)
 
-    def reset_head(self, duration: float = 0.1):
+    def rotate_head(self, axis: str, angle: float, duration: float = 0.1, scale_duration: bool = True):
+        """
+        Rotate the head by an angle around an axis.
+
+        The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+
+        :param axis: The axis of rotation. Options: `"pitch"`, `"yaw"`, `"roll"`.
+        :param angle: The target angle in degrees.
+        :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        """
+
+        self.action = RotateHead(axis=axis, angle=angle, duration=duration, scale_duration=scale_duration)
+
+    def reset_head(self, duration: float = 0.1, scale_duration: bool = True):
         """
         Reset the head to its neutral rotation.
 
         The head will continuously move over multiple `communicate()` calls until it is at its neutral rotation.
 
         :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
-        self.action = ResetHead(duration=duration)
+        self.action = ResetHead(duration=duration, scale_duration=scale_duration)
 
     def reset(self, position: Union[Dict[str, float], np.ndarray] = None,
               rotation: Union[Dict[str, float], np.ndarray] = None) -> None:

@@ -57,6 +57,8 @@ from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import LeapMotion as Leap
+from tdw.FBOutput import Framerate as Frame
+from tdw.FBOutput import OccupancyMap as Occ
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -407,11 +409,14 @@ class IsOnNavMesh(OutputData):
     def get_data(self) -> IsNM.IsOnNavMesh:
         return IsNM.IsOnNavMesh.GetRootAsIsOnNavMesh(self.bytes, 0)
 
-    def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Position())
+    def get_position(self) -> np.ndarray:
+        return self.data.PositionAsNumpy()
 
     def get_is_on(self) -> bool:
         return self.data.IsOn()
+
+    def get_id(self) -> int:
+        return self.data.Id()
 
 
 class IdPassGrayscale(OutputData):
@@ -844,7 +849,7 @@ class Containment(OutputData):
     def get_tag(self) -> ContainerTag:
         return ContainerTag(self.data.Tag())
 
-    def get_overlap_ids(self) -> np.array:
+    def get_overlap_ids(self) -> np.ndarray:
         return self.data.OverlapIdsAsNumpy()
 
     def get_env(self) -> bool:
@@ -1558,7 +1563,6 @@ class Replicants(OutputData):
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
 
-
 class LeapMotion(OutputData):
     def __init__(self, b):
         super().__init__(b)
@@ -1590,3 +1594,36 @@ class LeapMotion(OutputData):
 
     def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][bone_index][collision_index])
+
+class Framerate(OutputData):
+    def get_data(self) -> Frame.Framerate:
+        return Frame.Framerate.GetRootAsFramerate(self.bytes, 0)
+
+    def get_target_framerate(self) -> int:
+        return int(self.data.TargetFramerate())
+
+    def get_frame_dt(self) -> float:
+        return float(self.data.FrameDt())
+
+    def get_physics_timestep(self) -> float:
+        return float(self.data.PhysicsTimeStep())
+
+
+class OccupancyMap(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._shape: np.ndarray = self.data.ShapeAsNumpy()
+        self._map: np.ndarray = self.data.MapAsNumpy().reshape(self._shape)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(self._shape[0], self._shape[1], 2)
+
+    def get_data(self) -> Occ.OccupancyMap:
+        return Occ.OccupancyMap.GetRootAsOccupancyMap(self.bytes, 0)
+
+    def get_shape(self) -> np.ndarray:
+        return self._shape
+
+    def get_map(self) -> np.ndarray:
+        return self._map
+
+    def get_positions(self) -> np.ndarray:
+        return self._positions

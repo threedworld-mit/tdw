@@ -29,7 +29,7 @@ class Clap(ArmMotion):
 
     def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection):
         super().__init__(arms=[Arm.left, Arm.right], dynamic=dynamic, collision_detection=collision_detection,
-                         duration=0.025, previous=None)
+                         duration=0.025, previous=None, scale_duration=False)
         self.clap_state: ClapState = ClapState.raising_hands
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,

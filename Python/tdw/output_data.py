@@ -1563,6 +1563,7 @@ class Replicants(OutputData):
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
 
+
 class LeapMotion(OutputData):
     def __init__(self, b):
         super().__init__(b)
@@ -1594,6 +1595,7 @@ class LeapMotion(OutputData):
 
     def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][bone_index][collision_index])
+
 
 class Framerate(OutputData):
     def get_data(self) -> Frame.Framerate:

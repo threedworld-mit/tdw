@@ -80,6 +80,7 @@ class OculusLeapMotion(VR):
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
+        commands.append({"$type": "set_teleportation_area"})
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})

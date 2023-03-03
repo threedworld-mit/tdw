@@ -14,13 +14,14 @@ class LookAt(HeadMotion):
     The head will continuously move over multiple `communicate()` calls until it is looking at the target.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float):
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float, scale_duration: bool):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
-        super().__init__(duration=duration)
+        super().__init__(duration=duration, scale_duration=scale_duration)
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """

@@ -88,7 +88,7 @@ This is a non-animated action, meaning that the Replicant will immediately snap 
 
 **`self.move_by(distance)`**
 
-**`self.move_by(distance, reset_arms=True, reset_arms_duration=0.25, arrived_at=0.1, max_walk_cycles=100)`**
+**`self.move_by(distance, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, max_walk_cycles=100)`**
 
 Walk a given distance.
 
@@ -111,6 +111,7 @@ The action can end for several reasons depending on the collision detection rule
 | distance |  float |  | The target distance. If less than 0, the Replicant will walk backwards. |
 | reset_arms |  bool  | True | If True, reset the arms to their neutral positions while beginning the walk cycle. |
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
+| scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float  | 0.1 | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
 | max_walk_cycles |  int  | 100 | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 
@@ -118,7 +119,7 @@ The action can end for several reasons depending on the collision detection rule
 
 **`self.move_to(target)`**
 
-**`self.move_to(target, reset_arms=True, reset_arms_duration=0.25, arrived_at=0.1, max_walk_cycles=100, bounds_position="center")`**
+**`self.move_to(target, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, max_walk_cycles=100, bounds_position="center")`**
 
 Turn the Replicant to a target position or object and then walk to it.
 
@@ -141,6 +142,7 @@ The action can end for several reasons depending on the collision detection rule
 | target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 | reset_arms |  bool  | True | If True, reset the arms to their neutral positions while beginning the walk cycle. |
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
+| scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float  | 0.1 | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
 | max_walk_cycles |  int  | 100 | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 | bounds_position |  str  | "center" | If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`. |
@@ -155,7 +157,7 @@ These actions move and bend the joints of the Replicant's arms.
 
 **`self.reach_for(target, arm)`**
 
-**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25)`**
+**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True)`**
 
 Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -179,12 +181,13 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | arrived_at |  float  | 0.09 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
 | max_distance |  float  | 1.5 | The maximum distance from the hand to the target position. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 #### reset_arm
 
 **`self.reset_arm(arm)`**
 
-**`self.reset_arm(arm, duration=0.25)`**
+**`self.reset_arm(arm, duration=0.25, scale_duration=True)`**
 
 Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
 
@@ -197,6 +200,7 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | --- | --- | --- | --- |
 | arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 ***
 
@@ -250,7 +254,7 @@ These actions rotate the Replicant's head.
 
 **`self.look_at()`**
 
-**`self.look_at(target=target, duration=0.1)`**
+**`self.look_at(target=target, duration=0.1, scale_duration=True)`**
 
 Look at a target object or position.
 
@@ -260,12 +264,30 @@ The head will continuously move over multiple `communicate()` calls until it is 
 | --- | --- | --- | --- |
 | target |  Union[int, np.ndarray, Dict[str, float] | target | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 | duration |  float  | 0.1 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+
+#### rotate_head
+
+**`self.rotate_head()`**
+
+**`self.rotate_head(axis=axis, angle=angle, duration=0.1, scale_duration=True)`**
+
+Rotate the head by an angle around an axis.
+
+The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| axis |  str | axis | The axis of rotation. Options: `"pitch"`, `"yaw"`, `"roll"`. |
+| angle |  float | angle | The target angle in degrees. |
+| duration |  float  | 0.1 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 #### reset_head
 
 **`self.reset_head()`**
 
-**`self.reset_head(duration=0.1)`**
+**`self.reset_head(duration=0.1, scale_duration=True)`**
 
 Reset the head to its neutral rotation.
 
@@ -274,6 +296,7 @@ The head will continuously move over multiple `communicate()` calls until it is 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | duration |  float  | 0.1 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 ***
 

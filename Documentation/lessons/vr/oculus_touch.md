@@ -103,8 +103,8 @@ class VirtualReality(Controller):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.done = False
         self.vr = OculusTouch()
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.extend([self.vr])
 
     def run(self) -> None:
@@ -150,8 +150,8 @@ class OculusTouchButtonListener(Controller):
         self.vr = OculusTouch()
         # Quit when the left trigger button is pressed.
         self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # End the trial when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.end_trial)
+        # End the trial when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.end_trial)
         self.add_ons.extend([self.vr])
         self.communicate(TDWUtils.create_empty_room(12, 12))
 
@@ -226,8 +226,8 @@ class OculusTouchAxisListener(Controller):
         # Move the robot joints with the control sticks.
         self.vr.listen_to_axis(is_left=True, function=self.left_axis)
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.extend([self.robot, self.vr])
         self.done: bool = False
 
@@ -314,8 +314,8 @@ class OculusTouchCompositeObject(Controller):
         self.done = False
         # Add the VR rig.
         self.vr = OculusTouch(human_hands=False, output_data=True, attach_avatar=True, set_graspable=False)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
         self.add_ons.append(self.vr)
 
     def run(self) -> None:
@@ -456,10 +456,10 @@ class LoadingScreen(Controller):
         # Add a VR rig.
         self.vr: OculusTouch = OculusTouch()
         self.done: bool = False
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # Go to the next scene when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.next_trial)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # Go to the next scene when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.next_trial)
         self.add_ons.append(self.vr)
         # Load the first scene.
         self.next_trial()
@@ -614,10 +614,10 @@ class OculusTouchPyImpact(Controller):
         self.simulation_done = False
         self.trial_done = False
         self.vr = OculusTouch(set_graspable=False)
-        # Quit when the left trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=True, function=self.quit)
-        # End the trial when the right trigger button is pressed.
-        self.vr.listen_to_button(button=OculusTouchButton.trigger_button, is_left=False, function=self.end_trial)
+        # Quit when the left control stick is clicked.
+        self.vr.listen_to_button(button=OculusTouchButton.primary_2d_axis_click, is_left=True, function=self.quit)
+        # End the trial when the Y button is pressed.
+        self.vr.listen_to_button(button=OculusTouchButton.secondary_button, is_left=True, function=self.end_trial)
         # Enable PyImpact.
         self.py_impact = PyImpact()
         self.add_ons.extend([self.vr, self.py_impact])

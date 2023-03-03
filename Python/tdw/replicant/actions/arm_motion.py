@@ -1,8 +1,8 @@
-from __future__ import annotations
 from typing import List, Optional
 from abc import ABC
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
+from tdw.replicant.actions.ik_motion import IkMotion
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
@@ -10,7 +10,7 @@ from tdw.replicant.arm import Arm
 from tdw.replicant.image_frequency import ImageFrequency
 
 
-class ArmMotion(Action, ABC):
+class ArmMotion(IkMotion, ABC):
     """
     Abstract base class for actions related to Replicant arm motion.
 
@@ -21,16 +21,17 @@ class ArmMotion(Action, ABC):
     """
 
     def __init__(self, arms: List[Arm], dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 duration: float, previous: Optional[Action]):
+                 previous: Optional[Action], duration: float, scale_duration: bool):
         """
         :param arms: A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
-        :param duration: The duration of the motion in seconds.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action. Can be None.
+        :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
-        super().__init__()
+        super().__init__(duration=duration, scale_duration=scale_duration)
         """:field
         A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
         """
@@ -42,10 +43,6 @@ class ArmMotion(Action, ABC):
         # Ignore collision detection for held items.
         self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
         self.collision_detection.exclude_objects.extend(self.__held_objects)
-        """:field
-        The duration of the motion in seconds.
-        """
-        self.duration: float = duration
         """:field
         If the action fails in a collision, this is a list of arms that collided with something.
         """

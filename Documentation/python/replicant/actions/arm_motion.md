@@ -17,9 +17,11 @@ Duration an arm motion, the Replicant's arm(s) will continuously over multiple `
 
 - `collision_detection` The [`CollisionDetection`](../collision_detection.md) rules.
 
+- `collisions` If the action fails in a collision, this is a list of arms that collided with something.
+
 - `duration` The duration of the motion in seconds.
 
-- `collisions` If the action fails in a collision, this is a list of arms that collided with something.
+- `scale_duration` If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
 
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
@@ -33,15 +35,16 @@ Duration an arm motion, the Replicant's arm(s) will continuously over multiple `
 
 #### \_\_init\_\_
 
-**`ArmMotion(arms, dynamic, duration, collision_detection, previous)`**
+**`ArmMotion(arms, dynamic, collision_detection, previous, duration, scale_duration)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | arms |  List[Arm] |  | A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
-| duration |  float |  | The duration of the motion in seconds. |
 | collision_detection |  CollisionDetection |  | The [`CollisionDetection`](../collision_detection.md) rules. |
 | previous |  Optional[Action] |  | The previous action. Can be None. |
+| duration |  float |  | The duration of the motion in seconds. |
+| scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 #### get_initialization_commands
 

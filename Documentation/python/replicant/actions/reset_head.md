@@ -12,6 +12,18 @@ The head will continuously move over multiple `communicate()` calls until it is 
 
 - `duration` The duration of the motion in seconds.
 
+- `scale_duration` If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+
+- `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
+
+- `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
+
+- `done` If True, this action is done and won't send any more commands.
+
+- `duration` The duration of the motion in seconds.
+
+- `scale_duration` If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -30,11 +42,12 @@ The head will continuously move over multiple `communicate()` calls until it is 
 
 #### \_\_init\_\_
 
-**`ResetHead(duration)`**
+**`ResetHead(duration, scale_duration)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | duration |  float |  | The duration of the motion in seconds. |
+| scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
 #### get_initialization_commands
 

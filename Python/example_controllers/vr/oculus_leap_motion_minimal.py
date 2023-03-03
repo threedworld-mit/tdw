@@ -19,7 +19,6 @@ commands.extend(Controller.get_add_physics_object(model_name="woven_box",
                                                   position={"x": 0, "y": 1, "z": z},
                                                   default_physics_values=False,
                                                   mass=100))
-# Add the ball object and make it graspable.
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=Controller.get_unique_id(),
                                                   position={"x": 0, "y": 1.25, "z": z}))

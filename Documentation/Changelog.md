@@ -24,8 +24,11 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 ### `tdw` module
 
 - Added: `controller.get_add_visual_effect(name, id, position, rotation, library)` A wrapper function for the `add_visual_effect` command.
-
 - Added: `VisualEffectLibrarian` and `VisualEffectRecord`
+
+### Model Library
+
+- Added to `models_core.json`: b05_fire_extinguisher, b04_fireextinguisher, fire_extinguisher, fire_extinguisher_(max2014)
 
 ### Visual Effects Library
 

@@ -8,23 +8,23 @@ Minimal Oculus Leap Motion example.
 
 c = Controller()
 commands = [TDWUtils.create_empty_room(12, 12)]
-z = 0.8
+z = 0.6
 table_id = Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",
                                                   object_id=table_id,
                                                   position={"x": 0, "y": 0, "z": z},
                                                   kinematic=True))
-commands.extend(Controller.get_add_physics_object(model_name="woven_box",
+commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                   object_id=Controller.get_unique_id(),
-                                                  position={"x": 0, "y": 1, "z": z},
+                                                  position={"x": 0, "y": 1, "z": z - 0.25},
+                                                  scale_mass=False,
+                                                  scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
                                                   default_physics_values=False,
-                                                  mass=100))
-commands.extend(Controller.get_add_physics_object(model_name="vase_02",
-                                                  object_id=Controller.get_unique_id(),
-                                                  position={"x": 0, "y": 1.25, "z": z}))
-vr = OculusLeapMotion(non_graspable=[table_id],
-                      attach_avatar=False,
-                      set_graspable=False)
+                                                  mass=1,
+                                                  static_friction=1,
+                                                  dynamic_friction=1,
+                                                  library="models_flex.json"))
+vr = OculusLeapMotion()
 c.add_ons.append(vr)
 c.communicate(commands)
 while True:

@@ -1,5 +1,3 @@
-from mido import tick2second
-
 from typing import List, Dict
 import numpy as np
 from tdw.add_ons.vr import VR
@@ -48,6 +46,7 @@ class OculusLeapMotion(VR):
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable and self._rig_type != RigType.oculus_leap_motion_physics_hands
+        self._set_ignore_helpers: bool = self._rig_type == RigType.oculus_leap_motion_physics_hands
         if non_graspable is None:
             self._non_graspable: List[int] = list()
         else:
@@ -83,7 +82,7 @@ class OculusLeapMotion(VR):
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
         commands.append({"$type": "set_teleportation_area"})
-        if self._set_graspable:
+        if self._set_graspable or self._set_ignore_helpers:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
         if self._output_data:
@@ -93,9 +92,7 @@ class OculusLeapMotion(VR):
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
-        # Make non-kinematic objects graspable.
-        if self._set_graspable:
-            self._set_graspable = False
+        if self._set_graspable or self._set_ignore_helpers:
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "srig":
@@ -103,15 +100,23 @@ class OculusLeapMotion(VR):
                     for j in range(static_rigidbodies.get_num()):
                         object_id = static_rigidbodies.get_id(j)
                         # Make all non-kinematic objects graspable unless they are in `self._non_graspable`.
-                        if object_id not in self._non_graspable:
-                            self.commands.append({"$type": "set_leap_motion_graspable",
-                                                  "id": object_id})
+                        if self._set_graspable:
+                            if object_id not in self._non_graspable:
+                                self.commands.append({"$type": "set_leap_motion_graspable",
+                                                      "id": object_id})
+                        # Ignore leap motion physics helpers.
+                        if self._set_ignore_helpers:
+                            if object_id in self._non_graspable or static_rigidbodies.get_kinematic(j):
+                                self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
+                                                      "id": object_id})
                         # Set "discrete" collision detection mode for all non-kinematic objects.
                         if self._discrete_collision_detection_mode:
                             self.commands.append({"$type": "set_object_collision_detection_mode",
                                                   "id": object_id,
                                                   "mode": "discrete"})
                     break
+            self._set_graspable = False
+            self._set_ignore_helpers = False
         super().on_send(resp=resp)
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

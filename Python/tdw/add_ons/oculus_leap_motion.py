@@ -84,8 +84,10 @@ class OculusLeapMotion(VR):
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
-        commands.append({"$type": "send_leap_motion",
-                         "frequency": "always"})
+        if self._output_data:
+            commands.append({"$type": "send_leap_motion",
+                             "frequency": "always"})
+        commands.append({"$type": "set_teleportation_area"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

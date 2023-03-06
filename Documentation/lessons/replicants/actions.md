@@ -14,6 +14,7 @@ The `Replicant` has a pre-defined action space, divided into separate function c
 - `drop(arm)`
 - `animate(animation)`
 - `look_at(target)`
+- `rotate_head(angle, axis)`
 - `reset_head()`
 
 Calling one of these action functions will *start* the action but won't actually *do* the action. This means that Replicants can move concurrently in a [multi-agent simulation](../multi_agent/overview.md).

@@ -266,6 +266,23 @@ The head will continuously move over multiple `communicate()` calls until it is 
 | duration |  float  | 0.1 | The duration of the motion in seconds. |
 | scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
+#### rotate_head
+
+**`self.rotate_head()`**
+
+**`self.rotate_head(axis=axis, angle=angle, duration=0.1, scale_duration=True)`**
+
+Rotate the head by an angle around an axis.
+
+The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| axis |  str | axis | The axis of rotation. Options: `"pitch"`, `"yaw"`, `"roll"`. |
+| angle |  float | angle | The target angle in degrees. |
+| duration |  float  | 0.1 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+
 #### reset_head
 
 **`self.reset_head()`**

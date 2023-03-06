@@ -55,9 +55,12 @@ class Drop(Action):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        commands.append({"$type": "replicant_drop_object",
-                         "id": static.replicant_id,
-                         "arm": self.arm.name})
+        commands.extend([{"$type": "replicant_drop_object",
+                          "id": static.replicant_id,
+                          "arm": self.arm.name},
+                         {"$type": "enable_nav_mesh_obstacle",
+                          "id": self.object_id,
+                          "enable": True}])
         self.object_position = self._get_object_position(object_id=self.object_id, resp=resp)
         return commands
 

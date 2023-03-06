@@ -1,3 +1,5 @@
+from mido import tick2second
+
 from typing import List, Dict
 import numpy as np
 from tdw.add_ons.vr import VR
@@ -45,7 +47,7 @@ class OculusLeapMotion(VR):
         super().__init__(rig_type=RigType.oculus_leap_motion_physics_hands, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
-        self._set_graspable: bool = set_graspable
+        self._set_graspable: bool = set_graspable and self._rig_type != RigType.oculus_leap_motion_physics_hands
         if non_graspable is None:
             self._non_graspable: List[int] = list()
         else:

@@ -10445,6 +10445,82 @@
             "wcategory": "water faucet",
             "wnid": "n04559451"
         },
+        "b04_fireextinguisher": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 1102037,
+                "Linux": 1490308,
+                "Windows": 806149
+            },
+            "bounds": {
+                "back": {
+                    "x": -7.450581e-08,
+                    "y": 0.3037765,
+                    "z": -0.1637777
+                },
+                "bottom": {
+                    "x": -7.450581e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -7.450581e-08,
+                    "y": 0.3037765,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -7.450581e-08,
+                    "y": 0.3037765,
+                    "z": 0.1637776
+                },
+                "left": {
+                    "x": -0.1057671,
+                    "y": 0.3037765,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1057669,
+                    "y": 0.3037765,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -7.450581e-08,
+                    "y": 0.6075531,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_fireextinguisher",
+            "physics_quality": -1,
+            "scale_factor": 0.1,
+            "substructure": [
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_red",
+                        "plastic_vinyl_glossy_black",
+                        "Diffuse_Base_004"
+                    ],
+                    "name": "B04_FireExtinguisher"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_fireextinguisher",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_fireextinguisher",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_fireextinguisher"
+            },
+            "volume": 0.022700324654579163,
+            "wcategory": "fire extinguisher",
+            "wnid": "n03345837"
+        },
         "b04_geosphere001": {
             "asset_bundle_sizes": {
                 "Darwin": 1020276,
@@ -14785,6 +14861,260 @@
             "volume": 4.006388735433575e-06,
             "wcategory": "pen",
             "wnid": "n03906997"
+        },
+        "b05_fire_extinguisher": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 188545155,
+                "Linux": 188848150,
+                "Windows": 188374120
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.3321203,
+                    "z": -0.1331043
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.3321203,
+                    "z": 0
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.3321203,
+                    "z": 0.1331043
+                },
+                "left": {
+                    "x": -0.08813566,
+                    "y": 0.3321203,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.08813578,
+                    "y": 0.3321203,
+                    "z": 0
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.6642406,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b05_fire_extinguisher",
+            "physics_quality": 0.9612470288258542,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Circle001"
+                    ],
+                    "name": "Circle001"
+                },
+                {
+                    "materials": [
+                        "08_-_Default"
+                    ],
+                    "name": "Circle002"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Circle002 1"
+                },
+                {
+                    "materials": [
+                        "Cylinder001"
+                    ],
+                    "name": "Cylinder001"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Cylinder003"
+                },
+                {
+                    "materials": [
+                        "02_-_Default"
+                    ],
+                    "name": "Cylinder004"
+                },
+                {
+                    "materials": [
+                        "02_-_Default"
+                    ],
+                    "name": "Cylinder005"
+                },
+                {
+                    "materials": [
+                        "02_-_Default"
+                    ],
+                    "name": "Cylinder006"
+                },
+                {
+                    "materials": [
+                        "Line002"
+                    ],
+                    "name": "Line002"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Line005"
+                },
+                {
+                    "materials": [
+                        "Line006"
+                    ],
+                    "name": "Line006"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Line007"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Line008"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Line009"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Line010"
+                },
+                {
+                    "materials": [
+                        "02_-_Default"
+                    ],
+                    "name": "Line011"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Line012"
+                },
+                {
+                    "materials": [
+                        "Line013"
+                    ],
+                    "name": "Line013"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object001"
+                },
+                {
+                    "materials": [
+                        "Object002"
+                    ],
+                    "name": "Object002"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Object003"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Object005"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Object006"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Object007"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Object008"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Object009"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Object010"
+                },
+                {
+                    "materials": [
+                        "04_-_Default"
+                    ],
+                    "name": "Object011"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Rectangle001"
+                },
+                {
+                    "materials": [
+                        "Aluminium"
+                    ],
+                    "name": "Rectangle002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_fire_extinguisher",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_fire_extinguisher",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_fire_extinguisher"
+            },
+            "volume": 0.014438694342970848,
+            "wcategory": "fire extinguisher",
+            "wnid": "n03345837"
         },
         "b05_gold_glass_soap_dispenser(max)": {
             "asset_bundle_sizes": {
@@ -35232,6 +35562,252 @@
             "volume": 0.0011613834649324417,
             "wcategory": "soap dispenser",
             "wnid": "n04254120"
+        },
+        "fire_extinguisher": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 19285604,
+                "Linux": 19483985,
+                "Windows": 19186616
+            },
+            "bounds": {
+                "back": {
+                    "x": -8.940697e-08,
+                    "y": 0.2424593,
+                    "z": -0.07262105
+                },
+                "bottom": {
+                    "x": -8.940697e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -8.940697e-08,
+                    "y": 0.2424593,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -8.940697e-08,
+                    "y": 0.2424593,
+                    "z": 0.07262102
+                },
+                "left": {
+                    "x": -0.1181796,
+                    "y": 0.2424593,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1181794,
+                    "y": 0.2424593,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -8.940697e-08,
+                    "y": 0.4849186,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "fire_extinguisher",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Fire_extinguisher"
+                    ],
+                    "name": "Fire_extinguisher"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fire_extinguisher",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fire_extinguisher",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fire_extinguisher"
+            },
+            "volume": 0.008528287522494793,
+            "wcategory": "fire extinguisher",
+            "wnid": "n03345837"
+        },
+        "fire_extinguisher_(max2014)": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 1596001,
+                "Linux": 1868426,
+                "Windows": 1368320
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.043081e-07,
+                    "y": 0.4635497,
+                    "z": -0.1558384
+                },
+                "bottom": {
+                    "x": 1.043081e-07,
+                    "y": -2.980232e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 1.043081e-07,
+                    "y": 0.4635497,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.043081e-07,
+                    "y": 0.4635497,
+                    "z": 0.1558384
+                },
+                "left": {
+                    "x": -0.2307254,
+                    "y": 0.4635497,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.2307256,
+                    "y": 0.4635497,
+                    "z": 0
+                },
+                "top": {
+                    "x": 1.043081e-07,
+                    "y": 0.9270995,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "fire_extinguisher_(max2014)",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Alt_Mandal"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Circle002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Sticker"
+                    ],
+                    "name": "Cylinder020"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder021"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder022"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Barometre_Label"
+                    ],
+                    "name": "Cylinder026"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder027"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder028"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder029"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder030"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder031"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "Cylinder032"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Star007"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Star008"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Ust_Mandal"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/fire_extinguisher_(max2014)",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/fire_extinguisher_(max2014)",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/fire_extinguisher_(max2014)"
+            },
+            "volume": 0.06970484554767609,
+            "wcategory": "fire extinguisher",
+            "wnid": "n03345837"
         },
         "flat_woven_rug": {
             "asset_bundle_sizes": {

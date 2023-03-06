@@ -67,11 +67,14 @@ class Grasp(Action):
                                           "id": int(overlap_id),
                                           "is_kinematic": True,
                                           "use_gravity": False}])
-        # Grasp the object.
-        commands.append({"$type": "replicant_grasp_object",
+        # Grasp the object. Disable the NavMeshObstacle, if any.
+        commands.extend([{"$type": "replicant_grasp_object",
                          "id": static.replicant_id,
-                         "arm": self.arm.name,
-                         "object_id": self.target})
+                          "arm": self.arm.name,
+                          "object_id": self.target},
+                         {"$type": "enable_nav_mesh_obstacle",
+                          "id": self.target,
+                          "enable": False}])
         # Set the object's rotation.
         if self.angle is not None and self.axis is not None:
             commands.append({"$type": "replicant_set_grasped_object_rotation",

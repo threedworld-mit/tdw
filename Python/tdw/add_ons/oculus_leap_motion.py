@@ -30,7 +30,7 @@ class OculusLeapMotion(VR):
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None,
                  discrete_collision_detection_mode: bool = True):
         """
-        :param set_graspable: If True, set all [non-kinematic objects](../../lessons/physx/physics_objects.md) and [composite sub-objects](../../lessons/composite_objects/overview.md) as graspable by the VR rig.
+        :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param position: The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}`
         :param rotation: The initial rotation of the VR rig in degrees.
@@ -38,15 +38,14 @@ class OculusLeapMotion(VR):
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75
-        :param non_graspable: A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
+        :param non_graspable: A list of IDs of non-graspable objects, meaning that they don't have physics helpers (see `set_graspable`). By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
         :param discrete_collision_detection_mode: If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW).
         """
 
-        super().__init__(rig_type=RigType.oculus_leap_motion_physics_hands, output_data=output_data, position=position,
+        super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
-        self._set_graspable: bool = set_graspable and self._rig_type != RigType.oculus_leap_motion_physics_hands
-        self._set_ignore_helpers: bool = self._rig_type == RigType.oculus_leap_motion_physics_hands
+        self._set_graspable: bool = set_graspable
         if non_graspable is None:
             self._non_graspable: List[int] = list()
         else:
@@ -82,7 +81,7 @@ class OculusLeapMotion(VR):
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
         commands.append({"$type": "set_teleportation_area"})
-        if self._set_graspable or self._set_ignore_helpers:
+        if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
         if self._output_data:
@@ -92,23 +91,17 @@ class OculusLeapMotion(VR):
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
-        if self._set_graspable or self._set_ignore_helpers:
+        if self._set_graspable:
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])
                 if r_id == "srig":
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
                         object_id = static_rigidbodies.get_id(j)
-                        # Make all non-kinematic objects graspable unless they are in `self._non_graspable`.
-                        if self._set_graspable:
-                            if object_id not in self._non_graspable:
-                                self.commands.append({"$type": "set_leap_motion_graspable",
-                                                      "id": object_id})
                         # Ignore leap motion physics helpers.
-                        if self._set_ignore_helpers:
-                            if object_id in self._non_graspable or static_rigidbodies.get_kinematic(j):
-                                self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
-                                                      "id": object_id})
+                        if object_id in self._non_graspable or static_rigidbodies.get_kinematic(j):
+                            self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
+                                                  "id": object_id})
                         # Set "discrete" collision detection mode for all non-kinematic objects.
                         if self._discrete_collision_detection_mode:
                             self.commands.append({"$type": "set_object_collision_detection_mode",
@@ -116,7 +109,6 @@ class OculusLeapMotion(VR):
                                                   "mode": "discrete"})
                     break
             self._set_graspable = False
-            self._set_ignore_helpers = False
         super().on_send(resp=resp)
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])

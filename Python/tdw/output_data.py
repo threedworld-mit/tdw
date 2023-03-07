@@ -1565,15 +1565,17 @@ class Replicants(OutputData):
 
 
 class LeapMotion(OutputData):
+    _NUM_BONES_PER_HAND: int = 13
+
     def __init__(self, b):
         super().__init__(b)
-        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, 15, 3)
-        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, 15, 4)
-        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, 15, 3)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
         self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy()
-        self._max_num_collisions: int = self._collision_ids.shape[0] // 32
-        self._collision_ids = self._collision_ids.reshape((2, 16, self._max_num_collisions))
-        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, 16, self._max_num_collisions))
+        self._max_num_collisions: int = self._collision_ids.shape[0] // (LeapMotion._NUM_BONES_PER_HAND * 2)
+        self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
 
     def get_data(self) -> Leap.LeapMotion:
         return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)

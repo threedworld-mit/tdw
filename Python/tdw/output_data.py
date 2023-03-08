@@ -1565,7 +1565,7 @@ class Replicants(OutputData):
 
 
 class LeapMotion(OutputData):
-    _NUM_BONES_PER_HAND: int = 13
+    _NUM_BONES_PER_HAND: int = 16
 
     def __init__(self, b):
         super().__init__(b)
@@ -1576,7 +1576,7 @@ class LeapMotion(OutputData):
         self._max_num_collisions: int = self._collision_ids.shape[0] // (LeapMotion._NUM_BONES_PER_HAND * 2)
         self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
         self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
-        self._angles: np.ndarray = self.data.AnglesAsNumpy().reshape(2, 20)
+        self._angles: np.ndarray = self.data.AnglesAsNumpy().reshape(2, 25)
 
     def get_data(self) -> Leap.LeapMotion:
         return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)

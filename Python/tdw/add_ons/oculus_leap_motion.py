@@ -26,8 +26,10 @@ class OculusLeapMotion(VR):
     def __init__(self, set_graspable: bool = True, output_data: bool = True,
                  position: Dict[str, float] = None, rotation: float = 0, attach_avatar: bool = False,
                  avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
-                 headset_resolution_scale: float = 1.0, non_graspable: List[int] = None,
-                 discrete_collision_detection_mode: bool = True):
+                 headset_resolution_scale: float = 1.0, non_graspable: List[int] = None, max_graspable_mass: float = 50,
+                 discrete_collision_detection_mode: bool = True, set_object_physic_materials: bool = True,
+                 object_static_friction: float = 1, object_dynamic_friction: float = 1, object_bounciness: float = 0,
+                 time_step: float = 0.02):
         """
         :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
@@ -38,7 +40,13 @@ class OculusLeapMotion(VR):
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75
         :param non_graspable: A list of IDs of non-graspable objects, meaning that they don't have physics helpers (see `set_graspable`). By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable.
+        :param max_graspable_mass: Any objects with mass greater than or equal to this value won't have physics helpers. This will prevent the hands from attempting to grasp furniture.
         :param discrete_collision_detection_mode: If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW).
+        :param set_object_physic_materials: If True, set the physic material of each non-kinematic graspable object (see: `non_graspable`).
+        :param object_static_friction: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this static friction value.
+        :param object_dynamic_friction: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this dynamic friction value.
+        :param object_bounciness: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this bounciness value.
+        :param time_step: The physics time step. Leap Motion tends to work better at this value. The TDW default is 0.01.
         """
 
         super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
@@ -76,10 +84,18 @@ class OculusLeapMotion(VR):
         self.right_hand_angles: Dict[FingerBone, np.ndarray] = dict()
         self._initialize_fingers(transforms=self.left_hand_transforms, collisions=self.left_hand_collisions)
         self._initialize_fingers(transforms=self.right_hand_transforms, collisions=self.right_hand_collisions)
+        self._max_graspable_mass: float = max_graspable_mass
+        self._set_object_physic_materials: bool = set_object_physic_materials
+        self._object_static_friction: float = object_static_friction
+        self._object_dynamic_friction: float = object_dynamic_friction
+        self._object_bounciness: float = object_bounciness
+        self._time_step: float = time_step
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
         commands.append({"$type": "set_teleportation_area"})
+        commands.append({"$type": "set_time_step",
+                         "time_step": self._time_step})
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
@@ -97,15 +113,24 @@ class OculusLeapMotion(VR):
                     static_rigidbodies = StaticRigidbodies(resp[i])
                     for j in range(static_rigidbodies.get_num()):
                         object_id = static_rigidbodies.get_id(j)
+                        kinematic = static_rigidbodies.get_kinematic(j)
                         # Ignore leap motion physics helpers.
-                        if object_id in self._non_graspable or static_rigidbodies.get_kinematic(j):
+                        if object_id in self._non_graspable or kinematic or static_rigidbodies.get_mass(j) >= self._max_graspable_mass:
                             self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
                                                   "id": object_id})
-                        # Set "discrete" collision detection mode for all non-kinematic objects.
-                        if self._discrete_collision_detection_mode:
-                            self.commands.append({"$type": "set_object_collision_detection_mode",
-                                                  "id": object_id,
-                                                  "mode": "discrete"})
+                        if not kinematic:
+                            # Set "discrete" collision detection mode for all non-kinematic objects.
+                            if self._discrete_collision_detection_mode:
+                                self.commands.append({"$type": "set_object_collision_detection_mode",
+                                                      "id": object_id,
+                                                      "mode": "discrete"})
+                            # Set the physic material.
+                            if self._set_object_physic_materials:
+                                self.commands.append({"$type": "set_physic_material",
+                                                      "dynamic_friction": self._object_dynamic_friction,
+                                                      "static_friction": self._object_static_friction,
+                                                      "bounciness": self._object_bounciness,
+                                                      "id": object_id})
                     break
             self._set_graspable = False
         super().on_send(resp=resp)

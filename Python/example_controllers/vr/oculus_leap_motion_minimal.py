@@ -21,8 +21,6 @@ commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                   scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
                                                   default_physics_values=False,
                                                   mass=1,
-                                                  static_friction=1,
-                                                  dynamic_friction=1,
                                                   library="models_flex.json"))
 vr = OculusLeapMotion()
 c.add_ons.append(vr)

@@ -27,10 +27,9 @@ class OculusLeapMotion(VR):
                  position: Dict[str, float] = None, rotation: float = 0, attach_avatar: bool = False,
                  avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None, max_graspable_mass: float = 50,
-                 min_mass: float = 1,
-                 discrete_collision_detection_mode: bool = True, set_object_physic_materials: bool = True,
-                 object_static_friction: float = 1, object_dynamic_friction: float = 1, object_bounciness: float = 0,
-                 time_step: float = 0.02):
+                 min_mass: float = 1, discrete_collision_detection_mode: bool = True,
+                 set_object_physic_materials: bool = True, object_static_friction: float = 1,
+                 object_dynamic_friction: float = 1, object_bounciness: float = 0, time_step: float = 0.02):
         """
         :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.

@@ -18,6 +18,10 @@ class OculusLeapMotion(VR):
     The finger bones as [`FingerBone`](../vr_data/finger_bone.md) values in the order that they'll appear in this add-on's dictionaries.
     """
     BONES: List[FingerBone] = [__b for __b in FingerBone]
+    """:class_var
+    A dictionary. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = The number degrees of freedom for that bone.
+    """
+    NUM_DOFS: Dict[FingerBone, int] = {__f: 3 if __f.name[-1] == "0" else 1 for __f in FingerBone if __f != FingerBone.palm}
 
     def __init__(self, set_graspable: bool = True, output_data: bool = True,
                  position: Dict[str, float] = None, rotation: float = 0, attach_avatar: bool = False,
@@ -51,19 +55,27 @@ class OculusLeapMotion(VR):
         """
         self.left_hand_transforms: Dict[FingerBone, Transform] = dict()
         """:field
-        A dictionary of [`Transform`](../object_data/transform.md) for each bone in the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = [`Transform`](../object_data/transform.md).
+        A dictionary of [`Transform`](../object_data/transform.md) for each bone on the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = [`Transform`](../object_data/transform.md).
         """
         self.right_hand_transforms: Dict[FingerBone, Transform] = dict()
         """:field
-        A dictionary of object IDs for each bone in the left hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
+        A dictionary of object IDs for each bone on the left hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
         """
         self.left_hand_collisions: Dict[FingerBone, List[int]] = dict()
         """:field
         A dictionary of object IDs for each bone in the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
         """
-        self.right_finger_collisions: Dict[FingerBone, List[int]] = dict()
+        self.right_hand_collisions: Dict[FingerBone, List[int]] = dict()
+        """:field
+        A dictionary of angles per finger bone on the left hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A numpy array of angles in degrees. Some bones have 3 angles and some have 1. See: `LeapMotion.NUM_DOFS`. The palm isn't in this dictionary.
+        """
+        self.left_hand_angles: Dict[FingerBone, np.ndarray] = dict()
+        """:field
+        A dictionary of angles per finger bone on the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A numpy array of angles in degrees. Some bones have 3 angles and some have 1. See: `LeapMotion.NUM_DOFS`. The palm isn't in this dictionary.
+        """
+        self.right_hand_angles: Dict[FingerBone, np.ndarray] = dict()
         self._initialize_fingers(transforms=self.left_hand_transforms, collisions=self.left_hand_collisions)
-        self._initialize_fingers(transforms=self.right_hand_transforms, collisions=self.right_finger_collisions)
+        self._initialize_fingers(transforms=self.right_hand_transforms, collisions=self.right_hand_collisions)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -104,11 +116,13 @@ class OculusLeapMotion(VR):
                 self._set_hand(leap_motion=leap_motion,
                                hand_index=0,
                                transforms=self.left_hand_transforms,
-                               collisions=self.left_hand_collisions)
+                               collisions=self.left_hand_collisions,
+                               angles=self.left_hand_angles)
                 self._set_hand(leap_motion=leap_motion,
                                hand_index=1,
                                transforms=self.right_hand_transforms,
-                               collisions=self.right_finger_collisions)
+                               collisions=self.right_hand_collisions,
+                               angles=self.right_hand_angles)
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
@@ -142,27 +156,32 @@ class OculusLeapMotion(VR):
             collisions[b] = list()
 
     @staticmethod
-    def _set_hand(leap_motion: LeapMotion,
-                  hand_index: int,
-                  transforms: Dict[FingerBone, Transform],
-                  collisions: Dict[FingerBone, List[int]]) -> None:
+    def _set_hand(leap_motion: LeapMotion, hand_index: int, transforms: Dict[FingerBone, Transform],
+                  collisions: Dict[FingerBone, List[int]], angles: Dict[FingerBone, np.ndarray]) -> None:
         """
         :param leap_motion: The `LeapMotion` output data.
         :param hand_index: The index of the hand.
         :param transforms: The dictionary of bone transforms.
         :param collisions: The dictionary of collisions per bone.
+        :param angles: The dictionary of angles per bone.
         """
 
         b = 0
+        angle_index = 0
         max_num_collisions = leap_motion.get_num_collisions_per_bone()
         for i in range(len(OculusLeapMotion.BONES)):
+            bone = OculusLeapMotion.BONES[i]
             # Set the bone transform.
-            transforms[OculusLeapMotion.BONES[i]].position = leap_motion.get_position(hand_index, b)
-            transforms[OculusLeapMotion.BONES[i]].rotation = leap_motion.get_rotation(hand_index, b)
-            transforms[OculusLeapMotion.BONES[i]].forward = leap_motion.get_forward(hand_index, b)
+            transforms[bone].position = leap_motion.get_position(hand_index, b)
+            transforms[bone].rotation = leap_motion.get_rotation(hand_index, b)
+            transforms[bone].forward = leap_motion.get_forward(hand_index, b)
             # Reset the collision data.
-            collisions[OculusLeapMotion.BONES[i]].clear()
+            collisions[bone].clear()
             for k in range(max_num_collisions):
-                if leap_motion.get_is_collision(hand_index, b, k): collisions[OculusLeapMotion.BONES[i]].append(leap_motion.get_collision_id(hand_index, b, k))
+                if leap_motion.get_is_collision(hand_index, b, k): collisions[bone].append(leap_motion.get_collision_id(hand_index, b, k))
+            # Set the angles.
+            if bone != FingerBone.palm:
+                dof: int = OculusLeapMotion.NUM_DOFS[bone]
+                angles[bone] = leap_motion.get_angles(hand_index, angle_index, angle_index + dof)
+                angle_index += dof
             b += 1
-

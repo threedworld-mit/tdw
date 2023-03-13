@@ -83,16 +83,15 @@ class OculusLeapMotion(VR):
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
-        commands.append({"$type": "set_teleportation_area"})
-        commands.append({"$type": "set_time_step",
-                         "time_step": self._time_step})
+        commands.extend([{"$type": "set_teleportation_area"},
+                         {"$type": "set_time_step",
+                          "time_step": self._time_step}])
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
         if self._output_data:
             commands.append({"$type": "send_leap_motion",
                              "frequency": "always"})
-        commands.append({"$type": "set_teleportation_area"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -104,29 +103,29 @@ class OculusLeapMotion(VR):
                     for j in range(static_rigidbodies.get_num()):
                         object_id = static_rigidbodies.get_id(j)
                         kinematic = static_rigidbodies.get_kinematic(j)
-                        # Ignore leap motion physics helpers.
                         mass = static_rigidbodies.get_mass(j)
+                        # Make this object graspable.
                         if object_id not in self._non_graspable and not kinematic and mass < self._max_graspable_mass:
                             self.commands.append({"$type": "set_leap_motion_graspable",
                                                   "id": object_id})
-                        if not kinematic:
-                            # Set "discrete" collision detection mode for all non-kinematic objects.
-                            if self._discrete_collision_detection_mode:
-                                self.commands.append({"$type": "set_object_collision_detection_mode",
-                                                      "id": object_id,
-                                                      "mode": "discrete"})
-                            # Set the physic material.
-                            if self._set_object_physic_materials:
-                                self.commands.append({"$type": "set_physic_material",
-                                                      "dynamic_friction": self._object_dynamic_friction,
-                                                      "static_friction": self._object_static_friction,
-                                                      "bounciness": self._object_bounciness,
-                                                      "id": object_id})
-                            # Clamp the mass to a minimum.
-                            if mass < self._min_mass:
-                                self.commands.append({"$type": "set_mass",
-                                                      "id": object_id,
-                                                      "mass": self._min_mass})
+                            if not kinematic:
+                                # Set "discrete" collision detection mode for all non-kinematic objects.
+                                if self._discrete_collision_detection_mode:
+                                    self.commands.append({"$type": "set_object_collision_detection_mode",
+                                                          "id": object_id,
+                                                          "mode": "discrete"})
+                                # Set the physic material.
+                                if self._set_object_physic_materials:
+                                    self.commands.append({"$type": "set_physic_material",
+                                                          "dynamic_friction": self._object_dynamic_friction,
+                                                          "static_friction": self._object_static_friction,
+                                                          "bounciness": self._object_bounciness,
+                                                          "id": object_id})
+                                # Clamp the mass to a minimum.
+                                if mass < self._min_mass:
+                                    self.commands.append({"$type": "set_mass",
+                                                          "id": object_id,
+                                                          "mass": self._min_mass})
                     break
             self._set_graspable = False
         super().on_send(resp=resp)

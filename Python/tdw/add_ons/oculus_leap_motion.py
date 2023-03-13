@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Callable, Optional
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
@@ -25,7 +25,8 @@ class OculusLeapMotion(VR):
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None, max_graspable_mass: float = 50,
                  min_mass: float = 1, discrete_collision_detection_mode: bool = True,
                  set_object_physic_materials: bool = True, object_static_friction: float = 1,
-                 object_dynamic_friction: float = 1, object_bounciness: float = 0, time_step: float = 0.02):
+                 object_dynamic_friction: float = 1, object_bounciness: float = 0, time_step: float = 0.02,
+                 quit_button: Optional[int] = 3):
         """
         :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
@@ -44,6 +45,7 @@ class OculusLeapMotion(VR):
         :param object_dynamic_friction: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this dynamic friction value.
         :param object_bounciness: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this bounciness value.
         :param time_step: The physics time step. Leap Motion tends to work better at this value. The TDW default is 0.01.
+        :param quit_button: The button used to quit the program as an integer: A = 0, B = 1, C = 2, D = 3. If None, no quit button will be assigned.
         """
 
         super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
@@ -71,6 +73,10 @@ class OculusLeapMotion(VR):
         A dictionary of object IDs for each bone in the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
         """
         self.right_hand_collisions: Dict[FingerBone, List[int]] = dict()
+        """:field
+        If True, the rig and the simulation are done. This can be useful to break a while loop in a controller. Pressing the quit button (see `quit_button`) will set this to True.
+        """
+        self.done = False
         self._initialize_fingers(transforms=self.left_hand_transforms, collisions=self.left_hand_collisions)
         self._initialize_fingers(transforms=self.right_hand_transforms, collisions=self.right_hand_collisions)
         self._max_graspable_mass: float = max_graspable_mass
@@ -80,6 +86,9 @@ class OculusLeapMotion(VR):
         self._object_dynamic_friction: float = object_dynamic_friction
         self._object_bounciness: float = object_bounciness
         self._time_step: float = time_step
+        self._button_callbacks: Dict[int, Callable[[], None]] = dict()
+        if quit_button is not None:
+            self.listen_to_button(quit_button, self._quit)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -141,6 +150,20 @@ class OculusLeapMotion(VR):
                                hand_index=1,
                                transforms=self.right_hand_transforms,
                                collisions=self.right_hand_collisions)
+                # Handle button callbacks.
+                for button_index in self._button_callbacks:
+                    if leap_motion.get_is_button_pressed(button_index):
+                        self._button_callbacks[button_index]()
+
+    def listen_to_button(self, button: int, callback: Callable[[], None]) -> None:
+        """
+        Listen for when a button is pressed.
+
+        :param button: The button as an integer. 0 = A, 1 = B, 2 = C, 3 = D.
+        :param callback: A callback function to invoke when the button is pressed. The function must have no arguments and no return value.
+        """
+
+        self._button_callbacks[button] = callback
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """
@@ -197,3 +220,11 @@ class OculusLeapMotion(VR):
                 if leap_motion.get_is_collision(hand_index, b, k):
                     collisions[bone].append(leap_motion.get_collision_id(hand_index, b, k))
             b += 1
+
+    def _quit(self) -> None:
+        """
+        End the simulation.
+        """
+
+        self.done = True
+

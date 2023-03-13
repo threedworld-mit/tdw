@@ -1576,6 +1576,7 @@ class LeapMotion(OutputData):
         self._max_num_collisions: int = self._collision_ids.shape[0] // (LeapMotion._NUM_BONES * 2)
         self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES, self._max_num_collisions))
         self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES, self._max_num_collisions))
+        self._button_presses: np.ndarray = self.data.ButtonsAsNumpy()
 
     def get_data(self) -> Leap.LeapMotion:
         return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)
@@ -1597,6 +1598,9 @@ class LeapMotion(OutputData):
 
     def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][bone_index][collision_index])
+
+    def get_is_button_pressed(self, index: int) -> bool:
+        return bool(self._button_presses[index])
 
 
 class Framerate(OutputData):

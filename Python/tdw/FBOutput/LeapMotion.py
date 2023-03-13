@@ -128,7 +128,29 @@ class LeapMotion(object):
             return self._tab.VectorLen(o)
         return 0
 
-def LeapMotionStart(builder): builder.StartObject(5)
+    # LeapMotion
+    def Buttons(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # LeapMotion
+    def ButtonsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
+        return 0
+
+    # LeapMotion
+    def ButtonsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def LeapMotionStart(builder): builder.StartObject(6)
 def LeapMotionAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
 def LeapMotionStartPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def LeapMotionAddRotations(builder, rotations): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotations), 0)
@@ -139,4 +161,6 @@ def LeapMotionAddCollisionsIds(builder, collisionsIds): builder.PrependUOffsetTR
 def LeapMotionStartCollisionsIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def LeapMotionAddIsCollisions(builder, isCollisions): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(isCollisions), 0)
 def LeapMotionStartIsCollisionsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def LeapMotionAddButtons(builder, buttons): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(buttons), 0)
+def LeapMotionStartButtonsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def LeapMotionEnd(builder): return builder.EndObject()

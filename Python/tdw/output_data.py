@@ -1600,7 +1600,7 @@ class LeapMotion(OutputData):
         return int(self._collision_ids[index][bone_index][collision_index])
 
     def get_angles(self, index: int, start_bone_index: int, end_bone_index: int) -> np.ndarray:
-        return self._angles[index][start_bone_index: end_bone_index]
+        return np.rad2deg(self._angles[index][start_bone_index: end_bone_index])
 
 
 class Framerate(OutputData):

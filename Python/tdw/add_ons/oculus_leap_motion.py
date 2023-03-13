@@ -106,8 +106,8 @@ class OculusLeapMotion(VR):
                         kinematic = static_rigidbodies.get_kinematic(j)
                         # Ignore leap motion physics helpers.
                         mass = static_rigidbodies.get_mass(j)
-                        if object_id in self._non_graspable or kinematic or mass >= self._max_graspable_mass:
-                            self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
+                        if object_id not in self._non_graspable and not kinematic and mass < self._max_graspable_mass:
+                            self.commands.append({"$type": "set_leap_motion_graspable",
                                                   "id": object_id})
                         if not kinematic:
                             # Set "discrete" collision detection mode for all non-kinematic objects.

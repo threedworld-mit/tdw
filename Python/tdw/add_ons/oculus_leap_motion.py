@@ -45,7 +45,7 @@ class OculusLeapMotion(VR):
         :param object_dynamic_friction: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this dynamic friction value.
         :param object_bounciness: If `set_object_physic_materials == True`, all non-kinematic graspable object will have this bounciness value.
         :param time_step: The physics time step. Leap Motion tends to work better at this value. The TDW default is 0.01.
-        :param quit_button: The button used to quit the program as an integer: A = 0, B = 1, C = 2, D = 3. If None, no quit button will be assigned.
+        :param quit_button: The button used to quit the program as an integer: 0, 1, 2, or 3. If None, no quit button will be assigned.
         """
 
         super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
@@ -159,7 +159,7 @@ class OculusLeapMotion(VR):
         """
         Listen for when a button is pressed.
 
-        :param button: The button as an integer. 0 = A, 1 = B, 2 = C, 3 = D.
+        :param button: The button as an integer: 0, 1, 2, or 3.
         :param callback: A callback function to invoke when the button is pressed. The function must have no arguments and no return value.
         """
 
@@ -227,4 +227,3 @@ class OculusLeapMotion(VR):
         """
 
         self.done = True
-

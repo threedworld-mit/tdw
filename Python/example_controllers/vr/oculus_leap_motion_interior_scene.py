@@ -12,7 +12,6 @@ class OculusLeapMotionInteriorScene(Controller):
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.done = False
         self.communicate({"$type": "set_screen_size",
                           "width": 1920,
                           "height": 1080})
@@ -26,6 +25,9 @@ class OculusLeapMotionInteriorScene(Controller):
         self.vr = OculusLeapMotion()
         # Append the add-ons.
         self.add_ons.extend([self.interior_scene_lighting, self.vr])
+        print("WARNING! This is an example of how to use a LeapMotion rig in a densely-populated environment,"
+              " but it is not a good example of how to set up a scene. Instead of using interior_scene.json,"
+              " use the ProcGenKitchen add-on.")
 
     def run(self) -> None:
         # Set the HDRI skybox to a nice sunset one.
@@ -34,7 +36,7 @@ class OculusLeapMotionInteriorScene(Controller):
         self.communicate(self.init_commands)
         # Start by the table. The teleport will occur on the next communicate() call.
         self.vr.set_position({"x": 0.7, "y": 0.0, "z": 1.0})
-        while not self.done:
+        while not self.vr.done:
             self.communicate([])
         self.communicate({"$type": "terminate"})
 

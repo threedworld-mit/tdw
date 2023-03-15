@@ -3,16 +3,14 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
 
 
-class OculusTouchOutputData(Controller):
+class OculusLeapMotionOutputData(Controller):
     """
     Add several objects to the scene and parse VR output data.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.done = False
-
-        self.vr = OculusLeapMotion(output_data=True)
+        self.vr = OculusLeapMotion()
         self.add_ons.extend([self.vr])
 
     def run(self) -> None:
@@ -39,17 +37,13 @@ class OculusTouchOutputData(Controller):
                                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2}))
         # Send the commands.
         self.communicate(commands)
-        self.communicate({"$type": "set_teleportation_area"})
         # Loop until the Escape key is pressed.
-        while not self.done:
-            print("Position", self.vr.rig.position)
+        while not self.vr.done:
+            print("Left hand position:", self.vr.left_hand.position)
             self.communicate([])
         self.communicate({"$type": "terminate"})
 
-    def quit(self):
-        self.done = True
-
 
 if __name__ == "__main__":
-    c = OculusTouchOutputData(launch_build=False)
+    c = OculusLeapMotionOutputData()
     c.run()

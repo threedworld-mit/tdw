@@ -23,5 +23,6 @@ commands.extend(Controller.get_add_physics_object(model_name="vase_02",
 vr = OculusLeapMotion()
 c.add_ons.append(vr)
 c.communicate(commands)
-while True:
+while not vr.done:
     c.communicate([])
+c.communicate({"$type": "terminate"})

@@ -9,9 +9,8 @@ Minimal Oculus Leap Motion example.
 c = Controller()
 commands = [TDWUtils.create_empty_room(12, 12)]
 z = 0.6
-table_id = Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",
-                                                  object_id=table_id,
+                                                  object_id=Controller.get_unique_id(),
                                                   position={"x": 0, "y": 0, "z": z},
                                                   kinematic=True))
 commands.extend(Controller.get_add_physics_object(model_name="cube",

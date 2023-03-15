@@ -74,6 +74,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [ImageSensors](#ImageSensors) | The names of each ImageSensor component attached to an avatar, and whether they are enabled. | `imse` |
 | [IsOnNavMesh](#IsOnNavMesh) | Data regarding whether a position is on the NavMesh. Invoked by first sending the command `send_is_on_nav_mesh`. | `isnm` |
 | [Keyboard](#Keyboard) | Keyboard input. Note that in order to receive keyboard input, the build must be the focused window and running on the same computer as the keyboard. | `keyb` |
+| [LeapMotion](#LeapMotion) | Data for Leap Motion hands. | `leap` |
 | [Lights](#Lights) | Data for all lights in the scene. | `ligh` |
 | [LocalTransforms](#LocalTransforms) | Data about the Transform component of objects (position and rotation) relative to its parent objects. | `ltra` |
 | [LogMessage](#LogMessage) | A log message sent by the build. | `logm` |
@@ -509,6 +510,25 @@ Keyboard input. Note that in order to receive keyboard input, the build must be 
 | `get_held(index)` | Keys that are being pressed down. | `str` |
 | `get_num_released()` | The number of released. | `int` |
 | `get_released(index)` | Keys that were released between the previous frame and this frame. | `str` |
+
+## LeapMotion
+
+`l = LeapMotion(byte_array)`
+
+**Identifier:** `leap`
+
+Data for Leap Motion hands.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num_collisions_per_bone()` | The number of collisions per bone. | `int` |
+| `get_position(index, bone_index)` | The position. | `np.ndarray` |
+| `get_rotation(index, bone_index)` | The rotation. | `np.ndarray` |
+| `get_forward(index, bone_index)` | The forward. | `np.ndarray` |
+| `get_is_collision(index, bone_index, collision_index)` | The collision of the is. | `bool` |
+| `get_collision_id(index, bone_index, collision_index)` | The ID of the collision. | `int` |
+| `get_angles(index, start_bone_index, end_bone_index)` | The angles in degrees of each bone drive axis. | `np.ndarray` |
+| `get_is_button_pressed(index)` | The pressed of the is button. | `bool` |
 
 ## Lights
 

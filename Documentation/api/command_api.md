@@ -332,6 +332,7 @@
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`enable_nav_mesh_obstacle`](#enable_nav_mesh_obstacle) | Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing. |
+| [`ignore_leap_motion_physics_helpers`](#ignore_leap_motion_physics_helpers) | Make the object ignore a Leap Motion rig's physics helpers. This is useful for objects that shouldn't be moved, such as kinematic objects.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
@@ -650,7 +651,6 @@
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_occupancy_map`](#send_occupancy_map) | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free.  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
-| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
@@ -685,7 +685,6 @@
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
-| [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
@@ -711,6 +710,14 @@
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
+
+**Send Vr Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data. |
+| [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
+| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 
 **Ui Command**
 
@@ -901,6 +908,7 @@ The type of VR rig to add to the scene.
 | --- | --- |
 | `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
 | `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
+| `"oculus_leap_motion"` | A VR rig based on an Oculus headset (Rift S, Quest 2) with Leap Motion hand tracking. &lt;/summary |
 
 ***
 
@@ -4295,6 +4303,22 @@ Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavM
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"enable"` | bool | If True, enable the NavMeshObstacle. If False, disable the NavMeshObstacle. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`ignore_leap_motion_physics_helpers`**
+
+Make the object ignore a Leap Motion rig's physics helpers. This is useful for objects that shouldn't be moved, such as kinematic objects. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "ignore_leap_motion_physics_helpers", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -8049,39 +8073,6 @@ Options for when to send data.
 
 ***
 
-## **`send_static_oculus_touch`**
-
-Send static data for the Oculus Touch rig. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "send_static_oculus_touch"}
-```
-
-```python
-{"$type": "send_static_oculus_touch", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_static_robots`**
 
 Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots 
@@ -8878,39 +8869,6 @@ Options for when to send data.
 
 ***
 
-## **`send_oculus_touch_buttons`**
-
-Send data for buttons pressed on Oculus Touch controllers. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`OculusTouchButtons`](output_data.md#OculusTouchButtons)</font>
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "send_oculus_touch_buttons"}
-```
-
-```python
-{"$type": "send_oculus_touch_buttons", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_replicants`**
 
 Send data of each Replicant in the scene. 
@@ -9403,6 +9361,106 @@ Send spatial volume data of objects in the scene. Volume is calculated from the 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendVrCommand
+
+These commands send data that is specific to certain types of VR rigs.
+
+***
+
+## **`send_leap_motion`**
+
+Send Leap Motion hand tracking data.
+
+
+```python
+{"$type": "send_leap_motion"}
+```
+
+```python
+{"$type": "send_leap_motion", "max_num_collisions_per_bone": 5, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"max_num_collisions_per_bone"` | int | The maximum number of collisions per bone that will be returned in the output data. | 5 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_oculus_touch_buttons`**
+
+Send data for buttons pressed on Oculus Touch controllers. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`OculusTouchButtons`](output_data.md#OculusTouchButtons)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_oculus_touch_buttons"}
+```
+
+```python
+{"$type": "send_oculus_touch_buttons", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_oculus_touch`**
+
+Send static data for the Oculus Touch rig. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_static_oculus_touch"}
+```
+
+```python
+{"$type": "send_static_oculus_touch", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

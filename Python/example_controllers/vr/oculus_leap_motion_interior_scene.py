@@ -7,7 +7,12 @@ from tdw.add_ons.interior_scene_lighting import InteriorSceneLighting
 
 class OculusLeapMotionInteriorScene(Controller):
     """
-    Interact with objects in VR with UltraLeap hand tracking.
+    Interact with objects in VR with UltraLeap hand tracking in a kitchen scene.
+
+    WARNING! This is not a good example of how to initialize a scene.
+    It's meant to showcase VR functionality such that each of our users has the same experience.
+    Don't copy+paste this code with interior_scene.json.
+    Instead, use the ProcGenKitchen add-on.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
@@ -25,9 +30,7 @@ class OculusLeapMotionInteriorScene(Controller):
         self.vr = OculusLeapMotion()
         # Append the add-ons.
         self.add_ons.extend([self.interior_scene_lighting, self.vr])
-        print("WARNING! This is an example of how to use a LeapMotion rig in a densely-populated environment,"
-              " but it is not a good example of how to set up a scene. Instead of using interior_scene.json,"
-              " use the ProcGenKitchen add-on.")
+        print("")
 
     def run(self) -> None:
         # Set the HDRI skybox to a nice sunset one.

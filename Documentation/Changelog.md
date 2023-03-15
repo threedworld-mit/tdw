@@ -4,6 +4,52 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.9
+
+### New Features
+
+- **Added: Oculus Leap Motion VR rig.** This VR rig includes hand tracking and physically embodied hands. It requires the Oculus headset and an UltraLeap device.
+
+### Command API
+
+#### New Commands
+
+| Command                              | Description                                                 |
+| ------------------------------------ | ----------------------------------------------------------- |
+| `send_leap_motion`                   | Send Leap Motion hand tracking data.                        |
+| `ignore_leap_motion_physics_helpers` | Make the object ignore a Leap Motion rig's physics helpers. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                    |
+| ------------ | ------------------------------ |
+| `LeapMotion` | LeapMotion hand-tracking data. |
+
+### `tdw` module
+
+- Added: `OculusLeapMotion` add-on for the Oculus Leap Motion VR rig.
+  - Added: `FingerBone` enum values for finger bones.
+
+### Example Controllers:
+
+- Added: `vr/oculus_leap_motion_minimal.py`
+- Added: `vr/oculus_leap_motion_basket.py`
+- Added: `vr/oculus_leap_motion_interior_scene.py`
+- Added: `vr/oculus_leap_motion_output_data.py`
+- Added: `vr/oculus_leap_motion_ui.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                               | Description                               |
+| -------------------------------------- | ----------------------------------------- |
+| `lessons/vr/oculus_leap_motion.md`     | How to use the Oculus Leap Motion VR rig. |
+| `python/add_ons/oculus_leap_motion.md` | API documentation for `OculusLeapMotion`. |
+| `python/vr_data/finger_bone.md`        | API documentation for `FingerBone`.       |
+
 ## v1.11.8
 
 ### Build

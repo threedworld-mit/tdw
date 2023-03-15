@@ -23,11 +23,15 @@ The **Oculus Leap Motion** is a VR rig that uses an Oculus headset and [Leap Mot
 
 ## Rig description
 
-**TODO**
+The Oculus Leap Motion VR rig has two floating hands that track a human user's actual hands. The hands are visible and physically embodied, meaning that they can interact with objects, either by pushing them or by picking them up and putting them down. The remainder of the user's body, such as arms and legs, are not rendered or physically embodied.
+
+
+
+Unlike the [Oculus Touch](oculus_touch.md) rig, the Oculus Leap Motion rig cannot teleport. We intend to add teleportation later.
 
 ## The `OculusLeapMotion` add-on
 
-The simplest way to add an Oculus Touch rig to the scene is to use the [`OculusLeapMotion` add-on](../../python/add_ons/oculus_leap_motion.md):
+The simplest way to add an Oculus Touch rig to the scene is to use the [`OculusLeapMotion`](../../python/add_ons/oculus_leap_motion.md) add-on:
 
 ```python
 from tdw.controller import Controller
@@ -35,19 +39,100 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
 
 c = Controller()
+commands = [TDWUtils.create_empty_room(12, 12)]
+z = 0.6
+commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",
+                                                  object_id=Controller.get_unique_id(),
+                                                  position={"x": 0, "y": 0, "z": z},
+                                                  kinematic=True))
+commands.extend(Controller.get_add_physics_object(model_name="cube",
+                                                  object_id=Controller.get_unique_id(),
+                                                  position={"x": 0, "y": 1, "z": z - 0.25},
+                                                  scale_mass=False,
+                                                  scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
+                                                  default_physics_values=False,
+                                                  mass=1,
+                                                  library="models_flex.json"))
 vr = OculusLeapMotion()
 c.add_ons.append(vr)
-c.communicate([TDWUtils.create_empty_room(12, 12),
-               c.get_add_object(model_name="rh10",
-                                object_id=Controller.get_unique_id(),
-                                position={"x": 0, "y": 0, "z": 0.5})])
-while True:
+c.communicate(commands)
+while not vr.done:
     c.communicate([])
+c.communicate({"$type": "terminate"})
 ```
 
 Result:
 
 **TODO**
+
+### UI Buttons
+
+**If the user positions their left palm in front of the camera, four UI buttons will appear.** 
+
+These buttons can be mapped to Python functions via `vr.listen_to_button(button, callback)`:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+
+
+class OculusLeapMotionUI(Controller):
+    """
+    Press 0 to make the cube red. Press 4 to quit.
+    """
+
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.vr = OculusLeapMotion()
+        self.cube_id: int = Controller.get_unique_id()
+        self.vr.listen_to_button(button=0, callback=self.set_cube_color)
+        self.add_ons.extend([self.vr])
+
+    def run(self) -> None:
+        commands = [TDWUtils.create_empty_room(12, 12)]
+        z = 0.6
+        commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",
+                                                          object_id=Controller.get_unique_id(),
+                                                          position={"x": 0, "y": 0, "z": z},
+                                                          kinematic=True))
+        commands.extend(Controller.get_add_physics_object(model_name="cube",
+                                                          object_id=self.cube_id,
+                                                          position={"x": 0, "y": 1, "z": z - 0.25},
+                                                          scale_mass=False,
+                                                          scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
+                                                          default_physics_values=False,
+                                                          mass=1,
+                                                          library="models_flex.json"))
+        self.communicate(commands)
+        while not self.vr.done:
+            self.communicate([])
+        self.communicate({"$type": "terminate"})
+
+    def set_cube_color(self) -> None:
+        self.communicate({"$type": "set_color",
+                          "id": self.cube_id,
+                          "color": {"r": 1, "g": 0, "b": 0, "a": 1}})
+
+
+if __name__ == "__main__":
+    c = OculusLeapMotionUI()
+    c.run()
+```
+
+Result:
+
+**TODO**
+
+### The `vr.done` field
+
+In the previous example, as in others, the `while` loop is controlled by `vr.done`. 
+
+**If you press button 3, the build will send output data that will set `vr.done` to True.** 
+
+You can think of button 3 as a "quit button", but it doesn't actually quit the simulation or send any commands--by default, all it will do is set `vr.done` to True, which you can use to control the main loop.
+
+You can set a different button via the optional `quit_button` parameter in the `OculusLeapMotion` constructor: `vr = OculusLeapMotion(quit_button=2)`. Or, you can set no button: `vr = OculusLeapMotion(quit_button=None)`.
 
 ### Set the initial position and rotation
 
@@ -65,29 +150,31 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="rh10",
                                 object_id=Controller.get_unique_id(),
                                 position={"x": 0, "y": 0, "z": 0.5})])
-while True:
+while not vr.done:
     c.communicate([])
+c.communicate({"$type": "terminate"})
 ```
-
-### Teleport and rotate the VR rig
-
-**TODO**
-
-### Hand poses
-
-**TODO**
 
 ### Graspable objects
 
-**TODO**
+Grasping objects is achieved by applying "physics helper" scripts, without which it is difficult, if not impossible, to grasp objects; reasons for this vary but in general it's too difficult to wholly recreate the physics of a human hand gripping an object.
 
-### Non-graspable
+You can disable "physics helpers" by setting `set_graspable=False` in the `OculusLeapMotion` constructor.
 
-If you want certain non-kinematic objects to be non-graspable you can set the optional `non_graspable` parameter in the constructor:
+There are built-in constraints to which objects receive "physics helpers", some of which can be adjusted:
 
-```python
-TODO
-```
+- [Kinematic](../physx/physics_objects.md) objects never receive physics helpers.
+- High-mass objects don't receive physics helpers. See the `max_graspable_mass` parameter in the in the `OculusLeapMotion` constructor.
+- You can set certain objects to not receive "physics helpers" by setting the `non_graspable`  in the in the `OculusLeapMotion` constructor: `vr = OculusLeapMotion(non_graspable=[object_id_0, object_id_1])`.
+
+### Object physics
+
+The `OculusLeapMotion` add-on adjusts the physics properties of all objects about to receive "physics helpers" to prevent physics glitches:
+
+- Each object with less mass than a given threshold has its mass set to that threshold. By default, the threshold is 1. To adjust the threshold, set the `min_mass` parameter in the `OculusLeapMotion` constructor.
+- Each object's collision detection mode is set to "discrete" instead of the default "continuous dynamic". To disable this, set `discrete_collision_detection_mode=False`  in the `OculusLeapMotion` constructor.
+- Each object's [physic material](../physx/physics_objects.md) is set to have the highest possible friction values and no bounciness. Adjust these global values via the `object_static_friction`, `object_dynamic_friction`, and `object_bounciness` parameters in the `OculusLeapMotion` constructor. To *not* set global physic material values, set `set_object_physic_materials=False`.
+- The physics time step is set to 0.02 seconds instead of TDW's typical 0.01 seconds. To adjust this, set the `time_step` parameter in the `OculusLeapMotion` constructor.
 
 ### Output data
 
@@ -102,16 +189,17 @@ c = Controller()
 vr = OculusLeapMotion()
 c.add_ons.append(vr)
 c.communicate(TDWUtils.create_empty_room(12, 12))
-while True:
+while not vr.done:
     c.communicate([])
     print(vr.rig.position)
     print(vr.head.position)
     print(vr.left_hand.position)
     print(vr.right_hand.position)
     print("")
+c.communicate({"$type": "terminate"})
 ```
 
-- The transforms of every finger bone are saved in `vr.left_hand_transforms` and `vr.right_hand_transforms`. These are dictionaries where the key is a [`Finger`](../../python/vr_data/finger.md) value and the value is another dictionary: The key is a [`FingerBone`](../../python/vr_data/finger_bone.md) value and the value is a [`Transform`](../../python/object_data/transform.md):
+- The transforms of every finger bone are saved in `vr.left_hand_transforms` and `vr.right_hand_transforms`. These are dictionaries where the key is a [`FingerBone`](../../python/vr_data/finger_bone.md) value and the value is a [`Transform`](../../python/object_data/transform.md):
 
 ```python
 from tdw.controller import Controller
@@ -122,13 +210,13 @@ c = Controller()
 vr = OculusLeapMotion()
 c.add_ons.append(vr)
 c.communicate(TDWUtils.create_empty_room(12, 12))
-while True:
+while not vr.done:
     c.communicate([])
-    for finger in vr.left_hand_transforms:
-        for bone in vr.left_hand_transforms[finger]:
-            position = vr.left_hand_transforms[finger][bone]
-            print(finger, bone, position)
+    for bone in vr.left_hand_transforms:
+        position = vr.left_hand_transforms[bone]
+        print(bone, position)
     print("")
+c.communicate({"$type": "terminate"})
 ```
 
 - `vr.held_left` and `vr.held_right` are arrays of IDs of objects held in the left and right hands.
@@ -142,13 +230,14 @@ c = Controller()
 vr = OculusLeapMotion()
 c.add_ons.append(vr)
 c.communicate(TDWUtils.create_empty_room(12, 12))
-while True:
+while not vr.done:
     c.communicate([])
     print(vr.held_left, vr.held_right)
     print("")
+c.communicate({"$type": "terminate"})
 ```
 
-- Per-finger bone collision data is stored in `vr.left_hand_collisions` and `vr.right_hand_collisions`. These are dictionaries where the key is a [`Finger`](../../python/vr_data/finger.md) value and the value is another dictionary: The key is a [`FingerBone`](../../python/vr_data/finger_bone.md) value and the value is a list of IDs of objects that are in contact with the finger bone (in other words, in either an `enter` or `stay` state):
+- Per-finger bone collision data is stored in `vr.left_hand_collisions` and `vr.right_hand_collisions`. These are dictionaries where the key is a [`FingerBone`](../../python/vr_data/finger_bone.md) value and the value is a list of IDs of objects that are in contact with the finger bone (in other words, in either an `enter` or `stay` state):
 
 ```python
 from tdw.controller import Controller
@@ -162,32 +251,15 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                c.get_add_object(model_name="rh10",
                                 object_id=Controller.get_unique_id(),
                                 position={"x": 0, "y": 0, "z": 0.5})])
-while True:
+while not vr.done:
     c.communicate([])
-    for finger in vr.left_hand_collisions:
-        for b in vr.left_hand_collisions[f]:
-            if len(vr.left_hand_collisions[f][b]) > 0:
-                print(f, b, vr.left_hand_collisions[f][b])
+    for bone in vr.left_hand_collisions:
+        if len(vr.left_hand_collisions[bone]) > 0:
+            print(bone, vr.left_hand_collisions[bone])
+c.communicate({"$type": "terminate"})
 ```
 
-- Collision data for each palm is stored in `vr.left_palm_collisions` and `vr.right_palm_collisions`. These are lists of IDs of objects s that are in contact with the finger bone (in other words, in either an `enter` or `stay` state):
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
-
-c = Controller()
-vr = OculusLeapMotion()
-c.add_ons.append(vr)
-c.communicate(TDWUtils.create_empty_room(12, 12))
-while True:
-    c.communicate([])
-    if len(vr.left_palm_collisions) > 0:
-        print(vr.left_palm_collisions)
-```
-
-You can disable output data by setting `output_data=False` in the constructor:
+You can disable output data by setting `output_data=False` in the constructor. Be aware that this will also disable UI functionality.
 
 ```python
 from tdw.controller import Controller
@@ -204,22 +276,27 @@ while True:
 
 ### Image capture
 
-VR rig cameras are not [avatars](../core_concepts/avatars.md).  You can attach an avatar to a VR rig by setting `attach_avatar=True` in the constructor:
+VR rig cameras are not [avatars](../core_concepts/avatars.md).  You can attach an avatar to a VR rig by setting `attach_avatar=True` in the constructor and optionally include an [`ImageCapture`](../core_concepts/images.md) add-on. The ID of the VR rig's avatar is always `"vr"`.
 
 ```python
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("vr_images")
 c = Controller()
 vr = OculusLeapMotion(attach_avatar=True)
-c.add_ons.append(vr)
+capture = ImageCapture(path=path, avatar_ids=["vr"])
+c.add_ons.extend([vr, capture])
 c.communicate(TDWUtils.create_empty_room(12, 12))
-while True:
+while not vr.done:
     c.communicate([])
+c.communicate({"$type": "terminate"})
 ```
 
-You can then adjust the camera and capture image data like with any other avatar. The ID of this avatar is always `"vr"`.
+From there, the camera and images can be adjusted as with any other avatar.
 
 For performance reasons, the default width of the avatar's images is 512, which is lower than the resolution of the headset. The height is always scaled proportional to the width. To adjust the pixel width and height ratio, set `avatar_camera_width` and `headset_aspect_ratio` in the constructor.
 
@@ -227,13 +304,7 @@ For performance reasons, the default width of the avatar's images is 512, which 
 
 If you load a new scene, the VR rig will appear to act strangely while the scene is loading. This is harmless but can be unintuitive for new users.
 
-You can "solve" this by adding a loading screen to the VR rig. Call `vr.show_loading_screen(True)` followed by `c.communicate([])` to show the loading screen. The `communicate([])` call should be sent *before* loading the scene. After loading the scene, call `vr.show_loading_screen(False)` followed by `c.communicate([])`
-
-This is a minimal example of how to show and hide a loading screen (see `def next_trial(self):` for the loading screen code):
-
-```python
-TODO
-```
+You can "solve" this by adding a loading screen to the VR rig. Call `vr.show_loading_screen(True)` followed by `c.communicate([])` to show the loading screen. The `communicate([])` call should be sent *before* loading the scene. After loading the scene, call `vr.show_loading_screen(False)` followed by `c.communicate([])`.
 
 ### Reset
 
@@ -263,12 +334,6 @@ Audio is supported in the Oculus Leap Motion rig. Unlike other audio setups in T
 
 [Resonance Audio](../audio/resonance_audio.md) is *not* supported on the Oculus Leap Motion rig. Oculus does have audio spatialization but this hasn't yet been implemented in TDW.
 
-This example controller adds an Oculus Leap Motion rig and [PyImpact](../audio/py_impact.md) to a scene:
-
-```python
-TODO
-```
-
 ## Low-level commands
 
 The `OculusLeapMotion` initializes the rig with the following commands:
@@ -280,19 +345,19 @@ The `OculusLeapMotion` initializes the rig with the following commands:
 - [`attach_avatar_to_vr_rig`](../../api/command_api.md#attach_avatar_to_vr_rig) (If `attach_avatar` in the constructor is True)
 - [`set_screen_size`](../../api/command_api.md#set_screen_size) (If `attach_avatar` in the constructor is True; this sets the size of the images captured by the avatar)
 - [`send_static_rigidbodies`](../../api/command_api.md#send_static_rigidbodies) (Only once, and only if `set_graspable` in the constructor is True. This will return [`StaticRigidbodies`](../../api/output_data.md#StaticRigidbodies) output data, which is used to set graspable objects)
+- [`set_time_step`](../../api/command_api.md#set_time_step)
 - [`send_leap_moption`](../../api/command_api.md#send_leap_moption)
--  [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch) (Sends [`StaticOculusTouch`](../../api/output_data.md#StaticOculusTouch) output data on the first frame)
 
 On the second `communicate()` call after initialization:
 
-- Using `StaticRigidbodies` data, send [`set_vr_graspable`](../../api/command_api.md#set_vr_graspable) for each non-kinematic object in the scene.
+- Send [`ignore_leap_motion_physics_helpers`](../../api/command_api.md#ignore_leap_motion_physics_helpers) for each object that shouldn't receive physics helpers.
+- Send [`set_object_collision_detection_mode`](../../api/command_api.md#set_object_collision_detection_mode), [`set_physic_material`](../../api/command_api.md#set_physic_material) for all objects that *should* receive physics helpers.
+- Send [`set_mass`](../../api/command_api.md#set_mass) to adjust the mass of objects below the minimal threshold.
 
-Position and rotation:
+The add-on receives and uses the following output data:
 
-- [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
-- [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
-
-Loading screen:
+- [`VRRig`](../../api/output_data.md#VRRig)
+- [`LeapMotion`](../../api/output_data.md#LeapMotion)
 
 - [`set_vr_loading_screen`](../../api/command_api.md#set_vr_loading_screen)
 
@@ -306,9 +371,10 @@ On the backend, the root body and hands are cached as objects with their own IDs
 
 Python API:
 
-- [`OculusTouch`](../../python/add_ons/oculus_touch.md)
-- [`OculusTouchButton`](../../python/vr_data/oculus_touch_button.md)
+- [`OculusLeapMotion`](../../python/add_ons/oculus_leap_motion.md)
+- [`FingerBone`](../../python/vr_data/finger_bone.md)
 - [`Transform`](../../python/object_data/transform.md)
+- [`ImageCapture`](../../python/add_ons/image_capture.md)
 
 Example controllers:
 
@@ -330,16 +396,15 @@ Command API:
 - [`attach_avatar_to_vr_rig`](../../api/command_api.md#attach_avatar_to_vr_rig)
 - [`set_screen_size`](../../api/command_api.md#set_screen_size)
 - [`send_static_rigidbodies`](../../api/command_api.md#send_static_rigidbodies)
-- [`send_oculus_touch_buttons`](../../api/command_api.md#send_oculus_touch_buttons)
-- [`set_vr_graspable`](../../api/command_api.md#set_vr_graspable)
-- [`teleport_vr_rig`](../../api/command_api.md#teleport_vr_rig)
-- [`rotate_vr_rig_by`](../../api/command_api.md#rotate_vr_rig_by)
-- [`send_static_oculus_touch`](../../api/command_api.md#send_static_oculus_touch)
+- [`ignore_leap_motion_physics_helpers`](../../api/command_api.md#ignore_leap_motion_physics_helpers)
 - [`set_vr_loading_screen`](../../api/command_api.md#set_vr_loading_screen)
+- [`set_time_step`](../../api/command_api.md#set_time_step)
+- [`set_object_collision_detection_mode`](../../api/command_api.md#set_object_collision_detection_mode)
+- [`set_physic_material`](../../api/command_api.md#set_physic_material)
+- [`set_mass`](../../api/command_api.md#set_mass)
 
 Output Data:
 
 - [`VRRig`](../../api/output_data.md#VRRig)
-- [`OculusTouchButtons`](../../api/output_data.md#OculusTouchButtons)
+- [`LeapMotion`](../../api/output_data.md#LeapMotion)
 - [`StaticRigidbodies`](../../api/output_data.md#StaticRigidbodies)
-- [`StaticOculusTouch`](../../api/output_data.md#StaticOculusTouch)

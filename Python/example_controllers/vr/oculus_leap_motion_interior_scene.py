@@ -22,8 +22,6 @@ class OculusLeapMotionInteriorScene(Controller):
         self.init_commands = loads(init_commands_text)
         # Create the scene lighting add-on.
         self.interior_scene_lighting = InteriorSceneLighting()
-        # The ID of the table, as defined in "interior_scene.json".
-        self.table_id = 12132217
         # Add the VR rig.
         self.vr = OculusLeapMotion()
         # Append the add-ons.

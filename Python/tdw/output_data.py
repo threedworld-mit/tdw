@@ -1577,6 +1577,7 @@ class LeapMotion(OutputData):
         self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
         self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
         self._angles: np.ndarray = self.data.AnglesAsNumpy().reshape(2, 25)
+        self._button_presses: np.ndarray = self.data.ButtonsAsNumpy()
 
     def get_data(self) -> Leap.LeapMotion:
         return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)
@@ -1601,6 +1602,9 @@ class LeapMotion(OutputData):
 
     def get_angles(self, index: int, start_bone_index: int, end_bone_index: int) -> np.ndarray:
         return np.rad2deg(self._angles[index][start_bone_index: end_bone_index])
+
+    def get_is_button_pressed(self, index: int) -> bool:
+        return bool(self._button_presses[index])
 
 
 class Framerate(OutputData):

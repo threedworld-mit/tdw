@@ -42,5 +42,3 @@ class OculusLeapMotionInteriorScene(Controller):
 if __name__ == "__main__":
     c = OculusLeapMotionInteriorScene()
     c.run()
-        
-

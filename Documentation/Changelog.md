@@ -39,6 +39,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 - Added: `vr/oculus_leap_motion_interior_scene.py`
 - Added: `vr/oculus_leap_motion_output_data.py`
 - Added: `vr/oculus_leap_motion_ui.py`
+- Added: `vr/oculus_leap_motion_reset.py`
 
 ### Documentation
 

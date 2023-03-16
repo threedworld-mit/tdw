@@ -85,6 +85,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 ### Model Library
 
 - Added to `models_core.json`: b05_fire_extinguisher, b04_fireextinguisher, fire_extinguisher, fire_extinguisher_(max2014)
+- Added affordance points to b05_fire_extinguisher
 
 ### Visual Effects Library
 

@@ -14,7 +14,8 @@ The **Oculus Leap Motion** is a VR rig that uses an Oculus headset and [Leap Mot
 - *Quest and Quest 2:* An Oculus Link Cable
   - A USB-C port
 - [The Oculus PC app](https://www.oculus.com/setup/)
-- [UltraLeap device](https://www.adafruit.com/product/2106)
+- [UltraLeap controller](https://www.mouser.com/ProductDetail/Ultraleap/90-0005?qs=wnTfsH77Xs4v1GmVHWOXxw%3D%3D&mgh=1&gclid=Cj0KCQiA-oqdBhDfARIsAO0TrGEPu26nxpN_SmB5mc2J5847HNyYIFyGzqtq7rGQcHcAA6rGzXEUp8IaAgA8EALw_wcB)
+- [UltraLeap device mount](https://www.mouser.com/ProductDetail/Ultraleap/LM-VR?qs=wnTfsH77Xs4W1KBbR6YVHQ%3D%3D) The device doesn't easily attach to the VR headset. Consider using double-sided tape.
 - [UltraLeap Gemini Tracking Software](https://developer.leapmotion.com/tracking-software-download) After installing Gemini Tracking software, you can open a useful control panel from the system tray that will show you the Leap camera view. You may need to set a couple of things in that control panel, the first time you use the hand tracking.
 - You may need Touch controllers to navigate through the Oculus menus.
 

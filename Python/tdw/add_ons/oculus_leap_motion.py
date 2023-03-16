@@ -112,6 +112,7 @@ class OculusLeapMotion(VR):
         if self._output_data:
             commands.append({"$type": "send_leap_motion",
                              "frequency": "always"})
+        self._create_rig = False
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

@@ -18,8 +18,8 @@ class OculusLeapMotionInteriorScene(Controller):
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.communicate({"$type": "set_screen_size",
-                          "width": 1920,
-                          "height": 1080})
+                          "width": 512,
+                          "height": 512})
         # Load the commands used to initialize the objects in the scene.
         init_commands_text = Path("interior_scene.json").read_text()
         # Load the commands as a list of dictionaries.
@@ -30,7 +30,6 @@ class OculusLeapMotionInteriorScene(Controller):
         self.vr = OculusLeapMotion()
         # Append the add-ons.
         self.add_ons.extend([self.interior_scene_lighting, self.vr])
-        print("")
 
     def run(self) -> None:
         # Set the HDRI skybox to a nice sunset one.

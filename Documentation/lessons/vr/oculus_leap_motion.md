@@ -14,7 +14,7 @@ The **Oculus Leap Motion** is a VR rig that uses an Oculus headset and [Leap Mot
 - *Quest and Quest 2:* An Oculus Link Cable
   - A USB-C port
 - [The Oculus PC app](https://www.oculus.com/setup/)
-- UltraLeap device
+- [UltraLeap device](https://www.adafruit.com/product/2106)
 - [UltraLeap Gemini Tracking Software](https://developer.leapmotion.com/tracking-software-download) After installing Gemini Tracking software, you can open a useful control panel from the system tray that will show you the Leap camera view. You may need to set a couple of things in that control panel, the first time you use the hand tracking.
 - You may need Touch controllers to navigate through the Oculus menus.
 

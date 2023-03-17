@@ -286,6 +286,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 4. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
 5. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
 6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
+7. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
 
 ## 15. Misc. remote server topics
 
@@ -405,6 +406,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+- [VisualEffectLibrarian](Documentation/python/librarian/visual_effect_librarian.md)
 
 **tdw.lisdf_data**
 

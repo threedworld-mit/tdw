@@ -2,9 +2,9 @@
 
 # Object audio data
 
-When the `Clatter` add-on initializes, it will request output data from the build to determine which objects in the scene. On the *next* communicate() call, `Clatter` will "clatterize" each object in the scene.
+When the `Clatter` add-on initializes, it will request output data from the build to determine which objects are in the scene. On the *next* communicate() call, `Clatter` will "clatterize" each object in the scene.
 
-Every "clatterized" object has a audio-physical values that will determine what sort of sound it makes when it collides with another clatterized object. In the frontend TDW API, this data is stored as a [`ClatterObject`](../../python/physics_audio/clatter_object.md) class.
+Every "clatterized" object has audio-physical values that will determine what sort of sound it makes when it collides with another clatterized object. In the frontend TDW API, this data is stored as a [`ClatterObject`](../../python/physics_audio/clatter_object.md) class.
 
 ## Default object data
 

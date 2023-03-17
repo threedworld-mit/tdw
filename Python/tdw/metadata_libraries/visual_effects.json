@@ -1,0 +1,59 @@
+{
+    "description": "Visual Effects",
+    "records": {
+        "burned_wood_pile_1": {
+            "audio": false,
+            "name": "burned_wood_pile_1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/burned_wood_pile_1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/burned_wood_pile_1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/burned_wood_pile_1"
+            }
+        },
+        "burned_wood_pile_2": {
+            "audio": false,
+            "name": "burned_wood_pile_2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/burned_wood_pile_2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/burned_wood_pile_2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/burned_wood_pile_2"
+            }
+        },
+        "burned_wood_pile_3": {
+            "audio": false,
+            "name": "burned_wood_pile_3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/burned_wood_pile_3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/burned_wood_pile_3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/burned_wood_pile_3"
+            }
+        },
+        "fire": {
+            "audio": true,
+            "name": "fire",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fire",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fire",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fire"
+            }
+        }, 
+        "oil_fire": {
+            "audio": true,
+            "name": "oil_fire",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/oil_fire",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/oil_fire",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/oil_fire"
+            }
+        },
+        "smoke": {
+            "audio": false,
+            "name": "smoke",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/smoke",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/smoke",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/smoke"
+            }
+        }
+    }
+}

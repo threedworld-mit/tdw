@@ -106,6 +106,26 @@ In addition to [the usual `Action` initialization commands](actions.md), `LookAt
 
 The action ends when the head stops moving (as announced by the build in the output data).
 
+## The `rotate_head(angle, axis)` command
+
+The `rotate_head(target)` command will tell the Replicant to start to rotate its head by an angle (in degrees) around an axis. The axis options are: `"pitch"`, `"yaw"`, `"roll"`.
+
+### Optional parameters
+
+The `reset_head` action has the same optional parameters as `look_at`:
+
+- The optional `duration` parameter controls the speed in seconds at which the head turns; it works exactly the same was as it does in `rotate_head(target)`.
+
+- The optional `scale_duration` parameter works the same way as it does in `rotate_head(target)`.
+
+### Low-level description
+
+`replicant.rotate_head(angle, axis)` sets `replicant.action` to a [`RotateHead`](../../python/replicant/actions/rotate_head.md) action. 
+
+In addition to [the usual `Action` initialization commands](actions.md), `RotateHead` sends [`replicant_rotate_head_by`](../../api/command_api.md#replicant_rotate_head_by).
+
+The action ends when the head stops moving (as announced by the build in the output data).
+
 ## The `reset_head()` command
 
 Call `reset_head()` to start turning the head back to its neutral position:
@@ -152,13 +172,13 @@ Result:
 
 ![](images/head_rotation/look_at_reset.gif)
 
-### The `duration` parameter
+### Optional parameters
 
-The optional `duration` parameter controls the speed in seconds at which the head turns; it works exactly the same was as it does in `look_at(target)`.
+The `reset_head` action has the same optional parameters as `look_at` and `rotate_head`:
 
-### The `scale_duration` parameter
+- The optional `duration` parameter controls the speed in seconds at which the head turns; it works exactly the same was as it does in `reset_head(target)`.
 
-The optional `scale_duration` parameter works the same way as it does in `look_at(target)`.
+- The optional `scale_duration` parameter works the same way as it does in `reset_head(target)`.
 
 ### Low-level description
 
@@ -184,10 +204,12 @@ Command API:
 
 - [`replicant_look_at_position`](../../api/command_api.md#replicant_look_at_position)
 - [`replicant_look_at_object`](../../api/command_api.md#replicant_look_at_object)
+-  [`replicant_rotate_head_by`](../../api/command_api.md#replicant_rotate_head_by)
 - [`replicant_reset_head`](../../api/command_api.md#replicant_reset_head)
 
 Python API:
 
 - [`Replicant`](../../python/add_ons/replicant.md)
 - [`LookAt`](../../python/replicant/actions/look_at.md)
+- [`RotateHead`](../../python/replicant/actions/rotate_head.md)
 - [`ResetHead`](../../python/replicant/actions/reset_head.md)

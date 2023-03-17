@@ -18,6 +18,7 @@ from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
 from tdw.replicant.actions.look_at import LookAt
+from tdw.replicant.actions.rotate_head import RotateHead
 from tdw.replicant.actions.reset_head import ResetHead
 from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.image_frequency import ImageFrequency
@@ -112,6 +113,9 @@ class Replicant(AddOn):
                      "id": self.replicant_id},
                     {"$type": "add_replicant_rigidbody",
                      "id": self.replicant_id},
+                    {"$type": "set_rigidbody_constraints",
+                     "id": self.replicant_id,
+                     "freeze_position_axes": {"x": 0, "y": 1, "z": 0}},
                     {"$type": "send_replicants",
                      "frequency": "always"},
                     {"$type": "send_transforms",
@@ -413,6 +417,20 @@ class Replicant(AddOn):
         """
 
         self.action = LookAt(target=target, duration=duration, scale_duration=scale_duration)
+
+    def rotate_head(self, axis: str, angle: float, duration: float = 0.1, scale_duration: bool = True):
+        """
+        Rotate the head by an angle around an axis.
+
+        The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+
+        :param axis: The axis of rotation. Options: `"pitch"`, `"yaw"`, `"roll"`.
+        :param angle: The target angle in degrees.
+        :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        """
+
+        self.action = RotateHead(axis=axis, angle=angle, duration=duration, scale_duration=scale_duration)
 
     def reset_head(self, duration: float = 0.1, scale_duration: bool = True):
         """

@@ -132,7 +132,8 @@ class Navigate(Action):
                               arrived_at=0.1,
                               max_walk_cycles=100,
                               bounds_position="center",
-                              previous=None)
+                              previous=None,
+                              scale_reset_arms_duration=False)
         # Update the path index
         self.path_index += 1
         # Return the initialization commands.

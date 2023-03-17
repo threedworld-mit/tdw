@@ -273,6 +273,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 4. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
 5. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
 6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
+7. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
 
 ## 15. Misc. remote server topics
 
@@ -329,6 +330,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [LogPlayback](Documentation/python/add_ons/log_playback.md)
 - [ModelVerifier](Documentation/python/add_ons/model_verifier.md)
 - [Mouse](Documentation/python/add_ons/mouse.md)
+- [NavMesh](Documentation/python/add_ons/nav_mesh.md)
 - [Obi](Documentation/python/add_ons/obi.md)
 - [ObjectManager](Documentation/python/add_ons/object_manager.md)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)
@@ -391,6 +393,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+- [VisualEffectLibrarian](Documentation/python/librarian/visual_effect_librarian.md)
 
 **tdw.lisdf_data**
 
@@ -538,6 +541,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ReachFor](Documentation/python/replicant/actions/reach_for.md)
 - [ResetArm](Documentation/python/replicant/actions/reset_arm.md)
 - [ResetHead](Documentation/python/replicant/actions/reset_head.md)
+- [RotateHead](Documentation/python/replicant/actions/rotate_head.md)
 - [TurnBy](Documentation/python/replicant/actions/turn_by.md)
 - [TurnTo](Documentation/python/replicant/actions/turn_to.md)
 

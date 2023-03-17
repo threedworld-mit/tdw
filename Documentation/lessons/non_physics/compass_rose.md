@@ -45,7 +45,7 @@ Result:
 
 ***
 
-**This is the last document in the "Non-physics objects" tutorial.**
+**Next: [Visual Effects](visual_effects.md)**
 
 [Return to the README](../../../README.md)
 

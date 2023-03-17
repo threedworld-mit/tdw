@@ -35,7 +35,7 @@ When using Clatter, please cite  [Traer,Cusimano and McDermott, A perceptually i
 
 In nearly all cases, you will use the TDW [`Clatter`](../../python/add_ons/clatter.md) add-on to interface with the Clatter library. As with everything else in TDW, the `Clatter` add-on sends commands to the build. Among these, there are three Clatter-specific commands: [`initialize_clatter`](../../api/command_api.md#initialize_clatter), [`clatterize_object`](../../api/command_api.md#clatterize_object), and [`clatterize_robot_joint`](../../api/command_api.md#clatterize_robot_joint). 
 
-These three commands access code from the underlying Clatter C# library, which is embedded in the TDW build. [Documentation for the Clatter library can be found here](https://alters-mit.github.io/clatter/index.html). In TDW, you can't access the Clatter library directly, but it may be helpful to read through the documentation to better understand how Clatter works.
+These three commands access code from the underlying Clatter C# library, which is embedded in the TDW build. [Documentation for the Clatter library can be found here](https://alters-mit.github.io/clatter/index.html). In TDW, you can't access the Clatter library directly, but it may be helpful to read through the documentation to better understand how Clatter works. For more information regarding how to contribute to Clatter, [read this](contribute.md).
 
 Additionally, Clatter can be used as a [command-line executable](cli.md), to write .wav files without needing to reference TDW, or to manually generate audio to play in TDW.
 

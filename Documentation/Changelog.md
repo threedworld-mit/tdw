@@ -2,7 +2,92 @@
 
 # v1.11.x
 
-To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+
+## v1.11.9
+
+### New Features
+
+- **Added Clatter to TDW.** Clatter is an upgrade to PyImpact that mostly exists in the build, as opposed to being a collection of Python scripts in the `tdw` module. Clatter is significantly faster than PyImpact, especially in simulations in which there are concurrent audio events, and fixes several significant bugs in PyImpact. For documentation on Clatter, start with `lessons/clatter/overview.md`. For a comprehensive comparison to PyImpact and upgrade guide, read `lessons/py_impact/py_impact_and_clatter.md`.
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                              |
+| ------------------------ | ---------------------------------------- |
+| `initialize_clatter`     | Initialize Clatter.                      |
+| `clatterize_object`      | Make an object respond to Clatter audio. |
+| `clatterize_robot_joint` | Make a robot respond to Clatter audio.   |
+| `set_dsp_buffer_size`    | Set the DSP buffer size.                 |
+
+### `tdw` module
+
+- **Added `Clatter` add-on.**
+  - Added: `ClatterObject` Clatter audio object data.
+  - Added: `ImpactMaterial`. This is the same as `AudioMaterial` but renamed to match Clatter's internal naming convention and to differentiate it from scrape materials.
+- Deprecated PyImpact. Please use Clatter instead.
+  - Deprecated `Base64Sound`, `CollisionAudioEvent`, `CollisionAudioInfo`, `CollisionAudioType`, and `Modes`. These classes are only used by PyImpact, not Clatter.
+- Removed `audio_material` field from `ScrapeModel` because neither Clatter nor PyImpact needs it.
+- Changes to audio initializer add-ons:
+  - Added optional parameter `physics_time_step` to `AudioInitializer` and `ResonanceAudioInitializer` that defaults to 0.02 (instead of TDW's default 0.01).
+  - The default value of `framerate` in `AudioInitializer` and `ResonanceAudioInitializer` is now 30 (was 60).
+  - Renamed `ResonanceAudioInitializer.AUDIO_MATERIALS` to `ResonanceAudioInitializer.IMPACT_MATERIALS`.
+  - Added: `ResonanceAudioInitializer.RESONANCE_AUDIO_MATERIALS`
+
+### Example Controllers
+
+- Removed from `audio/`:
+  - `collision_events.py`
+  - `impact_with_controller.py`
+  - `impact_without_controller.py`
+  - `py_impact.py`
+  - `reset_py_impact.py`
+  - `scrape_with_controller.py`
+  - `scrape_without_controller.py`
+- Moved from `audio/` to `clatter/` and replaced PyImpact with Clatter:
+  - `implausible_audio.py`
+  - `minimal_audio_dataset.py`
+  - `robot_impact_sound.py`
+  - `rube_goldberg.py`
+  - `scrape.py`
+- Added  to `clatter/`:
+  - `clatter_benchmark.py`
+  - `clatter_marbles.py`
+  - `reset_clatter.py`
+  - `resonance_audio.py`
+- Moved `footsteps.py` from `camera_controls/` to `clatter/` and replaced PyImpact with Clatter.
+- Edited ffmpeg example controllers in `video/` to use Clatter instead of PyImpact.
+- Replaced `vr/oculus_touch_py_impact.py` with `vr/oculus_touch_clatter.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                     | Description                                                |
+| -------------------------------------------- | ---------------------------------------------------------- |
+| `lessons/clatter/overview.md`                | Overview of Clatter.                                       |
+| `lessons/clatter/clatter_objects.md`         | How to define and set per-object data in Clatter.          |
+| `lessons/clatter/record_clatter.md`          | How to use Clatter with the `PhysicsAudioRecorder` add-on. |
+| `lessons/clatter/resonance_audio.md`         | How to use Clatter with Resonance Audio.                   |
+| `lessons/clatter/reset.md`                   | How to reset Clatter.                                      |
+| `lessons/clatter/cli.md`                     | How to use the optional Clatter command-line executable.   |
+| `lessons/clatter/troubleshooting.md`         | Tips for how to troubleshoot in Clatter.                   |
+| `lessons/clatter/contribute.md`              | How to contribute to Clatter.                              |
+| `lessons/py_impact/py_impact_and_clatter.md` | A comparison of PyImpact and Clatter.                      |
+| `python/add_ons/clatter.md`                  | API documentation for `Clatter`.                           |
+| `python/physics_audio/impact_material.md`    | API documentation for `ImpactMaterial`.                    |
+
+#### Modified Documentation
+
+Throughout the `lessons/` documentation, references to PyImpact (text, links, example code, etc.) have been replaced with references to Clatter. Additionally, deprecation warnings have been added to PyImpact API documents. Below is a list of more significant changes:
+
+| Document                              | Modification                                                 |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/overview.md`           | Added a section about Clatter.                               |
+| `lessons/audio/py_impact.md`          | Moved to `py_impact/py_impact.md`                            |
+| `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
+| `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
 
 ## v1.11.8
 
@@ -1845,7 +1930,7 @@ To upgrade from TDW v1.8 to v1.9, read [this guide](upgrade_guides/v1.8_to_v1.9.
 
 - **Added add-ons.** These objects can be appended to `Controller.add_ons` to inject commands per `communicate()` call. They've been designed to simplify common tasks in TDW such as capturing images per frame or logging commands per frame.
 - **Completely rewrite of documentation.** All non-API documentation has been completely rewritten. Documentation is now divided into "lessons" for specified subjects such as robotics or visual perception. You can find the complete table of contents on the README. **Even if you are an experienced TDW user, we recommend you read our new documentation.** You might learn new techniques!
-- **PyImpact is now an add-on and has scrape sounds.** [Read this for more information.](lessons/audio/py_impact.md)
+- **PyImpact is now an add-on and has scrape sounds.**
 - (External repo) **[Magnebot](https://github.com/alters-mit/magnebot) has been upgraded to version 2.0.** Magnebot can now be used as an add-on, meaning that it can be added to any TDW controller.
 
 ### Command API

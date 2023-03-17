@@ -39,6 +39,6 @@ You can fix this in several ways:
 
 ***
 
-**This is the last document in the "Clatter" tutorial.**
+**Next: [How to Contribute to Clatter](contribute.md)**
 
 [Return to the README](../../../README.md)

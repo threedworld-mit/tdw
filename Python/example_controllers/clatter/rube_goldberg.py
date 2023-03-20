@@ -104,12 +104,16 @@ class RubeGoldbergDemo(Controller):
                                    avatar_id="a",
                                    rotation={"x": 6.36, "y": 109.13, "z": 0})
         # Initialize audio.
-        audio_initializer = AudioInitializer(avatar_id="a", framerate=60)
+        audio_initializer = AudioInitializer(avatar_id="a")
 
         # Add Clatter.
-        # Here we have a large number of closely-occuring collisions resulting in a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height.
+        # Here we have a large number of closely-occurring collisions resulting in a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height.
         # Using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant distortion of the audio.
-        self.clatter: Clatter = Clatter(objects=self.clatter_objects, simulation_amp=0.25)
+        # Set `roll_substitute` to `"none"` to prevent spurious roll audio sounds.
+        # Set `impact_area_ratio` and `min_collision_speed` to further reduce the number of impacts.
+        self.clatter: Clatter = Clatter(objects=self.clatter_objects, simulation_amp=0.25, roll_substitute="none",
+                                        impact_area_ratio=10, min_collision_speed=0.01,
+                                        max_num_events=50)
         # Add a recorder.
         self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder()
         # Add the add-ons.

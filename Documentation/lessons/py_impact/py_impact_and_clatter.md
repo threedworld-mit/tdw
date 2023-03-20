@@ -117,7 +117,7 @@ In PyImpact, global variables are spread out across multiple classes. In Clatter
 
 Clatter also contains additional constructor parameters:
 
-- audio_audio_settings
+- dsp_buffer_size
 - min_collision_speed
 - scrape_angle
 - max_contact_separation

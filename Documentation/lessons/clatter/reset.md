@@ -1,6 +1,6 @@
 ##### Clatter
 
-# Clatter and Resonance Audio
+# Reset Clatter
 
 To reset Clatter, call `clatter.reset()`.
 

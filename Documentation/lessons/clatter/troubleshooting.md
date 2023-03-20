@@ -10,7 +10,7 @@ This is a general problem with Clatter that we intend to correct by recording la
 
 ## Non-rigid impact materials don't sound as good
 
-This is a known problem that we will fix.
+Synthesis of non-rigid materials is in our development plans, and will be supported in a future update to Clatter.
 
 ## There are extra impact sounds
 

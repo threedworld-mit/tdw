@@ -160,7 +160,7 @@ class RubeGoldbergDemo(Controller):
     def do_trial(self):
         # Keep track of trial number.
         self.current_trial_num += 1
-        # Create folder for this trial's logging info.
+        # Create folder for this trial's images.
         dest_dir = self.output_directory.joinpath(str(self.current_trial_num))
         if not dest_dir.exists():
             dest_dir.mkdir(parents=True)

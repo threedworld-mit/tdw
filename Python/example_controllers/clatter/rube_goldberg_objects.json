@@ -16,6 +16,21 @@
       "x": 0.1,
       "y": 0.1,
       "z": 0.1
+    },
+    "audio":
+    {
+      "amp": 0.3,
+      "resonance": 0.35,
+      "fake_mass": 4,
+      "impact_material": "metal",
+      "size": 3
+    },
+    "physics": {
+      "kinematic": false,
+      "dynamic_friction": 0.43,
+      "static_friction": 0.47,
+      "bounciness": 0.2,
+      "mass": 4
     }
   },
   "1": {
@@ -42,6 +57,14 @@
       "static_friction": 0.4,
       "bounciness": 0.6,
       "mass": 200
+    },
+    "audio":
+    {
+      "amp": 0.4,
+      "resonance": 0.25,
+      "fake_mass": 200,
+      "impact_material": "wood_soft",
+      "size": 4
     }
   },
   "10": {
@@ -157,6 +180,14 @@
       "y": 2,
       "z": 1
     },
+    "audio":
+    {
+      "amp": 0.3,
+      "resonance": 0.65,
+      "fake_mass": 0.6,
+      "impact_material": "wood_medium",
+      "size": 4
+    },
     "physics": {
       "kinematic": false,
       "dynamic_friction": 0.2,
@@ -182,6 +213,14 @@
       "x": 1,
       "y": 1,
       "z": 1
+    },
+    "audio":
+    {
+      "amp": 0.1,
+      "resonance": 0.45,
+      "fake_mass": 0.5,
+      "impact_material": "cardboard",
+      "size": 3
     },
     "physics": {
       "kinematic": true,

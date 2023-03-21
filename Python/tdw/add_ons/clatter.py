@@ -63,7 +63,7 @@ class Clatter(AddOn):
         if objects is None:
             self._objects: Dict[int, ClatterObject] = dict()
         else:
-            self._objects = objects
+            self._objects = {k: v for k, v in objects.items()}
         if random_seed is None:
             self._random_seed: int = -1
             self._generate_random_seed: bool = True
@@ -192,7 +192,7 @@ class Clatter(AddOn):
                 name = names[object_id]
                 # Use override data.
                 if object_id in self._objects:
-                    pass
+                    continue
                 # Use default audio data.
                 elif name in DEFAULT_OBJECTS:
                     self._objects[object_id] = copy(DEFAULT_OBJECTS[name])
@@ -318,10 +318,10 @@ class Clatter(AddOn):
         if objects is not None:
             self._objects.update(objects)
         if random_seed is None:
-            self.random_seed = -1
+            self._random_seed = -1
             self._generate_random_seed = True
         else:
-            self.random_seed = random_seed
+            self._random_seed = random_seed
             self._generate_random_seed = False
 
     @staticmethod

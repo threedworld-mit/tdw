@@ -11,6 +11,7 @@ from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.physics_audio.clatter_object import ClatterObject, DEFAULT_OBJECTS
+from tdw.physics_audio.impact_material import ImpactMaterial
 
 
 class RubeGoldbergDemo(Controller):
@@ -59,10 +60,17 @@ class RubeGoldbergDemo(Controller):
                                                                              dynamic_friction=object_setup_data[o]["physics"]["dynamic_friction"],
                                                                              static_friction=object_setup_data[o]["physics"]["static_friction"],
                                                                              bounciness=object_setup_data[o]["physics"]["bounciness"]))
-                object_audio: ClatterObject = DEFAULT_OBJECTS[object_setup_data[o]["model_name"]]
-                object_audio.mass = object_setup_data[o]["physics"]["mass"]
-                object_audio.bounciness = object_setup_data[o]["physics"]["bounciness"]
-                self.clatter_objects[object_id] = object_audio
+                if "audio" in object_setup_data[o]:
+                    a = object_setup_data[o]["audio"]
+                    clatter_object: ClatterObject = ClatterObject(impact_material=ImpactMaterial[a["impact_material"]],
+                                                                  size=a["size"],
+                                                                  amp=a["amp"],
+                                                                  resonance=a["resonance"],
+                                                                  fake_mass=a["fake_mass"])
+                else:
+                    clatter_object: ClatterObject = DEFAULT_OBJECTS[object_setup_data[o]["model_name"]]
+                    clatter_object.fake_mass = object_setup_data[o]["physics"]["mass"]
+                self.clatter_objects[object_id] = clatter_object
             # Use default physics values.
             else:
                 self.init_object_commands.extend(self.get_add_physics_object(model_name=object_setup_data[o]["model_name"],
@@ -70,6 +78,7 @@ class RubeGoldbergDemo(Controller):
                                                                              position=object_setup_data[o]["position"],
                                                                              rotation=object_setup_data[o]["rotation"],
                                                                              scale_factor=object_setup_data[o]["scale"],
+                                                                             scale_mass=False,
                                                                              library=object_setup_data[o]["library"]))
             # Set the collision detection mode.
             self.init_object_commands.append({"$type": "set_object_collision_detection_mode",
@@ -110,12 +119,11 @@ class RubeGoldbergDemo(Controller):
         # Here we have a large number of closely-occurring collisions resulting in a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height.
         # Using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant distortion of the audio.
         # Set `roll_substitute` to `"none"` to prevent spurious roll audio sounds.
-        # Set `impact_area_ratio` and `min_collision_speed` to further reduce the number of impacts.
-        self.clatter: Clatter = Clatter(objects=self.clatter_objects, simulation_amp=0.25, roll_substitute="none",
-                                        impact_area_ratio=10, min_collision_speed=0.01,
-                                        max_num_events=50)
+        # The other parameters set here will reduce the number of non-impacts, and the number of audio events overall.
+        self.clatter: Clatter = Clatter(objects=self.clatter_objects, simulation_amp=0.2, roll_substitute="none",
+                                        roll_angular_speed=15, min_collision_speed=0.01, max_num_events=25, max_num_contacts=4)
         # Add a recorder.
-        self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder()
+        self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder(max_frames=200)
         # Add the add-ons.
         self.add_ons.extend([camera, audio_initializer, self.clatter, self.recorder])
 
@@ -124,7 +132,7 @@ class RubeGoldbergDemo(Controller):
 
         # Set path to write out logging info.
         self.output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("rube_goldberg")
-        print(f"Logs and .wav files will be output to: {self.output_directory}")
+        print(f".wav files will be output to: {self.output_directory}")
         if not self.output_directory.exists():
             self.output_directory.mkdir(parents=True)
 

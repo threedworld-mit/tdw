@@ -1,9 +1,9 @@
 {
   "1": {
     "1": {
-        "library": "models_core.json",
 		"scene": "floorplan_1",
         "name": "fplan1_floor1",
+		"adjacent_floors": ["2"],
         "position": {
           "x": 10.99,
           "y": -0.099,
@@ -16,9 +16,9 @@
         }
       },
 	"2": {
-        "library": "models_core.json",
 		"scene": "floorplan_1",
         "name": "fplan1_floor2",
+		"adjacent_floors": ["1", "3"],
         "position": {
           "x": 6.49,
           "y": -0.099,
@@ -31,9 +31,9 @@
         }
       },
 	"3": {
-        "library": "models_core.json",
 		"scene": "floorplan_1",
         "name": "fplan1_floor3",
+		"adjacent_floors": ["2","4"],
         "position": {
           "x": 0.7399,
           "y": -0.099,
@@ -46,9 +46,9 @@
         }
 	  },
    "4": {
-        "library": "models_core.json",
 		"scene": "floorplan_1",
         "name": "fplan1_floor4",
+		"adjacent_floors": ["3", "5"],
         "position": {
           "x": 0.2399,
           "y": -0.099,
@@ -61,9 +61,9 @@
         }
       },
 	"5": {
-        "library": "models_core.json",
 		"scene": "floorplan_1",
         "name": "fplan1_floor5",
+		"adjacent_floors": ["4", "6"],
         "position": {
           "x": -5.76,
           "y": -0.099,
@@ -76,9 +76,9 @@
         }
       },
 	"6": {
-        "library": "models_core.json",
 		"scene": "floorplan_1",
         "name": "fplan1_floor6",
+		"adjacent_floors": ["5"],
         "position": {
           "x": -11.26,
           "y": -0.099,
@@ -93,9 +93,9 @@
 	},
   "2": {
     "1": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor1",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -108,9 +108,9 @@
         }
       },
 	"2": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor2",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -123,9 +123,9 @@
         }
       },
 	"3": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor3",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -138,9 +138,9 @@
         }
 	  },
    "4": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor4",
+		"adjacent_floors": ["1", "2", "3", "5", "6", "7", "8"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -153,9 +153,9 @@
         }
       },
 	"5": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor5",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -168,9 +168,9 @@
         }
       },
 	"6": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor6",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -183,9 +183,9 @@
         }
       },
 	"7": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor7",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -198,9 +198,9 @@
         }
       },
 	"8": {
-        "library": "models_core.json",
 		"scene": "floorplan_2",
         "name": "fplan2_floor8",
+		"adjacent_floors": ["4"],
         "position": {
           "x": 8.933,
           "y": -0.1,
@@ -215,9 +215,9 @@
 	},
   "4": {
     "1": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan4_floor1",
+		"adjacent_floors": ["2"],
         "position": {
           "x": 5.15,
           "y": -0.099,
@@ -230,9 +230,9 @@
         }
       },
 	"2": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan4_floor2",
+		"adjacent_floors": ["1", "3"],
         "position": {
           "x": 5.15,
           "y": -0.099,
@@ -245,9 +245,9 @@
         }
       },
 	"3": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan3_floor4",
+		"adjacent_floors": ["2", "4"],
         "position": {
           "x": 4.15,
           "y": -0.099,
@@ -260,9 +260,9 @@
         }
 	  },
    "4": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan4_floor4",
+		"adjacent_floors": ["3", "5"],
         "position": {
           "x": -1.35,
           "y": -0.099,
@@ -275,9 +275,9 @@
         }
       },
 	"5": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan4_floor5",
+		"adjacent_floors": ["4", "6"],
         "position": {
           "x": -6.1,
           "y": -0.099,
@@ -290,9 +290,9 @@
         }
       },
 	"6": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan4_floor6",
+		"adjacent_floors": ["5", "7"],
         "position": {
           "x": -6.1,
           "y": -0.099,
@@ -305,9 +305,9 @@
         }
       },
 	"7": {
-        "library": "models_core.json",
 		"scene": "floorplan_4",
         "name": "fplan4_floor7",
+		"adjacent_floors": ["6"],
         "position": {
          "x": -6.1,
           "y": -0.099,
@@ -322,13 +322,13 @@
 	},
   "5": {
     "1": {
-        "library": "models_core.json",
 		"scene": "floorplan_5",
         "name": "fplan5_floor1",
+		"adjacent_floors": ["2"],
         "position": {
-          "x": 10.87928,
-          "y": 0.01806453,
-          "z": -3.399932
+          "x": 8.391,
+          "y": 0,
+          "z": -2.793
         },
         "scale_factor": {
           "x": 1,
@@ -337,13 +337,13 @@
         }
       },
 	"2": {
-        "library": "models_core.json",
 		"scene": "floorplan_5",
         "name": "fplan5_floor2",
+		"adjacent_floors": ["1", "3", "6"],
         "position": {
-          "x": 10.87928,
-          "y": 0.01806453,
-          "z": -3.399932
+          "x": 3.391,
+          "y": 0,
+          "z": -2.793
         },
         "scale_factor": {
           "x": 1,
@@ -352,13 +352,13 @@
         }
       },
 	"3": {
-        "library": "models_core.json",
 		"scene": "floorplan_5",
         "name": "fplan5_floor3",
+		"adjacent_floors": ["2", "4", "5"],
         "position": {
-          "x": 10.87928,
-          "y": 0.01806453,
-          "z": -3.399932
+          "x": -2.608,
+          "y": 0,
+          "z":  -2.793
         },
         "scale_factor": {
           "x": 1,
@@ -367,13 +367,13 @@
         }
 	  },
    "4": {
-        "library": "models_core.json",
 		"scene": "floorplan_5",
         "name": "fplan5_floor4",
+		"adjacent_floors": ["3"],
         "position": {
-          "x": 10.87928,
-          "y": 0.01806453,
-          "z": -3.399932
+          "x": -8.358,
+          "y": 0,
+          "z":  -2.793
         },
         "scale_factor": {
           "x": 1,
@@ -382,13 +382,13 @@
         }
       },
 	"5": {
-        "library": "models_core.json",
 		"scene": "floorplan_5",
         "name": "fplan5_floor5",
+		"adjacent_floors": ["3", "6"],
         "position": {
-          "x": 10.87928,
-          "y": 0.01806453,
-          "z": -3.399932
+          "x": -2.608,
+          "y": 0,
+          "z": 2.706
         },
         "scale_factor": {
           "x": 1,
@@ -397,13 +397,13 @@
         }
       },
 	"6": {
-        "library": "models_core.json",
 		"scene": "floorplan_5",
         "name": "fplan5_floor6",
+		"adjacent_floors": ["5", "2"],
         "position": {
-          "x": 10.87928,
-          "y": 0.01806453,
-          "z": -3.399932
+          "x": 3.391,
+          "y": 0,
+          "z": 2.706
         },
         "scale_factor": {
           "x": 1,

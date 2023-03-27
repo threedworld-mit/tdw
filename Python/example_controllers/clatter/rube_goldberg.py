@@ -1,3 +1,4 @@
+from copy import copy
 from typing import List, Dict
 from pathlib import Path
 import json
@@ -60,6 +61,7 @@ class RubeGoldbergDemo(Controller):
                                                                              dynamic_friction=object_setup_data[o]["physics"]["dynamic_friction"],
                                                                              static_friction=object_setup_data[o]["physics"]["static_friction"],
                                                                              bounciness=object_setup_data[o]["physics"]["bounciness"]))
+                # Use audio values from the JSON data.
                 if "audio" in object_setup_data[o]:
                     a = object_setup_data[o]["audio"]
                     clatter_object: ClatterObject = ClatterObject(impact_material=ImpactMaterial[a["impact_material"]],
@@ -67,8 +69,9 @@ class RubeGoldbergDemo(Controller):
                                                                   amp=a["amp"],
                                                                   resonance=a["resonance"],
                                                                   fake_mass=a["fake_mass"])
+                # Use default audio values but adjust the mass.
                 else:
-                    clatter_object: ClatterObject = DEFAULT_OBJECTS[object_setup_data[o]["model_name"]]
+                    clatter_object: ClatterObject = copy(DEFAULT_OBJECTS[object_setup_data[o]["model_name"]])
                     clatter_object.fake_mass = object_setup_data[o]["physics"]["mass"]
                 self.clatter_objects[object_id] = clatter_object
             # Use default physics values.
@@ -80,6 +83,10 @@ class RubeGoldbergDemo(Controller):
                                                                              scale_factor=object_setup_data[o]["scale"],
                                                                              scale_mass=False,
                                                                              library=object_setup_data[o]["library"]))
+                # Use default audio values but lower the resonance.
+                clatter_object: ClatterObject = copy(DEFAULT_OBJECTS[object_setup_data[o]["model_name"]])
+                clatter_object.resonance = 0.05
+                self.clatter_objects[object_id] = clatter_object
             # Set the collision detection mode.
             self.init_object_commands.append({"$type": "set_object_collision_detection_mode",
                                               "id": object_id,
@@ -115,13 +122,18 @@ class RubeGoldbergDemo(Controller):
         # Initialize audio.
         audio_initializer = AudioInitializer(avatar_id="a")
 
+        # Set the floor object.
+        env = ClatterObject(impact_material=ImpactMaterial.wood_medium, size=5,
+                            amp=0.1, resonance=0.01, fake_mass=500)
+
         # Add Clatter.
         # Here we have a large number of closely-occurring collisions resulting in a rapid series of "clustered" impact sounds, as opposed to a single object falling from a height.
         # Using a higher value such as the 0.5 used in the example controller will definitely result in unpleasant distortion of the audio.
         # Set `roll_substitute` to `"none"` to prevent spurious roll audio sounds.
-        # The other parameters set here will reduce the number of non-impacts, and the number of audio events overall.
+        # The other parameters set here will reduce the number of audio events overall and set the environment (floor).
         self.clatter: Clatter = Clatter(objects=self.clatter_objects, simulation_amp=0.2, roll_substitute="none",
-                                        roll_angular_speed=15, min_collision_speed=0.01, max_num_events=25, max_num_contacts=4)
+                                        roll_angular_speed=15, min_collision_speed=0.01, max_num_events=25,
+                                        max_num_contacts=4, environment=env)
         # Add a recorder.
         self.recorder: PhysicsAudioRecorder = PhysicsAudioRecorder(max_frames=200)
         # Add the add-ons.

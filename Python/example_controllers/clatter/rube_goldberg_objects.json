@@ -20,7 +20,7 @@
     "audio":
     {
       "amp": 0.3,
-      "resonance": 0.35,
+      "resonance": 0.1,
       "fake_mass": 4,
       "impact_material": "metal",
       "size": 3
@@ -61,7 +61,7 @@
     "audio":
     {
       "amp": 0.4,
-      "resonance": 0.25,
+      "resonance": 0.05,
       "fake_mass": 200,
       "impact_material": "wood_soft",
       "size": 4
@@ -183,7 +183,7 @@
     "audio":
     {
       "amp": 0.3,
-      "resonance": 0.65,
+      "resonance": 0.01,
       "fake_mass": 0.6,
       "impact_material": "wood_medium",
       "size": 4
@@ -217,7 +217,7 @@
     "audio":
     {
       "amp": 0.1,
-      "resonance": 0.45,
+      "resonance": 0.01,
       "fake_mass": 0.5,
       "impact_material": "cardboard",
       "size": 3
@@ -273,6 +273,14 @@
       "static_friction": 0.2,
       "bounciness": 0.6,
       "mass": 0.2
+    },
+    "audio":
+    {
+      "amp": 0.2,
+      "resonance": 0.15,
+      "fake_mass": 0.2,
+      "impact_material": "metal",
+      "size": 2
     }
   },
   "6": {

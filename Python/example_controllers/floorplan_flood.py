@@ -17,8 +17,8 @@ floorplan_flood = FloorplanFlood()
 floorplan_flood.init_scene(scene="1a", layout=0)
 
 # Add a camera and enable image capture.
-camera = ThirdPersonCamera(position={"x": 0, "y": 40, "z": 0},
-                           look_at={"x": 0, "y": 0, "z": 0},
+camera = ThirdPersonCamera(position={"x":-5, "y": 6.4, "z": -2.6},
+                           look_at={"x": -2.25, "y": 0.05, "z": 2.5},
                            avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("floorplan_controller")
 print(f"Images will be saved to: {path}")
@@ -31,16 +31,18 @@ c.communicate([])
 c.communicate([{"$type": "set_screen_size",
                 "width": 1280,
                 "height": 720},
+               {"$type": "set_field_of_view", "field_of_view": 82, "avatar_id": "a"},
                {"$type": "set_floorplan_roof",
                 "show": False}])
-# Flood the floor section #1
-floorplan_flood.add_flood_section(1)
-floorplan_flood.add_flood_section(2)
-floorplan_flood.add_flood_section(3)
+flood_start_floor = 4
 for i in range(50):
-    floorplan_flood.set_flood_height(1, 0.01)
-for j in range(40):
-    floorplan_flood.set_flood_height(2, 0.01)
-for k in range(30):
-    floorplan_flood.set_flood_height(3, 0.01)
+    floorplan_flood.set_flood_height(flood_start_floor, 0.0125)
+    c.communicate([])
+adjacent_floors = floorplan_flood.get_adjacent_floors(flood_start_floor)
+for f in adjacent_floors:
+    for i in range(50):
+        floorplan_flood.set_flood_height(f, 0.0125)
+        c.communicate([])
+
+
 #c.communicate({"$type": "terminate"})

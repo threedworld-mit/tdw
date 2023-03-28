@@ -43,6 +43,18 @@ for f in adjacent_floors:
     for i in range(50):
         floorplan_flood.set_flood_height(f, 0.0125)
         c.communicate([])
+bowl_id = self.get_unique_id()
+chair_id = self.get_unique_id()
+c.communicate([c.get_add_object(model_name="elephant_bowl",
+                                              object_id=bowl_id
+                                              position={"x": -2.8, "y": 0, "z": 2.5},
+                                              rotation={"x": 0, "y": 0, "z": 0}),
+               c.get_add_object(model_name="chair_thonet_marshall",
+                                              object_id=chair_id,
+                                              position={"x": -2.0, "y": 0, "z": 2.0},
+                                              rotation={"x": 0, "y": 0, "z": 0}),
+              {"$type": "add_floorplan_flood_buoyancy", "id": bowl_id},
+              {"$type": "add_floorplan_flood_buoyancy", "id": chair_id}])
 
 
 #c.communicate({"$type": "terminate"})

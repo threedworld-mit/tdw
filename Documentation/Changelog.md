@@ -6,6 +6,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ## v1.11.8
 
+### `tdw` module
+
+- Fixed: Replicant doesn't work in newer versions of Python because it imports `annotations` from `__future__`. This import has been removed.
+
 ### Build
 
 - Fixed: Visual effect audio doesn't work.

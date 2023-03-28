@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import List, Dict, Union, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils

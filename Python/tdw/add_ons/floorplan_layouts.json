@@ -8111,7 +8111,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 9.225582,
           "y": 0.001250118,
@@ -8133,7 +8133,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 9.228166,
           "y": 0.001268059,
@@ -10203,7 +10203,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 8.794378,
           "y": 0.001536578,
@@ -10225,7 +10225,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 7.580085,
           "y": 0.002320141,
@@ -12165,7 +12165,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 5.521248,
           "y": 1.292143,
@@ -12187,7 +12187,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": 2.136364,
           "y": 0.001430899,
@@ -12209,7 +12209,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": 3.351843,
           "y": 0.00277245,
@@ -12231,7 +12231,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": 5.063653,
           "y": 0.005595863,
@@ -12253,7 +12253,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": 6.749014,
           "y": -0.0001291037,
@@ -13067,7 +13067,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 6.12973,
           "y": 1.284067,
@@ -13751,7 +13751,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -3.474825,
           "y": 0.002089262,
@@ -13773,7 +13773,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": -2.352957,
           "y": 0.001279891,
@@ -15535,7 +15535,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -7.955274,
           "y": 0.002429157,
@@ -15557,7 +15557,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": -7.959599,
           "y": 0.002874106,
@@ -17321,7 +17321,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 9.925453,
           "y": 0.002429128,
@@ -17343,7 +17343,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 8.709776,
           "y": 0.002874076,
@@ -19303,7 +19303,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -5.36495,
           "y": 1.289366,
@@ -20249,7 +20249,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -5.36615,
           "y": 1.282887,

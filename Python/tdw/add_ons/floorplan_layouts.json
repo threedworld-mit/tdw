@@ -511,7 +511,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -2.393743,
           "y": 1.334,
@@ -533,7 +533,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 2.774915,
           "y": 0.001080811,
@@ -555,7 +555,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 2.775496,
           "y": 0.008154243,
@@ -577,7 +577,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 2.777281,
           "y": 0.00137198,
@@ -599,7 +599,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -2.278,
           "y": 0.03050852,
@@ -709,7 +709,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -2.24033,
           "y": 0.04182714,
@@ -731,7 +731,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 2.774205,
           "y": 0.02602124,
@@ -1501,7 +1501,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -2.389085,
           "y": 1.333,
@@ -1589,7 +1589,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -2.271564,
           "y": 0,
@@ -2339,7 +2339,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -8.312316,
           "y": 1.277516,
@@ -2361,7 +2361,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -8.191187,
           "y": 0.001550704,
@@ -2383,7 +2383,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -8.193738,
           "y": 0.001391023,
@@ -2405,7 +2405,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": -6.754916,
           "y": 0.001359254,
@@ -2427,7 +2427,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -3.63,
           "y": -0.0001302958,
@@ -2537,7 +2537,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -8.17327,
           "y": 0.01837641,
@@ -2559,7 +2559,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -4.477513,
           "y": 0.01036817,
@@ -3087,7 +3087,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -8.313621,
           "y": 1.277683,
@@ -3197,7 +3197,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -5.672021,
           "y": 0.001113445,
@@ -3417,7 +3417,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -8.187123,
           "y": -2.217293e-05,
@@ -3439,7 +3439,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_chrome_composite",
         "position": {
           "x": -5.535613,
           "y": 0.001058519,
@@ -4365,7 +4365,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -0.6611966,
           "y": 1.289366,
@@ -4387,7 +4387,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": -1.183731,
           "y": 0.001681656,
@@ -4409,7 +4409,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": 0.03294861,
           "y": 0.002922297,
@@ -4431,7 +4431,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": 0.7887546,
           "y": 0.003972739,
@@ -4453,7 +4453,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": 0.5614297,
           "y": 0.0005825758,
@@ -4541,7 +4541,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -1.752283,
           "y": 0.01400036,
@@ -4563,7 +4563,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -0.5689564,
           "y": 0.006486446,
@@ -5289,7 +5289,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -0.05276945,
           "y": 1.282887,
@@ -5377,7 +5377,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_chrome_composite",
         "position": {
           "x": -0.5054665,
           "y": 0.001035154,
@@ -5553,7 +5553,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "appliance-ge-profile-microwave3",
+        "name": "appliance-ge-profile-microwave_composite3_composite",
         "position": {
           "x": 0.7168486,
           "y": 0.9241129,
@@ -6261,7 +6261,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 7.577421,
           "y": 1.294108,
@@ -6283,7 +6283,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": 8.794104,
           "y": 0.001335025,
@@ -6305,7 +6305,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": 7.579797,
           "y": 0.003574848,
@@ -6327,7 +6327,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": 5.870882,
           "y": 0.005365342,
@@ -6349,7 +6349,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": 3.978992,
           "y": -0.000145793,
@@ -6459,7 +6459,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 6.798457,
           "y": 0.01498848,
@@ -6481,7 +6481,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 8.180622,
           "y": 0.01889324,
@@ -7361,7 +7361,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 8.786,
           "y": 1.286036,
@@ -7449,7 +7449,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_chrome_composite",
         "position": {
           "x": 5.058007,
           "y": 0.001533657,
@@ -8089,7 +8089,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 7.577506,
           "y": 1.287325,
@@ -8155,7 +8155,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 5.869765,
           "y": 0.003756821,
@@ -8177,7 +8177,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 4.148063,
           "y": -0.0001225471,
@@ -8287,7 +8287,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 6.797985,
           "y": 0.01529849,
@@ -8309,7 +8309,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 9.09315,
           "y": 0.01428118,
@@ -8859,7 +8859,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 9.341,
           "y": 1.279108,
@@ -8925,7 +8925,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 5.227055,
           "y": 0.001148224,
@@ -9167,7 +9167,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 6.30508,
           "y": -0.0001323223,
@@ -9189,7 +9189,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 8.035077,
           "y": 0.001103312,
@@ -10181,7 +10181,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 7.577506,
           "y": 1.292245,
@@ -10247,7 +10247,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 5.869894,
           "y": 0.004687548,
@@ -10269,7 +10269,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 3.978988,
           "y": -0.0001467466,
@@ -10379,7 +10379,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 6.798303,
           "y": 0.01527721,
@@ -10401,7 +10401,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 8.181293,
           "y": 0.01785868,
@@ -11303,7 +11303,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 8.786,
           "y": 1.284056,
@@ -11413,7 +11413,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_chrome_composite",
         "position": {
           "x": 5.057981,
           "y": 0.001517594,
@@ -12341,7 +12341,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 4.13258,
           "y": 0.01558346,
@@ -12363,7 +12363,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 2.749237,
           "y": 0.01797602,
@@ -13155,7 +13155,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite",
         "position": {
           "x": 5.670014,
           "y": 0.001092941,
@@ -13729,7 +13729,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -3.592339,
           "y": 1.283696,
@@ -13861,7 +13861,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -3.482068,
           "y": 0.006308883,
@@ -14301,7 +14301,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -3.592266,
           "y": 1.279712,
@@ -14565,7 +14565,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -0.2238331,
           "y": 2.968311e-05,
@@ -14785,7 +14785,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -1.289054,
           "y": 0.001053452,
@@ -14807,7 +14807,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -1.396886,
           "y": 0.01406854,
@@ -14829,7 +14829,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": -2.330251,
           "y": 0.001344681,
@@ -14851,7 +14851,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -0.1697487,
           "y": 0.00438562,
@@ -15513,7 +15513,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -4.106058,
           "y": 1.292141,
@@ -15579,7 +15579,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": -7.954346,
           "y": 0.003950953,
@@ -15601,7 +15601,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -4.231689,
           "y": -0.0001347065,
@@ -15711,7 +15711,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -7.931056,
           "y": 0.01483434,
@@ -15733,7 +15733,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -7.961329,
           "y": 0.005119056,
@@ -16547,7 +16547,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -4.107839,
           "y": 1.288497,
@@ -16635,7 +16635,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_chrome_composite",
         "position": {
           "x": -4.223536,
           "y": 0.001243711,
@@ -17299,7 +17299,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 10.12641,
           "y": 1.292141,
@@ -17365,7 +17365,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 10.00078,
           "y": -0.0001347065,
@@ -17475,7 +17475,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 7.927623,
           "y": 0.01483434,
@@ -17497,7 +17497,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 9.311201,
           "y": 0.005119085,
@@ -18333,7 +18333,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 10.12463,
           "y": 1.288497,
@@ -18421,7 +18421,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 10.00893,
           "y": 0.001243711,
@@ -19479,7 +19479,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -5.21368,
           "y": 0.01400042,
@@ -19501,7 +19501,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -2.376219,
           "y": 0.006486446,
@@ -20359,7 +20359,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_chrome_composite",
         "position": {
           "x": -5.248669,
           "y": 0.001035213,
@@ -20535,7 +20535,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "appliance-ge-profile-microwave3",
+        "name": "appliance-ge-profile-microwave_composite3_composite",
         "position": {
           "x": -1.09042,
           "y": 0.9241129,
@@ -21131,7 +21131,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 0.6302309,
           "y": 1.281727,
@@ -21153,7 +21153,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 5.856047,
           "y": 0.001550645,
@@ -21175,7 +21175,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 3.111661,
           "y": 0.0008039474,
@@ -21263,7 +21263,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 5.239104,
           "y": 0.005685091,
@@ -21725,7 +21725,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 0.630311,
           "y": 1.27775,
@@ -21989,7 +21989,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 2.502601,
           "y": -0.0003089905,
@@ -22209,7 +22209,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 4.177391,
           "y": -0.0005035102,
@@ -22231,7 +22231,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 0.764061,
           "y": 0.01290482,
@@ -22253,7 +22253,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 0.7327604,
           "y": 0.001274437,
@@ -22275,7 +22275,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_chrome_composite",
         "position": {
           "x": 0.7335005,
           "y": 0.003181189,

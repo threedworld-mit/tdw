@@ -12,7 +12,7 @@ Flood a small set of rooms, and allow two objects to float in the water.
 
 c = Controller()
 
-# Initialize the floorplan add-on.
+# Initialize the FloorplanFlood add-on.
 floorplan_flood = FloorplanFlood()
 # Scene 1, visual variant a, object layout 0.
 floorplan_flood.init_scene(scene="1a", layout=0)
@@ -34,19 +34,24 @@ chair_id = c.get_unique_id()
 c.communicate([{"$type": "set_screen_size",
                 "width": 1280,
                 "height": 720},
-               {"$type": "set_field_of_view", "field_of_view": 82, "avatar_id": "a"},
-               {"$type": "set_floorplan_roof", "show": False},
+               {"$type": "set_field_of_view",
+                "field_of_view": 82,
+                "avatar_id": "a"},
+               {"$type": "set_floorplan_roof",
+                "show": False},
                # Add two objects that will float about in the water.
                c.get_add_object(model_name="elephant_bowl",
-                                              object_id=bowl_id,
-                                              position={"x": -4.0, "y": 0, "z": 3.36},
-                                              rotation={"x": 0, "y": 0, "z": 0}),
+                                object_id=bowl_id,
+                                position={"x": -4.0, "y": 0, "z": 3.36},
+                                rotation={"x": 0, "y": 0, "z": 0}),
                c.get_add_object(model_name="chair_thonet_marshall",
-                                              object_id=chair_id,
-                                              position={"x": -7.0, "y": 0, "z": 3.8},
-                                              rotation={"x": 0, "y": 0, "z": 0}),
-              {"$type": "add_floorplan_flood_buoyancy", "id": bowl_id},
-              {"$type": "add_floorplan_flood_buoyancy", "id": chair_id}])
+                                object_id=chair_id,
+                                position={"x": -7.0, "y": 0, "z": 3.8},
+                                rotation={"x": 0, "y": 0, "z": 0}),
+              {"$type": "add_floorplan_flood_buoyancy",
+               "id": bowl_id},
+              {"$type": "add_floorplan_flood_buoyancy",
+               "id": chair_id}])
 # Start the flood at floor ID # 4, then use the adjacent floor info to propagate
 # to adjacent rooms.  This is a very simple example; a real application would use 
 # a more robust model for flood propagation.

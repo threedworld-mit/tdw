@@ -653,7 +653,7 @@ class VisualEffectLibrarian(_Librarian[VisualEffectRecord]):
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["visual_effects.json"]
+        return ["visual_effects.json", "flood_effects.json"]
 
     def _generate_record(self, data: dict) -> T:
         return VisualEffectRecord(data)

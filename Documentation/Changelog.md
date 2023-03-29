@@ -4,6 +4,37 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.9
+
+### Command API
+
+#### New Commands
+
+| Command                        | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| `add_floorplan_flood_buoyancy` | Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on. |
+
+### `tdw` module
+
+- Added: `FloorplanFlood` add-on. Initialize a scene populated by objects in pre-scripted layouts. Then, create a set of flood objects for each floor section in the floorplan.
+
+### Visual Effects Library
+
+- Added `flood_effects.json`. This library is used by the `FloorplanFlood` add-on.
+
+### Example Controllers
+
+- Added: `non_physics/floorplan_flood_minimal.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                  |
+| ---------------------------------------- | ---------------------------- |
+| `python/add_ons/floorplan_flood.md`      | API for `FloorplanFlood`.    |
+| `lessons/non_physics/floorplan_flood.md` | Lesson for `FloorplanFlood`. |
+
 ## v1.11.8
 
 ### `tdw` module

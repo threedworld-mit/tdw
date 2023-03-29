@@ -273,6 +273,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 5. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
 6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
 7. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
+8. [The `FloorplanFlood` add-on](Documentation/lessons/non_physics/floorplan_flood.md)
 
 ## 15. Misc. remote server topics
 

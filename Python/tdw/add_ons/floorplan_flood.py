@@ -65,14 +65,14 @@ class FloorplanFlood(Floorplan):
             # Add to dictionary of currently-flooded floors. Position will include current height (flood level).
             self._flooded_floors[floor_name] = floor_id
 
-    def get_adjacent_floors(self, floor: int) -> List[int]:
+    def get_adjacent_floors(self, index: int) -> List[int]:
         """
         Return a list of the floors adjacent to the floor parameter.
 
-        :param floor: The floor index.
+        :param index: The floor index.
         """
 
-        floor_index = str(floor)
+        floor_index = str(index)
         if floor_index not in self._floors:
             raise Exception(f"Floor not found: {floor_index}")
         return self._floors[floor_index]["adjacent_floors"]

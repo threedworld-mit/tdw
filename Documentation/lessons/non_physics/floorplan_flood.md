@@ -1,3 +1,12 @@
+##### Non-physics objects
+
+# The `FloorplanFlood` add-on
+
+The [`FloorplanFlood`](../../python/add_ons/floorplan_flood.md) add-on is a special case of [visual effects](visual_effects.md) in that it combines specialized visual effects with specific scenes. This add-on is a sub-class of the [`Floorplan` add-on](../scene_setup_high_level/floorplans.md). The `FloorplanFlood` add-on generates scene layouts that are exactly the same as `Floorplan`'s, using the exact same API. Additionally, it instantiates "flood effects" underneath floor sections of each room. By raising the height of the flood object, you can simulate a "flooding" effect.
+
+Read [the API documentation](../../python/add_ons/floorplan_flood.md) for more information.
+
+```python
 from tdw.controller import Controller
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
@@ -47,7 +56,11 @@ c.communicate([{"$type": "set_screen_size",
                c.get_add_object(model_name="chair_thonet_marshall",
                                 object_id=chair_id,
                                 position={"x": -7.0, "y": 0, "z": 3.8},
-                                rotation={"x": 0, "y": 0, "z": 0})])
+                                rotation={"x": 0, "y": 0, "z": 0}),
+              {"$type": "add_floorplan_flood_buoyancy",
+               "id": bowl_id},
+              {"$type": "add_floorplan_flood_buoyancy",
+               "id": chair_id}])
 # Start the flood at floor ID # 4, then use the adjacent floor info to propagate
 # to adjacent rooms.  This is a very simple example; a real application would use 
 # a more robust model for flood propagation.
@@ -55,11 +68,6 @@ flood_start_floor = 4
 for i in range(50):
     floorplan_flood.set_flood_height(flood_start_floor, 0.0125)
     c.communicate([])
-# Start to make the objects float.
-c.communicate([{"$type": "add_floorplan_flood_buoyancy",
-                "id": bowl_id},
-               {"$type": "add_floorplan_flood_buoyancy",
-                "id": chair_id}])
 adjacent_floors = floorplan_flood.get_adjacent_floors(flood_start_floor)
 for f in adjacent_floors:
     for i in range(50):
@@ -69,3 +77,36 @@ for f in adjacent_floors:
 for i in range(100):
     c.communicate([])
 c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+**TODO**
+
+### Buoyancy
+
+You can make objects "buoyant" by sending [`add_floorplan_flood_buoyancy`](../../api/command_api.md#add_floorplan_flood_buoyancy) per object. This isn't "true" buoyancy; the objects will become [kinematic](../physx/physics_objects.md) and a specialized script will manually move the object up and down to make it appear as if it is floating.
+
+### Valid Scenes
+
+The `FloorplanFlood` add-on uses custom-sized flood objects that must be added at specific positions to look realistic. Accordingly, the flood effects can only be used in the floorplan scenes, as opposed to other scenes such as tdw_room.
+
+***
+
+**This is the last document in the "Non-physics objects" tutorial.**
+
+[Return to the README](../../../README.md)
+
+***
+
+Example controllers:
+
+- [floodplan_flood_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/non_physics/floodplan_flood_minimal.py)  A minimal example of how to use a `FloorplanFlood` add-on.
+
+Python API:
+
+- [`FloorplanFlood`](../../python/add_ons/floorplan_flood.md)
+
+Command API:
+
+- [`add_floorplan_flood_buoyancy`](../../api/command_api.md#add_floorplan_flood_buoyancy)

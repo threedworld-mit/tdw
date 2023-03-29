@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np

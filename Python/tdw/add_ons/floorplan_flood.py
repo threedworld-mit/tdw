@@ -11,7 +11,8 @@ from tdw.librarian import VisualEffectLibrarian
 
 class FloorplanFlood(Floorplan):
     """
-    Initialize a scene populated by objects in pre-scripted layouts.
+    Initialize a scene populated by objects in pre-scripted layouts, than create a set of flood objects for wach floor
+     in the floorplan.
 
     There are four scenes (1, 2, 4, 5), each with three visual variants (a, b, c). Each scene has three different object layouts (0, 1, 2).
 
@@ -65,7 +66,8 @@ class FloorplanFlood(Floorplan):
             raise Exception(f"Invalid scene: {scene}")
         floorplan_floods = loads(Path(resource_filename(__name__, "floorplan_floods.json")).
                            read_text(encoding="utf-8"))
-        # Get the floors for this floorplan.
+        # Get the floors for this floorplan. Create flood objects for each floor.
+        # These will be at 0 in Y, and not visible until their height is adjusted.
         self.floors = floorplan_floods[scene_index[0:1]]
         for i in range(len(self.floors) - 1):
             floor_index = str(i+1)
@@ -90,6 +92,10 @@ class FloorplanFlood(Floorplan):
         pass
         
     def get_adjacent_floors(self, floor: int):
+        """
+        Return a list of the floors adjacent to the floor parameter.
+        :param floor: The floor index.
+        """
         floor_index = str(floor)
         if floor_index not in self.floors:
             raise Exception(f"Floor not found: {floor_index}")
@@ -97,6 +103,11 @@ class FloorplanFlood(Floorplan):
         return adjacents
 
     def set_flood_height(self, floor: int, height: float):
+        """
+        Set the height (Y) of a floor flood object.
+        :param floor: The floor index.
+        :param height: The height to set the floor object to.
+        """
         floor_index = str(floor)
         if floor_index not in self.floors:
             raise Exception(f"Floor not found: {floor_index}")

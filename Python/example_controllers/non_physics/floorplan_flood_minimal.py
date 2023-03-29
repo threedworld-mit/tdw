@@ -7,9 +7,10 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
 Generate a floorplan scene and populate it with a layout of objects.
+Flood a small set of rooms, and allow two objects to float in the water.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 
 # Initialize the floorplan add-on.
 floorplan_flood = FloorplanFlood()
@@ -27,13 +28,28 @@ capture = ImageCapture(avatar_ids=["a"], pass_masks=["_img"], path=path)
 c.add_ons.extend([floorplan_flood, camera, capture])
 # Initialize the scene.
 c.communicate([])
+bowl_id = c.get_unique_id()
+chair_id = c.get_unique_id()
 # Make the image 720p and hide the roof.
 c.communicate([{"$type": "set_screen_size",
                 "width": 1280,
                 "height": 720},
                {"$type": "set_field_of_view", "field_of_view": 82, "avatar_id": "a"},
-               {"$type": "set_floorplan_roof",
-                "show": False}])
+               {"$type": "set_floorplan_roof", "show": False},
+               # Add two objects that will float about in the water.
+               c.get_add_object(model_name="elephant_bowl",
+                                              object_id=bowl_id,
+                                              position={"x": -4.0, "y": 0, "z": 3.36},
+                                              rotation={"x": 0, "y": 0, "z": 0}),
+               c.get_add_object(model_name="chair_thonet_marshall",
+                                              object_id=chair_id,
+                                              position={"x": -7.0, "y": 0, "z": 3.8},
+                                              rotation={"x": 0, "y": 0, "z": 0}),
+              {"$type": "add_floorplan_flood_buoyancy", "id": bowl_id},
+              {"$type": "add_floorplan_flood_buoyancy", "id": chair_id}])
+# Start the flood at floor ID # 4, then use the adjacent floor info to propagate
+# to adjacent rooms.  This is a very simple example; a real application would use 
+# a more robust model for flood propagation.
 flood_start_floor = 4
 for i in range(50):
     floorplan_flood.set_flood_height(flood_start_floor, 0.0125)
@@ -43,18 +59,7 @@ for f in adjacent_floors:
     for i in range(50):
         floorplan_flood.set_flood_height(f, 0.0125)
         c.communicate([])
-bowl_id = self.get_unique_id()
-chair_id = self.get_unique_id()
-c.communicate([c.get_add_object(model_name="elephant_bowl",
-                                              object_id=bowl_id
-                                              position={"x": -2.8, "y": 0, "z": 2.5},
-                                              rotation={"x": 0, "y": 0, "z": 0}),
-               c.get_add_object(model_name="chair_thonet_marshall",
-                                              object_id=chair_id,
-                                              position={"x": -2.0, "y": 0, "z": 2.0},
-                                              rotation={"x": 0, "y": 0, "z": 0}),
-              {"$type": "add_floorplan_flood_buoyancy", "id": bowl_id},
-              {"$type": "add_floorplan_flood_buoyancy", "id": chair_id}])
-
-
-#c.communicate({"$type": "terminate"})
+# Let the flood water undulate, and the objects bob about, for a while before quitting.
+for i in range(100):
+    c.communicate([])
+c.communicate({"$type": "terminate"})

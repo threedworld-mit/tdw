@@ -44,7 +44,7 @@ c.communicate([{"$type": "set_screen_size",
                                 object_id=bowl_id,
                                 position={"x": -4.0, "y": 0, "z": 3.36},
                                 rotation={"x": 0, "y": 0, "z": 0}),
-               c.get_add_object(model_name="chair_thonet_marshall",
+               c.get_add_object(model_name="chair_billiani_doll",
                                 object_id=chair_id,
                                 position={"x": -7.0, "y": 0, "z": 3.8},
                                 rotation={"x": 0, "y": 0, "z": 0})])
@@ -55,17 +55,17 @@ flood_start_floor = 4
 for i in range(50):
     floorplan_flood.set_flood_height(flood_start_floor, 0.0125)
     c.communicate([])
-# Start to make the objects float.
-c.communicate([{"$type": "add_floorplan_flood_buoyancy",
-                "id": bowl_id},
-               {"$type": "add_floorplan_flood_buoyancy",
-                "id": chair_id}])
 adjacent_floors = floorplan_flood.get_adjacent_floors(flood_start_floor)
 for f in adjacent_floors:
     for i in range(50):
         floorplan_flood.set_flood_height(f, 0.0125)
         c.communicate([])
+# Start to make the objects float.
+c.communicate([{"$type": "add_floorplan_flood_buoyancy",
+                "id": bowl_id},
+               {"$type": "add_floorplan_flood_buoyancy",
+                "id": chair_id}])
 # Let the flood water undulate, and the objects bob about, for a while before quitting.
-for i in range(100):
+for i in range(200):
     c.communicate([])
 c.communicate({"$type": "terminate"})

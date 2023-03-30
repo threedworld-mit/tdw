@@ -138,5 +138,5 @@ class Action(ABC):
                 if framerate >= 60:
                     return duration * (60 / framerate)
                 else:
-                    return duration * (framerate / 60)
+                    return duration
         raise Exception("Framerate output data not found")

@@ -36,10 +36,7 @@ class CarryCouch(Controller):
         self.add_ons.extend([self.replicant_0, self.replicant_1, camera, capture])
         # Initialize the scene.
         commands = [TDWUtils.create_empty_room(12, 12),
-                    {"$type": "bake_nav_mesh",
-                     "ignore": [0, 1]},
-                    {"$type": "set_target_framerate",
-                     "framerate": 30}]
+                    {"$type": "bake_nav_mesh"}]
         commands.extend(Controller.get_add_physics_object(model_name="arflex_strips_sofa",
                                                           object_id=self.object_id,
                                                           position={"x": 0, "y": 0, "z": 1}))

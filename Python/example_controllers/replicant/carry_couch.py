@@ -37,7 +37,9 @@ class CarryCouch(Controller):
         # Initialize the scene.
         commands = [TDWUtils.create_empty_room(12, 12),
                     {"$type": "bake_nav_mesh",
-                     "ignore": [0, 1]}]
+                     "ignore": [0, 1]},
+                    {"$type": "set_target_framerate",
+                     "framerate": 30}]
         commands.extend(Controller.get_add_physics_object(model_name="arflex_strips_sofa",
                                                           object_id=self.object_id,
                                                           position={"x": 0, "y": 0, "z": 1}))
@@ -72,10 +74,10 @@ class CarryCouch(Controller):
         # Offset the bounds positions.
         v = left - center
         v = v / np.linalg.norm(v)
-        left += v * 0.4
+        left += v * 0.45
         v = right - center
         v = v / np.linalg.norm(v)
-        right += v * 0.4
+        right += v * 0.45
         # Set target positions for each.
         distance_left = np.linalg.norm(self.replicant_0.dynamic.transform.position - left)
         distance_right = np.linalg.norm(self.replicant_0.dynamic.transform.position - right)
@@ -126,14 +128,14 @@ class CarryCouch(Controller):
                 if replicant_0_path_index >= replicant_0_path.shape[0]:
                     replicant_0_done = True
                 else:
-                    self.replicant_0.move_to(replicant_0_path[replicant_0_path_index])
+                    self.replicant_0.move_to(replicant_0_path[replicant_0_path_index], arrived_at=0.05)
             replicant_1_done = False
             if self.replicant_1.action.status != ActionStatus.ongoing:
                 replicant_1_path_index += 1
                 if replicant_1_path_index >= replicant_1_path.shape[0]:
                     replicant_1_done = True
                 else:
-                    self.replicant_1.move_to(replicant_1_path[replicant_1_path_index])
+                    self.replicant_1.move_to(replicant_1_path[replicant_1_path_index], arrived_at=0.05)
             done = replicant_0_done and replicant_1_done
             # Continue the loop.
             self.communicate([])

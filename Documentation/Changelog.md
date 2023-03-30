@@ -18,6 +18,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 - Added: oil_fire
 
+### Example Controllers
+
+- Fixed: `replicant/carry_couch.py` doesn't work as expected.
+
 ## v1.11.7
 
 ### Command API

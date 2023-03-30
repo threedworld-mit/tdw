@@ -74,10 +74,10 @@ class CarryCouch(Controller):
         # Offset the bounds positions.
         v = left - center
         v = v / np.linalg.norm(v)
-        left += v * 0.25
+        left += v * 0.4
         v = right - center
         v = v / np.linalg.norm(v)
-        right += v * 0.25
+        right += v * 0.4
         # Set target positions for each.
         distance_left = np.linalg.norm(self.replicant_0.dynamic.transform.position - left)
         distance_right = np.linalg.norm(self.replicant_0.dynamic.transform.position - right)

@@ -40,9 +40,6 @@ class CarryCouch(Controller):
         commands.extend(Controller.get_add_physics_object(model_name="arflex_strips_sofa",
                                                           object_id=self.object_id,
                                                           position={"x": 0, "y": 0, "z": 1}))
-        commands.append({"$type": "make_nav_mesh_obstacle",
-                         "id": self.object_id,
-                         "carve_type": "stationary"})
         self.communicate(commands)
 
     def carry_sofa(self) -> None:

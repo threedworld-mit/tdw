@@ -1,4 +1,4 @@
-from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
+from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
 from tdw.FBOutput import Rigidbodies as Rigis
@@ -546,68 +546,89 @@ class FlexParticles(OutputData):
 
 
 class VRRig(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._transforms: np.ndarray = self.data.TransformsAsNumpy().reshape(6, 10)
+
     def get_data(self) -> VR.VRRig:
         return VR.VRRig.GetRootAsVRRig(self.bytes, 0)
 
-    def get_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Position())
+    def get_position(self) -> np.ndarray:
+        return self._transforms[0][:3]
 
-    def get_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_xyzw(self.data.Rotation())
+    def get_rotation(self) -> np.ndarray:
+        return self._transforms[0][3:7]
 
-    def get_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_xyz(self.data.Forward())
+    def get_forward(self) -> np.ndarray:
+        return self._transforms[0][7:]
 
-    def _get_simple_transform(self, t: int) -> SimpleTransform:
-        if t == 0:
-            return self.data.LeftHand()
-        elif t == 1:
-            return self.data.RightHand()
-        elif t == 2:
-            return self.data.Head()
-        else:
-            raise Exception("Not defined: " + str(t))
+    def _get_hand_position(self, is_left: bool) -> np.ndarray:
+        return self._transforms[1 if is_left else 2][:3]
 
-    def _get_hand_position(self, is_left: bool) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(0 if is_left else 1).Position)
+    def _get_hand_rotation(self, is_left: bool) -> np.ndarray:
+        return self._transforms[1 if is_left else 2][3:7]
 
-    def _get_hand_rotation(self, is_left: bool) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self._get_simple_transform(0 if is_left else 1).Rotation)
+    def _get_hand_forward(self, is_left: bool) -> np.ndarray:
+        return self._transforms[1 if is_left else 2][7:]
+    
+    def _get_eye_position(self, is_left: bool) -> np.ndarray:
+        return self._transforms[4 if is_left else 5][:3]
 
-    def _get_hand_forward(self, is_left: bool) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(0 if is_left else 1).Forward)
+    def _get_eye_rotation(self, is_left: bool) -> np.ndarray:
+        return self._transforms[4 if is_left else 5][3:7]
 
-    def get_left_hand_position(self) -> Tuple[float, float, float]:
+    def _get_eye_forward(self, is_left: bool) -> np.ndarray:
+        return self._transforms[4 if is_left else 5][7:]
+
+    def get_left_hand_position(self) -> np.ndarray:
         return self._get_hand_position(True)
 
-    def get_left_hand_rotation(self) -> Tuple[float, float, float, float]:
+    def get_left_hand_rotation(self) -> np.ndarray:
         return self._get_hand_rotation(True)
 
-    def get_left_hand_forward(self) -> Tuple[float, float, float]:
+    def get_left_hand_forward(self) -> np.ndarray:
         return self._get_hand_forward(True)
 
-    def get_right_hand_position(self) -> Tuple[float, float, float]:
+    def get_right_hand_position(self) -> np.ndarray:
         return self._get_hand_position(False)
 
-    def get_right_hand_rotation(self) -> Tuple[float, float, float, float]:
+    def get_right_hand_rotation(self) -> np.ndarray:
         return self._get_hand_rotation(False)
 
-    def get_right_hand_forward(self) -> Tuple[float, float, float]:
+    def get_right_hand_forward(self) -> np.ndarray:
         return self._get_hand_forward(False)
 
-    def get_head_position(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(2).Position)
+    def get_head_position(self) -> np.ndarray:
+        return self._transforms[3][:3]
 
-    def get_head_rotation(self) -> Tuple[float, float, float, float]:
-        return OutputData._get_quaternion(self._get_simple_transform(2).Rotation)
+    def get_head_rotation(self) -> np.ndarray:
+        return self._transforms[3][3:7]
 
-    def get_head_forward(self) -> Tuple[float, float, float]:
-        return OutputData._get_vector3(self._get_simple_transform(2).Forward)
+    def get_head_forward(self) -> np.ndarray:
+        return self._transforms[3][7:]
+    
+    def get_left_eye_position(self) -> np.ndarray:
+        return self._get_eye_position(True)
 
-    def get_held_left(self) -> np.array:
+    def get_left_eye_rotation(self) -> np.ndarray:
+        return self._get_eye_rotation(True)
+
+    def get_left_eye_forward(self) -> np.ndarray:
+        return self._get_eye_forward(True)
+
+    def get_right_eye_position(self) -> np.ndarray:
+        return self._get_eye_position(False)
+
+    def get_right_eye_rotation(self) -> np.ndarray:
+        return self._get_eye_rotation(False)
+
+    def get_right_eye_forward(self) -> np.ndarray:
+        return self._get_eye_forward(False)
+
+    def get_held_left(self) -> np.ndarray:
         return self.data.HeldLeftAsNumpy()
 
-    def get_held_right(self) -> np.array:
+    def get_held_right(self) -> np.ndarray:
         return self.data.HeldRightAsNumpy()
 
 

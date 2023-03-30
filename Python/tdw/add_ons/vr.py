@@ -48,21 +48,29 @@ class VR(AddOn, ABC):
         self._avatar_camera_height: int = int((1 / headset_aspect_ratio) * self._avatar_camera_width)
         self._headset_resolution_scale: float = headset_resolution_scale
         """:field
-        The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the root rig object. This is only updated if `output_data == True`.
         """
         self.rig: Transform = VR._get_empty_transform()
         """:field
-        The [`Transform`](../object_data/transform.md) data of the left hand. If `output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the left hand. This is only updated if `output_data == True`.
         """
         self.left_hand: Transform = VR._get_empty_transform()
         """:field
-        The [`Transform`](../object_data/transform.md) data of the right hand. If `output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the right hand. This is only updated if `output_data == True`.
         """
         self.right_hand: Transform = VR._get_empty_transform()
         """:field
-        The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
+        The [`Transform`](../object_data/transform.md) data of the head. This is only updated if `output_data == True`.
         """
         self.head: Transform = VR._get_empty_transform()
+        """:field
+        The [`Transform`](../object_data/transform.md) data of the left eye. This is only updated if `output_data == True` and if the headset is an Quest Pro with eye tracking enabled.
+        """
+        self.left_eye: Transform = VR._get_empty_transform()
+        """:field
+        The [`Transform`](../object_data/transform.md) data of the right eye. This is only updated if `output_data == True` and if the headset is an Quest Pro with eye tracking enabled.
+        """
+        self.right_eye: Transform = VR._get_empty_transform()
         """:field
         A numpy of object IDs held by the left hand.
         """
@@ -119,18 +127,24 @@ class VR(AddOn, ABC):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "vrri":
                 vr_rig = VRRig(resp[i])
-                self.rig.position = np.array(vr_rig.get_position())
-                self.rig.rotation = np.array(vr_rig.get_rotation())
-                self.rig.forward = np.array(vr_rig.get_forward())
-                self.left_hand.position = np.array(vr_rig.get_left_hand_position())
-                self.left_hand.rotation = np.array(vr_rig.get_left_hand_rotation())
-                self.left_hand.forward = np.array(vr_rig.get_left_hand_forward())
-                self.right_hand.position = np.array(vr_rig.get_right_hand_position())
-                self.right_hand.rotation = np.array(vr_rig.get_right_hand_rotation())
-                self.right_hand.forward = np.array(vr_rig.get_right_hand_forward())
-                self.head.position = np.array(vr_rig.get_head_position())
-                self.head.rotation = np.array(vr_rig.get_head_rotation())
-                self.head.forward = np.array(vr_rig.get_head_forward())
+                self.rig.position = vr_rig.get_position()
+                self.rig.rotation = vr_rig.get_rotation()
+                self.rig.forward = vr_rig.get_forward()
+                self.left_hand.position = vr_rig.get_left_hand_position()
+                self.left_hand.rotation = vr_rig.get_left_hand_rotation()
+                self.left_hand.forward = vr_rig.get_left_hand_forward()
+                self.right_hand.position = vr_rig.get_right_hand_position()
+                self.right_hand.rotation = vr_rig.get_right_hand_rotation()
+                self.right_hand.forward = vr_rig.get_right_hand_forward()
+                self.head.position = vr_rig.get_head_position()
+                self.head.rotation = vr_rig.get_head_rotation()
+                self.head.forward = vr_rig.get_head_forward()
+                self.left_eye.position = vr_rig.get_left_eye_position()
+                self.left_eye.rotation = vr_rig.get_left_eye_rotation()
+                self.left_eye.forward = vr_rig.get_left_eye_forward()
+                self.right_eye.position = vr_rig.get_right_eye_position()
+                self.right_eye.rotation = vr_rig.get_right_eye_rotation()
+                self.right_eye.forward = vr_rig.get_right_eye_forward()
                 self.held_left = vr_rig.get_held_left()
                 self.held_right = vr_rig.get_held_right()
                 break

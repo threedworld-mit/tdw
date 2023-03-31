@@ -34,12 +34,30 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | ---------------------------------------- | ---------------------------- |
 | `python/add_ons/floorplan_flood.md`      | API for `FloorplanFlood`.    |
 | `lessons/non_physics/floorplan_flood.md` | Lesson for `FloorplanFlood`. |
+| Command             | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `send_euler_angles` | Send the rotations of each object in the scene expressed as Euler angles. This command is a backend tool and not meant for general usage. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `EulerAngles` | The rotations of each object in the scene expressed as Euler angles. This output data is a backend tool and not meant for general usage. |
+
+### `tdw` module
+
+- Replaced all cabinets, dishwasher, and fridges in the `Floorplan` scenes with composite objects whenever possible.
+  - Backend: Updated `floorplan_layouts.json` to include the composite objects and to store object rotations as Euler angles.
 
 ## v1.11.8
 
 ### `tdw` module
 
 - Fixed: Replicant doesn't work in newer versions of Python because it imports `annotations` from `__future__`. This import has been removed.
+- Fixed: Replicant motions are glitchy at high framerates. The `Replicant` now has a `target_framerate` parameter that by default caps the simulation at 100 FPS, making it far more likely to run as expected.
+- Fixed: Replicant doesn't work as expected at low framerates.
 
 ### Build
 

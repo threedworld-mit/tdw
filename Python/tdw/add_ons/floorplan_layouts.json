@@ -5301,7 +5301,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "appliance-ge-profile-microwave3",
+        "name": "appliance-ge-profile-microwave3_composite",
         "position": {
           "x": 0.716848611831665,
           "y": 0.9241129159927368,
@@ -19603,7 +19603,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "appliance-ge-profile-microwave3",
+        "name": "appliance-ge-profile-microwave3_composite",
         "position": {
           "x": -1.0904200077056885,
           "y": 0.9241129159927368,

@@ -26,8 +26,6 @@ from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
-# target_framerate: int = 250
-
 
 class Replicant(AddOn):
     """
@@ -46,7 +44,7 @@ class Replicant(AddOn):
     def __init__(self, replicant_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
                  rotation: Union[Dict[str, float], np.ndarray] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
-                 target_framerate: int = 250):
+                 target_framerate: int = 150):
         """
         :param replicant_id: The ID of the Replicant.
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.

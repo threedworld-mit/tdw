@@ -488,7 +488,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -2.3937430381774902,
           "y": 1.3339999914169312,
@@ -496,7 +496,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -509,7 +509,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 2.7749149799346924,
           "y": 0.0010808110237121582,
@@ -517,7 +517,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 360.0
         },
         "scale_factor": {
@@ -530,7 +530,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 2.775496006011963,
           "y": 0.008154243230819702,
@@ -538,7 +538,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -551,7 +551,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 2.7772810459136963,
           "y": 0.001371979946270585,
@@ -559,7 +559,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 89.9000015258789,
+          "y": -90.0999984741211,
           "z": 0.0
         },
         "scale_factor": {
@@ -572,7 +572,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -2.2780001163482666,
           "y": 0.03050852008163929,
@@ -580,7 +580,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -1433,7 +1433,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -2.389085054397583,
           "y": 1.3329999446868896,
@@ -1441,7 +1441,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -1517,7 +1517,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -2.27156400680542,
           "y": 0.0,
@@ -1525,7 +1525,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -2233,7 +2233,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -8.312315940856934,
           "y": 1.2775160074234009,
@@ -2241,7 +2241,7 @@
         },
         "rotation": {
           "x": 0.30000001192092896,
-          "y": 269.8999938964844,
+          "y": 89.89999389648438,
           "z": 0.10000000149011612
         },
         "scale_factor": {
@@ -2254,7 +2254,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -8.191186904907227,
           "y": 0.0015507040079683065,
@@ -2262,7 +2262,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -2275,7 +2275,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": -8.193737983703613,
           "y": 0.0013910230481997132,
@@ -2283,7 +2283,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -2296,7 +2296,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": -6.754916191101074,
           "y": 0.0013592540053650737,
@@ -2304,7 +2304,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": -0.0,
+          "y": -180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -2317,7 +2317,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -3.630000114440918,
           "y": -0.0001302957971347496,
@@ -2325,7 +2325,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -2947,7 +2947,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -8.313620567321777,
           "y": 1.2776830196380615,
@@ -2955,7 +2955,7 @@
         },
         "rotation": {
           "x": 0.20000000298023224,
-          "y": 269.8999938964844,
+          "y": 89.89999389648438,
           "z": 0.0
         },
         "scale_factor": {
@@ -3052,7 +3052,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -5.67202091217041,
           "y": 0.0011134450323879719,
@@ -3060,7 +3060,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 180.0,
+          "y": 0.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -3262,7 +3262,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -8.18712329864502,
           "y": -2.2172929675434716e-05,
@@ -3270,7 +3270,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 360.0
         },
         "scale_factor": {
@@ -3283,7 +3283,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -5.535613059997559,
           "y": 0.001058519002981484,
@@ -3291,7 +3291,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": -0.0,
+          "y": -180.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -4167,7 +4167,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -0.6611965894699097,
           "y": 1.2893660068511963,
@@ -4175,7 +4175,7 @@
         },
         "rotation": {
           "x": 0.20000000298023224,
-          "y": 359.8999938964844,
+          "y": 179.89999389648438,
           "z": 360.0
         },
         "scale_factor": {
@@ -4188,7 +4188,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": -1.183730959892273,
           "y": 0.0016816559946164489,
@@ -4196,7 +4196,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 179.5,
+          "y": -0.5,
           "z": 0.0
         },
         "scale_factor": {
@@ -4209,7 +4209,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": 0.032948609441518784,
           "y": 0.002922296989709139,
@@ -4217,7 +4217,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.10000610351562,
+          "y": 0.100006103515625,
           "z": 0.10000000149011612
         },
         "scale_factor": {
@@ -4230,7 +4230,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": 0.7887545824050903,
           "y": 0.003972738981246948,
@@ -4238,7 +4238,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 180.10000610351562,
+          "y": 0.100006103515625,
           "z": 0.6000000238418579
         },
         "scale_factor": {
@@ -4251,7 +4251,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": 0.5614296793937683,
           "y": 0.000582575798034668,
@@ -4259,7 +4259,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 360.0,
+          "y": 180.0,
           "z": 0.10000000149011612
         },
         "scale_factor": {
@@ -5049,7 +5049,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -0.05276944860816002,
           "y": 1.2828869819641113,
@@ -5057,7 +5057,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 360.0,
+          "y": 180.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -5133,7 +5133,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite",
         "position": {
           "x": -0.5054665207862854,
           "y": 0.0010351539822295308,
@@ -5141,7 +5141,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 0.0
         },
         "scale_factor": {
@@ -5977,7 +5977,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 7.577421188354492,
           "y": 1.2941080331802368,
@@ -5985,7 +5985,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 359.6000061035156
         },
         "scale_factor": {
@@ -5998,7 +5998,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": 8.794103622436523,
           "y": 0.001335024950094521,
@@ -6006,7 +6006,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 359.29998779296875,
+          "y": 179.29998779296875,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -6019,7 +6019,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": 7.57979679107666,
           "y": 0.0035748479422181845,
@@ -6027,7 +6027,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 0.0
         },
         "scale_factor": {
@@ -6040,7 +6040,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": 5.870882034301758,
           "y": 0.005365341901779175,
@@ -6048,7 +6048,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 0.30000001192092896
         },
         "scale_factor": {
@@ -6061,7 +6061,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": 3.978991985321045,
           "y": -0.00014579300477635115,
@@ -6069,7 +6069,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.0,
+          "y": 0.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -7027,7 +7027,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 8.78600025177002,
           "y": 1.2860360145568848,
@@ -7035,7 +7035,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": -0.0,
+          "y": -180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -7111,7 +7111,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite",
         "position": {
           "x": 5.058006763458252,
           "y": 0.001533656963147223,
@@ -7119,7 +7119,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 180.0,
+          "y": 0.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -7722,7 +7722,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 7.577506065368652,
           "y": 1.2873250246047974,
@@ -7730,7 +7730,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 359.6000061035156
         },
         "scale_factor": {
@@ -7743,7 +7743,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 9.225582122802734,
           "y": 0.0012501180171966553,
@@ -7751,7 +7751,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 360.0
         },
         "scale_factor": {
@@ -7764,7 +7764,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 9.228165626525879,
           "y": 0.0012680590152740479,
@@ -7772,7 +7772,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -7785,7 +7785,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 5.869764804840088,
           "y": 0.003756820922717452,
@@ -7793,7 +7793,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 0.30000001192092896
         },
         "scale_factor": {
@@ -7806,7 +7806,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 4.1480631828308105,
           "y": -0.00012254710600245744,
@@ -7814,7 +7814,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.0,
+          "y": 0.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -8457,7 +8457,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 9.340999603271484,
           "y": 1.2791080474853516,
@@ -8465,7 +8465,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -8520,7 +8520,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 5.227055072784424,
           "y": 0.0011482239933684468,
@@ -8528,7 +8528,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 180.0,
+          "y": 0.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -8751,7 +8751,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 6.305079936981201,
           "y": -0.00013232229684945196,
@@ -8759,7 +8759,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.0,
+          "y": 0.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -8772,7 +8772,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 8.035077095031738,
           "y": 0.0011033120099455118,
@@ -8780,7 +8780,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 0.0,
+          "y": -180.0,
           "z": 360.0
         },
         "scale_factor": {
@@ -9719,7 +9719,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 7.577506065368652,
           "y": 1.2922450304031372,
@@ -9727,7 +9727,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 359.6000061035156
         },
         "scale_factor": {
@@ -9740,7 +9740,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 8.794378280639648,
           "y": 0.0015365780564025044,
@@ -9748,7 +9748,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 359.20001220703125,
+          "y": 179.20001220703125,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -9761,7 +9761,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 7.580084800720215,
           "y": 0.002320141065865755,
@@ -9769,7 +9769,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 0.20000000298023224,
+          "y": -179.79999999701977,
           "z": 0.0
         },
         "scale_factor": {
@@ -9782,7 +9782,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 5.869894027709961,
           "y": 0.004687548149377108,
@@ -9790,7 +9790,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 0.30000001192092896
         },
         "scale_factor": {
@@ -9803,7 +9803,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 3.9789879322052,
           "y": -0.00014674660633318126,
@@ -9811,7 +9811,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.0,
+          "y": 0.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -10790,7 +10790,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 8.78600025177002,
           "y": 1.2840559482574463,
@@ -10798,7 +10798,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": -0.0,
+          "y": -180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -10895,7 +10895,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 5.057981014251709,
           "y": 0.0015175939770415425,
@@ -10903,7 +10903,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 180.0,
+          "y": 0.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -11613,7 +11613,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 5.521247863769531,
           "y": 1.2921429872512817,
@@ -11621,7 +11621,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 360.0,
+          "y": 180.0,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -11634,7 +11634,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": 2.136363983154297,
           "y": 0.0014308990212157369,
@@ -11642,7 +11642,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 179.1999969482422,
+          "y": -0.8000030517578125,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -11655,7 +11655,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": 3.3518431186676025,
           "y": 0.0027724499814212322,
@@ -11663,7 +11663,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 179.89999389648438,
+          "y": -0.100006103515625,
           "z": 0.0
         },
         "scale_factor": {
@@ -11676,7 +11676,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": 5.063652992248535,
           "y": 0.005595862865447998,
@@ -11684,7 +11684,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.39999389648438,
+          "y": 0.399993896484375,
           "z": 0.20000000298023224
         },
         "scale_factor": {
@@ -11697,7 +11697,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": 6.749013900756836,
           "y": -0.00012910370423924178,
@@ -11705,7 +11705,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 0.0,
+          "y": -180.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -12474,7 +12474,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": 6.129730224609375,
           "y": 1.2840670347213745,
@@ -12482,7 +12482,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 360.0,
+          "y": 180.0,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -12558,7 +12558,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite",
         "position": {
           "x": 5.670013904571533,
           "y": 0.0010929410345852375,
@@ -12566,7 +12566,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 0.0,
+          "y": -180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -13106,7 +13106,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -3.592339038848877,
           "y": 1.2836960554122925,
@@ -13114,7 +13114,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 270.1000061035156,
+          "y": 90.10000610351562,
           "z": 360.0
         },
         "scale_factor": {
@@ -13127,7 +13127,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -3.474824905395508,
           "y": 0.002089262008666992,
@@ -13135,7 +13135,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 269.79998779296875,
+          "y": 89.79998779296875,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -13148,7 +13148,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": -2.352957010269165,
           "y": 0.0012798910029232502,
@@ -13156,7 +13156,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 360.0,
+          "y": 180.0,
           "z": 0.10000000149011612
         },
         "scale_factor": {
@@ -13652,7 +13652,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -3.592266082763672,
           "y": 1.2797119617462158,
@@ -13660,7 +13660,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 270.0,
+          "y": 90.0,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -13904,7 +13904,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -0.2238330990076065,
           "y": 2.9683109460165724e-05,
@@ -13912,7 +13912,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 0.0,
+          "y": -180.0,
           "z": 360.0
         },
         "scale_factor": {
@@ -14114,7 +14114,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -1.289054036140442,
           "y": 0.0010534520260989666,
@@ -14122,7 +14122,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 360.0,
+          "y": 180.0,
           "z": 360.0
         },
         "scale_factor": {
@@ -14156,7 +14156,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": -2.3302509784698486,
           "y": 0.0013446810189634562,
@@ -14164,7 +14164,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 179.8000030517578,
+          "y": -0.1999969482421875,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -14177,7 +14177,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -0.1697486937046051,
           "y": 0.004385619889944792,
@@ -14185,7 +14185,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.10000610351562,
+          "y": 0.100006103515625,
           "z": 0.30000001192092896
         },
         "scale_factor": {
@@ -14809,7 +14809,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -4.106058120727539,
           "y": 1.2921409606933594,
@@ -14817,7 +14817,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 89.9000015258789,
+          "y": -90.0999984741211,
           "z": 359.70001220703125
         },
         "scale_factor": {
@@ -14830,7 +14830,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": -7.9552741050720215,
           "y": 0.00242915702983737,
@@ -14838,7 +14838,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 269.0,
+          "y": 89.0,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -14851,7 +14851,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": -7.959599018096924,
           "y": 0.0028741059359163046,
@@ -14859,7 +14859,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 270.1000061035156,
+          "y": 90.10000610351562,
           "z": 0.0
         },
         "scale_factor": {
@@ -14872,7 +14872,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": -7.954346179962158,
           "y": 0.003950953017920256,
@@ -14880,7 +14880,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 270.1000061035156,
+          "y": 90.10000610351562,
           "z": 0.30000001192092896
         },
         "scale_factor": {
@@ -14893,7 +14893,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": -4.231688976287842,
           "y": -0.0001347064971923828,
@@ -14901,7 +14901,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -15796,7 +15796,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": -4.107839107513428,
           "y": 1.288496971130371,
@@ -15804,7 +15804,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 89.9000015258789,
+          "y": -90.0999984741211,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -15880,7 +15880,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": -4.223536014556885,
           "y": 0.001243710983544588,
@@ -15888,7 +15888,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -16514,7 +16514,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 10.126409530639648,
           "y": 1.2921409606933594,
@@ -16522,7 +16522,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 89.9000015258789,
+          "y": -90.0999984741211,
           "z": 359.70001220703125
         },
         "scale_factor": {
@@ -16535,7 +16535,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 9.925453186035156,
           "y": 0.002429127926006913,
@@ -16543,7 +16543,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 359.0,
+          "y": 179.0,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -16556,7 +16556,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 8.709775924682617,
           "y": 0.0028740759007632732,
@@ -16564,7 +16564,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 0.10000000149011612,
+          "y": -179.89999999850988,
           "z": 0.0
         },
         "scale_factor": {
@@ -16577,7 +16577,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 10.00078010559082,
           "y": -0.0001347064971923828,
@@ -16585,7 +16585,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -17501,7 +17501,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 10.124629974365234,
           "y": 1.288496971130371,
@@ -17509,7 +17509,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 89.9000015258789,
+          "y": -90.0999984741211,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -17585,7 +17585,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 10.008930206298828,
           "y": 0.001243710983544588,
@@ -17593,7 +17593,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 90.0,
+          "y": -90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -18427,7 +18427,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -5.364950180053711,
           "y": 1.2893660068511963,
@@ -18435,7 +18435,7 @@
         },
         "rotation": {
           "x": 0.20000000298023224,
-          "y": 269.8999938964844,
+          "y": 89.89999389648438,
           "z": 360.0
         },
         "scale_factor": {
@@ -18448,7 +18448,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_white_wood",
+        "name": "cabinet_24_two_door_wood_oak_white_composite",
         "position": {
           "x": -2.9909989833831787,
           "y": 0.0016816559946164489,
@@ -18456,7 +18456,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 179.5,
+          "y": -0.5,
           "z": 0.0
         },
         "scale_factor": {
@@ -18469,7 +18469,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_white_wood",
+        "name": "cabinet_24_single_door_wood_oak_white_composite",
         "position": {
           "x": -1.774319052696228,
           "y": 0.002922296989709139,
@@ -18477,7 +18477,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 180.10000610351562,
+          "y": 0.100006103515625,
           "z": 0.10000000149011612
         },
         "scale_factor": {
@@ -18490,7 +18490,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_white_wood",
+        "name": "cabinet_36_two_door_wood_oak_white_composite",
         "position": {
           "x": -1.0185099840164185,
           "y": 0.003972738981246948,
@@ -18498,7 +18498,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 180.10000610351562,
+          "y": 0.100006103515625,
           "z": 0.6000000238418579
         },
         "scale_factor": {
@@ -18511,7 +18511,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_white_wood",
+        "name": "cabinet_full_height_wood_oak_white_composite",
         "position": {
           "x": -5.252009868621826,
           "y": 0.000582575798034668,
@@ -18519,7 +18519,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.10000000149011612
         },
         "scale_factor": {
@@ -19330,7 +19330,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_white_wood",
+        "name": "cabinet_24_wall_wood_oak_white_composite",
         "position": {
           "x": -5.36614990234375,
           "y": 1.2828869819641113,
@@ -19338,7 +19338,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -19435,7 +19435,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_white_wood",
+        "name": "sink_cabinet_unit_wood_oak_white_porcelain_composite",
         "position": {
           "x": -5.248669147491455,
           "y": 0.001035213004797697,
@@ -19443,7 +19443,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 270.1000061035156,
+          "y": 90.10000610351562,
           "z": 0.0
         },
         "scale_factor": {
@@ -20172,7 +20172,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 0.6302309036254883,
           "y": 1.2817269563674927,
@@ -20180,7 +20180,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 270.1000061035156,
+          "y": 90.10000610351562,
           "z": 360.0
         },
         "scale_factor": {
@@ -20193,7 +20193,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_two_drawer_wood_beach_honey",
+        "name": "cabinet_24_two_door_wood_beech_honey_composite",
         "position": {
           "x": 5.8560471534729,
           "y": 0.0015506449854001403,
@@ -20201,7 +20201,7 @@
         },
         "rotation": {
           "x": 0.0,
-          "y": 359.8999938964844,
+          "y": 179.89999389648438,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -20214,7 +20214,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_24_wood_beach_honey",
+        "name": "cabinet_24_single_door_wood_beech_honey_composite",
         "position": {
           "x": 3.111660957336426,
           "y": 0.0008039473905228078,
@@ -20222,7 +20222,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 0.0,
+          "y": -180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -20739,7 +20739,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "24_in_wall_cabinet_wood_beach_honey",
+        "name": "cabinet_24_wall_wood_beech_honey_composite",
         "position": {
           "x": 0.6303110122680664,
           "y": 1.277750015258789,
@@ -20747,7 +20747,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 270.0,
+          "y": 90.0,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -20991,7 +20991,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_full_height_wood_beach_honey",
+        "name": "cabinet_full_height_wood_beech_honey_composite",
         "position": {
           "x": 2.502600908279419,
           "y": -0.00030899050761945546,
@@ -20999,7 +20999,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 0.0,
+          "y": -180.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -21201,7 +21201,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 4.177391052246094,
           "y": -0.0005035101785324514,
@@ -21209,7 +21209,7 @@
         },
         "rotation": {
           "x": 359.79998779296875,
-          "y": 359.8999938964844,
+          "y": 179.89999389648438,
           "z": 360.0
         },
         "scale_factor": {
@@ -21243,7 +21243,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "cabinet_36_wood_beach_honey",
+        "name": "cabinet_36_two_door_wood_beech_honey_composite",
         "position": {
           "x": 0.7327604293823242,
           "y": 0.0012744369450956583,
@@ -21251,7 +21251,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 269.79998779296875,
+          "y": 89.79998779296875,
           "z": 0.0
         },
         "scale_factor": {
@@ -21264,7 +21264,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "sink_base_wood_beach_honey",
+        "name": "sink_cabinet_unit_wood_beech_honey_porcelain_composite",
         "position": {
           "x": 0.7335004806518555,
           "y": 0.003181189065799117,
@@ -21272,7 +21272,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 270.0,
+          "y": 90.0,
           "z": 0.20000000298023224
         },
         "scale_factor": {

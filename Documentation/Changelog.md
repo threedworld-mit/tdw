@@ -9,6 +9,8 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 ### `tdw` module
 
 - Fixed: Replicant doesn't work in newer versions of Python because it imports `annotations` from `__future__`. This import has been removed.
+- Fixed: Replicant motions are glitchy at high framerates. The `Replicant` now has a `target_framerate` parameter that by default caps the simulation at 250 FPS, making it far more likely to run as expected.
+- Fixed: Replicant doesn't work as expected at low framerates.
 
 ### Build
 
@@ -17,10 +19,6 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 ### Visual Effects Library
 
 - Added: oil_fire
-
-### Example Controllers
-
-- Fixed: `replicant/carry_couch.py` doesn't work as expected.
 
 ## v1.11.7
 

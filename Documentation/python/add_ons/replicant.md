@@ -44,7 +44,7 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 
 **`Replicant(position, rotation)`**
 
-**`Replicant(replicant_id=0, position, rotation, image_frequency=ImageFrequency.once, name="replicant_0", target_framerate=150)`**
+**`Replicant(replicant_id=0, position, rotation, image_frequency=ImageFrequency.once, name="replicant_0", target_framerate=100)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -53,7 +53,7 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 | rotation |  Union[Dict[str, float] |  | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | image_frequency |  ImageFrequency  | ImageFrequency.once | An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured. |
 | name |  str  | "replicant_0" | The name of the Replicant model. |
-| target_framerate |  int  | 150 | The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement. |
+| target_framerate |  int  | 100 | The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement. |
 
 ***
 

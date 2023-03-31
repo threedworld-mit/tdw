@@ -677,7 +677,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -2.2403299808502197,
           "y": 0.041827138513326645,
@@ -685,7 +685,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 90.0,
+          "y": 180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -2422,7 +2422,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -8.173270225524902,
           "y": 0.018376410007476807,
@@ -2430,7 +2430,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 90.0,
+          "y": 180.0,
           "z": 0.0
         },
         "scale_factor": {
@@ -4335,7 +4335,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -1.752282977104187,
           "y": 0.014000359922647476,
@@ -4343,7 +4343,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 180.0,
+          "y": 270.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -6166,7 +6166,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 6.798457145690918,
           "y": 0.014988480135798454,
@@ -6174,7 +6174,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 180.10000610351562,
+          "y": 270.1000061035156,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -7911,7 +7911,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 6.797985076904297,
           "y": 0.015298490412533283,
@@ -7919,7 +7919,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 180.0,
+          "y": 270.0,
           "z": 359.79998779296875
         },
         "scale_factor": {
@@ -9908,7 +9908,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 6.798303127288818,
           "y": 0.01527720969170332,
@@ -9916,7 +9916,7 @@
         },
         "rotation": {
           "x": 0.10000000149011612,
-          "y": 180.10000610351562,
+          "y": 270.1000061035156,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -11781,7 +11781,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 4.132579803466797,
           "y": 0.015583460219204426,
@@ -11789,7 +11789,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 0.0,
+          "y": 90.0,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -14135,7 +14135,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -1.3968859910964966,
           "y": 0.014068540185689926,
@@ -14143,7 +14143,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 359.70001220703125,
+          "y": 449.70001220703125,
           "z": 360.0
         },
         "scale_factor": {
@@ -14998,7 +14998,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -7.931056022644043,
           "y": 0.01483433973044157,
@@ -15006,7 +15006,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 90.0999984741211,
+          "y": 180.0999984741211,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -16682,7 +16682,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 7.9276227951049805,
           "y": 0.01483433973044157,
@@ -16690,7 +16690,7 @@
         },
         "rotation": {
           "x": 360.0,
-          "y": 180.10000610351562,
+          "y": 270.1000061035156,
           "z": 359.8999938964844
         },
         "scale_factor": {
@@ -18595,7 +18595,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": -5.213679790496826,
           "y": 0.014000420458614826,
@@ -18603,7 +18603,7 @@
         },
         "rotation": {
           "x": -0.0,
-          "y": 90.0,
+          "y": 180.0,
           "z": -0.0
         },
         "scale_factor": {
@@ -21222,7 +21222,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "fridge_large",
+        "name": "fridge_large_composite",
         "position": {
           "x": 0.7640609741210938,
           "y": 0.012904820032417774,
@@ -21230,7 +21230,7 @@
         },
         "rotation": {
           "x": 359.8999938964844,
-          "y": 89.80000305175781,
+          "y": 179.8000030517578,
           "z": 359.8999938964844
         },
         "scale_factor": {

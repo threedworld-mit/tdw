@@ -4,6 +4,29 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.9
+
+### Command API
+
+#### New Commands
+
+| Command             | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `send_euler_angles` | Send the rotations of each object in the scene expressed as Euler angles. This command is a backend tool and not meant for general usage. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `EulerAngles` | The rotations of each object in the scene expressed as Euler angles. This output data is a backend tool and not meant for general usage. |
+
+### `tdw` module
+
+- Replaced all cabinets, dishwasher, and fridges in the `Floorplan` scenes with composite objects whenever possible.
+  - Backend: Updated `floorplan_layouts.json` to include the composite objects and to store object rotations as Euler angles.
+
 ## v1.11.8
 
 ### `tdw` module

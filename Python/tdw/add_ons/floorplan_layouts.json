@@ -698,7 +698,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 2.774204969406128,
           "y": 0.026021240279078484,
@@ -2443,7 +2443,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -4.477512836456299,
           "y": 0.010368170216679573,
@@ -4356,7 +4356,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -0.5689563751220703,
           "y": 0.006486446131020784,
@@ -6187,7 +6187,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 8.180622100830078,
           "y": 0.01889324001967907,
@@ -7932,7 +7932,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 9.09315013885498,
           "y": 0.014281179755926132,
@@ -9929,7 +9929,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 8.181292533874512,
           "y": 0.017858680337667465,
@@ -11802,7 +11802,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 2.749237060546875,
           "y": 0.01797601953148842,
@@ -13232,7 +13232,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -3.4820680618286133,
           "y": 0.006308882962912321,
@@ -15019,7 +15019,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -7.961328983306885,
           "y": 0.005119055975228548,
@@ -16703,7 +16703,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 9.311201095581055,
           "y": 0.005119084846228361,
@@ -18616,7 +18616,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": -2.3762190341949463,
           "y": 0.006486446131020784,
@@ -20298,7 +20298,7 @@
         "gravity": false,
         "kinematic": true,
         "library": "models_core.json",
-        "name": "dishwasher_4",
+        "name": "dishwasher_4_composite",
         "position": {
           "x": 5.2391037940979,
           "y": 0.005685091018676758,

@@ -77,7 +77,7 @@ class FloorplanFlood(Floorplan):
             raise Exception(f"Floor not found: {floor_index}")
         return self._floors[floor_index]["adjacent_floors"]
 
-    def set_flood_height(self, index: int, height: float):
+    def set_flood_height(self, index: int, height: float) -> None:
         """
         Set the height (Y) of a floor flood object.
 

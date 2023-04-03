@@ -385,6 +385,7 @@
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
 | [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
+| [`add_floorplan_flood_buoyancy`](#add_floorplan_flood_buoyancy) | Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on.  |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_obi_cloth`](#apply_force_to_obi_cloth) | Apply a uniform force to an Obi cloth actor.  |
@@ -5069,6 +5070,22 @@ Attach the object to a parent object using a FixedJoint.
 | `"parent_id"` | int | The ID of the parent object. | |
 | `"break_force"` | float | The break force. If -1, defaults to infinity. | -1 |
 | `"break_torque"` | float | The break torque. If -1, defaults to infinity. | -1 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`add_floorplan_flood_buoyancy`**
+
+Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "add_floorplan_flood_buoyancy", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 ***

@@ -2,7 +2,7 @@
 
 # The `FloorplanFlood` add-on
 
-The [`FloorplanFlood`](../../python/add_ons/floorplan_flood.md) add-on is a special case of [visual effects](visual_effects.md) in that it combines specialized visual effects with specific scenes. This add-on is a sub-class of the [`Floorplan` add-on](../scene_setup_high_level/floorplans.md). The `FloorplanFlood` add-on generates scene layouts that are exactly the same as `Floorplan`'s, using the exact same API. Additionally, it instantiates "flood effects" underneath floor sections of each room. By raising the height of the flood object, you can simulate a "flooding" effect.
+The [`FloorplanFlood`](../../python/add_ons/floorplan_flood.md) add-on is a special case of [visual effects](visual_effects.md) in that it combines specialized visual effects with specific scenes. This add-on is a sub-class of the [`Floorplan` add-on](../scene_setup_high_level/floorplans.md). The `FloorplanFlood` add-on generates scene layouts that are exactly the same as `Floorplan`'s, using the exact same API, except that it adds it instantiates "flood effects" underneath floor sections of each room. By raising the height of the flood object, you can simulate a "flooding" effect.
 
 The `FloorplanFlood` add-on doesn't work on pre-M1 Apple computers.
 
@@ -87,11 +87,11 @@ Result:
 
 ### Buoyancy
 
-You can make objects "buoyant" by sending [`add_floorplan_flood_buoyancy`](../../api/command_api.md#add_floorplan_flood_buoyancy) per object. This isn't "true" buoyancy; the objects will become [kinematic](../physx/physics_objects.md) and a specialized script will manually move the object up and down to make it appear as if it is floating.
+You can make objects "buoyant" by sending [`add_floorplan_flood_buoyancy`](../../api/command_api.md#add_floorplan_flood_buoyancy) per object. This isn't  a true buoyancy simulation. The objects will become [kinematic](../physx/physics_objects.md) and a specialized script will manually move the object up and down to make it appear as if it is floating.
 
 ### Valid Scenes
 
-The `FloorplanFlood` add-on uses custom-sized flood objects that must be added at specific positions to look realistic. Accordingly, the flood effects can only be used in the floorplan scenes, as opposed to other scenes such as tdw_room.
+The `FloorplanFlood` add-on uses custom-sized flood objects that must be added at specific positions to look realistic. Accordingly, the flood effects can only be used in the floorplan scenes, as opposed to other scenes such as tdw_room. Read [the API documentation](../../python/add_ons/floorplan_flood.md) for more information.
 
 ***
 

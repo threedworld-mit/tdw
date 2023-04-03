@@ -48,6 +48,8 @@ Result:
 
 ![](images/fire.gif)
 
+*Note: The fire and smoke effects don't work on pre-M1 Apple computers.*
+
 ## Audio and the `VisualEffectLibrarian`
 
 Metadata for visual effects is stored in a [`VisualEffectLibrarian`](../../python/librarian/visual_effect_librarian.md). Each `VisualEffectRecord` stores the effect's name, the asset bundle URLs, and whether it includes audio.

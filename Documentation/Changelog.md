@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.9
+## v1.11.10
 
 ### Command API
 
@@ -34,6 +34,13 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | ---------------------------------------- | ---------------------------- |
 | `python/add_ons/floorplan_flood.md`      | API for `FloorplanFlood`.    |
 | `lessons/non_physics/floorplan_flood.md` | Lesson for `FloorplanFlood`. |
+
+## v1.11.9
+
+### Command API
+
+#### New Commands
+
 | Command             | Description                                                  |
 | ------------------- | ------------------------------------------------------------ |
 | `send_euler_angles` | Send the rotations of each object in the scene expressed as Euler angles. This command is a backend tool and not meant for general usage. |

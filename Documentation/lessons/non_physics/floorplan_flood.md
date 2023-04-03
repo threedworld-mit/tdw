@@ -4,6 +4,8 @@
 
 The [`FloorplanFlood`](../../python/add_ons/floorplan_flood.md) add-on is a special case of [visual effects](visual_effects.md) in that it combines specialized visual effects with specific scenes. This add-on is a sub-class of the [`Floorplan` add-on](../scene_setup_high_level/floorplans.md). The `FloorplanFlood` add-on generates scene layouts that are exactly the same as `Floorplan`'s, using the exact same API. Additionally, it instantiates "flood effects" underneath floor sections of each room. By raising the height of the flood object, you can simulate a "flooding" effect.
 
+The `FloorplanFlood` add-on doesn't work on pre-M1 Apple computers.
+
 Read [the API documentation](../../python/add_ons/floorplan_flood.md) for more information.
 
 ```python
@@ -81,7 +83,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-**TODO**
+![](images/flood.gif)
 
 ### Buoyancy
 

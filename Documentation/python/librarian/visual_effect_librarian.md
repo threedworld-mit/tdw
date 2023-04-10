@@ -1,18 +1,22 @@
-# Visual Effect ibrarian
+# Visual Effect Librarian
 
 A **Visual Effect Librarian** is a non-physics visual effect records database.
 
 ## Default Libraries
 
-There is only one non-physics object library: `visual_effects.json`. You can define it explicitly, or not.
+There is one primary visual effects object library: `visual_effects.json`. You can define it explicitly, or not.
 
 ```python
 from tdw.librarian import VisualEffectLibrarian
 
 # These constructors will load the same records database.
 lib = VisualEffectLibrarian()
-lib = VisualEffectLibrarian(library="effects.json")
+lib = VisualEffectLibrarian(library="visual_effects.json")
 ```
+
+Other visual effect libraries:
+
+- `flood_effect.json` contains flood effects. It is meant to be used exclusively with the `FloorplanFlood` add-on.
 
 ## Command API
 
@@ -104,7 +108,7 @@ Returns the filename of the default library (which is always the first element i
 ```python
 default_library = VisualEffectLibrarian.get_default_library()
 
-print(default_library) # effects.json
+print(default_library) # visual_effects.json
 ```
 
 ### Functions

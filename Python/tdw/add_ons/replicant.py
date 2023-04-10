@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np
@@ -44,13 +43,15 @@ class Replicant(AddOn):
 
     def __init__(self, replicant_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
                  rotation: Union[Dict[str, float], np.ndarray] = None,
-                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
+                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
+                 target_framerate: int = 100):
         """
         :param replicant_id: The ID of the Replicant.
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param image_frequency: An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
         :param name: The name of the Replicant model.
+        :param target_framerate: The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement.
         """
 
         super().__init__()
@@ -91,11 +92,13 @@ class Replicant(AddOn):
         self._previous_action: Optional[Action] = None
         # This is used when saving images.
         self._frame_count: int = 0
-        # Initialize the Replicant metdata library.
+        # Initialize the Replicant metadata library.
         if Replicant.LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
             Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME] = HumanoidLibrarian(Replicant.LIBRARY_NAME)
         # The Replicant metadata record.
         self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME].get_record(name)
+        # The target framerate.
+        self._target_framerate: int = target_framerate
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -116,6 +119,8 @@ class Replicant(AddOn):
                     {"$type": "set_rigidbody_constraints",
                      "id": self.replicant_id,
                      "freeze_position_axes": {"x": 0, "y": 1, "z": 0}},
+                    {"$type": "set_target_framerate",
+                     "framerate": self._target_framerate},
                     {"$type": "send_replicants",
                      "frequency": "always"},
                     {"$type": "send_transforms",

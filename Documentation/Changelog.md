@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.9
+## v1.11.12
 
 ### New Features
 
@@ -89,7 +89,77 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
 
+## v1.11.11
+
+### `tdw` module
+
+- Fixed: `FloorplanFlood` doesn't add the given scene's list flood effect.
+
+### Build
+
+- Fixed: `replicant_reach_for_object` and `replicant_reach_for_position` ignore the `max_distance` parameter.
+
+## v1.11.10
+
+### Command API
+
+#### New Commands
+
+| Command                        | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| `add_floorplan_flood_buoyancy` | Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on. |
+
+### `tdw` module
+
+- Added: `FloorplanFlood` add-on. Initialize a scene populated by objects in pre-scripted layouts. Then, create a set of flood objects for each floor section in the floorplan.
+
+### Visual Effects Library
+
+- Added `flood_effects.json`. This library is used by the `FloorplanFlood` add-on.
+
+### Example Controllers
+
+- Added: `non_physics/floorplan_flood_minimal.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                  |
+| ---------------------------------------- | ---------------------------- |
+| `python/add_ons/floorplan_flood.md`      | API for `FloorplanFlood`.    |
+| `lessons/non_physics/floorplan_flood.md` | Lesson for `FloorplanFlood`. |
+
+## v1.11.9
+
+### Command API
+
+#### New Commands
+
+| Command             | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `send_euler_angles` | Send the rotations of each object in the scene expressed as Euler angles. This command is a backend tool and not meant for general usage. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `EulerAngles` | The rotations of each object in the scene expressed as Euler angles. This output data is a backend tool and not meant for general usage. |
+
+### `tdw` module
+
+- Replaced all cabinets, dishwasher, and fridges in the `Floorplan` scenes with composite objects whenever possible.
+  - Backend: Updated `floorplan_layouts.json` to include the composite objects and to store object rotations as Euler angles.
+
 ## v1.11.8
+
+### `tdw` module
+
+- Fixed: Replicant doesn't work in newer versions of Python because it imports `annotations` from `__future__`. This import has been removed.
+- Fixed: Replicant motions are glitchy at high framerates. The `Replicant` now has a `target_framerate` parameter that by default caps the simulation at 100 FPS, making it far more likely to run as expected.
+- Fixed: Replicant doesn't work as expected at low framerates.
 
 ### Build
 

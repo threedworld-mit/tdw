@@ -6,6 +6,10 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ## v1.11.11
 
+### `tdw` module
+
+- Fixed: `FloorplanFlood` doesn't add the given scene's list flood effect.
+
 ### Build
 
 - Fixed: `replicant_reach_for_object` and `replicant_reach_for_position` ignore the `max_distance` parameter.

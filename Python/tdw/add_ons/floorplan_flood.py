@@ -53,7 +53,7 @@ class FloorplanFlood(Floorplan):
         # These will be at 0 in Y, and not visible until their height is adjusted.
         # The index is the number of the scene, i.e. "1".
         self._floors = FloorplanFlood._FLOOD_DATA[scene[0]]
-        for i in range(len(self._floors) - 1):
+        for i in range(len(self._floors)):
             floor = self._floors[str(i + 1)]
             floor_name = floor["name"]
             floor_id = Controller.get_unique_id()

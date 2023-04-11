@@ -294,7 +294,7 @@ class Replicant(AddOn):
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
                   max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
-                  target_rotations: List[Union[int, np.ndarray, Dict[str, float]]] = None) -> None:
+                  target_rotation: Union[Union[int, np.ndarray, Dict[str, float]], List[Union[int, np.ndarray, Dict[str, float]]]] = None) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -317,7 +317,7 @@ class Replicant(AddOn):
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        :param target_rotations: Target rotations for each hand. If int: An object ID (tries to match the object's rotation). If dict: An x, y, z, w quaternion. If numpy array: An x, y, z, w quaternion. If None, defaults to the identity rotation.
+        :param target_rotation: Either a target rotation for the hand or a list of target rotations for each hand. If int: An object ID (tries to match the object's rotation). If dict: An x, y, z, w quaternion. If numpy array: An x, y, z, w quaternion. If None, defaults to the identity rotation.
         """
 
         # Convert the relative position to an absolute position.
@@ -327,8 +327,12 @@ class Replicant(AddOn):
             elif isinstance(target, dict):
                 target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
         arms = Replicant._arms_to_list(arm)
-        if target_rotations is None:
+        if target_rotation is None:
             target_rotations = [np.copy(QuaternionUtils.IDENTITY) for _ in range(len(arms))]
+        elif isinstance(target_rotation, list):
+            target_rotations = target_rotation
+        else:
+            target_rotations = [target_rotation]
         self.action = ReachFor(target=target,
                                arms=arms,
                                dynamic=self.dynamic,

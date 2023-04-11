@@ -1,5 +1,8 @@
-from typing import List, Optional
+from typing import List, Optional, Union, Dict
 from abc import ABC
+from overrides import final
+import numpy as np
+from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
 from tdw.replicant.actions.ik_motion import IkMotion
@@ -14,7 +17,7 @@ class ArmMotion(IkMotion, ABC):
     """
     Abstract base class for actions related to Replicant arm motion.
 
-    Duration an arm motion, the Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+    Duration an arm motion, the Replicant's arm(s) will continuously move over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 
     - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
     - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
@@ -67,3 +70,23 @@ class ArmMotion(IkMotion, ABC):
         for object_id in self.__held_objects:
             self.collision_detection.exclude_objects.remove(object_id)
         return super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
+
+    @final
+    def _get_rotation(self, rotation: Union[int, np.ndarray, Dict[str,  float]], resp: List[bytes]) -> Dict[str, float]:
+        """
+        :param rotation: The rotation.
+        :param resp: The response from the build.
+
+        :return: An x, y, z, w quaternion dictionary.
+        """
+
+        # Get the rotation of the object.
+        if isinstance(rotation, int):
+            transforms, i = self._get_object_transform(object_id=rotation, resp=resp)
+            return TDWUtils.array_to_vector4(transforms.get_rotation(i))
+        elif isinstance(rotation, dict):
+            return rotation
+        elif isinstance(rotation, np.ndarray):
+            return TDWUtils.array_to_vector4(rotation)
+        else:
+            raise Exception(f"Invalid rotation: {rotation}")

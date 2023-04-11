@@ -18,7 +18,7 @@ class ReachFor(ArmMotion):
     If the object has affordance points, the target position is the affordance point closest to the hand.
     Otherwise, the target position is the bounds position closest to the hand.
 
-    The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+    The Replicant's arm(s) will move continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 
     - If the hand is near the target at the end of the action, the action succeeds.
     - If the target is too far away at the start of the action, the action fails.
@@ -70,8 +70,8 @@ class ReachFor(ArmMotion):
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Fill the target rotations list.
-        self.target_rotations.update({arm: self._get_target_rotation(index=i, resp=resp) for i, arm in enumerate(self.arms)})
+        # Fill the target rotations dictionary.
+        self.target_rotations.update({arm: self._get_rotation(rotation=self._target_rotations[i], resp=resp) for i, arm in enumerate(self.arms)})
         # Get the commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
@@ -126,23 +126,3 @@ class ReachFor(ArmMotion):
                              "arrived_at": self.arrived_at,
                              "rotation": self.target_rotations[self.arms[0]]})
         return commands
-
-    def _get_target_rotation(self, index: int, resp: List[bytes]) -> Dict[str, float]:
-        """
-        :param index: The index (the arm).
-        :param resp: The response from the build.
-
-        :return: An x, y, z, w quaternion dictionary.
-        """
-
-        rot = self._target_rotations[index]
-        # Get the rotation of the object.
-        if isinstance(rot, int):
-            transforms, i = self._get_object_transform(object_id=rot, resp=resp)
-            return TDWUtils.array_to_vector4(transforms.get_rotation(i))
-        elif isinstance(rot, dict):
-            return rot
-        elif isinstance(rot, np.ndarray):
-            return TDWUtils.array_to_vector4(rot)
-        else:
-            raise Exception(f"Invalid rotation: {rot}")

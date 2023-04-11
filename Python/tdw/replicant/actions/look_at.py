@@ -11,7 +11,7 @@ class LookAt(HeadMotion):
     """
     Look at a target object or position.
 
-    The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+    The head will move continuously over multiple `communicate()` calls until it is looking at the target.
     """
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float, scale_duration: bool):

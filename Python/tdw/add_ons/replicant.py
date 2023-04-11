@@ -25,6 +25,7 @@ from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.quaternion_utils import QuaternionUtils
 
 
 class Replicant(AddOn):
@@ -292,7 +293,8 @@ class Replicant(AddOn):
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
-                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True) -> None:
+                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
+                  target_rotations: List[Union[int, np.ndarray, Dict[str, float]]] = None) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -315,6 +317,7 @@ class Replicant(AddOn):
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param target_rotations: Target rotations for each hand. If int: An object ID (tries to match the object's rotation). If dict: An x, y, z, w quaternion. If numpy array: An x, y, z, w quaternion. If None, defaults to the identity rotation.
         """
 
         # Convert the relative position to an absolute position.
@@ -323,8 +326,11 @@ class Replicant(AddOn):
                 target = self.dynamic.transform.position + target
             elif isinstance(target, dict):
                 target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
+        arms = Replicant._arms_to_list(arm)
+        if target_rotations is None:
+            target_rotations = [np.copy(QuaternionUtils.IDENTITY) for _ in range(len(arms))]
         self.action = ReachFor(target=target,
-                               arms=Replicant._arms_to_list(arm),
+                               arms=arms,
                                dynamic=self.dynamic,
                                collision_detection=self.collision_detection,
                                offhand_follows=offhand_follows,
@@ -332,7 +338,8 @@ class Replicant(AddOn):
                                previous=self._previous_action,
                                duration=duration,
                                scale_duration=scale_duration,
-                               max_distance=max_distance)
+                               max_distance=max_distance,
+                               target_rotations=target_rotations)
 
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch") -> None:
         """

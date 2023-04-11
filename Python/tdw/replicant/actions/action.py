@@ -103,12 +103,12 @@ class Action(ABC):
         return commands
 
     @final
-    def _get_object_position(self, object_id: int, resp: List[bytes]) -> np.ndarray:
+    def _get_object_transform(self, object_id: int, resp: List[bytes]) -> (Transforms, int):
         """
         :param object_id: The object ID.
         :param resp: The response from the build.
 
-        :return: The position of the object.
+        :return: The `Transform` output data and the index of of the object's data.
         """
 
         for i in range(len(resp) - 1):
@@ -117,8 +117,20 @@ class Action(ABC):
                 transforms = Transforms(resp[i])
                 for j in range(transforms.get_num()):
                     if transforms.get_id(j) == object_id:
-                        return transforms.get_position(j)
+                        return transforms, j
         raise Exception(f"Transform data not found for: {object_id}")
+
+    @final
+    def _get_object_position(self, object_id: int, resp: List[bytes]) -> np.ndarray:
+        """
+        :param object_id: The object ID.
+        :param resp: The response from the build.
+
+        :return: The position of the object.
+        """
+
+        transforms, i = self._get_object_transform(object_id=object_id, resp=resp)
+        return transforms.get_position(i)
 
     @staticmethod
     def _get_scaled_duration(duration: float, resp: List[bytes]) -> float:

@@ -29,7 +29,7 @@ class ReachFor(ArmMotion):
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
-                 scale_duration: bool):
+                 scale_duration: bool, target_rotations: List[Union[int, np.ndarray, Dict[str, float]]]):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
@@ -41,6 +41,7 @@ class ReachFor(ArmMotion):
         :param previous: The previous action. Can be None.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param target_rotations: Target rotations for each hand. If int: An object ID (tries to match the object's rotation). If dict: An x, y, z, w quaternion. If numpy array: An x, y, z, w quaternion.
         """
 
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
@@ -61,9 +62,17 @@ class ReachFor(ArmMotion):
         If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         """
         self.offhand_follows: bool = offhand_follows
+        self._target_rotations: List[Union[int, np.ndarray, Dict[str, float]]] = target_rotations
+        """:field
+        A dictionary of x, y, z, w target quaternion rotations per hand. This gets filled in `get_initialization_commands()`. Key = [`Arm`](../arm.md).
+        """
+        self.target_rotations: Dict[Arm, Dict[str, float]] = dict()
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
+        # Fill the target rotations list.
+        self.target_rotations.update({arm: self._get_target_rotation(index=i, resp=resp) for i, arm in enumerate(self.arms)})
+        # Get the commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         # Reach for a target position.
@@ -84,7 +93,8 @@ class ReachFor(ArmMotion):
                               "duration": self.duration,
                               "arm": arm.name,
                               "max_distance": self.max_distance,
-                              "arrived_at": self.arrived_at} for arm in self.arms])
+                              "arrived_at": self.arrived_at,
+                              "rotation": self.target_rotations[arm]} for arm in self.arms])
         else:
             raise Exception(f"Invalid target: {self.target}")
         return commands
@@ -96,13 +106,14 @@ class ReachFor(ArmMotion):
                      "duration": self.duration,
                      "arm": arm.name,
                      "max_distance": self.max_distance,
-                     "arrived_at": self.arrived_at} for arm in self.arms]
+                     "arrived_at": self.arrived_at,
+                     "rotation": self.target_rotations[arm]} for arm in self.arms]
         # Tell the offhand to follow.
         if self.offhand_follows and len(self.arms) == 1:
             # Get the offset to the target.
             offset = TDWUtils.vector3_to_array(target) - dynamic.body_parts[static.hands[self.arms[0]]].position
             # Get the offhand.
-            offhand = Arm.right if self.arms[0] == Arm.left else Arm.left
+            offhand: Arm = Arm.right if self.arms[0] == Arm.left else Arm.left
             # Get the position.
             position = dynamic.body_parts[static.hands[offhand]].position + offset
             # Set the target of the offhand.
@@ -112,5 +123,26 @@ class ReachFor(ArmMotion):
                              "duration": self.duration,
                              "arm": offhand.name,
                              "max_distance": self.max_distance,
-                             "arrived_at": self.arrived_at})
+                             "arrived_at": self.arrived_at,
+                             "rotation": self.target_rotations[self.arms[0]]})
         return commands
+
+    def _get_target_rotation(self, index: int, resp: List[bytes]) -> Dict[str, float]:
+        """
+        :param index: The index (the arm).
+        :param resp: The response from the build.
+
+        :return: An x, y, z, w quaternion dictionary.
+        """
+
+        rot = self._target_rotations[index]
+        # Get the rotation of the object.
+        if isinstance(rot, int):
+            transforms, i = self._get_object_transform(object_id=rot, resp=resp)
+            return TDWUtils.array_to_vector4(transforms.get_rotation(i))
+        elif isinstance(rot, dict):
+            return rot
+        elif isinstance(rot, np.ndarray):
+            return TDWUtils.array_to_vector4(rot)
+        else:
+            raise Exception(f"Invalid rotation: {rot}")

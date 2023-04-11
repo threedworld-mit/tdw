@@ -14,7 +14,7 @@ class QuaternionUtils:
     """:class_var
     The global up directional vector.
     """
-    UP = np.ndarray([0, 1, 0])
+    UP: np.ndarray = np.array([0, 1, 0])
     """:class_var
     The global forward directional vector.
     """
@@ -22,7 +22,7 @@ class QuaternionUtils:
     """:class_var
     The quaternion identity rotation.
     """
-    IDENTITY = np.ndarray([0, 0, 0, 1])
+    IDENTITY: np.ndarray = np.array([0, 0, 0, 1])
     _POLE: float = 0.49995
 
     @staticmethod

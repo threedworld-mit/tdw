@@ -49,6 +49,7 @@ class QuaternionUtils:
     def multiply(q1: np.ndarray, q2: np.ndarray) -> np.ndarray:
         """
         Multiply two quaternions.
+
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
         :param q1: The first quaternion.

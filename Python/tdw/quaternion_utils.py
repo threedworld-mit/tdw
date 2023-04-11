@@ -136,26 +136,30 @@ class QuaternionUtils:
         """
         Convert Euler angles to a quaternion.
 
+        Source: https://pastebin.com/riRLRvch
+
         :param euler: The Euler angles vector.
 
         :return: The quaternion representation of the Euler angles.
         """
 
-        roll = euler[0]
-        pitch = euler[1]
-        yaw = euler[2]
-        cy = np.cos(yaw * 0.5)
-        sy = np.sin(yaw * 0.5)
-        cp = np.cos(pitch * 0.5)
-        sp = np.sin(pitch * 0.5)
-        cr = np.cos(roll * 0.5)
-        sr = np.sin(roll * 0.5)
+        pitch = np.radians(euler[0] * 0.5)
+        cp = np.cos(pitch)
+        sp = np.sin(pitch)
 
+        yaw = np.radians(euler[1] * 0.5)
+        cy = np.cos(yaw)
+        sy = np.sin(yaw)
+
+        roll = np.radians(euler[2] * 0.5)
+        cr = np.cos(roll)
+        sr = np.sin(roll)
+
+        x = sy * cp * sr + cy * sp * cr
+        y = sy * cp * cr - cy * sp * sr
+        z = cy * cp * sr - sy * sp * cr
         w = cy * cp * cr + sy * sp * sr
-        x = cy * cp * sr - sy * sp * cr
-        y = sy * cp * sr + cy * sp * cr
-        z = sy * cp * cr - cy * sp * sr
-        return np.array([x, y, z, w])
+        return np.abs(np.array([x, y, z, w]))
 
     @staticmethod
     def quaternion_to_euler_angles(quaternion: np.ndarray) -> np.ndarray:

@@ -5,7 +5,8 @@
 Helper functions for using quaternions.
 
 Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
-This is the order returned in all Output Data objects.
+
+This is the same order as any quaternion found in TDW's output data, e.g. `Transforms.get_rotation(index)`.
 
 Vectors are always numpy arrays in the following order: `[x, y, z]`.
 
@@ -15,9 +16,9 @@ Vectors are always numpy arrays in the following order: `[x, y, z]`.
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `UP ` |  | The global up directional vector. | `np.array([0, 1, 0])` |
-| `FORWARD` | np.array | The global forward directional vector. | `np.array([0, 0, 1])` |
-| `IDENTITY ` |  | The quaternion identity rotation. | `np.array([0, 0, 0, 1])` |
+| `UP` | np.ndarray | The global up directional vector. | `np.array([0, 1, 0])` |
+| `FORWARD` | np.ndarray | The global forward directional vector. | `np.array([0, 0, 1])` |
+| `IDENTITY` | np.ndarray | The quaternion identity rotation. | `np.array([0, 0, 0, 1])` |
 
 ***
 
@@ -34,7 +35,7 @@ Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Q
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| q |  np.array |  | The quaternion. |
+| q |  np.ndarray |  | The quaternion. |
 
 _Returns:_  The inverse of the quaternion.
 
@@ -45,12 +46,13 @@ _Returns:_  The inverse of the quaternion.
 _(Static)_
 
 Multiply two quaternions.
+
 Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| q1 |  np.array |  | The first quaternion. |
-| q2 |  np.array |  | The second quaternion. |
+| q1 |  np.ndarray |  | The first quaternion. |
+| q2 |  np.ndarray |  | The second quaternion. |
 
 _Returns:_  The multiplied quaternion: `q1 * q2`
 
@@ -65,7 +67,7 @@ Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-v
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| q |  np.array |  | The quaternion. |
+| q |  np.ndarray |  | The quaternion. |
 
 _Returns:_  The conjugate of the quaternion: `[-x, -y, -z, w]`
 
@@ -76,13 +78,14 @@ _Returns:_  The conjugate of the quaternion: `[-x, -y, -z, w]`
 _(Static)_
 
 Multiply a quaternion by a vector.
+
 Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| q |  np.array |  | The quaternion. |
-| v |  np.array |  | The vector. |
+| q |  np.ndarray |  | The quaternion. |
+| v |  np.ndarray |  | The vector. |
 
 _Returns:_  A directional vector calculated from: `q * v`
 
@@ -93,14 +96,15 @@ _Returns:_  A directional vector calculated from: `q * v`
 _(Static)_
 
 Convert a vector position in absolute world coordinates to relative local coordinates.
+
 Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| position |  np.array |  | The position vector in world coordinates. |
-| origin |  np.array |  | The origin vector of the local space in world coordinates. |
-| rotation |  np.array |  | The rotation quaternion of the local coordinate space. |
+| position |  np.ndarray |  | The position vector in world coordinates. |
+| origin |  np.ndarray |  | The origin vector of the local space in world coordinates. |
+| rotation |  np.ndarray |  | The rotation quaternion of the local coordinate space. |
 
 _Returns:_  `position` in local coordinates.
 
@@ -113,7 +117,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| q |  np.array |  | The rotation as a quaternion. |
+| q |  np.ndarray |  | The rotation as a quaternion. |
 
 _Returns:_  A directional vector corresponding to the "up" direction from the quaternion.
 
@@ -125,10 +129,12 @@ _(Static)_
 
 Convert Euler angles to a quaternion.
 
+Source: https://pastebin.com/riRLRvch
+
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| euler |  np.array |  | The Euler angles vector. |
+| euler |  np.ndarray |  | The Euler angles vector. |
 
 _Returns:_  The quaternion representation of the Euler angles.
 
@@ -140,10 +146,12 @@ _(Static)_
 
 Convert a quaternion to Euler angles.
 
+Source: https://stackoverflow.com/a/12122899
+
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| quaternion |  np.array |  | A quaternion as a nump array. |
+| quaternion |  np.ndarray |  | A quaternion as a nump array. |
 
 _Returns:_  The Euler angles representation of the quaternion.
 
@@ -158,8 +166,8 @@ Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_a
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| q1 |  np.array |  | The first quaternion. |
-| q2 |  np.array |  | The second quaternion. |
+| q1 |  np.ndarray |  | The first quaternion. |
+| q2 |  np.ndarray |  | The second quaternion. |
 
 _Returns:_  The angle between the two quaternions in degrees around the y axis.
 
@@ -172,9 +180,9 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| origin |  np.array |  | The origin position. |
-| target |  np.array |  | The target position. |
-| forward |  np.array |  | The forward directional vector. |
+| origin |  np.ndarray |  | The origin position. |
+| target |  np.ndarray |  | The target position. |
+| forward |  np.ndarray |  | The forward directional vector. |
 
 _Returns:_  True if `target` is to the left of `origin` by the `forward` vector; False if it's to the right.
 

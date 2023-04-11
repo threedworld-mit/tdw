@@ -204,7 +204,7 @@ class QuaternionUtils:
             ex = np.arcsin(2 * (qx * qz - qw * qy))
             ey = np.arctan2(2 * qx * qw + 2 * qy * qz, 1 - 2 * (sqqz + qw * qw))
             ez = np.arctan2(2 * qx * qy + 2 * qz * qw, 1 - 2 * (qy * qy + sqqz))
-        return QuaternionUtils._normalize_angles(np.degrees(np.array([ex, ey, ez])))
+        return np.degrees(np.array([ex, ey, ez])) % 360
 
     @staticmethod
     def get_y_angle(q1: np.ndarray, q2: np.ndarray) -> float:
@@ -237,7 +237,3 @@ class QuaternionUtils:
         perpendicular: np.array = np.cross(forward, target_direction)
         direction = np.dot(perpendicular, QuaternionUtils.UP)
         return direction > 0
-
-    @staticmethod
-    def _normalize_angles(angles: np.ndarray) -> np.ndarray:
-        return angles % 360

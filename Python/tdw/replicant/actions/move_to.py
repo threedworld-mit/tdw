@@ -34,7 +34,7 @@ class MoveTo(Action):
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
                  scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int, bounds_position: str):
         """
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param target: The target. If int: An object ID. If dict or numpy array: An x, y, z position.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.

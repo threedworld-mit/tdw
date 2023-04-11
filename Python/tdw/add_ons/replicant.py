@@ -19,6 +19,7 @@ from tdw.replicant.actions.animate import Animate
 from tdw.replicant.actions.look_at import LookAt
 from tdw.replicant.actions.rotate_head import RotateHead
 from tdw.replicant.actions.reset_head import ResetHead
+from tdw.replicant.actions.rotate_hand import RotateHand
 from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
@@ -272,7 +273,7 @@ class Replicant(AddOn):
           - Otherwise, the action ends in failure.
         - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param target: The target. If int: An object ID. If dict or numpy array: An x, y, z position.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
@@ -309,7 +310,7 @@ class Replicant(AddOn):
         - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
         - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
 
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param target: The target. If int: An object ID. If dict or numpy array: An x, y, z position.
         :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int.
@@ -317,7 +318,7 @@ class Replicant(AddOn):
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        :param target_rotation: Either a target rotation for the hand or a list of target rotations for each hand. If int: An object ID (tries to match the object's rotation). If dict: An x, y, z, w quaternion. If numpy array: An x, y, z, w quaternion. If None, defaults to the identity rotation.
+        :param target_rotation: Either a target rotation for the hand or a list of target rotations for each hand. If int: An object ID. If dict or numpy array: An x, y, z, w quaternion. If None, defaults to the identity rotation.
         """
 
         # Convert the relative position to an absolute position.
@@ -344,6 +345,26 @@ class Replicant(AddOn):
                                scale_duration=scale_duration,
                                max_distance=max_distance,
                                target_rotations=target_rotations)
+
+    def rotate_hand(self, target: Union[Union[int, np.ndarray, Dict[str, float]], List[Union[int, np.ndarray, Dict[str, float]]]],
+                    arm: Union[Arm, List[Arm]], arrived_at: float = 0.1, duration: float = 0.25, scale_duration: bool = True):
+        """
+        :param target: Target rotations for each hand. Can be either a single value (for one hand) or a list (for both hands). If int: An object ID. If dict or numpy array: An x, y, z, w quaternion.
+        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param arrived_at: If the motion ends and the hand is this angle or less from the target rotation, the action succeeds.
+        :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        """
+
+        if isinstance(target, list):
+            rotations = target
+        else:
+            rotations = [target]
+        arms = Replicant._arms_to_list(arm)
+        self.action = RotateHand(target=rotations, arrived_at=arrived_at, arms=arms, dynamic=self.dynamic,
+                                 collision_detection=self.collision_detection, previous=self._previous_action,
+                                 duration=duration, scale_duration=scale_duration)
+
 
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch") -> None:
         """
@@ -427,7 +448,7 @@ class Replicant(AddOn):
 
         The head will continuously move over multiple `communicate()` calls until it is looking at the target.
 
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param target: The target. If int: An object ID. If dict or numpy array: An x, y, z position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """

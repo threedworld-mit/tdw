@@ -31,7 +31,7 @@ class ReachFor(ArmMotion):
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
                  scale_duration: bool, target_rotations: List[Union[int, np.ndarray, Dict[str, float]]]):
         """
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param target: The target. If int: An object ID. If dict or numpy array: An x, y, z position.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         :param arrived_at: If the motion ends and the hand is this distance or less from the target, the action succeeds.
         :param max_distance: If the target is further away from this distance at the start of the action, the action fails.
@@ -41,7 +41,7 @@ class ReachFor(ArmMotion):
         :param previous: The previous action. Can be None.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        :param target_rotations: Target rotations for each hand. If int: An object ID (tries to match the object's rotation). If dict: An x, y, z, w quaternion. If numpy array: An x, y, z, w quaternion.
+        :param target_rotations: Target rotations for each hand. If int: An object ID. If dict or numpy array: An x, y, z, w quaternion..
         """
 
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,

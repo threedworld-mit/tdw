@@ -6,7 +6,8 @@ class QuaternionUtils:
     Helper functions for using quaternions.
 
     Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
-    This is the order returned in all Output Data objects.
+
+    This is the same order as any quaternion found in TDW's output data, e.g. `Transforms.get_rotation(index)`.
 
     Vectors are always numpy arrays in the following order: `[x, y, z]`.
     """

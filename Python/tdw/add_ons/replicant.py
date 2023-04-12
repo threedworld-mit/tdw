@@ -317,7 +317,7 @@ class Replicant(AddOn):
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        :param rotations: Target rotations. Key = An [`Arm`](../arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation. Can be None.
+        :param rotations: Target rotations. Key = An [`Arm`](../replicant/arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation. Can be None.
         """
 
         # Convert the relative position to an absolute position.

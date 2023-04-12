@@ -8,7 +8,7 @@ If target is an object, the target position is a point on the object.
 If the object has affordance points, the target position is the affordance point closest to the hand.
 Otherwise, the target position is the bounds position closest to the hand.
 
-The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+The Replicant's arm(s) will move continuously move over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 
 - If the hand is near the target at the end of the action, the action succeeds.
 - If the target is too far away at the start of the action, the action fails.
@@ -26,6 +26,8 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 - `max_distance` If the target is further away from this distance at the start of the action, the action fails.
 
 - `offhand_follows` If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
+
+- `rotations` Target rotations. Key = An [`Arm`](../arm.md). Value = If int: An object ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation.
 
 - `arms` A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
 
@@ -65,11 +67,11 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 #### \_\_init\_\_
 
-**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration)`**
+**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, rotations)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict or numpy array: An x, y, z position. |
 | offhand_follows |  bool |  | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID. |
 | arrived_at |  float |  | If the motion ends and the hand is this distance or less from the target, the action succeeds. |
 | max_distance |  float |  | If the target is further away from this distance at the start of the action, the action fails. |
@@ -79,6 +81,7 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | previous |  Optional[Action] |  | The previous action. Can be None. |
 | duration |  float |  | The duration of the motion in seconds. |
 | scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+| rotations |  Dict[Arm, Union[int, np.ndarray, Dict[str, float] |  | Target rotations. Key = An [`Arm`](../arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation. |
 
 #### get_initialization_commands
 

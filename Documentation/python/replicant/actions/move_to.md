@@ -54,7 +54,7 @@ The action can end for several reasons depending on the collision detection rule
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict or numpy array: An x, y, z position. |
 | collision_detection |  CollisionDetection |  | The [`CollisionDetection`](../collision_detection.md) rules. |
 | previous |  Optional[Action] |  | The previous action, if any. |
 | reset_arms |  bool |  | If True, reset the arms to their neutral positions while beginning the walk cycle. |

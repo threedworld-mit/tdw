@@ -4,7 +4,7 @@
 
 Abstract base class for actions that rotate the Replicant's head.
 
-During a head motion, the Replicant's head will continuously move over multiple `communicate()` calls until either the motion is complete.
+During a head motion, the Replicant's head will move continuously over multiple `communicate()` calls until either the motion is complete.
 
 ***
 

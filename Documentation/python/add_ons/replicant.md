@@ -140,7 +140,7 @@ The action can end for several reasons depending on the collision detection rule
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict or numpy array: An x, y, z position. |
 | reset_arms |  bool  | True | If True, reset the arms to their neutral positions while beginning the walk cycle. |
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
@@ -156,9 +156,9 @@ These actions move and bend the joints of the Replicant's arms.
 
 #### reach_for
 
-**`self.reach_for(target, arm)`**
+**`self.reach_for(target, arm, rotations)`**
 
-**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True)`**
+**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True, rotations)`**
 
 Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -166,7 +166,7 @@ If target is an object, the target position is a point on the object.
 If the object has affordance points, the target position is the affordance point closest to the hand.
 Otherwise, the target position is the bounds position closest to the hand.
 
-The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+The Replicant's arm(s) will continuously move over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 
 - If the hand is near the target at the end of the action, the action succeeds.
 - If the target is too far away at the start of the action, the action fails.
@@ -175,12 +175,34 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict or numpy array: An x, y, z position. |
 | arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
 | absolute |  bool  | True | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | offhand_follows |  bool  | False | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int. |
 | arrived_at |  float  | 0.09 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
 | max_distance |  float  | 1.5 | The maximum distance from the hand to the target position. |
+| duration |  float  | 0.25 | The duration of the motion in seconds. |
+| scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+| rotations |  Dict[Arm, Union[int, np.ndarray, Dict[str, float] |  | Target rotations. Key = An [`Arm`](../replicant/arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation. Can be None. |
+
+#### rotate_hand
+
+**`self.rotate_hand()`**
+
+**`self.rotate_hand(targets=targets, arrived_at=0.1, duration=0.25, scale_duration=True)`**
+
+Rotate one or both hands to target rotations.
+
+The Replicant's arm(s) will move continuously rotate over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+
+- If either hand's rotation is near its target at the end of the action, the action succeeds.
+- The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+- If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| targets |  Dict[Arm, Union[int, np.ndarray, Dict[str, float] | targets | The target rotation per hand. Key = An [`Arm`](../replicant/arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. |
+| arrived_at |  float  | 0.1 | If the motion ends and the hand is this angle or less from the target rotation, the action succeeds. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
 | scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
@@ -225,7 +247,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 | --- | --- | --- | --- |
 | target |  int |  | The target object ID. |
 | arm |  Arm |  | The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object. |
-| angle |  Optional[float] | 90 | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
+| angle |  Optional[float] | 90 | Continuously (per `communicate()` call, including after this action ends), rotate the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
 | axis |  Optional[str] | "pitch" | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
 
 #### drop
@@ -263,7 +285,7 @@ The head will continuously move over multiple `communicate()` calls until it is 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, np.ndarray, Dict[str, float] | target | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  Union[int, np.ndarray, Dict[str, float] | target | The target. If int: An object ID. If dict or numpy array: An x, y, z position. |
 | duration |  float  | 0.1 | The duration of the motion in seconds. |
 | scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 

@@ -24,7 +24,7 @@ class RotateHand(ArmMotion):
                  dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Optional[Action],
                  duration: float, scale_duration: bool):
         """
-        :param targets: The target rotation per hand. Key = An [`Arm`](../replicant/arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion.
+        :param targets: The target rotation per hand. Key = An [`Arm`](../arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion.
         :param arrived_at: If the motion ends and the hand is this angle or less from the target rotation, the action succeeds.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
@@ -36,7 +36,7 @@ class RotateHand(ArmMotion):
         super().__init__(arms=list(targets.keys()), dynamic=dynamic, collision_detection=collision_detection, previous=previous,
                          duration=duration, scale_duration=scale_duration)
         """:field
-        The target rotation per hand. Key = An [`Arm`](../replicant/arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion.
+        The target rotation per hand. Key = An [`Arm`](../arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion.
         """
         self.targets: Dict[Arm, Union[int, np.ndarray, Dict[str, float]]] = targets
         """:field

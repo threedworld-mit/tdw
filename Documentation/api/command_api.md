@@ -438,6 +438,7 @@
 | Command | Description |
 | --- | --- |
 | [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm on a humanoid to its neutral position.  |
+| [`replicant_rotate_hand`](#replicant_rotate_hand) | Start to rotate a Replicant's hand to a target rotation.  |
 
 **Replicant Reach For Command**
 
@@ -5840,6 +5841,41 @@ Tell the Replicant to start to reset the arm on a humanoid to its neutral positi
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_rotate_hand`**
+
+Start to rotate a Replicant's hand to a target rotation. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_rotate_hand", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_rotate_hand", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "arrived_at": 0.1, "set_status": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"arrived_at"` | float | If the hand is this angle from the target rotation or less, the action succeeded. | 0.1 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"rotation"` | Quaternion | The target rotation. | |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |

@@ -4,7 +4,7 @@
 
 Look at a target object or position.
 
-The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+The head will move continuously over multiple `communicate()` calls until it is looking at the target.
 
 ***
 
@@ -48,7 +48,7 @@ The head will continuously move over multiple `communicate()` calls until it is 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict or numpy array: An x, y, z position. |
 | duration |  float |  | The duration of the motion in seconds. |
 | scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 

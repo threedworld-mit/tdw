@@ -4,7 +4,7 @@
 
 Play an animation.
 
-The animation will end either when the animation clip is finished or if the Replicant collides with something (see `self.collision_detection`).
+The animation will end when either the animation clip is finished or if the Replicant collides with something (see `self.collision_detection`).
 
 - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
 - If `self.collision_detection.previous_was_same == True`, and it was the same animation, and it ended in a collision, this action ends immediately.

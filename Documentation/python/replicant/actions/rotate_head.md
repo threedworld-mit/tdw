@@ -4,7 +4,7 @@
 
 Rotate the head by an angle around an axis.
 
-The head will continuously move over multiple `communicate()` calls until it is looking at the target.
+The head will move continuously over multiple `communicate()` calls until it is looking at the target.
 
 ***
 

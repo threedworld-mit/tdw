@@ -18,7 +18,7 @@ replicant = Replicant()
 camera = ThirdPersonCamera(position={"x": -0.9, "y": 1.175, "z": 3},
                            look_at={"x": 0, "y": 1, "z": 0},
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_rotate_hand").joinpath(str(i))
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_rotate_hand")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], path=path)
 c.add_ons.extend([replicant, camera, capture])
@@ -35,8 +35,7 @@ q1 = QuaternionUtils.euler_angles_to_quaternion(np.array([0, 70, 0]))
 q2 = QuaternionUtils.euler_angles_to_quaternion(QuaternionUtils.UP)
 # Rotate the hand.
 for rotation in [q0, q1, q2]:
-    replicant.rotate_hand(target=rotation,
-                          arm=Arm.right)
+    replicant.rotate_hand(targets={Arm.right: rotation})
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
 c.communicate({"$type": "terminate"})

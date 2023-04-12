@@ -36,7 +36,7 @@ for i, target_rotation in enumerate([None, chair_id]):
                    {"$type": "step_physics",
                     "frames": 50}])
     # Reach for the chair.
-    replicant.reach_for(target=chair_id, arm=Arm.right, target_rotation=target_rotation)
+    replicant.reach_for(target=chair_id, arm=Arm.right, rotations={Arm.right: chair_id})
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
     c.communicate([])

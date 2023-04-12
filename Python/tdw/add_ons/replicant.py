@@ -26,7 +26,6 @@ from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.quaternion_utils import QuaternionUtils
 
 
 class Replicant(AddOn):
@@ -295,7 +294,7 @@ class Replicant(AddOn):
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
                   max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
-                  target_rotation: Union[Union[int, np.ndarray, Dict[str, float]], List[Union[int, np.ndarray, Dict[str, float]]]] = None) -> None:
+                  rotations: Dict[Arm, Union[int, np.ndarray, Dict[str, float]]] = None) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -303,7 +302,7 @@ class Replicant(AddOn):
         If the object has affordance points, the target position is the affordance point closest to the hand.
         Otherwise, the target position is the bounds position closest to the hand.
 
-        The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+        The Replicant's arm(s) will continuously move over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 
         - If the hand is near the target at the end of the action, the action succeeds.
         - If the target is too far away at the start of the action, the action fails.
@@ -318,7 +317,7 @@ class Replicant(AddOn):
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        :param target_rotation: Either a target rotation for the hand or a list of target rotations for each hand. If int: An object ID. If dict or numpy array: An x, y, z, w quaternion. If None, defaults to the identity rotation.
+        :param rotations: Target rotations. Key = An [`Arm`](../arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation. Can be None.
         """
 
         # Convert the relative position to an absolute position.
@@ -328,12 +327,8 @@ class Replicant(AddOn):
             elif isinstance(target, dict):
                 target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
         arms = Replicant._arms_to_list(arm)
-        if target_rotation is None:
-            target_rotations = [np.copy(QuaternionUtils.IDENTITY) for _ in range(len(arms))]
-        elif isinstance(target_rotation, list):
-            target_rotations = target_rotation
-        else:
-            target_rotations = [target_rotation]
+        if rotations is None:
+            rotations = dict()
         self.action = ReachFor(target=target,
                                arms=arms,
                                dynamic=self.dynamic,
@@ -344,27 +339,28 @@ class Replicant(AddOn):
                                duration=duration,
                                scale_duration=scale_duration,
                                max_distance=max_distance,
-                               target_rotations=target_rotations)
+                               rotations=rotations)
 
-    def rotate_hand(self, target: Union[Union[int, np.ndarray, Dict[str, float]], List[Union[int, np.ndarray, Dict[str, float]]]],
-                    arm: Union[Arm, List[Arm]], arrived_at: float = 0.1, duration: float = 0.25, scale_duration: bool = True):
+    def rotate_hand(self, targets: Dict[Arm, Union[int, np.ndarray, Dict[str, float]]], arrived_at: float = 0.1,
+                    duration: float = 0.25, scale_duration: bool = True):
         """
-        :param target: Target rotations for each hand. Can be either a single value (for one hand) or a list (for both hands). If int: An object ID. If dict or numpy array: An x, y, z, w quaternion.
-        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        Rotate one or both hands to target rotations.
+
+        The Replicant's arm(s) will move continuously rotate over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+
+        - If either hand's rotation is near its target at the end of the action, the action succeeds.
+        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+        - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
+
+        :param targets: The target rotation per hand. Key = An [`Arm`](../replicant/arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion.
         :param arrived_at: If the motion ends and the hand is this angle or less from the target rotation, the action succeeds.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         """
 
-        if isinstance(target, list):
-            rotations = target
-        else:
-            rotations = [target]
-        arms = Replicant._arms_to_list(arm)
-        self.action = RotateHand(target=rotations, arrived_at=arrived_at, arms=arms, dynamic=self.dynamic,
+        self.action = RotateHand(targets=targets, arrived_at=arrived_at, dynamic=self.dynamic,
                                  collision_detection=self.collision_detection, previous=self._previous_action,
                                  duration=duration, scale_duration=scale_duration)
-
 
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch") -> None:
         """
@@ -376,7 +372,7 @@ class Replicant(AddOn):
 
         :param target: The target object ID.
         :param arm: The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object.
-        :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
+        :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
         :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
         """
 
@@ -503,7 +499,7 @@ class Replicant(AddOn):
     def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
                                            rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
         """
-        Set the intial position and rotation.
+        Set the initial position and rotation.
 
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.

@@ -18,7 +18,7 @@ class ReachFor(ArmMotion):
     If the object has affordance points, the target position is the affordance point closest to the hand.
     Otherwise, the target position is the bounds position closest to the hand.
 
-    The Replicant's arm(s) will move continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+    The Replicant's arm(s) will move continuously move over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
 
     - If the hand is near the target at the end of the action, the action succeeds.
     - If the target is too far away at the start of the action, the action fails.
@@ -29,7 +29,7 @@ class ReachFor(ArmMotion):
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
-                 scale_duration: bool, target_rotations: List[Union[int, np.ndarray, Dict[str, float]]]):
+                 scale_duration: bool, rotations: Dict[Arm, Union[int, np.ndarray, Dict[str, float]]]):
         """
         :param target: The target. If int: An object ID. If dict or numpy array: An x, y, z position.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
@@ -41,7 +41,7 @@ class ReachFor(ArmMotion):
         :param previous: The previous action. Can be None.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        :param target_rotations: Target rotations for each hand. If int: An object ID. If dict or numpy array: An x, y, z, w quaternion..
+        :param rotations: Target rotations. Key = An [`Arm`](../arm.md). Value = A rotation. If int: The rotation of the object with this ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation.
         """
 
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
@@ -62,16 +62,13 @@ class ReachFor(ArmMotion):
         If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         """
         self.offhand_follows: bool = offhand_follows
-        self._target_rotations: List[Union[int, np.ndarray, Dict[str, float]]] = target_rotations
         """:field
-        A dictionary of x, y, z, w target quaternion rotations per hand. This gets filled in `get_initialization_commands()`. Key = [`Arm`](../arm.md).
+        Target rotations. Key = An [`Arm`](../arm.md). Value = If int: An object ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation.
         """
-        self.target_rotations: Dict[Arm, Dict[str, float]] = dict()
+        self.rotations: Dict[Arm, Optional[Union[int, np.ndarray, Dict[str, float]]]] = rotations
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Fill the target rotations dictionary.
-        self.target_rotations.update({arm: self._get_rotation(rotation=self._target_rotations[i], resp=resp) for i, arm in enumerate(self.arms)})
         # Get the commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
@@ -93,10 +90,17 @@ class ReachFor(ArmMotion):
                               "duration": self.duration,
                               "arm": arm.name,
                               "max_distance": self.max_distance,
-                              "arrived_at": self.arrived_at,
-                              "rotation": self.target_rotations[arm]} for arm in self.arms])
+                              "arrived_at": self.arrived_at} for arm in self.arms])
         else:
             raise Exception(f"Invalid target: {self.target}")
+        # Set target rotations.
+        commands.extend([{"$type": "replicant_rotate_hand",
+                          "id": static.replicant_id,
+                          "arm": arm.name,
+                          "rotation": self._get_rotation(rotation=self.rotations[arm], resp=resp),
+                          "arrived_at": 0.1,
+                          "set_status": False} for arm in self.rotations])
+
         return commands
 
     def _get_reach_for_position(self, target: Dict[str, float], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
@@ -106,8 +110,7 @@ class ReachFor(ArmMotion):
                      "duration": self.duration,
                      "arm": arm.name,
                      "max_distance": self.max_distance,
-                     "arrived_at": self.arrived_at,
-                     "rotation": self.target_rotations[arm]} for arm in self.arms]
+                     "arrived_at": self.arrived_at} for arm in self.arms]
         # Tell the offhand to follow.
         if self.offhand_follows and len(self.arms) == 1:
             # Get the offset to the target.
@@ -123,6 +126,5 @@ class ReachFor(ArmMotion):
                              "duration": self.duration,
                              "arm": offhand.name,
                              "max_distance": self.max_distance,
-                             "arrived_at": self.arrived_at,
-                             "rotation": self.target_rotations[self.arms[0]]})
+                             "arrived_at": self.arrived_at})
         return commands

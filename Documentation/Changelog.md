@@ -4,6 +4,42 @@
 
 To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.12
+
+### Command API
+
+#### New Commands
+
+| Command                 | Description                                              |
+| ----------------------- | -------------------------------------------------------- |
+| `replicant_rotate_hand` | Start to rotate a Replicant's hand to a target rotation. |
+
+### `tdw` module
+
+- Added optional parameter `rotations` to `replicant.reach_for(target, arm)`. Set a target rotation per arm while the arm is moving.
+- Added a new Replicant action: `rotate_hand(targets)`. Targets is a dictionary of hands and rotations. The replicant will rotate its hands without moving its arms.
+  - (Backend) Added `RotateHand` action.
+
+### Example Controllers
+
+- Added: `replicant/rotate_hand.py`
+- Added: `replicant/target_rotation.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                  | Description                         |
+| ----------------------------------------- | ----------------------------------- |
+| `python/replicant/actions/rotate_hand.md` | API documentation for `RotateHand`. |
+
+#### Modified Documentation
+
+| Document                              | Modification                                                 |
+| ------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation` | Added a section for the `rotations` parameter in `reach_for(target, arm)`.<br>Added a section for the new `rotate_hand(targets)` action. |
+| `python/add_ons/replicant.md`         | Added `rotate_hand(targets)` documentation.                  |
+
 ## v1.11.11
 
 ### `tdw` module

@@ -175,6 +175,58 @@ Result:
 
 ![](images/arm_articulation/reach_for_object_both_hands.gif)
 
+### The `rotations` parameter
+
+`reach_for(target, arm)` has an optional `rotations` parameter which will set a target orientation for each hand while the arm is moving. To rotate the Replicant's hands without moving the arm, see "Hand Rotation", below.
+
+The `rotations` parameter is a dictionary, where the key is an [`Arm`](../../python/replicant/arm.md) and the value is a rotation. For example: `rotations={Arm.right: {"x": 0, "y": 0, "z": 0, "w": 1}}`. The rotation can be a quaternion dictionary (as shown here), a 4-element numpy array of a quaternion, or an integer representing an object ID, in which case it's the rotation of the matching object. Note that you can't set the rotation to Euler angles. To convert Euler angles to a quaternion, see [`QuaternionUtils`](../../python/quaternion_utils.md).
+
+In this example, the Replicant will reach for a chair twice. In the first action, the Replicant doesn't use rotation targets. In the second action, the Replicant tries to rotate its right hand to match the rotation of the chair:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.replicant.arm import Arm
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.add_ons.replicant import Replicant
+from tdw.replicant.action_status import ActionStatus
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+chair_id = Controller.get_unique_id()
+for rotate in [False, True]:
+    # Clear the add-ons from the previous trial.
+    c.add_ons.clear()
+    replicant = Replicant()
+    camera = ThirdPersonCamera(position={"x": -0.9, "y": 1.175, "z": 3},
+                               look_at={"x": 0, "y": 1, "z": 0},
+                               avatar_id="a")
+    path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_target_rotation").joinpath(str(i))
+    print(f"Images will be saved to: {path}")
+    capture = ImageCapture(avatar_ids=["a"], path=path)
+    c.add_ons.extend([replicant, camera, capture])
+    c.communicate([{"$type": "load_scene",
+                    "scene_name": "ProcGenScene"},
+                   TDWUtils.create_empty_room(12, 12),
+                   Controller.get_add_object(model_name="chair_billiani_doll",
+                                             object_id=chair_id,
+                                             position={"x": 0, "y": 0.6, "z": 1},
+                                             rotation={"x": 70, "y": 45, "z": 2}),
+                   {"$type": "step_physics",
+                    "frames": 50}])
+    # Reach for the chair.
+    replicant.reach_for(target=chair_id, arm=Arm.right, rotations={Arm.right: chair_id} if rotate else None)
+    while replicant.action.status == ActionStatus.ongoing:
+        c.communicate([])
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arm_articulation/reach_for_rotation.gif)
+
 ### Action success and collision detection
 
 The action succeeds if, when it ends, the hand is near the target (see below, `arrived_at`).
@@ -463,13 +515,63 @@ The action succeeds when the arm(s) finish resetting. The action can end in `Act
 
 The action can't end in `ActionStatus.cannot_reach` or `ActionStatus.failed_to_reach` because the Replicant isn't reaching for a target.
 
+## Hand Rotation
+
+To rotate a Replicant's hand without moving its arm, call `replicant.rotate_hand(targets)`. Unlike the previously-described actions that have independent `target` and `arm` values, this action has `targets` dictionary parameter (because you will often want to set different rotations for each hand). The key of `targets ` is an  [`Arm`](../../python/replicant/arm.md) and the value is a rotation. The rotation can be a quaternion dictionary, a 4-element numpy array of a quaternion, or an integer representing an object ID, in which case it's the rotation of the matching object. Note that you can't set the rotation to Euler angles. To convert Euler angles to a quaternion, see [`QuaternionUtils`](../../python/quaternion_utils.md).
+
+In this example, the Replicant will extend its hand and then rotate it:
+
+```python
+import numpy as np
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.quaternion_utils import QuaternionUtils
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.arm import Arm
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": -0.9, "y": 1.175, "z": 3},
+                           look_at={"x": 0, "y": 1, "z": 0},
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_rotate_hand")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+c.add_ons.extend([replicant, camera, capture])
+c.communicate([TDWUtils.create_empty_room(12, 12)])
+# Reach for a target position so that it's easier to see the hand rotation.
+replicant.reach_for(target={"x": 0.6, "y": 0.8, "z": 0.9},
+                    arm=Arm.right)
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+# Get some rotations.
+q0 = QuaternionUtils.euler_angles_to_quaternion(np.array([30, 0, 0]))
+q1 = QuaternionUtils.euler_angles_to_quaternion(np.array([0, 70, 0]))
+q2 = QuaternionUtils.euler_angles_to_quaternion(QuaternionUtils.UP)
+# Rotate the hand.
+for rotation in [q0, q1, q2]:
+    replicant.rotate_hand(targets={Arm.right: rotation})
+    while replicant.action.status == ActionStatus.ongoing:
+        c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arm_articulation/rotate_hand.gif)
+
 ## Low-level description
 
 ### The `reach_for(target, arm)` action
 
 `replicant.reach_for(target, arm)` sets `replicant.action` to an [`ReachFor`](../../python/replicant/actions/reach_for.md) action. 
 
-In addition to [the usual `Action` initialization commands](actions.md), `ReachFor` sends [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position) or [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object).
+In addition to [the usual `Action` initialization commands](actions.md), `ReachFor` sends [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position) or [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object). If the `rotations` parameter is set, `ReachFor` also sends [`replicant_rotate_hand`](../../api/command_api.md#replicant_rotate_hand).
 
 The action continues until there is a collision or until `replicant.dynamic.output_action_status != ActionStatus.ongoing` (meaning that the build has signaled that the animation ended).
 
@@ -478,6 +580,14 @@ The action continues until there is a collision or until `replicant.dynamic.outp
 `replicant.reset_arm(arm)` sets `replicant.action` to an [`ResetArm`](../../python/replicant/actions/reset_arm.md) action. 
 
 In addition to [the usual `Action` initialization commands](actions.md), `ResetArm` sends [`replicant_reset_arm`](../../api/command_api.md#replicant_reset_arm).
+
+The action continues until there is a collision or until `replicant.dynamic.output_action_status == ActionStatus.success` (meaning that the build has signaled that the animation ended).
+
+### The `rotate_hand(targets)` action 
+
+`replicant.rotate_hand(targets)` sets `replicant.action` to an [`RotateHand`](../../python/replicant/actions/rotate_hand.md) action. 
+
+In addition to [the usual `Action` initialization commands](actions.md), `RotateHand` sends [`replicant_rotate_hand`](../../api/command_api.md#replicant_rotate_hand).
 
 The action continues until there is a collision or until `replicant.dynamic.output_action_status == ActionStatus.success` (meaning that the build has signaled that the animation ended).
 
@@ -496,12 +606,15 @@ Example controllers:
 - [reach_too_far.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_too_far.py) Reach for a target that is too far away.
 - [reset_arm.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reset_arm.py) Reach for a target position and then reset the arm.
 - [reach_for_follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_follow.py) Reach for a target position and have the offhand follow the main hand.
+- [target_rotation.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_follow.py) Reach for a chair twice. The second time, use the chair's rotation as the target rotation.
+- [rotate_hand.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/rotate_hand.py) Rotate the Replicant's hand without moving the arm.
 
 Command API:
 
 - [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position)
 - [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object)
 - [`replicant_reset_arm`](../../api/command_api.md#replicant_reset_arm)
+- [`replicant_rotate_hand`](../../api/command_api.md#replicant_rotate_hand)
 
 Python API:
 
@@ -511,3 +624,5 @@ Python API:
 - [`ModelRecord`](../../python/librarian/model_librarian.md)
 - [`ReachFor`](../../python/replicant/actions/reach_for.md)
 - [`ResetArm`](../../python/replicant/actions/reset_arm.md)
+- [`RotateHand`](../../python/replicant/actions/rotate_hand.md)
+- [`QuaternionUtils`](../../python/quaternion_utils.md)

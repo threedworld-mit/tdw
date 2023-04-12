@@ -8,14 +8,12 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Reach for a chair twice. 
-The first time, use the default target orientation. 
-The second time, use the chair's rotation as the target rotation.
+Reach for a chair twice. The second time, use the chair's rotation as the target rotation.
 """
 
 c = Controller()
 chair_id = Controller.get_unique_id()
-for i, target_rotation in enumerate([None, chair_id]):
+for i, rotate in enumerate([False, True]):
     # Clear the add-ons from the previous trial.
     c.add_ons.clear()
     replicant = Replicant()
@@ -36,7 +34,8 @@ for i, target_rotation in enumerate([None, chair_id]):
                    {"$type": "step_physics",
                     "frames": 50}])
     # Reach for the chair.
-    replicant.reach_for(target=chair_id, arm=Arm.right, rotations={Arm.right: chair_id})
+    replicant.reach_for(target=chair_id, arm=Arm.right, rotations={Arm.right: chair_id} if rotate else None,
+                        scale_duration=False)
     while replicant.action.status == ActionStatus.ongoing:
         c.communicate([])
     c.communicate([])

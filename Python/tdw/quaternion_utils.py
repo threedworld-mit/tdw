@@ -6,7 +6,8 @@ class QuaternionUtils:
     Helper functions for using quaternions.
 
     Quaternions are always numpy arrays in the following order: `[x, y, z, w]`.
-    This is the order returned in all Output Data objects.
+
+    This is the same order as any quaternion found in TDW's output data, e.g. `Transforms.get_rotation(index)`.
 
     Vectors are always numpy arrays in the following order: `[x, y, z]`.
     """
@@ -14,18 +15,19 @@ class QuaternionUtils:
     """:class_var
     The global up directional vector.
     """
-    UP = np.array([0, 1, 0])
+    UP: np.ndarray = np.array([0, 1, 0])
     """:class_var
     The global forward directional vector.
     """
-    FORWARD: np.array = np.array([0, 0, 1])
+    FORWARD: np.ndarray = np.array([0, 0, 1])
     """:class_var
     The quaternion identity rotation.
     """
-    IDENTITY = np.array([0, 0, 0, 1])
+    IDENTITY: np.ndarray = np.array([0, 0, 0, 1])
+    _POLE: float = 0.49995
 
     @staticmethod
-    def get_inverse(q: np.array) -> np.array:
+    def get_inverse(q: np.ndarray) -> np.ndarray:
         """
         Source: https://referencesource.microsoft.com/#System.Numerics/System/Numerics/Quaternion.cs
 
@@ -42,12 +44,13 @@ class QuaternionUtils:
         ls = x * x + y * y + z * z + w * w
         inv = 1.0 / ls
 
-        return np.array([-x * inv, -y * inv, -z * inv, w * inv])
+        return np.array([-x, -y, -z, w]) * inv
 
     @staticmethod
-    def multiply(q1: np.array, q2: np.array) -> np.array:
+    def multiply(q1: np.ndarray, q2: np.ndarray) -> np.ndarray:
         """
         Multiply two quaternions.
+
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
         :param q1: The first quaternion.
@@ -72,7 +75,7 @@ class QuaternionUtils:
         return np.array([x, y, z, w])
 
     @staticmethod
-    def get_conjugate(q: np.array) -> np.array:
+    def get_conjugate(q: np.ndarray) -> np.ndarray:
         """
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
@@ -89,9 +92,10 @@ class QuaternionUtils:
         return np.array([-x, -y, -z, w])
 
     @staticmethod
-    def multiply_by_vector(q: np.array, v: np.array) -> np.array:
+    def multiply_by_vector(q: np.ndarray, v: np.ndarray) -> np.ndarray:
         """
         Multiply a quaternion by a vector.
+
         Source: https://stackoverflow.com/questions/4870393/rotating-coordinate-system-via-a-quaternion
 
         :param q: The quaternion.
@@ -100,13 +104,14 @@ class QuaternionUtils:
         :return: A directional vector calculated from: `q * v`
         """
 
-        q2 = (v[0], v[1], v[2], 0.0)
+        q2 = np.array([v[0], v[1], v[2], 0.0])
         return QuaternionUtils.multiply(QuaternionUtils.multiply(q, q2), QuaternionUtils.get_conjugate(q))[:-1]
 
     @staticmethod
-    def world_to_local_vector(position: np.array, origin: np.array, rotation: np.array) -> np.array:
+    def world_to_local_vector(position: np.ndarray, origin: np.ndarray, rotation: np.ndarray) -> np.ndarray:
         """
         Convert a vector position in absolute world coordinates to relative local coordinates.
+
         Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-does-need-explanation-p.html
 
         :param position: The position vector in world coordinates.
@@ -119,7 +124,7 @@ class QuaternionUtils:
         return QuaternionUtils.multiply_by_vector(q=QuaternionUtils.get_inverse(q=rotation), v=position - origin)
 
     @staticmethod
-    def get_up_direction(q: np.array) -> np.array:
+    def get_up_direction(q: np.ndarray) -> np.ndarray:
         """
         :param q: The rotation as a quaternion.
 
@@ -129,35 +134,41 @@ class QuaternionUtils:
         return QuaternionUtils.multiply_by_vector(q, QuaternionUtils.UP)
 
     @staticmethod
-    def euler_angles_to_quaternion(euler: np.array) -> np.array:
+    def euler_angles_to_quaternion(euler: np.ndarray) -> np.ndarray:
         """
         Convert Euler angles to a quaternion.
+
+        Source: https://pastebin.com/riRLRvch
 
         :param euler: The Euler angles vector.
 
         :return: The quaternion representation of the Euler angles.
         """
 
-        roll = euler[0]
-        pitch = euler[1]
-        yaw = euler[2]
-        cy = np.cos(yaw * 0.5)
-        sy = np.sin(yaw * 0.5)
-        cp = np.cos(pitch * 0.5)
-        sp = np.sin(pitch * 0.5)
-        cr = np.cos(roll * 0.5)
-        sr = np.sin(roll * 0.5)
+        pitch = np.radians(euler[0] * 0.5)
+        cp = np.cos(pitch)
+        sp = np.sin(pitch)
 
+        yaw = np.radians(euler[1] * 0.5)
+        cy = np.cos(yaw)
+        sy = np.sin(yaw)
+
+        roll = np.radians(euler[2] * 0.5)
+        cr = np.cos(roll)
+        sr = np.sin(roll)
+
+        x = sy * cp * sr + cy * sp * cr
+        y = sy * cp * cr - cy * sp * sr
+        z = cy * cp * sr - sy * sp * cr
         w = cy * cp * cr + sy * sp * sr
-        x = cy * cp * sr - sy * sp * cr
-        y = sy * cp * sr + cy * sp * cr
-        z = sy * cp * cr - cy * sp * sr
-        return np.array([x, y, z, w])
+        return np.abs(np.array([x, y, z, w]))
 
     @staticmethod
-    def quaternion_to_euler_angles(quaternion: np.array) -> np.array:
+    def quaternion_to_euler_angles(quaternion: np.ndarray) -> np.ndarray:
         """
         Convert a quaternion to Euler angles.
+
+        Source: https://stackoverflow.com/a/12122899
 
         :param quaternion: A quaternion as a nump array.
 
@@ -168,26 +179,36 @@ class QuaternionUtils:
         y = quaternion[1]
         z = quaternion[2]
         w = quaternion[3]
-        ysqr = y * y
 
-        t0 = +2.0 * (w * x + y * z)
-        t1 = +1.0 - 2.0 * (x * x + ysqr)
-        ex = np.degrees(np.arctan2(t0, t1))
+        sqx = x * x
+        sqy = y * y
+        sqz = z * z
+        sqw = w * w
 
-        t2 = +2.0 * (w * y - z * x)
-        t2 = np.where(t2 > +1.0, +1.0, t2)
+        unit = sqx + sqy + sqz + sqw
+        test = x * w - y * z
 
-        t2 = np.where(t2 < -1.0, -1.0, t2)
-        ey = np.degrees(np.arcsin(t2))
-
-        t3 = +2.0 * (w * z + x * y)
-        t4 = +1.0 - 2.0 * (ysqr + z * z)
-        ez = np.degrees(np.arctan2(t3, t4))
-
-        return np.array([ex, ey, ez])
+        if test > QuaternionUtils._POLE * unit:
+            ex = np.pi / 2
+            ey = 2 * np.arctan2(y, x)
+            ez = 0
+        elif test < -QuaternionUtils._POLE * unit:
+            ex = -np.pi / 2
+            ey = -2 * np.arctan2(y, x)
+            ez = 0
+        else:
+            qx = w
+            qy = z
+            qz = x
+            qw = y
+            sqqz = qz * qz
+            ex = np.arcsin(2 * (qx * qz - qw * qy))
+            ey = np.arctan2(2 * qx * qw + 2 * qy * qz, 1 - 2 * (sqqz + qw * qw))
+            ez = np.arctan2(2 * qx * qy + 2 * qz * qw, 1 - 2 * (qy * qy + sqqz))
+        return np.degrees(np.array([ex, ey, ez])) % 360
 
     @staticmethod
-    def get_y_angle(q1: np.array, q2: np.array) -> float:
+    def get_y_angle(q1: np.ndarray, q2: np.ndarray) -> float:
         """
         Source: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
 
@@ -201,7 +222,7 @@ class QuaternionUtils:
         return np.rad2deg(2 * np.arcsin(np.clip(qd[1], -1, 1)))
 
     @staticmethod
-    def is_left_of(origin: np.array, target: np.array, forward: np.array) -> bool:
+    def is_left_of(origin: np.ndarray, target: np.ndarray, forward: np.ndarray) -> bool:
         """
         :param origin: The origin position.
         :param target: The target position.

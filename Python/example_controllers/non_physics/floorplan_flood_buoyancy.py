@@ -68,7 +68,7 @@ c.communicate([{"$type": "set_screen_size",
 # a more robust model for flood propagation.
 flood_start_floor = 4
 for i in range(50):
-    floorplan_flood.set_flood_height(flood_start_floor, 0.0125)
+    floorplan_flood.set_flood_height(flood_start_floor, 0.0175)
     c.communicate([])
 adjacent_floors = floorplan_flood.get_adjacent_floors(flood_start_floor)
 for f in adjacent_floors:

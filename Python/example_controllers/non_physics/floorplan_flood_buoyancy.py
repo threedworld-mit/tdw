@@ -73,7 +73,7 @@ for i in range(50):
 adjacent_floors = floorplan_flood.get_adjacent_floors(flood_start_floor)
 for f in adjacent_floors:
     for i in range(50):
-        floorplan_flood.set_flood_height(f, 0.0125)
+        floorplan_flood.set_flood_height(f, 0.0175)
         c.communicate([])
 # Start to make the objects float.
 c.communicate([{"$type": "add_floorplan_flood_buoyancy",
@@ -85,7 +85,7 @@ c.communicate([{"$type": "add_floorplan_flood_buoyancy",
               {"$type": "add_floorplan_flood_buoyancy",
                 "radius": 0.15,
                 "speed": 0.05,
-                "id": chair_i2},
+                "id": chair_id2},
               {"$type": "add_floorplan_flood_buoyancy",
                 "radius": 0.05,
                 "speed": 0.25,

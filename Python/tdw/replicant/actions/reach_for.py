@@ -66,8 +66,6 @@ class ReachFor(ArmMotion):
         Target rotations. Key = An [`Arm`](../arm.md). Value = If int: An object ID. If dict or numpy array: An x, y, z, w quaternion. If an `Arm` isn't in this dictionary, that hand won't rotate towards a target rotation.
         """
         self.rotations: Dict[Arm, Optional[Union[int, np.ndarray, Dict[str, float]]]] = rotations
-        # A dictionary of booleans that will determine which sub-action controls the action status: the movement, or the rotation.
-        self._set_position_status: Dict[Arm, bool] = {arm: arm not in self.rotations for arm in self.arms}
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -92,8 +90,7 @@ class ReachFor(ArmMotion):
                               "duration": self.duration,
                               "arm": arm.name,
                               "max_distance": self.max_distance,
-                              "arrived_at": self.arrived_at,
-                              "set_status": self._set_position_status[arm]} for arm in self.arms])
+                              "arrived_at": self.arrived_at} for arm in self.arms])
         else:
             raise Exception(f"Invalid target: {self.target}")
         # Set target rotations.
@@ -102,7 +99,7 @@ class ReachFor(ArmMotion):
                           "arm": arm.name,
                           "rotation": self._get_rotation(rotation=self.rotations[arm], resp=resp),
                           "arrived_at": 0.1,
-                          "duration": self.duration} for arm in self.rotations])
+                          "set_status": False} for arm in self.rotations])
 
         return commands
 
@@ -113,8 +110,7 @@ class ReachFor(ArmMotion):
                      "duration": self.duration,
                      "arm": arm.name,
                      "max_distance": self.max_distance,
-                     "arrived_at": self.arrived_at,
-                     "set_status": self._set_position_status[arm]} for arm in self.arms]
+                     "arrived_at": self.arrived_at} for arm in self.arms]
         # Tell the offhand to follow.
         if self.offhand_follows and len(self.arms) == 1:
             # Get the offset to the target.
@@ -130,6 +126,5 @@ class ReachFor(ArmMotion):
                              "duration": self.duration,
                              "arm": offhand.name,
                              "max_distance": self.max_distance,
-                             "arrived_at": self.arrived_at,
-                             "set_status": False})
+                             "arrived_at": self.arrived_at})
         return commands

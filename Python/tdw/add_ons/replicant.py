@@ -339,7 +339,8 @@ class Replicant(AddOn):
                                from_held=from_held,
                                held_point=held_point)
 
-    def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch", relative: bool = True) -> None:
+    def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch",
+              relative_to_hand: bool = True) -> None:
         """
         Grasp a target object.
 
@@ -351,7 +352,7 @@ class Replicant(AddOn):
         :param arm: The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object.
         :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
         :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
-        :param relative: If True, the object rotates relative to the hand holding it. If False, the object rotates in world space. Ignored if `angle` or `axis` is None.
+        :param relative_to_hand: If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
         """
 
         self.action = Grasp(target=target,
@@ -359,7 +360,7 @@ class Replicant(AddOn):
                             dynamic=self.dynamic,
                             angle=angle,
                             axis=axis,
-                            relative=relative)
+                            relative_to_hand=relative_to_hand)
 
     def drop(self, arm: Arm, max_num_frames: int = 100) -> None:
         """

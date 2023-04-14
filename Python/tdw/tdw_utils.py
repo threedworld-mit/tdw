@@ -493,8 +493,8 @@ class TDWUtils:
         points_in_cam = np.multiply(TDWUtils.__CAM_TO_IMG_MAT, depth.reshape(-1))
         points_in_cam = np.concatenate((points_in_cam, np.ones((1, points_in_cam.shape[1]))), axis=0)
         points_in_world = np.dot(camera_matrix, points_in_cam)
-        points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
-        points_in_cam = points_in_cam[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
+        points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__HEIGHT, TDWUtils.__WIDTH)
+        points_in_cam = points_in_cam[:3, :].reshape(3, TDWUtils.__HEIGHT, TDWUtils.__WIDTH)
         if filename is not None:
             f = open(filename, 'w')
             for i in range(points_in_world.shape[1]):

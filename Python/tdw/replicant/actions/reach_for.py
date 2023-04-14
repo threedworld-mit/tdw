@@ -70,7 +70,7 @@ class ReachFor(ArmMotion):
         """:field
         The bounds point of the held object. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
         """
-        self.held_point: str = offset_point
+        self.held_point: str = held_point
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:

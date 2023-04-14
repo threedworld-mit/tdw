@@ -29,7 +29,7 @@ class ReachFor(ArmMotion):
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
-                 scale_duration: bool):
+                 scale_duration: bool, from_held: bool, offset_point: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
@@ -41,6 +41,8 @@ class ReachFor(ArmMotion):
         :param previous: The previous action. Can be None.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param from_held: If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object.
+        :param offset_point: The bounds point of the held object. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
         """
 
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
@@ -61,6 +63,14 @@ class ReachFor(ArmMotion):
         If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         """
         self.offhand_follows: bool = offhand_follows
+        """:field
+        If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`.
+        """
+        self.from_held: bool = from_held
+        """:field
+        The bounds point of the held object. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
+        """
+        self.offset_point: str = offset_point
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:

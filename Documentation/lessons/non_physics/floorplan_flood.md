@@ -103,7 +103,7 @@ The `FloorplanFlood` add-on uses custom-sized flood objects that must be added a
 
 Example controllers:
 
-- [floodplan_flood_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/non_physics/floodplan_flood_minimal.py)  A minimal example of how to use a `FloorplanFlood` add-on.
+- [floorplan_flood_minimal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/non_physics/floorplan_flood_minimal.py)  A minimal example of how to use a `FloorplanFlood` add-on.
 
 Python API:
 

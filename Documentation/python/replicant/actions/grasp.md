@@ -20,6 +20,8 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 
 - `axis` Continuously (per `communicate()` call, including after this action ends), rotate the grasped object around this axis. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
 
+- `relative_to_hand` If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
+
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -32,7 +34,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 
 #### \_\_init\_\_
 
-**`Grasp(target, arm, dynamic, angle, axis)`**
+**`Grasp(target, arm, dynamic, angle, axis, relative_to_hand)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -41,6 +43,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
 | angle |  Optional[float] |  | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
 | axis |  Optional[str] |  | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
+| relative_to_hand |  bool |  | If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None. |
 
 #### get_initialization_commands
 

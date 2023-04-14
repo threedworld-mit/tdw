@@ -27,6 +27,10 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 - `offhand_follows` If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
 
+- `from_held` If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`.
+
+- `held_point` The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
+
 - `arms` A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
 
 - `collision_detection` The [`CollisionDetection`](../collision_detection.md) rules.
@@ -65,7 +69,7 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 #### \_\_init\_\_
 
-**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration)`**
+**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -79,6 +83,8 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | previous |  Optional[Action] |  | The previous action. Can be None. |
 | duration |  float |  | The duration of the motion in seconds. |
 | scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+| from_held |  bool |  | If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object. |
+| held_point |  str |  | The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object. |
 
 #### get_initialization_commands
 

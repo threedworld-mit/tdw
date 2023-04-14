@@ -4,6 +4,37 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.13
+
+### Command API
+
+#### Modified Commands
+
+| Command                                 | Modification                                 |
+| --------------------------------------- | -------------------------------------------- |
+| `replicant_set_grasped_object_rotation` | Added optional parameter `relative_to_hand`. |
+| `replicant_reach_for_object`            | Added optional parameter `offset`.           |
+| `repicant_reach_for_position`           | Added optional parameter `offset`.           |
+
+### `tdw` module
+
+- Added optional parameters to `replicant.reach_for(target, arm)`: `from_held` Control whether an offset from the held object will be applied to the target position. `held_point` The bounds point of the held object from which the offset will be calculated.
+- Added optional parameter to `replicant.grasp(target, arm)`: `relative_to_hand` controls how the held object is rotated.
+
+### Example Controllers
+
+- Added: `replicant/grasp_rotate.py`
+- Added: `replicant/reach_for_offset.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation.md` | Added a section on how to offset the target position from a held object. |
+| `lessons/replicants/grasp_drop.md`       | Added a section on how to set the relative target of a held object's rotation. |
+
 ## v1.11.12
 
 ### `tdw` module

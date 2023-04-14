@@ -139,6 +139,6 @@ class ReachFor(ArmMotion):
         if self.from_held and arm in dynamic.held_objects:
             object_position = self._get_object_position(object_id=dynamic.held_objects[arm], resp=resp)
             hand_position = dynamic.body_parts[static.hands[arm]].position
-            return TDWUtils.array_to_vector3(object_position - hand_position)
+            return TDWUtils.array_to_vector3(hand_position - object_position)
         else:
             return {"x": 0, "y": 0, "z": 0}

@@ -17,13 +17,14 @@ class Grasp(Action):
     When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
-    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, angle: Optional[float], axis: Optional[str]):
+    def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, angle: Optional[float], axis: Optional[str], relative: bool):
         """
         :param target: The target object ID.
         :param arm: The [`Arm`](../arm.md) value for the hand that will grasp the target object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
         :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
+        :param relative: If True, the object rotates relative to the hand holding it. If False, the object rotates in world space. Ignored if `angle` or `axis` is None.
         """
 
         super().__init__()
@@ -43,6 +44,10 @@ class Grasp(Action):
         Continuously (per `communicate()` call, including after this action ends), rotate the grasped object around this axis. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
         """
         self.axis: Optional[str] = axis
+        """:field
+        If True, the object rotates relative to the hand holding it. If False, the object rotates in world space. Ignored if `angle` or `axis` is None.
+        """
+        self.relative: bool = relative
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
@@ -92,7 +97,8 @@ class Grasp(Action):
                              "id": static.replicant_id,
                              "arm": self.arm.name,
                              "angle": self.angle,
-                             "axis": self.axis})
+                             "axis": self.axis,
+                             "relative": self.relative})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

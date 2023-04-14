@@ -292,7 +292,8 @@ class Replicant(AddOn):
 
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
-                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True) -> None:
+                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
+                  from_held: bool = False, held_point: str = "bottom") -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -315,6 +316,8 @@ class Replicant(AddOn):
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param from_held: If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object.
+        :param held_point: The bounds point of the held object. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
         """
 
         # Convert the relative position to an absolute position.
@@ -332,7 +335,9 @@ class Replicant(AddOn):
                                previous=self._previous_action,
                                duration=duration,
                                scale_duration=scale_duration,
-                               max_distance=max_distance)
+                               max_distance=max_distance,
+                               from_held=from_held,
+                               held_point=held_point)
 
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch") -> None:
         """

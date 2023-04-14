@@ -5,7 +5,7 @@ from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.arm import Arm
 from tdw.replicant.image_frequency import ImageFrequency
-from tdw.output_data import OutputData, Containment
+from tdw.output_data import OutputData, Containment, Replicants
 
 
 class Grasp(Action):
@@ -51,6 +51,15 @@ class Grasp(Action):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
+        replicant_ids: List[int] = list()
+        # Get all Replicant IDs.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "repl":
+                replicants = Replicants(resp[i])
+                for j in range(replicants.get_num()):
+                    replicant_ids.append(replicants.get_id(j))
+                break
         # Get all of the objects contained by the grasped object. Parent them to the container and make them kinematic.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -59,6 +68,8 @@ class Grasp(Action):
                 object_id = containment.get_object_id()
                 if object_id == self.target:
                     overlap_ids = containment.get_overlap_ids()
+                    # Ignore Replicants.
+                    overlap_ids = [o_id for o_id in overlap_ids if o_id not in replicant_ids]
                     for overlap_id in overlap_ids:
                         commands.extend([{"$type": "parent_object_to_object",
                                           "parent_id": self.target,

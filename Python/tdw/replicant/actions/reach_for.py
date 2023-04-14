@@ -137,7 +137,8 @@ class ReachFor(ArmMotion):
 
     def _get_offset(self, arm: Arm, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> Dict[str, float]:
         if self.from_held and arm in dynamic.held_objects:
-            object_position = self._get_object_position(object_id=dynamic.held_objects[arm], resp=resp)
+            bounds = self._get_object_bounds(object_id=dynamic.held_objects[arm], resp=resp)
+            object_position = bounds[self.held_point]
             hand_position = dynamic.body_parts[static.hands[arm]].position
             return TDWUtils.array_to_vector3(hand_position - object_position)
         else:

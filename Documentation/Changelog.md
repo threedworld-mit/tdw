@@ -8,6 +8,7 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 
 ### `tdw` module
 
+- Fixed: Point clouds reshape to `(3, width, height)` instead of `(3, height, width)`
 - Fixed: `FloorplanFlood` doesn't add the given scene's list flood effect.
 - Fixed: `QuaternionUtils.euler_angles_to_quaternion(euler)` and `QuaternionUtils.quaternion_to_euler_angles(quaternion)` return incorrect values.
 - (Backend) Fixed the type hinting of `QuaternionUtils` (np.ndarray instead of np.array).

@@ -2,13 +2,22 @@
 
 # v1.11.x
 
-To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+
+## v1.11.12
+
+### `tdw` module
+
+- Fixed: Replicant sometimes glitches if it tries to grasp a container (the container tries to parent the Replicant to itself rather than the other way around).
+
+### Build
+
+- Fixed: NullReferenceException if `replicant.reset()` is called while the Replicant is holding an object.
 
 ## v1.11.11
 
 ### `tdw` module
 
-- Fixed: Point clouds reshape to `(3, width, height)` instead of `(3, height, width)`
 - Fixed: `FloorplanFlood` doesn't add the given scene's list flood effect.
 - Fixed: `QuaternionUtils.euler_angles_to_quaternion(euler)` and `QuaternionUtils.quaternion_to_euler_angles(quaternion)` return incorrect values.
 - (Backend) Fixed the type hinting of `QuaternionUtils` (np.ndarray instead of np.array).

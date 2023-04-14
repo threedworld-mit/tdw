@@ -6,6 +6,10 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 ## v1.11.12
 
+### `tdw` module
+
+- Fixed: Replicant sometimes glitches if it tries to grasp a container (the container tries to parent the Replicant to itself rather than the other way around).
+
 ### Build
 
 - Fixed: NullReferenceException if `replicant.reset()` is called while the Replicant is holding an object.

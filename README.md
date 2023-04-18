@@ -520,6 +520,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ActionStatus](Documentation/python/replicant/action_status.md)
 - [Arm](Documentation/python/replicant/arm.md)
 - [CollisionDetection](Documentation/python/replicant/collision_detection.md)
+- [IkPlanType](Documentation/python/replicant/ik_plan_type.md)
 - [ImageFrequency](Documentation/python/replicant/image_frequency.md)
 - [ReplicantBodyPart](Documentation/python/replicant/replicant_body_part.md)
 - [ReplicantDynamic](Documentation/python/replicant/replicant_dynamic.md)
@@ -539,11 +540,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [MoveBy](Documentation/python/replicant/actions/move_by.md)
 - [MoveTo](Documentation/python/replicant/actions/move_to.md)
 - [ReachFor](Documentation/python/replicant/actions/reach_for.md)
+- [ReachForWithPlan](Documentation/python/replicant/actions/reach_for_with_plan.md)
 - [ResetArm](Documentation/python/replicant/actions/reset_arm.md)
 - [ResetHead](Documentation/python/replicant/actions/reset_head.md)
 - [RotateHead](Documentation/python/replicant/actions/rotate_head.md)
 - [TurnBy](Documentation/python/replicant/actions/turn_by.md)
 - [TurnTo](Documentation/python/replicant/actions/turn_to.md)
+
+**tdw.replicant.ik_plans**
+
+- [IkPlan](Documentation/python/replicant/ik_plans/ik_plan.md)
+- [VerticalHorizontal](Documentation/python/replicant/ik_plans/vertical_horizontal.md)
 
 **tdw.robot_data**
 

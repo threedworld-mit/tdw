@@ -34,7 +34,12 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | ---------------------------------------- | ------------------------------------------------------------ |
 | `lessons/replicants/arm_articulation.md` | Added a section on how to offset the target position from a held object. |
 | `lessons/replicants/grasp_drop.md`       | Added a section on how to set the relative target of a held object's rotation. |
+## v1.11.13
 
+### Build
+
+- Fixed: Unhandled MissingReferenceException if the scene is reset while the Replicant is doing a `reach_for()` action.
+- Fixed: Potential unhandled exceptions if the scene is reset while the Replicant is doing a `move_by()`, `move_to()`, `animate()`, `look_at()`, `reset_arm()`, `reset_head()`, or `rotate_head()` action.
 ## v1.11.12
 
 ### `tdw` module

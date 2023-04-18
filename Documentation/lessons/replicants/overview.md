@@ -53,6 +53,20 @@ There are additional constructor parameters that will be covered in subsequent d
 
 Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes.md), Replicants are **asset bundles** stored on a remote S3 server that must be downloaded before they can be added to the scene. This means that when you first add a Replicant to the scene, there will be a brief pause while it is downloaded and loaded into memory. For subsequent scene resets, the Replicant will already in memory and will appear immediately.
 
+You can specify which Replicant asset bundle you want to use by setting the optional `name` parameter in the constructor. For example: `replicant = Replicant(name="fireman")`. 
+
+The default Replicant is `"replicant_0"`.
+
+Like all other asset bundle types in TDW, Replicants have metadata records stored in the TDW Python module. Each Replicant has a corresponding [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md), which is stored in a [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md). To print the name of each available Replicant:
+
+```python
+from tdw.librarian import HumanoidLibrarian
+
+library = HumanoidLibrarian("replicants.json")
+for record in library.records:
+    print(record.name)
+```
+
 ## Future development
 
 **The Replicant is usable but unfinished.** This version of the Replicant can be thought of as "Phase 1" and there are known limitations to it. These include:
@@ -74,3 +88,5 @@ Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes
 Python API:
 
 - [`Replicant`](../../python/add_ons/replicant.md)
+- [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md)
+- [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md)

@@ -14,10 +14,6 @@ lib = HumanoidLibrarian()
 lib = HumanoidLibrarian(library="humanoids.json")
 ```
 
-## Command API
-
-**TODO**
-
 ## HumanoidRecord API
 
 A record of a humanoid asset bundle.
@@ -91,7 +87,7 @@ Returns a list of the filenames of the libraries of this type in the `tdw` modul
 ```python
 filenames = HumanoidLibrarian.get_library_filenames()
 
-print(filenames) # ['humanoids.json']
+print(filenames) # ['humanoids.json', 'smpl_humanoids.json', 'replicants.json']
 ```
 
 ***

@@ -41,9 +41,21 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 - Fixed: Replicant sometimes glitches if it tries to grasp a container (the container tries to parent the Replicant to itself rather than the other way around).
 
+### Replicant Library
+
+- Added: fireman, man_casual
+
 ### Build
 
 - Fixed: NullReferenceException if `replicant.reset()` is called while the Replicant is holding an object.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                         | Modification                                                 |
+| -------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/overview.md` | Added a section on how to set different Replicant asset bundles. |
 
 ## v1.11.11
 

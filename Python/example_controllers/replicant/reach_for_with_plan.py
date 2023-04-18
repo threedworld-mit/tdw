@@ -35,30 +35,30 @@ class ReachForWithPlan(Controller):
         self.replicant.reset()
         self.camera.initialized = False
         self.capture.initialized = False
-        trunk_id = 1
+        table_id = 1
         mug_id = 2
-        trunk_z = 3
+        table_z = 3
         commands = [{"$type": "load_scene",
                      "scene_name": "ProcGenScene"},
                     TDWUtils.create_empty_room(12, 12)]
-        commands.extend(Controller.get_add_physics_object(model_name="trunck",
-                                                          object_id=trunk_id,
-                                                          position={"x": 0, "y": 0, "z": trunk_z},
+        commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",
+                                                          object_id=table_id,
+                                                          position={"x": 0, "y": 0, "z": table_z},
                                                           kinematic=True))
         commands.extend(Controller.get_add_physics_object(model_name="coffeemug",
                                                           object_id=mug_id,
-                                                          position={"x": 0, "y": 0, "z": trunk_z - 0.5}))
+                                                          position={"x": 0, "y": 0, "z": table_z - 0.4}))
         self.communicate(commands)
         # Move to the trunk.
-        self.replicant.move_to(target=trunk_id)
+        self.replicant.move_to(target=mug_id)
         self.do_action()
         # Reach for an grasp the mug.
         self.replicant.reach_for(target=mug_id, arm=Arm.right)
         self.do_action()
-        self.replicant.grasp(target=mug_id, arm=Arm.right, relative_to_hand=False)
+        self.replicant.grasp(target=mug_id, arm=Arm.right)
         self.do_action()
         # Reach above the trunk. Use the `plan`, which may be None.
-        self.replicant.reach_for(target={"x": 0, "y": 1.3, "z": trunk_z},
+        self.replicant.reach_for(target={"x": 0, "y": 1.1, "z": table_z},
                                  arm=Arm.right,
                                  plan=plan,
                                  from_held=True)
@@ -67,7 +67,7 @@ class ReachForWithPlan(Controller):
         if self.replicant.action.status != ActionStatus.success:
             return self.replicant.action.status
         # Drop the object on the trunk.
-        self.replicant.drop(arm=Arm.right)
+        self.replicant.drop(arm=Arm.right, max_num_frames=200)
         self.do_action()
         return self.replicant.action.status
 
@@ -75,5 +75,6 @@ class ReachForWithPlan(Controller):
 if __name__ == "__main__":
     c = ReachForWithPlan()
     for p in [None, IkPlanType.vertical_horizontal]:
-        c.trial(plan=p)
+        s = c.trial(plan=p)
+        print(s)
     c.communicate({"$type": "terminate"})

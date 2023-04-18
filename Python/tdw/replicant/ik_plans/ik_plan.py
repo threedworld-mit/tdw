@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict, Union, Optional
+from overrides import final
 import numpy as np
-from tdw.tdw_utils import TDWUtils
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
@@ -10,10 +10,21 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.arm import Arm
-from tdw.replicant.image_frequency import ImageFrequency
 
 
-class IkPan(ABC):
+class IkPlan(ABC):
+    """
+    A data class that stores a list of [`ReachFor`](../actions/reach_for.md) actions.
+
+    An `IkPlan` takes the reach-for parameters and converts them into a list of [`ReachFor`](../actions/reach_for.md) actions.
+
+    The parameters of `IkPlan` are similar to that of a `ReachFor` action, but an `IkPlan` is *not* an action.
+
+    This is an abstract class. Subclasses of `IkPlan` define how the list of `ReachFor` actions is set.
+
+    An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.md) action. (From the Replicant API, this is combined with the `reach_for(target, arm)` function).
+    """
+
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], arrived_at: float, max_distance: float, 
                  arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, 
                  previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
@@ -50,10 +61,14 @@ class IkPan(ABC):
         # Ignore collision detection for held items.
         self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if v not in self.collision_detection.exclude_objects]
         self.collision_detection.exclude_objects.extend(self.__held_objects)
+        """:field
+        The previous action. Can be None.
+        """
+        self.previous: Optional[Action] = previous
         # Immediately end the action if the previous action was the same motion and it ended with a collision.
         if self.collision_detection.previous_was_same and previous is not None and isinstance(previous, ArmMotion) and arm in previous.collisions:
             if arm in previous.collisions:
-                self.status = ActionStatus.collision            
+                self.status = ActionStatus.collision
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
@@ -74,19 +89,30 @@ class IkPan(ABC):
         The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
         """
         self.held_point: str = held_point
-        """:field
-        A list of [`ReachFor`](../actions/reach_for.md) sub-actions.
-        """
-        self.reach_fors: List[ReachFor] = self._get_reach_for_actions()
-        """:field
-        The index of the current action.
-        """
-        self.reach_for_index: int = 0
-    
+
     @abstractmethod
-    def _get_reach_for_actions(self) -> List[ReachFor]:
+    def get_actions(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[ReachFor]:
         """
+        :param resp: The response from the build.
+        :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
+
         :return: A list of [`ReachFor`](../actions/reach_for.md) actions.
         """
-        
+
         raise Exception()
+
+    @final
+    def _get_reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float, dynamic: ReplicantDynamic) -> ReachFor:
+        """
+        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param duration: The duration in seconds of this `ReachFor` action (not the total duration of all sub-actions).
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
+
+        :return: A `ReachFor` action.
+        """
+
+        return ReachFor(target=target, offhand_follows=False, arrived_at=self.arrived_at,
+                        max_distance=self.max_distance, arms=[self.arm], dynamic=dynamic,
+                        collision_detection=self.collision_detection, previous=self.previous, duration=duration,
+                        from_held=self.from_held, held_point=self.held_point, scale_duration=self.scale_duration)

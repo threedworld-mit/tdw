@@ -12,6 +12,7 @@ from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
 from tdw.replicant.actions.reach_for import ReachFor
+from tdw.replicant.actions.reach_for_with_plan import ReachForWithPlan
 from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
@@ -22,6 +23,7 @@ from tdw.replicant.actions.reset_head import ResetHead
 from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
+from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
@@ -293,7 +295,7 @@ class Replicant(AddOn):
     def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
                   max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
-                  from_held: bool = False, held_point: str = "bottom") -> None:
+                  from_held: bool = False, held_point: str = "bottom", plan: IkPlanType = None) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -318,6 +320,7 @@ class Replicant(AddOn):
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param from_held: If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object.
         :param held_point: The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
+        :param plan: An optional [`IkPlanType`](../replicant/ik_plan/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions.
         """
 
         # Convert the relative position to an absolute position.
@@ -326,18 +329,32 @@ class Replicant(AddOn):
                 target = self.dynamic.transform.position + target
             elif isinstance(target, dict):
                 target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
-        self.action = ReachFor(target=target,
-                               arms=Replicant._arms_to_list(arm),
-                               dynamic=self.dynamic,
-                               collision_detection=self.collision_detection,
-                               offhand_follows=offhand_follows,
-                               arrived_at=arrived_at,
-                               previous=self._previous_action,
-                               duration=duration,
-                               scale_duration=scale_duration,
-                               max_distance=max_distance,
-                               from_held=from_held,
-                               held_point=held_point)
+        if plan is None:
+            self.action = ReachFor(target=target,
+                                   arms=Replicant._arms_to_list(arm),
+                                   dynamic=self.dynamic,
+                                   collision_detection=self.collision_detection,
+                                   offhand_follows=offhand_follows,
+                                   arrived_at=arrived_at,
+                                   previous=self._previous_action,
+                                   duration=duration,
+                                   scale_duration=scale_duration,
+                                   max_distance=max_distance,
+                                   from_held=from_held,
+                                   held_point=held_point)
+        else:
+            self.action = ReachForWithPlan(target=target,
+                                           arm=arm if isinstance(arm, Arm) else arm[0],
+                                           dynamic=self.dynamic,
+                                           collision_detection=self.collision_detection,
+                                           arrived_at=arrived_at,
+                                           previous=self._previous_action,
+                                           duration=duration,
+                                           scale_duration=scale_duration,
+                                           max_distance=max_distance,
+                                           from_held=from_held,
+                                           held_point=held_point,
+                                           plan=plan)
 
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch",
               relative_to_hand: bool = True) -> None:

@@ -24,6 +24,8 @@ class ReachFor(ArmMotion):
     - If the target is too far away at the start of the action, the action fails.
     - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
     - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
+
+    See also: [`ReachForWithPlan`](reach_for_with_plan.md).
     """
 
     def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], offhand_follows: bool,

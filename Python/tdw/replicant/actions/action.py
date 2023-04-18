@@ -1,6 +1,5 @@
 from abc import ABC
 from typing import List, Dict
-from overrides import final
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Transforms, Framerate, Bounds
@@ -103,8 +102,8 @@ class Action(ABC):
                               "frequency": "once"}])
         return commands
 
-    @final
-    def _get_object_position(self, object_id: int, resp: List[bytes]) -> np.ndarray:
+    @staticmethod
+    def _get_object_position(object_id: int, resp: List[bytes]) -> np.ndarray:
         """
         :param object_id: The object ID.
         :param resp: The response from the build.
@@ -121,8 +120,8 @@ class Action(ABC):
                         return transforms.get_position(j)
         raise Exception(f"Transform data not found for: {object_id}")
 
-    @final
-    def _get_object_bounds(self, object_id: int, resp: List[bytes]) -> Dict[str, np.ndarray]:
+    @staticmethod
+    def _get_object_bounds(object_id: int, resp: List[bytes]) -> Dict[str, np.ndarray]:
         """
         :param object_id: The object ID.
         :param resp: The response from the build.

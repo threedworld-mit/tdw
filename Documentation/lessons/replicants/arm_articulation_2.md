@@ -219,7 +219,7 @@ if __name__ == "__main__":
 
 Result:
 
-**TODO**
+![](images/arm_articulation/reach_for_with_plan.gif)
 
 Output:
 
@@ -240,6 +240,7 @@ Example controllers:
 
 - [reach_for_follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_follow.py) Reach for a target position and have the offhand follow the main hand.
 - [reach_for_offset.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_offset.py) A minimal example of how to reach for a position that is offset by a held object.
+- [reach_for_with_plan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_with_plan.py) An example of the difference between a `reach_for()` action with and without a plan.
 
 Python API:
 

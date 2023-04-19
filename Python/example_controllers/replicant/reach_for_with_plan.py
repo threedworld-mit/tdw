@@ -12,7 +12,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 class ReachForWithPlan(Controller):
     """
-    An example of the difference between a simple `reach_for()` motion and a `reach_for()` motion with a plan.
+    An example of the difference between a `reach_for()` action with and without a plan.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
@@ -52,16 +52,17 @@ class ReachForWithPlan(Controller):
         # Move to the trunk.
         self.replicant.move_to(target=mug_id)
         self.do_action()
-        # Reach for an grasp the mug.
+        # Reach for and grasp the mug.
         self.replicant.reach_for(target=mug_id, arm=Arm.right)
         self.do_action()
-        self.replicant.grasp(target=mug_id, arm=Arm.right)
+        self.replicant.grasp(target=mug_id, arm=Arm.right, angle=0, axis="pitch", relative_to_hand=False)
         self.do_action()
         # Reach above the trunk. Use the `plan`, which may be None.
         self.replicant.reach_for(target={"x": 0, "y": 1.1, "z": table_z},
                                  arm=Arm.right,
                                  plan=plan,
-                                 from_held=True)
+                                 from_held=True,
+                                 duration=2)
         self.do_action()
         # If the reach_for() action failed, stop here.
         if self.replicant.action.status != ActionStatus.success:

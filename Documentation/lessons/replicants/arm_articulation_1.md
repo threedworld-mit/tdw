@@ -1,8 +1,8 @@
 ##### Replicants
 
-# Arm articulation, pt. 1
+# Arm articulation, pt. 1: Basics
 
-Replicant arm articulation is a complex topic. This document covers basic arm articulation actions. [Part 2](arm_articulation_2.md) covers more advanced examples that use some additional optional parameters.
+*Replicant arm articulation is a complex topic. This document covers basic arm articulation actions. [Part 2](arm_articulation_2.md) covers grasping and dropping. [Part 3](arm_articulation_3.md) covers more advanced examples that use some additional optional parameters.*
 
 Unlike [movement](movement.md) and [animations](animations.md), which are controlled by pre-recorded animation data, Replicant arm articulation is procedural. It uses inverse kinematic (IK) and the [FinalIK Unity asset](https://root-motion.com/) to solve an end pose, given a target position that a hand is reaching for.
 
@@ -443,7 +443,7 @@ The action continues until there is a collision or until `replicant.dynamic.outp
 
 ***
 
-**Next: [Arm Articulation pt. 2](grasp_drop.md)**
+**Next: [Arm articulation, pt. 2: Grasp and drop objects](arm_articulation_2.md)**
 
 [Return to the README](../../../README.md)
 

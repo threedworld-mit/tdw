@@ -320,7 +320,7 @@ class Replicant(AddOn):
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param from_held: If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object.
         :param held_point: The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
-        :param plan: An optional [`IkPlanType`](../replicant/ik_plan/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions.
+        :param plan: An optional [`IkPlanType`](../replicant/ik_plans/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions.
         """
 
         # Convert the relative position to an absolute position.

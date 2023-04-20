@@ -6,6 +6,10 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 ## v1.11.13
 
+### `tdw` module
+
+- Fixed numpy array type hinting in TDWUtils.
+
 ### Build
 
 - Fixed: Unhandled MissingReferenceException if the scene is reset while the Replicant is doing a `reach_for()` action.

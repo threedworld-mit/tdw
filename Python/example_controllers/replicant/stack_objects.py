@@ -1,11 +1,13 @@
 from enum import Enum
 from typing import List, Dict
+from itertools import permutations
 import numpy as np
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.nav_mesh import NavMesh
 from tdw.add_ons.replicant import Replicant
 from tdw.add_ons.object_manager import ObjectManager
+from tdw.add_ons.empty_object_manager import EmptyObjectManager
 from tdw.replicant.arm import Arm
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
@@ -38,6 +40,7 @@ class StackObjects(Controller):
         self.capture = ImageCapture(avatar_ids=["a"], path=path)
         self.nav_mesh = NavMesh(exclude_objects=[self.replicant.replicant_id])
         self.object_manager = ObjectManager()
+        self.empty_object_manager = EmptyObjectManager()
         self.nav_mesh_path: np.ndarray = np.zeros(shape=0)
         self.nav_mesh_path_index: int = 0
         self.replicant_state: ReplicantState = ReplicantState.moving_to_cube
@@ -55,6 +58,11 @@ class StackObjects(Controller):
         self.capture.initialized = False
         self.nav_mesh.initialized = False
         self.object_manager.reset()
+        # Add empty objects to the Replicant. This will be used to reset an arm holding an object.
+        empty_object_positions: Dict[int, List[dict]] = {self.replicant.replicant_id: list()}
+        for x in [-0.2, 0.2]:
+            empty_object_positions[self.replicant.replicant_id].append({"x": x, "y": 1, "z": 0.35})
+        self.empty_object_manager.reset(empty_object_positions=empty_object_positions)
         # Reset the state and the stack.
         self.replicant_state = ReplicantState.moving_to_cube
         self.cubes.clear()
@@ -64,42 +72,34 @@ class StackObjects(Controller):
         commands = [{"$type": "load_scene",
                      "scene_name": "ProcGenScene"},
                     TDWUtils.create_empty_room(12, 12)]
-        # Add empty objects to the Replicant. The Replicant will use these to hold objects while walking.
-        for x, empty_object_id in zip([-0.2, 0.2], [0, 1]):
-            commands.append({"$type": "attach_empty_object",
-                             "position": {"x": x, "y": 1, "z": 0.35},
-                             "empty_object_id": empty_object_id,
-                             "id": self.replicant.replicant_id})
         # Create an occupancy map. This works because we know that there is only one room and we know its dimensions.
-        object_occupancy_map: np.ndarray = np.array(np.mgrid[-5.4:5.4, -5.4:5.4])
+        object_occupancy_map: np.ndarray = np.array(np.mgrid[-5.1:5.1, -5.1:5.1])
         xs = object_occupancy_map[0].flatten()
         zs = object_occupancy_map[1].flatten()
-        object_occupancy_indices = np.array(np.mgrid[0:object_occupancy_map.shape[0], 0:object_occupancy_map.shape[1]], dtype=int)
-        ixs = object_occupancy_indices[0].flatten()
-        izs = object_occupancy_indices[1].flatten()
+        indices = np.array(list(permutations(np.arange(0, object_occupancy_map.shape[1], dtype=int), 2)))
+        indices_indices = np.arange(0, indices.shape[0], dtype=int)
         # Create a random number generator.
         if random_seed is None:
             rng = np.random.RandomState()
         else:
             rng = np.random.RandomState(random_seed)
         # Get random positions.
-        ixs = np.arange(0, ixs.shape[0], dtype=int)
-        rng.shuffle(ixs)
+        rng.shuffle(indices_indices)
         object_rotations = rng.uniform(-90, 90, num_objects)
         # Get random colors.
-        colors = [TDWUtils.array_to_vector3(c) for c in rng.uniform(0, 1, num_objects * 3).reshape(num_objects, 3)]
-        for i in range(len(colors)):
-            colors[i]["a"] = 1
+        color_arrs = rng.uniform(0, 1, num_objects * 3).reshape(num_objects, 3)
+        colors = []
+        for color in color_arrs:
+            colors.append({"r": float(color[0]), "g": float(color[1]), "b": float(color[2]), "a": 1})
         # Get the scale of the cubes.
         object_scale_factor = {"x": self.object_scale, "y": self.object_scale, "z": self.object_scale}
         # Add the objects.
         for i in range(num_objects):
             object_id = Controller.get_unique_id()
             # Get the indices of the next position.
-            index_x = ixs[i]
-            index_z = izs[i]
+            ix, iz = indices[indices_indices[i]]
             # Get the position.
-            position = {"x": float(xs[index_x]), "y": 0, "z": float(zs[index_z])}
+            position = {"x": float(xs[ix]), "y": 0, "z": float(zs[iz])}
             # Get the rotation.
             rotation = float(object_rotations[i])
             # Add the object.
@@ -122,11 +122,10 @@ class StackObjects(Controller):
             # Remember the ID of the cube.
             self.cubes.append(object_id)
         # Set a position for the stack.
-        stack_position_x = xs[ixs[num_objects]]
-        stack_position_z = zs[izs[num_objects]]
-        self.stack_position = {"x": float(stack_position_x), "y": 0, "z": float(stack_position_z)}
-        # Add the Replicant, the ObjectManager, the OccupancyMap, and the NavMesh.
-        self.add_ons.extend([self.replicant, self.object_manager, self.nav_mesh])
+        ix, iz = indices[indices_indices[num_objects]]
+        self.stack_position = {"x": float(xs[ix]), "y": 0, "z": float(zs[iz])}
+        # Add the Replicant, the ObjectManager, the OccupancyMap, the NavMesh, and the EmptyObjectManager.
+        self.add_ons.extend([self.replicant, self.object_manager, self.nav_mesh, self.empty_object_manager])
         # Create the scene.
         self.communicate(commands)
         # Add a camera and enable image capture.
@@ -175,15 +174,12 @@ class StackObjects(Controller):
             if self.replicant.action.status != ActionStatus.ongoing:
                 if self.replicant.action.status != ActionStatus.success:
                     print(f"Warning! Failed to grasp {self.cubes[self.cube_index]}")
-            for x, empty_object_id in zip([-0.2, 0.2], [0, 1]):
-                commands.append({"$type": "attach_empty_object",
-                                 "position": {"x": x, "y": 1, "z": 0.35},
-                                 "empty_object_id": empty_object_id,
-                                 "id": self.replicant_id})
-                warg
             # Start to reset the arm holding the cube.
             self.replicant_state = ReplicantState.resetting_arm_with_cube
             self.communicate([])
+            # Get the target position from the Replicant's empty objects.
+            empty_object_index = Arm.right.value
+            target = self.empty_object_manager.empty_objects[self.replicant.replicant_id][empty_object_index]
             self.replicant.reach_for(target=target, arm=Arm.right)
         elif self.replicant_state == ReplicantState.resetting_arm_with_cube:
             if self.replicant.action.status != ActionStatus.ongoing:
@@ -313,3 +309,9 @@ class StackObjects(Controller):
                     if raycast.get_hit_object():
                         return float(raycast.get_point()[1])
         return 0
+
+
+if __name__ == "__main__":
+    c = StackObjects()
+    c.run(random_seed=0)
+    c.communicate({"$type": "terminate"})

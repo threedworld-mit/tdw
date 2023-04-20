@@ -40,7 +40,7 @@ Convert a numpy array to a Vector3.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| arr |  np.array |  | The numpy array. |
+| arr |  np.ndarray |  | The numpy array. |
 
 _Returns:_  A Vector3, e.g. `{"x": 0, "y": 0, "z": 0}`
 
@@ -70,7 +70,7 @@ Convert a numpy array to a Vector4.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| arr |  np.array |  | The numpy array. |
+| arr |  np.ndarray |  | The numpy array. |
 
 _Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
 
@@ -100,7 +100,7 @@ Convert a numpy array to a RGBA Color. If no A value is supplied it will default
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| arr |  np.array |  | The array. |
+| arr |  np.ndarray |  | The array. |
 
 _Returns:_  A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
 
@@ -115,7 +115,7 @@ Get a random point in a circle, defined by a center and radius.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| center |  np.array |  | The center of the circle. |
+| center |  np.ndarray |  | The center of the circle. |
 | radius |  float |  | The radius of the circle. |
 
 _Returns:_  A numpy array. The y value (`arr[1]`) is always 0.
@@ -148,8 +148,8 @@ Extend the line defined by p0 to p1 by distance d. Clamps the y value to 0.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| p0 |  np.array |  | The origin. |
-| p1 |  np.array |  | The second point. |
+| p0 |  np.ndarray |  | The origin. |
+| p1 |  np.ndarray |  | The second point. |
 | d |  float |  | The distance of which the line is to be extended. |
 | clamp_y |  | True | Clamp the y value to 0. |
 
@@ -314,7 +314,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| id_pass |  np.array |  | The ID pass image as a numpy array. |
+| id_pass |  np.ndarray |  | The ID pass image as a numpy array. |
 
 _Returns:_  A list of unique colors in the ID pass.
 
@@ -375,7 +375,7 @@ The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| image |  np.array |  | The image pass as a numpy array. |
+| image |  np.ndarray |  | The image pass as a numpy array. |
 | depth_pass |  str  | "_depth" | The type of depth pass. This determines how the values are decoded. Options: `"_depth"`, `"_depth_simple"`. |
 | width |  int  | 256 | The width of the screen in pixels. See output data `Images.get_width()`. |
 | height |  int  | 256 | The height of the screen in pixels. See output data `Images.get_height()`. |
@@ -398,7 +398,7 @@ Create a point cloud from an numpy array of depth values.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | depth |  |  | Depth values converted from a depth pass. See: `TDWUtils.get_depth_values()` |
-| camera_matrix |  Union[np.array, tuple] |  | The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices). |
+| camera_matrix |  Union[np.ndarray, tuple] |  | The camera matrix as a tuple or numpy array. See: [`send_camera_matrices`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#send_camera_matrices). |
 | vfov |  float  | 54.43222 | The field of view. See: [`set_field_of_view`](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_field_of_view) |
 | filename |  str  | None | If not None, the point cloud data will be written to this file. |
 | near_plane |  float  | 0.1 | The near clipping plane. See command `set_camera_clipping_planes`. The default value in this function is the default value of the near clipping plane. |
@@ -471,7 +471,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| color |  Union[np.array, Tuple[int, int, int] |  | The color as an RGB array or tuple, where each value is between 0 and 255. |
+| color |  Union[np.ndarray, Tuple[int, int, int] |  | The color as an RGB array or tuple, where each value is between 0 and 255. |
 
 _Returns:_  A hashable integer representation of the color array.
 
@@ -527,7 +527,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| origin |  np.array |  | The origin from which the distance is calculated. |
+| origin |  np.ndarray |  | The origin from which the distance is calculated. |
 | bounds |  Bounds |  | Bounds output data. |
 | index |  int |  | The index in `bounds` of the target object. |
 
@@ -542,9 +542,9 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| position |  np.array |  | The target position. |
-| origin |  np.array |  | The origin position of the directional vector. |
-| forward |  np.array |  | The forward directional vector. |
+| position |  np.ndarray |  | The target position. |
+| origin |  np.ndarray |  | The origin position of the directional vector. |
+| forward |  np.ndarray |  | The forward directional vector. |
 
 _Returns:_  The angle in degrees between `forward` and the direction vector from `origin` to `position`.
 
@@ -557,8 +557,8 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| v1 |  np.array |  | The first directional vector. |
-| v2 |  np.array |  | The second directional vector. |
+| v1 |  np.ndarray |  | The first directional vector. |
+| v2 |  np.ndarray |  | The second directional vector. |
 
 _Returns:_  The angle in degrees between two directional vectors.
 
@@ -575,8 +575,8 @@ Rotate a position by a given angle around a given origin.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| origin |  np.array  | None | The origin position.  If None, the origin is `[0, 0, 0]` |
-| position |  np.array |  | The point being rotated. |
+| origin |  np.ndarray  | None | The origin position.  If None, the origin is `[0, 0, 0]` |
+| position |  np.ndarray |  | The point being rotated. |
 | angle |  float |  | The angle in degrees. |
 
 _Returns:_  The rotated position.
@@ -592,7 +592,7 @@ Convert Euler angles to ROS RPY angles.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| euler_angles |  np.array |  | A numpy array: `[x, y, z]` Euler angles in degrees. |
+| euler_angles |  np.ndarray |  | A numpy array: `[x, y, z]` Euler angles in degrees. |
 
 _Returns:_  A numpy array: `[r, p, y]` angles in radians.
 

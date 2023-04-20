@@ -275,6 +275,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
 7. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
 8. [The `FloorplanFlood` add-on](Documentation/lessons/non_physics/floorplan_flood.md)
+9. [Empty objects](Documentation/lessons/non_physics/empty_objects.md)
 
 ## 15. Misc. remote server topics
 
@@ -320,6 +321,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
+- [EmptyObjectManager](Documentation/python/add_ons/empty_object_manager.md)
 - [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [FloorplanFlood](Documentation/python/add_ons/floorplan_flood.md)

@@ -19,6 +19,21 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 - Added affordance points to all models in `models_flex.json`
 
+### Documentation
+
+#### New Documentation
+
+| Document                           | Description                                  |
+| ---------------------------------- | -------------------------------------------- |
+| `lessons/remote/overview.md`       | Overview of documentation for Linux servers. |
+| `lessons/remote/x11_forwarding.md` | X11 forwarding.                              |
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Moved the remote server documentation to be just below the setup section. |
+
 ## v1.11.12
 
 ### `tdw` module

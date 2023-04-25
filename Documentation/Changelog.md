@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.14
+## v1.11.15
 
 ### Command API
 
@@ -34,6 +34,16 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | ---------------------------------------- | ------------------------------------------------------------ |
 | `lessons/replicants/arm_articulation.md` | Added a section on how to offset the target position from a held object. |
 | `lessons/replicants/grasp_drop.md`       | Added a section on how to set the relative target of a held object's rotation. |
+
+## v1.11.14
+
+### Build
+
+- Fixed: Objects held by the Replicant can be offset far from the hand holding them. Now, held objects will be in their expected positions relative to the hand.
+- Fixed: Replicant transform output data doesn't match the actual body part positions during an animation. In terms of the `Replicant` add-on, this fixes bugs found in `animate()`, `move_by()`, and `move_to()`.
+- Fixed: All Replicant IK commands exhibit strange behavior at lower framerates. This was due to an internal counter using the wrong framerate value. In terms of the `Replicant` add-on, this fixes bugs found in `reach_for()`, `reset_arm()`, `look_at()`, `rotate_head()`, and `reset_head()`.
+- Fixed: It is possible for the Replicant's apparent position to be different between saved images and what's rendered in the simulation window.
+
 ## v1.11.13
 
 ### `tdw` module

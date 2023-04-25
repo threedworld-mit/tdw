@@ -136,9 +136,7 @@ class StackObjects(Controller):
                 self.replicant.reach_for(target=self.cubes[self.cube_index], arm=Arm.right)
         # Reach for the next cube.
         elif self.replicant_state == ReplicantState.reaching_for_cube:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print(f"Warning! Failed to reach for {self.cubes[self.cube_index]}")
+            if self.action_ended(error_message=f"reach for {self.cubes[self.cube_index]}"):
                 # Start to grasp the cube.
                 self.replicant_state = ReplicantState.grasping_cube
                 self.communicate([])
@@ -149,27 +147,21 @@ class StackObjects(Controller):
                                      relative_to_hand=False)
         # Grasp the next cube.
         elif self.replicant_state == ReplicantState.grasping_cube:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print(f"Warning! Failed to grasp {self.cubes[self.cube_index]}")
+            if self.action_ended(error_message=f"grasp {self.cubes[self.cube_index]}"):
                 # Start to reset the arm holding the cube.
                 self.replicant_state = ReplicantState.resetting_arm_with_cube
                 self.communicate([])
                 # Reach for a relative position.
                 self.replicant.reach_for(target=self.hold_object_positions[Arm.right], arm=Arm.right, absolute=False)
         elif self.replicant_state == ReplicantState.resetting_arm_with_cube:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print("Warning! Failed to reset arm holding cube.")
+            if self.action_ended(error_message="reset arm holding cube"):
                 # Start to move to the stack.
                 self.replicant_state = ReplicantState.moving_to_stack
                 self.communicate([])
                 self.replicant.move_to(target=self.stack_position, arrived_at=0.8, reset_arms=False)
         # Navigate to the stack.
         elif self.replicant_state == ReplicantState.moving_to_stack:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print(f"Warning! Failed to move to stack.")
+            if self.action_ended(error_message="move to stack"):
                 self.communicate([])
                 # Get the target position above the stack.
                 target_position = {k: v for k, v in self.stack_position.items()}
@@ -186,9 +178,7 @@ class StackObjects(Controller):
                 self.replicant_state = ReplicantState.reaching_above_stack
         # Reach above the stack.
         elif self.replicant_state == ReplicantState.reaching_above_stack:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print(f"Warning! Failed to reach above stack.")
+            if self.action_ended(error_message="reach above stack"):
                 # Start to drop the cube.
                 self.replicant_state = ReplicantState.dropping_cube
                 # Drop the object. Set the `offset_distance` to 0 so that the object falls directly down.
@@ -196,18 +186,14 @@ class StackObjects(Controller):
                                     offset_distance=0)
         # Drop the cube.
         elif self.replicant_state == ReplicantState.dropping_cube:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print(f"Warning! Failed to drop {self.cubes[self.cube_index]}.")
+            if self.action_ended(error_message=f"drop {self.cubes[self.cube_index]}"):
                 # Start to move away.
                 self.replicant_state = ReplicantState.backing_away
                 self.communicate([])
                 self.replicant.move_by(distance=-0.5)
         # Reset the arm.
         elif self.replicant_state == ReplicantState.backing_away:
-            if self.replicant.action.status != ActionStatus.ongoing:
-                if self.replicant.action.status != ActionStatus.success:
-                    print(f"Warning! Failed to back away from the stack.")
+            if self.action_ended(error_message="back away from stack"):
                 self.communicate([])
                 # Did the stack's height change?
                 y1 = self.raycast_stack()
@@ -262,6 +248,21 @@ class StackObjects(Controller):
                     if raycast.get_hit_object():
                         return float(raycast.get_point()[1])
         return 0
+
+    def action_ended(self, error_message: str) -> bool:
+        """
+        Check if the Replicant's action ended. Print a warning if there was a problem.
+
+        :param error_message: The *infix* of a warning message. For example, `"back away from stack"` will print as `"Warning! Failed to back away from the stack."`
+
+        :return: True if the Replicant's action ended.
+        """
+
+        if self.replicant.action.status != ActionStatus.ongoing:
+            if self.replicant.action.status != ActionStatus.success:
+                print(f"Warning! Failed to {error_message}: {self.replicant.action.status}")
+            return True
+        return False
 
 
 if __name__ == "__main__":

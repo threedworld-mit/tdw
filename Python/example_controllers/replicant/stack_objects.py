@@ -62,7 +62,7 @@ class StackObjects(Controller):
                      "scene_name": "ProcGenScene"},
                     TDWUtils.create_empty_room(12, 12)]
         # Create an occupancy map. This works because we know that there is only one room and we know its dimensions.
-        xs = np.linspace(-5.1, 5.1, 12)
+        xs = np.linspace(-4.8, 4.8, 10)
         zs = xs.copy()
         indices = np.array(list(permutations(np.arange(0, xs.shape[0], dtype=int), 2)))
         indices_indices = np.arange(0, indices.shape[0], dtype=int)
@@ -174,13 +174,13 @@ class StackObjects(Controller):
                 # Get the target position above the stack.
                 target_position = {k: v for k, v in self.stack_position.items()}
                 dy = self.object_scale * 0.5
-                target_position["y"] = dy + self.raycast_stack()
+                target_position["y"] = dy * (self.cube_index + 1)
                 # Reach for the point above the stack. Offset the target by the held object. Use an IK plan.
                 self.replicant.reach_for(target=target_position,
                                          arm=Arm.right,
                                          from_held=True,
-                                         held_point="bottom",
-                                         plan=IkPlanType.vertical_horizontal if self.cube_index > 0 else None,
+                                         held_point="top",
+                                         plan=IkPlanType.vertical_horizontal,
                                          arrived_at=0.02)
                 # Set the state.
                 self.replicant_state = ReplicantState.reaching_above_stack
@@ -223,8 +223,8 @@ class StackObjects(Controller):
                         self.start_moving_to_cube()
                 else:
                     print(f"Warning! Failed drop the object at the stack position.")
-                    print(self.cubes, self.cube_index)
                     self.communicate([{"$type": "add_position_marker",
+                                       "color": {"r": 0, "g": 1, "b": 0, "a": 1},
                                        "position": self.stack_position},
                                       {"$type": "pause_editor"}])
         return False

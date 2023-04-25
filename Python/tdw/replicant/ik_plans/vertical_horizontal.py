@@ -33,5 +33,5 @@ class VerticalHorizontal(IkPlan):
         # Raise the hand up.
         p1 = np.copy(p0)
         p1[1] = target_arr[1]
-        return [self._get_reach_for(target=p1, absolute=True, duration=duration, dynamic=dynamic),
-                self._get_reach_for(target=self.target, absolute=self.absolute, duration=duration, dynamic=dynamic)]
+        return [self._get_reach_for(target=p1, absolute=True, duration=duration, dynamic=dynamic, from_held=False),
+                self._get_reach_for(target=self.target, absolute=self.absolute, duration=duration, dynamic=dynamic, from_held=self.from_held)]

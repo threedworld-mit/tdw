@@ -142,7 +142,10 @@ class StackObjects(Controller):
                 # Start to grasp the cube.
                 self.replicant_state = ReplicantState.grasping_cube
                 self.communicate([])
-                self.replicant.grasp(target=self.cubes[self.cube_index], arm=Arm.right, angle=0, axis="pitch",
+                self.replicant.grasp(target=self.cubes[self.cube_index],
+                                     arm=Arm.right,
+                                     angle=0,
+                                     axis="pitch",
                                      relative_to_hand=False)
         # Grasp the next cube.
         elif self.replicant_state == ReplicantState.grasping_cube:
@@ -161,7 +164,7 @@ class StackObjects(Controller):
                 # Start to move to the stack.
                 self.replicant_state = ReplicantState.moving_to_stack
                 self.communicate([])
-                self.replicant.move_to(target=self.stack_position, arrived_at=0.7, reset_arms=False)
+                self.replicant.move_to(target=self.stack_position, arrived_at=0.8, reset_arms=False)
         # Navigate to the stack.
         elif self.replicant_state == ReplicantState.moving_to_stack:
             if self.replicant.action.status != ActionStatus.ongoing:
@@ -176,7 +179,7 @@ class StackObjects(Controller):
                 self.replicant.reach_for(target=target_position,
                                          arm=Arm.right,
                                          from_held=True,
-                                         held_point="center",
+                                         held_point="bottom",
                                          plan=IkPlanType.vertical_horizontal if self.cube_index > 0 else None,
                                          arrived_at=0.02)
                 # Set the state.
@@ -188,15 +191,14 @@ class StackObjects(Controller):
                     print(f"Warning! Failed to reach above stack.")
                 # Start to drop the cube.
                 self.replicant_state = ReplicantState.dropping_cube
-                self.communicate([])
-                self.replicant.drop(arm=Arm.right)
+                # Drop the object. Set the `offset_distance` to 0 so that the object falls directly down.
+                self.replicant.drop(arm=Arm.right,
+                                    offset_distance=0)
         # Drop the cube.
         elif self.replicant_state == ReplicantState.dropping_cube:
             if self.replicant.action.status != ActionStatus.ongoing:
                 if self.replicant.action.status != ActionStatus.success:
                     print(f"Warning! Failed to drop {self.cubes[self.cube_index]}.")
-                # Increment the cube index.
-                self.cube_index += 1
                 # Start to move away.
                 self.replicant_state = ReplicantState.backing_away
                 self.communicate([])
@@ -219,6 +221,12 @@ class StackObjects(Controller):
                     else:
                         self.replicant_state = ReplicantState.moving_to_cube
                         self.start_moving_to_cube()
+                else:
+                    print(f"Warning! Failed drop the object at the stack position.")
+                    print(self.cubes, self.cube_index)
+                    self.communicate([{"$type": "add_position_marker",
+                                       "position": self.stack_position},
+                                      {"$type": "pause_editor"}])
         return False
 
     def start_moving_to_cube(self) -> None:

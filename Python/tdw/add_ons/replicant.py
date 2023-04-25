@@ -380,7 +380,7 @@ class Replicant(AddOn):
                             axis=axis,
                             relative_to_hand=relative_to_hand)
 
-    def drop(self, arm: Arm, max_num_frames: int = 100) -> None:
+    def drop(self, arm: Arm, max_num_frames: int = 100, offset_distance: float = 0.1) -> None:
         """
         Drop a held target object.
 
@@ -390,9 +390,10 @@ class Replicant(AddOn):
 
         :param arm: The [`Arm`](../replicant/arm.md) holding the object.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        :param offset_distance: Prior to being dropped, the object will be moved by this distance along its forward directional vector.
         """
 
-        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames)
+        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset_distance=offset_distance)
 
     def animate(self, animation: str, library: str = "humanoid_animations.json") -> None:
         """

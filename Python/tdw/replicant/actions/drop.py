@@ -17,11 +17,12 @@ class Drop(Action):
     When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
-    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int):
+    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int, offset_distance: float):
         """
         :param arm: The [`Arm`](../arm.md) holding the object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        :param offset_distance: Prior to being dropped, the object will be moved by this distance along its forward directional vector.
         """
 
         super().__init__()
@@ -49,6 +50,10 @@ class Drop(Action):
         The current frame.
         """
         self.frame_count: int = 0
+        """:field
+        Prior to being dropped, the object will be moved by this distance along its forward directional vector.
+        """
+        self.offset_distance: float = offset_distance
         self._first_frame: bool = True
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
@@ -57,7 +62,8 @@ class Drop(Action):
                                                        image_frequency=image_frequency)
         commands.extend([{"$type": "replicant_drop_object",
                           "id": static.replicant_id,
-                          "arm": self.arm.name},
+                          "arm": self.arm.name,
+                          "offset_distance": self.offset_distance},
                          {"$type": "enable_nav_mesh_obstacle",
                           "id": self.object_id,
                           "enable": True}])

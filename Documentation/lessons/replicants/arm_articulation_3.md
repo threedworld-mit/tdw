@@ -132,6 +132,10 @@ Result:
 
 ![](images/arm_articulation/grasp_rotate.gif)
 
+## Set the `drop(arm)`  offset distance
+
+When the Replicant drops an object, the object is moved along its forward vector by a given distance. You can set this distance like this: `replicant.drop(arm=Arm.right, offset_distance=0.1)`. If you want the object to fall directly downward, set `offset_distance=0`.
+
 ## `reach_for(target, arm)` and offset the target by a held object
 
 In many scenarios, you might want the target position to change if the Replicant is holding an object. For example, if you want the Replicant to place a plate on a table, then you will want the Replicant to move the *plate* to the target position rather than the *hand*. You can achieve this by setting two optional parameters in the `reach_for()` action: `from_held` and `held_point`.

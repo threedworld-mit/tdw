@@ -28,12 +28,13 @@ class ReachFor(ArmMotion):
     See also: [`ReachForWithPlan`](reach_for_with_plan.md).
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], offhand_follows: bool,
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool, offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
                  scale_duration: bool, from_held: bool, held_point: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         :param arrived_at: If the motion ends and the hand is this distance or less from the target, the action succeeds.
         :param max_distance: If the target is further away from this distance at the start of the action, the action fails.
@@ -53,6 +54,10 @@ class ReachFor(ArmMotion):
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
         self.target: Union[int, np.ndarray, Dict[str,  float]] = target
+        """:field
+        If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
+        """
+        self.absolute: bool = absolute
         """:field
         If the motion ends and the hand is this distance or less from the target, the action succeeds.
         """
@@ -110,7 +115,7 @@ class ReachFor(ArmMotion):
     def _get_reach_for_position(self, target: Dict[str, float], resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = []
         for arm in self.arms:
-            commands.append({"$type": "replicant_reach_for_position",
+            commands.append({"$type": "replicant_reach_for_position" if self.absolute else "replicant_reach_for_relative_position",
                              "id": static.replicant_id,
                              "position": target,
                              "duration": self.duration,

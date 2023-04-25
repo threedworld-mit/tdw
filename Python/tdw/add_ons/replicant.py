@@ -109,7 +109,7 @@ class Replicant(AddOn):
         :return: A list of commands that will initialize this add-on.
         """
 
-        # Add the replicant. Send output data: Replicants, Transforms, Bounds, Containment.
+        # Add the replicant. Send output data: Replicants, Transforms, Bounds, Containment, and Framerate.
         commands = [{"$type": "add_replicant",
                      "name": self._record.name,
                      "position": self.initial_position,
@@ -133,6 +133,11 @@ class Replicant(AddOn):
                      "frequency": "always"},
                     {"$type": "send_framerate",
                      "frequency": "always"}]
+        # Add empty objects to the Replicant for relative IK motion targets.
+        commands.extend([{"$type": "attach_empty_object",
+                          "id": self.replicant_id,
+                          "empty_object_id": arm.value,
+                          "position": {"x": 0, "y": 0, "z": 0}} for arm in [Arm.left, Arm.right]])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -323,15 +328,10 @@ class Replicant(AddOn):
         :param plan: An optional [`IkPlanType`](../replicant/ik_plans/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions.
         """
 
-        # Convert the relative position to an absolute position.
-        if not isinstance(target, int) and not absolute:
-            if isinstance(target, np.ndarray):
-                target = self.dynamic.transform.position + target
-            elif isinstance(target, dict):
-                target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
         if plan is None:
             self.action = ReachFor(target=target,
                                    arms=Replicant._arms_to_list(arm),
+                                   absolute=absolute,
                                    dynamic=self.dynamic,
                                    collision_detection=self.collision_detection,
                                    offhand_follows=offhand_follows,
@@ -345,6 +345,7 @@ class Replicant(AddOn):
         else:
             self.action = ReachForWithPlan(target=target,
                                            arm=arm if isinstance(arm, Arm) else arm[0],
+                                           absolute=absolute,
                                            dynamic=self.dynamic,
                                            collision_detection=self.collision_detection,
                                            arrived_at=arrived_at,

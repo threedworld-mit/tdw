@@ -45,6 +45,8 @@ c.communicate({"$type": "terminate"})
 
 ## Install TDW on a remote Linux server
 
+**[For more in-depth information on how to run TDW on a remote Linux server, [read this](../remote/overview.md).**
+
 #### Install NVIDIA and X on your server
 
 1. Download and install latest NVIDIA drivers for the machine

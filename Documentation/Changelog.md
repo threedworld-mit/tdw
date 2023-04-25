@@ -39,6 +39,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 ### `tdw` module
 
 - Fixed numpy array type hinting in TDWUtils.
+- Added: `EmptyObjectManager`. Add empty objects and track their positions.
 
 ### Build
 
@@ -48,6 +49,27 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 ### Model Library
 
 - Added affordance points to all models in `models_flex.json`
+
+### Example Controllers
+
+- Added: `non_physics/empty_objects.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                         |
+| ---------------------------------------- | ----------------------------------- |
+| `lessons/non_physics/empty_objects.md`   | Lesson for the `EmptyObjectManager` |
+| `python/add_ons/empty_object_manager.md` | API for the `EmptyObjectManager`.   |
+| `lessons/remote/overview.md`       | Overview of documentation for Linux servers. |
+| `lessons/remote/x11_forwarding.md` | X11 forwarding.                              |
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Moved the remote server documentation to be just below the setup section. |
 
 ## v1.11.12
 

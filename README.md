@@ -14,8 +14,17 @@
 
 ## Setup
 
+### 1.1 Installation (Read this first!)
+
 1. [Install TDW](Documentation/lessons/setup/install.md)
 3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
+
+### 1.2 How to run TDW on a Linux server
+
+1. [Overview](Documentation/lessons/remote/overview.md)
+2. [Launch a TDW build on a remote server from a personal computer](Documentation/lessons/remote/launch_build.md)
+3. [Remote rendering with xpra](Documentation/lessons/remote/xpra.md)
+4. [X11 forwarding](Documentation/lessons/remote/x11_forwarding.md)
 
 ## Core Concepts
 
@@ -274,13 +283,9 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
 7. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
 8. [The `FloorplanFlood` add-on](Documentation/lessons/non_physics/floorplan_flood.md)
+9. [Empty objects](Documentation/lessons/non_physics/empty_objects.md)
 
-## 15. Misc. remote server topics
-
-1. [Launch a TDW build on a remote server from a personal computer](Documentation/lessons/remote/launch_build.md)
-2. [Remote rendering with xpra](Documentation/lessons/remote/xpra.md)
-
-## 16. Misc. other topics
+## 15. Misc. other topics
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
@@ -319,6 +324,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
+- [EmptyObjectManager](Documentation/python/add_ons/empty_object_manager.md)
 - [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [FloorplanFlood](Documentation/python/add_ons/floorplan_flood.md)

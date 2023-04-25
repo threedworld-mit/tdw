@@ -1,6 +1,6 @@
+from math import pi, sin, cos
 from enum import Enum
 from typing import List, Dict
-from itertools import permutations
 import numpy as np
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
@@ -45,7 +45,7 @@ class StackObjects(Controller):
         self.object_scale: float = object_scale
         self.hold_object_positions: Dict[Arm, Dict[str, float]] = {arm: {"x": x, "y": 1, "z": 0.7} for arm, x in zip([Arm.left, Arm.right], [-0.2, 0.2])}
 
-    def run(self, random_seed: int = None, num_objects: int = 5) -> None:
+    def run(self, random_seed: int = None, num_objects: int = 3) -> None:
         # Reset the add-ons.
         self.add_ons.clear()
         self.replicant.reset()
@@ -61,41 +61,35 @@ class StackObjects(Controller):
         commands = [{"$type": "load_scene",
                      "scene_name": "ProcGenScene"},
                     TDWUtils.create_empty_room(12, 12)]
-        # Create an occupancy map. This works because we know that there is only one room and we know its dimensions.
-        xs = np.linspace(-4.8, 4.8, 10)
-        zs = xs.copy()
-        indices = np.array(list(permutations(np.arange(0, xs.shape[0], dtype=int), 2)))
-        indices_indices = np.arange(0, indices.shape[0], dtype=int)
+        # Get the scale of the cubes.
+        object_scale_factor = {"x": self.object_scale, "y": self.object_scale, "z": self.object_scale}
         # Create a random number generator.
         if random_seed is None:
             rng = np.random.RandomState()
         else:
             rng = np.random.RandomState(random_seed)
-        # Get random positions.
-        rng.shuffle(indices_indices)
-        object_rotations = rng.uniform(-90, 90, num_objects)
-        # Get random colors.
+        # Get random colors for the cubes.
         color_arrs = rng.uniform(0, 1, num_objects * 3).reshape(num_objects, 3)
         colors = []
         for color in color_arrs:
             colors.append({"r": float(color[0]), "g": float(color[1]), "b": float(color[2]), "a": 1})
-        # Get the scale of the cubes.
-        object_scale_factor = {"x": self.object_scale, "y": self.object_scale, "z": self.object_scale}
-        # Add the objects.
+        # Get random rotations for the cubes.
+        object_rotations = rng.uniform(-90, 90, num_objects)
+        # Add cubes in a circle around the Replicant.
+        angle = 2 * pi / num_objects
         for i in range(num_objects):
+            # Get the distance of the object from the center of the room.
+            cube_r = float(rng.uniform(1.5, 4.8))
+            # Get the position of the object.
+            position = {"x": cube_r * cos(angle * i), "y": 0, "z": cube_r * sin(angle * i)}
+            # Get an object ID.
             object_id = Controller.get_unique_id()
-            # Get the indices of the next position.
-            ix, iz = indices[indices_indices[i]]
-            # Get the position.
-            position = {"x": float(xs[ix]), "y": 0, "z": float(zs[iz])}
-            # Get the rotation.
-            rotation = float(object_rotations[i])
             # Add the object.
             commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                               object_id=object_id,
                                                               library="models_flex.json",
                                                               position=position,
-                                                              rotation={"x": 0, "y": rotation, "z": 0},
+                                                              rotation={"x": 0, "y": object_rotations[i], "z": 0},
                                                               default_physics_values=False,
                                                               mass=1,
                                                               scale_factor=object_scale_factor,
@@ -109,9 +103,8 @@ class StackObjects(Controller):
                              "color": colors[i]})
             # Remember the ID of the cube.
             self.cubes.append(object_id)
-        # Set a position for the stack.
-        ix, iz = indices[indices_indices[num_objects]]
-        self.stack_position = {"x": float(xs[ix]), "y": 0, "z": float(zs[iz])}
+        # Move cubes to this position.
+        self.stack_position = {"x": 0, "y": 0, "z": 0}
         # Add the Replicant, the ObjectManager, the OccupancyMap, and the EmptyObjectManager.
         self.add_ons.extend([self.replicant, self.object_manager])
         # Create the scene.

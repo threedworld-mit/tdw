@@ -95,7 +95,7 @@ The `FloorplanFlood` add-on uses custom-sized flood objects that must be added a
 
 ***
 
-**This is the last document in the "Non-physics objects" tutorial.**
+**Next: [Empty objects](empty_objects.md)**
 
 [Return to the README](../../../README.md)
 

@@ -173,7 +173,7 @@ class StackObjects(Controller):
                 self.communicate([])
                 # Get the target position above the stack.
                 target_position = {k: v for k, v in self.stack_position.items()}
-                dy = self.object_scale * 2
+                dy = self.object_scale * 0.5
                 target_position["y"] = dy + self.raycast_stack()
                 # Reach for the point above the stack. Offset the target by the held object. Use an IK plan.
                 self.replicant.reach_for(target=target_position,

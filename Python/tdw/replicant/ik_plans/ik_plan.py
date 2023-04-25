@@ -25,11 +25,12 @@ class IkPlan(ABC):
     An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.md) action. (From the Replicant API, this is combined with the `reach_for(target, arm)` function).
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], arrived_at: float, max_distance: float, 
-                 arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection, 
+    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool, arrived_at: float,
+                 max_distance: float, arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param arrived_at: If the final [`ReachFor`](../actions/reach_for.md) action ends and the hand is this distance or less from the target, the motion succeeds.
         :param max_distance: If at the start of the first [`ReachFor`](../actions/reach_for.md) action the target is further away than this distance from the hand, the action fails.
         :param arm: The [`Arm`](../arm.md) that will reach for the `target`.
@@ -74,6 +75,10 @@ class IkPlan(ABC):
         """
         self.target: Union[int, np.ndarray, Dict[str,  float]] = target
         """:field
+        If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
+        """
+        self.absolute: bool = absolute
+        """:field
         If the final [`ReachFor`](../actions/reach_for.md) action ends and the hand is this distance or less from the target, the motion succeeds.
         """
         self.arrived_at: float = arrived_at
@@ -103,16 +108,18 @@ class IkPlan(ABC):
         raise Exception()
 
     @final
-    def _get_reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float, dynamic: ReplicantDynamic) -> ReachFor:
+    def _get_reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool,
+                       duration: float, dynamic: ReplicantDynamic) -> ReachFor:
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param duration: The duration in seconds of this `ReachFor` action (not the total duration of all sub-actions).
         :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
 
         :return: A `ReachFor` action.
         """
 
-        return ReachFor(target=target, offhand_follows=False, arrived_at=self.arrived_at,
+        return ReachFor(target=target, absolute=absolute, offhand_follows=False, arrived_at=self.arrived_at,
                         max_distance=self.max_distance, arms=[self.arm], dynamic=dynamic,
                         collision_detection=self.collision_detection, previous=self.previous, duration=duration,
                         from_held=self.from_held, held_point=self.held_point, scale_duration=self.scale_duration)

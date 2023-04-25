@@ -260,9 +260,54 @@ Output:
 ActionStatus.success
 ```
 
-### The `absolute` parameter
+### Reach for a relative position (the `absolute` parameter)
 
-If `target` is a position (a dictionary or a numpy array, as opposed to a position), it defaults to a world space position. It's often useful, however, to set `absolute=False`, which defines `target` as being relative to the Replicant's position (but *not* the Replicant's rotation).
+If `target` is a position (a dictionary or a numpy array, as opposed to a position), it defaults to a world space position. It's often useful, however, to set `absolute=False`, which defines `target` as being relative to the Replicant's position and rotation:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.arm import Arm
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+def do_action():
+    while replicant.action.status == ActionStatus.ongoing:
+        c.communicate([])
+    c.communicate([])
+
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 3.5},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_relative")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
+c.add_ons.extend([replicant, camera, capture])
+for rotation in [0, 30, -45]:
+    replicant.reset()
+    camera.initialized = False
+    capture.initialized = False
+    c.communicate([{"$type": "load_scene",
+                    "scene_name": "ProcGenScene"},
+                   TDWUtils.create_empty_room(12, 12)])
+    # Turn the Replicant.
+    replicant.turn_by(rotation)
+    do_action()
+    # Reach for a relative target with the right hand.
+    replicant.reach_for(target={"x": 0.6, "y": 1.5, "z": 0.3}, arm=Arm.right, absolute=False)
+    do_action()
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arm_articulation/reach_for_relative.gif)
 
 ### The `duration` parameter
 
@@ -429,7 +474,7 @@ The action can't end in `ActionStatus.cannot_reach` or `ActionStatus.failed_to_r
 
 `replicant.reach_for(target, arm)` sets `replicant.action` to an [`ReachFor`](../../python/replicant/actions/reach_for.md) action. 
 
-In addition to [the usual `Action` initialization commands](actions.md), `ReachFor` sends [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position) or [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object).
+In addition to [the usual `Action` initialization commands](actions.md), `ReachFor` sends [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position) , [`replicant_reach_for_relative_position`](../../api/command_api.md#replicant_reach_for_relative_position), or [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object), depending on the type of target and the value of the `absolute` parameter.
 
 The action continues until there is a collision or until `replicant.dynamic.output_action_status != ActionStatus.ongoing` (meaning that the build has signaled that the animation ended).
 
@@ -453,12 +498,14 @@ Example controllers:
 
 - [reach_for_position.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_position.py) Reach for a target position.
 - [reach_for_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_object.py) Reach for a target object.
+- [reach_for_relative.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_relative.py) Reach for a relative target position.
 - [reach_too_far.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_too_far.py) Reach for a target that is too far away.
 - [reset_arm.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reset_arm.py) Reach for a target position and then reset the arm.
 
 Command API:
 
 - [`replicant_reach_for_position`](../../api/command_api.md#replicant_reach_for_position)
+- [`replicant_reach_for_relative_position`](../../api/command_api.md#replicant_reach_for_relative_position)
 - [`replicant_reach_for_object`](../../api/command_api.md#replicant_reach_for_object)
 - [`replicant_reset_arm`](../../api/command_api.md#replicant_reset_arm)
 

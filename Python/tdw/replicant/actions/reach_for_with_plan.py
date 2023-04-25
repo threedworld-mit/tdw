@@ -40,12 +40,14 @@ class ReachForWithPlan(Action):
     See also: [`ReachFor`](reach_for.md).
     """
 
-    def __init__(self, plan: IkPlanType, target: Union[int, np.ndarray, Dict[str,  float]], arrived_at: float,
-                 max_distance: float, arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
+    def __init__(self, plan: IkPlanType, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool,
+                 arrived_at: float, max_distance: float, arm: Arm, dynamic: ReplicantDynamic,
+                 collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
+                 scale_duration: bool, from_held: bool, held_point: str):
         """
         :param plan: An [`IkPlanType`](../ik_plans/ik_plan_type.md) that will define the [`IkPlan`](../ik_plans/ik_plan.md) this action will use.
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param arrived_at: If the final [`ReachFor`](../actions/reach_for.md) action ends and the hand is this distance or less from the target, the motion succeeds.
         :param max_distance: If at the start of the first [`ReachFor`](../actions/reach_for.md) action the target is further away than this distance from the hand, the action fails.
         :param arm: The [`Arm`](../arm.md) that will reach for the `target`.
@@ -66,7 +68,7 @@ class ReachForWithPlan(Action):
         """:field
         The [`IkPlan`](../ik_plans/ik_plan.md) this action will use.
         """
-        self.ik_plan: IkPlan = ctor(target=target, arrived_at=arrived_at, max_distance=max_distance,
+        self.ik_plan: IkPlan = ctor(target=target, absolute=absolute, arrived_at=arrived_at, max_distance=max_distance,
                                     arm=arm, dynamic=dynamic, collision_detection=collision_detection,
                                     previous=previous, duration=duration, scale_duration=scale_duration,
                                     from_held=from_held, held_point=held_point)

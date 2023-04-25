@@ -6,7 +6,6 @@ from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.replicant import Replicant
 from tdw.add_ons.object_manager import ObjectManager
-from tdw.add_ons.empty_object_manager import EmptyObjectManager
 from tdw.replicant.arm import Arm
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
@@ -38,13 +37,13 @@ class StackObjects(Controller):
         print(f"Images will be saved to: {path}")
         self.capture = ImageCapture(avatar_ids=["a"], path=path)
         self.object_manager = ObjectManager(transforms=True, bounds=True, rigidbodies=False)
-        self.empty_object_manager = EmptyObjectManager()
         self.replicant_state: ReplicantState = ReplicantState.moving_to_cube
         self.cubes: List[int] = list()
         self.stack_position: Dict[str, float] = dict()
         self.stack_y: float = 0
         self.cube_index: int = 0
         self.object_scale: float = object_scale
+        self.hold_object_positions: Dict[Arm, Dict[str, float]] = {arm: {"x": x, "y": 1, "z": 0.7} for arm, x in zip([Arm.left, Arm.right], [-0.2, 0.2])}
 
     def run(self, random_seed: int = None, num_objects: int = 5) -> None:
         # Reset the add-ons.
@@ -53,11 +52,6 @@ class StackObjects(Controller):
         self.camera.initialized = False
         self.capture.initialized = False
         self.object_manager.reset()
-        # Add empty objects to the Replicant. This will be used to reset an arm holding an object.
-        empty_object_positions: Dict[int, List[dict]] = {self.replicant.replicant_id: list()}
-        for x in [-0.2, 0.2]:
-            empty_object_positions[self.replicant.replicant_id].append({"x": x, "y": 1, "z": 0.35})
-        self.empty_object_manager.reset(empty_object_positions=empty_object_positions)
         # Reset the state and the stack.
         self.replicant_state = ReplicantState.moving_to_cube
         self.cubes.clear()
@@ -119,7 +113,7 @@ class StackObjects(Controller):
         ix, iz = indices[indices_indices[num_objects]]
         self.stack_position = {"x": float(xs[ix]), "y": 0, "z": float(zs[iz])}
         # Add the Replicant, the ObjectManager, the OccupancyMap, and the EmptyObjectManager.
-        self.add_ons.extend([self.replicant, self.object_manager, self.empty_object_manager])
+        self.add_ons.extend([self.replicant, self.object_manager])
         # Create the scene.
         self.communicate(commands)
         # Add a camera and enable image capture.
@@ -158,10 +152,8 @@ class StackObjects(Controller):
                 # Start to reset the arm holding the cube.
                 self.replicant_state = ReplicantState.resetting_arm_with_cube
                 self.communicate([])
-                # Get the target position from the Replicant's empty objects.
-                empty_object_index = Arm.right.value
-                target = self.empty_object_manager.empty_objects[self.replicant.replicant_id][empty_object_index]
-                self.replicant.reach_for(target=target, arm=Arm.right)
+                # Reach for a relative position.
+                self.replicant.reach_for(target=self.hold_object_positions[Arm.right], arm=Arm.right, absolute=False)
         elif self.replicant_state == ReplicantState.resetting_arm_with_cube:
             if self.replicant.action.status != ActionStatus.ongoing:
                 if self.replicant.action.status != ActionStatus.success:
@@ -186,7 +178,6 @@ class StackObjects(Controller):
                                          from_held=True,
                                          held_point="center",
                                          plan=IkPlanType.vertical_horizontal if self.cube_index > 0 else None,
-                                         duration=2,
                                          arrived_at=0.02)
                 # Set the state.
                 self.replicant_state = ReplicantState.reaching_above_stack

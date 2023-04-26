@@ -23,6 +23,8 @@ See also: [`ReachForWithPlan`](reach_for_with_plan.md).
 
 - `target` The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
 
+- `absolute` If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
+
 - `arrived_at` If the motion ends and the hand is this distance or less from the target, the action succeeds.
 
 - `max_distance` If the target is further away from this distance at the start of the action, the action fails.
@@ -71,11 +73,12 @@ See also: [`ReachForWithPlan`](reach_for_with_plan.md).
 
 #### \_\_init\_\_
 
-**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
+**`ReachFor(target, absolute, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| absolute |  bool |  | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | offhand_follows |  bool |  | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID. |
 | arrived_at |  float |  | If the motion ends and the hand is this distance or less from the target, the action succeeds. |
 | max_distance |  float |  | If the target is further away from this distance at the start of the action, the action fails. |

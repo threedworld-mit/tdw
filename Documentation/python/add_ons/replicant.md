@@ -234,9 +234,9 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 
 #### drop
 
-**`self.drop(arm)`**
+**`self.drop(arm, offset)`**
 
-**`self.drop(arm, max_num_frames=100)`**
+**`self.drop(arm, max_num_frames=100, offset)`**
 
 Drop a held target object.
 
@@ -248,6 +248,7 @@ When an object is dropped, it is made non-kinematic. Any objects contained by th
 | --- | --- | --- | --- |
 | arm |  Arm |  | The [`Arm`](../replicant/arm.md) holding the object. |
 | max_num_frames |  int  | 100 | Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action. |
+| offset |  Union[float, np.ndarray, Dict[str, float] |  | Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position). |
 
 ***
 

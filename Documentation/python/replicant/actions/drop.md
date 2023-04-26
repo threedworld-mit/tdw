@@ -22,6 +22,8 @@ When an object is dropped, it is made non-kinematic. Any objects contained by th
 
 - `frame_count` The current frame.
 
+- `offset` Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
+
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -34,13 +36,14 @@ When an object is dropped, it is made non-kinematic. Any objects contained by th
 
 #### \_\_init\_\_
 
-**`Drop(arm, dynamic, max_num_frames)`**
+**`Drop(arm, dynamic, max_num_frames, offset)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | arm |  Arm |  | The [`Arm`](../arm.md) holding the object. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
 | max_num_frames |  int |  | Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action. |
+| offset |  Union[float, np.ndarray, Dict[str, float] |  | Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position). |
 
 #### get_initialization_commands
 

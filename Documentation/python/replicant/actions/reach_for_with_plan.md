@@ -48,12 +48,13 @@ See also: [`ReachFor`](reach_for.md).
 
 #### \_\_init\_\_
 
-**`ReachForWithPlan(plan, target, arrived_at, max_distance, arm, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
+**`ReachForWithPlan(plan, target, absolute, arrived_at, max_distance, arm, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | plan |  IkPlanType |  | An [`IkPlanType`](../ik_plans/ik_plan_type.md) that will define the [`IkPlan`](../ik_plans/ik_plan.md) this action will use. |
 | target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| absolute |  bool |  | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | arrived_at |  float |  | If the final [`ReachFor`](../actions/reach_for.md) action ends and the hand is this distance or less from the target, the motion succeeds. |
 | max_distance |  float |  | If at the start of the first [`ReachFor`](../actions/reach_for.md) action the target is further away than this distance from the hand, the action fails. |
 | arm |  Arm |  | The [`Arm`](../arm.md) that will reach for the `target`. |

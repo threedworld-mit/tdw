@@ -16,36 +16,86 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class ReplicantState(Enum):
-    moving_to_cube = 0
-    reaching_for_cube = 1
-    grasping_cube = 2
-    resetting_arm_with_cube = 3
-    moving_to_stack = 4
-    reaching_above_stack = 5
-    dropping_cube = 6
-    backing_away = 7
+    """
+    Enum values describing the current state of the Replicant.
+    """
+
+    moving_to_cube = 0  # The Replicant is moving to a cube it wants to carry to the stack.
+    reaching_for_cube = 1  # The Replicant is reaching for a cube it wants to carry to the stack.
+    grasping_cube = 2  # The Replicant is grasping for a cube it wants to carry to the stack.
+    resetting_arm_with_cube = 3  # The Replicant is holding a cube and is resetting its arm to a neutral holding position.
+    moving_to_stack = 4  # The Replicant is holding a cube and is carrying it towards the stack.
+    reaching_above_stack = 5  # The Replicant is positioning a held cube above the stack.
+    dropping_cube = 6  # The Replicant has dropped the cube. The cube is falling onto the stack.
+    backing_away = 7  # The Replicant is backing away from the stack.
 
 
 class StackObjects(Controller):
+    """
+    An example of how to use advanced features of the Replicant's arm articulation to stack objects.
+
+    This is NOT a robust use-case example, nor is it meant to be.
+
+    For more information, read: `Documentation/lessons/replicants/arm_articulation_4.md`
+    """
+
     def __init__(self, object_scale: float = 0.3, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        """
+        This is a standard `Controller` constructor with an additional field: `object_scale`.
+
+        `object_scale` sets the scale factor of the cubes.
+        """
+
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        # Add a Replicant.
         self.replicant = Replicant()
+        # Add a third-person camera.
         self.camera = ThirdPersonCamera(position={"x": 0, "y": 2.2, "z": -2.61},
                                         avatar_id="a",
                                         look_at=self.replicant.replicant_id)
+        # Enable image capture for the third-person camera.
         path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_stack_objects")
         print(f"Images will be saved to: {path}")
         self.capture = ImageCapture(avatar_ids=["a"], path=path)
+        # Add an ObjectManager. We'll use this to tell the Replicant to move towards objects.
         self.object_manager = ObjectManager(transforms=True, bounds=True, rigidbodies=False)
+
+        # This tracks the current state of the Replicant.
         self.replicant_state: ReplicantState = ReplicantState.moving_to_cube
+
+        # A list of IDs of each cube object in the scene.
         self.cubes: List[int] = list()
-        self.stack_position: Dict[str, float] = dict()
-        self.stack_y: float = 0
+        # The index in `self.cubes` of the cube the Replicant is trying to put on the stack.
         self.cube_index: int = 0
-        self.object_scale: float = object_scale
-        self.hold_object_positions: Dict[Arm, Dict[str, float]] = {arm: {"x": x, "y": 1, "z": 0.7} for arm, x in zip([Arm.left, Arm.right], [-0.2, 0.2])}
+
+        # The position of the stack.
+        # For the simplicity's sake, this is always (0, 0, 0) but you could put it somewhere else, randomize it, etc.
+        self.stack_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+
+        # The current height of the stack of cubes.
+        # This is used to determine whether the Replicant successfully placed a cube on the stack.
+        self.stack_y: float = 0
+
+        # Each cube will be scaled by this factor.
+        self.object_scale_factor: Dict[str, float] = {"x": object_scale, "y": object_scale, "z": object_scale}
+
+        # When the Replicant is holding a cube and walking, its right hand will be at this position relative to its body.
+        self.hold_object_position = {"x": 0.2, "y": 1, "z": 0.7}
 
     def run(self, random_seed: int = None, num_objects: int = 3) -> None:
+        """
+        Run a trial.
+
+        A trial starts with a Replicant in the center of the room and cubes scattered around it.
+
+        A trial ends when either the Replicant stacks all the cubes.
+
+        If there is an error during the trial, it will hang indefinitely.
+
+        :param random_seed: The random seed for the trial. If None, the seed is random.
+        :param num_objects: The number of cubes in the scene.
+        """
+
         # Reset the add-ons.
         self.add_ons.clear()
         self.replicant.reset()
@@ -61,8 +111,6 @@ class StackObjects(Controller):
         commands = [{"$type": "load_scene",
                      "scene_name": "ProcGenScene"},
                     TDWUtils.create_empty_room(12, 12)]
-        # Get the scale of the cubes.
-        object_scale_factor = {"x": self.object_scale, "y": self.object_scale, "z": self.object_scale}
         # Create a random number generator.
         if random_seed is None:
             rng = np.random.RandomState()
@@ -80,11 +128,12 @@ class StackObjects(Controller):
         for i in range(num_objects):
             # Get the distance of the object from the center of the room.
             cube_r = float(rng.uniform(1.5, 4.8))
-            # Get the position of the object.
+            # Get the position of the object by multiplying the angle by the radius.
             position = {"x": cube_r * cos(angle * i), "y": 0, "z": cube_r * sin(angle * i)}
             # Get an object ID.
             object_id = Controller.get_unique_id()
             # Add the object.
+            # Set high friction and low bounciness to make it easier for the cube to stay on the stack.
             commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                               object_id=object_id,
                                                               library="models_flex.json",
@@ -92,7 +141,7 @@ class StackObjects(Controller):
                                                               rotation={"x": 0, "y": object_rotations[i], "z": 0},
                                                               default_physics_values=False,
                                                               mass=1,
-                                                              scale_factor=object_scale_factor,
+                                                              scale_factor=self.object_scale_factor,
                                                               dynamic_friction=0.95,
                                                               static_friction=0.95,
                                                               bounciness=0.01,
@@ -123,16 +172,23 @@ class StackObjects(Controller):
         # Navigate to the next cube.
         if self.replicant_state == ReplicantState.moving_to_cube:
             if self.replicant.action.status != ActionStatus.ongoing:
-                # Reach for the cube.
                 self.replicant_state = ReplicantState.reaching_for_cube
                 self.communicate([])
+
+                # Reach for the cube.
+                # This is a simple rotation that doesn't need to use the optional parameters.
                 self.replicant.reach_for(target=self.cubes[self.cube_index], arm=Arm.right)
         # Reach for the next cube.
         elif self.replicant_state == ReplicantState.reaching_for_cube:
             if self.action_ended(error_message=f"reach for {self.cubes[self.cube_index]}"):
-                # Start to grasp the cube.
                 self.replicant_state = ReplicantState.grasping_cube
                 self.communicate([])
+
+                # Start to grasp the cube.
+                # Set the rotation of the cube to be at a slight angle relative to the hand.
+                # This seems to help the cube fall in a correct position.
+                # `angle` and `axis` define the cube's rotation per `communicate()` call.
+                # `relative_to_hand=True` means that `angle` and `axis` are relative to the hand.
                 self.replicant.grasp(target=self.cubes[self.cube_index],
                                      arm=Arm.right,
                                      angle=20,
@@ -141,47 +197,59 @@ class StackObjects(Controller):
         # Grasp the next cube.
         elif self.replicant_state == ReplicantState.grasping_cube:
             if self.action_ended(error_message=f"grasp {self.cubes[self.cube_index]}"):
-                # Start to reset the arm holding the cube.
                 self.replicant_state = ReplicantState.resetting_arm_with_cube
                 self.communicate([])
-                # Reach for a relative position.
-                self.replicant.reach_for(target=self.hold_object_positions[Arm.right], arm=Arm.right, absolute=False)
+
+                # Start to reset the arm holding the cube to a neutral holding position.
+                # `absolute=False` means that the target position is relative to the Replicant's position and rotation.
+                self.replicant.reach_for(target=self.hold_object_position,
+                                         arm=Arm.right,
+                                         absolute=False)
         elif self.replicant_state == ReplicantState.resetting_arm_with_cube:
             if self.action_ended(error_message="reset arm holding cube"):
-                # Start to move to the stack.
                 self.replicant_state = ReplicantState.moving_to_stack
                 self.communicate([])
+
+                # Start to move to the stack.
+                # The Replicant will travel directly towards the target, ignoring any obstacles in the way.
+                # In an actual use-case, this would need to be multiple move actions and include navigation planning.
+                # Set `arrived_at` to a relatively large value so that the Replicant doesn't knock over the stack.
+                # Don't reset the arms to maintain the neutral holding position of the hand.
                 self.replicant.move_to(target=self.stack_position, arrived_at=0.8, reset_arms=False)
         # Navigate to the stack.
         elif self.replicant_state == ReplicantState.moving_to_stack:
             if self.action_ended(error_message="move to stack"):
+                self.replicant_state = ReplicantState.reaching_above_stack
                 self.communicate([])
-                # Get the target position above the stack.
+                # Get a target position above the stack.
                 target_position = {k: v for k, v in self.stack_position.items()}
-                target_position["y"] = self.object_scale * (self.cube_index + 1)
-                # Reach for the point above the stack. Offset the target by the held object. Use an IK plan.
+                target_position["y"] = self.object_scale_factor["y"] * (self.cube_index + 1)
+
+                # Reach for the point above the stack.
+                # `from_held` and `held_point` will offset `target_position` by the cube's top bound point.
+                # `plan` subdivides the action into horizontal and vertical components so that the hand doesn't knock over the stack.
                 self.replicant.reach_for(target=target_position,
                                          arm=Arm.right,
                                          from_held=True,
                                          held_point="top",
-                                         plan=IkPlanType.vertical_horizontal,
-                                         arrived_at=0.02)
-                # Set the state.
-                self.replicant_state = ReplicantState.reaching_above_stack
+                                         plan=IkPlanType.vertical_horizontal)
         # Reach above the stack.
         elif self.replicant_state == ReplicantState.reaching_above_stack:
             if self.action_ended(error_message="reach above stack"):
-                # Start to drop the cube.
                 self.replicant_state = ReplicantState.dropping_cube
-                # Drop the object. Set the `offset_distance` to 0 so that the object falls directly down.
+
+                # Drop the object.
+                # `offset_distance=0` will allow the cube to fall directly down.
                 self.replicant.drop(arm=Arm.right,
                                     offset_distance=0)
         # Drop the cube.
         elif self.replicant_state == ReplicantState.dropping_cube:
             if self.action_ended(error_message=f"drop {self.cubes[self.cube_index]}"):
-                # Start to move away.
                 self.replicant_state = ReplicantState.backing_away
                 self.communicate([])
+
+                # Start to move away from the stack. This will allow the Replicant more room for its next move action.
+                # This is a very simple system that would have to be far more sophisticated in an actual use-case.
                 self.replicant.move_by(distance=-0.5)
         # Reset the arm.
         elif self.replicant_state == ReplicantState.backing_away:
@@ -201,10 +269,7 @@ class StackObjects(Controller):
                         self.start_moving_to_cube()
                 else:
                     print(f"Warning! Failed drop the object at the stack position.")
-                    self.communicate([{"$type": "add_position_marker",
-                                       "color": {"r": 0, "g": 1, "b": 0, "a": 1},
-                                       "position": self.stack_position},
-                                      {"$type": "pause_editor"}])
+                    self.communicate([])
         return False
 
     def start_moving_to_cube(self) -> None:
@@ -214,6 +279,9 @@ class StackObjects(Controller):
 
         cube_position = TDWUtils.array_to_vector3(self.object_manager.transforms[self.cubes[self.cube_index]].position)
         cube_position["y"] = 0
+
+        # Move to the cube.
+        # `arrived_at` is set to make sure that the Replicant is at a distance at which it's easy to pick up the cube.
         self.replicant.move_to(target=self.cubes[self.cube_index], arrived_at=0.25)
 
     def raycast_stack(self) -> float:
@@ -224,7 +292,6 @@ class StackObjects(Controller):
         """
 
         raycast_id = 0
-        # End the action. Raycast the top of the stack.
         resp = self.communicate([{"$type": "send_raycast",
                                   "origin": {"x": self.stack_position["x"], "y": 2.8, "z": self.stack_position["z"]},
                                   "destination": self.stack_position,
@@ -236,14 +303,14 @@ class StackObjects(Controller):
                 if raycast.get_raycast_id() == raycast_id:
                     if not raycast.get_hit():
                         print("Warning! Raycast didn't hit anything.")
-                    # There is something here on the stack. Raise the target to be above the stack.
-                    if raycast.get_hit_object():
-                        return float(raycast.get_point()[1])
+                    return float(raycast.get_point()[1])
         return 0
 
     def action_ended(self, error_message: str) -> bool:
         """
         Check if the Replicant's action ended. Print a warning if there was a problem.
+
+        Notice that the simulation won't end if there is an error, nor will the Replicant try to change its behavior.
 
         :param error_message: The *infix* of a warning message. For example, `"back away from stack"` will print as `"Warning! Failed to back away from the stack."`
 

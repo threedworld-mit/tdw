@@ -2,7 +2,11 @@
 
 # Arm articulation, pt. 3: Advanced topics
 
-*Replicant arm articulation is a complex topic. [Part 1](arm_articulation_1.md) covers basic arm articulation actions. [Part 2](arm_articulation_2.md) covers grasping and dropping. This document covers more advanced examples that use some additional optional parameters.*
+*Replicant arm articulation is a complex topic. [Part 1](arm_articulation_1.md) covers basic arm articulation actions. [Part 2](arm_articulation_2.md) covers grasping and dropping. This document covers more advanced examples that use some additional optional parameters. [Part 4](arm_articulation_4.md) describes a relatively complex use-case: stacking objects on top of each other.*
+
+This document describes how to use the Replicant API's more advanced arm articulation features. All of these features can be found in the actions you're now familiar with (`reach_for(target, arm)`, `grasp(target, arm)` and `drop(arm)`) by setting optional parameters.
+
+**There is no bounded solution for when to set optional parameters.** There is no way to determine using a simple algorithm which plan, if any, is correct for any given situation, because "correctness" is impossible to define. It is often possible for a Replicant to achieve a desired behavior without using an optional parameters, or by using several different combinations. It is up to the user or the training system to decide which plan, if any, to use for a given `reach_for()` action.
 
 ## `reach_for(target, arm)` and make one hand follow the other
 
@@ -219,8 +223,6 @@ In many cases, it's not desirable for the Replicant to simply reach towards a ta
 
 The best way to solve this is to subdivide a single motion into multiple motions. In TDW, this subdivided motion is handled using an IkPlan. To set the plan for the action, set the optional `plan` parameter to a [`IkPlanType`](../../python/replicant/ik_plans/ik_plan_type.md) value. For example: `plan=IkPlanType.vertical_horizontal`.
 
-**There is no bounded solution for when to use IkPlans.** There is no way to determine using a simple algorithm which plan, if any, is correct for any given situation, because "correctness" is impossible to define. For example, it is often possible for the Replicant to reach for a position without a plan *and* with a plan, meaning that both options could be considered equally "correct". It is up to the user or the training system to decide which plan, if any, to use for a given `reach_for()` action.
-
 In the example, there are two trials. In both trials, the Replicant reaches for a mug and [grasps it](arm_articulation_2.md) and tries to drop the mug on the trunk. If the hand or arm collides with the trunk, the trial ends in failure. In the first trial, the Replicant doesn't set the `plan` parameter. In the second trial, the Replicant uses `IkPlanType.vertical_horizontal`, thereby splitting the motion into vertical and horizontal components.
 
 ```python
@@ -319,7 +321,7 @@ ActionStatus.success
 
 ***
 
-**Next: [Head rotation](head_rotation.md)**
+**Next: [Arm articulation, pt. 4: Stacking objects](arm_articulation_4.md)**
 
 [Return to the README](../../../README.md)
 

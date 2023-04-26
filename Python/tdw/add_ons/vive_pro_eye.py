@@ -78,8 +78,8 @@ class ViveProEye(VR):
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
-        commands.append({"$type": "send_oculus_touch_buttons",
-                         "frequency": "always"})
+        #commands.append({"$type": "send_oculus_touch_buttons",
+                         #"frequency": "always"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

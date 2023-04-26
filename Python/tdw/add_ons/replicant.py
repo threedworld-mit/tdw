@@ -380,7 +380,7 @@ class Replicant(AddOn):
                             axis=axis,
                             relative_to_hand=relative_to_hand)
 
-    def drop(self, arm: Arm, max_num_frames: int = 100, offset_distance: float = 0.1) -> None:
+    def drop(self, arm: Arm, max_num_frames: int = 100, offset: Union[float, np.ndarray, Dict[str, float]] = 0.1) -> None:
         """
         Drop a held target object.
 
@@ -390,10 +390,10 @@ class Replicant(AddOn):
 
         :param arm: The [`Arm`](../replicant/arm.md) holding the object.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
-        :param offset_distance: Prior to being dropped, the object will be moved by this distance along its forward directional vector.
+        :param offset: Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
         """
 
-        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset_distance=offset_distance)
+        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset=offset)
 
     def animate(self, animation: str, library: str = "humanoid_animations.json") -> None:
         """

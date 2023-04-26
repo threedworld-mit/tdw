@@ -132,9 +132,12 @@ Result:
 
 ![](images/arm_articulation/grasp_rotate.gif)
 
-## Set the `drop(arm)`  offset distance
+## Set the `drop(arm)`  offset
 
-When the Replicant drops an object, the object is moved along its forward vector by a given distance. You can set this distance like this: `replicant.drop(arm=Arm.right, offset_distance=0.1)`. If you want the object to fall directly downward, set `offset_distance=0`.
+When the Replicant drops an object, the object can optionally be positioned at an offset before falling. This is controlled by the optional `offset` parameter, which can be either a float, dictionary, or numpy array. By default, `offset` is set to `0.1`.
+
+- If `offset` is a float, it is a distance along the object's forward directional vector: `replicant.drop(arm=Arm.right, offset=0.1)`. If you want the object to fall directly downward, set `offset=0`. 
+- If `offset` is a dictionary or numpy array, it is a world space position. `replicant.drop(arm=Arm.right, offset={"x": 0, "y": 1.1, "z": 0})`. If you need to object to fall onto a target position, set `offset={"x": position["x"], "y": y, "z": position["z"]}` where `position` is the target position and `y` is the current y coordinate of the object.
 
 ## `reach_for(target, arm)` and offset the target by a held object
 

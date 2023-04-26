@@ -185,13 +185,11 @@ class StackObjects(Controller):
                 self.communicate([])
 
                 # Start to grasp the cube.
-                # Set the rotation of the cube to be at a slight angle relative to the hand.
-                # This seems to help the cube fall in a correct position.
                 # `angle` and `axis` define the cube's rotation per `communicate()` call.
                 # `relative_to_hand=True` means that `angle` and `axis` are relative to the hand.
                 self.replicant.grasp(target=self.cubes[self.cube_index],
                                      arm=Arm.right,
-                                     angle=20,
+                                     angle=0,
                                      axis="pitch",
                                      relative_to_hand=True)
         # Grasp the next cube.
@@ -238,10 +236,16 @@ class StackObjects(Controller):
             if self.action_ended(error_message="reach above stack"):
                 self.replicant_state = ReplicantState.dropping_cube
 
+                # Get the target position for the cube.
+                cube_position = np.copy(self.object_manager.transforms[self.cubes[self.cube_index]].position)
+                # Set the x, z coordinates to be above the stack.
+                cube_position[0] = 0
+                cube_position[2] = 0
+
                 # Drop the object.
-                # `offset_distance=0` will allow the cube to fall directly down.
+                # `offset` will reposition the cube to be directly above the stack.
                 self.replicant.drop(arm=Arm.right,
-                                    offset_distance=0)
+                                    offset=cube_position)
         # Drop the cube.
         elif self.replicant_state == ReplicantState.dropping_cube:
             if self.action_ended(error_message=f"drop {self.cubes[self.cube_index]}"):

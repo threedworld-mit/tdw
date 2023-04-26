@@ -135,9 +135,9 @@ class StackObjects(Controller):
                 self.communicate([])
                 self.replicant.grasp(target=self.cubes[self.cube_index],
                                      arm=Arm.right,
-                                     angle=0,
+                                     angle=20,
                                      axis="pitch",
-                                     relative_to_hand=False)
+                                     relative_to_hand=True)
         # Grasp the next cube.
         elif self.replicant_state == ReplicantState.grasping_cube:
             if self.action_ended(error_message=f"grasp {self.cubes[self.cube_index]}"):

@@ -14,7 +14,7 @@ If you run the `stack_objects.py`, this is the result:
 
 `stack_objects.py` utilizes nearly all of the advanced arm articulation features described in the previous documents:
 
-- When the Replicant grasps an object, it sets the object's rotation relative to its hand per communicate() call (`angle`, `axis`, and `relative_to_hand` parameters). This will allow the object to remain at an appropriate angle.
+- When the Replicant grasps an object, it sets the object's rotation relative to its hand per communicate() call (`angle`, `axis`, and `relative_to_hand` parameters). This will allow the object to remain at an appropriate angle. The replicant also offsets the cube's position from the hand by a factor (`offset` parameter).
 - The Replicant resets the arm holding the object to a "neutral holding position" prior to carrying the object to the stack, relative to itself rather than the world (`absolute=False`).
 - To place the object on the stack, the Replicant uses an IK plan to subdivide the motion into vertical and horizontal components (the `plan` parameter). Without this, the hand would approach the stack at a diagonal and possibly knock over the objects. The target position also needs to be offset from the held object, so the `from_held` and `held_point` parameters are set.
 - When the object is dropped, it might be at a slight offset from the desired target position. This is due to limitations in the current accuracy of the Replicant's IK system, which we intend to address in future updates. For now, the `offset` parameter is used to nudge the object into the right position.

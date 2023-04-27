@@ -1,4 +1,4 @@
-##### Misc. remote server topics
+##### How to run TDW on a Linux server
 
 # Remote rendering with xpra
 
@@ -44,6 +44,8 @@ On newer Nvidia driver versions (>440), applications may be locked at 1 fps. For
 ***
 
 **This is the last document in the "Misc. remote server topics" tutorial.**
+
+**Next: [X11 forwarding](x11_forwarding.md).**
 
 [Return to the README](../../../README.md)
 

@@ -1,5 +1,3 @@
-from json import loads
-from pkg_resources import resource_filename
 import numpy as np
 import random
 import math
@@ -39,10 +37,10 @@ class TDWUtils:
     # Cached values used during point cloud generation.
     __WIDTH: int = -1
     __HEIGHT: int = -1
-    __CAM_TO_IMG_MAT: Optional[np.array] = None
+    __CAM_TO_IMG_MAT: Optional[np.ndarray] = None
 
     @staticmethod
-    def vector3_to_array(vector3: Dict[str, float]) -> np.array:
+    def vector3_to_array(vector3: Dict[str, float]) -> np.ndarray:
         """
         Convert a Vector3 object to a numpy array.
 
@@ -54,7 +52,7 @@ class TDWUtils:
         return np.array([vector3["x"], vector3["y"], vector3["z"]])
 
     @staticmethod
-    def array_to_vector3(arr: np.array) -> Dict[str, float]:
+    def array_to_vector3(arr: np.ndarray) -> Dict[str, float]:
         """
         Convert a numpy array to a Vector3.
 
@@ -66,7 +64,7 @@ class TDWUtils:
         return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2])}
 
     @staticmethod
-    def vector4_to_array(vector4: Dict[str, float]) -> np.array:
+    def vector4_to_array(vector4: Dict[str, float]) -> np.ndarray:
         """
         Convert a Vector4 to a numpy array.
 
@@ -78,7 +76,7 @@ class TDWUtils:
         return np.array([vector4["x"], vector4["y"], vector4["z"], vector4["w"]])
 
     @staticmethod
-    def array_to_vector4(arr: np.array) -> Dict[str, float]:
+    def array_to_vector4(arr: np.ndarray) -> Dict[str, float]:
         """
         Convert a numpy array to a Vector4.
 
@@ -90,7 +88,7 @@ class TDWUtils:
         return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2]), "w": float(arr[3])}
 
     @staticmethod
-    def color_to_array(color: Dict[str, float]) -> np.array:
+    def color_to_array(color: Dict[str, float]) -> np.ndarray:
         """
         Convert a RGB Color to a numpy array.
 
@@ -102,7 +100,7 @@ class TDWUtils:
         return np.array([round(color["r"] * 255), round(color["g"] * 255), round(color["b"] * 255)])
 
     @staticmethod
-    def array_to_color(arr: np.array) -> Dict[str, float]:
+    def array_to_color(arr: np.ndarray) -> Dict[str, float]:
         """
         Convert a numpy array to a RGBA Color. If no A value is supplied it will default to 1.
 
@@ -114,7 +112,7 @@ class TDWUtils:
         return {"r": arr[0], "g": arr[1], "b": arr[2], "a": 1 if len(arr) == 3 else arr[3]}
 
     @staticmethod
-    def get_random_point_in_circle(center: np.array, radius: float) -> np.array:
+    def get_random_point_in_circle(center: np.ndarray, radius: float) -> np.ndarray:
         """
         Get a random point in a circle, defined by a center and radius.
 
@@ -144,7 +142,7 @@ class TDWUtils:
         return np.linalg.norm(TDWUtils.vector3_to_array(vector3))
 
     @staticmethod
-    def extend_line(p0: np.array, p1: np.array, d: float, clamp_y=True) -> np.array:
+    def extend_line(p0: np.ndarray, p1: np.ndarray, d: float, clamp_y=True) -> np.ndarray:
         """
         Extend the line defined by p0 to p1 by distance d. Clamps the y value to 0.
 
@@ -295,7 +293,7 @@ class TDWUtils:
                         f.write(images.get_image(i))
 
     @staticmethod
-    def get_shaped_depth_pass(images: Images, index: int) -> np.array:
+    def get_shaped_depth_pass(images: Images, index: int) -> np.ndarray:
         """
         The `_depth` and `_depth_simple` passes are a 1D array of RGB values, as oppposed to a png or jpg like every other pass.
         This function reshapes the array into a 2D array of RGB values.
@@ -339,7 +337,7 @@ class TDWUtils:
             return Image.open(io.BytesIO(images.get_image(index)))
 
     @staticmethod
-    def get_segmentation_colors(id_pass: np.array) -> np.array:
+    def get_segmentation_colors(id_pass: np.ndarray) -> np.ndarray:
         """
         :param id_pass: The ID pass image as a numpy array.
 
@@ -409,7 +407,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def get_depth_values(image: np.array, depth_pass: str = "_depth", width: int = 256, height: int = 256, near_plane: float = 0.1, far_plane: float = 100) -> np.array:
+    def get_depth_values(image: np.ndarray, depth_pass: str = "_depth", width: int = 256, height: int = 256, near_plane: float = 0.1, far_plane: float = 100) -> np.ndarray:
         """
         Get the depth values of each pixel in a _depth image pass.
         The far plane is hardcoded as 100. The near plane is hardcoded as 0.1.
@@ -437,7 +435,7 @@ class TDWUtils:
         return (depth_values * ((far_plane - near_plane) / 256.0)).astype(np.float32)
 
     @staticmethod
-    def get_point_cloud(depth, camera_matrix: Union[np.array, tuple], vfov: float = 54.43222, filename: str = None, near_plane: float = 0.1, far_plane: float = 100) -> np.array:
+    def get_point_cloud(depth, camera_matrix: Union[np.ndarray, tuple], vfov: float = 54.43222, filename: str = None, near_plane: float = 0.1, far_plane: float = 100) -> np.ndarray:
         """
         Create a point cloud from an numpy array of depth values.
 
@@ -452,7 +450,7 @@ class TDWUtils:
         """
 
         if isinstance(camera_matrix, tuple):
-            camera_matrix = np.array(camera_matrix)
+            camera_matrix = np.ndarray(camera_matrix)
         camera_matrix = np.linalg.inv(camera_matrix.reshape((4, 4)))
 
         # Different from real-world camera coordinate system.
@@ -493,8 +491,8 @@ class TDWUtils:
         points_in_cam = np.multiply(TDWUtils.__CAM_TO_IMG_MAT, depth.reshape(-1))
         points_in_cam = np.concatenate((points_in_cam, np.ones((1, points_in_cam.shape[1]))), axis=0)
         points_in_world = np.dot(camera_matrix, points_in_cam)
-        points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
-        points_in_cam = points_in_cam[:3, :].reshape(3, TDWUtils.__WIDTH, TDWUtils.__HEIGHT)
+        points_in_world = points_in_world[:3, :].reshape(3, TDWUtils.__HEIGHT, TDWUtils.__WIDTH)
+        points_in_cam = points_in_cam[:3, :].reshape(3, TDWUtils.__HEIGHT, TDWUtils.__WIDTH)
         if filename is not None:
             f = open(filename, 'w')
             for i in range(points_in_world.shape[1]):
@@ -593,7 +591,7 @@ class TDWUtils:
         return base64.b64encode(forces).decode()
 
     @staticmethod
-    def color_to_hashable(color: Union[np.array, Tuple[int, int, int]]) -> int:
+    def color_to_hashable(color: Union[np.ndarray, Tuple[int, int, int]]) -> int:
         """
         :param color: The color as an RGB array or tuple, where each value is between 0 and 255.
 
@@ -603,7 +601,7 @@ class TDWUtils:
         return (color[0] << 16) + (color[1] << 8) + color[2]
 
     @staticmethod
-    def hashable_to_color(hashable: int) -> np.array:
+    def hashable_to_color(hashable: int) -> np.ndarray:
         """
         :param hashable: A hashable integer representing an RGB color.
 
@@ -630,7 +628,7 @@ class TDWUtils:
                 "center": np.array(bounds.get_center(index))}
 
     @staticmethod
-    def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.array:
+    def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.ndarray:
         """
         :param bounds: Bounds output data or cached bounds data from a record (`record.bounds`).
         :param index: The index in `bounds` of the target object. Ignored if `bounds` is a dictionary.
@@ -650,7 +648,7 @@ class TDWUtils:
             raise Exception(f"Invalid bounds data: {bounds}")
 
     @staticmethod
-    def get_closest_position_in_bounds(origin: np.array, bounds: Bounds, index: int) -> np.array:
+    def get_closest_position_in_bounds(origin: np.ndarray, bounds: Bounds, index: int) -> np.ndarray:
         """
         :param origin: The origin from which the distance is calculated.
         :param bounds: Bounds output data.
@@ -672,7 +670,7 @@ class TDWUtils:
         return object_bounds[min_destination]
 
     @staticmethod
-    def get_angle(forward: np.array, origin: np.array, position: np.array) -> float:
+    def get_angle(forward: np.ndarray, origin: np.ndarray, position: np.ndarray) -> float:
         """
           :param position: The target position.
           :param origin: The origin position of the directional vector.
@@ -695,7 +693,7 @@ class TDWUtils:
         return angle
 
     @staticmethod
-    def get_angle_between(v1: np.array, v2: np.array) -> float:
+    def get_angle_between(v1: np.ndarray, v2: np.ndarray) -> float:
         """
         :param v1: The first directional vector.
         :param v2: The second directional vector.
@@ -709,7 +707,7 @@ class TDWUtils:
         return np.rad2deg((ang1 - ang2) % (2 * np.pi))
 
     @staticmethod
-    def rotate_position_around(position: np.array, angle: float, origin: np.array = None) -> np.array:
+    def rotate_position_around(position: np.ndarray, angle: float, origin: np.ndarray = None) -> np.ndarray:
         """
         Rotate a position by a given angle around a given origin.
 
@@ -736,7 +734,7 @@ class TDWUtils:
         return np.array([qx, position[1], qy])
 
     @staticmethod
-    def euler_angles_to_rpy(euler_angles: np.array) -> np.array:
+    def euler_angles_to_rpy(euler_angles: np.ndarray) -> np.ndarray:
         """
         Convert Euler angles to ROS RPY angles.
 
@@ -759,7 +757,7 @@ class TDWUtils:
         return b / (1 << 20)
 
     @staticmethod
-    def get_circle_mask(shape: Tuple[int, int], row: int, column: int, radius: int) -> np.array:
+    def get_circle_mask(shape: Tuple[int, int], row: int, column: int, radius: int) -> np.ndarray:
         """
         Get elements in an array within a circle.
 

@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.12
+## v1.11.15
 
 ### New Features
 
@@ -89,11 +89,81 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
 
+## v1.11.14
+
+### Build
+
+- Fixed: Objects held by the Replicant can be offset far from the hand holding them. Now, held objects will be in their expected positions relative to the hand.
+- Fixed: Replicant transform output data doesn't match the actual body part positions during an animation. In terms of the `Replicant` add-on, this fixes bugs found in `animate()`, `move_by()`, and `move_to()`.
+- Fixed: All Replicant IK commands exhibit strange behavior at lower framerates. This was due to an internal counter using the wrong framerate value. In terms of the `Replicant` add-on, this fixes bugs found in `reach_for()`, `reset_arm()`, `look_at()`, `rotate_head()`, and `reset_head()`.
+- Fixed: It is possible for the Replicant's apparent position to be different between saved images and what's rendered in the simulation window.
+
+## v1.11.13
+
+### `tdw` module
+
+- Fixed numpy array type hinting in TDWUtils.
+- Added: `EmptyObjectManager`. Add empty objects and track their positions.
+
+### Build
+
+- Fixed: Unhandled MissingReferenceException if the scene is reset while the Replicant is doing a `reach_for()` action.
+- Fixed: Potential unhandled exceptions if the scene is reset while the Replicant is doing a `move_by()`, `move_to()`, `animate()`, `look_at()`, `reset_arm()`, `reset_head()`, or `rotate_head()` action.
+
+### Model Library
+
+- Added affordance points to all models in `models_flex.json`
+
+### Example Controllers
+
+- Added: `non_physics/empty_objects.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                         |
+| ---------------------------------------- | ----------------------------------- |
+| `lessons/non_physics/empty_objects.md`   | Lesson for the `EmptyObjectManager` |
+| `python/add_ons/empty_object_manager.md` | API for the `EmptyObjectManager`.   |
+| `lessons/remote/overview.md`       | Overview of documentation for Linux servers. |
+| `lessons/remote/x11_forwarding.md` | X11 forwarding.                              |
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Moved the remote server documentation to be just below the setup section. |
+
+## v1.11.12
+
+### `tdw` module
+
+- Fixed: Replicant sometimes glitches if it tries to grasp a container (the container tries to parent the Replicant to itself rather than the other way around).
+
+### Replicant Library
+
+- Added: fireman, man_casual
+
+### Build
+
+- Fixed: NullReferenceException if `replicant.reset()` is called while the Replicant is holding an object.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                         | Modification                                                 |
+| -------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/overview.md` | Added a section on how to set different Replicant asset bundles. |
+
 ## v1.11.11
 
 ### `tdw` module
 
 - Fixed: `FloorplanFlood` doesn't add the given scene's list flood effect.
+- Fixed: `QuaternionUtils.euler_angles_to_quaternion(euler)` and `QuaternionUtils.quaternion_to_euler_angles(quaternion)` return incorrect values.
+- (Backend) Fixed the type hinting of `QuaternionUtils` (np.ndarray instead of np.array).
 
 ### Build
 

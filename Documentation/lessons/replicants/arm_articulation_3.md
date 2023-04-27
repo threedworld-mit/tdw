@@ -225,11 +225,11 @@ Result:
 
 ## Subdivide a `reach_for(target, arm)` action using an IK Plan
 
-In many cases, it's not desirable for the Replicant to simply reach towards a target position. For example, if the Replicant is [grasping an object](arm_articulation_2.md) that is only the floor and wants to put the object on a kitchen counter, it shouldn't move its hand directly towards the surface of the counter because the hand will collide with a cabinet door along the way.
+In many cases, it's not desirable for the Replicant to simply reach towards a target position. For example, if the Replicant is [grasping an object](arm_articulation_2.md) that is on the floor and wants to put the object on a kitchen counter, it shouldn't move its hand directly towards the surface of the counter because the hand will collide with a cabinet door along the way.
 
 The best way to solve this is to subdivide a single motion into multiple motions. In TDW, this subdivided motion is handled using an IkPlan. To set the plan for the action, set the optional `plan` parameter to a [`IkPlanType`](../../python/replicant/ik_plans/ik_plan_type.md) value. For example: `plan=IkPlanType.vertical_horizontal`.
 
-In the example, there are two trials. In both trials, the Replicant reaches for a mug and [grasps it](arm_articulation_2.md) and tries to drop the mug on the trunk. If the hand or arm collides with the trunk, the trial ends in failure. In the first trial, the Replicant doesn't set the `plan` parameter. In the second trial, the Replicant uses `IkPlanType.vertical_horizontal`, thereby splitting the motion into vertical and horizontal components.
+In the example, there are two trials. In both trials, the Replicant reaches for a mug and [grasps it](arm_articulation_2.md) and tries to drop the mug on the table. If the hand or arm collides with the table, the trial ends in failure. In the first trial, the Replicant doesn't set the `plan` parameter. In the second trial, the Replicant uses `IkPlanType.vertical_horizontal`, thereby splitting the motion into vertical and horizontal components.
 
 ```python
 from typing import Optional

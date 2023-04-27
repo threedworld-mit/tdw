@@ -40,11 +40,11 @@ class StackObjects(Controller):
     """
 
     # A list of all possible models.
-    MODELS: List[str] = ["cube", "cylinder", "pentagon"]
-    # Scale the height of the model by this factor (after applying the overall object scale).
-    MODEL_HEIGHT_SCALES: List[float] = [1, 0.5, 0.5]
+    MODELS: List[str] = ["b04_honey_jar_max_2014", "elephant_bowl", "holy_bible"]
+    # The uniform scales of each model.
+    MODEL_SCALES = [2, 0.5, 2.5]
 
-    def __init__(self, object_scale: float = 0.3, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """
         This is a standard `Controller` constructor with an additional field: `object_scale`.
 
@@ -81,13 +81,11 @@ class StackObjects(Controller):
         # This is used to determine whether the Replicant successfully placed a object on the stack.
         self.stack_y: float = 0
 
-        # Each object will be scaled by this factor.
-        self.object_scale: float = object_scale
-
         # When the Replicant is holding a object and walking, its right hand will be at this position relative to its body.
         self.hold_object_position = {"x": 0.2, "y": 1, "z": 0.7}
-        # When the Replicant is holding a object, the object will be offset from the hand by this distance.
-        self.offset: float = object_scale / 3
+
+        # The indices of the models used per object. We'll use this to find the extents.
+        self.model_indices: List[int] = list()
 
     def run(self, random_seed: int = None, num_objects: int = 3) -> None:
         """
@@ -123,11 +121,6 @@ class StackObjects(Controller):
             rng = np.random.RandomState()
         else:
             rng = np.random.RandomState(random_seed)
-        # Get random colors for the objects.
-        color_arrs = rng.uniform(0, 1, num_objects * 3).reshape(num_objects, 3)
-        colors = []
-        for color in color_arrs:
-            colors.append({"r": float(color[0]), "g": float(color[1]), "b": float(color[2]), "a": 1})
         # Get random rotations for the objects.
         object_rotations = rng.uniform(-90, 90, num_objects)
         # Get random models.
@@ -142,28 +135,27 @@ class StackObjects(Controller):
             position = {"x": object_r * cos(angle * i), "y": 0, "z": object_r * sin(angle * i)}
             # Get an object ID.
             object_id = Controller.get_unique_id()
+            # Get the model index.
+            model_index = model_indices[i]
+            self.model_indices.append(model_index)
             # Get the mode name.
-            model_name = StackObjects.MODELS[i]
+            model_name = StackObjects.MODELS[model_index]
             # Get the scale.
-            scale = {"x": self.object_scale, "y": self.object_scale * StackObjects.MODEL_HEIGHT_SCALES[i], "z": self.object_scale}
+            s = StackObjects.MODEL_SCALES[model_index]
+            scale_factor = {"x": s, "y": s, "z": s}
             # Add the object.
             # Set high friction and low bounciness to make it easier for the object to stay on the stack.
             commands.extend(Controller.get_add_physics_object(model_name=model_name,
                                                               object_id=object_id,
-                                                              library="models_flex.json",
                                                               position=position,
                                                               rotation={"x": 0, "y": object_rotations[i], "z": 0},
                                                               default_physics_values=False,
                                                               mass=1,
-                                                              scale_factor=scale,
+                                                              scale_factor=scale_factor,
                                                               dynamic_friction=0.95,
                                                               static_friction=0.95,
                                                               bounciness=0.01,
                                                               scale_mass=False))
-            # Set a random color.
-            commands.append({"$type": "set_color",
-                             "id": object_id,
-                             "color": colors[i]})
             # Remember the ID of the object.
             self.objects.append(object_id)
         # Move objects to this position.
@@ -198,6 +190,13 @@ class StackObjects(Controller):
                 self.replicant_state = ReplicantState.grasping_object
                 self.communicate([])
 
+                # Calculate the object offset by getting the bounds of the object.
+                # We can't use the bounds data in the record because the objects have been scaled.
+                bounds = self.object_manager.bounds[self.objects[self.object_index]]
+                x = np.linalg.norm(bounds.left - bounds.right)
+                z = np.linalg.norm(bounds.front - bounds.back)
+                offset = ((x + z) / 2) / 3
+
                 # Start to grasp the object.
                 # `angle` and `axis` define the object's rotation per `communicate()` call.
                 # `relative_to_hand=True` means that `angle` and `axis` are relative to the hand.
@@ -207,7 +206,7 @@ class StackObjects(Controller):
                                      angle=0,
                                      axis="pitch",
                                      relative_to_hand=True,
-                                     offset=self.offset)
+                                     offset=float(offset))
         # Grasp the next object.
         elif self.replicant_state == ReplicantState.grasping_object:
             if self.action_ended(error_message=f"grasp {self.objects[self.object_index]}"):
@@ -237,7 +236,13 @@ class StackObjects(Controller):
                 self.communicate([])
                 # Get a target position above the stack.
                 target_position = {k: v for k, v in self.stack_position.items()}
-                target_position["y"] = self.raycast_stack() + 0.3
+                y = 0
+                for i in range(self.object_index):
+                    object_id = self.objects[i]
+                    bounds = self.object_manager.bounds[object_id]
+                    height = np.linalg.norm(bounds.top - bounds.bottom)
+                    y += height
+                target_position["y"] = y + 0.3
 
                 # Reach for the point above the stack.
                 # `from_held` and `held_point` will offset `target_position` by the object's top bound point.

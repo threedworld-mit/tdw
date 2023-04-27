@@ -58,6 +58,12 @@ There is no bounded answer to when to use the optional parameters, which can mak
 
 One way you could sidestep these problems would be to narrowly define the possible arm motions a Replicant can do. In this example, you could make two new reach-for actions: `ResetArmToHoldingObject` and `ReachAboveStack`. Combined with the generic `reach_for(target, arm)` action that the Replicant uses to reach for an object on the ground, these three motions are all you need to stack objects. If you need additional arm motion actions, you could explicitly define them as well.
 
+### 4. Model selection and physics values
+
+For this controller, we only selected very boxy models that can easily be stacked, and scaled them to similar sizes.
+
+Each object has higher friction and lower bounciness values than what would otherwise be "realistic".
+
 ***
 
 **Next: [Head rotation](head_rotation.md)**

@@ -216,7 +216,7 @@ These actions involve interaction with other objects, e.g. grasping or dropping.
 
 **`self.grasp(target, arm)`**
 
-**`self.grasp(target, arm, angle=90, axis="pitch", relative_to_hand=True)`**
+**`self.grasp(target, arm, angle=90, axis="pitch", relative_to_hand=True, offset=None)`**
 
 Grasp a target object.
 
@@ -231,6 +231,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 | angle |  Optional[float] | 90 | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
 | axis |  Optional[str] | "pitch" | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
 | relative_to_hand |  bool  | True | If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None. |
+| offset |  float  | None | Offset the object's position from the Replicant's hand by this distance. If None, a default offset is used: `distance(left_bound_of_object, right_bound_of_object) / 3`. |
 
 #### drop
 

@@ -431,6 +431,7 @@
 | --- | --- |
 | [`replicant_drop_object`](#replicant_drop_object) | Drop a held object.  |
 | [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object.  |
+| [`replicant_set_grasped_object_offset`](#replicant_set_grasped_object_offset) | Set the offset distance from the Replicant's hand to the held object. |
 | [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped.  |
 
 **Replicant Arm Motion Command**
@@ -5762,6 +5763,32 @@ Grasp a target object.
 | `"object_id"` | int | The target object ID. | |
 | `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_set_grasped_object_offset`**
+
+Set the offset distance from the Replicant's hand to the held object.
+
+
+```python
+{"$type": "replicant_set_grasped_object_offset", "offset": 0.125, "arm": "left", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"offset"` | float | The offset distance from the hand to the object. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 

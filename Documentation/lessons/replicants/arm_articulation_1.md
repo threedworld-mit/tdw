@@ -119,7 +119,9 @@ Result:
 
 ![](images/arm_articulation/reach_for_object.gif)
 
-**Notice that the Replicant does *not* reach for the center of the object.** This is intentional.
+### Affordance points
+
+**Notice that in the previous example, the Replicant does *not* reach for the center of the object.** This is intentional.
 
 Certain models in TDW have "**affordance points**" that are automatically attached to them upon instantiation. Affordance points don't have meshes, colliders, etc.; they are just an transform with a position and rotation. Affordance points are parented to objects, meaning that when the object moves and rotates, the empty objects will follow within the local coordinate space.
 

@@ -13,6 +13,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | Command                                 | Description                                                  |
 | --------------------------------------- | ------------------------------------------------------------ |
 | `replicant_reach_for_relative_position` | Instruct a Replicant to start to reach for a target position relative to the Replicant. |
+| `replicant_set_grasp_offset`            | Set the offset distance from the Replicant's hand to the held object. |
 
 #### Modified Commands
 
@@ -29,8 +30,11 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
   - `held_point` The bounds point of the held object from which the offset will be calculated.
   - `plan` Use an `IkPlan` to subdivide the motion.
   - `absolute` Determines whether the `target` position is relative to the world or to the Replicant.
-- Added optional parameter to `replicant.grasp()`: `relative_to_hand` controls how the held object is rotated.
-- Added optional parameter to `replicant.drop()`: `offset` sets an offset to apply to a dropped object.
+- Added optional parameters to `replicant.grasp()`:
+  -  `relative_to_hand` How the held object is rotated.
+  - `offset` The offset distance from the hand.
+- Added optional parameters to `replicant.drop()`:
+  - `offset` Sets an offset distance or position to apply to a dropped object.
 - Added: `IkPlanType`. Enum values defining IK plans.
 - Fixed: `replicant.turn_by()` and `replicant.turn_to()` don't set the positions of held objects correctly.
 - Fixed (in the build): The initial position of the hand in a `replicant.reach_for()` action is set incorrectly.

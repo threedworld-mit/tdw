@@ -54,7 +54,7 @@ Result:
 
 ![](images/arm_articulation/reach_for_follow.gif)
 
-## `grasp()` and rotate the object
+## `grasp(target, arm)` and rotate the object
 
 A grasped object will continuously rotate relative to the hand grasping it. By default, the rotation is 90 degrees along the relative pitch axis.
 
@@ -135,6 +135,14 @@ if __name__ == "__main__":
 Result:
 
 ![](images/arm_articulation/grasp_rotate.gif)
+
+## `grasp(target, arm)` and offset the object
+
+By default, a grasped object is at a distance offset from the hand. The pivot of the offset is always the [grasped affordance point](arm_articulation_1.md). The offset direction is always up from the hands.
+
+The offset distance can vary. By default, it is the `distance(left_bound_of_object, right_bound_of_object) / 3`. This works well for smaller objects but larger objects might appear to float above the hand.
+
+To manually set the offset distance, set the `offset` parameter, for example: `grasp(target, arm, offset=0)`.
 
 ## Set the `drop(arm)`  offset
 

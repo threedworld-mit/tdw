@@ -13,7 +13,6 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | Command                                 | Description                                                  |
 | --------------------------------------- | ------------------------------------------------------------ |
 | `replicant_reach_for_relative_position` | Instruct a Replicant to start to reach for a target position relative to the Replicant. |
-| `replicant_set_grasp_offset`            | Set the offset distance from the Replicant's hand to the held object. |
 
 #### Modified Commands
 
@@ -22,6 +21,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | `replicant_set_grasped_object_rotation` | Added optional parameter `relative_to_hand`. |
 | `replicant_reach_for_object`            | Added optional parameter `offset`.           |
 | `repicant_reach_for_position`           | Added optional parameter `offset`.           |
+| `replicant_grasp_object`                | Added optional parameter `offset`.           |
 
 ### `tdw` module
 

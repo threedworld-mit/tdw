@@ -139,8 +139,6 @@ In addition to [the usual `Action` initialization commands](actions.md), `Grasp`
 
 If `angle` is not None and `axis` is not None, the action initializes object rotation via [`replicant_set_grasped_object_rotation`](../../api/command_api.md#replicant_set_grasped_object_rotation).
 
-If `offset` is not None, the action sends [`replicant_set_grasped_object_offset`](../../api/command_api.md#replicant_set_grasped_object_offset). Otherwise, a default offset is used.
-
 Assuming that the object can be grasped, the `Grasp` action always succeeds (i.e. there is no physics-related failure state).
 
 A grasped object is *not* parented to its hand or connected to the object in any way. This is due to how the underlying FinalIK system updates per frame vs. how TDW updates per frame. Instead, the grasped object moves and rotates itself to the Replicant's hand per `communicate()` call.
@@ -259,7 +257,6 @@ Command API:
 - [`parent_object_to_object`](../../api/command_api.md#parent_object_to_object)
 - [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
 - [`replicant_set_grasped_object_rotation`](../../api/command_api.md#replicant_set_grasped_object_rotation)
--  [`replicant_set_grasped_object_offset`](../../api/command_api.md#replicant_set_grasped_object_offset)
 - [`replicant_drop_object`](../../api/command_api.md#replicant_drop_object)
 
 Output Data API:

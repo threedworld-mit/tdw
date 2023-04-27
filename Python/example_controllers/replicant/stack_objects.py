@@ -81,6 +81,8 @@ class StackObjects(Controller):
 
         # When the Replicant is holding a cube and walking, its right hand will be at this position relative to its body.
         self.hold_object_position = {"x": 0.2, "y": 1, "z": 0.7}
+        # When the Replicant is holding a cube, the cube will be offset from the hand by this distance.
+        self.offset: float = object_scale / 3
 
     def run(self, random_seed: int = None, num_objects: int = 3) -> None:
         """
@@ -187,11 +189,13 @@ class StackObjects(Controller):
                 # Start to grasp the cube.
                 # `angle` and `axis` define the cube's rotation per `communicate()` call.
                 # `relative_to_hand=True` means that `angle` and `axis` are relative to the hand.
+                # `offset` sets an offset distance from the cube to the hand.
                 self.replicant.grasp(target=self.cubes[self.cube_index],
                                      arm=Arm.right,
                                      angle=0,
                                      axis="pitch",
-                                     relative_to_hand=True)
+                                     relative_to_hand=True,
+                                     offset=self.offset)
         # Grasp the next cube.
         elif self.replicant_state == ReplicantState.grasping_cube:
             if self.action_ended(error_message=f"grasp {self.cubes[self.cube_index]}"):

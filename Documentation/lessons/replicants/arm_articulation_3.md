@@ -138,11 +138,9 @@ Result:
 
 ## `grasp(target, arm)` and offset the object
 
-By default, a grasped object is at a distance offset from the hand. The pivot of the offset is always the [grasped affordance point](arm_articulation_1.md). The offset direction is always up from the hands.
+By default, a grasped object sets its [grasped affordance point](arm_articulation_1.md) (i.e. its pivot) to the same position as the hand holding the object.
 
-The offset distance can vary. By default, it is the `distance(left_bound_of_object, right_bound_of_object) / 3`. This works well for smaller objects but larger objects might appear to float above the hand.
-
-To manually set the offset distance, set the `offset` parameter, for example: `grasp(target, arm, offset=0)`.
+For some objects, especially boxier ones that might collide with the Replicant's lower arm, you might want to offset the distance from the pivot to the hand by setting the optional `offset` parameter, for example: `grasp(target, arm, offset=0.3)`. `offset` is a distance. The direction of the offset is always the local up vector from the hand.
 
 ## Set the `drop(arm)`  offset
 

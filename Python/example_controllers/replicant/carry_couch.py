@@ -145,7 +145,7 @@ class CarryCouch(Controller):
         self.replicant_1.reach_for(target=self.object_id, arm=[Arm.left, Arm.right])
         self.do_actions()
         # Only the first Replicant grasps the couch.
-        self.replicant_0.grasp(target=self.object_id, arm=Arm.left, angle=None, offset=0)
+        self.replicant_0.grasp(target=self.object_id, arm=Arm.left, angle=None)
         self.do_replicant_0_action()
         # Everyone raises their hands.
         self.reach_for_height(y=0.8)

@@ -18,7 +18,7 @@ class Grasp(Action):
     """
 
     def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, angle: Optional[float], axis: Optional[str],
-                 relative_to_hand: bool, offset: Optional[float]):
+                 relative_to_hand: bool, offset: float):
         """
         :param target: The target object ID.
         :param arm: The [`Arm`](../arm.md) value for the hand that will grasp the target object.
@@ -26,7 +26,7 @@ class Grasp(Action):
         :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
         :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
         :param relative_to_hand: If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
-        :param offset: Offset the object's position from the Replicant's hand by this distance. If None, a default offset is used: `distance(left_bound_of_object, right_bound_of_object) / 3`.
+        :param offset: Offset the object's position from the Replicant's hand by this distance.
         """
 
         super().__init__()
@@ -51,9 +51,9 @@ class Grasp(Action):
         """
         self.relative_to_hand: bool = relative_to_hand
         """:field
-        Offset the object's position from the Replicant's hand by this distance. If None, a default offset is used: `distance(left_bound_of_object, right_bound_of_object) / 3`.
+        Offset the object's position from the Replicant's hand by this distance.
         """
-        self.offset: Optional[float] = offset
+        self.offset: float = offset
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
@@ -93,16 +93,11 @@ class Grasp(Action):
         commands.extend([{"$type": "replicant_grasp_object",
                          "id": static.replicant_id,
                           "arm": self.arm.name,
-                          "object_id": self.target},
+                          "object_id": self.target,
+                          "offset": self.offset},
                          {"$type": "enable_nav_mesh_obstacle",
                           "id": self.target,
                           "enable": False}])
-        # Set the object's offset.
-        if self.offset is not None:
-            commands.append({"$type": "replicant_set_grasped_object_offset",
-                             "id": static.replicant_id,
-                             "arm": self.arm.name,
-                             "offset": self.offset})
         # Set the object's rotation.
         if self.angle is not None and self.axis is not None:
             commands.append({"$type": "replicant_set_grasped_object_rotation",

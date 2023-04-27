@@ -431,7 +431,6 @@
 | --- | --- |
 | [`replicant_drop_object`](#replicant_drop_object) | Drop a held object.  |
 | [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object.  |
-| [`replicant_set_grasped_object_offset`](#replicant_set_grasped_object_offset) | Set the offset distance from the Replicant's hand to the held object. |
 | [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped.  |
 
 **Replicant Arm Motion Command**
@@ -5751,11 +5750,11 @@ Grasp a target object.
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1}
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "rotate": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5763,32 +5762,7 @@ Grasp a target object.
 | `"object_id"` | int | The target object ID. | |
 | `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
-| `"arm"` | Arm | The arm doing the action. | |
-| `"id"` | int | The unique object ID. | |
-
-#### Arm
-
-A left or right arm.
-
-| Value | Description |
-| --- | --- |
-| `"left"` |  |
-| `"right"` |  |
-
-***
-
-## **`replicant_set_grasped_object_offset`**
-
-Set the offset distance from the Replicant's hand to the held object.
-
-
-```python
-{"$type": "replicant_set_grasped_object_offset", "offset": 0.125, "arm": "left", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"offset"` | float | The offset distance from the hand to the object. | |
+| `"offset"` | float | Offset the object from the hand by this distance. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 

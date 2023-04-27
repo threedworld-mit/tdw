@@ -22,7 +22,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 
 - `relative_to_hand` If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
 
-- `offset` Offset the object's position from the Replicant's hand by this distance. If None, a default offset is used: `distance(left_bound_of_object, right_bound_of_object) / 3`.
+- `offset` Offset the object's position from the Replicant's hand by this distance.
 
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
@@ -46,7 +46,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 | angle |  Optional[float] |  | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
 | axis |  Optional[str] |  | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
 | relative_to_hand |  bool |  | If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None. |
-| offset |  Optional[float] |  | Offset the object's position from the Replicant's hand by this distance. If None, a default offset is used: `distance(left_bound_of_object, right_bound_of_object) / 3`. |
+| offset |  float |  | Offset the object's position from the Replicant's hand by this distance. |
 
 #### get_initialization_commands
 

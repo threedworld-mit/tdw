@@ -31,6 +31,8 @@ class TurnBy(Action):
                          "axis": "yaw",
                          "is_world": True,
                          "use_centroid": False})
+        commands.append({"$type": "replicant_step",
+                         "id": static.replicant_id})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

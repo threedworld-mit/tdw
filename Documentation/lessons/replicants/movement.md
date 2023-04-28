@@ -41,7 +41,7 @@ The Replicant's walk animation is stored as a [humanoid animation asset bundle](
 
 ### Resetting the arms
 
-By default, the Replicant's arms reset at the start of a `move_by(distance)` action. The arms reset while the Replicant is walking, rather than before. For more information regarding arm movement, [read this](arm_articulation.md).
+By default, the Replicant's arms reset at the start of a `move_by(distance)` action. The arms reset while the Replicant is walking, rather than before. For more information regarding arm movement, [read this](arm_articulation_1.md).
 
 ```python
 from tdw.controller import Controller
@@ -78,7 +78,7 @@ Result:
 
 ![](images/movement/reach_for_move.gif)
 
-You might want the Replicant to hold a pose with its arms while walking (for example, if it is [holding an object](grasp_drop.md)). If so, you can set the optional parameter `reset_arms=False`:
+You might want the Replicant to hold a pose with its arms while walking (for example, if it is [holding an object](arm_articulation_2.md)). If so, you can set the optional parameter `reset_arms=False`:
 
 ```python
 from tdw.controller import Controller

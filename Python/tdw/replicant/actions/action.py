@@ -1,8 +1,8 @@
 from abc import ABC
-from typing import List
-from overrides import final
+from typing import List, Dict
 import numpy as np
-from tdw.output_data import OutputData, Transforms, Framerate
+from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, Transforms, Framerate, Bounds
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.action_status import ActionStatus
@@ -102,8 +102,8 @@ class Action(ABC):
                               "frequency": "once"}])
         return commands
 
-    @final
-    def _get_object_position(self, object_id: int, resp: List[bytes]) -> np.ndarray:
+    @staticmethod
+    def _get_object_position(object_id: int, resp: List[bytes]) -> np.ndarray:
         """
         :param object_id: The object ID.
         :param resp: The response from the build.
@@ -119,6 +119,24 @@ class Action(ABC):
                     if transforms.get_id(j) == object_id:
                         return transforms.get_position(j)
         raise Exception(f"Transform data not found for: {object_id}")
+
+    @staticmethod
+    def _get_object_bounds(object_id: int, resp: List[bytes]) -> Dict[str, np.ndarray]:
+        """
+        :param object_id: The object ID.
+        :param resp: The response from the build.
+
+        :return: The bounds of the object.
+        """
+
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "boun":
+                bounds = Bounds(resp[i])
+                for j in range(bounds.get_num()):
+                    if bounds.get_id(j) == object_id:
+                        return TDWUtils.get_bounds_dict(bounds, j)
+        raise Exception(f"Bounds data not found for: {object_id}")
 
     @staticmethod
     def _get_scaled_duration(duration: float, resp: List[bytes]) -> float:

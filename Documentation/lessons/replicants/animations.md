@@ -223,7 +223,7 @@ In addition to [the usual `Action` end commands](actions.md), `Animate` sends [`
 
 ***
 
-**Next: [Arm articulation](arm_articulation.md)**
+**Next: [Arm articulation, pt. 1](arm_articulation_1.md)**
 
 [Return to the README](../../../README.md)
 

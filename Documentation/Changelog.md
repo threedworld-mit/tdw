@@ -4,6 +4,74 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.15
+
+### Command API
+
+#### New Commands
+
+| Command                                 | Description                                                  |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `replicant_reach_for_relative_position` | Instruct a Replicant to start to reach for a target position relative to the Replicant. |
+
+#### Modified Commands
+
+| Command                                 | Modification                                 |
+| --------------------------------------- | -------------------------------------------- |
+| `replicant_set_grasped_object_rotation` | Added optional parameter `relative_to_hand`. |
+| `replicant_reach_for_object`            | Added optional parameter `offset`.           |
+| `repicant_reach_for_position`           | Added optional parameter `offset`.           |
+| `replicant_grasp_object`                | Added optional parameter `offset`.           |
+
+### `tdw` module
+
+- Added optional parameters to `replicant.reach_for()`:
+  - `from_held` Control whether an offset from the held object will be applied to the target position. 
+  - `held_point` The bounds point of the held object from which the offset will be calculated.
+  - `plan` Use an `IkPlan` to subdivide the motion.
+  - `absolute` Determines whether the `target` position is relative to the world or to the Replicant.
+- Added optional parameters to `replicant.grasp()`:
+  -  `relative_to_hand` How the held object is rotated.
+  - `offset` The offset distance from the hand.
+- Added optional parameters to `replicant.drop()`:
+  - `offset` Sets an offset distance or position to apply to a dropped object.
+- Added: `IkPlanType`. Enum values defining IK plans.
+- Fixed: `replicant.turn_by()` and `replicant.turn_to()` don't set the positions of held objects correctly.
+- Fixed (in the build): The initial position of the hand in a `replicant.reach_for()` action is set incorrectly.
+- Fixed (in the build): The offset of a held object from the hand is calculated incorrectly and doesn't change with respect to which hand is holding the object.
+- Fixed (in the build): While a Replicant is walking or playing any other animation, the positions of held objects aren't updated correctly.
+- (Backend) Added a new Replicant action: `ReachForWithPlan`. This is hidden from the user; if the user sets `plan` parameter in `reach_for()`, the Replicant will use `ReachForWithPlan` instead of `ReachFor`.
+- (Backend) Added `IkPlan`. Abstract base class for IK plans.
+- (Backend) Added `VerticalHorizontal`. An IK plan with vertical and horizontal components.
+
+### Example Controllers
+
+- Added: `replicant/grasp_rotate.py`
+- Added: `replicant/reach_for_offset.py`
+- Added: `replicant/reach_for_relative.py`
+- Added: `replicant/reach_for_with_plan.py`
+- Added: `replicant/stack_objects.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                           | Description                                                  |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation_3.md`         | How to use advanced features in the Replicant's arm articulation API. |
+| `lessons/replicants/arm_articulation_4.md`         | An example of how a Replicant can stack objects.             |
+| `python/replicant/actions/reach_for_with_plan.md`  | API for `ReachForWithPlan`                                   |
+| `python/replicant/ik_plans/ik_plan_type.md`        | API for `IkPlanType`                                         |
+| `python/replicant/ik_plans/ik_plan.md`             | API for `IkPlan`                                             |
+| `python/replicant/ik_plans/vertical_horizontal.md` | API for `VerticalHorizontal`                                 |
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation.md` | Renamed: *Arm articulation, pt.1: Basics*<br>Moved some of the more advanced sections to Arm articulation, pt. 3 |
+| `lessons/replicants/grasp_drop.md`       | Renamed: *Arm articulation, pt. 2: Grasp and drop*<br>Moved some of the more advanced sections to Arm articulation, pt. 3 |
+
 ## v1.11.14
 
 ### Build

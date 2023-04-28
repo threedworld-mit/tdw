@@ -59,6 +59,7 @@ from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
+from tdw.FBOutput import ViveEyeTracking as Vive
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1601,8 +1602,8 @@ class OccupancyMap(OutputData):
 class EulerAngles(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 3)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 3)
 
     def get_data(self) -> Eulers.EulerAngles:
         return Eulers.EulerAngles.GetRootAsEulerAngles(self.bytes, 0)
@@ -1615,3 +1616,25 @@ class EulerAngles(OutputData):
 
     def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]
+
+
+class ViveEyeTracking(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._valid: np.ndarray = self.data.ValidAsNumpy()
+        self._eye_rays: np.ndarray = self.data.EyeRaysAsNumpy().reshape(2, 2, 3)
+
+    def get_data(self) -> Vive.ViveEyeTracking:
+        return Vive.ViveEyeTracking.GetRootAsViveEyeTracking(self.bytes, 0)
+
+    def get_focused(self) -> np.ndarray:
+        return self.data.FocusedAsNumpy()
+
+    def get_valid(self, index: int) -> bool:
+        return bool(self._valid[index])
+
+    def get_eye_ray(self, index: int) -> np.ndarray:
+        return self._eye_rays[index]
+
+    def get_blinking(self) -> np.ndarray:
+        return self.data.BlinkingAsNumpy()

@@ -37,7 +37,7 @@ class DoNothing(Action):
 - *Always* add `commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)`. This will set up "Replicant step" correctly.
 - In `ongoing_commands(resp, static, dynamic)`, we want the command to end immediately in success, so we added `self.status = ActionStatus.success`.
 
-The "Replicant step" refers to a command that always gets sent from every action on every `communicate()` call: [`replicant_step`](../../api/command_api.md). This command forces the Replicant's underlying [IK system](arm_articulation.md) to sync with its [animation system](animations.md). If you don't call `commands = super().get_initialization_commands()`, `commands = super().get_ongoing_commands()`, etc., your action won't send `replicant_step` and there will likely be bugs due to the IK system desyncing.
+The "Replicant step" refers to a command that always gets sent from every action on every `communicate()` call: [`replicant_step`](../../api/command_api.md). This command forces the Replicant's underlying [IK system](arm_articulation_1.md) to sync with its [animation system](animations.md). If you don't call `commands = super().get_initialization_commands()`, `commands = super().get_ongoing_commands()`, etc., your action won't send `replicant_step` and there will likely be bugs due to the IK system desyncing.
 
 You can optionally add `get_end_commands(resp, static, dynamic, image_frequency)`. *This is not necessary.* You only need to add it if you need the action to send extra commands when it ends. This function always gets called when an action ends, regardless of whether it succeeds:
 

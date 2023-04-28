@@ -448,6 +448,7 @@
 | --- | --- |
 | [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
 | [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
+| [`replicant_reach_for_relative_position`](#replicant_reach_for_relative_position) | Instruct a Replicant to start to reach for a target position relative to the Replicant.  |
 
 **Replicant Look At Command**
 
@@ -5844,11 +5845,11 @@ Grasp a target object.
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1}
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "rotate": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5856,6 +5857,7 @@ Grasp a target object.
 | `"object_id"` | int | The target object ID. | |
 | `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | float | Offset the object from the hand by this distance. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -5881,13 +5883,14 @@ Start to rotate a grasped object relative to the rotation of the hand. This will
 ```
 
 ```python
-{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "set_status": True}
+{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "relative_to_hand": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | Rotate the object by this many degrees relative to the hand's rotation. | |
 | `"axis"` | Axis | Rotate the object around this axis relative to the hand's rotation. | |
+| `"relative_to_hand"` | bool | If True, rotate the object relative to the hand that is holding it. If false, rotate relative to the Replicant. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -5966,7 +5969,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5975,6 +5978,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6002,7 +6006,7 @@ Instruct a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6011,6 +6015,44 @@ Instruct a Replicant to start to reach for a target position.
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_reach_for_relative_position`**
+
+Instruct a Replicant to start to reach for a target position relative to the Replicant. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position relative to the Replicant. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |

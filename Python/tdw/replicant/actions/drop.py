@@ -1,5 +1,6 @@
-from typing import List
+from typing import List, Union, Dict
 import numpy as np
+from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -17,11 +18,12 @@ class Drop(Action):
     When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
-    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int):
+    def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int, offset: Union[float, np.ndarray, Dict[str, float]]):
         """
         :param arm: The [`Arm`](../arm.md) holding the object.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        :param offset: Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
         """
 
         super().__init__()
@@ -49,18 +51,38 @@ class Drop(Action):
         The current frame.
         """
         self.frame_count: int = 0
+        """:field
+        Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
+        """
+        self.offset: Union[float, np.ndarray, Dict[str, float]] = offset
         self._first_frame: bool = True
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
+        # Get the offset distance from the hand.
+        if isinstance(self.offset, float):
+            offset_distance = self.offset
+        else:
+            offset_distance = 0
+        # Drop the object and enable its NavMeshObstacle if it has one.
         commands.extend([{"$type": "replicant_drop_object",
                           "id": static.replicant_id,
-                          "arm": self.arm.name},
+                          "arm": self.arm.name,
+                          "offset_distance": offset_distance},
                          {"$type": "enable_nav_mesh_obstacle",
                           "id": self.object_id,
                           "enable": True}])
+        # Possible teleport the object.
+        if isinstance(self.offset, dict):
+            commands.append({"$type": "teleport_object",
+                             "id": self.object_id,
+                             "position": self.offset})
+        elif isinstance(self.offset, np.ndarray):
+            commands.append({"$type": "teleport_object",
+                             "id": self.object_id,
+                             "position": TDWUtils.array_to_vector3(self.offset)})
         self.object_position = self._get_object_position(object_id=self.object_id, resp=resp)
         return commands
 

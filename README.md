@@ -244,13 +244,15 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 4. [Collision detection](Documentation/lessons/replicants/collision_detection.md)
 5. [Movement](Documentation/lessons/replicants/movement.md)
 6. [Animations](Documentation/lessons/replicants/animations.md)
-7. [Arm articulation](Documentation/lessons/replicants/arm_articulation.md)
-8. [Grasp and drop objects](Documentation/lessons/replicants/grasp_drop.md)
-9. [Head rotation](Documentation/lessons/replicants/head_rotation.md)
-10. [Navigation](Documentation/lessons/replicants/navigation.md)
-11. [Custom actions](Documentation/lessons/replicants/custom_actions.md)
-12. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
-13. [Reset](Documentation/lessons/replicants/reset.md)
+7. [Arm articulation, pt. 1: Basics](Documentation/lessons/replicants/arm_articulation_1.md)
+8. [Arm articulation, pt. 2: Grasp and drop objects](Documentation/lessons/replicants/arm_articulation_2.md)
+9. [Arm articulation, pt. 3: Advanced topics](Documentation/lessons/replicants/arm_articulation_3.md)
+10. [Arm articulation, pt. 4: Stacking objects](Documentation/lessons/replicants/arm_articulation_4.md)
+11. [Head rotation](Documentation/lessons/replicants/head_rotation.md)
+12. [Navigation](Documentation/lessons/replicants/navigation.md)
+13. [Custom actions](Documentation/lessons/replicants/custom_actions.md)
+14. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
+15. [Reset](Documentation/lessons/replicants/reset.md)
 
 ### 11.4 Virtual Reality (VR)
 
@@ -563,11 +565,18 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [MoveBy](Documentation/python/replicant/actions/move_by.md)
 - [MoveTo](Documentation/python/replicant/actions/move_to.md)
 - [ReachFor](Documentation/python/replicant/actions/reach_for.md)
+- [ReachForWithPlan](Documentation/python/replicant/actions/reach_for_with_plan.md)
 - [ResetArm](Documentation/python/replicant/actions/reset_arm.md)
 - [ResetHead](Documentation/python/replicant/actions/reset_head.md)
 - [RotateHead](Documentation/python/replicant/actions/rotate_head.md)
 - [TurnBy](Documentation/python/replicant/actions/turn_by.md)
 - [TurnTo](Documentation/python/replicant/actions/turn_to.md)
+
+**tdw.replicant.ik_plans**
+
+- [IkPlan](Documentation/python/replicant/ik_plans/ik_plan.md)
+- [IkPlanType](Documentation/python/replicant/ik_plans/ik_plan_type.md)
+- [VerticalHorizontal](Documentation/python/replicant/ik_plans/vertical_horizontal.md)
 
 **tdw.robot_data**
 

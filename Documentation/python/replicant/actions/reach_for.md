@@ -15,17 +15,25 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
 - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
 
+See also: [`ReachForWithPlan`](reach_for_with_plan.md).
+
 ***
 
 ## Fields
 
 - `target` The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
 
+- `absolute` If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
+
 - `arrived_at` If the motion ends and the hand is this distance or less from the target, the action succeeds.
 
 - `max_distance` If the target is further away from this distance at the start of the action, the action fails.
 
 - `offhand_follows` If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
+
+- `from_held` If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`.
+
+- `held_point` The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
 
 - `arms` A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
 
@@ -65,11 +73,12 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 #### \_\_init\_\_
 
-**`ReachFor(target, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration)`**
+**`ReachFor(target, absolute, offhand_follows, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | target |  Union[int, np.ndarray, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| absolute |  bool |  | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | offhand_follows |  bool |  | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID. |
 | arrived_at |  float |  | If the motion ends and the hand is this distance or less from the target, the action succeeds. |
 | max_distance |  float |  | If the target is further away from this distance at the start of the action, the action fails. |
@@ -79,6 +88,8 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | previous |  Optional[Action] |  | The previous action. Can be None. |
 | duration |  float |  | The duration of the motion in seconds. |
 | scale_duration |  bool |  | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+| from_held |  bool |  | If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object. |
+| held_point |  str |  | The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object. |
 
 #### get_initialization_commands
 

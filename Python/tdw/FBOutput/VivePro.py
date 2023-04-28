@@ -4,21 +4,21 @@
 
 import tdw.flatbuffers
 
-class ViveEyeTracking(object):
+class VivePro(object):
     __slots__ = ['_tab']
 
     @classmethod
-    def GetRootAsViveEyeTracking(cls, buf, offset):
+    def GetRootAsVivePro(cls, buf, offset):
         n = tdw.flatbuffers.encode.Get(tdw.flatbuffers.packer.uoffset, buf, offset)
-        x = ViveEyeTracking()
+        x = VivePro()
         x.Init(buf, n + offset)
         return x
 
-    # ViveEyeTracking
+    # VivePro
     def Init(self, buf, pos):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
-    # ViveEyeTracking
+    # VivePro
     def Focused(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
@@ -26,21 +26,21 @@ class ViveEyeTracking(object):
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def FocusedAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def FocusedLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def Valid(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
@@ -48,21 +48,21 @@ class ViveEyeTracking(object):
             return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def ValidAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def ValidLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def EyeRays(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
@@ -70,21 +70,21 @@ class ViveEyeTracking(object):
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def EyeRaysAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def EyeRaysLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def Blinking(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
@@ -92,27 +92,27 @@ class ViveEyeTracking(object):
             return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def BlinkingAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
         return 0
 
-    # ViveEyeTracking
+    # VivePro
     def BlinkingLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def ViveEyeTrackingStart(builder): builder.StartObject(4)
-def ViveEyeTrackingAddFocused(builder, focused): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(focused), 0)
-def ViveEyeTrackingStartFocusedVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ViveEyeTrackingAddValid(builder, valid): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(valid), 0)
-def ViveEyeTrackingStartValidVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def ViveEyeTrackingAddEyeRays(builder, eyeRays): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(eyeRays), 0)
-def ViveEyeTrackingStartEyeRaysVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ViveEyeTrackingAddBlinking(builder, blinking): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(blinking), 0)
-def ViveEyeTrackingStartBlinkingVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def ViveEyeTrackingEnd(builder): return builder.EndObject()
+def ViveProStart(builder): builder.StartObject(4)
+def ViveProAddFocused(builder, focused): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(focused), 0)
+def ViveProStartFocusedVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ViveProAddValid(builder, valid): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(valid), 0)
+def ViveProStartValidVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ViveProAddEyeRays(builder, eyeRays): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(eyeRays), 0)
+def ViveProStartEyeRaysVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ViveProAddBlinking(builder, blinking): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(blinking), 0)
+def ViveProStartBlinkingVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ViveProEnd(builder): return builder.EndObject()

@@ -1618,14 +1618,14 @@ class EulerAngles(OutputData):
         return self._rotations[index]
 
 
-class ViveEyeTracking(OutputData):
+class VivePro(OutputData):
     def __init__(self, b):
         super().__init__(b)
         self._valid: np.ndarray = self.data.ValidAsNumpy()
         self._eye_rays: np.ndarray = self.data.EyeRaysAsNumpy().reshape(2, 2, 3)
 
-    def get_data(self) -> Vive.ViveEyeTracking:
-        return Vive.ViveEyeTracking.GetRootAsViveEyeTracking(self.bytes, 0)
+    def get_data(self) -> Vive.VivePro:
+        return Vive.VivePro.GetRootAsVivePro(self.bytes, 0)
 
     def get_focused(self) -> np.ndarray:
         return self.data.FocusedAsNumpy()

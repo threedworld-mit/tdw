@@ -2,11 +2,13 @@ from typing import List, Callable, Dict
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
+from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
-from tdw.output_data import OutputData, StaticRigidbodies, OculusTouchButtons, StaticOculusTouch
+from tdw.output_data import OutputData, StaticRigidbodies
+from tdw.output_data import VivePro as Vive
 
 
-class ViveProEye(VR):
+class VivePro(VR):
     """
     Add a VR rig to the scene that uses the Vive Pro Eye headset and controllers.
 
@@ -36,8 +38,9 @@ class ViveProEye(VR):
 
         if human_hands:
             rig_type = RigType.vive_human_hands_eyetracking
-        #else:
-            #rig_type = RigType.oculus_touch_robot_hands
+        else:
+            # rig_type = RigType.oculus_touch_robot_hands
+            rig_type = RigType.vive_human_hands_eyetracking
         super().__init__(rig_type=rig_type, output_data=output_data, position=position, rotation=rotation,
                          attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
@@ -60,26 +63,22 @@ class ViveProEye(VR):
         Object IDs of the VR nodes (the body and hands).
         """
         self.vr_node_ids: List[int] = list()
-
-    """
-    def get_initialization_commands(self) -> List[dict]:
-        commands = super().get_initialization_commands()
-        if self._set_graspable:
-            commands.extend([{"$type": "send_static_oculus_touch"},
-                             {"$type": "send_static_rigidbodies",
-                             "frequency": "once"}])
-        commands.append({"$type": "send_oculus_touch_buttons",
-                         "frequency": "always"})
-        return commands
-    """
+        """:field
+        Eye tracking data in world space.
+        """
+        self.world_eye_data: ViveEyeData = get_default_data()
+        """:field
+        Eye tracking data relative to the head.
+        """
+        self.local_eye_data: ViveEyeData = get_default_data()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
-        #commands.append({"$type": "send_oculus_touch_buttons",
-                         #"frequency": "always"})
+        commands.append({"$type": "send_vive_pro",
+                         "frequency": "always"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -88,7 +87,7 @@ class ViveProEye(VR):
             self._set_graspable = False
             # Get static Oculus Touch rig data.
             for i in range(len(resp) - 1):
-                r_id = OutputData.get_data_type_id(resp[i]) 
+                r_id = OutputData.get_data_type_id(resp[i])
                 """
                 if r_id == "soct":
                     static_oculus_touch = StaticOculusTouch(resp[i])
@@ -122,7 +121,16 @@ class ViveProEye(VR):
                                 self.commands.append({"$type": "set_object_collision_detection_mode",
                                                       "id": int(object_id),
                                                       "mode": "discrete"})
-                    break
+                elif r_id == "vivp":
+                    vive_pro: Vive = Vive(resp[i])
+                    # Get the world eye tracking data.
+                    blinking = vive_pro.get_blinking()
+                    self.world_eye_data.valid = vive_pro.get_valid(0)
+                    self.world_eye_data.ray = vive_pro.get_eye_ray(0)
+                    self.world_eye_data.blinking = blinking
+                    self.local_eye_data.valid = vive_pro.get_valid(1)
+                    self.local_eye_data.ray = vive_pro.get_eye_ray(1)
+                    self.local_eye_data.blinking = np.copy(blinking)
         super().on_send(resp=resp)
         """
         # Get the button presses.

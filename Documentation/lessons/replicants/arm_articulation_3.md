@@ -6,7 +6,9 @@
 
 This document describes how to use the Replicant API's more advanced arm articulation features. All of these features can be found in the actions you're now familiar with (`reach_for(target, arm)`, `grasp(target, arm)` and `drop(arm)`) by setting optional parameters.
 
-**There is no bounded solution for when to set optional parameters.** There is no way to determine using a simple algorithm which plan, if any, is correct for any given situation, because "correctness" is impossible to define. It is often possible for a Replicant to achieve a desired behavior without using an optional parameters, or by using several different combinations. It is up to the user or the training system to decide which plan, if any, to use for a given `reach_for()` action.
+## When to set optional parameters
+
+**There is no bounded solution for when to set optional parameters.** There is no way to determine using a simple algorithm which optional parameter, if any, is correct for any given situation, because "correctness" is impossible to define. It is often possible for a Replicant to achieve a desired behavior without using an optional parameters, or by using several different combinations. It is up to the user or the training system to decide how to best use the full capabilities of the Replicant arm articulation API.
 
 ## `reach_for(target, arm)` and make one hand follow the other
 

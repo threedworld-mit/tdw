@@ -1,6 +1,7 @@
 from typing import List, Callable, Dict
 from tdw.add_ons.autohand import Autohand
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.vr_data.rig_type import RigType
 from tdw.output_data import OutputData, OculusTouchButtons
 
 
@@ -80,3 +81,9 @@ class OculusTouch(Autohand):
             self._button_press_events_left[button] = function
         else:
             self._button_press_events_right[button] = function
+
+    def _get_human_hands(self) -> RigType:
+        return RigType.oculus_touch_human_hands
+
+    def _get_robot_hands(self) -> RigType:
+        return RigType.oculus_touch_robot_hands

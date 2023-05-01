@@ -2,6 +2,7 @@ from typing import List, Callable, Dict
 import numpy as np
 from tdw.add_ons.autohand import Autohand
 from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
+from tdw.vr_data.rig_type import RigType
 from tdw.output_data import OutputData
 from tdw.output_data import VivePro as Vive
 
@@ -92,3 +93,9 @@ class VivePro(Autohand):
             self._button_press_events_left[index] = function
         else:
             self._button_press_events_right[index] = function
+
+    def _get_human_hands(self) -> RigType:
+        return RigType.vive_pro_human_hands
+
+    def _get_robot_hands(self) -> RigType:
+        return RigType.vive_pro_robot_hands

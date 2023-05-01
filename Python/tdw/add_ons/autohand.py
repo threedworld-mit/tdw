@@ -1,5 +1,5 @@
 from typing import Dict, List, Callable
-from abc import ABC
+from abc import ABC, abstractmethod
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
@@ -31,9 +31,9 @@ class Autohand(VR, ABC):
         """
 
         if human_hands:
-            rig_type = RigType.oculus_touch_human_hands
+            rig_type = self._get_human_hands()
         else:
-            rig_type = RigType.oculus_touch_robot_hands
+            rig_type = self._get_robot_hands()
         super().__init__(rig_type=rig_type, output_data=output_data, position=position, rotation=rotation,
                          attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
@@ -129,3 +129,19 @@ class Autohand(VR, ABC):
             self._non_graspable = non_graspable
         self.vr_node_ids.clear()
         super().reset(position=position, rotation=rotation)
+
+    @abstractmethod
+    def _get_human_hands(self) -> RigType:
+        """
+        :return: The human hands rig type.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def _get_robot_hands(self) -> RigType:
+        """
+        :return: The robot hands rig type.
+        """
+
+        raise Exception()

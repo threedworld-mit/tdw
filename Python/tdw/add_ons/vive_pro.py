@@ -77,22 +77,30 @@ class VivePro(Autohand):
                                        [self._axis_events_left, self._axis_events_right]):
                     for event in axis:
                         event(delta)
-                # TODO Get the button presses.
+                # Listen for button presses.
+                for j, button in enumerate(vive_pro.get_left_buttons()):
+                    if button and j in self._button_press_events_left:
+                        self._button_press_events_left[j]()
+                for j, button in enumerate(vive_pro.get_right_buttons()):
+                    if button and j in self._button_press_events_right:
+                        self._button_press_events_right[j]()
                 break
 
-    def listen_to_button(self, index: int, is_left: bool, function: Callable[[], None]) -> None:
+    def listen_to_button(self, button: int, is_left: bool, function: Callable[[], None]) -> None:
         """
-        Listen for Oculus Touch controller button presses.
+        Listen for Vive Pro controller button presses.
 
-        :param button: The Oculus Touch controller button.
+         TODO: This doesn't work! Buttons have to be mapped to enum values somehow. There needs to be a command to add them to the list of what we're listening for.
+
+        :param button: The button index.
         :param is_left: If True, this is the left controller. If False, this is the right controller.
         :param function: The function to invoke when the button is pressed. This function must have no arguments and return None.
         """
 
         if is_left:
-            self._button_press_events_left[index] = function
+            self._button_press_events_left[button] = function
         else:
-            self._button_press_events_right[index] = function
+            self._button_press_events_right[button] = function
 
     def _get_human_hands(self) -> RigType:
         return RigType.vive_pro_human_hands

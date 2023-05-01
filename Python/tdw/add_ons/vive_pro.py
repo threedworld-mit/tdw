@@ -3,6 +3,7 @@ import numpy as np
 from tdw.add_ons.autohand import Autohand
 from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
 from tdw.vr_data.rig_type import RigType
+from tdw.vr_data.vive_pro_button import ViveProButton
 from tdw.output_data import OutputData
 from tdw.output_data import VivePro as Vive
 
@@ -41,8 +42,8 @@ class VivePro(Autohand):
                          headset_resolution_scale=headset_resolution_scale, non_graspable=non_graspable,
                          discrete_collision_detection_mode=discrete_collision_detection_mode)
         # Button press events.
-        self._button_press_events_left: Dict[int, Callable[[], None]] = dict()
-        self._button_press_events_right: Dict[int, Callable[[], None]] = dict()
+        self._button_press_events_left: Dict[ViveProButton, Callable[[], None]] = dict()
+        self._button_press_events_right: Dict[ViveProButton, Callable[[], None]] = dict()
         """:field
         Eye tracking data in world space.
         """
@@ -79,20 +80,20 @@ class VivePro(Autohand):
                         event(delta)
                 # Listen for button presses.
                 for j, button in enumerate(vive_pro.get_left_buttons()):
-                    if button and j in self._button_press_events_left:
-                        self._button_press_events_left[j]()
+                    v = ViveProButton(j)
+                    if button and v in self._button_press_events_left:
+                        self._button_press_events_left[v]()
                 for j, button in enumerate(vive_pro.get_right_buttons()):
+                    v = ViveProButton(j)
                     if button and j in self._button_press_events_right:
-                        self._button_press_events_right[j]()
+                        self._button_press_events_right[v]()
                 break
 
-    def listen_to_button(self, button: int, is_left: bool, function: Callable[[], None]) -> None:
+    def listen_to_button(self, button: ViveProButton, is_left: bool, function: Callable[[], None]) -> None:
         """
         Listen for Vive Pro controller button presses.
 
-         TODO: This doesn't work! Buttons have to be mapped to enum values somehow. There needs to be a command to add them to the list of what we're listening for.
-
-        :param button: The button index.
+        :param button: A [`ViveProButton`](../vr_data/vive_pro_button) enum value.
         :param is_left: If True, this is the left controller. If False, this is the right controller.
         :param function: The function to invoke when the button is pressed. This function must have no arguments and return None.
         """

@@ -129,7 +129,7 @@ class VivePro(object):
         return 0
 
     # VivePro
-    def LeftButtons(self, j):
+    def Buttons(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             a = self._tab.Vector(o)
@@ -137,42 +137,20 @@ class VivePro(object):
         return 0
 
     # VivePro
-    def LeftButtonsAsNumpy(self):
+    def ButtonsAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
         return 0
 
     # VivePro
-    def LeftButtonsLength(self):
+    def ButtonsLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-    # VivePro
-    def RightButtons(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
-        return 0
-
-    # VivePro
-    def RightButtonsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
-        return 0
-
-    # VivePro
-    def RightButtonsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-def ViveProStart(builder): builder.StartObject(7)
+def ViveProStart(builder): builder.StartObject(6)
 def ViveProAddFocused(builder, focused): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(focused), 0)
 def ViveProStartFocusedVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ViveProAddValid(builder, valid): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(valid), 0)
@@ -183,8 +161,6 @@ def ViveProAddBlinking(builder, blinking): builder.PrependUOffsetTRelativeSlot(3
 def ViveProStartBlinkingVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def ViveProAddAxes(builder, axes): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(axes), 0)
 def ViveProStartAxesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ViveProAddLeftButtons(builder, leftButtons): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(leftButtons), 0)
-def ViveProStartLeftButtonsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def ViveProAddRightButtons(builder, rightButtons): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rightButtons), 0)
-def ViveProStartRightButtonsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def ViveProAddButtons(builder, buttons): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(buttons), 0)
+def ViveProStartButtonsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def ViveProEnd(builder): return builder.EndObject()

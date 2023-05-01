@@ -1624,6 +1624,7 @@ class VivePro(OutputData):
         self._valid: np.ndarray = self.data.ValidAsNumpy()
         self._eye_rays: np.ndarray = self.data.EyeRaysAsNumpy().reshape(2, 2, 3)
         self._axes: np.ndarray = self.data.AxesAsNumpy().reshape(2, 2)
+        self._buttons: np.ndarray = self.data.ButtonsAsNumpy().reshape(2, 2)
 
     def get_data(self) -> Vive.VivePro:
         return Vive.VivePro.GetRootAsVivePro(self.bytes, 0)
@@ -1647,7 +1648,7 @@ class VivePro(OutputData):
         return self._axes[1]
 
     def get_left_buttons(self) -> np.ndarray:
-        return self.data.LeftButtonsAsNumpy()
+        return self._buttons[0]
 
     def get_right_buttons(self) -> np.ndarray:
-        return self.data.RightButtonsAsNumpy()
+        return self._buttons[1]

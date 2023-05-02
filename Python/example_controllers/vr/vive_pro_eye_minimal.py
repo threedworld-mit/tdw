@@ -1,6 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.vive_pro import ViveProEye
+from tdw.add_ons.vive_pro_eye import ViveProEye
 
 """
 Minimal Oculus touch example.

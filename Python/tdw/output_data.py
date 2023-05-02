@@ -59,7 +59,7 @@ from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
-from tdw.FBOutput import VivePro as Vive
+from tdw.FBOutput import ViveProEye as ViveEye
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1618,16 +1618,15 @@ class EulerAngles(OutputData):
         return self._rotations[index]
 
 
-class VivePro(OutputData):
+class ViveProEye(OutputData):
     def __init__(self, b):
         super().__init__(b)
         self._valid: np.ndarray = self.data.ValidAsNumpy()
         self._eye_rays: np.ndarray = self.data.EyeRaysAsNumpy().reshape(2, 2, 3)
         self._axes: np.ndarray = self.data.AxesAsNumpy().reshape(2, 2)
-        self._buttons: np.ndarray = self.data.ButtonsAsNumpy().reshape(2, 2)
 
-    def get_data(self) -> Vive.VivePro:
-        return Vive.VivePro.GetRootAsVivePro(self.bytes, 0)
+    def get_data(self) -> ViveEye.ViveProEye:
+        return ViveEye.ViveProEye.GetRootAsViveProEye(self.bytes, 0)
 
     def get_focused(self) -> np.ndarray:
         return self.data.FocusedAsNumpy()
@@ -1647,8 +1646,5 @@ class VivePro(OutputData):
     def get_right_axis(self) -> np.ndarray:
         return self._axes[1]
 
-    def get_left_buttons(self) -> np.ndarray:
-        return self._buttons[0]
-
-    def get_right_buttons(self) -> np.ndarray:
-        return self._buttons[1]
+    def get_pinches(self) -> np.ndarray:
+        return self.data.PinchesAsNumpy()

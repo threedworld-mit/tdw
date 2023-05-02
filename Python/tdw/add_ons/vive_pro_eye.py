@@ -1,14 +1,13 @@
-from typing import List, Callable, Dict
+from typing import List, Callable, Dict, Optional
 import numpy as np
 from tdw.add_ons.autohand import Autohand
 from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
 from tdw.vr_data.rig_type import RigType
-from tdw.vr_data.vive_pro_button import ViveProButton
 from tdw.output_data import OutputData
-from tdw.output_data import VivePro as Vive
+from tdw.output_data import ViveProEye as ViveEye
 
 
-class VivePro(Autohand):
+class ViveProEye(Autohand):
     """
     Add a VR rig to the scene that uses the Vive Pro Eye headset and controllers.
 
@@ -41,9 +40,9 @@ class VivePro(Autohand):
                          avatar_camera_width=avatar_camera_width, headset_aspect_ratio=headset_aspect_ratio,
                          headset_resolution_scale=headset_resolution_scale, non_graspable=non_graspable,
                          discrete_collision_detection_mode=discrete_collision_detection_mode)
-        # Button press events.
-        self._button_press_events_left: Dict[ViveProButton, Callable[[], None]] = dict()
-        self._button_press_events_right: Dict[ViveProButton, Callable[[], None]] = dict()
+        # Pinch events.
+        self._pinch_left: Optional[Callable[[], None]] = None
+        self._pinch_right: Optional[Callable[[], None]] = None
         """:field
         Eye tracking data in world space.
         """
@@ -55,7 +54,7 @@ class VivePro(Autohand):
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
-        commands.append({"$type": "send_vive_pro",
+        commands.append({"$type": "send_vive_pro_eye",
                          "frequency": "always"})
         return commands
 
@@ -63,8 +62,8 @@ class VivePro(Autohand):
         super().on_send(resp=resp)
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "vivp":
-                vive_pro: Vive = Vive(resp[i])
+            if r_id == "vive":
+                vive_pro: ViveEye = ViveEye(resp[i])
                 # Get the world eye tracking data.
                 blinking = vive_pro.get_blinking()
                 self.world_eye_data.valid = vive_pro.get_valid(0)
@@ -78,33 +77,27 @@ class VivePro(Autohand):
                                        [self._axis_events_left, self._axis_events_right]):
                     for event in axis:
                         event(delta)
-                # Listen for button presses.
-                for j, button in enumerate(vive_pro.get_left_buttons()):
-                    v = ViveProButton(j)
-                    if button and v in self._button_press_events_left:
-                        self._button_press_events_left[v]()
-                for j, button in enumerate(vive_pro.get_right_buttons()):
-                    v = ViveProButton(j)
-                    if button and j in self._button_press_events_right:
-                        self._button_press_events_right[v]()
+                # Listen for pinches.
+                for p, c in zip(vive_pro.get_pinches(), [self._pinch_left, self._pinch_right]):
+                    if p and (c is not None):
+                        c()
                 break
 
-    def listen_to_button(self, button: ViveProButton, is_left: bool, function: Callable[[], None]) -> None:
+    def listen_to_pinch(self, is_left: bool, function: Callable[[], None]) -> None:
         """
-        Listen for Vive Pro controller button presses.
+        Listen for Vive Pro controller pinch button presses.
 
-        :param button: A [`ViveProButton`](../vr_data/vive_pro_button) enum value.
         :param is_left: If True, this is the left controller. If False, this is the right controller.
         :param function: The function to invoke when the button is pressed. This function must have no arguments and return None.
         """
 
         if is_left:
-            self._button_press_events_left[button] = function
+            self._pinch_left = function
         else:
-            self._button_press_events_right[button] = function
+            self._pinch_right = function
 
     def _get_human_hands(self) -> RigType:
-        return RigType.vive_pro_human_hands
+        return RigType.vive_pro_eye_human_hands
 
     def _get_robot_hands(self) -> RigType:
-        return RigType.vive_pro_robot_hands
+        return RigType.vive_pro_eye_robot_hands

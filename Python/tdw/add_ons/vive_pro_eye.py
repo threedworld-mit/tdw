@@ -72,11 +72,6 @@ class ViveProEye(Autohand):
                 self.local_eye_data.valid = vive_pro.get_valid(1)
                 self.local_eye_data.ray = vive_pro.get_eye_ray(1)
                 self.local_eye_data.blinking = np.copy(blinking)
-                # Get the axis data.
-                for delta, axis in zip([vive_pro.get_left_axis(), vive_pro.get_right_axis()],
-                                       [self._axis_events_left, self._axis_events_right]):
-                    for event in axis:
-                        event(delta)
                 # Listen for pinches.
                 for p, c in zip(vive_pro.get_pinches(), [self._pinch_left, self._pinch_right]):
                     if p and (c is not None):

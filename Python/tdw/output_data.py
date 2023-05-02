@@ -1623,7 +1623,6 @@ class ViveProEye(OutputData):
         super().__init__(b)
         self._valid: np.ndarray = self.data.ValidAsNumpy()
         self._eye_rays: np.ndarray = self.data.EyeRaysAsNumpy().reshape(2, 2, 3)
-        self._axes: np.ndarray = self.data.AxesAsNumpy().reshape(2, 2)
 
     def get_data(self) -> ViveEye.ViveProEye:
         return ViveEye.ViveProEye.GetRootAsViveProEye(self.bytes, 0)
@@ -1639,12 +1638,6 @@ class ViveProEye(OutputData):
 
     def get_blinking(self) -> np.ndarray:
         return self.data.BlinkingAsNumpy()
-
-    def get_left_axis(self) -> np.ndarray:
-        return self._axes[0]
-
-    def get_right_axis(self) -> np.ndarray:
-        return self._axes[1]
 
     def get_pinches(self) -> np.ndarray:
         return self.data.PinchesAsNumpy()

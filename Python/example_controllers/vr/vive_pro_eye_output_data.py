@@ -29,7 +29,7 @@ class ViveProEyeOutputData(Controller):
         self.object_id = Controller.get_unique_id()
         # If True, we'll apply a force to the cube. This gets set in the left trackpad callback function.
         self.apply_force = False
-        # If True, quit the simulation. This gets set in the left reset callback function.
+        # If True, quit the simulation. This gets set in the left menu callback function.
         self.done = False
 
         # Initialize the Vive Pro Eye.
@@ -39,7 +39,7 @@ class ViveProEyeOutputData(Controller):
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
         # Do something on button presses.
         self.vr.listen_to_button(button=ViveButton.left_trackpad_click, function=self.left_trackpad)
-        self.vr.listen_to_button(button=ViveButton.left_reset, function=self.quit)
+        self.vr.listen_to_button(button=ViveButton.left_menu, function=self.quit)
 
         # The `UI` add-on is used to show text if the user is looking at the cube.
         self.ui = UI()

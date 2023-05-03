@@ -7,4 +7,4 @@ class ViveButton(Enum):
     """
 
     left_trackpad_click = 0
-    left_reset = 1
+    left_menu = 1

@@ -8,19 +8,40 @@ from tdw.output_data import OutputData, Raycast
 
 
 class ViveProEyeOutputData(Controller):
+    """
+    An example of how to read the Vive Pro Eye output data.
+
+    - Left trackpad click to apply a force to the cube.
+    - Left reset click to quit.
+    - Left and right trackpads to change the color of the cube.
+    - Look at the cube to show a UI message.
+    - Look around to move a marker showing the gaze position.
+    """
+
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+
+        # The color of the cube. This will be modified by controller axis events.
         self.color = {"r": 0, "g": 0, "b": 1, "a": 1}
-        self.color_delta = 0.01
+        # Change the color of the cube at this rate.
+        self.color_delta = 0.005
+        # The ID of the cube.
         self.object_id = Controller.get_unique_id()
+        # If True, we'll apply a force to the cube. This gets set in the left trackpad callback function.
         self.apply_force = False
+        # If True, quit the simulation. This gets set in the left reset callback function.
         self.done = False
-        self.force = 0.25
+
+        # Initialize the Vive Pro Eye.
         self.vr = ViveProEye()
+        # Do something on left/right axis movement.
         self.vr.listen_to_axis(is_left=True, function=self.left_axis)
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
+        # Do something on button presses.
         self.vr.listen_to_button(button=ViveButton.left_trackpad_click, function=self.left_trackpad)
         self.vr.listen_to_button(button=ViveButton.left_reset, function=self.quit)
+
+        # The `UI` add-on is used to show text if the user is looking at the cube.
         self.ui = UI()
         self.ui.attach_canvas_to_vr_rig()
         self.text_id = self.ui.add_text(text="",
@@ -31,6 +52,9 @@ class ViveProEyeOutputData(Controller):
         self.add_ons.extend([self.vr, self.ui])
 
     def left_axis(self, axis: np.ndarray):
+        # Adjust the cube's color.
+        # Notice that we aren't sending a command.
+        # This will tell the controller in `run()` to send the relevant command.
         if axis[0] > 0:
             self.color_up("r")
         elif axis[0] < 0:
@@ -41,6 +65,9 @@ class ViveProEyeOutputData(Controller):
             self.color_down("g")
 
     def right_axis(self, axis: np.ndarray):
+        # Adjust the cube's color.
+        # Notice that we aren't sending a command.
+        # This will tell the controller in `run()` to send the relevant command.
         if axis[0] > 0:
             self.color_up("b")
         elif axis[0] < 0:
@@ -51,9 +78,15 @@ class ViveProEyeOutputData(Controller):
             self.color_down("a")
 
     def left_trackpad(self):
+        # When the left trackpad is clicked, apply force.
+        # Notice that we aren't actually sending a command.
+        # This will tell the controller in `run()` to send the relevant command.
         self.apply_force = True
 
     def quit(self):
+        # Quit the simulation.
+        # Notice that we aren't sending a command.
+        # This will tell the controller in `run()` to send the relevant command.
         self.done = True
 
     def color_up(self, channel: str):
@@ -84,12 +117,13 @@ class ViveProEyeOutputData(Controller):
             if self.apply_force:
                 self.apply_force = False
                 commands.append({"$type": "apply_force_to_object",
-                                 "force": {"x": self.force, "y": 0, "z": 0},
+                                 "force": {"x": 0.25, "y": 0, "z": 0},
                                  "id": self.object_id})
             if self.object_id in self.vr.focused_objects:
                 self.ui.set_text(text="I can see the object", ui_id=self.text_id)
             else:
                 self.ui.set_text(text="", ui_id=self.text_id)
+            # If we have eye tracking data, raycast along the eye ray.
             if self.vr.world_eye_data.valid:
                 origin = self.vr.world_eye_data.ray[0]
                 direction = self.vr.world_eye_data.ray[1]

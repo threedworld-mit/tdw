@@ -6,7 +6,7 @@ from tdw.add_ons.vive_pro_eye import ViveProEye
 Minimal Oculus touch example.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 vr = ViveProEye()
 c.add_ons.append(vr)
 c.communicate([TDWUtils.create_empty_room(12, 12),

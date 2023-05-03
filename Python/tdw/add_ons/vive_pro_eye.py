@@ -51,6 +51,10 @@ class ViveProEye(Autohand):
         Eye tracking data relative to the head.
         """
         self.local_eye_data: ViveEyeData = get_default_data()
+        """:field
+        A list of object IDs in view of the headset.
+        """
+        self.focused_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -64,6 +68,9 @@ class ViveProEye(Autohand):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "vipe":
                 vive_pro: ViveEye = ViveEye(resp[i])
+                # Get the focused objects.
+                self.focused_objects.clear()
+                self.focused_objects.extend(vive_pro.get_focused())
                 # Get the world eye tracking data.
                 blinking = vive_pro.get_blinking()
                 self.world_eye_data.valid = vive_pro.get_valid(0)

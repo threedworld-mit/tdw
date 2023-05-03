@@ -2,6 +2,7 @@ import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.vive_pro_eye import ViveProEye
+from tdw.add_ons.ui import UI
 from tdw.vr_data.vive_button import ViveButton
 
 
@@ -19,7 +20,14 @@ class ViveProEyeOutputData(Controller):
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
         self.vr.listen_to_button(button=ViveButton.left_trackpad_click, function=self.left_trackpad)
         self.vr.listen_to_button(button=ViveButton.left_reset, function=self.quit)
-        self.add_ons.append(self.vr)
+        self.ui = UI()
+        self.ui.attach_canvas_to_vr_rig()
+        self.text_id = self.ui.add_text(text="",
+                                        font_size=36,
+                                        position={"x": 0, "y": 0},
+                                        color={"r": 1, "g": 0, "b": 0, "a": 1},
+                                        raycast_target=False)
+        self.add_ons.extend([self.vr, self.ui])
 
     def left_axis(self, axis: np.ndarray):
         if axis[0] > 0:
@@ -77,6 +85,10 @@ class ViveProEyeOutputData(Controller):
                 commands.append({"$type": "apply_force_to_object",
                                  "force": {"x": self.force, "y": 0, "z": 0},
                                  "id": self.object_id})
+            if self.object_id in self.vr.focused_objects:
+                self.ui.set_text(text="I can see the object", ui_id=self.text_id)
+            else:
+                self.ui.set_text(text="", ui_id=self.text_id)
             self.communicate(commands)
         self.communicate({"$type": "terminate"})
 

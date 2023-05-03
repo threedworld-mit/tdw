@@ -107,8 +107,30 @@ class ViveProEye(object):
         return 0
 
     # ViveProEye
-    def Pinches(self, j):
+    def Axes(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # ViveProEye
+    def AxesAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # ViveProEye
+    def AxesLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # ViveProEye
+    def Pinches(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
@@ -116,19 +138,19 @@ class ViveProEye(object):
 
     # ViveProEye
     def PinchesAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
         return 0
 
     # ViveProEye
     def PinchesLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def ViveProEyeStart(builder): builder.StartObject(5)
+def ViveProEyeStart(builder): builder.StartObject(6)
 def ViveProEyeAddFocused(builder, focused): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(focused), 0)
 def ViveProEyeStartFocusedVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ViveProEyeAddValid(builder, valid): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(valid), 0)
@@ -137,6 +159,8 @@ def ViveProEyeAddEyeRays(builder, eyeRays): builder.PrependUOffsetTRelativeSlot(
 def ViveProEyeStartEyeRaysVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def ViveProEyeAddBlinking(builder, blinking): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(blinking), 0)
 def ViveProEyeStartBlinkingVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def ViveProEyeAddPinches(builder, pinches): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(pinches), 0)
+def ViveProEyeAddAxes(builder, axes): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(axes), 0)
+def ViveProEyeStartAxesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def ViveProEyeAddPinches(builder, pinches): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(pinches), 0)
 def ViveProEyeStartPinchesVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def ViveProEyeEnd(builder): return builder.EndObject()

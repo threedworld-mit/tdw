@@ -1,5 +1,6 @@
-from typing import Dict, List
+from typing import Dict, List, Callable
 from abc import ABC, abstractmethod
+import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.rig_type import RigType
 from tdw.output_data import OutputData, StaticOculusTouch, StaticRigidbodies
@@ -37,6 +38,9 @@ class Autohand(VR, ABC):
                          attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
+        # Axis events.
+        self._axis_events_left: List[Callable[[np.array], None]] = list()
+        self._axis_events_right: List[Callable[[np.array], None]] = list()
         # Non-graspable objects.
         if non_graspable is None:
             self._non_graspable: List[int] = list()
@@ -95,6 +99,19 @@ class Autohand(VR, ABC):
                                                       "mode": "discrete"})
                     break
         super().on_send(resp=resp)
+
+    def listen_to_axis(self, is_left: bool, function: Callable[[np.array], None]) -> None:
+        """
+        Listen for Oculus Touch controller axis events.
+
+        :param is_left: If True, this is the left controller. If False, this is the right controller.
+        :param function: The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None.
+        """
+
+        if is_left:
+            self._axis_events_left.append(function)
+        else:
+            self._axis_events_right.append(function)
 
     def reset(self, non_graspable: List[int] = None, position: Dict[str, float] = None, rotation: float = 0) -> None:
         """

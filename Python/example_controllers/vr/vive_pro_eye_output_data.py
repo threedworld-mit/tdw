@@ -4,6 +4,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.vive_pro_eye import ViveProEye
 from tdw.add_ons.ui import UI
 from tdw.vr_data.vive_button import ViveButton
+from tdw.output_data import OutputData, Raycast
 
 
 class ViveProEyeOutputData(Controller):
@@ -66,14 +67,14 @@ class ViveProEyeOutputData(Controller):
             self.color[channel] = 0
 
     def run(self):
-        self.communicate([TDWUtils.create_empty_room(12, 12),
-                          Controller.get_add_object(model_name="cube",
-                                                    library="models_flex.json",
-                                                    object_id=self.object_id,
-                                                    position={"x": 0, "y": 0, "z": 0.5}),
-                          {"$type": "scale_object",
-                           "id": self.object_id,
-                           "scale_factor": {"x": 0.2, "y": 0.2, "z": 0.2}}])
+        resp = self.communicate([TDWUtils.create_empty_room(12, 12),
+                                 Controller.get_add_object(model_name="cube",
+                                                           library="models_flex.json",
+                                                           object_id=self.object_id,
+                                                           position={"x": 0, "y": 0, "z": 0.5}),
+                                 {"$type": "scale_object",
+                                  "id": self.object_id,
+                                  "scale_factor": {"x": 0.2, "y": 0.2, "z": 0.2}}])
         while not self.done:
             # Set the color of the cube.
             commands = [{"$type": "set_color",
@@ -89,7 +90,25 @@ class ViveProEyeOutputData(Controller):
                 self.ui.set_text(text="I can see the object", ui_id=self.text_id)
             else:
                 self.ui.set_text(text="", ui_id=self.text_id)
-            self.communicate(commands)
+            if self.vr.world_eye_data.valid:
+                origin = self.vr.world_eye_data.ray[0]
+                direction = self.vr.world_eye_data.ray[1]
+                destination = origin + direction * 20
+                commands.append({"$type": "send_raycast",
+                                 "id": 0,
+                                 "origin": TDWUtils.array_to_vector3(origin),
+                                 "destination": TDWUtils.array_to_vector3(destination)})
+            # If there was a raycast, add a position marker.
+            for i in range(len(resp) - 1):
+                r_id = OutputData.get_data_type_id(resp[i])
+                if r_id == "rayc":
+                    raycast = Raycast(resp[i])
+                    if raycast.get_hit():
+                        point = raycast.get_point()
+                        commands.extend([{"$type": "remove_position_markers"},
+                                         {"$type": "add_position_marker",
+                                          "position": {"x": point[0], "y": point[1], "z": point[2]}}])
+            resp = self.communicate(commands)
         self.communicate({"$type": "terminate"})
 
 

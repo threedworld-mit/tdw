@@ -1646,5 +1646,5 @@ class ViveProEye(OutputData):
     def get_right_axis(self) -> np.ndarray:
         return self._axes[1]
 
-    def get_pinches(self) -> np.ndarray:
-        return self.data.PinchesAsNumpy()
+    def get_buttons(self) -> np.ndarray:
+        return self.data.ButtonsAsNumpy()

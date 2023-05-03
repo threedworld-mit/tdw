@@ -1,8 +1,9 @@
-from typing import List, Callable, Dict, Optional
+from typing import List, Callable, Dict
 import numpy as np
 from tdw.add_ons.autohand import Autohand
-from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
 from tdw.vr_data.rig_type import RigType
+from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
+from tdw.vr_data.vive_button import ViveButton
 from tdw.output_data import OutputData
 from tdw.output_data import ViveProEye as ViveEye
 
@@ -40,9 +41,8 @@ class ViveProEye(Autohand):
                          avatar_camera_width=avatar_camera_width, headset_aspect_ratio=headset_aspect_ratio,
                          headset_resolution_scale=headset_resolution_scale, non_graspable=non_graspable,
                          discrete_collision_detection_mode=discrete_collision_detection_mode)
-        # Pinch events.
-        self._pinch_left: Optional[Callable[[], None]] = None
-        self._pinch_right: Optional[Callable[[], None]] = None
+        # Button events.
+        self._button_events: Dict[ViveButton, Callable[[], None]] = dict()
         """:field
         Eye tracking data in world space.
         """
@@ -77,10 +77,12 @@ class ViveProEye(Autohand):
                                        [self._axis_events_left, self._axis_events_right]):
                     for event in axis:
                         event(delta)
-                # Listen for pinches.
-                for p, c in zip(vive_pro.get_pinches(), [self._pinch_left, self._pinch_right]):
-                    if p and (c is not None):
-                        c()
+                # Listen for button presses.
+                for j, clicked in enumerate(vive_pro.get_buttons()):
+                    if clicked:
+                        button = ViveButton(j)
+                        if button in self._button_events:
+                            self._button_events[button]()
                 # Invoke axis events.
                 for delta, axis in zip([vive_pro.get_left_axis(), vive_pro.get_right_axis()],
                                        [self._axis_events_left, self._axis_events_right]):
@@ -88,18 +90,15 @@ class ViveProEye(Autohand):
                         event(delta)
                 break
 
-    def listen_to_pinch(self, is_left: bool, function: Callable[[], None]) -> None:
+    def listen_to_button(self, button: ViveButton, function: Callable[[], None]) -> None:
         """
-        Listen for Vive Pro controller pinch button presses.
+        Listen for Vive Pro controller button presses. For now, only buttons on the left controller are supported.
 
-        :param is_left: If True, this is the left controller. If False, this is the right controller.
+        :param button: The [`ViveButton`](../vr_data/vive_button.md) on the left controller.
         :param function: The function to invoke when the button is pressed. This function must have no arguments and return None.
         """
 
-        if is_left:
-            self._pinch_left = function
-        else:
-            self._pinch_right = function
+        self._button_events[button] = function
 
     def _get_human_hands(self) -> RigType:
         return RigType.vive_pro_eye_human_hands

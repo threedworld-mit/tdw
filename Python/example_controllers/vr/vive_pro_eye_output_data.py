@@ -2,6 +2,7 @@ import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.vive_pro_eye import ViveProEye
+from tdw.vr_data.vive_button import ViveButton
 
 
 class ViveProEyeOutputData(Controller):
@@ -10,9 +11,14 @@ class ViveProEyeOutputData(Controller):
         self.color = {"r": 0, "g": 0, "b": 1, "a": 1}
         self.color_delta = 0.01
         self.object_id = Controller.get_unique_id()
+        self.apply_force = False
+        self.done = False
+        self.force = 0.25
         self.vr = ViveProEye()
         self.vr.listen_to_axis(is_left=True, function=self.left_axis)
         self.vr.listen_to_axis(is_left=False, function=self.right_axis)
+        self.vr.listen_to_button(button=ViveButton.left_trackpad_click, function=self.left_trackpad)
+        self.vr.listen_to_button(button=ViveButton.left_reset, function=self.quit)
         self.add_ons.append(self.vr)
 
     def left_axis(self, axis: np.ndarray):
@@ -35,6 +41,12 @@ class ViveProEyeOutputData(Controller):
         elif axis[1] < 0:
             self.color_down("a")
 
+    def left_trackpad(self):
+        self.apply_force = True
+
+    def quit(self):
+        self.done = True
+
     def color_up(self, channel: str):
         self.color[channel] += self.color_delta
         if self.color[channel] > 1:
@@ -54,11 +66,19 @@ class ViveProEyeOutputData(Controller):
                           {"$type": "scale_object",
                            "id": self.object_id,
                            "scale_factor": {"x": 0.2, "y": 0.2, "z": 0.2}}])
-        while True:
+        while not self.done:
             # Set the color of the cube.
-            self.communicate([{"$type": "set_color",
-                               "id": self.object_id,
-                               "color": self.color}])
+            commands = [{"$type": "set_color",
+                         "id": self.object_id,
+                         "color": self.color}]
+            # Apply a force to the cube.
+            if self.apply_force:
+                self.apply_force = False
+                commands.append({"$type": "apply_force_to_object",
+                                 "force": {"x": self.force, "y": 0, "z": 0},
+                                 "id": self.object_id})
+            self.communicate(commands)
+        self.communicate({"$type": "terminate"})
 
 
 if __name__ == "__main__":

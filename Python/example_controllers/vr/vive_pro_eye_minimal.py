@@ -3,7 +3,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.vive_pro_eye import ViveProEye
 
 """
-Minimal Oculus touch example.
+Minimal Vive Eye Pro example.
 """
 
 c = Controller()

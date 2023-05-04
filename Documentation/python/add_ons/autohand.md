@@ -1,12 +1,8 @@
-# OculusTouch
+# Autohand
 
-`from tdw.add_ons.oculus_touch import OculusTouch`
+`from tdw.add_ons.autohand import Autohand`
 
-Add a VR rig to the scene that uses Oculus Touch controllers.
-
-Make all non-kinematic objects graspable by the rig.
-
-Per-frame, update the positions of the VR rig, its hands, and its head, as well as which objects it is grasping and the controller button presses.
+Abstract base class for Autohand rigs.
 
 ## Class Variables
 
@@ -36,31 +32,15 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 - `initialized` If True, this module has been initialized.
 
-- `rig` The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
-
-- `left_hand` The [`Transform`](../object_data/transform.md) data of the left hand. If `output_data == False`, this is never updated.
-
-- `right_hand` The [`Transform`](../object_data/transform.md) data of the right hand. If `output_data == False`, this is never updated.
-
-- `head` The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
-
-- `held_left` A numpy of object IDs held by the left hand.
-
-- `held_right` A numpy of object IDs held by the right hand.
-
-- `commands` These commands will be appended to the commands of the next `communicate()` call.
-
-- `initialized` If True, this module has been initialized.
-
 ***
 
 ## Functions
 
 #### \_\_init\_\_
 
-**`OculusTouch()`**
+**`Autohand()`**
 
-**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
+**`Autohand(human_hands=True, set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -161,15 +141,3 @@ Listen for controller axis events.
 | --- | --- | --- | --- |
 | is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
 | function |  Callable[[np.array] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |
-
-#### listen_to_button
-
-**`self.listen_to_button(button, is_left, function)`**
-
-Listen for Oculus Touch controller button presses.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| button |  OculusTouchButton |  | The Oculus Touch controller button. |
-| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
-| function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |

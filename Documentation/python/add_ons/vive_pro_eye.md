@@ -1,8 +1,8 @@
-# OculusTouch
+# ViveProEye
 
-`from tdw.add_ons.oculus_touch import OculusTouch`
+`from tdw.add_ons.vive_pro_eye import ViveProEye`
 
-Add a VR rig to the scene that uses Oculus Touch controllers.
+Add a VR rig to the scene that uses the Vive Pro Eye headset and controllers.
 
 Make all non-kinematic objects graspable by the rig.
 
@@ -17,6 +17,12 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 ***
 
 ## Fields
+
+- `world_eye_data` Eye tracking data in world space.
+
+- `local_eye_data` Eye tracking data relative to the head.
+
+- `focused_objects` A list of object IDs in view of the headset.
 
 - `vr_node_ids` Object IDs of the VR nodes (the body and hands).
 
@@ -58,9 +64,9 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 
 #### \_\_init\_\_
 
-**`OculusTouch()`**
+**`ViveProEye()`**
 
-**`OculusTouch(human_hands=True, set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True)`**
+**`ViveProEye(human_hands=True, set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, discrete_collision_detection_mode=True, gaze_radius=0.1)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -75,6 +81,7 @@ Per-frame, update the positions of the VR rig, its hands, and its head, as well 
 | headset_resolution_scale |  float  | 1.0 | The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75 |
 | non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
 | discrete_collision_detection_mode |  bool  | True | If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW). |
+| gaze_radius |  float  | 0.1 | The radius of the spherecast used to find objects in the gaze focus. |
 
 #### get_initialization_commands
 
@@ -164,12 +171,11 @@ Listen for controller axis events.
 
 #### listen_to_button
 
-**`self.listen_to_button(button, is_left, function)`**
+**`self.listen_to_button(button, function)`**
 
-Listen for Oculus Touch controller button presses.
+Listen for Vive Pro controller button presses. For now, only buttons on the left controller are supported.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| button |  OculusTouchButton |  | The Oculus Touch controller button. |
-| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
+| button |  ViveButton |  | The [`ViveButton`](../vr_data/vive_button.md) on the left controller. |
 | function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |

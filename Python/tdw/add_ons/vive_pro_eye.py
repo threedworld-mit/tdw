@@ -5,7 +5,7 @@ from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.vive_eye_data import ViveEyeData, get_default_data
 from tdw.vr_data.vive_button import ViveButton
 from tdw.output_data import OutputData
-from tdw.output_data import ViveProEye as ViveEye
+from tdw.output_data import ViveProEye as _ViveProEyeOutputData
 
 
 class ViveProEye(Autohand):
@@ -71,7 +71,7 @@ class ViveProEye(Autohand):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "vipe":
-                vive_pro: ViveEye = ViveEye(resp[i])
+                vive_pro: _ViveProEyeOutputData = _ViveProEyeOutputData(resp[i])
                 # Get the focused objects.
                 self.focused_objects.clear()
                 self.focused_objects.extend(vive_pro.get_focused())

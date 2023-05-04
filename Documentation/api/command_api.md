@@ -693,6 +693,7 @@
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
 | [`send_version`](#send_version) | Receive data about the build version.  |
+| [`send_vive_pro_eye`](#send_vive_pro_eye) | Send Vive Pro Eye data, including controller pad movement, button presses, and eye tracking data.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
 **Send Objects Block Command**
@@ -763,6 +764,7 @@
 | [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
+| [`set_vive_pro_eye_gaze_radius`](#set_vive_pro_eye_gaze_radius) | Set the radius of the spherecast used to find objects that are in focus in a Vive Pro Eye simulation.  |
 | [`set_vr_loading_screen`](#set_vr_loading_screen) | Show or hide the VR rig's loading screen.  |
 | [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
@@ -904,6 +906,8 @@ The type of VR rig to add to the scene.
 | --- | --- |
 | `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
 | `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
+| `"vive_pro_eye_human_hands"` | A VR rig based on an HTC Vive Pro Eye headset, eyetracking, controllers and AutoHand grasping. Hands are visualized as human hands. |
+| `"vive_pro_eye_robot_hands"` | A VR rig based on an HTC Vive Pro Eye headset, eyetracking, controllers and AutoHand grasping. Hands are visualized as robot hands. |
 
 ***
 
@@ -9132,6 +9136,39 @@ Options for when to send data.
 
 ***
 
+## **`send_vive_pro_eye`**
+
+Send Vive Pro Eye data, including controller pad movement, button presses, and eye tracking data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`VivePro`](output_data.md#VivePro)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_vive_pro_eye"}
+```
+
+```python
+{"$type": "send_vive_pro_eye", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_vr_rig`**
 
 Send data for a VR Rig currently in the scene. 
@@ -9907,6 +9944,26 @@ Rotate the VR rig by an angle.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | The angle of rotation in degrees. | |
+
+***
+
+## **`set_vive_pro_eye_gaze_radius`**
+
+Set the radius of the spherecast used to find objects that are in focus in a Vive Pro Eye simulation. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "set_vive_pro_eye_gaze_radius"}
+```
+
+```python
+{"$type": "set_vive_pro_eye_gaze_radius", "gaze_radius": 0.1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"gaze_radius"` | float | The radius of the gaze spherecast. | 0.1 |
 
 ***
 

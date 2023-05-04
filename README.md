@@ -242,7 +242,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 ### 11.4 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
-2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
+2. [Oculus Touch](Documentation/lessons/vr/oculus_touch.md)
+3. [Vive Pro Eye](Documentation/lessons/vr/vive_pro_eye.md)
 
 ### 11.5 Keyboard and Mouse
 
@@ -319,6 +320,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [AddOn](Documentation/python/add_ons/add_on.md)
 - [AudioInitializer](Documentation/python/add_ons/audio_initializer.md)
 - [AudioInitializerBase](Documentation/python/add_ons/audio_initializer_base.md)
+- [Autohand](Documentation/python/add_ons/autohand.md)
 - [AvatarBody](Documentation/python/add_ons/avatar_body.md)
 - [Benchmark](Documentation/python/add_ons/benchmark.md)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
@@ -358,6 +360,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [UI](Documentation/python/add_ons/ui.md)
+- [ViveProEye](Documentation/python/add_ons/vive_pro_eye.md)
 - [VR](Documentation/python/add_ons/vr.md)
 - [Writer](Documentation/python/add_ons/writer.md)
 
@@ -581,6 +584,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
 - [RigType](Documentation/python/vr_data/rig_type.md)
+- [ViveButton](Documentation/python/vr_data/vive_button.md)
+- [ViveEyeData](Documentation/python/vr_data/vive_eye_data.md)
 
 # Performance benchmarks
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)

@@ -40,6 +40,8 @@ class TurnTo(Action):
         commands.append({"$type": "object_look_at_position",
                          "position": position,
                          "id": static.replicant_id})
+        commands.append({"$type": "replicant_step",
+                         "id": static.replicant_id})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

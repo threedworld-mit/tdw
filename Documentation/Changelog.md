@@ -2,9 +2,9 @@
 
 # v1.11.x
 
-To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.9
+## v1.11.16
 
 ### New Features
 
@@ -51,7 +51,215 @@ To upgrade from TDW v1.9 to v1.10, read [this guide](upgrade_guides/v1.10_to_v1.
 | `python/add_ons/oculus_leap_motion.md` | API documentation for `OculusLeapMotion`. |
 | `python/vr_data/finger_bone.md`        | API documentation for `FingerBone`.       |
 
+## v1.11.15
+
+### Command API
+
+#### New Commands
+
+| Command                                 | Description                                                  |
+| --------------------------------------- | ------------------------------------------------------------ |
+| `replicant_reach_for_relative_position` | Instruct a Replicant to start to reach for a target position relative to the Replicant. |
+
+#### Modified Commands
+
+| Command                                 | Modification                                 |
+| --------------------------------------- | -------------------------------------------- |
+| `replicant_set_grasped_object_rotation` | Added optional parameter `relative_to_hand`. |
+| `replicant_reach_for_object`            | Added optional parameter `offset`.           |
+| `repicant_reach_for_position`           | Added optional parameter `offset`.           |
+| `replicant_grasp_object`                | Added optional parameter `offset`.           |
+
+### `tdw` module
+
+- Added optional parameters to `replicant.reach_for()`:
+  - `from_held` Control whether an offset from the held object will be applied to the target position. 
+  - `held_point` The bounds point of the held object from which the offset will be calculated.
+  - `plan` Use an `IkPlan` to subdivide the motion.
+  - `absolute` Determines whether the `target` position is relative to the world or to the Replicant.
+- Added optional parameters to `replicant.grasp()`:
+  -  `relative_to_hand` How the held object is rotated.
+  - `offset` The offset distance from the hand.
+- Added optional parameters to `replicant.drop()`:
+  - `offset` Sets an offset distance or position to apply to a dropped object.
+- Added: `IkPlanType`. Enum values defining IK plans.
+- Fixed: `replicant.turn_by()` and `replicant.turn_to()` don't set the positions of held objects correctly.
+- Fixed (in the build): The initial position of the hand in a `replicant.reach_for()` action is set incorrectly.
+- Fixed (in the build): The offset of a held object from the hand is calculated incorrectly and doesn't change with respect to which hand is holding the object.
+- Fixed (in the build): While a Replicant is walking or playing any other animation, the positions of held objects aren't updated correctly.
+- (Backend) Added a new Replicant action: `ReachForWithPlan`. This is hidden from the user; if the user sets `plan` parameter in `reach_for()`, the Replicant will use `ReachForWithPlan` instead of `ReachFor`.
+- (Backend) Added `IkPlan`. Abstract base class for IK plans.
+- (Backend) Added `VerticalHorizontal`. An IK plan with vertical and horizontal components.
+
+### Example Controllers
+
+- Added: `replicant/grasp_rotate.py`
+- Added: `replicant/reach_for_offset.py`
+- Added: `replicant/reach_for_relative.py`
+- Added: `replicant/reach_for_with_plan.py`
+- Added: `replicant/stack_objects.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                           | Description                                                  |
+| -------------------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation_3.md`         | How to use advanced features in the Replicant's arm articulation API. |
+| `lessons/replicants/arm_articulation_4.md`         | An example of how a Replicant can stack objects.             |
+| `python/replicant/actions/reach_for_with_plan.md`  | API for `ReachForWithPlan`                                   |
+| `python/replicant/ik_plans/ik_plan_type.md`        | API for `IkPlanType`                                         |
+| `python/replicant/ik_plans/ik_plan.md`             | API for `IkPlan`                                             |
+| `python/replicant/ik_plans/vertical_horizontal.md` | API for `VerticalHorizontal`                                 |
+
+#### Modified Documentation
+
+| Document                                 | Modification                                                 |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/arm_articulation.md` | Renamed: *Arm articulation, pt.1: Basics*<br>Moved some of the more advanced sections to Arm articulation, pt. 3 |
+| `lessons/replicants/grasp_drop.md`       | Renamed: *Arm articulation, pt. 2: Grasp and drop*<br>Moved some of the more advanced sections to Arm articulation, pt. 3 |
+
+## v1.11.14
+
+### Build
+
+- Fixed: Objects held by the Replicant can be offset far from the hand holding them. Now, held objects will be in their expected positions relative to the hand.
+- Fixed: Replicant transform output data doesn't match the actual body part positions during an animation. In terms of the `Replicant` add-on, this fixes bugs found in `animate()`, `move_by()`, and `move_to()`.
+- Fixed: All Replicant IK commands exhibit strange behavior at lower framerates. This was due to an internal counter using the wrong framerate value. In terms of the `Replicant` add-on, this fixes bugs found in `reach_for()`, `reset_arm()`, `look_at()`, `rotate_head()`, and `reset_head()`.
+- Fixed: It is possible for the Replicant's apparent position to be different between saved images and what's rendered in the simulation window.
+
+## v1.11.13
+
+### `tdw` module
+
+- Fixed numpy array type hinting in TDWUtils.
+- Added: `EmptyObjectManager`. Add empty objects and track their positions.
+
+### Build
+
+- Fixed: Unhandled MissingReferenceException if the scene is reset while the Replicant is doing a `reach_for()` action.
+- Fixed: Potential unhandled exceptions if the scene is reset while the Replicant is doing a `move_by()`, `move_to()`, `animate()`, `look_at()`, `reset_arm()`, `reset_head()`, or `rotate_head()` action.
+
+### Model Library
+
+- Added affordance points to all models in `models_flex.json`
+
+### Example Controllers
+
+- Added: `non_physics/empty_objects.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                         |
+| ---------------------------------------- | ----------------------------------- |
+| `lessons/non_physics/empty_objects.md`   | Lesson for the `EmptyObjectManager` |
+| `python/add_ons/empty_object_manager.md` | API for the `EmptyObjectManager`.   |
+| `lessons/remote/overview.md`       | Overview of documentation for Linux servers. |
+| `lessons/remote/x11_forwarding.md` | X11 forwarding.                              |
+
+#### Modified Documentation
+
+| Document    | Modification                                                 |
+| ----------- | ------------------------------------------------------------ |
+| `README.md` | Moved the remote server documentation to be just below the setup section. |
+
+## v1.11.12
+
+### `tdw` module
+
+- Fixed: Replicant sometimes glitches if it tries to grasp a container (the container tries to parent the Replicant to itself rather than the other way around).
+
+### Replicant Library
+
+- Added: fireman, man_casual
+
+### Build
+
+- Fixed: NullReferenceException if `replicant.reset()` is called while the Replicant is holding an object.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                         | Modification                                                 |
+| -------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/overview.md` | Added a section on how to set different Replicant asset bundles. |
+
+## v1.11.11
+
+### `tdw` module
+
+- Fixed: `FloorplanFlood` doesn't add the given scene's list flood effect.
+- Fixed: `QuaternionUtils.euler_angles_to_quaternion(euler)` and `QuaternionUtils.quaternion_to_euler_angles(quaternion)` return incorrect values.
+- (Backend) Fixed the type hinting of `QuaternionUtils` (np.ndarray instead of np.array).
+
+### Build
+
+- Fixed: `replicant_reach_for_object` and `replicant_reach_for_position` ignore the `max_distance` parameter.
+
+## v1.11.10
+
+### Command API
+
+#### New Commands
+
+| Command                        | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| `add_floorplan_flood_buoyancy` | Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on. |
+
+### `tdw` module
+
+- Added: `FloorplanFlood` add-on. Initialize a scene populated by objects in pre-scripted layouts. Then, create a set of flood objects for each floor section in the floorplan.
+
+### Visual Effects Library
+
+- Added `flood_effects.json`. This library is used by the `FloorplanFlood` add-on.
+
+### Example Controllers
+
+- Added: `non_physics/floorplan_flood_minimal.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                 | Description                  |
+| ---------------------------------------- | ---------------------------- |
+| `python/add_ons/floorplan_flood.md`      | API for `FloorplanFlood`.    |
+| `lessons/non_physics/floorplan_flood.md` | Lesson for `FloorplanFlood`. |
+
+## v1.11.9
+
+### Command API
+
+#### New Commands
+
+| Command             | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `send_euler_angles` | Send the rotations of each object in the scene expressed as Euler angles. This command is a backend tool and not meant for general usage. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data   | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| `EulerAngles` | The rotations of each object in the scene expressed as Euler angles. This output data is a backend tool and not meant for general usage. |
+
+### `tdw` module
+
+- Replaced all cabinets, dishwasher, and fridges in the `Floorplan` scenes with composite objects whenever possible.
+  - Backend: Updated `floorplan_layouts.json` to include the composite objects and to store object rotations as Euler angles.
+
 ## v1.11.8
+
+### `tdw` module
+
+- Fixed: Replicant doesn't work in newer versions of Python because it imports `annotations` from `__future__`. This import has been removed.
+- Fixed: Replicant motions are glitchy at high framerates. The `Replicant` now has a `target_framerate` parameter that by default caps the simulation at 100 FPS, making it far more likely to run as expected.
+- Fixed: Replicant doesn't work as expected at low framerates.
 
 ### Build
 

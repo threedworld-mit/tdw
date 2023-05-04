@@ -44,7 +44,7 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 
 **`Replicant(position, rotation)`**
 
-**`Replicant(replicant_id=0, position, rotation, image_frequency=ImageFrequency.once, name="replicant_0")`**
+**`Replicant(replicant_id=0, position, rotation, image_frequency=ImageFrequency.once, name="replicant_0", target_framerate=100)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -53,6 +53,7 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 | rotation |  Union[Dict[str, float] |  | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | image_frequency |  ImageFrequency  | ImageFrequency.once | An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured. |
 | name |  str  | "replicant_0" | The name of the Replicant model. |
+| target_framerate |  int  | 100 | The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement. |
 
 ***
 
@@ -157,7 +158,7 @@ These actions move and bend the joints of the Replicant's arms.
 
 **`self.reach_for(target, arm)`**
 
-**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True)`**
+**`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True, from_held=False, held_point="bottom", plan=None)`**
 
 Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -182,6 +183,9 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 | max_distance |  float  | 1.5 | The maximum distance from the hand to the target position. |
 | duration |  float  | 0.25 | The duration of the motion in seconds. |
 | scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
+| from_held |  bool  | False | If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object. |
+| held_point |  str  | "bottom" | The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object. |
+| plan |  IkPlanType  | None | An optional [`IkPlanType`](../replicant/ik_plans/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions. |
 
 #### reset_arm
 
@@ -212,7 +216,7 @@ These actions involve interaction with other objects, e.g. grasping or dropping.
 
 **`self.grasp(target, arm)`**
 
-**`self.grasp(target, arm, angle=90, axis="pitch")`**
+**`self.grasp(target, arm, angle=90, axis="pitch", relative_to_hand=True, offset=0)`**
 
 Grasp a target object.
 
@@ -226,12 +230,14 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 | arm |  Arm |  | The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object. |
 | angle |  Optional[float] | 90 | Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation. |
 | axis |  Optional[str] | "pitch" | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
+| relative_to_hand |  bool  | True | If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None. |
+| offset |  float  | 0 | Offset the object's position from the Replicant's hand by this distance. |
 
 #### drop
 
-**`self.drop(arm)`**
+**`self.drop(arm, offset)`**
 
-**`self.drop(arm, max_num_frames=100)`**
+**`self.drop(arm, max_num_frames=100, offset)`**
 
 Drop a held target object.
 
@@ -243,6 +249,7 @@ When an object is dropped, it is made non-kinematic. Any objects contained by th
 | --- | --- | --- | --- |
 | arm |  Arm |  | The [`Arm`](../replicant/arm.md) holding the object. |
 | max_num_frames |  int  | 100 | Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action. |
+| offset |  Union[float, np.ndarray, Dict[str, float] |  | Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position). |
 
 ***
 

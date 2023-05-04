@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import List, Optional
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus

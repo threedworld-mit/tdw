@@ -65,6 +65,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [DynamicRobots](#DynamicRobots) | Dynamic robot output data. | `drob` |
 | [EnvironmentColliderIntersection](#EnvironmentColliderIntersection) | Data for an whose colliders are intersecting with an environment collider such as a wall. | `enci` |
 | [EnvironmentCollision](#EnvironmentCollision) | Data for a collision between and object and the scene environment on this frame. | `enco` |
+| [EulerAngles](#EulerAngles) | The rotation of each object in the scene expressed as Euler angles. | `eule` |
 | [FieldOfView](#FieldOfView) | An avatar's camera field of view and focal length. | `fofv` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
 | [Framerate](#Framerate) | Framerate data. | `fram` |
@@ -370,6 +371,20 @@ Data for a collision between and object and the scene environment on this frame.
 | `get_contact_normal(index)` | The normal of the contact. | `Tuple[float, float, float]` |
 | `get_contact_point(index)` | The point of the contact. | `Tuple[float, float, float]` |
 | `get_floor()` | If True, this is the floor. | `bool` |
+
+## EulerAngles
+
+`e = EulerAngles(byte_array)`
+
+**Identifier:** `eule`
+
+The rotation of each object in the scene expressed as Euler angles.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_rotation(index)` | The rotation. | `np.ndarray` |
 
 ## FieldOfView
 

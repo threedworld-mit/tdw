@@ -1,8 +1,8 @@
-##### Misc. remote server topics
+##### How to run TDW on a Linux server
 
 # Launch a TDW build on a remote server from a personal computer
 
-## Step 1: Launch binary_manager.py on the remote server
+## Step 1: Launch remote_build_launcher.py on the remote server
 
 [binary_manager.py](https://github.com/threedworld-mit/tdw/blob/master/Python/binary_manager.py) can be used to launch and manage TDW builds on a remote server.
 

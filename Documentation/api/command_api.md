@@ -386,6 +386,7 @@
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
 | [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
+| [`add_floorplan_flood_buoyancy`](#add_floorplan_flood_buoyancy) | Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on.  |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_obi_cloth`](#apply_force_to_obi_cloth) | Apply a uniform force to an Obi cloth actor.  |
@@ -445,6 +446,7 @@
 | --- | --- |
 | [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
 | [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
+| [`replicant_reach_for_relative_position`](#replicant_reach_for_relative_position) | Instruct a Replicant to start to reach for a target position relative to the Replicant.  |
 
 **Replicant Look At Command**
 
@@ -704,6 +706,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
+| [`send_euler_angles`](#send_euler_angles) | Send the rotations of each object expressed as Euler angles.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
@@ -5096,6 +5099,22 @@ Attach the object to a parent object using a FixedJoint.
 
 ***
 
+## **`add_floorplan_flood_buoyancy`**
+
+Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "add_floorplan_flood_buoyancy", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`apply_force_at_position`**
 
 Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large.
@@ -5755,11 +5774,11 @@ Grasp a target object.
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1}
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "rotate": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5767,6 +5786,7 @@ Grasp a target object.
 | `"object_id"` | int | The target object ID. | |
 | `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | float | Offset the object from the hand by this distance. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -5792,13 +5812,14 @@ Start to rotate a grasped object relative to the rotation of the hand. This will
 ```
 
 ```python
-{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "set_status": True}
+{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "relative_to_hand": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | Rotate the object by this many degrees relative to the hand's rotation. | |
 | `"axis"` | Axis | Rotate the object around this axis relative to the hand's rotation. | |
+| `"relative_to_hand"` | bool | If True, rotate the object relative to the hand that is holding it. If false, rotate relative to the Replicant. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -5877,7 +5898,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5886,6 +5907,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -5913,7 +5935,7 @@ Instruct a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5922,6 +5944,44 @@ Instruct a Replicant to start to reach for a target position.
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_reach_for_relative_position`**
+
+Instruct a Replicant to start to reach for a target position relative to the Replicant. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position relative to the Replicant. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -9152,6 +9212,42 @@ Send rotated bounds data of objects in the scene.
 
 ```python
 {"$type": "send_bounds", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_euler_angles`**
+
+Send the rotations of each object expressed as Euler angles. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`EulerAngles`](output_data.md#EulerAngles)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_euler_angles", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_euler_angles", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

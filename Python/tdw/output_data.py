@@ -59,6 +59,7 @@ from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import LeapMotion as Leap
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
+from tdw.FBOutput import EulerAngles as Eulers
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1639,3 +1640,22 @@ class OccupancyMap(OutputData):
 
     def get_positions(self) -> np.ndarray:
         return self._positions
+
+
+class EulerAngles(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 3)
+
+    def get_data(self) -> Eulers.EulerAngles:
+        return Eulers.EulerAngles.GetRootAsEulerAngles(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index]

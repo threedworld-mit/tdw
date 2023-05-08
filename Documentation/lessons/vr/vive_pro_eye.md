@@ -21,7 +21,7 @@ The **Vive Pro Eye** is a VR rig that uses an HTC Vive Pro Eye headset and contr
 7. [Download and install SRanipal.](https://www.dropbox.com/s/wx23k6oo1ks9i83/VIVE_SRanipalInstaller.msi?dl=0)
 8. Put on the headset. You will be prompted to enable and calibrate eye tracking. Do this.
 
-## Setup (do this every time)
+## Setup (do this every time before running TDW)
 
 *Do the following steps IN ORDER:*
 

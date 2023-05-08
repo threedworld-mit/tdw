@@ -116,7 +116,7 @@ It can be useful to listen to button presses in order to trigger events in the c
 
 Call `vr.listen_to_axis()` to listen to axis movement from the left and right control sticks. These functions must have a single parameter: a numpy array of expected shape (`2`) (the x, y coordinates of the control stick movement delta, ranging from -1 to 1).
 
-This example listens to control stick input to move two joints of a [robot arm](../robots/overview.md). The functions `left_axis(delta)` and `right_axis(delta)` are every frame. They then evaluate `delta` to determine a) if there was movement along a particular axis and if so b) which commands to send. This example also adds a button callback: When the left menu button is pressed, `self.is_done` is set to True which stops the loop in `run()` and ends the simulation:
+This example listens to control stick input to move two joints of a [robot arm](../robots/overview.md). The functions `left_axis(delta)` and `right_axis(delta)` are invoked every frame. They then evaluate `delta` to determine a) if there was movement along a particular axis and if so b) which commands to send. This example also adds a button callback: When the left menu button is pressed, `self.is_done` is set to True which stops the loop in `run()` and ends the simulation:
 
 ```python
 import numpy as np
@@ -300,7 +300,7 @@ There are many other optional constructor parameters that are likely less-common
 
 *For more information regarding collision detection, [read this](../physx/collisions.md).*
 
-The Oculus Touch rig can send basic haptics data. The rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md) as if they were standard TDW objects. If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
+The Vive Pro Eye rig can send basic haptics data. The rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md) as if they were standard TDW objects. If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
 
 ### 2. Physics glitches
 

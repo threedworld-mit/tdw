@@ -29,17 +29,13 @@ The **Vive Pro Eye** is a VR rig that uses an HTC Vive Pro Eye headset and contr
 2. Plug your base trackers into wall outlets and point them at where you're sitting.
 3. Turn the controllers on (if they turn themselves off, you can safely turn them back on without restarting this process).
 4. Run SteamVR.
-5. Run VivePort.
-6. Run Sraninpal.
+6. Run SRaninpal.
 
-If everything is setup correctly:
-
-- SteamVR will show green/blue icons for the headset, controls, and trackers.
-- The Sranipal tray icon will have black or green eyes.
+If everything is setup correctly, SteamVR will show green/blue icons for the headset, controls, and trackers.
 
 Once you've done this, you can run your TDW controller + build as you normally would.
 
-If you accidentally disconnect the headset, shut *everything* down: SteamVR, VivePort, SRanipal, and TDW. Then, restart them, following the steps listed above.
+If you accidentally disconnect the headset, shut *everything* down: SteamVR, SRanipal, and TDW. Then, restart them, following the steps listed above.
 
 ## Rig description
 

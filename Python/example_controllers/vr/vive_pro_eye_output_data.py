@@ -121,8 +121,10 @@ class ViveProEyeOutputData(Controller):
                                  "id": self.object_id})
             if self.object_id in self.vr.focused_objects:
                 self.ui.set_text(text="I can see the object", ui_id=self.text_id)
+                text_visible = True
             else:
                 self.ui.set_text(text="", ui_id=self.text_id)
+                text_visible = False
             # If we have eye tracking data, raycast along the eye ray.
             if self.vr.world_eye_data.valid:
                 origin = self.vr.world_eye_data.ray[0]
@@ -139,9 +141,10 @@ class ViveProEyeOutputData(Controller):
                     raycast = Raycast(resp[i])
                     if raycast.get_hit():
                         point = raycast.get_point()
-                        commands.extend([{"$type": "remove_position_markers"},
-                                         {"$type": "add_position_marker",
-                                          "position": {"x": point[0], "y": point[1], "z": point[2]}}])
+                        commands.append({"$type": "remove_position_markers"})
+                        if not text_visible:
+                            commands.append({"$type": "add_position_marker",
+                                             "position": {"x": point[0], "y": point[1], "z": point[2]}})
             resp = self.communicate(commands)
         self.communicate({"$type": "terminate"})
 

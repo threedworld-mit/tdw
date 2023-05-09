@@ -57,6 +57,10 @@ class Drone(AddOn):
         """
         self.drone_id: int = drone_id
         """:field
+        The ID of the drone's avatar (camera). This is used internally for API calls.
+        """
+        self.avatar_id: str = str(drone_id)
+        """:field
         The drone's current [action](../drone/actions/action.md). Can be None (no ongoing action).
         """
         self.action: Optional[Action] = None
@@ -137,6 +141,22 @@ class Drone(AddOn):
                      "stability": self.stability,
                      "turn_sensitivity": self.turn_sensitivity,
                      "enable_lights": False},
+                    {"$type": "create_avatar",
+                     "type": "A_Img_Caps_Kinematic",
+                     "id": self.avatar_id},
+                    {"$type": "set_pass_masks",
+                    "pass_masks": ["_img", "_id", "_depth"],
+                    "avatar_id": self.avatar_id},
+                    {"$type": "parent_avatar_to_drone",
+                     "position": {"x": -0.1, "y": -0.1, "z": 0},
+                     "avatar_id": self.avatar_id,
+                     "id": self.drone_id},
+                    {"$type": "enable_image_sensor",
+                     "enable": False,
+                     "avatar_id": self.avatar_id},
+                    {"$type": "set_img_pass_encoding",
+                     "value": False},
+                    {"$type": "rotate_sensor_container_by", "axis": "pitch", "angle": 45.0}
                     {"$type": "set_target_framerate",
                      "framerate": self._target_framerate},
                     {"$type": "send_transforms",

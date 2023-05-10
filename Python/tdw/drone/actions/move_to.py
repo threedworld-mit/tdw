@@ -77,7 +77,7 @@ class MoveTo(Action):
                 target_position: np.ndarray = self.target
             elif isinstance(self.target, dict):
                 target_position = TDWUtils.vector3_to_array(self.target)
-            # If the target is and object ID, the target position is a bounds position.
+            # If the target is an object ID, the target position is a bounds position.
             elif isinstance(self.target, int):
                 target_position = np.zeros(shape=3)
                 for i in range(len(resp) - 1):
@@ -96,18 +96,25 @@ class MoveTo(Action):
                 raise Exception(f"Invalid target: {self.target}")
             # Get the distance to the target. The distance is positive because we already turned to the target.
             distance = np.linalg.norm(dynamic.transform.position - target_position)
-            # Start walking.
-            self._move_by = MoveBy(distance=float(distance),
-                                   dynamic=dynamic,
-                                   collision_detection=self.collision_detection,
-                                   previous=self._previous_action,
-                                   arrived_at=self.arrived_at)
+            # Test the drone's altitude.
+            if dynamic.transform.position["y"] < target_position["y"] - self.arrived_at:
+                # We need to rise.
+                commands.append({"$type": "apply_lift_force_to_drone", "id": dynamic.drone_id, "force": 1.0})
+            elif dynamic.transform.position["y"] > target_position["y"] + self.arrived_at:
+                # We need to descend.
+                commands.append({"$type": "apply_lift_force_to_drone", "id": dynamic.drone_id, "force": -1.0})
+            else
+                # Maintain present altitude.
+                commands.append({"$type": "apply_lift_force_to_drone", "id": dynamic.drone_id, "force": 0})
+            # Fly towards target.
+            commands.append({"$type": "apply_drive_force_to_drone", "id": dynamic.drone_id, "force": 1.0})
+
             commands = self._move_by.get_initialization_commands(resp=resp,
                                                                  dynamic=dynamic,
                                                                  image_frequency=self._image_frequency)
             self.status = self._move_by.status
             return commands
-        # Keep walking.
+        # Keep flying.
         commands = self._move_by.get_ongoing_commands(resp=resp, dynamic=dynamic)
         self.status = self._move_by.status
         return commands

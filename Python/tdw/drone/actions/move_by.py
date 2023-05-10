@@ -60,11 +60,8 @@ class MoveBy(Action):
         self._initial_position = dynamic.transform.position
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes], static: droneStatic, dynamic: droneDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], dynamic: droneDynamic) -> List[dict]:
         commands = super().get_ongoing_commands(resp=resp, dynamic=dynamic)
-        # Reset the action status because we want to loop the animation.
-        if self.status == ActionStatus.success:
-            self.status = ActionStatus.ongoing
         if self.status != ActionStatus.ongoing:
             return commands
         else:

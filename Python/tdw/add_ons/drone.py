@@ -2,6 +2,7 @@ from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np
 from tdw.add_ons.add_on import AddOn
+from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.drone.actions.action import Action
 from tdw.drone.action_status import ActionStatus
 from tdw.drone.actions.turn_by import TurnBy
@@ -156,7 +157,10 @@ class Drone(AddOn):
                      "avatar_id": self.avatar_id},
                     {"$type": "set_img_pass_encoding",
                      "value": False},
-                    {"$type": "rotate_sensor_container_by", "axis": "pitch", "angle": 45.0}
+                    {"$type": "rotate_sensor_container_by", 
+                     "axis": "pitch", 
+                     "angle": 45.0,
+                     "avatar_id": self.avatar_id},
                     {"$type": "set_target_framerate",
                      "framerate": self._target_framerate},
                     {"$type": "send_transforms",

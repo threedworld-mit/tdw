@@ -4,12 +4,12 @@ import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Images, CameraMatrices
+from tdw.output_data import OutputData, Images, CameraMatrices, Transforms
 from tdw.object_data.transform import Transform
 
 
 
-class ReplicantDynamic:
+class DroneDynamic:
     """
     Dynamic data for a drone that can change per `communicate()` call (such as the position of the drone).
     """
@@ -45,8 +45,8 @@ class ReplicantDynamic:
         self.got_images: bool = False
 
         self._frame_count: int = frame_count
-        self._drone_id: int = _drone_id
-        avatar_id = str(_drone_id)
+        self._drone_id: int = drone_id
+        self.avatar_id = str(drone_id)
         got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -55,12 +55,14 @@ class ReplicantDynamic:
                 transforms = Transforms(resp[i])
                 for j in range(transforms.get_num()):
                     if transforms.get_id(j) == drone_id:
-                            self.transform = transforms(j)
+                           self.transform = Transform(position=transforms.get_position(j),
+                                                      rotation=transforms.get_rotation(j),
+                                                      forward=transforms.get_forward(j))
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])
                 # Get this drones's avatar and save the images.
-                if images.get_avatar_id() == avatar_id:
+                if images.get_avatar_id() == self.avatar_id:
                     self.got_images = True
                     for j in range(images.get_num_passes()):
                         image_data = images.get_image(j)
@@ -76,7 +78,7 @@ class ReplicantDynamic:
             # Get the camera matrices for the avatar's camera.
             elif r_id == "cama":
                 camera_matrices = CameraMatrices(resp[i])
-                if camera_matrices.get_avatar_id() == avatar_id:
+                if camera_matrices.get_avatar_id() == self.avatar_id:
                     self.projection_matrix = camera_matrices.get_projection_matrix()
                     self.camera_matrix = camera_matrices.get_camera_matrix()
 

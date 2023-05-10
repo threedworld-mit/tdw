@@ -3,7 +3,7 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.drone.actions.action import Action
 from tdw.drone.action_status import ActionStatus
-from tdw.drone.drone_dynamic import droneDynamic
+from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.drone.collision_detection import CollisionDetection
 from tdw.drone.image_frequency import ImageFrequency
 from tdw.output_data import OutputData, Overlap
@@ -26,7 +26,7 @@ class MoveBy(Action):
     - If the drone takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    def __init__(self, distance: float, dynamic: droneDynamic, collision_detection: CollisionDetection, arrived_at: float):
+    def __init__(self, distance: float, dynamic: DroneDynamic, collision_detection: CollisionDetection, arrived_at: float):
         """
         :param distance: The target distance. If less than 0, the drone will walk backwards.
         :param dynamic: The [`droneDynamic`](../drone_dynamic.md) data that changes per `communicate()` call.
@@ -53,16 +53,20 @@ class MoveBy(Action):
         # The initial position. This is used to determine the distance traversed. This is set in `get_initialization_commands()`.
         self._initial_position: np.ndarray = np.zeros(shape=3)
 
-    def get_initialization_commands(self, resp: List[bytes], dynamic: droneDynamic,
+    def get_initialization_commands(self, resp: List[bytes], dynamic: DroneDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         self._initial_position = dynamic.transform.position
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes], dynamic: droneDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], dynamic: DroneDynamic) -> List[dict]:
         commands = super().get_ongoing_commands(resp=resp, dynamic=dynamic)
+        # Reset the action status because we want to loop the animation.
+        if self.status == ActionStatus.success:
+            return
         if self.status != ActionStatus.ongoing:
+            commands.append()
             return commands
         else:
             distance_to_target = np.linalg.norm(dynamic.transform.position - self._destination)
@@ -91,11 +95,11 @@ class MoveBy(Action):
                                         return commands
             return commands
 
-    def get_end_commands(self, resp: List[bytes], dynamic: droneDynamic,
+    def get_end_commands(self, resp: List[bytes], dynamic: DroneDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
         return super().get_end_commands(resp=resp, dynamic=dynamic, image_frequency=image_frequency)
 
-    def _overlap(self, dynamic: droneDynamic) -> List[dict]:
+    def _overlap(self, dynamic: DroneDynamic) -> List[dict]:
         """
         :param dynamic: The dynamic drone data.
 

@@ -5,7 +5,7 @@ from tdw.output_data import OutputData, Bounds
 from tdw.drone.actions.action import Action
 from tdw.drone.actions.turn_to import TurnTo
 from tdw.drone.actions.move_by import MoveBy
-from tdw.drone.drone_dynamic import droneDynamic
+from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.drone.collision_detection import CollisionDetection
 from tdw.drone.image_frequency import ImageFrequency
 
@@ -59,7 +59,7 @@ class MoveTo(Action):
         self._previous_action: Optional[Action] = previous
         super().__init__()
 
-    def get_initialization_commands(self, resp: List[bytes], dynamic: droneDynamic,
+    def get_initialization_commands(self, resp: List[bytes], dynamic: DroneDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         # Remember the image frequency for both the turn and move sub-actions.
         self._image_frequency = image_frequency
@@ -68,7 +68,7 @@ class MoveTo(Action):
                                                                       dynamic=dynamic,
                                                                       image_frequency=image_frequency)
 
-    def get_ongoing_commands(self, resp: List[bytes], dynamic: droneDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], dynamic: DroneDynamic) -> List[dict]:
         # Turning requires only one `communicate()` call. Now, it's time to start walking.
         if self._turning:
             self._turning = False
@@ -89,7 +89,7 @@ class MoveTo(Action):
                         for j in range(bounds.get_num()):
                             if bounds.get_id(j) == self.target:
                                 bound = TDWUtils.get_bounds_dict(bounds, j)
-                                target_position = bound[self.bounds_position].
+                                target_position = bound[self.bounds_position]
                                 break
                         break
             else:
@@ -103,7 +103,7 @@ class MoveTo(Action):
             elif dynamic.transform.position["y"] > target_position["y"] + self.arrived_at:
                 # We need to descend.
                 commands.append({"$type": "apply_lift_force_to_drone", "id": dynamic.drone_id, "force": -1.0})
-            else
+            else:
                 # Maintain present altitude.
                 commands.append({"$type": "apply_lift_force_to_drone", "id": dynamic.drone_id, "force": 0})
             # Fly towards target.
@@ -119,7 +119,7 @@ class MoveTo(Action):
         self.status = self._move_by.status
         return commands
 
-    def get_end_commands(self, resp: List[bytes], dynamic: droneDynamic,
+    def get_end_commands(self, resp: List[bytes], dynamic: DroneDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
         if self._move_by is not None:
             return self._move_by.get_end_commands(resp=resp, dynamic=dynamic, image_frequency=image_frequency)

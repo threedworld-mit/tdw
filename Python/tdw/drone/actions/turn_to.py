@@ -3,7 +3,7 @@ import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.drone.actions.action import Action
 from tdw.drone.action_status import ActionStatus
-from tdw.drone.drone_dynamic import droneDynamic
+from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.drone.image_frequency import ImageFrequency
 
 
@@ -22,7 +22,7 @@ class TurnTo(Action):
         super().__init__()
         self._target: Union[int, Dict[str, float], np.ndarray] = target
 
-    def get_initialization_commands(self, resp: List[bytes], dynamic: droneDynamic,
+    def get_initialization_commands(self, resp: List[bytes], dynamic: DroneDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, dynamic=dynamic,
                                                        image_frequency=image_frequency)
@@ -43,6 +43,6 @@ class TurnTo(Action):
                          "id": dynamic.drone_id})
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes], dynamic: droneDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], dynamic: DroneDynamic) -> List[dict]:
         self.status = ActionStatus.success
         return super().get_ongoing_commands(resp=resp, dynamic=dynamic)

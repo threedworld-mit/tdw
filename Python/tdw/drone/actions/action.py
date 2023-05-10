@@ -47,12 +47,12 @@ class Action(ABC):
         if image_frequency == ImageFrequency.once or image_frequency == ImageFrequency.never:
             commands.extend([{"$type": "enable_image_sensor",
                               "enable": False,
-                              "avatar_id": static.avatar_id}])
+                              "avatar_id": dynamic.avatar_id}])
         # If we want images per frame, enable image capture now.
         elif image_frequency == ImageFrequency.always:
             commands.extend([{"$type": "enable_image_sensor",
                               "enable": True,
-                              "avatar_id": static.avatar_id},
+                              "avatar_id": dynamic.avatar_id},
                              {"$type": "send_images",
                               "frequency": "always"},
                              {"$type": "send_camera_matrices",
@@ -61,12 +61,11 @@ class Action(ABC):
             raise Exception(f"Invalid image capture option: {image_frequency}")
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes], static: droneStatic, dynamic: droneDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], dynamic: DroneDynamic) -> List[dict]:
         """
         Evaluate an action per-frame to determine whether it's done.
 
         :param resp: The response from the build.
-        :param static: The [`droneStatic`](../drone_static.md) data that doesn't change after the drone is initialized.
         :param dynamic: The [`droneDynamic`](../drone_dynamic.md) data that changes per `communicate()` call.
 
         :return: A list of commands to send to the build to continue the action.
@@ -74,11 +73,10 @@ class Action(ABC):
 
         return []
 
-    def get_end_commands(self, resp: List[bytes], static: droneStatic, dynamic: droneDynamic,
+    def get_end_commands(self, resp: List[bytes], dynamic: DroneDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
         """
         :param resp: The response from the build.
-        :param static: The [`droneStatic`](../drone_static.md) data that doesn't change after the drone is initialized.
         :param dynamic: The [`droneDynamic`](../drone_dynamic.md) data that changes per `communicate()` call.
         :param image_frequency: An [`ImageFrequency`](../image_frequency.md) value describing how often image data will be captured.
 
@@ -90,7 +88,7 @@ class Action(ABC):
         if image_frequency == ImageFrequency.once:
             commands.extend([{"$type": "enable_image_sensor",
                               "enable": True,
-                              "avatar_id": static.avatar_id},
+                              "avatar_id": dynamic.avatar_id},
                              {"$type": "send_images",
                               "frequency": "once"},
                              {"$type": "send_camera_matrices",

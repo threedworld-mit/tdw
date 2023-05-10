@@ -3,13 +3,8 @@ from copy import deepcopy
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.drone.drone_dynamic import DroneDynamic
-from tdw.drone.actions.action import Action
-from tdw.drone.action_status import ActionStatus
-from tdw.drone.actions.turn_by import TurnBy
-from tdw.drone.actions.turn_to import TurnTo
-from tdw.drone.actions.move_by import MoveBy
-from tdw.drone.actions.move_to import MoveTo
 from tdw.drone.image_frequency import ImageFrequency
+from tdw.drone.collision_detection import CollisionDetection
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 
@@ -31,11 +26,11 @@ class Drone(AddOn):
                  acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
                  enable_lights: bool = False, target_framerate: int = 100):
         """
-        :param replicant_id: The ID of the Replicant.
-        :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param drone_id: The ID of the drone.
+        :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the drone in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param image_frequency: An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
-        :param name: The name of the Replicant model.
+        :param name: The name of the drone model.
         :param target_framerate: The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement.
         """
 
@@ -62,13 +57,13 @@ class Drone(AddOn):
         """
         self.avatar_id: str = str(drone_id)
         """:field
-        The drone's current [action](../drone/actions/action.md). Can be None (no ongoing action).
-        """
-        self.action: Optional[Action] = None
-        """:field
         An [`ImageFrequency`](../drone/image_frequency.md) value that sets how often images are captured.
         """
         self.image_frequency: ImageFrequency = image_frequency
+        """:field
+        [The collision detection rules.](../replicant/collision_detection.md) This determines whether the drone will immediately stop moving or turning when it collides with something.
+        """
+        self.collision_detection: CollisionDetection = CollisionDetection()
         """:field
         The max forward speed of this drone.
         """
@@ -105,6 +100,18 @@ class Drone(AddOn):
         Whether the drone's lights are on and blinking.
         """
         self.enable_lights = enable_lights
+        """:field
+        The current drone lift value.
+        """
+        self.lift = 0
+        """:field
+        The current drone drive value.
+        """
+        self.drive = 0
+        """:field
+        The current drone turn value.
+        """
+        self.turn = 0
         # This is used for collision detection. If the previous action is the "same" as this one, this action fails.
         self._previous_action: Optional[Action] = None
         # This is used when saving images.
@@ -146,17 +153,14 @@ class Drone(AddOn):
                      "type": "A_Img_Caps_Kinematic",
                      "id": self.avatar_id},
                     {"$type": "set_pass_masks",
-                    "pass_masks": ["_img", "_id", "_depth"],
+                    "pass_masks": ["_img", "_depth"],
                     "avatar_id": self.avatar_id},
                     {"$type": "parent_avatar_to_drone",
-                     "position": {"x": -0.1, "y": -0.1, "z": 0},
+                     "position": {"x": 0, "y": -0.1, "z": 0},
                      "avatar_id": self.avatar_id,
                      "id": self.drone_id},
-                    {"$type": "enable_image_sensor",
-                     "enable": False,
-                     "avatar_id": self.avatar_id},
                     {"$type": "set_img_pass_encoding",
-                     "value": False},
+                     "value": True},
                     {"$type": "rotate_sensor_container_by", 
                      "axis": "pitch", 
                      "angle": 45.0,
@@ -169,6 +173,19 @@ class Drone(AddOn):
                      "frequency": "always"},
                     {"$type": "send_framerate",
                      "frequency": "always"}]
+        if self.image_frequency == ImageFrequency.once or self.image_frequency == ImageFrequency.never:
+            commands.extend([{"$type": "enable_image_sensor",
+                              "enable": False,
+                              "avatar_id": self.avatar_id}])
+        # If we want images per frame, enable image capture now.
+        elif self.image_frequency == ImageFrequency.always:
+            commands.extend([{"$type": "enable_image_sensor",
+                              "enable": True,
+                              "avatar_id": self.avatar_id},
+                             {"$type": "send_images",
+                              "frequency": "always"},
+                             {"$type": "send_camera_matrices",
+                              "frequency": "always"}])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -183,122 +200,21 @@ class Drone(AddOn):
 
         # Update the dynamic data per `communicate()` call.
         self._set_dynamic_data(resp=resp)
-        # Don't do anything if there isn't an action or if the action is done.
-        if self.action is None or self.action.done:
-            return
-        # Start or continue the action.
-        else:
-            # Initialize the action.
-            if not self.action.initialized:
-                # The action's status defaults to `ongoing`, but actions sometimes fail prior to initialization.
-                if self.action.status == ActionStatus.ongoing:
-                    # Initialize the action and get initialization commands.
-                    self.action.initialized = True
-                    initialization_commands = self.action.get_initialization_commands(resp=resp,
-                                                                                      dynamic=self.dynamic,
-                                                                                      image_frequency=self.image_frequency)
 
-                    # Most actions are `ongoing` after initialization, but they might've succeeded or failed already.
-                    if self.action.status == ActionStatus.ongoing:
-                        self.commands.extend(initialization_commands)
-                    else:
-                        self.commands.extend(self.action.get_end_commands(resp=resp,
-                                                                          dynamic=self.dynamic,
-                                                                          image_frequency=self.image_frequency))
-            # Continue an ongoing action.
-            else:
-                # Get the ongoing action commands.
-                action_commands = self.action.get_ongoing_commands(resp=resp, dynamic=self.dynamic)
-                # This is an ongoing action. Append ongoing commands.
-                if self.action.status == ActionStatus.ongoing:
-                    self.commands.extend(action_commands)
-                # This action is done. Append end commands.
-                else:
-                    self.commands.extend(self.action.get_end_commands(resp=resp,
-                                                                      dynamic=self.dynamic,
-                                                                      image_frequency=self.image_frequency))
-            # This action ended. Remember it as the previous action.
-            if self.action.status != ActionStatus.ongoing:
-                # Mark the action as done.
-                self.action.done = True
-                # Remember the previous action.
-                self._previous_action = deepcopy(self.action)
- 
-    def turn_by(self, angle: float) -> None:
-        """
-        Turn the drone by an angle.
+        # Add commands for elevation and forward motion.
+        self.commands.extend([{"$type": "apply_drive_force_to_drone", "id": self.drone_id, "force": self.drive},
+                              {"$type": "apply_lift_force_to_drone", "id": self.drone_id, "force": self.lift},
+                              {"$type": "apply_turn_force_to_drone", "id": self.drone_id, "force": self.turn}])
+      
+    def set_lift(self, lift: float) -> None:
+        self.lift = lift
 
-        This is a non-animated action, meaning that the drone will immediately snap to the angle.
+    def set_drive(self, drive: float) -> None:
+        self.drive = drive
 
-        :param angle: The target angle in degrees. Positive value = clockwise turn.
-        """
-
-        self.action = TurnBy(angle=angle)
-
-    def turn_to(self, target: Union[int, Dict[str, float], np.ndarray]) -> None:
-        """
-        Turn the drone to face a target object or position.
-
-        This is a non-animated action, meaning that the drone will immediately snap to the angle.
-
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        """
-
-        self.action = TurnTo(target=target)
-
-    def move_by(self, distance: float, arrived_at: float = 0.1) -> None:
-        """
-        Fly a given distance.
-
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
-
-        - If the drone flys the target distance, the action succeeds.
-        - If `collision_detection.previous_was_same == True`, and the previous action was `move_by()` or `move_to()`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
-        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
-          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
-          - Otherwise, the action ends in failure.
-        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
-          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
-          - Otherwise, the action ends in failure.
-
-        :param distance: The target distance. If less than 0, the Replicant will walk backwards.
-        :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        """
-
-        self.action = MoveBy(distance=distance,
-                             dynamic=self.dynamic,
-                             collision_detection=self.collision_detection,
-                             previous=self._previous_action,
-                             arrived_at=arrived_at)
-
-    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms: bool = True, arrived_at: float = 0.1, bounds_position: str = "center") -> None:
-        """
-        Turn the drone to a target position or object and then fly to it.
-
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
-
-        - If the Replicant walks the target distance, the action succeeds.
-        - If `collision_detection.previous_was_same == True`, and the previous action was `move_by()` or `move_to()`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
-        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
-          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
-          - Otherwise, the action ends in failure.
-        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
-          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
-          - Otherwise, the action ends in failure.
-        - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
-
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
-        """
-
-        self.action = MoveTo(target=target,
-                             collision_detection=self.collision_detection,
-                             previous=self._previous_action,
-                             arrived_at=arrived_at,
-                             bounds_position=bounds_position)
+    def set_turn(self, turn: float) -> None:
+        self.turn = turn
    
-
     def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
                                            rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
         """

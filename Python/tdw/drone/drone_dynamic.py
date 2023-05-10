@@ -45,7 +45,7 @@ class DroneDynamic:
         self.got_images: bool = False
 
         self._frame_count: int = frame_count
-        self._drone_id: int = drone_id
+        self.drone_id: int = drone_id
         self.avatar_id = str(drone_id)
         got_data = False
         for i in range(len(resp) - 1):

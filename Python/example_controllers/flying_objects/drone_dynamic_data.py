@@ -1,14 +1,18 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.drone import Drone
+from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 
 """
-Minimal drone  example.
+Minimal drone dynamic data example.
 """
 
 c = Controller(launch_build=False)
-drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 00, "z": 0})
+# We want to stop rising when the drone reaches this height.
+altitude_ceiling = 10
+cruise_level = 2
+drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0})
 camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
                            look_at=drone.drone_id,
                            avatar_id="a")
@@ -21,35 +25,23 @@ for i in range(200):
     c.communicate([])
 # Start rising.
 drone.set_lift(1)
+while TDWUtils.array_to_vector3(drone.dynamic.transform.position)["y"] < altitude_ceiling:
+    c.communicate([])
+# Stop rising and hover for a bit.
+drone.set_lift(0)
+print("Reached altitude ceiling")
 for i in range(100):
     c.communicate([])
-# Hold this altitude.
-drone.set_lift(0)
-# Fly forward.
+# Fly down the street, dropping to "cruise_level" then continue.
 drone.set_drive(1)
-for i in range(200):
-    c.communicate([])
-"""
-# Turn a little then continue straight.
-drone.set_turn(-1)
-for i in range(100):
-    c.communicate([])
-drone.set_turn(0)
-for i in range(100):
-    c.communicate([])
-# Stop and hover for 200 frames.
-drone.set_drive(0)
-for i in range(200):
-    c.communicate([])
-# Return to the ground.
 drone.set_lift(-1)
-for i in range(100):
+while TDWUtils.array_to_vector3(drone.dynamic.transform.position)["y"] > cruise_level:
     c.communicate([])
-# Watch for a bit.
 drone.set_lift(0)
-for i in range(200):
+print("Reached cruise level")
+for i in range(400):
     c.communicate([])
 c.communicate({"$type": "terminate"})
-"""
+
 
 

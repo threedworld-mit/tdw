@@ -43,14 +43,6 @@ class DroneDynamic:
         If True, we got images from the output data.
         """
         self.got_images: bool = False
-        """:field
-        The percentage battery level of the drone.
-        """
-        self.battery_level: float = 100
-        """:field
-        The battery drain amount, per communicate call.
-        """
-        self.battery_level: float = 0.01
         self._frame_count: int = frame_count
         self.drone_id: int = drone_id
         self.avatar_id = str(drone_id)

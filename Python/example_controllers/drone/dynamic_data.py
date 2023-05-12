@@ -12,8 +12,10 @@ class DynamicData(Controller):
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        self._first_time_only = True
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0})
+        self.add_ons.append(self.drone)
         self.path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_dynamic_data")
         print(f"Images and JSON data will be saved to: {self.path}")
         # Start the json data.
@@ -21,6 +23,9 @@ class DynamicData(Controller):
 
     def communicate(self, commands: Union[dict, List[dict]]) -> list:
         resp = super().communicate(commands=commands)
+        if self._first_time_only:
+            self._first_time_only = False
+            return resp
         # Save the drone's images.
         self.drone.dynamic.save_images(output_directory=self.path)
         # Write the other data as a JSON file.
@@ -39,8 +44,6 @@ class DynamicData(Controller):
 
     def run(self):
         self.communicate([TDWUtils.create_empty_room(12, 12)])
-        for i in range(200):
-            self.communicate([])
         # Let the drone rise.
         self.drone.set_lift(1)
         while self.drone.dynamic.transform.position[1] < 10:

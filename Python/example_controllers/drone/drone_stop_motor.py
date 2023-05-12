@@ -31,6 +31,3 @@ drone.set_motor(False)
 for i in range(200):
     c.communicate([])
 c.communicate({"$type": "terminate"})
-
-
-

@@ -214,6 +214,9 @@ class Drone(AddOn):
 
     def set_turn(self, turn: float) -> None:
         self.turn = turn
+
+    def set_motor(self, motor_on: bool):
+        self.commands.append({"$type": "set_drone_motor", "motor_on": motor_on", "id": self.drone_id})
    
     def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
                                            rotation: Union[Dict[str, float], np.ndarray] = None) -> None:

@@ -9,9 +9,6 @@ from tdw.add_ons.keyboard import Keyboard
 Minimal example showing how to stop the drone's motor running.
 """
 
-def stop_motor():
-    c.communicate({"$type": "set_drone_motor", "motor_on": False})
-
 c = Controller(launch_build=False)
 # We want to stop rising when the drone reaches this height.
 altitude_ceiling = 10
@@ -23,7 +20,7 @@ camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
 c.add_ons.extend([drone, camera])
 keyboard = Keyboard()
 c.add_ons.append(keyboard)
-keyboard.listen(key="Escape", function=stop_motor)
+keyboard.listen(key="Escape", function=drone.set_motor(false))
 c.communicate([c.get_add_scene(scene_name="suburb_scene_2023"),
               {"$type": "set_screen_size",
                "width": 1920,
@@ -50,8 +47,6 @@ while True:
     c.communicate([])
 
 
-def stop_motor():
-    c.communicate({"$type": "set_drone_motor", "motor_on": False})
 
 
 

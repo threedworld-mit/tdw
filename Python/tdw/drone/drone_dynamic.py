@@ -127,7 +127,7 @@ class DroneDynamic:
                 Image.fromarray(self.images[pass_name]).save(str(p.resolve()))
             else:
                 with p.open("wb") as f:
-                    f.write(self.images[pass_name])
+                    f.write(self.images[pass_name].tobytes())
 
     def get_pil_image(self, pass_mask: str = "img") -> Image.Image:
         """

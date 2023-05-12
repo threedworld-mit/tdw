@@ -44,15 +44,27 @@ class Drone(AddOn):
         """
 
         super().__init__()
+
+        if position is None:
+            """:field
+            The initial position of the drone.
+            """
+            self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+        elif isinstance(position, dict):
+            self.initial_position = position
+        elif isinstance(position, np.ndarray):
+            self.initial_position = TDWUtils.array_to_vector3(position)
+        else:
+            raise Exception(position)
         """:field
-        The initial position of the drone.
+        The initial rotation of the drone in Euler angles.
         """
-        self.initial_position: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
-        """:field
-        The initial rotation of the drone.
-        """
-        self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
-        self._set_initial_position_and_rotation(position=position, rotation=rotation)
+        if rotation is None:
+            self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+        elif isinstance(rotation, dict):
+            self.initial_rotation = rotation
+        elif isinstance(rotation, np.ndarray):
+            self.initial_rotation = TDWUtils.array_to_vector3(rotation)
         """:field
         The [`DroneDynamic`](../drone/drone_dynamic.md) data.
         """
@@ -78,7 +90,7 @@ class Drone(AddOn):
         self._lift: int = 0
         self._drive: int = 0
         self._turn: int = 0
-        self._motor_on = motor_on
+        self._initial_motor_on = motor_on
         # This is used when saving images.
         self._frame_count: int = 0
         # Initialize the Replicant metadata library.
@@ -116,7 +128,7 @@ class Drone(AddOn):
                      "stability": self._stability,
                      "turn_sensitivity": self._turn_sensitivity,
                      "enable_lights": self._enable_lights,
-                     "motor_on": self._motor_on},
+                     "motor_on": self._initial_motor_on},
                     {"$type": "create_avatar",
                      "type": "A_Img_Caps_Kinematic",
                      "id": self.avatar_id},
@@ -158,43 +170,59 @@ class Drone(AddOn):
             self._frame_count += 1
 
         # Add commands for elevation and forward motion.
-        self.commands.extend([{"$type": "apply_drive_force_to_drone", "id": self.drone_id, "force": self._drive},
-                              {"$type": "apply_lift_force_to_drone", "id": self.drone_id, "force": self._lift},
-                              {"$type": "apply_turn_force_to_drone", "id": self.drone_id, "force": self._turn},
-                              {"$type": "set_drone_motor", "motor_on": self._motor_on}])
+        self.commands.extend([{"$type": "apply_drive_force_to_drone",
+                               "id": self.drone_id,
+                               "force": self._drive},
+                              {"$type": "apply_lift_force_to_drone",
+                               "id": self.drone_id,
+                               "force": self._lift},
+                              {"$type": "apply_turn_force_to_drone",
+                               "id": self.drone_id,
+                               "force": self._turn}])
       
-    def set_lift(self, lift: float) -> None:
-        self._lift = lift
-
-    def set_drive(self, drive: float) -> None:
-        self._drive = drive
-
-    def set_turn(self, turn: float) -> None:
-        self._turn = turn
-
-    def set_motor(self, motor_on: bool):
-        self._motor_on = motor_on
-   
-    def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
-                                           rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def set_lift(self, lift: int) -> None:
         """
-        Set the intial position and rotation.
+        Set the drone's lift force.
 
-        :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param rotation: The rotation of the drone in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param lift: The lift force. Must be -1, 0, or 1.
         """
 
-        if position is None:
-            self.initial_position = {"x": 0, "y": 0, "z": 0}
-        elif isinstance(position, dict):
-            self.initial_position = position
-        elif isinstance(position, np.ndarray):
-            self.initial_position = TDWUtils.array_to_vector3(position)
-        else:
-            raise Exception(position)
-        if rotation is None:
-            self.initial_rotation = {"x": 0, "y": 0, "z": 0}
-        elif isinstance(rotation, dict):
-            self.initial_rotation = rotation
-        elif isinstance(rotation, np.ndarray):
-            self.initial_rotation = TDWUtils.array_to_vector3(rotation)
+        self._lift = Drone._get_clamped_force(lift)
+
+    def set_drive(self, drive: int) -> None:
+        """
+        Set the drone's drive force.
+
+        :param drive: The drive force. Must be -1, 0, or 1.
+        """
+
+        self._drive = Drone._get_clamped_force(drive)
+
+    def set_turn(self, turn: int) -> None:
+        """
+        Set the drone's turn force.
+
+        :param turn: The turn force. Must be -1, 0, or 1.
+        """
+
+        self._turn = Drone._get_clamped_force(turn)
+
+    def set_motor(self, motor_on: bool) -> None:
+        """
+        Turn the drone's motor on or off.
+
+        :param motor_on: If True, turn the motor on. If False, turn the motor off.
+        """
+
+        self.commands.append({"$type": "set_drone_motor",
+                              "motor_on": motor_on})
+
+    @staticmethod
+    def _get_clamped_force(force: int) -> float:
+        """
+        :param force: The force input value.
+
+        :return: The force clamped between -1 and 1.
+        """
+
+        return max(min(force, 1), -1)

@@ -1,5 +1,4 @@
 from typing import List, Optional, Dict, Union
-from copy import deepcopy
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.drone.drone_dynamic import DroneDynamic
@@ -25,7 +24,7 @@ class Drone(AddOn):
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "drone",
                  forward_speed: float = 3, backward_speed: float = 3, rise_speed: float = 3, drop_speed: float = 3,
                  acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
-                 enable_lights: bool = False, motor_on: bool = True, target_framerate: int = 100):
+                 enable_lights: bool = False, motor_on: bool = True):
         """
         :param drone_id: The ID of the drone.
         :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -42,7 +41,6 @@ class Drone(AddOn):
         :param turn_sensitivity: The name of the drone model.
         :param enable_lights: Sets whether or not the drone's lights are on. 
         :param motor_on: Sets whether or not the drone is active on start.    
-        :param target_framerate: The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement.
         """
 
         super().__init__()
@@ -64,9 +62,9 @@ class Drone(AddOn):
         """
         self.drone_id: int = drone_id
         """:field
-        The name this drone.
+        The name of the drone model.
         """
-        self.name: int = name
+        self.name: str = name
         """:field
         The ID of the drone's avatar (camera). This is used internally for API calls.
         """
@@ -140,8 +138,6 @@ class Drone(AddOn):
             Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME] = DroneLibrarian(Drone.LIBRARY_NAME)
         # The Replicant metadata record.
         self._record: DroneRecord = Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME].get_record(name)
-        # The target framerate.
-        self._target_framerate: int = target_framerate
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -183,8 +179,6 @@ class Drone(AddOn):
                      "axis": "pitch", 
                      "angle": 45.0,
                      "avatar_id": self.avatar_id},
-                    {"$type": "set_target_framerate",
-                     "framerate": self._target_framerate},
                     {"$type": "send_transforms",
                      "frequency": "always"},
                     {"$type": "send_bounds",

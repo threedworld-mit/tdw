@@ -13,14 +13,18 @@ c = Controller(launch_build=False)
 # We want to stop rising when the drone reaches this height.
 altitude_ceiling = 10
 cruise_level = 2
-drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0})
+drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0}, motor_on=True)
 camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
                            look_at=drone.drone_id,
                            avatar_id="a")
 c.add_ons.extend([drone, camera])
 keyboard = Keyboard()
 c.add_ons.append(keyboard)
-keyboard.listen(key="Escape", function=drone.set_motor(false))
+
+def stop_motor():
+    drone.set_motor(False)
+
+keyboard.listen(key="Escape", function=stop_motor)
 c.communicate([c.get_add_scene(scene_name="suburb_scene_2023"),
               {"$type": "set_screen_size",
                "width": 1920,

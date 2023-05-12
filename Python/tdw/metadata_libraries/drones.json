@@ -1,0 +1,13 @@
+{
+  "description": "drones",
+  "records": {
+    "drone": {
+      "name": "drone",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/flying_objects/osx/2020.3/drone",
+        "Linux": "https://tdw-public.s3.amazonaws.com/flying_objects/linux/2020.3/drone",
+        "Windows": "https://tdw-public.s3.amazonaws.com/flying_objects/windows/2020.3/drone"
+      }
+    }
+  }
+}

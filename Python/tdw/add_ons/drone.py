@@ -7,6 +7,7 @@ from tdw.drone.image_frequency import ImageFrequency
 from tdw.drone.collision_detection import CollisionDetection
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.librarian import DroneRecord, DroneLibrarian
 
 
 class Drone(AddOn):
@@ -17,20 +18,30 @@ class Drone(AddOn):
     """:class_var
     The drone's library file. You can override this to use a custom library (e.g. a local library).
     """
-    LIBRARY_NAME: str = "drone.json"
+    LIBRARY_NAME: str = "drones.json"
 
     def __init__(self, drone_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
                  rotation: Union[Dict[str, float], np.ndarray] = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "drone",
                  forward_speed: float = 3, backward_speed: float = 3, rise_speed: float = 3, drop_speed: float = 3,
                  acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
-                 enable_lights: bool = False, target_framerate: int = 100):
+                 enable_lights: bool = False, motor_on: bool = True, target_framerate: int = 100):
         """
         :param drone_id: The ID of the drone.
         :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the drone in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param image_frequency: An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
         :param name: The name of the drone model.
+        :param forward_speed: Sets the drone's max forward speed.
+        :param backward_speed: Sets the drone's max backward speed.
+        :param rise_speed: Sets the drone's max vertical rise speed.
+        :param drop_speed: Sets the drone's max vertical drop speed.
+        :param acceleration: How fast the drone speeds up.
+        :param deceleration: How fast the drone slows down.
+        :param stability: How easily the drone is affected by outside forces.
+        :param turn_sensitivity: The name of the drone model.
+        :param enable_lights: Sets whether or not the drone's lights are on. 
+        :param motor_on: Sets whether or not the drone is active on start.    
         :param target_framerate: The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement.
         """
 
@@ -52,6 +63,10 @@ class Drone(AddOn):
         The ID of this drone.
         """
         self.drone_id: int = drone_id
+        """:field
+        The name this drone.
+        """
+        self.name: int = name
         """:field
         The ID of the drone's avatar (camera). This is used internally for API calls.
         """
@@ -112,17 +127,19 @@ class Drone(AddOn):
         The current drone turn value.
         """
         self.turn = 0
+        """:field
+        Whether the drone's motor is on or off.
+        """
+        self.motor_on = motor_on
         # This is used for collision detection. If the previous action is the "same" as this one, this action fails.
         self._previous_action: Optional[Action] = None
         # This is used when saving images.
         self._frame_count: int = 0
-        """
         # Initialize the Replicant metadata library.
-        if Replicant.LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
-            Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME] = HumanoidLibrarian(Replicant.LIBRARY_NAME)
+        if Drone.LIBRARY_NAME not in Controller.DRONE_LIBRARIANS:
+            Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME] = DroneLibrarian(Drone.LIBRARY_NAME)
         # The Replicant metadata record.
-        self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME].get_record(name)
-        """
+        self._record: DroneRecord = Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME].get_record(name)
         # The target framerate.
         self._target_framerate: int = target_framerate
 
@@ -136,8 +153,8 @@ class Drone(AddOn):
         # Add the replicant. Send output data: Transforms, Bounds.
         commands = [{"$type": "add_drone", 
                      "id": self.drone_id,
-                     "name":"drone", 
-                     "url": "https://tdw-public.s3.amazonaws.com/flying_objects/windows/2020.3/drone", 
+                     "name":self.name, 
+                     "url": self._record.get_url(), 
                      "position": self.initial_position,
                      "rotation": self.initial_rotation,
                      "rise_speed": self.rise_speed,
@@ -148,7 +165,8 @@ class Drone(AddOn):
                      "deceleration": self.deceleration,
                      "stability": self.stability,
                      "turn_sensitivity": self.turn_sensitivity,
-                     "enable_lights": False},
+                     "enable_lights": self.enable_lights,
+                     "motor_on": self.motor_on},
                     {"$type": "create_avatar",
                      "type": "A_Img_Caps_Kinematic",
                      "id": self.avatar_id},
@@ -204,7 +222,8 @@ class Drone(AddOn):
         # Add commands for elevation and forward motion.
         self.commands.extend([{"$type": "apply_drive_force_to_drone", "id": self.drone_id, "force": self.drive},
                               {"$type": "apply_lift_force_to_drone", "id": self.drone_id, "force": self.lift},
-                              {"$type": "apply_turn_force_to_drone", "id": self.drone_id, "force": self.turn}])
+                              {"$type": "apply_turn_force_to_drone", "id": self.drone_id, "force": self.turn},
+                              {"$type": "set_drone_motor", "motor_on": self.motor_on}])
       
     def set_lift(self, lift: float) -> None:
         self.lift = lift
@@ -216,7 +235,7 @@ class Drone(AddOn):
         self.turn = turn
 
     def set_motor(self, motor_on: bool):
-        self.commands.append({"$type": "set_drone_motor", "motor_on": motor_on", "id": self.drone_id})
+        self.motor_on = motor_on
    
     def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
                                            rotation: Union[Dict[str, float], np.ndarray] = None) -> None:

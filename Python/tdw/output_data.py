@@ -59,6 +59,7 @@ from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
+from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1562,6 +1563,25 @@ class Replicants(OutputData):
 
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
+
+
+class ReplicantSegmentationColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._colors: np.ndarray = self.data.ColorsAsNumpy().reshape(-1, 3)
+
+    def get_data(self) -> RepSepCo.ReplicantSegmentationColors:
+        return RepSepCo.ReplicantSegmentationColors.GetRootAsReplicantSegmentationColors(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return int(self._ids.shape[0])
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_segmentation_color(self, index: int) -> np.ndarray:
+        return self._colors[index]
 
 
 class Framerate(OutputData):

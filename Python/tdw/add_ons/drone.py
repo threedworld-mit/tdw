@@ -170,13 +170,13 @@ class Drone(AddOn):
             self._frame_count += 1
 
         # Add commands for elevation and forward motion.
-        self.commands.extend([{"$type": "apply_drive_force_to_drone",
+        self.commands.extend([{"$type": "apply_drone_drive",
                                "id": self.drone_id,
                                "force": self._drive},
-                              {"$type": "apply_lift_force_to_drone",
+                              {"$type": "apply_drone_lift",
                                "id": self.drone_id,
                                "force": self._lift},
-                              {"$type": "apply_turn_force_to_drone",
+                              {"$type": "apply_drone_turn",
                                "id": self.drone_id,
                                "force": self._turn}])
       

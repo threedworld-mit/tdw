@@ -1,47 +1,56 @@
+from json import dumps
+from typing import Union, List
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.drone import Drone
-from tdw.drone.drone_dynamic import DroneDynamic
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-
-"""
-Minimal drone dynamic data example.
-"""
-
-c = Controller(launch_build=False)
-# We want to stop rising when the drone reaches this height.
-altitude_ceiling = 10
-cruise_level = 2
-drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0})
-camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
-                           look_at=drone.drone_id,
-                           avatar_id="a")
-c.add_ons.extend([drone, camera])
-c.communicate([c.get_add_scene(scene_name="suburb_scene_2023"),
-              {"$type": "set_screen_size",
-               "width": 1920,
-               "height": 1080}])
-for i in range(200):
-    c.communicate([])
-# Start rising.
-drone.set_lift(1)
-while TDWUtils.array_to_vector3(drone.dynamic.transform.position)["y"] < altitude_ceiling:
-    c.communicate([])
-# Stop rising and hover for a bit.
-drone.set_lift(0)
-print("Reached altitude ceiling")
-for i in range(100):
-    c.communicate([])
-# Fly down the street, dropping to "cruise_level" then continue.
-drone.set_drive(1)
-drone.set_lift(-1)
-while TDWUtils.array_to_vector3(drone.dynamic.transform.position)["y"] > cruise_level:
-    c.communicate([])
-drone.set_lift(0)
-print("Reached cruise level")
-for i in range(400):
-    c.communicate([])
-c.communicate({"$type": "terminate"})
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
+class DynamicData(Controller):
+    """
+    Read and save the drone's output data, including image data.
+    """
 
+    def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0})
+        self.path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_dynamic_data")
+        print(f"Images and JSON data will be saved to: {self.path}")
+        # Start the json data.
+        self.output_data = list()
+
+    def communicate(self, commands: Union[dict, List[dict]]) -> list:
+        resp = super().communicate(commands=commands)
+        # Save the drone's images.
+        self.drone.dynamic.save_images(output_directory=self.path)
+        # Write the other data as a JSON file.
+        output_data = {"transform": {"position": self.drone.dynamic.transform.position.tolist(),
+                                     "rotation": self.drone.dynamic.transform.rotation.tolist(),
+                                     "forward": self.drone.dynamic.transform.forward.tolist()},
+                       "camera_matrices": {"camera_matrix": self.drone.dynamic.camera_matrix.tolist(),
+                                           "projection_matrix": self.drone.dynamic.projection_matrix.tolist()},
+                       "raycast": {"hit": self.drone.dynamic.raycast_hit,
+                                   "point": self.drone.dynamic.raycast_point.tolist()},
+                       "motor_on": self.drone.dynamic.motor_on}
+        # Remember the output data.
+        self.output_data.append(output_data)
+        # Return the response from the build.
+        return resp
+
+    def run(self):
+        self.communicate([TDWUtils.create_empty_room(12, 12)])
+        for i in range(200):
+            self.communicate([])
+        # Let the drone rise.
+        self.drone.set_lift(1)
+        while self.drone.dynamic.transform.position[1] < 10:
+            self.communicate([])
+        # Quit.
+        self.communicate({"$type": "terminate"})
+        # Write the JSON data.
+        self.path.joinpath("output_data.json").write_text(dumps(self.output_data, indent=2))
+
+
+if __name__ == "__main__":
+    c = DynamicData()
+    c.run()

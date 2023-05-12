@@ -2,7 +2,6 @@ from typing import List, Optional, Dict, Union
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.drone.drone_dynamic import DroneDynamic
-from tdw.replicant.image_frequency import ImageFrequency
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import DroneRecord, DroneLibrarian
@@ -19,16 +18,15 @@ class Drone(AddOn):
     LIBRARY_NAME: str = "drones.json"
 
     def __init__(self, drone_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None,
-                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "drone",
+                 rotation: Union[Dict[str, float], np.ndarray] = None, name: str = "drone",
                  forward_speed: float = 3, backward_speed: float = 3, rise_speed: float = 3, drop_speed: float = 3,
                  acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
-                 enable_lights: bool = False, motor_on: bool = True):
+                 enable_lights: bool = False, motor_on: bool = True, image_capture: bool = True,
+                 image_passes: List[str] = None, png: bool = False):
         """
         :param drone_id: The ID of the drone.
         :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the drone in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
-        :param image_frequency: An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
         :param name: The name of the drone model.
         :param forward_speed: Sets the drone's max forward speed.
         :param backward_speed: Sets the drone's max backward speed.
@@ -39,7 +37,10 @@ class Drone(AddOn):
         :param stability: How easily the drone is affected by outside forces.
         :param turn_sensitivity: The name of the drone model.
         :param enable_lights: Sets whether or not the drone's lights are on. 
-        :param motor_on: Sets whether or not the drone is active on start.    
+        :param motor_on: Sets whether or not the drone is active on start.
+        :param image_capture: If True, the drone will receive image and camera matrix data per `communicate()` call. Whether or not this is True, the drone will always render images in the simulation window.
+        :param image_passes: A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_depth", "_id"]`.
+        :param png: If True, image data will be lossless .png data. If False, image data will be lossy .jpg data.
         """
 
         super().__init__()
@@ -68,10 +69,6 @@ class Drone(AddOn):
         The ID of the drone's avatar (camera). This is used internally for API calls.
         """
         self.avatar_id: str = str(drone_id)
-        """:field
-        An [`ImageFrequency`](../drone/image_frequency.md) value that sets how often images are captured.
-        """
-        self.image_frequency: ImageFrequency = image_frequency
         """:field
         The max forward speed of this drone.
         """
@@ -131,6 +128,12 @@ class Drone(AddOn):
             Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME] = DroneLibrarian(Drone.LIBRARY_NAME)
         # The Replicant metadata record.
         self._record: DroneRecord = Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME].get_record(name)
+        self._image_capture: bool = image_capture
+        if image_passes is None:
+            self._image_passes: List[str] = ["_img", "_depth", "_id"]
+        else:
+            self._image_passes = image_passes
+        self._png: bool = png
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -142,7 +145,7 @@ class Drone(AddOn):
         # Add the replicant. Send output data: Transforms, Bounds.
         commands = [{"$type": "add_drone", 
                      "id": self.drone_id,
-                     "name":self.name, 
+                     "name": self.name,
                      "url": self._record.get_url(), 
                      "position": self.initial_position,
                      "rotation": self.initial_rotation,
@@ -159,15 +162,12 @@ class Drone(AddOn):
                     {"$type": "create_avatar",
                      "type": "A_Img_Caps_Kinematic",
                      "id": self.avatar_id},
-                    {"$type": "set_pass_masks",
-                    "pass_masks": ["_img", "_depth"],
-                    "avatar_id": self.avatar_id},
                     {"$type": "parent_avatar_to_drone",
                      "position": {"x": 0, "y": -0.1, "z": 0},
                      "avatar_id": self.avatar_id,
                      "id": self.drone_id},
                     {"$type": "set_img_pass_encoding",
-                     "value": True},
+                     "value": self._png},
                     {"$type": "rotate_sensor_container_by", 
                      "axis": "pitch", 
                      "angle": 45.0,
@@ -178,14 +178,9 @@ class Drone(AddOn):
                      "frequency": "always"},
                     {"$type": "send_framerate",
                      "frequency": "always"}]
-        if self.image_frequency == ImageFrequency.once or self.image_frequency == ImageFrequency.never:
-            commands.extend([{"$type": "enable_image_sensor",
-                              "enable": False,
-                              "avatar_id": self.avatar_id}])
-        # If we want images per frame, enable image capture now.
-        elif self.image_frequency == ImageFrequency.always:
-            commands.extend([{"$type": "enable_image_sensor",
-                              "enable": True,
+        if self._image_capture:
+            commands.extend([{"$type": "set_pass_masks",
+                              "pass_masks": self._image_passes,
                               "avatar_id": self.avatar_id},
                              {"$type": "send_images",
                               "frequency": "always"},

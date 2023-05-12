@@ -2,8 +2,7 @@ from typing import List, Optional, Dict, Union
 import numpy as np
 from tdw.add_ons.add_on import AddOn
 from tdw.drone.drone_dynamic import DroneDynamic
-from tdw.drone.image_frequency import ImageFrequency
-from tdw.drone.collision_detection import CollisionDetection
+from tdw.replicant.image_frequency import ImageFrequency
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.librarian import DroneRecord, DroneLibrarian
@@ -73,10 +72,6 @@ class Drone(AddOn):
         An [`ImageFrequency`](../drone/image_frequency.md) value that sets how often images are captured.
         """
         self.image_frequency: ImageFrequency = image_frequency
-        """:field
-        [The collision detection rules.](../replicant/collision_detection.md) This determines whether the drone will immediately stop moving or turning when it collides with something.
-        """
-        self.collision_detection: CollisionDetection = CollisionDetection()
         """:field
         The max forward speed of this drone.
         """

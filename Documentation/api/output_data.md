@@ -92,6 +92,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
+| [ReplicantSegmentationColors](#ReplicantSegmentationColors) | Color segmentation data for Replicants in the scene. | `rseg` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
@@ -802,6 +803,20 @@ Data about each Replicant in the scene.
 | `get_is_collision(index, body_part_index, collision_index)` | The collision of the is. | `bool` |
 | `get_collision_id(index, body_part_index, collision_index)` | The ID of the collision. | `int` |
 | `get_status(index)` | The status. | `ActionStatus` |
+
+## ReplicantSegmentationColors
+
+`r = ReplicantSegmentationColors(byte_array)`
+
+**Identifier:** `rseg`
+
+Color segmentation data for Replicants in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.ndarray` |
 
 ## Rigidbodies
 

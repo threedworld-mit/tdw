@@ -689,6 +689,7 @@
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
+| [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
@@ -8985,6 +8986,38 @@ Send data of each Replicant in the scene.
 
 ```python
 {"$type": "send_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_replicant_segmentation_colors`**
+
+Send the segmentationColor of each Replicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ReplicantSegmentationColors`](output_data.md#ReplicantSegmentationColors)</font>
+
+```python
+{"$type": "send_replicant_segmentation_colors"}
+```
+
+```python
+{"$type": "send_replicant_segmentation_colors", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

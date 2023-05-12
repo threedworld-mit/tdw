@@ -132,7 +132,8 @@ class Replicant(AddOn):
                     {"$type": "send_containment",
                      "frequency": "always"},
                     {"$type": "send_framerate",
-                     "frequency": "always"}]
+                     "frequency": "always"},
+                    {"$type": "send_replicant_segmentation_colors"}]
         # Add empty objects to the Replicant for relative IK motion targets.
         commands.extend([{"$type": "attach_empty_object",
                           "id": self.replicant_id,

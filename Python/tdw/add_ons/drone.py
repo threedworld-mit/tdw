@@ -112,7 +112,6 @@ class Drone(AddOn):
         :return: A list of commands that will initialize this add-on.
         """
 
-        # Add the replicant. Send output data: Transforms, Bounds.
         commands = [{"$type": "add_drone", 
                      "id": self.drone_id,
                      "name": self._name,

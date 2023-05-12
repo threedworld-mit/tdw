@@ -1,5 +1,6 @@
 from typing import Dict, List
-from tdw.output_data import OutputData, Replicants
+import numpy as np
+from tdw.output_data import OutputData, Replicants, ReplicantSegmentationColors
 from tdw.replicant.arm import Arm
 from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
 
@@ -33,7 +34,10 @@ class ReplicantStatic:
         Body parts by name. Key = [`ReplicantBodyPart`](replicant_body_part.md). Value = Object ID.
         """
         self.body_parts: Dict[ReplicantBodyPart, int] = dict()
-        got_data = False
+        """:field
+        The Replicant's segmentation color.
+        """
+        self.segmentation_color: np.ndarray = np.zeros(3)
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get Replicants data.
@@ -46,10 +50,13 @@ class ReplicantStatic:
                         for k in range(len(BODY_PARTS)):
                             # Cache the ID.
                             self.body_parts[BODY_PARTS[k]] = replicants.get_body_part_id(j, k)
-                        got_data = True
-                        break
-            if got_data:
-                break
+            elif r_id == "rseg":
+                replicant_segmentation_colors = ReplicantSegmentationColors(resp[i])
+                for j in range(replicant_segmentation_colors.get_num()):
+                    object_id = replicant_segmentation_colors.get_id(j)
+                    # We found the ID of this replicant.
+                    if object_id == self.replicant_id:
+                        self.segmentation_color = replicant_segmentation_colors.get_segmentation_color(j)
         """:field
         The Replicant's hands. Key = [`Arm`](arm.md). Value = Hand ID.
         """

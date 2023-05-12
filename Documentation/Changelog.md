@@ -4,6 +4,28 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v.11.16
+
+### Command API
+
+#### New Commands
+
+| Command                              | Description                                        |
+| ------------------------------------ | -------------------------------------------------- |
+| `send_replicant_segmentation_colors` | Request `ReplicantSegmentationColors` output data. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data                   | Description                    |
+| ----------------------------- | ------------------------------ |
+| `ReplicantSegmentationColors` | Replicant segmentation colors. |
+
+### `tdw` module
+
+- Added: `ReplicantStatic.segmentation_color` The Replicant's segmentation color.
+
 ## v1.11.15
 
 ### Command API

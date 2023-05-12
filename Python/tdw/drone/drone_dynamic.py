@@ -39,15 +39,15 @@ class DroneDynamic:
         """:field
         The images rendered by the drone as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
         """
-        self.images: Dict[str, np.array] = dict()
+        self.images: Dict[str, np.ndarray] = dict()
         """:field
         The [camera projection matrix](../../api/output_data.md#cameramatrices) of the drone's camera as a numpy array.
         """
-        self.projection_matrix: Optional[np.array] = None
+        self.projection_matrix: Optional[np.ndarray] = None
         """:field
         The [camera matrix](../../api/output_data.md#cameramatrices) of the drone's camera as a numpy array.
         """
-        self.camera_matrix: Optional[np.array] = None
+        self.camera_matrix: Optional[np.ndarray] = None
         # File extensions per pass.
         self.__image_extensions: Dict[str, str] = dict()
         """:field

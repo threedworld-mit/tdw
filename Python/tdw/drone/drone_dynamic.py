@@ -4,9 +4,8 @@ import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Images, CameraMatrices, Transforms
+from tdw.output_data import OutputData, Images, CameraMatrices, Transforms, Drones
 from tdw.object_data.transform import Transform
-
 
 
 class DroneDynamic:
@@ -25,6 +24,18 @@ class DroneDynamic:
         The [`Transform`](../object_data/transform.md) of the drone.
         """
         self.transform: Transform = Transform(np.zeros(shape=3), np.zeros(shape=4), np.zeros(shape=3))
+        """:field
+        If True, the ray that was cast down from the drone hit something.
+        """
+        self.raycast_hit: bool = False
+        """:field
+        The point that the ray that was cast down from the drone hit. Ignore this if `self.raycast_hit == False`.
+        """
+        self.raycast_point: np.ndarray = np.zeros(shape=3)
+        """:field
+        If True, the drone's motor is on.
+        """
+        self.motor_on: bool = False
         """:field
         The images rendered by the drone as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
         """
@@ -46,7 +57,6 @@ class DroneDynamic:
         self._frame_count: int = frame_count
         self.drone_id: int = drone_id
         self.avatar_id = str(drone_id)
-        got_data = False
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get drone's transform data.
@@ -54,9 +64,9 @@ class DroneDynamic:
                 transforms = Transforms(resp[i])
                 for j in range(transforms.get_num()):
                     if transforms.get_id(j) == drone_id:
-                           self.transform = Transform(position=transforms.get_position(j),
-                                                      rotation=transforms.get_rotation(j),
-                                                      forward=transforms.get_forward(j))
+                        self.transform = Transform(position=transforms.get_position(j),
+                                                   rotation=transforms.get_rotation(j),
+                                                   forward=transforms.get_forward(j))
             # Get the images captured by the avatar's camera.
             elif r_id == "imag":
                 images = Images(resp[i])
@@ -80,6 +90,15 @@ class DroneDynamic:
                 if camera_matrices.get_avatar_id() == self.avatar_id:
                     self.projection_matrix = camera_matrices.get_projection_matrix()
                     self.camera_matrix = camera_matrices.get_camera_matrix()
+            # Get the data for this drone.
+            elif r_id == "dron":
+                drones = Drones(resp[i])
+                for j in range(drones.get_num()):
+                    if self.drone_id == drones.get_id(j):
+                        self.raycast_hit = drones.get_raycast_hit(j)
+                        if self.raycast_hit:
+                            self.raycast_point = drones.get_raycast(j)
+                        self.motor_on = drones.get_motor_on(j)
 
     def save_images(self, output_directory: Union[str, Path]) -> None:
         """

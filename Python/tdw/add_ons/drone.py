@@ -61,66 +61,24 @@ class Drone(AddOn):
         The ID of this drone.
         """
         self.drone_id: int = drone_id
-        """:field
-        The name of the drone model.
-        """
-        self.name: str = name
+        self._name: str = name
         """:field
         The ID of the drone's avatar (camera). This is used internally for API calls.
         """
         self.avatar_id: str = str(drone_id)
-        """:field
-        The max forward speed of this drone.
-        """
-        self.forward_speed = forward_speed
-        """:field
-        The max backwards speed of this drone.
-        """
-        self.backward_speed = backward_speed
-        """:field
-        The max vertical rise speed of this drone.
-        """
-        self.rise_speed = rise_speed
-        """:field
-        The max vertical drop speed of this drone.
-        """
-        self.drop_speed = drop_speed
-        """:field
-        How fast the drone speeds up.
-        """
-        self.acceleration = acceleration
-        """:field
-        How fast the drone slows down.
-        """
-        self.deceleration = deceleration
-        """:field
-        How easily the drone is affected by outside forces.
-        """
-        self.stability = stability
-        """:field
-        How fast the drone rotates.
-        """
-        self.turn_sensitivity = turn_sensitivity
-        """:field
-        Whether the drone's lights are on and blinking.
-        """
-        self.enable_lights = enable_lights
-        """:field
-        The current drone lift value.
-        """
-        self.lift = 0
-        """:field
-        The current drone drive value.
-        """
-        self.drive = 0
-        """:field
-        The current drone turn value.
-        """
-        self.turn = 0
-        """:field
-        Whether the drone's motor is on or off.
-        """
-        self.motor_on = motor_on
+        self._forward_speed: float = forward_speed
+        self._backward_speed: float = backward_speed
+        self._rise_speed: float = rise_speed
+        self._drop_speed: float = drop_speed
+        self._acceleration: float = acceleration
+        self._deceleration: float = deceleration
+        self._stability: float = stability
+        self._turn_sensitivity: float = turn_sensitivity
+        self._enable_lights: bool = enable_lights
+        self._lift: int = 0
+        self._drive: int = 0
+        self._turn: int = 0
+        self._motor_on = motor_on
         # This is used when saving images.
         self._frame_count: int = 0
         # Initialize the Replicant metadata library.
@@ -145,20 +103,20 @@ class Drone(AddOn):
         # Add the replicant. Send output data: Transforms, Bounds.
         commands = [{"$type": "add_drone", 
                      "id": self.drone_id,
-                     "name": self.name,
+                     "name": self._name,
                      "url": self._record.get_url(), 
                      "position": self.initial_position,
                      "rotation": self.initial_rotation,
-                     "rise_speed": self.rise_speed,
-                     "drop_speed": self.drop_speed,
-                     "forward_speed": self.forward_speed,
-                     "backward_speed": self.backward_speed,
-                     "acceleration": self.acceleration,
-                     "deceleration": self.deceleration,
-                     "stability": self.stability,
-                     "turn_sensitivity": self.turn_sensitivity,
-                     "enable_lights": self.enable_lights,
-                     "motor_on": self.motor_on},
+                     "rise_speed": self._rise_speed,
+                     "drop_speed": self._drop_speed,
+                     "forward_speed": self._forward_speed,
+                     "backward_speed": self._backward_speed,
+                     "acceleration": self._acceleration,
+                     "deceleration": self._deceleration,
+                     "stability": self._stability,
+                     "turn_sensitivity": self._turn_sensitivity,
+                     "enable_lights": self._enable_lights,
+                     "motor_on": self._motor_on},
                     {"$type": "create_avatar",
                      "type": "A_Img_Caps_Kinematic",
                      "id": self.avatar_id},
@@ -166,22 +124,18 @@ class Drone(AddOn):
                      "position": {"x": 0, "y": -0.1, "z": 0},
                      "avatar_id": self.avatar_id,
                      "id": self.drone_id},
-                    {"$type": "set_img_pass_encoding",
-                     "value": self._png},
                     {"$type": "rotate_sensor_container_by", 
                      "axis": "pitch", 
                      "angle": 45.0,
                      "avatar_id": self.avatar_id},
                     {"$type": "send_transforms",
-                     "frequency": "always"},
-                    {"$type": "send_bounds",
-                     "frequency": "always"},
-                    {"$type": "send_framerate",
                      "frequency": "always"}]
         if self._image_capture:
             commands.extend([{"$type": "set_pass_masks",
                               "pass_masks": self._image_passes,
                               "avatar_id": self.avatar_id},
+                             {"$type": "set_img_pass_encoding",
+                              "value": self._png},
                              {"$type": "send_images",
                               "frequency": "always"},
                              {"$type": "send_camera_matrices",
@@ -199,25 +153,27 @@ class Drone(AddOn):
         """
 
         # Update the dynamic data per `communicate()` call.
-        self._set_dynamic_data(resp=resp)
+        self.dynamic = DroneDynamic(resp=resp, drone_id=self.drone_id, frame_count=self._frame_count)
+        if self.dynamic.got_images:
+            self._frame_count += 1
 
         # Add commands for elevation and forward motion.
-        self.commands.extend([{"$type": "apply_drive_force_to_drone", "id": self.drone_id, "force": self.drive},
-                              {"$type": "apply_lift_force_to_drone", "id": self.drone_id, "force": self.lift},
-                              {"$type": "apply_turn_force_to_drone", "id": self.drone_id, "force": self.turn},
-                              {"$type": "set_drone_motor", "motor_on": self.motor_on}])
+        self.commands.extend([{"$type": "apply_drive_force_to_drone", "id": self.drone_id, "force": self._drive},
+                              {"$type": "apply_lift_force_to_drone", "id": self.drone_id, "force": self._lift},
+                              {"$type": "apply_turn_force_to_drone", "id": self.drone_id, "force": self._turn},
+                              {"$type": "set_drone_motor", "motor_on": self._motor_on}])
       
     def set_lift(self, lift: float) -> None:
-        self.lift = lift
+        self._lift = lift
 
     def set_drive(self, drive: float) -> None:
-        self.drive = drive
+        self._drive = drive
 
     def set_turn(self, turn: float) -> None:
-        self.turn = turn
+        self._turn = turn
 
     def set_motor(self, motor_on: bool):
-        self.motor_on = motor_on
+        self._motor_on = motor_on
    
     def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
                                            rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
@@ -242,17 +198,3 @@ class Drone(AddOn):
             self.initial_rotation = rotation
         elif isinstance(rotation, np.ndarray):
             self.initial_rotation = TDWUtils.array_to_vector3(rotation)
-
-    
-    def _set_dynamic_data(self, resp: List[bytes]) -> None:
-        """
-        Set dynamic data.
-
-        :param resp: The response from the build.
-        """
-
-        self.dynamic = DroneDynamic(resp=resp, drone_id=self.drone_id, frame_count=self._frame_count)
-        if self.dynamic.got_images:
-            self._frame_count += 1
-
-   

@@ -129,8 +129,6 @@ class Drone(AddOn):
         Whether the drone's motor is on or off.
         """
         self.motor_on = motor_on
-        # This is used for collision detection. If the previous action is the "same" as this one, this action fails.
-        self._previous_action: Optional[Action] = None
         # This is used when saving images.
         self._frame_count: int = 0
         # Initialize the Replicant metadata library.

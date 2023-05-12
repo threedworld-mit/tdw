@@ -29,7 +29,6 @@ drone.set_lift(0)
 drone.set_drive(1)
 for i in range(200):
     c.communicate([])
-"""
 # Turn a little then continue straight.
 drone.set_turn(-1)
 for i in range(100):
@@ -50,6 +49,6 @@ drone.set_lift(0)
 for i in range(200):
     c.communicate([])
 c.communicate({"$type": "terminate"})
-"""
+
 
 

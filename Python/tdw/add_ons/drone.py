@@ -11,7 +11,7 @@ class Drone(AddOn):
     """
     A drone is a flying agent. From this API, you can set the drone's speed (lift, drive, turn) and turn its motor on and off.
 
-    The drone's output data, including images, is stored in [`drone.dynamic`](../../drone/drone_dynamic.md).
+    The drone's output data, including images, is stored in [`drone.dynamic`](../drone/drone_dynamic.md).
     """
 
     """:class_var

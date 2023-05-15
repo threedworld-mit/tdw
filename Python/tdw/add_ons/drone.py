@@ -41,7 +41,7 @@ class Drone(AddOn):
         :param enable_lights: Sets whether or not the drone's lights are on. 
         :param motor_on: Sets whether or not the drone is active on start.
         :param image_capture: If True, the drone will receive image and camera matrix data per `communicate()` call. Whether or not this is True, the drone will always render images in the simulation window.
-        :param image_passes: A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_depth", "_id"]`.
+        :param image_passes: A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_id"]`.
         """
 
         super().__init__()
@@ -101,7 +101,7 @@ class Drone(AddOn):
         self._record: DroneRecord = Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME].get_record(name)
         self._image_capture: bool = image_capture
         if image_passes is None:
-            self._image_passes: List[str] = ["_img", "_depth", "_id"]
+            self._image_passes: List[str] = ["_img", "_depth"]
         else:
             self._image_passes = image_passes
 

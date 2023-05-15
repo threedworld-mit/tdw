@@ -57,7 +57,7 @@ The drone's output data, including images, is stored in [`drone.dynamic`](../dro
 | enable_lights |  bool  | False | Sets whether or not the drone's lights are on. |
 | motor_on |  bool  | True | Sets whether or not the drone is active on start. |
 | image_capture |  bool  | True | If True, the drone will receive image and camera matrix data per `communicate()` call. Whether or not this is True, the drone will always render images in the simulation window. |
-| image_passes |  List[str] | None | A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_depth", "_id"]`. |
+| image_passes |  List[str] | None | A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_id"]`. |
 
 #### get_initialization_commands
 

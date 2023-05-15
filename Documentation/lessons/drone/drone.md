@@ -83,7 +83,7 @@ The drone stores its output data in `drone.dynamic`, which is a [`DroneDynamic`]
 
 Images are stored in a dictionary: `drone.dynamic.images`. The key is a string indicating the capture pass, for example `"_img"`. 
 
-By default, the drone saves [RGB images](../core_concepts/images.md), [depth maps](../visual_perception/depth.md), and [segmentation colors](../visual_perception/id.md). To set the drone's image passes, set the optional `image_passes` parameter in the constructor like this: `drone = Drone(image_passes=["_img"])`. 
+By default, the drone saves [RGB images](../core_concepts/images.md) and [depth maps](../visual_perception/depth.md). To set the drone's image passes, set the optional `image_passes` parameter in the constructor like this: `drone = Drone(image_passes=["_img"])`. 
 
 The drone's camera matrices are stored in `drone.dynamic.camera_matrix` and `drone.dynamic.projection_matrix`.
 

@@ -6,11 +6,11 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Minimal example showing how to stop the drone's motor running.
+Stop the drone's motor.
 """
 
 c = Controller()
-drone = Drone(rotation={"x": 0, "y": -90, "z": 0}, motor_on=True)
+drone = Drone(rotation={"x": 0, "y": -90, "z": 0})
 camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
                            look_at=drone.drone_id,
                            avatar_id="a")

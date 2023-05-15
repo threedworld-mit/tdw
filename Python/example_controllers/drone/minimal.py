@@ -5,7 +5,7 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Minimal drone example.
+Minimal example of a drone flying in a suburb.
 """
 
 c = Controller()

@@ -24,7 +24,7 @@ class Drone(AddOn):
                  forward_speed: float = 3, backward_speed: float = 3, rise_speed: float = 3, drop_speed: float = 3,
                  acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
                  enable_lights: bool = False, motor_on: bool = True, image_capture: bool = True,
-                 image_passes: List[str] = None, png: bool = False):
+                 image_passes: List[str] = None):
         """
         :param drone_id: The ID of the drone.
         :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -42,7 +42,6 @@ class Drone(AddOn):
         :param motor_on: Sets whether or not the drone is active on start.
         :param image_capture: If True, the drone will receive image and camera matrix data per `communicate()` call. Whether or not this is True, the drone will always render images in the simulation window.
         :param image_passes: A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_depth", "_id"]`.
-        :param png: If True, image data will be lossless .png data. If False, image data will be lossy .jpg data.
         """
 
         super().__init__()
@@ -105,7 +104,6 @@ class Drone(AddOn):
             self._image_passes: List[str] = ["_img", "_depth", "_id"]
         else:
             self._image_passes = image_passes
-        self._png: bool = png
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -150,7 +148,7 @@ class Drone(AddOn):
                               "pass_masks": self._image_passes,
                               "avatar_id": self.avatar_id},
                              {"$type": "set_img_pass_encoding",
-                              "value": self._png},
+                              "value": False},
                              {"$type": "send_images",
                               "frequency": "always"},
                              {"$type": "send_camera_matrices",

@@ -1,7 +1,6 @@
 from json import dumps
 from typing import Union, List
 from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.drone import Drone
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
@@ -14,7 +13,7 @@ class DynamicData(Controller):
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         self._first_time_only = True
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.drone = Drone(rotation={"x": 0, "y": -90, "z": 0})
+        self.drone = Drone(rotation={"x": 0, "y": -90, "z": 0}, image_passes=["_img"])
         self.add_ons.append(self.drone)
         self.path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_dynamic_data")
         print(f"Images and JSON data will be saved to: {self.path}")
@@ -43,7 +42,7 @@ class DynamicData(Controller):
         return resp
 
     def run(self):
-        self.communicate([TDWUtils.create_empty_room(12, 12)])
+        self.communicate(c.get_add_scene(scene_name="suburb_scene_2023"))
         # Let the drone rise.
         self.drone.set_lift(1)
         while self.drone.dynamic.transform.position[1] < 10:

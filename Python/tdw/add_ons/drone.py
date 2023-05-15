@@ -215,6 +215,9 @@ class Drone(AddOn):
         :param motor_on: If True, turn the motor on. If False, turn the motor off.
         """
 
+        self._lift = 0
+        self._turn = 0
+        self._drive = 0
         self.commands.append({"$type": "set_drone_motor",
                               "motor_on": motor_on})
 

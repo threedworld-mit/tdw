@@ -4,6 +4,65 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.17
+
+### New Features
+
+- **Added: `Drone` add-on, which simulates quadcopter drones.**
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                            |
+| ------------------------ | -------------------------------------- |
+| `add_drone`              | Add a drone to the scene.              |
+| `apply_drone_drive`      | Fly a drone forward or backward.       |
+| `apply_drone_lift`       | Fly a drone up or down.                |
+| `apply_drone_turn`       | Turn a drone left or right.            |
+| `parent_avatar_to_drone` | Parent an avatar to a drone.           |
+| `set_drone_motor`        | Turns the drone's motor on or off.     |
+| `send_drones`            | Send data for each drone in the scene. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description                       |
+| ----------- | --------------------------------- |
+| `Drones`    | Data for each drone in the scene. |
+
+### `tdw` module
+
+- Added: `Drone` add-on.
+  - Added: `DroneDynamic` data class
+  - Added: `DroneLibrarian` and `DroneRecord`
+
+### Example Controllers
+
+- Added: `drone/collision_detection.py`
+- Added: `drone/dynamic_data.py`
+- Added: `drone/minimal.py`
+- Added: `drone/rise_by.py`
+- Added: `drone/stop_motor.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                              | Description          |
+| ------------------------------------- | -------------------- |
+| `lessons/drone/drone.md`              | Drone tutorial       |
+| `python/add_ons/drone.md`             | `Drone` API          |
+| `python/drone/drone_dynamic.md`       | `DroneDynamic` API   |
+| `python/librarian/drone_librarian.md` | `DroneLibrarian` API |
+
+#### Modified Documentation
+
+| Document                     | Modification                |
+| ---------------------------- | --------------------------- |
+| `lessons/agents/overview.md` | Added a section for drones. |
+
 ## v1.11.16
 
 ### Command API

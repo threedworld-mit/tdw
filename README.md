@@ -403,6 +403,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.librarian**
 
+- [DroneLibrarian](Documentation/python/librarian/drone_librarian.md)
 - [HdriSkyboxLibrarian](Documentation/python/librarian/hdri_skybox_librarian.md)
 - [HumanoidAnimationLibrarian](Documentation/python/librarian/humanoid_animation_librarian.md)
 - [HumanoidLibrarian](Documentation/python/librarian/humanoid_librarian.md)

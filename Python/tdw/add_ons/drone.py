@@ -142,6 +142,8 @@ class Drone(AddOn):
                      "angle": 45.0,
                      "avatar_id": self.avatar_id},
                     {"$type": "send_transforms",
+                     "frequency": "always"},
+                    {"$type": "send_drones",
                      "frequency": "always"}]
         if self._image_capture:
             commands.extend([{"$type": "set_pass_masks",

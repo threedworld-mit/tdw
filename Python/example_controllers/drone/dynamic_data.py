@@ -14,7 +14,7 @@ class DynamicData(Controller):
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         self._first_time_only = True
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": -90, "z": 0})
+        self.drone = Drone(rotation={"x": 0, "y": -90, "z": 0})
         self.add_ons.append(self.drone)
         self.path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_dynamic_data")
         print(f"Images and JSON data will be saved to: {self.path}")

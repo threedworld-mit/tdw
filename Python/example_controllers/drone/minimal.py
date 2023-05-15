@@ -9,7 +9,7 @@ Minimal drone example.
 """
 
 c = Controller()
-drone = Drone(position={"x": 0, "y": 0, "z": 0}, rotation={"x": 0, "y": 00, "z": 0})
+drone = Drone()
 camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
                            look_at=drone.drone_id,
                            avatar_id="a")

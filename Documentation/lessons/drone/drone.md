@@ -4,7 +4,7 @@
 
 *Drones in TDW are handled via the PhysX physics engine. If you haven't done so already, we strongly recommend you read the [physics tutorial](../physx/physx.md).*
 
-TDW drones are agents that act like real-life drones. The user can set lift, drive, and turn values to steer the drone. 
+TDW drones are agents that act like real-life drone quadcopters. The user can set lift, drive, and turn values to steer the drone. 
 
 A drone can be added to the scene by using the [`Drone`](../../python/add_ons/drone.md) add-on:
 
@@ -79,7 +79,7 @@ For a full list of flight parameters, [read the API documentation](../../python/
 
 ## Output data and images
 
-The drone stores its output data in `drone.dynamic`, which is a [`DroneDynamic`](../python/drone/drone_dynamic.md) data object. This data includes the drone's position (`drone.dynamic.transform`, a [`Transform`](../../python/object_data/transform.md)), data for a raycast that starts from the drone and ends somewhere below it (`drone.dynamic.raycast_hit` and `drone.dynamic.raycast_point`), and a boolean indicating if the drone's motor is on.
+The drone stores its output data in `drone.dynamic`, which is a [`DroneDynamic`](../../python/drone/drone_dynamic.md) data object. This data includes the drone's position (`drone.dynamic.transform`, a [`Transform`](../../python/object_data/transform.md)), data for a raycast that starts from the drone and ends somewhere below it (`drone.dynamic.raycast_hit` and `drone.dynamic.raycast_point`), and a boolean indicating if the drone's motor is on.
 
 Images are stored in a dictionary: `drone.dynamic.images`. The key is a string indicating the capture pass, for example `"_img"`. 
 
@@ -358,6 +358,14 @@ Result:
 
 ![](images/collision_detection.gif)
 
+## Physical realism
+
+**Drones are *not* entirely physically realistic.** 
+
+Drones *are* realistic in that they look like drones and respond to [PhysX forces](../physx/forces.md). Whenever you set the drone's lift, drive, or turn values,  you are adjusting forces being applied to it per communicate() call. As explained above, drones can collide with objects.
+
+However, TDW doesn't simulate true aerodynamic. Drones "fly" by ignoring the simulation's gravity. 
+
 ## Low-level description
 
 The drone is added to the scene via [`add_drone`](../../api/command_api.md#add_drone).  And [avatar](../core_concepts/avatars.md) is attached to the drone via [`create_avatar`](../../api/command_api.md#create_avatar) and [`parent_avatar_to_drone`](../../api/command_api.md#parent_avatar_to_drone).
@@ -384,8 +392,8 @@ Example controllers:
 
 Python API:
 
-- [`Drone`](../python/add_ons/drone.md)
-- [`DroneDynamic`](../python/drone/drone_dynamic.md)
+- [`Drone`](../../python/add_ons/drone.md)
+- [`DroneDynamic`](../../python/drone/drone_dynamic.md)
 - [`Transform`](../../python/object_data/transform.md)
 
 Command API:

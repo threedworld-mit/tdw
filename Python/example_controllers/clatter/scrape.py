@@ -19,7 +19,7 @@ camera = ThirdPersonCamera(position={"x": 1.3, "y": 2.1, "z": -1.1},
                            avatar_id="a")
 audio = AudioInitializer(avatar_id="a")
 # Initialized Clatter with a hardcoded random seed.
-clatter = Clatter(random_seed=0, simulation_amp=0.9)
+clatter = Clatter(random_seed=0, simulation_amp=0.9, roughness_ratio_exponent=0.7)
 recorder = PhysicsAudioRecorder()
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("scrape")
 print(f"Audio will be saved to: {path}")

@@ -59,6 +59,7 @@ from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
+from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
@@ -1635,3 +1636,30 @@ class EulerAngles(OutputData):
 
     def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]
+
+
+class Drones(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._raycast_hits: np.ndarray = self.data.RaycastHitsAsNumpy()
+        self._raycasts: np.ndarray = self.data.RaycastsAsNumpy().reshape(-1, 3)
+        self._motor_ons: np.ndarray = self.data.MotorOnAsNumpy()
+
+    def get_data(self) -> Dro.Drones:
+        return Dro.Drones.GetRootAsDrones(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return int(self._ids.shape[0])
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_raycast_hit(self, index: int) -> bool:
+        return bool(self._raycast_hits[index])
+
+    def get_raycast(self, index: int) -> np.ndarray:
+        return self._raycasts[index]
+
+    def get_motor_on(self, index: int) -> bool:
+        return bool(self._motor_ons[index])

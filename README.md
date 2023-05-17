@@ -239,19 +239,23 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 14. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
 15. [Reset](Documentation/lessons/replicants/reset.md)
 
-### 11.4 Virtual Reality (VR)
+### 11.4 Drones
+
+1. [Drones](Documentation/lessons/drone/drone.md)
+
+### 11.5 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 11.5 Keyboard and Mouse
+### 11.6 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.6 Embodied avatars
+### 11.7 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
@@ -325,6 +329,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
+- [Drone](Documentation/python/add_ons/drone.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
 - [EmptyObjectManager](Documentation/python/add_ons/empty_object_manager.md)
 - [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
@@ -388,12 +393,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CylinderContainer](Documentation/python/container_data/cylinder_container.md)
 - [SphereContainer](Documentation/python/container_data/sphere_container.md)
 
+**tdw.drone**
+
+- [DroneDynamic](Documentation/python/drone/drone_dynamic.md)
+
 **tdw.flex_data**
 
 - [FluidType](Documentation/python/flex_data/fluid_type.md)
 
 **tdw.librarian**
 
+- [DroneLibrarian](Documentation/python/librarian/drone_librarian.md)
 - [HdriSkyboxLibrarian](Documentation/python/librarian/hdri_skybox_librarian.md)
 - [HumanoidAnimationLibrarian](Documentation/python/librarian/humanoid_animation_librarian.md)
 - [HumanoidLibrarian](Documentation/python/librarian/humanoid_librarian.md)

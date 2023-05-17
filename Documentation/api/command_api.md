@@ -53,6 +53,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_drone`](#add_drone) | Add a drone to the scene.  |
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
 | [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md  |
@@ -407,6 +408,16 @@
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
 | [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
+**Drone Command**
+
+| Command | Description |
+| --- | --- |
+| [`apply_drone_drive`](#apply_drone_drive) | Fly a drone forwards or backwards, based on an input force value. Positive values fly forwards, negative values fly backwards. Zero value hovers drone. |
+| [`apply_drone_lift`](#apply_drone_lift) | Control the drone's elevation above the ground. Positive numbers cause the drone to rise, negative numbers cause it to descend. A zero value will cause it to maintain its current elevation. |
+| [`apply_drone_turn`](#apply_drone_turn) | Turn a drone left or right, based on an input force value. Positive values turn right, negative values turn left. Zero value flies straight. |
+| [`parent_avatar_to_drone`](#parent_avatar_to_drone) | Parent an avatar to a drone. Usually you'll want to do this to add a camera to the drone. |
+| [`set_drone_motor`](#set_drone_motor) | Turns the drone's motor on or off. |
+
 **Humanoid Command**
 
 | Command | Description |
@@ -677,6 +688,7 @@
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
+| [`send_drones`](#send_drones) | Send data for each drone in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send the positions of each empty object in the scene.  |
 | [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
@@ -1460,6 +1472,42 @@ Add a scene to TDW. Unloads the current scene if any (including any created by t
 # AddObjectCommand
 
 These commands load an asset bundle with a specific object (model, material, etc.).
+
+***
+
+## **`add_drone`**
+
+Add a drone to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/drone_librarian.md`</font>
+
+```python
+{"$type": "add_drone", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_drone", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "forward_speed": 7, "backward_speed": 5, "right_speed": 5, "left_speed": 5, "rise_speed": 5, "drop_speed": 5, "acceleration": 0.3, "deceleration": 0.2, "stability": 0.1, "turn_sensitivity": 2, "motor_on": True, "enable_lights": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the drone. | |
+| `"position"` | Vector3 | The position of the drone. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the drone, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"forward_speed"` | float | Sets the drone's max forward speed. | 7 |
+| `"backward_speed"` | float | Sets the drone's max backward speed. | 5 |
+| `"right_speed"` | float | Sets the drone's max right strafe speed. | 5 |
+| `"left_speed"` | float | Sets the drone's max left strafe speed. | 5 |
+| `"rise_speed"` | float | Sets the drone's max vertical rise speed. | 5 |
+| `"drop_speed"` | float | Sets the drone's max vertical drop speed. | 5 |
+| `"acceleration"` | float | Sets the drone's acceleration. | 0.3 |
+| `"deceleration"` | float | Sets the drone's deceleration. | 0.2 |
+| `"stability"` | float | A factor that determinates how easily the drone is affected by outside forces. | 0.1 |
+| `"turn_sensitivity"` | float | Sets the drone's rotation speed. | 2 |
+| `"motor_on"` | bool | Sets whether or not the drone is active on start. | True |
+| `"enable_lights"` | bool | Sets whether or not the drone's lights are on. | False |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
 ***
 
@@ -5544,6 +5592,110 @@ A group of particles from which an Obi cloth sheet can be tethered to another ob
 | `"west_edge"` |  |
 | `"center"` |  |
 
+# DroneCommand
+
+These commands affect a drone currently in the scene.
+
+***
+
+## **`apply_drone_drive`**
+
+Fly a drone forwards or backwards, based on an input force value. Positive values fly forwards, negative values fly backwards. Zero value hovers drone.
+
+
+```python
+{"$type": "apply_drone_drive", "id": 1}
+```
+
+```python
+{"$type": "apply_drone_drive", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | int | The force value. Must be -1, 0, or 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_drone_lift`**
+
+Control the drone's elevation above the ground. Positive numbers cause the drone to rise, negative numbers cause it to descend. A zero value will cause it to maintain its current elevation.
+
+
+```python
+{"$type": "apply_drone_lift", "id": 1}
+```
+
+```python
+{"$type": "apply_drone_lift", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | int | The force value. Must be -1, 0, or 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_drone_turn`**
+
+Turn a drone left or right, based on an input force value. Positive values turn right, negative values turn left. Zero value flies straight.
+
+
+```python
+{"$type": "apply_drone_turn", "id": 1}
+```
+
+```python
+{"$type": "apply_drone_turn", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | int | The force value. Must be -1, 0, or 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`parent_avatar_to_drone`**
+
+Parent an avatar to a drone. Usually you'll want to do this to add a camera to the drone.
+
+
+```python
+{"$type": "parent_avatar_to_drone", "id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_drone", "id": 1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_drone_motor`**
+
+Turns the drone's motor on or off.
+
+
+```python
+{"$type": "set_drone_motor", "id": 1}
+```
+
+```python
+{"$type": "set_drone_motor", "id": 1, "motor_on": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"motor_on"` | bool | Toggles whether the motor is on. | True |
+| `"id"` | int | The unique object ID. | |
+
 # HumanoidCommand
 
 These commands affect humanoids currently in the scene. To add a humanoid, see add_humanoid in the Command API.
@@ -8597,6 +8749,38 @@ Send data for the category names and colors of each object in the scene.
 
 ```python
 {"$type": "send_categories", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_drones`**
+
+Send data for each drone in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Drones`](output_data.md#Drones)</font>
+
+```python
+{"$type": "send_drones"}
+```
+
+```python
+{"$type": "send_drones", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

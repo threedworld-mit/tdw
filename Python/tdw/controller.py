@@ -4,7 +4,8 @@ import os
 from subprocess import Popen
 from typing import List, Union, Tuple, Dict
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
-    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, VisualEffectLibrarian
+    HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, VisualEffectLibrarian, \
+    DroneLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
 from tdw.output_data import Version, QuitSignal
 from tdw.release.build import Build
@@ -40,6 +41,7 @@ class Controller:
     HUMANOID_ANIMATION_LIBRARIANS: Dict[str, HumanoidAnimationLibrarian] = dict()
     ROBOT_LIBRARIANS: Dict[str, RobotLibrarian] = dict()
     VISUAL_EFFECT_LIBRARIANS: Dict[str, VisualEffectLibrarian] = dict()
+    DRONE_LIBRARIANS: Dict[str, DroneLibrarian] = dict()
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         """

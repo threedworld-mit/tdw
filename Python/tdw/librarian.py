@@ -260,6 +260,15 @@ class HumanoidRecord(_Record):
         super().__init__(data)
 
 
+class DroneRecord(_Record):
+    """
+    A record for a drone asset bundle.
+    """
+
+    def __init__(self, data: Optional[dict] = None):
+        super().__init__(data)
+
+
 class RobotRecord(_Record):
     """
     A record for a robot asset bundle.
@@ -631,6 +640,19 @@ class HumanoidLibrarian(_Librarian[HumanoidRecord]):
 
     def _generate_record(self, data: dict) -> T:
         return HumanoidRecord(data)
+
+
+class DroneLibrarian(_Librarian[DroneRecord]):
+    """
+    Librarian class for drone metadata.
+    """
+
+    @staticmethod
+    def get_library_filenames() -> List[str]:
+        return ["drones.json"]
+
+    def _generate_record(self, data: dict) -> T:
+        return DroneRecord(data)
 
 
 class RobotLibrarian(_Librarian[RobotRecord]):

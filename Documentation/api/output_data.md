@@ -60,6 +60,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [Containment](#Containment) | The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag. | `cont` |
+| [Drones](#Drones) | Data for each drone in the scene. | `dron` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
 | [DynamicEmptyObjects](#DynamicEmptyObjects) | The position of each empty object in the scene. | `dyem` |
 | [DynamicRobots](#DynamicRobots) | Dynamic robot output data. | `drob` |
@@ -92,6 +93,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
+| [ReplicantSegmentationColors](#ReplicantSegmentationColors) | Color segmentation data for Replicants in the scene. | `rseg` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
@@ -288,6 +290,22 @@ The IDs of every object that a shape overlaps plus parent IDs and the semantic c
 | `get_overlap_ids()` | The IDs of every object in the overlap shape. | `np.ndarray` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
+
+## Drones
+
+`d = Drones(byte_array)`
+
+**Identifier:** `dron`
+
+Data for each drone in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_raycast_hit(index)` | The hit of the raycast. | `bool` |
+| `get_raycast(index)` | The raycast. | `np.ndarray` |
+| `get_motor_on(index)` | If true, the drone's motor is on. | `bool` |
 
 ## DynamicCompositeObjects
 
@@ -802,6 +820,20 @@ Data about each Replicant in the scene.
 | `get_is_collision(index, body_part_index, collision_index)` | The collision of the is. | `bool` |
 | `get_collision_id(index, body_part_index, collision_index)` | The ID of the collision. | `int` |
 | `get_status(index)` | The status. | `ActionStatus` |
+
+## ReplicantSegmentationColors
+
+`r = ReplicantSegmentationColors(byte_array)`
+
+**Identifier:** `rseg`
+
+Color segmentation data for Replicants in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.ndarray` |
 
 ## Rigidbodies
 

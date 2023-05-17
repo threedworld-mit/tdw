@@ -57,10 +57,10 @@ class Drone(AddOn):
             self.initial_position = TDWUtils.array_to_vector3(position)
         else:
             raise Exception(position)
-        """:field
-        The initial rotation of the drone in Euler angles.
-        """
         if rotation is None:
+            """:field
+            The initial rotation of the drone in Euler angles.
+            """
             self.initial_rotation: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
         elif isinstance(rotation, dict):
             self.initial_rotation = rotation

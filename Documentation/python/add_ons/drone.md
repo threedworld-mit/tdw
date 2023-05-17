@@ -20,7 +20,9 @@ The drone's output data, including images, is stored in [`drone.dynamic`](../dro
 
 - `initial_position` The initial position of the drone.
 
-- `dynamic` The initial rotation of the drone in Euler angles.
+- `initial_rotation` The initial rotation of the drone in Euler angles.
+
+- `dynamic` The [`DroneDynamic`](../drone/drone_dynamic.md) data.
 
 - `drone_id` The ID of this drone.
 

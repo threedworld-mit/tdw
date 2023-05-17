@@ -54,7 +54,7 @@ The Replicant API is a high-level action space API very similar to the Magnebot 
 
 **Trade-offs:** Replicants can *cause* physics events (e.g. pushing objects) but won't *respond* to physics events (e.g. getting pushed by objects). The Replicant is incomplete, and will be improved and extended in the near future.
 
-### [Drone](../drone.md)
+### [Drone](../drone/drone.md)
 
 [Drones](../drone/drone.md) simulate real-life quadcopter drones.
 

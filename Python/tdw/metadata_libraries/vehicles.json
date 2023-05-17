@@ -1,0 +1,13 @@
+{
+  "description": "vehicles",
+  "records": {
+    "all_terrain_vehicle": {
+      "name": "all_terrain_vehicle",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/vehicles/osx/2020.3/all_terrain_vehicle",
+        "Linux": "https://tdw-public.s3.amazonaws.com/vehicles/linux/2020.3/all_terrain_vehicle",
+        "Windows": "https://tdw-public.s3.amazonaws.com/vehicles/windows/2020.3/all_terrain_vehicle"
+      }
+    }
+  }
+}

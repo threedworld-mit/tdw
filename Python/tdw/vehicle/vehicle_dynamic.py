@@ -4,7 +4,7 @@ import numpy as np
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
 from PIL import Image
-from tdw.output_data import OutputData, Images, CameraMatrices, Transforms, Vehicles
+from tdw.output_data import OutputData, Images, CameraMatrices, Transforms
 from tdw.object_data.transform import Transform
 
 
@@ -24,18 +24,6 @@ class VehicleDynamic:
         The [`Transform`](../object_data/transform.md) of the vehicle.
         """
         self.transform: Transform = Transform(np.zeros(shape=3), np.zeros(shape=4), np.zeros(shape=3))
-        """:field
-        If True, the ray that was cast forward from the vehicle hit something.
-        """
-        self.raycast_hit: bool = False
-        """:field
-        The point that the ray that was cast forward from the vehicle hit. Ignore this if `self.raycast_hit == False`.
-        """
-        self.raycast_point: np.ndarray = np.zeros(shape=3)
-        """:field
-        If True, the vehicle's motor is on.
-        """
-        self.motor_on: bool = False
         """:field
         The images rendered by the vehicle as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
         """
@@ -90,16 +78,7 @@ class VehicleDynamic:
                 if camera_matrices.get_avatar_id() == self.avatar_id:
                     self.projection_matrix = camera_matrices.get_projection_matrix()
                     self.camera_matrix = camera_matrices.get_camera_matrix()
-            # Get the data for this vehicle.
-            elif r_id == "dron":
-                vehicles = Vehicles(resp[i])
-                for j in range(vehicles.get_num()):
-                    if self.vehicle_id == vehicles.get_id(j):
-                        self.raycast_hit = vehicles.get_raycast_hit(j)
-                        if self.raycast_hit:
-                            self.raycast_point = vehicles.get_raycast(j)
-                        self.motor_on = vehicles.get_motor_on(j)
-
+           
     def save_images(self, output_directory: Union[str, Path]) -> None:
         """
         Save the ID pass (segmentation colors) and the depth pass to disk.

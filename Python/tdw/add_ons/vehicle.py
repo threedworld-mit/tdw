@@ -20,8 +20,8 @@ class Vehicle(AddOn):
     LIBRARY_NAME: str = "vehicles.json"
 
     def __init__(self, vehicle_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None, name: str = "vehicle",
-                 forward_speed: float = 30, backward_speed: float = 12, image_capture: bool = True,
+                 rotation: Union[Dict[str, float], np.ndarray] = None, name: str = "all_terrain_vehicle",
+                 forward_speed: float = 30, reverse_speed: float = 12, image_capture: bool = True,
                  image_passes: List[str] = None):
         """
         :param vehicle_id: The ID of the vehicle.
@@ -29,7 +29,7 @@ class Vehicle(AddOn):
         :param rotation: The rotation of the vehicle in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param name: The name of the vehicle model.
         :param forward_speed: Sets the vehicle's max forward speed.
-        :param backward_speed: Sets the vehicle's max backward speed.
+        :param reverse_speed: Sets the vehicle's max reverse speed.
         :param image_capture: If True, the vehicle will receive image and camera matrix data per `communicate()` call. Whether or not this is True, the vehicle will always render images in the simulation window.
         :param image_passes: A list of image passes that will be captured. Ignored if `image_capture == False`. If None, defaults to `["_img", "_id"]`.
         """
@@ -70,16 +70,16 @@ class Vehicle(AddOn):
         """
         self.avatar_id: str = str(vehicle_id)
         self._forward_speed: float = forward_speed
-        self._backward_speed: float = backward_speed
+        self._reverse_speed: float = reverse_speed
         self._drive: int = 0
         self._turn: int = 0
         # This is used when saving images.
         self._frame_count: int = 0
-        # Initialize the Replicant metadata library.
-        if Drone.LIBRARY_NAME not in Controller.DRONE_LIBRARIANS:
-            Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME] = DroneLibrarian(Drone.LIBRARY_NAME)
-        # The Replicant metadata record.
-        self._record: DroneRecord = Controller.DRONE_LIBRARIANS[Drone.LIBRARY_NAME].get_record(name)
+        # Initialize the vehicle metadata library.
+        if Vehicle.LIBRARY_NAME not in Controller.VEHICLE_LIBRARIANS:
+            Controller.VEHICLE_LIBRARIANS[Vehicle.LIBRARY_NAME] = VehicleLibrarian(Vehicle.LIBRARY_NAME)
+        # The vehicle metadata record.
+        self._record: VehicleRecord = Controller.VEHICLE_LIBRARIANS[Vehicle.LIBRARY_NAME].get_record(name)
         self._image_capture: bool = image_capture
         if image_passes is None:
             self._image_passes: List[str] = ["_img", "_depth"]
@@ -100,7 +100,7 @@ class Vehicle(AddOn):
                      "position": self.initial_position,
                      "rotation": self.initial_rotation,
                      "forward_speed": self._forward_speed,
-                     "backward_speed": self._backward_speed,
+                     "reverse_speed": self._reverse_speed},
                     {"$type": "create_avatar",
                      "type": "A_Img_Caps_Kinematic",
                      "id": self.avatar_id},
@@ -113,8 +113,6 @@ class Vehicle(AddOn):
                      "angle": 0,
                      "avatar_id": self.avatar_id},
                     {"$type": "send_transforms",
-                     "frequency": "always"},
-                    {"$type": "send_vehicles",
                      "frequency": "always"}]
         if self._image_capture:
             commands.extend([{"$type": "set_pass_masks",
@@ -170,7 +168,6 @@ class Vehicle(AddOn):
         """
 
         self._turn = Vehicle._get_clamped_force(turn)
-
 
     @staticmethod
     def _get_clamped_force(force: int) -> float:

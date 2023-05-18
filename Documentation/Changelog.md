@@ -4,6 +4,20 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.18
+
+### Command API
+
+#### New Commands
+
+| Command                    | Description                          |
+| -------------------------- | ------------------------------------ |
+| `stop_replicant_animation` | Stop an ongoing Replicant animation. |
+
+### `tdw` module
+
+- Fixed: If a Replicant starts a new action while an animation is playing (i.e. `animate(animation)`, `move_by(distance)`, or `move_to(target)`), the animation doesn't stop.
+
 ## v1.11.17
 
 ### New Features

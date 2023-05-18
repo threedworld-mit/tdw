@@ -27,7 +27,7 @@ for i in range(200):
     c.communicate([])
 #Speed up a bit.
 vehicle.set_drive(0.5)
-for i in range(310):
+for i in range(300):
     c.communicate([])
 # Turn then continue straight.
 vehicle.set_drive(0.25)

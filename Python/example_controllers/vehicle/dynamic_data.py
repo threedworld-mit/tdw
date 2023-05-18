@@ -42,7 +42,7 @@ class DynamicData(Controller):
         self.communicate(c.get_add_scene(scene_name="suburb_scene_2023"))
         # Drive the vehicle forward.
         self.vehicle.set_drive(0.5)
-        while self.vehicle.dynamic.transform.position[2] < 10:
+        while self.vehicle.dynamic.transform.position[0] > -30:
             self.communicate([])
         # Quit.
         self.vehicle.set_drive(0)
@@ -54,5 +54,5 @@ class DynamicData(Controller):
 
 
 if __name__ == "__main__":
-    c = DynamicData()
+    c = DynamicData(launch_build=False)
     c.run()

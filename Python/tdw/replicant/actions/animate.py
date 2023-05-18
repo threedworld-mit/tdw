@@ -87,11 +87,3 @@ class Animate(Action):
                          "id": static.replicant_id,
                          "direction": TDWUtils.array_to_vector3(collider_intersections_direction)})
         return commands
-
-    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
-                         image_frequency: ImageFrequency) -> List[dict]:
-        commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
-        # Stop the animation.
-        commands.append({"$type": "stop_humanoid_animation",
-                         "id": static.replicant_id})
-        return commands

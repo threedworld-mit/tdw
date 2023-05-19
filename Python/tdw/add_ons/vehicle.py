@@ -71,8 +71,9 @@ class Vehicle(AddOn):
         self.avatar_id: str = str(vehicle_id)
         self._forward_speed: float = forward_speed
         self._reverse_speed: float = reverse_speed
-        self._drive: int = 0
-        self._turn: int = 0
+        self._drive: float = 0
+        self._turn: float = 0
+        self._brake: float = 0
         # This is used when saving images.
         self._frame_count: int = 0
         # Initialize the vehicle metadata library.
@@ -149,7 +150,10 @@ class Vehicle(AddOn):
                                "force": self._drive},
                               {"$type": "apply_vehicle_turn",
                                "id": self.vehicle_id,
-                               "force": self._turn}])
+                               "force": self._turn},
+                              {"$type": "apply_vehicle_brake",
+                               "id": self.vehicle_id,
+                               "force": self._brake}])
 
     def set_drive(self, drive: float) -> None:
         """
@@ -168,6 +172,15 @@ class Vehicle(AddOn):
         """
 
         self._turn = Vehicle._get_clamped_force(turn)
+
+    def set_brake(self, brake: float) -> None:
+        """
+        Set the vehicle's brake force.
+
+        :param brake: The brake force as a float. Must be between -1.0 and 1.0.
+        """
+
+        self._brake = Vehicle._get_clamped_force(brake)
 
     @staticmethod
     def _get_clamped_force(force: float) -> float:

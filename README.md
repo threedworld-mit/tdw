@@ -363,8 +363,13 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [UI](Documentation/python/add_ons/ui.md)
+- [Vehicle](Documentation/python/add_ons/vehicle.md)
 - [VR](Documentation/python/add_ons/vr.md)
 - [Writer](Documentation/python/add_ons/writer.md)
+
+**tdw.agent_data**
+
+- [AgentDynamic](Documentation/python/agent_data/agent_dynamic.md)
 
 **tdw.asset_bundle_creator**
 
@@ -586,6 +591,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [RegionBounds](Documentation/python/scene_data/region_bounds.md)
 - [Room](Documentation/python/scene_data/room.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
+
+**tdw.vehicle**
+
+- [VehicleDynamic](Documentation/python/vehicle/vehicle_dynamic.md)
 
 **tdw.vr_data**
 

@@ -1,18 +1,12 @@
-# DroneDynamic
+# AgentDynamic
 
-`from tdw.drone.drone_dynamic import DroneDynamic`
+`from tdw.agent_data.agent_dynamic import AgentDynamic`
 
-Dynamic data for a drone that can change per `communicate()` call (such as the position of the drone).
+Abstract base class for agent dynamic data that can change per `communicate()` call.
 
 ***
 
 ## Fields
-
-- `raycast_hit` If True, the ray that was cast down from the drone hit something.
-
-- `raycast_point` The point that the ray that was cast down from the drone hit. Ignore this if `self.raycast_hit == False`.
-
-- `motor_on` If True, the drone's motor is on.
 
 - `transform` The [`Transform`](../object_data/transform.md) of the agent.
 
@@ -32,12 +26,12 @@ Dynamic data for a drone that can change per `communicate()` call (such as the p
 
 #### \_\_init\_\_
 
-**`DroneDynamic(resp, drone_id, frame_count)`**
+**`AgentDynamic(resp, agent_id, frame_count)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build, which we assume contains `drone` output data. |
-| drone_id |  int |  | The ID of this drone. |
+| resp |  List[bytes] |  | The response from the build. |
+| agent_id |  int |  | The ID of this agent. |
 | frame_count |  int |  | The current frame count. |
 
 #### save_images
@@ -70,3 +64,4 @@ Do NOT use this function to save image data to disk; `save_image` is much faster
 | pass_mask |  str  | "img" | The pass mask. Options: `"img"`, `"id"`, `"depth"`. |
 
 _Returns:_  A PIL image.
+

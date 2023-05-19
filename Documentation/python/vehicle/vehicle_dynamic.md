@@ -1,18 +1,12 @@
-# DroneDynamic
+# VehicleDynamic
 
-`from tdw.drone.drone_dynamic import DroneDynamic`
+`from tdw.vehicle.vehicle_dynamic import VehicleDynamic`
 
-Dynamic data for a drone that can change per `communicate()` call (such as the position of the drone).
+Dynamic data for a vehicle that can change per `communicate()` call (such as the position of the vehicle).
 
 ***
 
 ## Fields
-
-- `raycast_hit` If True, the ray that was cast down from the drone hit something.
-
-- `raycast_point` The point that the ray that was cast down from the drone hit. Ignore this if `self.raycast_hit == False`.
-
-- `motor_on` If True, the drone's motor is on.
 
 - `transform` The [`Transform`](../object_data/transform.md) of the agent.
 
@@ -28,16 +22,20 @@ Dynamic data for a drone that can change per `communicate()` call (such as the p
 
 ***
 
+***
+
 ## Functions
 
 #### \_\_init\_\_
 
-**`DroneDynamic(resp, drone_id, frame_count)`**
+\_\_init\_\_
+
+**`VehicleDynamic(resp, agent_id, frame_count)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build, which we assume contains `drone` output data. |
-| drone_id |  int |  | The ID of this drone. |
+| resp |  List[bytes] |  | The response from the build. |
+| agent_id |  int |  | The ID of this agent. |
 | frame_count |  int |  | The current frame count. |
 
 #### save_images

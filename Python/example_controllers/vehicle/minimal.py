@@ -22,12 +22,12 @@ c.communicate([c.get_add_scene(scene_name="suburb_scene_2023")])
 for i in range(50):
     c.communicate([])
 # Drive up the street slowly.
-vehicle.set_drive(0.25)
-for i in range(200):
-    c.communicate([])
-#Speed up a bit.
 vehicle.set_drive(0.5)
 for i in range(300):
+    c.communicate([])
+#Speed up a bit.
+vehicle.set_drive(0.75)
+for i in range(450):
     c.communicate([])
 # Turn then continue straight.
 vehicle.set_drive(0.25)

@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.18
+
+### Build
+
+- Fixed: When a Replicant drops a container with objects in it, the objects in the container ignore gravity.
+
 ## v1.11.17
 
 ### New Features

@@ -8,7 +8,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 Minimal example of a vehicle driving in a suburb.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 vehicle = Vehicle(rotation={"x": 0, "y": -90, "z": 0}, image_capture=False)
 camera = ThirdPersonCamera(position={"x": 7, "y": 2.5, "z": -1},
                            look_at=vehicle.vehicle_id,

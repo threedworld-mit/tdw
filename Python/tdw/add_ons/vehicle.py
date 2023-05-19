@@ -9,7 +9,7 @@ from tdw.librarian import VehicleRecord, VehicleLibrarian
 
 class Vehicle(AddOn):
     """
-    A vehicle is a driving agent such as a car, bus or truck. From this API, you can set the vehicles's speed (rive, turn, brake) and turn its motor on and off.
+    A vehicle is a driving agent such as a car, bus or truck. From this API, you can set the vehicles's speed (drive, turn, brake) and turn its motor on and off.
 
     The vehicle's output data, including images, is stored in [`vehicle.dynamic`](../vehicle/vehicle_dynamic.md).
     """
@@ -57,7 +57,7 @@ class Vehicle(AddOn):
         elif isinstance(rotation, np.ndarray):
             self.initial_rotation = TDWUtils.array_to_vector3(rotation)
         """:field
-        The [`DroneDynamic`](../vehicle/vehicle_dynamic.md) data.
+        The [`VehicleDynamic`](../vehicle/vehicle_dynamic.md) data.
         """
         self.dynamic: Optional[VehicleDynamic] = None
         """:field
@@ -139,7 +139,7 @@ class Vehicle(AddOn):
         """
 
         # Update the dynamic data per `communicate()` call.
-        self.dynamic = VehicleDynamic(resp=resp, vehicle_id=self.vehicle_id, frame_count=self._frame_count)
+        self.dynamic = VehicleDynamic(resp=resp, agent_id=self.vehicle_id, frame_count=self._frame_count)
         if self.dynamic.got_images:
             self._frame_count += 1
 
@@ -151,8 +151,6 @@ class Vehicle(AddOn):
                                "id": self.vehicle_id,
                                "force": self._turn}])
       
-
-
     def set_drive(self, drive: int) -> None:
         """
         Set the vehicle's drive force.

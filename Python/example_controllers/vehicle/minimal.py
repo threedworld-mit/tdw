@@ -21,26 +21,26 @@ capture = ImageCapture(avatar_ids=["a"], path=path)
 print(f"Images will be saved to: {path}")
 c.add_ons.extend([vehicle, camera, capture])
 c.add_ons.extend([vehicle, camera])
-c.communicate([c.get_add_scene(scene_name="suburb_scene_2023"),
-               {"$type": "set_target_framerate",
-                "framerate": 60}])
+c.communicate([c.get_add_scene(scene_name="suburb_scene_2023")])
 for i in range(50):
     c.communicate([])
-# Drive up the street slowly.
-vehicle.set_drive(0.5)
-for i in range(120):
+# Drive up the street.
+vehicle.set_drive(1)
+for i in range(160):
     c.communicate([])
 # Slow down.
 vehicle.set_drive(0.2)
-for i in range(60):
+vehicle.set_brake(0.2)
+for i in range(40):
     c.communicate([])
 # Turn into the driveway.
-vehicle.set_turn(0.9)
-for i in range(80):
+vehicle.set_brake(0)
+vehicle.set_turn(1)
+vehicle.set_drive(0)
+for i in range(150):
     c.communicate([])
 # Hit the brakes.
 vehicle.set_turn(0)
-vehicle.set_drive(0)
 vehicle.set_brake(0.5)
 for i in range(50):
     c.communicate([])

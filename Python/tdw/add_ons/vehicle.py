@@ -107,7 +107,7 @@ class Vehicle(AddOn):
                     # Add camera and position to approximately driver head height, just in front of windshield.
                     # Other vehicle assets will likely require adjusting these values.
                     {"$type": "parent_avatar_to_vehicle",
-                     "position": {"x": 0, "y": 1.25, "z": 1.0},
+                     "position": {"x": 0, "y": 1.75, "z": 1.0},
                      "avatar_id": self.avatar_id,
                      "id": self.vehicle_id},
                     {"$type": "rotate_sensor_container_by", 

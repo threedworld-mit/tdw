@@ -44,10 +44,12 @@ class DynamicData(Controller):
         self.vehicle.set_drive(0.5)
         while self.vehicle.dynamic.transform.position[0] > -30:
             self.communicate([])
-        # Quit.
+        # Brake.
         self.vehicle.set_drive(0)
+        self.vehicle.set_brake(0.7)
         for i in range(100):
             c.communicate([])
+        # Quit.
         self.communicate({"$type": "terminate"})
         # Write the JSON data.
         self.path.joinpath("output_data.json").write_text(dumps(self.output_data, indent=2))

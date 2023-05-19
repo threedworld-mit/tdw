@@ -13,10 +13,10 @@ vehicle = Vehicle(rotation={"x": 0, "y": -90, "z": 0}, image_capture=False)
 camera = ThirdPersonCamera(position={"x": 7, "y": 2.5, "z": -1},
                            look_at=vehicle.vehicle_id,
                            avatar_id="a")
-#path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("vehicle_suburb")
-#capture = ImageCapture(avatar_ids=["a"], path=path)
-#print(f"Images will be saved to: {path}")
-#c.add_ons.extend([vehicle, camera, capture])
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("vehicle_suburb")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+print(f"Images will be saved to: {path}")
+c.add_ons.extend([vehicle, camera, capture])
 c.add_ons.extend([vehicle, camera])
 c.communicate([c.get_add_scene(scene_name="suburb_scene_2023")])
 for i in range(50):
@@ -25,7 +25,7 @@ for i in range(50):
 vehicle.set_drive(0.5)
 for i in range(300):
     c.communicate([])
-#Speed up a bit.
+# Speed up a bit.
 vehicle.set_drive(0.75)
 for i in range(450):
     c.communicate([])

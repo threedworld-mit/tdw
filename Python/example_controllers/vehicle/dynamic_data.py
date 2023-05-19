@@ -54,5 +54,5 @@ class DynamicData(Controller):
 
 
 if __name__ == "__main__":
-    c = DynamicData(launch_build=False)
+    c = DynamicData()
     c.run()

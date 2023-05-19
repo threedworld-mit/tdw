@@ -150,27 +150,27 @@ class Vehicle(AddOn):
                               {"$type": "apply_vehicle_turn",
                                "id": self.vehicle_id,
                                "force": self._turn}])
-      
-    def set_drive(self, drive: int) -> None:
+
+    def set_drive(self, drive: float) -> None:
         """
         Set the vehicle's drive force.
 
-        :param drive: The drive force. Must be -1, 0, or 1.
+        :param drive: The drive force as a float. Must be between -1.0 and 1.0.
         """
 
         self._drive = Vehicle._get_clamped_force(drive)
 
-    def set_turn(self, turn: int) -> None:
+    def set_turn(self, turn: float) -> None:
         """
         Set the vehicle's turn force.
 
-        :param turn: The turn force. Must be -1, 0, or 1.
+        :param turn: The turn force as a float. Must be between -1.0 and 1.0.
         """
 
         self._turn = Vehicle._get_clamped_force(turn)
 
     @staticmethod
-    def _get_clamped_force(force: int) -> float:
+    def _get_clamped_force(force: float) -> float:
         """
         :param force: The force input value.
 

@@ -11,7 +11,7 @@ Move a Replicant to a target behind it.
 """
 
 c = Controller()
-replicant = Replicant(position={"x": 0, "y": 0, "z": 2})
+replicant = Replicant(position={"x": 0, "y": 0, "z": 2}, name="man_suit_edited")
 camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
                            look_at=replicant.replicant_id,
                            avatar_id="a")

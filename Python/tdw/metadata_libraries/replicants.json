@@ -24,6 +24,14 @@
         "Linux": "https://tdw-public.s3.amazonaws.com/replicants/linux/2020.3/replicant_0",
         "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/replicant_0"
       }
+	},
+	"man_suit_edited": {
+      "name": "man_suit_edited",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/replicants/osx/2020.3/man_suit_edited",
+        "Linux": "https://tdw-public.s3.amazonaws.com/replicants/linux/2020.3/man_suit_edited",
+        "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/man_suit_edited"
+      }
     }
   }
 }

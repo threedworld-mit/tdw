@@ -25,7 +25,7 @@ class CarryCouch(Controller):
         self.object_id: int = Controller.get_unique_id()
         # Set the Replicants.
         self.replicant_0: Replicant = Replicant(replicant_id=0, position={"x": -1, "y": 0, "z": -1})
-        self.replicant_1: Replicant = Replicant(replicant_id=1, position={"x": 1, "y": 0, "z": -1})
+        self.replicant_1: Replicant = Replicant(replicant_id=1, position={"x": 1, "y": 0, "z": -1}, name="man_suit_edited")
         # Add a camera and enable image capture.
         camera = ThirdPersonCamera(position={"x": 0, "y": 2.2, "z": -2.61},
                                    avatar_id="a",

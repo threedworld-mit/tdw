@@ -2,7 +2,7 @@
 
 `from tdw.add_ons.vehicle import Vehicle`
 
-A vehicle is a driving agent such as a car, bus or truck. From this API, you can set the vehicles's speed (rive, turn, brake) and turn its motor on and off.
+A vehicle is a driving agent such as a car, bus or truck. From this API, you can set the vehicles's speed (drive, turn, brake) and turn its motor on and off.
 
 The vehicle's output data, including images, is stored in [`vehicle.dynamic`](../vehicle/vehicle_dynamic.md).
 
@@ -90,7 +90,7 @@ Set the vehicle's drive force.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| drive |  int |  | The drive force. Must be -1, 0, or 1. |
+| drive |  float |  | The drive force as a float. Must be between -1.0 and 1.0. |
 
 #### set_turn
 
@@ -100,4 +100,14 @@ Set the vehicle's turn force.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| turn |  int |  | The turn force. Must be -1, 0, or 1. |
+| turn |  float |  | The turn force as a float. Must be between -1.0 and 1.0. |
+
+#### set_brake
+
+**`self.set_brake(brake)`**
+
+Set the vehicle's brake force.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| brake |  float |  | The brake force as a float. Must be between -1.0 and 1.0. |

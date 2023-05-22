@@ -57,6 +57,7 @@
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
 | [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md  |
+| [`add_vehicle`](#add_vehicle) | Add a vehicle to the scene.  |
 | [`add_visual_effect`](#add_visual_effect) | Add a non-physics visual effect to the scene from an asset bundle.  |
 
 **Add Humanoid Command**
@@ -478,6 +479,15 @@
 | [`set_spring_force`](#set_spring_force) | Set the force of a spring.  |
 | [`set_spring_target_position`](#set_spring_target_position) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
+
+**Vehicle Command**
+
+| Command | Description |
+| --- | --- |
+| [`apply_vehicle_brake`](#apply_vehicle_brake) | Set the vehicle's brake value. |
+| [`apply_vehicle_drive`](#apply_vehicle_drive) | Move the vehicle forward or backward. |
+| [`apply_vehicle_turn`](#apply_vehicle_turn) | Turn a vehicle left or right. |
+| [`parent_avatar_to_vehicle`](#parent_avatar_to_vehicle) | Parent an avatar to a vehicle. Usually you'll want to do this to add a camera to the vehicle. |
 
 **Visual Material Command**
 
@@ -1572,6 +1582,32 @@ Add a robot to the scene. For further documentation, see: Documentation/lessons/
 | `"id"` | int | The unique ID of the robot. | 0 |
 | `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_vehicle`**
+
+Add a vehicle to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/vehicle_librarian.md`</font>
+
+```python
+{"$type": "add_vehicle", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_vehicle", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "forward_speed": 30, "reverse_speed": 12}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the vehicle. | |
+| `"position"` | Vector3 | The position of the vehicle. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the vehicle, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"forward_speed"` | float | Sets the vehicle's max forward speed. | 30 |
+| `"reverse_speed"` | float | Sets the vehicle's max reverse speed. | 12 |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -6373,6 +6409,91 @@ Turn a light on or off.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"is_on"` | bool | If true, the light will be on. | |
+| `"id"` | int | The unique object ID. | |
+
+# VehicleCommand
+
+These commands affect a vehicle currently in the scene.
+
+***
+
+## **`apply_vehicle_brake`**
+
+Set the vehicle's brake value.
+
+
+```python
+{"$type": "apply_vehicle_brake", "id": 1}
+```
+
+```python
+{"$type": "apply_vehicle_brake", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force value. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_vehicle_drive`**
+
+Move the vehicle forward or backward.
+
+
+```python
+{"$type": "apply_vehicle_drive", "id": 1}
+```
+
+```python
+{"$type": "apply_vehicle_drive", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force value. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_vehicle_turn`**
+
+Turn a vehicle left or right.
+
+
+```python
+{"$type": "apply_vehicle_turn", "id": 1}
+```
+
+```python
+{"$type": "apply_vehicle_turn", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force value. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`parent_avatar_to_vehicle`**
+
+Parent an avatar to a vehicle. Usually you'll want to do this to add a camera to the vehicle.
+
+
+```python
+{"$type": "parent_avatar_to_vehicle", "id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_vehicle", "id": 1, "avatar_id": "a", "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"position"` | Vector3 | The camera position. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 # VisualMaterialCommand

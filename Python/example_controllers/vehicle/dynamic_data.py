@@ -31,6 +31,8 @@ class DynamicData(Controller):
         output_data = {"transform": {"position": self.vehicle.dynamic.transform.position.tolist(),
                                      "rotation": self.vehicle.dynamic.transform.rotation.tolist(),
                                      "forward": self.vehicle.dynamic.transform.forward.tolist()},
+                       "rigidbody": {"velocity": self.vehicle.dynamic.rigidbody.velocity.tolist(),
+                                     "angular_velocity": self.vehicle.dynamic.rigidbody.angular_velocity.tolist()},
                        "camera_matrices": {"camera_matrix": self.vehicle.dynamic.camera_matrix.tolist(),
                                            "projection_matrix": self.vehicle.dynamic.projection_matrix.tolist()}}
         # Remember the output data.

@@ -8,6 +8,8 @@ Dynamic data for a vehicle that can change per `communicate()` call (such as the
 
 ## Fields
 
+- `rigidbody` The [`Rigidbody`](../object_data/rigidbody.md) (velocity and angular velocity) of the vehicle.
+
 - `transform` The [`Transform`](../object_data/transform.md) of the agent.
 
 - `images` The images rendered by the agent as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
@@ -22,21 +24,13 @@ Dynamic data for a vehicle that can change per `communicate()` call (such as the
 
 ***
 
-***
-
 ## Functions
 
 #### \_\_init\_\_
 
-\_\_init\_\_
+**`VehicleDynamic()`**
 
-**`VehicleDynamic(resp, agent_id, frame_count)`**
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| resp |  List[bytes] |  | The response from the build. |
-| agent_id |  int |  | The ID of this agent. |
-| frame_count |  int |  | The current frame count. |
+The [`Rigidbody`](../object_data/rigidbody.md) (velocity and angular velocity) of the vehicle.
 
 #### save_images
 

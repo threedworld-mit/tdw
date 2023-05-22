@@ -243,19 +243,23 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Drones](Documentation/lessons/drone/drone.md)
 
-### 11.5 Virtual Reality (VR)
+### 11.5 Vehicles
+
+1. [Vehicles](Documentation/lessons/vehicle/vehicle.md)
+
+### 11.6 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 11.6 Keyboard and Mouse
+### 11.7 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.7 Embodied avatars
+### 11.8 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
@@ -416,6 +420,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+- [VehicleLibrarian](Documentation/python/librarian/vehicle_librarian.md)
 - [VisualEffectLibrarian](Documentation/python/librarian/visual_effect_librarian.md)
 
 **tdw.lisdf_data**

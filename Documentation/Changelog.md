@@ -4,7 +4,9 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.18
+## v1.11.19
+
+### New Features
 
 ### New Features
 
@@ -88,6 +90,12 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact.md`          | Moved to `py_impact/py_impact.md`                            |
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
+
+## v1.11.18
+
+### Build
+
+- Fixed: When a Replicant drops a container with objects in it, the objects in the container ignore gravity.
 
 ## v1.11.17
 

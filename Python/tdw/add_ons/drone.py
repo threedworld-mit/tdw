@@ -229,4 +229,4 @@ class Drone(AddOn):
         :return: The force clamped between -1 and 1.
         """
 
-        return max(min(force, 1), -1)
+        return int(max(min(force, 1), -1))

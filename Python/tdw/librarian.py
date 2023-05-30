@@ -269,6 +269,15 @@ class DroneRecord(_Record):
         super().__init__(data)
 
 
+class VehicleRecord(_Record):
+    """
+    A record for a vehicle asset bundle.
+    """
+
+    def __init__(self, data: Optional[dict] = None):
+        super().__init__(data)
+
+
 class RobotRecord(_Record):
     """
     A record for a robot asset bundle.
@@ -653,6 +662,19 @@ class DroneLibrarian(_Librarian[DroneRecord]):
 
     def _generate_record(self, data: dict) -> T:
         return DroneRecord(data)
+
+
+class VehicleLibrarian(_Librarian[VehicleRecord]):
+    """
+    Librarian class for vehicle metadata.
+    """
+
+    @staticmethod
+    def get_library_filenames() -> List[str]:
+        return ["vehicles.json"]
+
+    def _generate_record(self, data: dict) -> T:
+        return VehicleRecord(data)
 
 
 class RobotLibrarian(_Librarian[RobotRecord]):

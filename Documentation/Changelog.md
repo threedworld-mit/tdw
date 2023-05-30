@@ -21,6 +21,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | `apply_vehicle_drive`       | Move the vehicle forward or backward.                |
 | `apply_vehicle_turn`       | Turn the vehicle left or right.            |
 | `parent_avatar_to_vehicle` | Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle.           |
+| `stop_replicant_animation` | Stop an ongoing Replicant animation. |
 
 ### `tdw` module
 
@@ -28,6 +29,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
   - Added: `VehicleDynamic` data class
   - Added: `VehicleLibrarian` and `VehicleRecord`
 - (Backend) Added abstract class `AgentDynamic`. `ReplicantDynamic` and `DroneDynamic` are now subclasses of `AgentDynamic`, as is the new `VehicleDynamic`.
+- Fixed: If a Replicant starts a new action while an animation is playing (i.e. `animate(animation)`, `move_by(distance)`, or `move_to(target)`), the animation doesn't stop.
 
 ### Example Controllers
 

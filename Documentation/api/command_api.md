@@ -436,6 +436,7 @@
 | [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 | [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
+| [`stop_replicant_animation`](#stop_replicant_animation) | Stop an ongoing Replicant animation. |
 
 **Replicant Arm Command**
 
@@ -5888,6 +5889,21 @@ Advance the Replicant's IK solvers by 1 frame.
 
 ```python
 {"$type": "replicant_step", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`stop_replicant_animation`**
+
+Stop an ongoing Replicant animation.
+
+
+```python
+{"$type": "stop_replicant_animation", "id": 1}
 ```
 
 | Parameter | Type | Description | Default |

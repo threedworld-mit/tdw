@@ -8,23 +8,25 @@ Dynamic data for a replicant that can change per `communicate()` call (such as t
 
 ## Fields
 
-- `transform` The [`Transform`](../object_data/transform.md) of the Replicant.
-
 - `held_objects` A dictionary of objects held in each hand. Key = [`Arm`](arm.md). Value = Object ID.
-
-- `images` The images rendered by the robot as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
-
-- `projection_matrix` The [camera projection matrix](../../api/output_data.md#cameramatrices) of the Replicant's camera as a numpy array.
-
-- `camera_matrix` The [camera matrix](../../api/output_data.md#cameramatrices) of the Replicant's camera as a numpy array.
-
-- `got_images` If True, we got images from the output data.
 
 - `body_parts` Transform data for each body part. Key = Body part ID. Value = [`Transform`](../object_data/transform.md).
 
 - `collisions` Collision data per body part. Key = Body part ID. Value = A list of object IDs that the body part collided with.
 
 - `output_data_status` This is meant for internal use only. For certain actions, the build will update the Replicant's `ActionStatus`. *Do not use this field to check the Replicant's status.* Always check `replicant.action.status` instead.
+
+- `transform` The [`Transform`](../object_data/transform.md) of the agent.
+
+- `images` The images rendered by the agent as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
+
+- `projection_matrix` The [camera projection matrix](../../api/output_data.md#cameramatrices) of the agent's camera as a numpy array.
+
+- `camera_matrix` The [camera matrix](../../api/output_data.md#cameramatrices) of the agent's camera as a numpy array.
+
+- `got_images` If True, we got images from the output data.
+
+- `avatar_id` The ID of the avatar.
 
 ***
 
@@ -81,4 +83,3 @@ _Returns:_  A PIL image.
 | collision_detection |  CollisionDetection |  | The [`CollisionDetection`](collision_detection.md) rules. |
 
 _Returns:_  A list of body IDs that entered a collision on this frame, filtered by the collision detection rules.
-

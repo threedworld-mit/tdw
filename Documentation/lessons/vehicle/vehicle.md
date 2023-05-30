@@ -170,7 +170,7 @@ This will also write data to a JSON file.
 
 So far, the examples in this document have waited a certain number of communicate() calls to drive a vehicle. In some use-cases, you will want to wait until the vehicle has driven a certain distance, reached a certain speed, etc.
 
-This controller wraps `vehicle.set_drive(force)` in a simple `drive` function that calls communicate() until the vehicle is at a target distancet:
+This controller wraps `vehicle.set_drive(force)` in a simple `move_by(distance)` function that calls communicate() until the vehicle is at a target distance:
 
 ```python
 import numpy as np
@@ -335,7 +335,7 @@ This will also write a list of IDs per frame that the vehicle collided with to a
 
 Vehicles *are* realistic in that they look like vehicles and respond to [PhysX forces](../physx/forces.md). Whenever you set the vehicle's drive, turn, or brake values,  you are adjusting forces being applied to it per communicate() call. As explained above, vehicles can collide with objects.
 
-However, TDW doesn't include a true driving simulation.  TDW does not attempt to model individual parts of vehicles, realistic tires, fuel consumption, etc. Vehicles cannot be damaged in TDW.
+However, TDW doesn't include a true driving simulation.  TDW does not attempt to model individual parts of vehicles, realistic tires, fuel consumption, etc.
 
 ## Low-level description
 

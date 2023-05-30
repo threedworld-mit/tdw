@@ -486,8 +486,8 @@
 | --- | --- |
 | [`apply_vehicle_brake`](#apply_vehicle_brake) | Set the vehicle's brake value. |
 | [`apply_vehicle_drive`](#apply_vehicle_drive) | Move the vehicle forward or backward. |
-| [`apply_vehicle_turn`](#apply_vehicle_turn) | Turn a vehicle left or right. |
-| [`parent_avatar_to_vehicle`](#parent_avatar_to_vehicle) | Parent an avatar to a vehicle. Usually you'll want to do this to add a camera to the vehicle. |
+| [`apply_vehicle_turn`](#apply_vehicle_turn) | Turn the vehicle left or right. |
+| [`parent_avatar_to_vehicle`](#parent_avatar_to_vehicle) | Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle. |
 
 **Visual Material Command**
 
@@ -6459,7 +6459,7 @@ Move the vehicle forward or backward.
 
 ## **`apply_vehicle_turn`**
 
-Turn a vehicle left or right.
+Turn the vehicle left or right.
 
 
 ```python
@@ -6479,7 +6479,7 @@ Turn a vehicle left or right.
 
 ## **`parent_avatar_to_vehicle`**
 
-Parent an avatar to a vehicle. Usually you'll want to do this to add a camera to the vehicle.
+Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle.
 
 
 ```python

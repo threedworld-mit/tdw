@@ -4,6 +4,55 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.19
+
+### New Features
+
+- **Added: `Vehicle` add-on, which simulates vehicles such as cars.**
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                            |
+| ------------------------ | -------------------------------------- |
+| `add_vehicle`              | Add a vehicle to the scene.              |
+| `apply_vehicle_brake`      | Set the vehicle's brake value.      |
+| `apply_vehicle_drive`       | Move the vehicle forward or backward.                |
+| `apply_vehicle_turn`       | Turn the vehicle left or right.            |
+| `parent_avatar_to_vehicle` | Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle.           |
+
+### `tdw` module
+
+- Added: `Vehicle` add-on.
+  - Added: `VehicleDynamic` data class
+  - Added: `VehicleLibrarian` and `VehicleRecord`
+- (Backend) Added abstract class `AgentDynamic`. `ReplicantDynamic` and `DroneDynamic` are now subclasses of `AgentDynamic`, as is the new `VehicleDynamic`.
+
+### Example Controllers
+
+- Added: `vehicle/collision_detection.py`
+- Added: `vehicle/dynamic_data.py`
+- Added: `vehicle/minimal.py`
+- Added: `vehicle/move_by.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                              | Description          |
+| ------------------------------------- | -------------------- |
+| `lessons/vehicle/vehicle.md`              | Vehicle tutorial       |
+| `python/add_ons/vehicle.md`             | `Vehicle` API          |
+| `python/vehicle/vehicle_dynamic.md`       | `VehicleDynamic` API   |
+| `python/librarian/vehicle_librarian.md` | `VehicleLibrarian` API |
+
+#### Modified Documentation
+
+| Document                     | Modification                |
+| ---------------------------- | --------------------------- |
+| `lessons/agents/overview.md` | Added a section for vehicles. |
+
 ## v1.11.18
 
 ### Build

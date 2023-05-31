@@ -4,7 +4,7 @@
 
 An empty object is a transform point attached to a [TDW object](../core_concepts/objects.md).  An empty object has a position and rotation. When the parent object moves or rotates, the empty object moves or rotates relative to the parent object. An empty object doesn't have a visual mesh, colliders, mass, etc. It won't respond to any physics events independent of its parent object's physics events. TDW objects may have any number of child empty objects.
 
-In most cases, empty objects are meant to be handled in add-on internal code. For example [Replicants try to reach for objects at affordance points](../replicants/arm_articulation.md); these affordance points are actually empty objects that have been automatically added to the TDW objects using model record metadata.
+In most cases, empty objects are meant to be handled in add-on internal code. For example [Replicants try to reach for objects at affordance points](../replicants/arm_articulation_1.md); these affordance points are actually empty objects that have been automatically added to the TDW objects using model record metadata.
 
 ## The `EmptyObjectManager` add-on
 

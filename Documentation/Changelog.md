@@ -4,9 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.19
-
-### New Features
+## v1.11.20
 
 ### New Features
 
@@ -22,20 +20,6 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | `clatterize_object`      | Make an object respond to Clatter audio. |
 | `clatterize_robot_joint` | Make a robot respond to Clatter audio.   |
 | `set_dsp_buffer_size`    | Set the DSP buffer size.                 |
-
-### `tdw` module
-
-- **Added `Clatter` add-on.**
-  - Added: `ClatterObject` Clatter audio object data.
-  - Added: `ImpactMaterial`. This is the same as `AudioMaterial` but renamed to match Clatter's internal naming convention and to differentiate it from scrape materials.
-- Deprecated PyImpact. Please use Clatter instead.
-  - Deprecated `Base64Sound`, `CollisionAudioEvent`, `CollisionAudioInfo`, `CollisionAudioType`, and `Modes`. These classes are only used by PyImpact, not Clatter.
-- Removed `audio_material` field from `ScrapeModel` because neither Clatter nor PyImpact needs it.
-- Changes to audio initializer add-ons:
-  - Added optional parameter `physics_time_step` to `AudioInitializer` and `ResonanceAudioInitializer` that defaults to 0.02 (instead of TDW's default 0.01).
-  - The default value of `framerate` in `AudioInitializer` and `ResonanceAudioInitializer` is now 30 (was 60).
-  - Renamed `ResonanceAudioInitializer.AUDIO_MATERIALS` to `ResonanceAudioInitializer.IMPACT_MATERIALS`.
-  - Added: `ResonanceAudioInitializer.RESONANCE_AUDIO_MATERIALS`
 
 ### Example Controllers
 
@@ -61,6 +45,20 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - Moved `footsteps.py` from `camera_controls/` to `clatter/` and replaced PyImpact with Clatter.
 - Edited ffmpeg example controllers in `video/` to use Clatter instead of PyImpact.
 - Replaced `vr/oculus_touch_py_impact.py` with `vr/oculus_touch_clatter.py`
+
+### `tdw` module
+
+- **Added `Clatter` add-on.**
+  - Added: `ClatterObject` Clatter audio object data.
+  - Added: `ImpactMaterial`. This is the same as `AudioMaterial` but renamed to match Clatter's internal naming convention and to differentiate it from scrape materials.
+- Deprecated PyImpact. Please use Clatter instead.
+  - Deprecated `Base64Sound`, `CollisionAudioEvent`, `CollisionAudioInfo`, `CollisionAudioType`, and `Modes`. These classes are only used by PyImpact, not Clatter.
+- Removed `audio_material` field from `ScrapeModel` because neither Clatter nor PyImpact needs it.
+- Changes to audio initializer add-ons:
+  - Added optional parameter `physics_time_step` to `AudioInitializer` and `ResonanceAudioInitializer` that defaults to 0.02 (instead of TDW's default 0.01).
+  - The default value of `framerate` in `AudioInitializer` and `ResonanceAudioInitializer` is now 30 (was 60).
+  - Renamed `ResonanceAudioInitializer.AUDIO_MATERIALS` to `ResonanceAudioInitializer.IMPACT_MATERIALS`.
+  - Added: `ResonanceAudioInitializer.RESONANCE_AUDIO_MATERIALS`
 
 ### Documentation
 
@@ -90,6 +88,57 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact.md`          | Moved to `py_impact/py_impact.md`                            |
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
+
+## v1.11.19
+
+### New Features
+
+- **Added: `Vehicle` add-on, which simulates vehicles such as cars.**
+
+### Command API
+
+#### New Commands
+
+| Command                  | Description                            |
+| ------------------------ | -------------------------------------- |
+| `add_vehicle`              | Add a vehicle to the scene.              |
+| `apply_vehicle_brake`      | Set the vehicle's brake value.      |
+| `apply_vehicle_drive`       | Move the vehicle forward or backward.                |
+| `apply_vehicle_turn`       | Turn the vehicle left or right.            |
+| `parent_avatar_to_vehicle` | Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle.           |
+| `stop_replicant_animation` | Stop an ongoing Replicant animation. |
+
+### `tdw` module
+
+- Added: `Vehicle` add-on.
+  - Added: `VehicleDynamic` data class
+  - Added: `VehicleLibrarian` and `VehicleRecord`
+- (Backend) Added abstract class `AgentDynamic`. `ReplicantDynamic` and `DroneDynamic` are now subclasses of `AgentDynamic`, as is the new `VehicleDynamic`.
+- Fixed: If a Replicant starts a new action while an animation is playing (i.e. `animate(animation)`, `move_by(distance)`, or `move_to(target)`), the animation doesn't stop.
+
+### Example Controllers
+
+- Added: `vehicle/collision_detection.py`
+- Added: `vehicle/dynamic_data.py`
+- Added: `vehicle/minimal.py`
+- Added: `vehicle/move_by.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                              | Description          |
+| ------------------------------------- | -------------------- |
+| `lessons/vehicle/vehicle.md`              | Vehicle tutorial       |
+| `python/add_ons/vehicle.md`             | `Vehicle` API          |
+| `python/vehicle/vehicle_dynamic.md`       | `VehicleDynamic` API   |
+| `python/librarian/vehicle_librarian.md` | `VehicleLibrarian` API |
+
+#### Modified Documentation
+
+| Document                     | Modification                |
+| ---------------------------- | --------------------------- |
+| `lessons/agents/overview.md` | Added a section for vehicles. |
 
 ## v1.11.18
 

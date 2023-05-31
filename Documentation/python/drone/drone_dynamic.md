@@ -8,21 +8,23 @@ Dynamic data for a drone that can change per `communicate()` call (such as the p
 
 ## Fields
 
-- `transform` The [`Transform`](../object_data/transform.md) of the drone.
-
 - `raycast_hit` If True, the ray that was cast down from the drone hit something.
 
 - `raycast_point` The point that the ray that was cast down from the drone hit. Ignore this if `self.raycast_hit == False`.
 
 - `motor_on` If True, the drone's motor is on.
 
-- `images` The images rendered by the drone as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
+- `transform` The [`Transform`](../object_data/transform.md) of the agent.
 
-- `projection_matrix` The [camera projection matrix](../../api/output_data.md#cameramatrices) of the drone's camera as a numpy array.
+- `images` The images rendered by the agent as dictionary. Key = the name of the pass. Value = the pass as a numpy array.
 
-- `camera_matrix` The [camera matrix](../../api/output_data.md#cameramatrices) of the drone's camera as a numpy array.
+- `projection_matrix` The [camera projection matrix](../../api/output_data.md#cameramatrices) of the agent's camera as a numpy array.
+
+- `camera_matrix` The [camera matrix](../../api/output_data.md#cameramatrices) of the agent's camera as a numpy array.
 
 - `got_images` If True, we got images from the output data.
+
+- `avatar_id` The ID of the avatar.
 
 ***
 
@@ -68,4 +70,3 @@ Do NOT use this function to save image data to disk; `save_image` is much faster
 | pass_mask |  str  | "img" | The pass mask. Options: `"img"`, `"id"`, `"depth"`. |
 
 _Returns:_  A PIL image.
-

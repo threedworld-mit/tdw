@@ -6,8 +6,8 @@ class Bound:
     Bounds data for a single object.
     """
 
-    def __init__(self, front: np.array, back: np.array, left: np.array, right: np.array, top: np.array,
-                 bottom: np.array, center: np.array):
+    def __init__(self, front: np.ndarray, back: np.ndarray, left: np.ndarray, right: np.ndarray, top: np.ndarray,
+                 bottom: np.ndarray, center: np.ndarray):
         """
         :param front: The position of the front point.
         :param back: The position of the back point.
@@ -21,28 +21,28 @@ class Bound:
         """:field
         The position of the front point.
         """
-        self.front: np.array = front
+        self.front: np.ndarray = front
         """:field
         The position of the back point.
         """
-        self.back: np.array = back
+        self.back: np.ndarray = back
         """:field
         The position of the left point.
         """
-        self.left: np.array = left
+        self.left: np.ndarray = left
         """:field
         The position of the right point.
         """
-        self.right: np.array = right
+        self.right: np.ndarray = right
         """:field
         The position of the top point.
         """
-        self.top: np.array = top
+        self.top: np.ndarray = top
         """:field
         The position of the bottom point.
         """
-        self.bottom: np.array = bottom
+        self.bottom: np.ndarray = bottom
         """:field
         The position of the center point.
         """
-        self.center: np.array = center
+        self.center: np.ndarray = center

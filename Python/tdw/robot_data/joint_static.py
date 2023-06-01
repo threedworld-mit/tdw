@@ -32,7 +32,7 @@ class JointStatic:
         """:field
         The segmentation color of this joint as an `[r, g, b]` numpy array.
         """
-        self.segmentation_color: np.array = np.array(static_robot.get_joint_segmentation_color(static_index))
+        self.segmentation_color: np.ndarray = np.array(static_robot.get_joint_segmentation_color(static_index))
         """:field
         The mass of this joint.
         """

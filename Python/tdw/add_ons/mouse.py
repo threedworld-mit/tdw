@@ -60,15 +60,15 @@ class Mouse(AddOn):
         """:field
         The (x, y) pixel position of the mouse on the screen.
         """
-        self.screen_position: np.array = np.array([0, 0])
+        self.screen_position: np.ndarray = np.array([0, 0])
         """:field
         The (x, y) scroll wheel delta.
         """
-        self.scroll_wheel_delta: np.array = np.array([0, 0])
+        self.scroll_wheel_delta: np.ndarray = np.array([0, 0])
         """:field
         The (x, y, z) world position of the mouse. The z depth coordinate is derived via a raycast.
         """
-        self.world_position: np.array = np.array([0, 0, 0])
+        self.world_position: np.ndarray = np.array([0, 0, 0])
         """:field
         If True, the mouse is currently over an object.
         """

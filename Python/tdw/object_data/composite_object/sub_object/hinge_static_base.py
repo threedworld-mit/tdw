@@ -36,8 +36,8 @@ class HingeStaticBase(SubObjectStatic, ABC):
         """:field
         The axis of rotation.
         """
-        self.axis: np.array = self._get_axis(static_composite_objects=static_composite_objects,
-                                             object_index=object_index, sub_object_index=sub_object_index)
+        self.axis: np.ndarray = self._get_axis(static_composite_objects=static_composite_objects,
+                                               object_index=object_index, sub_object_index=sub_object_index)
 
     @abstractmethod
     def _get_has_limits(self, static_composite_objects: StaticCompositeObjects, object_index: int,
@@ -80,7 +80,7 @@ class HingeStaticBase(SubObjectStatic, ABC):
 
     @abstractmethod
     def _get_axis(self, static_composite_objects: StaticCompositeObjects, object_index: int,
-                  sub_object_index: int) -> np.array:
+                  sub_object_index: int) -> np.ndarray:
         """
         :param static_composite_objects: `StaticCompositeObjects` output data.
         :param object_index: The object index.

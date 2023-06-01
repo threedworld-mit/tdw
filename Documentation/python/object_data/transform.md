@@ -24,7 +24,7 @@ Positional data for an object, robot body part, etc.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| position |  np.array |  | The position vector of the object as a numpy array. |
-| rotation |  np.array |  | The rotation quaternion of the object as a numpy array. |
-| forward |  np.array |  | The forward directional vector of the object as a numpy array. |
+| position |  np.ndarray |  | The position vector of the object as a numpy array. |
+| rotation |  np.ndarray |  | The rotation quaternion of the object as a numpy array. |
+| forward |  np.ndarray |  | The forward directional vector of the object as a numpy array. |
 

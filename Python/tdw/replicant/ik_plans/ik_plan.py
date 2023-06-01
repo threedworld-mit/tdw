@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Union, Optional
+from typing import List, Optional
 from overrides import final
-import numpy as np
+from tdw.type_aliases import TARGET
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
@@ -25,9 +25,9 @@ class IkPlan(ABC):
     An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.md) action. (From the Replicant API, this is combined with the `reach_for(target, arm)` function).
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool, arrived_at: float,
-                 max_distance: float, arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
+    def __init__(self, target: TARGET, absolute: bool, arrived_at: float, max_distance: float, arm: Arm,
+                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Optional[Action],
+                 duration: float, scale_duration: bool, from_held: bool, held_point: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
@@ -73,7 +73,7 @@ class IkPlan(ABC):
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
-        self.target: Union[int, np.ndarray, Dict[str,  float]] = target
+        self.target: TARGET = target
         """:field
         If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         """
@@ -108,7 +108,7 @@ class IkPlan(ABC):
         raise Exception()
 
     @final
-    def _get_reach_for(self, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool,
+    def _get_reach_for(self, target: TARGET, absolute: bool,
                        duration: float, dynamic: ReplicantDynamic, from_held: bool) -> ReachFor:
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.

@@ -166,4 +166,4 @@ Start to reach for a target position.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[Dict[str, float] |  | The target position. Can be a dictionary or a numpy array. |
+| target |  POSITION |  | The target position. Can be a dictionary or a numpy array. |

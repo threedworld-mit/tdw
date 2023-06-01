@@ -6,7 +6,7 @@ class Transform:
     Positional data for an object, robot body part, etc.
     """
 
-    def __init__(self, position: np.array, rotation: np.array, forward: np.array):
+    def __init__(self, position: np.ndarray, rotation: np.ndarray, forward: np.ndarray):
         """
         :param position: The position vector of the object as a numpy array.
         :param rotation: The rotation quaternion of the object as a numpy array.

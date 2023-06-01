@@ -160,7 +160,7 @@ These actions move and bend the joints of the Replicant's arms.
 
 **`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True, from_held=False, held_point="bottom", plan=None)`**
 
-Reach for a target object or position. One or both hands can reach for the target at the same time.
+Reach for a target object or position. One or both hands can reach for the same or separate targets.
 
 If target is an object, the target position is a point on the object.
 If the object has affordance points, the target position is the affordance point closest to the hand.
@@ -175,8 +175,8 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  TARGET |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
-| arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
+| target |  Union[TARGET, List[TARGET] |  | The target(s). This can be a list (one target per hand) or a single value (the hand's target). If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for each target as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
 | absolute |  bool  | True | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | offhand_follows |  bool  | False | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int. |
 | arrived_at |  float  | 0.09 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |

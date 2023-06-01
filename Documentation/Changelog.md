@@ -33,6 +33,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - (Backend) Added `tdw.type_aliases` which contains aliases for commonly used types.
 - (Backend) Replaced type hinting throughout `tdw` with type aliases. This doesn't affect any functionality but has slightly altered the API documentation.
 - Fixed: In many scripts, numpy array type hinting uses `np.array` instead of `np.ndarray`.
+- The Replicant can now reach for a separate target per hand The `target` and `arm` parameters in `reach_for()` can optionally be set as lists rather than single values.
 
 ### Example Controllers
 
@@ -40,6 +41,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - Added: `vehicle/dynamic_data.py`
 - Added: `vehicle/minimal.py`
 - Added: `vehicle/move_by.py`
+- Added: `replicant/reach_for_two_targets.py`
 
 ### Documentation
 
@@ -58,6 +60,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | Document                     | Modification                |
 | ---------------------------- | --------------------------- |
 | `lessons/agents/overview.md` | Added a section for vehicles. |
+| `lessons/replicants/arm_articulation_3.md` | Added a section for reaching for multiple targets at the same time. |
 
 ## v1.11.18
 

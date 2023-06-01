@@ -66,11 +66,11 @@ class VR(AddOn, ABC):
         """:field
         A numpy of object IDs held by the left hand.
         """
-        self.held_left: np.array = np.array([], dtype=int)
+        self.held_left: np.ndarray = np.array([], dtype=int)
         """:field
         A numpy of object IDs held by the right hand.
         """
-        self.held_right: np.array = np.array([], dtype=int)
+        self.held_right: np.ndarray = np.array([], dtype=int)
 
     def get_initialization_commands(self) -> List[dict]:
         """

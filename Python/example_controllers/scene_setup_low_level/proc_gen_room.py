@@ -18,7 +18,7 @@ class ProcGenRoom(Controller):
     def create_scene(self) -> List[dict]:
         width: int = self.rng.randint(12, 18)
         length: int = self.rng.randint(14, 20)
-        room_arr: np.array = np.zeros(shape=(width, length), dtype=int)
+        room_arr: np.ndarray = np.zeros(shape=(width, length), dtype=int)
         # Define the uppermost width-wise wall.
         turn_south_at = int(length * 0.75) + self.rng.randint(1, 3)
         for i in range(turn_south_at + 1):

@@ -106,16 +106,11 @@ class Arrangement(ABC):
         """
 
         commands = []
-        # Get numpy array and dictionary representations of the center position.
-        if isinstance(position, dict):
-            center_dict = position
-        else:
-            center_dict = TDWUtils.array_to_vector3(position)
         # Get the x, z positions.
-        xs: np.array = np.arange(cell_size, size[0] - cell_size, cell_size)
-        zs: np.array = np.arange(cell_size, size[1] - cell_size, cell_size)
+        xs: np.ndarray = np.arange(cell_size, size[0] - cell_size, cell_size)
+        zs: np.ndarray = np.arange(cell_size, size[1] - cell_size, cell_size)
         # Get the occupancy map.
-        occupancy_map: np.array = np.zeros(shape=(len(xs), len(zs)), dtype=bool)
+        occupancy_map: np.ndarray = np.zeros(shape=(len(xs), len(zs)), dtype=bool)
         # Get the semi-minor axis of the rectangle's size.
         semi_minor_axis = size[0] if size[0] < size[1] else size[1]
         # Get valid objects.
@@ -170,8 +165,8 @@ class Arrangement(ABC):
             z = (iz * cell_size) + self._rng.uniform(-cell_size * perturbation_distance,
                                                      cell_size * perturbation_distance)
             # Offset from the center.
-            x += center_dict["x"] - size[0] / 2 + cell_size
-            z += center_dict["z"] - size[1] / 2 + cell_size
+            x += position["x"] - size[0] / 2 + cell_size
+            z += position["z"] - size[1] / 2 + cell_size
             # Cache the object ID.
             object_id = Controller.get_unique_id()
             # Set the rotation.
@@ -179,7 +174,7 @@ class Arrangement(ABC):
             self.object_ids.append(object_id)
             # Add the object.
             commands.extend(Controller.get_add_physics_object(model_name=model_name,
-                                                              position={"x": x, "y": center_dict["y"], "z": z},
+                                                              position={"x": x, "y": position["y"], "z": z},
                                                               rotation={"x": 0, "y": self._rng.uniform(0, 360), "z": 0},
                                                               object_id=object_id,
                                                               library="models_core.json"))

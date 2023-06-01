@@ -619,13 +619,13 @@ class TDWUtils:
         :return: A dictionary of the bounds. Key = the name of the position. Value = the position as a numpy array.
         """
 
-        return {"top": np.array(bounds.get_top(index)),
-                "bottom": np.array(bounds.get_bottom(index)),
-                "left": np.array(bounds.get_left(index)),
-                "right": np.array(bounds.get_right(index)),
-                "front": np.array(bounds.get_front(index)),
-                "back": np.array(bounds.get_back(index)),
-                "center": np.array(bounds.get_center(index))}
+        return {"top": np.ndarray(bounds.get_top(index)),
+                "bottom": np.ndarray(bounds.get_bottom(index)),
+                "left": np.ndarray(bounds.get_left(index)),
+                "right": np.ndarray(bounds.get_right(index)),
+                "front": np.ndarray(bounds.get_front(index)),
+                "back": np.ndarray(bounds.get_back(index)),
+                "center": np.ndarray(bounds.get_center(index))}
 
     @staticmethod
     def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.ndarray:

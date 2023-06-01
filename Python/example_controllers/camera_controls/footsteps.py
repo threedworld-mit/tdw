@@ -63,8 +63,8 @@ for i in range(300):
         d_theta = int(360 / 3)
         r = 0.0625
         theta = 0
-        contact_points: List[np.array] = list()
-        contact_normals: List[np.array] = list()
+        contact_points: List[np.ndarray] = list()
+        contact_normals: List[np.ndarray] = list()
         while theta < 360:
             rad = radians(theta)
             x = cos(rad) * r + foot_position[0]

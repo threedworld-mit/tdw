@@ -32,7 +32,7 @@ class OculusTouchAxisListener(Controller):
             self.communicate([])
         self.communicate({"$type": "terminate"})
 
-    def left_axis(self, delta: np.array) -> None:
+    def left_axis(self, delta: np.ndarray) -> None:
         if self.robot.joints_are_moving():
             return
         targets = dict()
@@ -43,7 +43,7 @@ class OculusTouchAxisListener(Controller):
             targets[shoulder_link_id] = shoulder_link_angle + delta[0] * OculusTouchAxisListener.SPEED
         self.robot.set_joint_targets(targets=targets)
 
-    def right_axis(self, delta: np.array) -> None:
+    def right_axis(self, delta: np.ndarray) -> None:
         if self.robot.joints_are_moving():
             return
         targets = dict()

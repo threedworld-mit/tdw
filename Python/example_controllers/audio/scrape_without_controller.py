@@ -14,7 +14,7 @@ output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("scrape_without_contr
 if not output_directory.exists():
     output_directory.mkdir()
 print(f"Audio will be saved to: {output_directory}")
-contact_normals: List[np.array] = list()
+contact_normals: List[np.ndarray] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
 for i in range(5):

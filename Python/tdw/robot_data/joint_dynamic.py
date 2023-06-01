@@ -6,7 +6,7 @@ class JointDynamic:
     Dynamic info for a joint that can change per-frame, such as its current position.
     """
 
-    def __init__(self, joint_id: int, position: np.array, angles: np.array, moving: bool):
+    def __init__(self, joint_id: int, position: np.ndarray, angles: np.ndarray, moving: bool):
         """
         :param joint_id: The ID of this joint.
         :param position: The worldspace position of this joint as an `[x, y, z]` numpy array.
@@ -21,11 +21,11 @@ class JointDynamic:
         """:field
         The worldspace position of this joint as an `[x, y, z]` numpy array.
         """
-        self.position: np.array = position
+        self.position: np.ndarray = position
         """:field
         The angles of each axis of the joint in degrees. For prismatic joints, you need to convert this from degrees to radians in order to get the correct distance in meters.
         """
-        self.angles: np.array = angles
+        self.angles: np.ndarray = angles
         """:field
         If True, this joint is currently moving.
         """

@@ -33,7 +33,7 @@ commands = [TDWUtils.create_empty_room(12, 12),
 resp = c.communicate(commands)
 
 # The position of the object per frame.
-positions: List[np.array] = list()
+positions: List[np.ndarray] = list()
 # If True, the object has stopped moving.
 sleeping = False
 

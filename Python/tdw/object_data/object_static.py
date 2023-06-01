@@ -6,7 +6,7 @@ class ObjectStatic:
     Static data for an object. This data won't change between frames.
     """
 
-    def __init__(self, name: str, object_id: int, mass: float, segmentation_color: np.array, size: np.array,
+    def __init__(self, name: str, object_id: int, mass: float, segmentation_color: np.ndarray, size: np.ndarray,
                  category: str, kinematic: bool, dynamic_friction: float, static_friction: float, bounciness: float):
         """
         :param name: The name of the object.
@@ -35,19 +35,19 @@ class ObjectStatic:
         """:field
         If True, this object is kinematic, and won't respond to physics. 
         """
-        self.kinematic = kinematic
+        self.kinematic: bool = kinematic
         """:field
         The RGB segmentation color for the object as a numpy array: `[r, g, b]`
         """
-        self.segmentation_color = segmentation_color
+        self.segmentation_color: np.ndarray = segmentation_color
         """:field
         The mass of the object.
         """
-        self.mass = mass
+        self.mass: float = mass
         """:field
         The size of the object as a numpy array: `[width, height, length]`
         """
-        self.size = size
+        self.size: np.ndarray = size
         """:field
         The dynamic friction of the object.
         """

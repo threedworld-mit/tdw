@@ -48,7 +48,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         """:field
         The rotation of the camera as an [x, y, z, w] numpy array.
         """
-        self.camera_rotation: np.array = np.array([0, 0, 0, 0])
+        self.camera_rotation: np.ndarray = np.array([0, 0, 0, 0])
         """:field
         If True, the avatar is currently moving or turning.
         """

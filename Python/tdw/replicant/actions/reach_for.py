@@ -1,5 +1,6 @@
-from typing import List, Dict, Union, Optional
+from typing import List, Dict, Optional
 import numpy as np
+from tdw.type_aliases import TARGET
 from tdw.tdw_utils import TDWUtils
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -28,7 +29,7 @@ class ReachFor(ArmMotion):
     See also: [`ReachForWithPlan`](reach_for_with_plan.md).
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool, offhand_follows: bool,
+    def __init__(self, target: TARGET, absolute: bool, offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
                  scale_duration: bool, from_held: bool, held_point: str):
@@ -53,7 +54,7 @@ class ReachFor(ArmMotion):
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
-        self.target: Union[int, np.ndarray, Dict[str,  float]] = target
+        self.target: TARGET = target
         """:field
         If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         """

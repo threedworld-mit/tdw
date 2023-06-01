@@ -1,5 +1,5 @@
-from typing import List, Dict, Union, Optional
-import numpy as np
+from typing import List, Optional
+from tdw.type_aliases import TARGET
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.image_frequency import ImageFrequency
@@ -40,7 +40,7 @@ class ReachForWithPlan(Action):
     See also: [`ReachFor`](reach_for.md).
     """
 
-    def __init__(self, plan: IkPlanType, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool,
+    def __init__(self, plan: IkPlanType, target: TARGET, absolute: bool,
                  arrived_at: float, max_distance: float, arm: Arm, dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
                  scale_duration: bool, from_held: bool, held_point: str):

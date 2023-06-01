@@ -1,6 +1,7 @@
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np
+from tdw.type_aliases import TARGET
 from tdw.add_ons.add_on import AddOn
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -211,7 +212,7 @@ class Replicant(AddOn):
 
         self.action = TurnBy(angle=angle)
 
-    def turn_to(self, target: Union[int, Dict[str, float], np.ndarray]) -> None:
+    def turn_to(self, target: TARGET) -> None:
         """
         Turn the Replicant to face a target object or position.
 
@@ -259,7 +260,7 @@ class Replicant(AddOn):
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles)
 
-    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms: bool = True,
+    def move_to(self, target: TARGET, reset_arms: bool = True,
                 reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 0.1,
                 max_walk_cycles: int = 100, bounds_position: str = "center") -> None:
         """
@@ -298,7 +299,7 @@ class Replicant(AddOn):
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
-    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
+    def reach_for(self, target: TARGET, arm: Union[Arm, List[Arm]],
                   absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
                   max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
                   from_held: bool = False, held_point: str = "bottom", plan: IkPlanType = None) -> None:
@@ -439,7 +440,7 @@ class Replicant(AddOn):
                                duration=duration,
                                scale_duration=scale_duration)
 
-    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1,
+    def look_at(self, target: TARGET, duration: float = 0.1,
                 scale_duration: bool = True):
         """
         Look at a target object or position.

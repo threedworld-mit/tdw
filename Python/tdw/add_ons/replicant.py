@@ -1,7 +1,7 @@
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np
-from tdw.type_aliases import TARGET
+from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.add_ons.add_on import AddOn
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -44,8 +44,8 @@ class Replicant(AddOn):
     """
     LIBRARY_NAME: str = "replicants.json"
 
-    def __init__(self, replicant_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None,
+    def __init__(self, replicant_id: int = 0, position: POSITION = None,
+                 rotation: ROTATION = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
                  target_framerate: int = 100):
         """
@@ -480,8 +480,7 @@ class Replicant(AddOn):
 
         self.action = ResetHead(duration=duration, scale_duration=scale_duration)
 
-    def reset(self, position: Union[Dict[str, float], np.ndarray] = None,
-              rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def reset(self, position: POSITION = None, rotation: ROTATION = None) -> None:
         """
         Reset the Replicant. Call this when you reset the scene.
 
@@ -499,10 +498,9 @@ class Replicant(AddOn):
         self._set_initial_position_and_rotation(position=position, rotation=rotation)
         self.commands.clear()
 
-    def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
-                                           rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def _set_initial_position_and_rotation(self, position: POSITION = None, rotation: ROTATION = None) -> None:
         """
-        Set the intial position and rotation.
+        Set the initial position and rotation.
 
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.

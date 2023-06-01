@@ -1,5 +1,6 @@
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict
 import numpy as np
+from tdw.type_aliases import POSITION, ROTATION
 from tdw.add_ons.add_on import AddOn
 from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.controller import Controller
@@ -19,8 +20,8 @@ class Drone(AddOn):
     """
     LIBRARY_NAME: str = "drones.json"
 
-    def __init__(self, drone_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None, name: str = "drone",
+    def __init__(self, drone_id: int = 0, position: POSITION = None,
+                 rotation: ROTATION = None, name: str = "drone",
                  forward_speed: float = 3, backward_speed: float = 3, rise_speed: float = 3, drop_speed: float = 3,
                  acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
                  enable_lights: bool = False, motor_on: bool = True, image_capture: bool = True,

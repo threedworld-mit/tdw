@@ -1,5 +1,6 @@
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict
 import numpy as np
+from tdw.type_aliases import POSITION, ROTATION
 from tdw.add_ons.add_on import AddOn
 from tdw.vehicle.vehicle_dynamic import VehicleDynamic
 from tdw.controller import Controller
@@ -19,8 +20,8 @@ class Vehicle(AddOn):
     """
     LIBRARY_NAME: str = "vehicles.json"
 
-    def __init__(self, vehicle_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None, name: str = "all_terrain_vehicle",
+    def __init__(self, vehicle_id: int = 0, position: POSITION = None,
+                 rotation: ROTATION = None, name: str = "all_terrain_vehicle",
                  forward_speed: float = 30, reverse_speed: float = 12, image_capture: bool = True,
                  image_passes: List[str] = None):
         """

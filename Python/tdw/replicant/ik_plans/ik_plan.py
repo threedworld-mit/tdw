@@ -25,9 +25,9 @@ class IkPlan(ABC):
     An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.md) action. (From the Replicant API, this is combined with the `reach_for(target, arm)` function).
     """
 
-    def __init__(self, target: TARGET, absolute: bool, arrived_at: float,
-                 max_distance: float, arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
+    def __init__(self, target: TARGET, absolute: bool, arrived_at: float, max_distance: float, arm: Arm,
+                 dynamic: ReplicantDynamic, collision_detection: CollisionDetection, previous: Optional[Action],
+                 duration: float, scale_duration: bool, from_held: bool, held_point: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.

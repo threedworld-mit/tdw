@@ -40,10 +40,9 @@ class ReachForWithPlan(Action):
     See also: [`ReachFor`](reach_for.md).
     """
 
-    def __init__(self, plan: IkPlanType, target: TARGET, absolute: bool,
-                 arrived_at: float, max_distance: float, arm: Arm, dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
-                 scale_duration: bool, from_held: bool, held_point: str):
+    def __init__(self, plan: IkPlanType, target: TARGET, absolute: bool, arrived_at: float, max_distance: float,
+                 arm: Arm, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
+                 previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
         """
         :param plan: An [`IkPlanType`](../ik_plans/ik_plan_type.md) that will define the [`IkPlan`](../ik_plans/ik_plan.md) this action will use.
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.

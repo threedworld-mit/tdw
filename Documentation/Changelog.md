@@ -31,6 +31,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - (Backend) Added abstract class `AgentDynamic`. `ReplicantDynamic` and `DroneDynamic` are now subclasses of `AgentDynamic`, as is the new `VehicleDynamic`.
 - Fixed: If a Replicant starts a new action while an animation is playing (i.e. `animate(animation)`, `move_by(distance)`, or `move_to(target)`), the animation doesn't stop.
 - (Backend) Added `tdw.type_aliases` which contains aliases for commonly used types.
+- (Backend) Replaced type hinting throughout `tdw` with type aliases. This doesn't affect any functionality but has slightly altered the API documentation.
 - Fixed: In many scripts, numpy array type hinting uses `np.array` instead of `np.ndarray`.
 
 ### Example Controllers

@@ -31,9 +31,9 @@ class MoveTo(Action):
     - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    def __init__(self, target: TARGET, collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int, bounds_position: str):
+    def __init__(self, target: TARGET, collision_detection: CollisionDetection, previous: Optional[Action],
+                 reset_arms: bool, reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
+                 max_walk_cycles: int, bounds_position: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.

@@ -44,8 +44,7 @@ class Replicant(AddOn):
     """
     LIBRARY_NAME: str = "replicants.json"
 
-    def __init__(self, replicant_id: int = 0, position: POSITION = None,
-                 rotation: ROTATION = None,
+    def __init__(self, replicant_id: int = 0, position: POSITION = None, rotation: ROTATION = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
                  target_framerate: int = 100):
         """
@@ -260,9 +259,9 @@ class Replicant(AddOn):
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles)
 
-    def move_to(self, target: TARGET, reset_arms: bool = True,
-                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 0.1,
-                max_walk_cycles: int = 100, bounds_position: str = "center") -> None:
+    def move_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
+                bounds_position: str = "center") -> None:
         """
         Turn the Replicant to a target position or object and then walk to it.
 
@@ -299,10 +298,10 @@ class Replicant(AddOn):
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
-    def reach_for(self, target: TARGET, arm: Union[Arm, List[Arm]],
-                  absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
-                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
-                  from_held: bool = False, held_point: str = "bottom", plan: IkPlanType = None) -> None:
+    def reach_for(self, target: TARGET, arm: Union[Arm, List[Arm]], absolute: bool = True,
+                  offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,
+                  duration: float = 0.25, scale_duration: bool = True, from_held: bool = False,
+                  held_point: str = "bottom", plan: IkPlanType = None) -> None:
         """
         Reach for a target object or position. One or both hands can reach for the target at the same time.
 
@@ -440,8 +439,7 @@ class Replicant(AddOn):
                                duration=duration,
                                scale_duration=scale_duration)
 
-    def look_at(self, target: TARGET, duration: float = 0.1,
-                scale_duration: bool = True):
+    def look_at(self, target: TARGET, duration: float = 0.1, scale_duration: bool = True):
         """
         Look at a target object or position.
 

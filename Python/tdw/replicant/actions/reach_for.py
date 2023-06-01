@@ -13,7 +13,7 @@ from tdw.replicant.image_frequency import ImageFrequency
 
 class ReachFor(ArmMotion):
     """
-    Reach for a target object or position. One or both hands can reach for the target at the same time.
+    Reach for a target object or position. One or both hands can reach for the same or separate targets.
 
     If target is an object, the target position is a point on the object.
     If the object has affordance points, the target position is the affordance point closest to the hand.
@@ -29,12 +29,12 @@ class ReachFor(ArmMotion):
     See also: [`ReachForWithPlan`](reach_for_with_plan.md).
     """
 
-    def __init__(self, target: TARGET, absolute: bool, offhand_follows: bool,
+    def __init__(self, targets: List[TARGET], absolute: bool, offhand_follows: bool,
                  arrived_at: float, max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
                  scale_duration: bool, from_held: bool, held_point: str):
         """
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param targets: The target per arm. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         :param arrived_at: If the motion ends and the hand is this distance or less from the target, the action succeeds.
@@ -52,9 +52,9 @@ class ReachFor(ArmMotion):
         super().__init__(arms=arms, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
                          duration=duration, scale_duration=scale_duration)
         """:field
-        The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        The target per arm. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
-        self.target: TARGET = target
+        self.targets: List[TARGET] = targets
         """:field
         If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         """
@@ -70,7 +70,7 @@ class ReachFor(ArmMotion):
         """:field
         If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         """
-        self.offhand_follows: bool = offhand_follows
+        self.offhand_follows: bool = offhand_follows and len(arms) == 1
         """:field
         If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`.
         """
@@ -84,24 +84,26 @@ class ReachFor(ArmMotion):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        # Reach for a target position.
-        if isinstance(self.target, np.ndarray):
-            commands.extend(self._get_reach_for_position(target=TDWUtils.array_to_vector3(self.target),
-                                                         resp=resp,
-                                                         static=static,
-                                                         dynamic=dynamic))
-        # Reach for a target position.
-        elif isinstance(self.target, dict):
-            commands.extend(self._get_reach_for_position(target=self.target,
-                                                         resp=resp,
-                                                         static=static,
-                                                         dynamic=dynamic))
-        # Reach for a target object.
-        elif isinstance(self.target, int):
-            for arm in self.arms:
+        for target, arm in zip(self.targets, self.arms):
+            # Reach for a target position.
+            if isinstance(target, np.ndarray):
+                commands.extend(self._get_reach_for_position(target=TDWUtils.array_to_vector3(target),
+                                                             arm=arm,
+                                                             resp=resp,
+                                                             static=static,
+                                                             dynamic=dynamic))
+            # Reach for a target position.
+            elif isinstance(target, dict):
+                commands.extend(self._get_reach_for_position(target=target,
+                                                             arm=arm,
+                                                             resp=resp,
+                                                             static=static,
+                                                             dynamic=dynamic))
+            # Reach for a target object.
+            elif isinstance(target, int):
                 commands.append({"$type": "replicant_reach_for_object",
                                  "id": static.replicant_id,
-                                 "object_id": int(self.target),
+                                 "object_id": int(target),
                                  "duration": self.duration,
                                  "arm": arm.name,
                                  "max_distance": self.max_distance,
@@ -109,23 +111,21 @@ class ReachFor(ArmMotion):
                                  "from_held": self.from_held,
                                  "held_point": self.held_point,
                                  "offset": self._get_offset(arm=arm, resp=resp, static=static, dynamic=dynamic)})
-        else:
-            raise Exception(f"Invalid target: {self.target}")
+            else:
+                raise Exception(f"Invalid target: {target} for arm {arm.name}")
         return commands
 
-    def _get_reach_for_position(self, target: Dict[str, float], resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        commands = []
-        for arm in self.arms:
-            commands.append({"$type": "replicant_reach_for_position" if self.absolute else "replicant_reach_for_relative_position",
-                             "id": static.replicant_id,
-                             "position": target,
-                             "duration": self.duration,
-                             "arm": arm.name,
-                             "max_distance": self.max_distance,
-                             "arrived_at": self.arrived_at,
-                             "offset": self._get_offset(arm=arm, resp=resp, static=static, dynamic=dynamic)})
+    def _get_reach_for_position(self, target: Dict[str, float], arm: Arm, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
+        commands = [{"$type": "replicant_reach_for_position" if self.absolute else "replicant_reach_for_relative_position",
+                     "id": static.replicant_id,
+                     "position": target,
+                     "duration": self.duration,
+                     "arm": arm.name,
+                     "max_distance": self.max_distance,
+                     "arrived_at": self.arrived_at,
+                     "offset": self._get_offset(arm=arm, resp=resp, static=static, dynamic=dynamic)}]
         # Tell the offhand to follow.
-        if self.offhand_follows and len(self.arms) == 1:
+        if self.offhand_follows:
             # Get the offset to the target.
             offset = TDWUtils.vector3_to_array(target) - dynamic.body_parts[static.hands[self.arms[0]]].position
             # Get the offhand.

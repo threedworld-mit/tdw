@@ -33,7 +33,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - (Backend) Added `tdw.type_aliases` which contains aliases for commonly used types.
 - (Backend) Replaced type hinting throughout `tdw` with type aliases. This doesn't affect any functionality but has slightly altered the API documentation.
 - Fixed: In many scripts, numpy array type hinting uses `np.array` instead of `np.ndarray`.
-- The Replicant can now reach for a separate target per hand The `target` and `arm` parameters in `reach_for()` can optionally be set as lists rather than single values.
+- The Replicant can now reach for a separate target per hand. The `target` and `arm` parameters in `reach_for()` can optionally be set as lists rather than single values.
 
 ### Example Controllers
 

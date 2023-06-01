@@ -7,5 +7,5 @@ TARGET = Union[int, np.ndarray, Dict[str,  float]]
 # A position: A numpy array or a dictionary.
 POSITION = Union[np.ndarray, Dict[str, float]]
 
-# A position: A numpy array or a dictionary.
+# A rotation: A numpy array or a dictionary.
 ROTATION = Union[np.ndarray, Dict[str, float]]

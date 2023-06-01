@@ -24,9 +24,9 @@ Resonant mode properties: Frequencies, powers, and times.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| frequencies |  np.array |  | A numpy array of mode frequencies in Hz. |
-| powers |  np.array |  | A numpy array of mode onset powers in dB re 1. |
-| decay_times |  np.array |  | A numpy array of mode decay times i.e. the time in ms it takes for each mode to decay 60dB from its onset power. |
+| frequencies |  np.ndarray |  | A numpy array of mode frequencies in Hz. |
+| powers |  np.ndarray |  | A numpy array of mode onset powers in dB re 1. |
+| decay_times |  np.ndarray |  | A numpy array of mode decay times i.e. the time in ms it takes for each mode to decay 60dB from its onset power. |
 
 #### sum_modes
 
@@ -55,8 +55,8 @@ Add together numpy arrays of different lengths by zero-padding the shorter.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| a |  np.array |  | The first array. |
-| b |  np.array |  | The second array. |
+| a |  np.ndarray |  | The first array. |
+| b |  np.ndarray |  | The second array. |
 
 _Returns:_  The summed modes.
 

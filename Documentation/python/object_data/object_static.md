@@ -41,8 +41,8 @@ Static data for an object. This data won't change between frames.
 | name |  str |  | The name of the object. |
 | object_id |  int |  | The unique ID of the object. |
 | mass |  float |  | The mass of the object. |
-| segmentation_color |  np.array |  | The segmentation color of the object. |
-| size |  np.array |  | The size of the object. |
+| segmentation_color |  np.ndarray |  | The segmentation color of the object. |
+| size |  np.ndarray |  | The size of the object. |
 | dynamic_friction |  float |  | The dynamic friction of the object. |
 | static_friction |  float |  | The static friction of the object. |
 | bounciness |  float |  | The bounciness of the object. |

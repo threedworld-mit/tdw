@@ -136,7 +136,7 @@ Look at a target object or position.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: an object ID. If a dictionary or numpy array: an x, y, z position. |
+| target |  TARGET |  | The target. If int: an object ID. If a dictionary or numpy array: an x, y, z position. |
 
 #### reset_camera
 

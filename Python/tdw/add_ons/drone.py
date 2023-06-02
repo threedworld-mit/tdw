@@ -1,6 +1,5 @@
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 import numpy as np
-from tdw.type_aliases import POSITION, ROTATION
 from tdw.add_ons.add_on import AddOn
 from tdw.drone.drone_dynamic import DroneDynamic
 from tdw.controller import Controller
@@ -20,11 +19,12 @@ class Drone(AddOn):
     """
     LIBRARY_NAME: str = "drones.json"
 
-    def __init__(self, drone_id: int = 0, position: POSITION = None, rotation: ROTATION = None, name: str = "drone",
+    def __init__(self, drone_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
+                 rotation: Union[Dict[str, float], np.ndarray] = None, name: str = "drone",
                  forward_speed: float = 3, backward_speed: float = 3, rise_speed: float = 3, drop_speed: float = 3,
-                 acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1,
-                 turn_sensitivity: float = 2, enable_lights: bool = False, motor_on: bool = True,
-                 image_capture: bool = True, image_passes: List[str] = None):
+                 acceleration: float = 0.3, deceleration: float = 0.2, stability: float = 0.1, turn_sensitivity: float = 2,   
+                 enable_lights: bool = False, motor_on: bool = True, image_capture: bool = True,
+                 image_passes: List[str] = None):
         """
         :param drone_id: The ID of the drone.
         :param position: The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
@@ -179,7 +179,11 @@ class Drone(AddOn):
                                "force": self._lift},
                               {"$type": "apply_drone_turn",
                                "id": self.drone_id,
-                               "force": self._turn}])
+                               "force": self._turn},
+                              {"$type": "set_drone_speed",
+                               "id": self.drone_id,
+                               "forward_speed": self._forward_speed,
+                               "backward_speed": self._backward_speed}])
       
     def set_lift(self, lift: int) -> None:
         """
@@ -221,6 +225,17 @@ class Drone(AddOn):
         self.commands.append({"$type": "set_drone_motor",
                               "motor_on": motor_on})
 
+    def set_speed(self, forward_speed: float = 3, backward_speed: float = 3) -> None:
+        """
+        Set the drone's forward and/or backward speeds.
+
+        :param forward_speed: The forward speed. Must be between 0 and 10.0.
+        :param forward_speed: The forward speed. Must be between 0 and 10.0.
+        """
+
+        self._forward_speed = Drone._get_clamped_speed(forward_speed)
+        self._backward_speed = Drone._get_clamped_speed(backward_speed)
+
     @staticmethod
     def _get_clamped_force(force: int) -> float:
         """
@@ -230,3 +245,13 @@ class Drone(AddOn):
         """
 
         return int(max(min(force, 1), -1))
+
+    @staticmethod
+    def _get_clamped_speed(speed: float) -> float:
+        """
+        :param force: The speed input value.
+
+        :return: The force clamped between 0 and 10.
+        """
+
+        return int(max(min(force, 10.0), 0))

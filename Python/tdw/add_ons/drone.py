@@ -249,9 +249,9 @@ class Drone(AddOn):
     @staticmethod
     def _get_clamped_speed(speed: float) -> float:
         """
-        :param force: The speed input value.
+        :param speed: The speed input value.
 
-        :return: The force clamped between 0 and 10.
+        :return: The speed clamped between 0 and 20.
         """
 
-        return int(max(min(force, 10.0), 0))
+        return int(max(min(speed, 20.0), 0))

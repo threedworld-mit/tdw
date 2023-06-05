@@ -221,6 +221,19 @@ class Drone(AddOn):
         self.commands.append({"$type": "set_drone_motor",
                               "motor_on": motor_on})
 
+    def set_speed(self, forward_speed: float = 3, backward_speed: float = 3) -> None:
+        """
+        Set the drone's forward and/or backward speeds.
+
+        :param forward_speed: The forward speed. Must be between 0 and 20.0.
+        :param forward_speed: The forward speed. Must be between 0 and 20.0.
+        """
+
+        self.commands.append({"$type": "set_drone_speed",
+                              "id": self.drone_id,
+                              "forward_speed": Drone._get_clamped_speed(forward_speed),
+                              "backward_speed": Drone._get_clamped_speed(backward_speed)})
+
     @staticmethod
     def _get_clamped_force(force: int) -> float:
         """
@@ -230,3 +243,13 @@ class Drone(AddOn):
         """
 
         return int(max(min(force, 1), -1))
+
+    @staticmethod
+    def _get_clamped_speed(speed: float) -> float:
+        """
+        :param speed: The speed input value.
+
+        :return: The speed clamped between 0 and 20.
+        """
+
+        return float(max(min(speed, 20.0), 0))

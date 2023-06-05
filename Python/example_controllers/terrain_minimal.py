@@ -18,9 +18,10 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 32.0, "z": 60.0},
                            avatar_id="a")
 c.add_ons.extend([vehicle, camera])
 c.communicate([c.get_add_scene(scene_name="terrain_3x3_scene")])
+c.communicate({"$type": "set_camera_clipping_planes", "near": 1.0, "far": 10000, "avatar_id": "a"})
 for i in range(50):
     c.communicate([])
-# Drive up the street.
+# Drive fowards.
 vehicle.set_drive(1)
 for i in range(360):
     c.communicate([])
@@ -29,7 +30,7 @@ vehicle.set_drive(0.2)
 vehicle.set_brake(0.2)
 for i in range(240):
     c.communicate([])
-# Turn into the driveway.
+# Turn.
 vehicle.set_brake(0)
 vehicle.set_turn(1)
 vehicle.set_drive(0)

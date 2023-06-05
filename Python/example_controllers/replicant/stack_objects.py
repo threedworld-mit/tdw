@@ -251,6 +251,7 @@ class StackObjects(Controller):
                                          arm=Arm.right,
                                          from_held=True,
                                          held_point="top",
+                                         duration=0.5,
                                          plan=IkPlanType.vertical_horizontal)
         # Reach above the stack.
         elif self.replicant_state == ReplicantState.reaching_above_stack:

@@ -73,10 +73,13 @@ class Controller:
 
         # Set error handling to default values (the build will try to quit on errors and exceptions).
         # Request the version to log it and remember here if the Editor is being used.
+        # Set the random number generator. This allows logging to work correctly.
         resp = self.communicate([{"$type": "set_error_handling"},
                                  {"$type": "send_version"},
                                  {"$type": "load_scene",
-                                  "scene_name": "ProcGenScene"}])
+                                  "scene_name": "ProcGenScene"},
+                                 {"$type": "set_random",
+                                  "seed": Controller.get_unique_id()}])
         self._is_standalone: bool = False
         self._tdw_version: str = ""
         self._unity_version: str = ""

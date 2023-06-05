@@ -4,7 +4,6 @@ from tdw.tdw_utils import TDWUtils
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.action import Action
-from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.ik_plans.ik_plan import IkPlan
 
 
@@ -16,7 +15,7 @@ class VerticalHorizontal(IkPlan):
     2. Reach laterally towards the (x, z) coordinates of the target.
     """
 
-    def get_actions(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[ReachFor]:
+    def get_actions(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[Action]:
         targets_1 = []
         for target in self.targets:
             # Get the target as a numpy array.

@@ -14,9 +14,7 @@ from tdw.replicant.arm import Arm
 
 class IkPlan(ABC):
     """
-    A data class that stores a list of [`ReachFor`](../actions/reach_for.md) actions.
-
-    An `IkPlan` takes the reach-for parameters and converts them into a list of [`ReachFor`](../actions/reach_for.md) actions.
+    An `IkPlan` takes the reach-for parameters and converts them into a list of actions.
 
     The parameters of `IkPlan` are similar to that of a `ReachFor` action, but an `IkPlan` is *not* an action.
 
@@ -97,13 +95,13 @@ class IkPlan(ABC):
         self.held_point: str = held_point
 
     @abstractmethod
-    def get_actions(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[ReachFor]:
+    def get_actions(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[Action]:
         """
         :param resp: The response from the build.
         :param static: The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
 
-        :return: A list of [`ReachFor`](../actions/reach_for.md) actions.
+        :return: A list of [`Action`](../actions/action.md).
         """
 
         raise Exception()

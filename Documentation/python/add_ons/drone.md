@@ -131,3 +131,15 @@ Turn the drone's motor on or off.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | motor_on |  bool |  | If True, turn the motor on. If False, turn the motor off. |
+
+#### set_speed
+
+**`self.set_speed()`**
+
+**`self.set_speed(forward_speed=3)`**
+
+Set the drone's forward and/or backward speeds.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| forward_speed |  float  | 3 | The forward speed. Must be between 0 and 20.0. |

@@ -5,15 +5,15 @@ from tdw.add_ons.image_capture import ImageCapture
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
-Minimal example of a drone flying in a suburb.
+Set the drone's speed.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 drone = Drone()
 camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
                            look_at=drone.drone_id,
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_suburb")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_speed")
 capture = ImageCapture(avatar_ids=["a"], path=path)
 print(f"Images will be saved to: {path}")
 c.add_ons.extend([drone, camera, capture])
@@ -40,7 +40,7 @@ drone.set_drive(1)
 drone.set_speed(forward_speed=15.0)
 for i in range(60):
     c.communicate([])
-# Stop and descend
+# Stop and descend.
 drone.set_drive(0)
 drone.set_lift(-1)
 for i in range(100):

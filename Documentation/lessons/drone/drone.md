@@ -77,6 +77,65 @@ There are many optional flight parameters that will determine the drone's speed,
 
 For a full list of flight parameters, [read the API documentation](../../python/add_ons/drone.md).
 
+## Set the speed
+
+Set the drone's speed via the `drone.set_speed(forward, backward)` function:
+
+```python
+from tdw.controller import Controller
+from tdw.add_ons.drone import Drone
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+drone = Drone()
+camera = ThirdPersonCamera(position={"x": 3.15, "y": 1.2, "z": 2},
+                           look_at=drone.drone_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("drone_speed")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+print(f"Images will be saved to: {path}")
+c.add_ons.extend([drone, camera, capture])
+c.communicate([c.get_add_scene(scene_name="suburb_scene_2023")])
+for i in range(200):
+    c.communicate([])
+# Start rising.
+drone.set_lift(1)
+for i in range(100):
+    c.communicate([])
+# Hold this altitude.
+drone.set_lift(0)
+# Fly forward.
+drone.set_drive(1)
+drone.set_speed(forward_speed=2.0)
+for i in range(100):
+    c.communicate([])
+# Stop and hover for 100 frames.
+drone.set_drive(0)
+for i in range(100):
+    c.communicate([])
+# Speed off.
+drone.set_drive(1)
+drone.set_speed(forward_speed=15.0)
+for i in range(60):
+    c.communicate([])
+# Stop and descend.
+drone.set_drive(0)
+drone.set_lift(-1)
+for i in range(100):
+    c.communicate([])
+# Watch for a bit.
+drone.set_lift(0)
+for i in range(100):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/set_speed.gif)
+
 ## Output data and images
 
 The drone stores its output data in `drone.dynamic`, which is a [`DroneDynamic`](../../python/drone/drone_dynamic.md) data object. This data includes the drone's position (`drone.dynamic.transform`, a [`Transform`](../../python/object_data/transform.md)), data for a raycast that starts from the drone and ends somewhere below it (`drone.dynamic.raycast_hit` and `drone.dynamic.raycast_point`), and a boolean indicating if the drone's motor is on.
@@ -389,6 +448,7 @@ Example controllers:
 - [dynamic_data.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/drone/dynamic_data.py) Read and save the drone's output data, including image data.
 - [rise_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/drone/rise_by.py) Wrap drone movement in a simple "rise by" function.
 - [stop_motor.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/drone/stop_motor.py) Stop the drone's motor.
+- [set_speed.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/drone/set_speed.py) Set the drone's speed.
 
 Python API:
 

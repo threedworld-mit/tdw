@@ -38,15 +38,15 @@ The drone's output data, including images, is stored in [`drone.dynamic`](../dro
 
 #### \_\_init\_\_
 
-**`Drone(position, rotation)`**
+**`Drone()`**
 
-**`Drone(drone_id=0, position, rotation, name="drone", forward_speed=3, backward_speed=3, rise_speed=3, drop_speed=3, acceleration=0.3, deceleration=0.2, stability=0.1, turn_sensitivity=2, enable_lights=False, motor_on=True, image_capture=True, image_passes=None)`**
+**`Drone(drone_id=0, position=None, rotation=None, name="drone", forward_speed=3, backward_speed=3, rise_speed=3, drop_speed=3, acceleration=0.3, deceleration=0.2, stability=0.1, turn_sensitivity=2, enable_lights=False, motor_on=True, image_capture=True, image_passes=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | drone_id |  int  | 0 | The ID of the drone. |
-| position |  Union[Dict[str, float] |  | The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Union[Dict[str, float] |  | The rotation of the drone in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| position |  POSITION  | None | The position of the drone as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  ROTATION  | None | The rotation of the drone in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | name |  str  | "drone" | The name of the drone model. |
 | forward_speed |  float  | 3 | Sets the drone's max forward speed. |
 | backward_speed |  float  | 3 | Sets the drone's max backward speed. |
@@ -131,3 +131,15 @@ Turn the drone's motor on or off.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | motor_on |  bool |  | If True, turn the motor on. If False, turn the motor off. |
+
+#### set_speed
+
+**`self.set_speed()`**
+
+**`self.set_speed(forward_speed=3)`**
+
+Set the drone's forward and/or backward speeds.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| forward_speed |  float  | 3 | The forward speed. Must be between 0 and 20.0. |

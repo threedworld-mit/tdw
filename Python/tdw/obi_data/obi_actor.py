@@ -23,11 +23,11 @@ class ObiActor:
         """:field
         The positions of each particle as a numpy array.
         """
-        self.positions: np.array = np.array([], dtype=np.float32)
+        self.positions: np.ndarray = np.array([], dtype=np.float32)
         """:field
         The velocities of each particle as a numpy array.
         """
-        self.velocities: np.array = np.array([], dtype=np.float32)
+        self.velocities: np.ndarray = np.array([], dtype=np.float32)
 
     def on_communicate(self, obi_particles: ObiParticles) -> None:
         """

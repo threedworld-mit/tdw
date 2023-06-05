@@ -68,7 +68,7 @@ class CollisionAudioEvent:
         """:field
         The velocity vector.
         """
-        self.velocity: np.array = np.array([0, 0, 0])
+        self.velocity: np.ndarray = np.array([0, 0, 0])
         if collision.state == "exit":
             return
 

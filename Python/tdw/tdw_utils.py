@@ -450,7 +450,7 @@ class TDWUtils:
         """
 
         if isinstance(camera_matrix, tuple):
-            camera_matrix = np.ndarray(camera_matrix)
+            camera_matrix = np.array(camera_matrix)
         camera_matrix = np.linalg.inv(camera_matrix.reshape((4, 4)))
 
         # Different from real-world camera coordinate system.
@@ -619,13 +619,13 @@ class TDWUtils:
         :return: A dictionary of the bounds. Key = the name of the position. Value = the position as a numpy array.
         """
 
-        return {"top": np.array(bounds.get_top(index)),
-                "bottom": np.array(bounds.get_bottom(index)),
-                "left": np.array(bounds.get_left(index)),
-                "right": np.array(bounds.get_right(index)),
-                "front": np.array(bounds.get_front(index)),
-                "back": np.array(bounds.get_back(index)),
-                "center": np.array(bounds.get_center(index))}
+        return {"top": bounds.get_top(index),
+                "bottom": bounds.get_bottom(index),
+                "left": bounds.get_left(index),
+                "right": bounds.get_right(index),
+                "front": bounds.get_front(index),
+                "back": bounds.get_back(index),
+                "center": bounds.get_center(index)}
 
     @staticmethod
     def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.ndarray:
@@ -637,9 +637,9 @@ class TDWUtils:
         """
 
         if isinstance(bounds, Bounds):
-            return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
-                             np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index))),
-                             np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index)))])
+            return np.array([np.linalg.norm(bounds.get_left(index) - bounds.get_right(index)),
+                             np.linalg.norm(bounds.get_top(index) - bounds.get_bottom(index)),
+                             np.linalg.norm(bounds.get_front(index) - bounds.get_back(index))])
         elif isinstance(bounds, dict):
             return np.array([np.linalg.norm(TDWUtils.vector3_to_array(bounds["left"]) - TDWUtils.vector3_to_array(bounds["right"])),
                              np.linalg.norm(TDWUtils.vector3_to_array(bounds["top"]) - TDWUtils.vector3_to_array(bounds["bottom"])),

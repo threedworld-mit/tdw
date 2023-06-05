@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.20
+## v1.11.21
 
 ### New Features
 
@@ -89,6 +89,32 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
 
+## v1.11.20
+
+### Command API
+
+#### New Commands
+
+| Command           | Description            |
+| ----------------- | ---------------------- |
+| `set_drone_speed` | Set the drone's speed. |
+
+### `tdw` module
+
+- Added: `drone.set_speed(forward, backward)`
+
+### Example Controllers
+
+- Added: `drone/set_speed.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                 | Description                                    |
+| ------------------------ | ---------------------------------------------- |
+| `lessons/drone/drone.md` | Added a section for setting the drone's speed. |
+
 ## v1.11.19
 
 ### New Features
@@ -115,6 +141,10 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
   - Added: `VehicleLibrarian` and `VehicleRecord`
 - (Backend) Added abstract class `AgentDynamic`. `ReplicantDynamic` and `DroneDynamic` are now subclasses of `AgentDynamic`, as is the new `VehicleDynamic`.
 - Fixed: If a Replicant starts a new action while an animation is playing (i.e. `animate(animation)`, `move_by(distance)`, or `move_to(target)`), the animation doesn't stop.
+- (Backend) Added `tdw.type_aliases` which contains aliases for commonly used types.
+- (Backend) Replaced type hinting throughout `tdw` with type aliases. This doesn't affect any functionality but has slightly altered the API documentation.
+- Fixed: In many scripts, numpy array type hinting uses `np.array` instead of `np.ndarray`.
+- The Replicant can now reach for a separate target per hand. The `target` and `arm` parameters in `reach_for()` can optionally be set as lists rather than single values.
 
 ### Example Controllers
 
@@ -122,6 +152,7 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 - Added: `vehicle/dynamic_data.py`
 - Added: `vehicle/minimal.py`
 - Added: `vehicle/move_by.py`
+- Added: `replicant/reach_for_two_targets.py`
 
 ### Documentation
 
@@ -133,12 +164,14 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `python/add_ons/vehicle.md`             | `Vehicle` API          |
 | `python/vehicle/vehicle_dynamic.md`       | `VehicleDynamic` API   |
 | `python/librarian/vehicle_librarian.md` | `VehicleLibrarian` API |
+| `python/type_aliases.md` | Type aliases API |
 
 #### Modified Documentation
 
 | Document                     | Modification                |
 | ---------------------------- | --------------------------- |
 | `lessons/agents/overview.md` | Added a section for vehicles. |
+| `lessons/replicants/arm_articulation_3.md` | Added a section for reaching for multiple targets at the same time. |
 
 ## v1.11.18
 

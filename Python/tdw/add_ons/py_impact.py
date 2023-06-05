@@ -470,7 +470,7 @@ class PyImpact(CollisionManager):
                 t = np.append(t, jt * 1e3)
         return Modes(f, p, t)
 
-    def get_impact_sound(self, velocity: np.array, contact_normals: List[np.array],
+    def get_impact_sound(self, velocity: np.ndarray, contact_normals: List[np.ndarray],
                          primary_id: int, primary_material: str, primary_amp: float, primary_mass: float,
                          secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                          secondary_mass: float, primary_resonance: float, secondary_resonance: float) -> Optional[Base64Sound]:
@@ -566,8 +566,8 @@ class PyImpact(CollisionManager):
         sound = amp * sound / np.max(np.abs(sound))
         return Base64Sound(sound)
 
-    def get_impact_sound_command(self, velocity: np.array, contact_points: List[np.array],
-                                 contact_normals: List[np.array], primary_id: int,
+    def get_impact_sound_command(self, velocity: np.ndarray, contact_points: List[np.ndarray],
+                                 contact_normals: List[np.ndarray], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                                  secondary_mass: float, primary_resonance: float, secondary_resonance: float) -> Optional[dict]:
@@ -644,10 +644,10 @@ class PyImpact(CollisionManager):
         snth = PyImpact._synth_impact_modes(modes_1, modes_2, mass, primary_resonance, secondary_resonance)
         return snth, modes_1, modes_2
 
-    def _get_impulse_response(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+    def _get_impulse_response(self, velocity: np.ndarray, contact_normals: List[np.ndarray], primary_id: int,
                               primary_material: str, primary_amp: float, primary_mass: float,
                               secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
-                              primary_resonance: float, secondary_resonance: float) -> Tuple[np.array, float]:
+                              primary_resonance: float, secondary_resonance: float) -> Tuple[np.ndarray, float]:
         """
         Generate an impulse response from the modes for two specified objects.
 
@@ -679,8 +679,8 @@ class PyImpact(CollisionManager):
         h = Modes.mode_add(h1, h2)
         return h, min(modes_1.frequencies)
 
-    def get_scrape_sound_command(self, velocity: np.array, contact_points: np.array,
-                                 contact_normals: List[np.array], primary_id: int,
+    def get_scrape_sound_command(self, velocity: np.ndarray, contact_points: np.ndarray,
+                                 contact_normals: List[np.ndarray], primary_id: int,
                                  primary_material: str, primary_amp: float, primary_mass: float,
                                  secondary_id: Optional[int], secondary_material: str, secondary_amp: float,
                                  secondary_mass: float, primary_resonance: float, secondary_resonance: float,
@@ -725,7 +725,7 @@ class PyImpact(CollisionManager):
                                            contact_points=contact_points,
                                            sound=sound)
 
-    def get_scrape_sound(self, velocity: np.array, contact_normals: List[np.array], primary_id: int,
+    def get_scrape_sound(self, velocity: np.ndarray, contact_normals: List[np.ndarray], primary_id: int,
                          primary_material: str, primary_amp: float, primary_mass: float,
                          secondary_id: int, secondary_material: str, secondary_amp: float, secondary_mass: float,
                          primary_resonance: float, secondary_resonance: float, scrape_material: ScrapeMaterial) -> Optional[Base64Sound]:
@@ -894,7 +894,7 @@ class PyImpact(CollisionManager):
         return sound
 
     @staticmethod
-    def _synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, primary_resonance: float, secondary_resonance: float) -> np.array:
+    def _synth_impact_modes(modes1: Modes, modes2: Modes, mass: float, primary_resonance: float, secondary_resonance: float) -> np.ndarray:
         """
         Generate an impact sound from specified modes for two objects, and the mass of the smaller object.
 
@@ -1034,7 +1034,7 @@ class PyImpact(CollisionManager):
         robot_joints: Dict[int, dict] = dict()
         object_masses: Dict[int, float] = dict()
         object_bouncinesses: Dict[int, float] = dict()
-        extents: Dict[int, np.array] = dict()
+        extents: Dict[int, np.ndarray] = dict()
         vr_nodes: List[ObjectAudioStatic] = list()
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -1169,7 +1169,7 @@ class PyImpact(CollisionManager):
             self._static_audio_data[vr_node.object_id] = vr_node
 
     @staticmethod
-    def _normalize_16bit_int(arr: np.array) -> np.array:
+    def _normalize_16bit_int(arr: np.ndarray) -> np.ndarray:
         """
         Convert numpy float array to normalized 16-bit integers.
 
@@ -1183,7 +1183,7 @@ class PyImpact(CollisionManager):
         return (normalized_floats * 32767).astype(np.int16)
 
     @staticmethod
-    def _normalize_floats(arr: np.array) -> np.array:
+    def _normalize_floats(arr: np.ndarray) -> np.ndarray:
         """
         Normalize numpy array of float audio data.
 
@@ -1213,7 +1213,7 @@ class PyImpact(CollisionManager):
         if scrape_key in self._scrape_previous_indices:
             del self._scrape_previous_indices[scrape_key]
 
-    def _get_audio_command(self, audio_source_id: int, contact_points: np.array, sound: Base64Sound) -> dict:
+    def _get_audio_command(self, audio_source_id: int, contact_points: np.ndarray, sound: Base64Sound) -> dict:
         """
         :param audio_source_id: The audio source ID.
         :param contact_points: The collision contact points.

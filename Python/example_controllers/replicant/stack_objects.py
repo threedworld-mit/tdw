@@ -20,11 +20,11 @@ class ReplicantState(Enum):
     Enum values describing the current state of the Replicant.
     """
 
-    moving_to_object = 0  # The Replicant is moving to a object it wants to carry to the stack.
-    reaching_for_object = 1  # The Replicant is reaching for a object it wants to carry to the stack.
-    grasping_object = 2  # The Replicant is grasping for a object it wants to carry to the stack.
-    resetting_arm_with_object = 3  # The Replicant is holding a object and is resetting its arm to a neutral holding position.
-    moving_to_stack = 4  # The Replicant is holding a object and is carrying it towards the stack.
+    moving_to_object = 0  # The Replicant is moving to an object it wants to carry to the stack.
+    reaching_for_object = 1  # The Replicant is reaching for an object it wants to carry to the stack.
+    grasping_object = 2  # The Replicant is grasping for an object it wants to carry to the stack.
+    resetting_arm_with_object = 3  # The Replicant is holding an object and is resetting its arm to a neutral holding position.
+    moving_to_stack = 4  # The Replicant is holding an object and is carrying it towards the stack.
     reaching_above_stack = 5  # The Replicant is positioning a held object above the stack.
     dropping_object = 6  # The Replicant has dropped the object. The object is falling onto the stack.
     backing_away = 7  # The Replicant is backing away from the stack.

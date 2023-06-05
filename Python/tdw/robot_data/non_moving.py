@@ -24,4 +24,4 @@ class NonMoving:
         """:field
         The segmentation color of this joint as an `[r, g, b]` numpy array.
         """
-        self.segmentation_color: np.array = np.array(static_robot.get_non_moving_segmentation_color(index))
+        self.segmentation_color: np.ndarray = np.array(static_robot.get_non_moving_segmentation_color(index))

@@ -336,6 +336,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [QuaternionUtils](Documentation/python/quaternion_utils.md)
 - [RemoteBuildLauncher](Documentation/python/remote_build_launcher.md)
 - [TDWUtils](Documentation/python/tdw_utils.md)
+- [TypeAliases](Documentation/python/type_aliases.md)
 
 **tdw.add_ons**
 

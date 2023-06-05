@@ -32,11 +32,11 @@ Bounds data for a single object.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| front |  np.array |  | The position of the front point. |
-| back |  np.array |  | The position of the back point. |
-| left |  np.array |  | The position of the left point. |
-| right |  np.array |  | The position of the right point. |
-| top |  np.array |  | The position of the top point. |
-| bottom |  np.array |  | The position of the bottom point. |
-| center |  np.array |  | The position of the center point. |
+| front |  np.ndarray |  | The position of the front point. |
+| back |  np.ndarray |  | The position of the back point. |
+| left |  np.ndarray |  | The position of the left point. |
+| right |  np.ndarray |  | The position of the right point. |
+| top |  np.ndarray |  | The position of the top point. |
+| bottom |  np.ndarray |  | The position of the bottom point. |
+| center |  np.ndarray |  | The position of the center point. |
 

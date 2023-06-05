@@ -1,6 +1,7 @@
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np
+from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.add_ons.add_on import AddOn
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -43,8 +44,7 @@ class Replicant(AddOn):
     """
     LIBRARY_NAME: str = "replicants.json"
 
-    def __init__(self, replicant_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None,
+    def __init__(self, replicant_id: int = 0, position: POSITION = None, rotation: ROTATION = None,
                  image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
                  target_framerate: int = 100):
         """
@@ -211,7 +211,7 @@ class Replicant(AddOn):
 
         self.action = TurnBy(angle=angle)
 
-    def turn_to(self, target: Union[int, Dict[str, float], np.ndarray]) -> None:
+    def turn_to(self, target: TARGET) -> None:
         """
         Turn the Replicant to face a target object or position.
 
@@ -259,9 +259,9 @@ class Replicant(AddOn):
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles)
 
-    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms: bool = True,
-                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 0.1,
-                max_walk_cycles: int = 100, bounds_position: str = "center") -> None:
+    def move_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
+                bounds_position: str = "center") -> None:
         """
         Turn the Replicant to a target position or object and then walk to it.
 
@@ -298,12 +298,12 @@ class Replicant(AddOn):
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
-    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
-                  absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
-                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True,
-                  from_held: bool = False, held_point: str = "bottom", plan: IkPlanType = None) -> None:
+    def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
+                  offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,
+                  duration: float = 0.25, scale_duration: bool = True, from_held: bool = False,
+                  held_point: str = "bottom", plan: IkPlanType = None) -> None:
         """
-        Reach for a target object or position. One or both hands can reach for the target at the same time.
+        Reach for a target object or position. One or both hands can reach for the same or separate targets.
 
         If target is an object, the target position is a point on the object.
         If the object has affordance points, the target position is the affordance point closest to the hand.
@@ -316,8 +316,8 @@ class Replicant(AddOn):
         - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
         - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
 
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param target: The target(s). This can be a list (one target per hand) or a single value (the hand's target). If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for each target as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
@@ -329,8 +329,12 @@ class Replicant(AddOn):
         :param plan: An optional [`IkPlanType`](../replicant/ik_plans/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions.
         """
 
+        if isinstance(target, list):
+            targets = target
+        else:
+            targets = [target]
         if plan is None:
-            self.action = ReachFor(target=target,
+            self.action = ReachFor(targets=targets,
                                    arms=Replicant._arms_to_list(arm),
                                    absolute=absolute,
                                    dynamic=self.dynamic,
@@ -344,8 +348,8 @@ class Replicant(AddOn):
                                    from_held=from_held,
                                    held_point=held_point)
         else:
-            self.action = ReachForWithPlan(target=target,
-                                           arm=arm if isinstance(arm, Arm) else arm[0],
+            self.action = ReachForWithPlan(targets=targets,
+                                           arms=Replicant._arms_to_list(arm),
                                            absolute=absolute,
                                            dynamic=self.dynamic,
                                            collision_detection=self.collision_detection,
@@ -439,8 +443,7 @@ class Replicant(AddOn):
                                duration=duration,
                                scale_duration=scale_duration)
 
-    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1,
-                scale_duration: bool = True):
+    def look_at(self, target: TARGET, duration: float = 0.1, scale_duration: bool = True):
         """
         Look at a target object or position.
 
@@ -479,8 +482,7 @@ class Replicant(AddOn):
 
         self.action = ResetHead(duration=duration, scale_duration=scale_duration)
 
-    def reset(self, position: Union[Dict[str, float], np.ndarray] = None,
-              rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def reset(self, position: POSITION = None, rotation: ROTATION = None) -> None:
         """
         Reset the Replicant. Call this when you reset the scene.
 
@@ -498,10 +500,9 @@ class Replicant(AddOn):
         self._set_initial_position_and_rotation(position=position, rotation=rotation)
         self.commands.clear()
 
-    def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
-                                           rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def _set_initial_position_and_rotation(self, position: POSITION = None, rotation: ROTATION = None) -> None:
         """
-        Set the intial position and rotation.
+        Set the initial position and rotation.
 
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.

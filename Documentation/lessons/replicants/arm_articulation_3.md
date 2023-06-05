@@ -10,9 +10,46 @@ This document describes how to use the Replicant API's more advanced arm articul
 
 **There is no bounded solution for when to set optional parameters.** There is no way to determine using a simple algorithm which optional parameter, if any, is correct for any given situation, because "correctness" is impossible to define. It is often possible for a Replicant to achieve a desired behavior without using an optional parameters, or by using several different combinations. It is up to the user or the training system to decide how to best use the full capabilities of the Replicant arm articulation API.
 
+## `reach_for(target, arm)` for two arms at the same time
+
+The Replicant can reach for multiple targets at the same time by setting `target` and `arm` to lists of values:
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.arm import Arm
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+replicant = Replicant()
+camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.1},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_two_targets")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
+c.add_ons.extend([replicant, camera, capture])
+c.communicate(TDWUtils.create_empty_room(12, 12))
+replicant.reach_for(target=[{"x": -0.8, "y": 0.9, "z": 0.3},
+                            {"x": 0.8, "y": 0.9, "z": 0.3}],
+                    arm=[Arm.left, Arm.right])
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/arm_articulation/reach_for_two_targets.gif)
+
 ## `reach_for(target, arm)` and make one hand follow the other
 
-During a `reach_for(target, arm)` action, If the `arm` parameter is a single value (e.g. `Arm.left`, not `[Arm.left, Arm.right]`), you can set the optional parameter `offhand_follows=True`. This will make the offhand (the opposite of whatever `arm` is set to) follow the primary hand:
+During a `reach_for(target, arm)` action, If the `arm` parameter is a single value (e.g. `Arm.left`, not `[Arm.left, Arm.right]`), you can set the optional parameter `offhand_follows=True`. This will make the offhand (the opposite of whatever `arm` is set to) follow the primary hand. If there are multiple targets and/or arms (see above), `offhand_follows` is ignored.
 
 ```python
 from tdw.controller import Controller
@@ -231,6 +268,8 @@ In many cases, it's not desirable for the Replicant to simply reach towards a ta
 
 The best way to solve this is to subdivide a single motion into multiple motions. In TDW, this subdivided motion is handled using an IkPlan. To set the plan for the action, set the optional `plan` parameter to a [`IkPlanType`](../../python/replicant/ik_plans/ik_plan_type.md) value. For example: `plan=IkPlanType.vertical_horizontal`.
 
+As with a `reach_for` action *without* a plan, it is possible to set `target` and `arm` as lists to reach for multiple targets at the same time using the same IK plan.
+
 In the example, there are two trials. In both trials, the Replicant reaches for a mug and [grasps it](arm_articulation_2.md) and tries to drop the mug on the table. If the hand or arm collides with the table, the trial ends in failure. In the first trial, the Replicant doesn't set the `plan` parameter. In the second trial, the Replicant uses `IkPlanType.vertical_horizontal`, thereby splitting the motion into vertical and horizontal components.
 
 ```python
@@ -338,6 +377,7 @@ ActionStatus.success
 Example controllers:
 
 - [reach_for_follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_follow.py) Reach for a target position and have the offhand follow the main hand.
+- [reach_for_two_targets.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_two_targets.py) Reach for two target positions, one per hand.
 - [reach_for_offset.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_offset.py) A minimal example of how to reach for a position that is offset by a held object.
 - [reach_for_with_plan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_with_plan.py) An example of the difference between a `reach_for()` action with and without a plan.
 

@@ -117,7 +117,7 @@ class ObjectManager(AddOn):
         """:field
         The segmentation color per category as use in the _category image pass. Key = The category. Value = The color as an `[r, g, b]` numpy array.
         """
-        self.categories: Dict[str, np.array] = dict()
+        self.categories: Dict[str, np.ndarray] = dict()
         """:field
         The [transform data](../object_data/transform.md) for each object on the scene on this frame. Key = The object ID. If `transforms=False` in the constructor, this dictionary will be empty.
         """
@@ -147,10 +147,10 @@ class ObjectManager(AddOn):
         if not self._cached_static_data:
             self._cached_static_data = True
             # Sort the static output data by object ID.
-            segmentation_colors: Dict[int, np.array] = dict()
+            segmentation_colors: Dict[int, np.ndarray] = dict()
             names: Dict[int, str] = dict()
             static_rigidbodies: Dict[int, _StaticRigidbody] = dict()
-            sizes: Dict[int, np.array] = dict()
+            sizes: Dict[int, np.ndarray] = dict()
             categories: Dict[int, str] = dict()
             for i in range(len(resp) - 1):
                 r_id = OutputData.get_data_type_id(resp[i])

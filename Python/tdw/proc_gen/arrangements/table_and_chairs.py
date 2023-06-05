@@ -44,7 +44,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
 
         self._used_walls: int = used_walls
         self._region: InteriorRegion = region
-        self._bound_point_positions: List[np.array] = list()
+        self._bound_point_positions: List[np.ndarray] = list()
         super().__init__(model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
@@ -129,7 +129,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
         raise Exception()
 
     @final
-    def _get_chair_bound_position(self, cardinal_direction: CardinalDirection) -> np.array:
+    def _get_chair_bound_position(self, cardinal_direction: CardinalDirection) -> np.ndarray:
         """
         :param cardinal_direction: The direction of the chair from the center of the table.
 
@@ -149,7 +149,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
                          self._record.bounds[side]["z"] + self._position["z"]])
 
     @final
-    def _get_chair_position(self, chair_record: ModelRecord, table_bound_point: np.array) -> np.array:
+    def _get_chair_position(self, chair_record: ModelRecord, table_bound_point: np.ndarray) -> np.ndarray:
         """
         :param chair_record: The chair model record.
         :param table_bound_point: The bounds position.

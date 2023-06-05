@@ -36,15 +36,15 @@ The vehicle's output data, including images, is stored in [`vehicle.dynamic`](..
 
 #### \_\_init\_\_
 
-**`Vehicle(position, rotation)`**
+**`Vehicle()`**
 
-**`Vehicle(vehicle_id=0, position, rotation, name="all_terrain_vehicle", forward_speed=30, reverse_speed=12, image_capture=True, image_passes=None)`**
+**`Vehicle(vehicle_id=0, position=None, rotation=None, name="all_terrain_vehicle", forward_speed=30, reverse_speed=12, image_capture=True, image_passes=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | vehicle_id |  int  | 0 | The ID of the vehicle. |
-| position |  Union[Dict[str, float] |  | The position of the vehicle as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Union[Dict[str, float] |  | The rotation of the vehicle in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| position |  POSITION  | None | The position of the vehicle as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  ROTATION  | None | The rotation of the vehicle in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | name |  str  | "all_terrain_vehicle" | The name of the vehicle model. |
 | forward_speed |  float  | 30 | Sets the vehicle's max forward speed. |
 | reverse_speed |  float  | 12 | Sets the vehicle's max reverse speed. |

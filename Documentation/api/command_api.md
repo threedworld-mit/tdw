@@ -421,6 +421,7 @@
 | [`apply_drone_turn`](#apply_drone_turn) | Turn a drone left or right, based on an input force value. Positive values turn right, negative values turn left. Zero value flies straight. |
 | [`parent_avatar_to_drone`](#parent_avatar_to_drone) | Parent an avatar to a drone. Usually you'll want to do this to add a camera to the drone. |
 | [`set_drone_motor`](#set_drone_motor) | Turns the drone's motor on or off. |
+| [`set_drone_speed`](#set_drone_speed) | Set the forward and/or backward speed of the drone. |
 
 **Humanoid Command**
 
@@ -5826,6 +5827,27 @@ Turns the drone's motor on or off.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"motor_on"` | bool | Toggles whether the motor is on. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_drone_speed`**
+
+Set the forward and/or backward speed of the drone.
+
+
+```python
+{"$type": "set_drone_speed", "id": 1}
+```
+
+```python
+{"$type": "set_drone_speed", "id": 1, "forward_speed": 3.0, "backward_speed": 3.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"forward_speed"` | float | The drone's max forward speed. | 3.0 |
+| `"backward_speed"` | float | The drone's max backward speed. | 3.0 |
 | `"id"` | int | The unique object ID. | |
 
 # HumanoidCommand

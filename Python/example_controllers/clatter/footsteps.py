@@ -58,6 +58,7 @@ for i in range(300):
         foot_position[1] = -3
         # This is approximately how far the foot is from the root body.
         foot_position[2] += 0.3
+<<<<<<< HEAD:Python/example_controllers/clatter/footsteps.py
         # Generate an impact sound.
         resp = run(['./clatter.exe',
                     '--primary_material', 'wood_soft_1',
@@ -80,5 +81,32 @@ for i in range(300):
                          "position": TDWUtils.array_to_vector3(foot_position),
                          "wav_data": audio,
                          "num_frames": len(resp.stdout) // 2})
+=======
+        d_theta = int(360 / 3)
+        r = 0.0625
+        theta = 0
+        contact_points: List[np.ndarray] = list()
+        contact_normals: List[np.ndarray] = list()
+        while theta < 360:
+            rad = radians(theta)
+            x = cos(rad) * r + foot_position[0]
+            z = sin(rad) * r + foot_position[2]
+            contact_points.append(np.array([x, -3, z]))
+            contact_normals.append(np.array([0, 1, 0]))
+            theta += d_theta
+        commands.append(py_impact.get_impact_sound_command(velocity=np.array([0, uniform(-1.6, -1.4), 0]),
+                                                           contact_points=contact_points,
+                                                           contact_normals=contact_normals,
+                                                           primary_id=humanoid_id,
+                                                           primary_material="wood_soft_1",
+                                                           primary_amp=0.1,
+                                                           primary_mass=64,
+                                                           secondary_id=None,
+                                                           secondary_material="stone_4",
+                                                           secondary_amp=0.5,
+                                                           secondary_mass=100,
+                                                           primary_resonance=0.1,
+                                                           secondary_resonance=0.01))
+>>>>>>> master:Python/example_controllers/camera_controls/footsteps.py
     resp = c.communicate(commands)
 c.communicate({"$type": "terminate"})

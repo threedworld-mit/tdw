@@ -3,6 +3,7 @@ import numpy as np
 from overrides import final
 from ikpy.chain import Chain
 from ikpy.link import OriginLink, URDFLink, Link
+from tdw.type_aliases import POSITION
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from tdw.add_ons.robot import Robot
@@ -42,7 +43,7 @@ class RobotArm(Robot):
         # Set robot arm IK chain.
         self._chain: Chain = Chain(name=name, links=links)
 
-    def reach_for(self, target: Union[Dict[str, float], np.array]) -> None:
+    def reach_for(self, target: POSITION) -> None:
         """
         Start to reach for a target position.
 
@@ -86,7 +87,7 @@ class RobotArm(Robot):
         super().stop_joints(joint_ids=joint_ids)
 
     @final
-    def _get_ik_angles(self, target: Union[Dict[str, float], np.array]) -> List[float]:
+    def _get_ik_angles(self, target: POSITION) -> List[float]:
         """
         :param target: The target position to reach for.
 
@@ -106,7 +107,7 @@ class RobotArm(Robot):
         return self._chain.inverse_kinematics(target_position=relative_target, initial_position=initial_angles)
 
     @final
-    def _absolute_to_relative(self, target: np.array) -> np.array:
+    def _absolute_to_relative(self, target: np.ndarray) -> np.ndarray:
         """
         :param target: The target position.
         :return: The target position in relative coordinates.

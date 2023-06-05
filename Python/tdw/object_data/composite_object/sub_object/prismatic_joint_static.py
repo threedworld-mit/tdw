@@ -24,7 +24,7 @@ class PrismaticJointStatic(SubObjectStatic):
         """:field
         The axis of movement.
         """
-        self.axis: np.array = np.array(static_composite_objects.get_prismatic_joint_axis(object_index, sub_object_index))
+        self.axis: np.ndarray = np.array(static_composite_objects.get_prismatic_joint_axis(object_index, sub_object_index))
 
     def _get_sub_object_id(self, static_composite_objects: StaticCompositeObjects, object_index: int,
                            sub_object_index: int) -> int:

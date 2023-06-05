@@ -154,8 +154,8 @@ Produce sound of two colliding objects as a byte array.
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
 | primary_resonance |  float |  | The resonance of the primary (target) object. |
 | secondary_resonance |  float |  | The resonance of the secondary (other) object. |
-| velocity |  np.array |  | The velocity. |
-| contact_normals |  List[np.array] |  | The collision contact normals. |
+| velocity |  np.ndarray |  | The velocity. |
+| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
 
@@ -180,9 +180,9 @@ Create an impact sound, and return a valid command to play audio data in TDW.
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
 | primary_resonance |  float |  | The resonance of the primary (target) object. |
 | secondary_resonance |  float |  | The resonance of the secondary (other) object. |
-| velocity |  np.array |  | The velocity. |
-| contact_points |  List[np.array] |  | The collision contact points. |
-| contact_normals |  List[np.array] |  | The collision contact normals. |
+| velocity |  np.ndarray |  | The velocity. |
+| contact_points |  List[np.ndarray] |  | The collision contact points. |
+| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
 
@@ -203,9 +203,9 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
 | primary_resonance |  float |  | The resonance of the primary (target) object. |
 | secondary_resonance |  float |  | The resonance of the secondary (other) object. |
-| velocity |  np.array |  | The velocity. |
-| contact_points |  np.array |  | The collision contact points. |
-| contact_normals |  List[np.array] |  | The collision contact normals. |
+| velocity |  np.ndarray |  | The velocity. |
+| contact_points |  np.ndarray |  | The collision contact points. |
+| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
 | scrape_material |  ScrapeMaterial |  | The [scrape material](../physics_audio/scrape_material.md). |
@@ -231,8 +231,8 @@ Create a scrape sound, and return a valid command to play audio data in TDW.
 | secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
 | primary_resonance |  float |  | The resonance of the primary (target) object. |
 | secondary_resonance |  float |  | The resonance of the secondary (other) object. |
-| velocity |  np.array |  | The velocity. |
-| contact_normals |  List[np.array] |  | The collision contact normals. |
+| velocity |  np.ndarray |  | The velocity. |
+| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
 | primary_mass |  float |  | The mass of the primary (target) object. |
 | secondary_mass |  float |  | The mass of the secondary (target) object. |
 | scrape_material |  ScrapeMaterial |  | The [scrape material](../physics_audio/scrape_material.md). |

@@ -25,5 +25,5 @@ class HingeStatic(HingeStaticBase):
         return static_composite_objects.get_hinge_max_limit(object_index, sub_object_index)
 
     def _get_axis(self, static_composite_objects: StaticCompositeObjects, object_index: int,
-                  sub_object_index: int) -> np.array:
+                  sub_object_index: int) -> np.ndarray:
         return np.array(static_composite_objects.get_hinge_axis(object_index, sub_object_index))

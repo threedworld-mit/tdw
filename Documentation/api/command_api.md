@@ -30,6 +30,7 @@
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
 | [`set_hdri_skybox_exposure`](#set_hdri_skybox_exposure) | Set the exposure of the HDRI skybox to a given value. |
 | [`set_physics_solver_iterations`](#set_physics_solver_iterations) | Set the number of physics solver iterations, which affects the overall accuracy of the physics engine. |
+| [`set_random`](#set_random) | Create a new random generator and set its seed. The random number generator is used to set segmentation colors and IDs of sub-objects such as robot joints. The controller automatically sends this command as part of its first communicate() call. |
 | [`set_render_quality`](#set_render_quality) | Set the render quality level. The highest render quality level enables near-photorealism runtime rendering. The lowest render quality has "flat" rendering, no shadows, etc. The lower the render quality, the faster the simulation will run, especially in scenes with complex lighting. |
 | [`set_screen_size`](#set_screen_size) | Set the screen size. Any images the build creates will also be this size. |
 | [`set_shadow_strength`](#set_shadow_strength) | Set the shadow strength of all lights in the scene. This only works if you already sent load_scene or add_scene. |
@@ -1232,6 +1233,21 @@ Set the number of physics solver iterations, which affects the overall accuracy 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"iterations"` | int | Number of physics solver iterations. A higher number means better physics accuracy and somewhat reduced framerate. | 12 |
+
+***
+
+## **`set_random`**
+
+Create a new random generator and set its seed. The random number generator is used to set segmentation colors and IDs of sub-objects such as robot joints. The controller automatically sends this command as part of its first communicate() call.
+
+
+```python
+{"$type": "set_random", "seed": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"seed"` | int | The random number generator's seed. | |
 
 ***
 

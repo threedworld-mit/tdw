@@ -134,6 +134,10 @@ jug01 is in the frame! 0.0045013427734375
 jug05 is in the frame! 0.003204345703125
 ```
 
+## Random numbers and segmentation colors generation
+
+Segmentation colors are generated randomly by the build. It is possible to seed the build's random number generator and generate the same segmentation colors every time you run your controller. [Read this for more information.](../core_concepts/random.md)
+
 ## `IdPassSegmentationColors` output data
 
 If you only need to know which segmentation colors are in the image, as opposed to *to what extent* an object is in the image, you can send [`send_id_pass_segmentation_colors`](../../api/command_api.md#send_id_pass_segmentation_colors), which will return [`IdPassSegmentationColors`](../../api/output_data.md#IdPassSegmentationColors).

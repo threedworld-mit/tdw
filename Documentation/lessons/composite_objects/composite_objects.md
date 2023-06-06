@@ -297,6 +297,10 @@ Result:
 
 ![](images/microwave_door.gif)
 
+## Randomness and composite sub-object IDs
+
+Composite sub-object IDs are generated randomly by the build. This is usually not a problem, but it will cause errors if you [log a controller with a composite object in it](../read_write/logger.md). It is possible to seed the build's random number generator and generate the same sub-object IDs every time you run your controller. [Read this for more information.](../core_concepts/random.md)
+
 ***
 
 **Next: [Create a composite object from a prefab](create_from_prefab.md)**

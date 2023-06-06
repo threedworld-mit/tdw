@@ -359,6 +359,10 @@ robot.stop_joints(joint_ids=[shoulder_id])
 c.communicate({"$type": "terminate"})
 ```
 
+## Randomness and robot joint IDs
+
+Robot joint IDs are generated randomly by the build. This is usually not a problem, but it will cause errors if you [log a controller with a robot in it](../read_write/logger.md). It is possible to seed the build's random number generator and generate the same joint IDs every time you run your controller. [Read this for more information.](../core_concepts/random.md)
+
 ***
 
 **Next: [Robot collision detection](collision_detection.md)**

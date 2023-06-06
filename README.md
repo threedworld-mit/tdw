@@ -38,6 +38,7 @@
 8. [Objects](Documentation/lessons/core_concepts/objects.md)
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
+11. [Random numbers](Documentation/lessons/core_concepts/random.md)
 
 ## Troubleshooting
 

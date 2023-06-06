@@ -1,6 +1,6 @@
 ##### Core Concepts
 
-# TDW and Random Numbers
+# Random Numbers
 
 In nearly all cases in TDW, the controller handles random number generation, not the build. This document explain best practices for generating and handling random numbers.
 
@@ -47,7 +47,7 @@ f = float(rng.uniform(-1.0, 1.0))
 
 ## Segmentation colors
 
-The build assigns random segmentation colors to each object. This *can* be deterministic, provided your controller sends [`set_random`](../../api/command_api.md#set_random):
+The build (not the controller) assigns random [segmentation colors](../visual_perception/id.md) to each object. This *can* be deterministic, provided your controller sends [`set_random`](../../api/command_api.md#set_random):
 
 ```python
 from tdw.controller import Controller
@@ -63,181 +63,128 @@ The build's random number generator is used to assign segmentation colors. So, b
 
 If you explicitly send a `set_random` command and log it with a [`Logger`](../read_write/logger.md), and then reload the log file with a [`LogPlayback`](../read_write/logger.md), the segmentation colors will be the same because the log includes the `set_random` command. 
 
+## Joint IDs and composite sub-object IDs
 
+The build assigns random IDs for [robot joints](../robots/overview.md) and [composite sub-objects](../composite_objects/overview.md). 
 
-and add it before the log will always include the `set_random` command (the comma)
+If you try to add a robot or composite object to the scene and [log the commands](../read_write/logger.md), you will get an error when you try to load the log with a `LogPlayback` because the build will generate different IDs.
 
-A **scene** is a static environment in a TDW simulation. It usually contains objects such as an empty room, outdoor terrain, etc. It might include additional 3D meshes such as trees, houses, etc., but these meshes are also static (they can't be moved or adjusted). Scenes can contain [objects](objects.md), [avatars](avatars.md), and other non-static entities.
+However, if you include a `set_random` command at the start of your controller, then the `Logger` will record that command, and the `LogPlayback` will send it, and therefore the joint IDs will be the same as before.
 
-For most of the [TDW Command API](commands.md) to work, you must add a scene to the simulation. There can never be more than one scene in TDW; loading a new scene will discard the previous scene.
+## Example Controllers
 
-There are several ways to load a scene in TDW:
-
-
-
-## Optional A: Procedurally generated indoor environment
-
-Creating a procedurally-generated interior scene (often abbreviated to "proc-gen room") in TDW requires several commands:
-
-2. [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls) to create a room with exterior walls.
-3. (Optional) [`create_interior_walls`](../../api/command_api.md#create_interior_walls) to add create interior walls.
-4. (Optional) [There are many other proc-gen room commands as well.](../../api/command_api.md#ProcGenRoomCommand)
-
-These commands are relatively cumbersome to use, so TDW includes simple wrapper functions.
-
-This controller:
+In this example controller, we ran an initial controller and wrote a dictionary of the return segmentation colors, joint IDs, and composite sub-object IDs. The controller will create the same scene and assert that the returns colors and IDs match the precalculate colors and IDs. If the controller doesn't print anything, then it worked as expected:
 
 ```python
+import numpy as np
 from tdw.controller import Controller
+from tdw.add_ons.robot import Robot
+from tdw.add_ons.object_manager import ObjectManager
+from tdw.add_ons.logger import Logger
 from tdw.tdw_utils import TDWUtils
 
+joint_ids = {0: np.array([147, 157, 175]),
+             1008269081: np.array([195, 94, 113]),
+             2005789796: np.array([0, 154, 146]),
+             1706746116: np.array([138, 76, 169]),
+             1922776196: np.array([207, 131, 96]),
+             216757113: np.array([177, 130, 222]),
+             1704308182: np.array([185, 30, 134])}
+object_ids = {1: np.array([199, 145, 100]),
+              1755192844: np.array([216, 138, 133])}
 c = Controller()
-c.communicate(TDWUtils.create_empty_room(12, 12))
+robot = Robot(name="ur5")
+object_manager = ObjectManager()
+logger = Logger(path="determinism_log.txt")
+c.add_ons.extend([logger, robot, object_manager])
+c.communicate([{"$type": "set_random",
+                "seed": 0},
+               TDWUtils.create_empty_room(6, 6),
+               Controller.get_add_object(model_name="microwave_composite",
+                                         object_id=1,
+                                         position={"x": 2, "y": 0, "z": 0})])
+
+for object_id in object_manager.objects_static:
+    assert object_id in object_ids, f"Object ID not found: {object_id}"
+    color = object_manager.objects_static[object_id].segmentation_color
+    assert (color == object_ids[object_id]).all(), f"Bad segmentation color for object {object_id}: {color}"
+
+for joint_id in robot.static.joints:
+    joint = robot.static.joints[joint_id]
+    assert joint_id in joint_ids, f"Joint ID not found: {joint_id}"
+    color = joint.segmentation_color
+    assert (color == joint_ids[joint_id]).all(), f"Bad segmentation color for joint {joint_id}: {color}"
+
+c.communicate({"$type": "terminate"})
 ```
 
-...does the exact same thing as this controller:
+In this example controller, we'll load a log file, run it, and compare the [output data](output_data.md) to the precalculated colors and IDs. If the controller doesn't print anything, then it worked as expected:
 
 ```python
+import numpy as np
 from tdw.controller import Controller
+from tdw.add_ons.log_playback import LogPlayback
+from tdw.output_data import OutputData, SegmentationColors, StaticRobot
 
+"""
+Load a log file generated by a variant of `determinism_rng.py`.
+
+Assert that the joint IDs, sub-object IDs, and all segmentation colors are the same as what was logged.
+"""
+
+joint_ids = {0: np.array([147, 157, 175]),
+             1008269081: np.array([195, 94, 113]),
+             2005789796: np.array([0, 154, 146]),
+             1706746116: np.array([138, 76, 169]),
+             1922776196: np.array([207, 131, 96]),
+             216757113: np.array([177, 130, 222]),
+             1704308182: np.array([185, 30, 134])}
+object_ids = {1: np.array([199, 145, 100]),
+              1755192844: np.array([216, 138, 133])}
 c = Controller()
-c.communicate({'$type': 'create_exterior_walls',
-               'walls': [{'x': 0, 'y': 0}, {'x': 0, 'y': 1}, {'x': 0, 'y': 2}, {'x': 0, 'y': 3}, {'x': 0, 'y': 4}, {'x': 0, 'y': 5}, {'x': 0, 'y': 6}, {'x': 0, 'y': 7}, {'x': 0, 'y': 8}, {'x': 0, 'y': 9}, {'x': 0, 'y': 10}, {'x': 0, 'y': 11}, {'x': 1, 'y': 0}, {'x': 1, 'y': 11}, {'x': 2, 'y': 0}, {'x': 2, 'y': 11}, {'x': 3, 'y': 0}, {'x': 3, 'y': 11}, {'x': 4, 'y': 0}, {'x': 4, 'y': 11}, {'x': 5, 'y': 0}, {'x': 5, 'y': 11}, {'x': 6, 'y': 0}, {'x': 6, 'y': 11}, {'x': 7, 'y': 0}, {'x': 7, 'y': 11}, {'x': 8, 'y': 0}, {'x': 8, 'y': 11}, {'x': 9, 'y': 0}, {'x': 9, 'y': 11}, {'x': 10, 'y': 0}, {'x': 10, 'y': 11}, {'x': 11, 'y': 0}, {'x': 11, 'y': 1}, {'x': 11, 'y': 2}, {'x': 11, 'y': 3}, {'x': 11, 'y': 4}, {'x': 11, 'y': 5}, {'x': 11, 'y': 6}, {'x': 11, 'y': 7}, {'x': 11, 'y': 8}, {'x': 11, 'y': 9}, {'x': 11, 'y': 10}, {'x': 11, 'y': 11}]})
-
+playback = LogPlayback()
+playback.load("determinism_log.txt")
+c.add_ons.append(playback)
+while len(playback.playback) > 0:
+    resp = c.communicate([])
+    for i in range(len(resp) - 1):
+        r_id = OutputData.get_data_type_id(resp[i])
+        if r_id == "segm":
+            segm = SegmentationColors(resp[i])
+            for j in range(segm.get_num()):
+                object_id = segm.get_object_id(j)
+                color = segm.get_object_color(j)
+                assert object_id in object_ids, f"Object ID not found: {object_id}"
+                assert (color == object_ids[object_id]).all(), f"Bad segmentation color for object {object_id}: {color}"
+        elif r_id == "srob":
+            srob = StaticRobot(resp[i])
+            for j in range(srob.get_num_joints()):
+                joint_id = srob.get_joint_id(j)
+                color = srob.get_joint_segmentation_color(j)
+                assert joint_id in joint_ids, f"Joint ID not found: {joint_id}"
+                assert (color == joint_ids[joint_id]).all(), f"Bad segmentation color for joint {joint_id}: {color}"
+c.communicate({"$type": "terminate"})
 ```
-
-...which will create this scene:
-
-![](images/empty_room.png)
-
-**Note: The scene won't be actually be visible.** [The next page](avatars.md) will cover how to add rendering to TDW.
-
-## Option B: Download and load a streamed scene
-
-TDW includes many pre-generated photorealistic scenes. These scenes exist on a remote Amazon S3 server as ***asset bundles***, which are Unity3D-specific binary files that can be loaded into a Unity3D application (e.g. the TDW build) at runtime. To access a scene asset bundle, TDW downloads the scene into active memory (not to a local file).
-
-Scene asset bundles can be quite large; expect downloads to require up to several minutes. When a scene is loaded into TDW, the previous scene (if any) is discarded from memory; if you want to use it again, TDW will need to re-download it.
-
-To add a streamed scene to your simulation, send  [`add_scene`](../../api/command_api.md#add_scene). Because this command's parameters can be difficult to manage, TDW includes a helpful [`get_add_scene()` wrapper function](../../python/controller.md):
-
-```python
-from tdw.controller import Controller
-
-c = Controller()
-c.communicate(c.get_add_scene(scene_name="tdw_room"))
-```
-
-...does the exact same thing as this controller:
-
-```python
-from tdw.controller import Controller
-
-c = Controller()
-c.communicate({'$type': 'add_scene',
-               'name': 'tdw_room',
-               'url': 'https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room'})
-```
-
-...which will create this scene:
-
-![](images/tdw_room.png)
-
-### Scene metadata records and the `SceneLibrarian`
-
-All asset bundles in TDW (including scenes) have associated metadata records. These records are stored in the `tdw` module as json files.
-
-This is what the metadata for the scene `tdw_room` (the scene in the previous example) looks like:
-
-```json
-{'name': 'tdw_room', 
- 'urls': {
-     'Darwin': 'https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room', 
-     'Linux': 'https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room',
-     'Windows': 'https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room'}, 
- 'description': 'An interior space lit by sunlight from outside.', 
- 'hdri': True, 
- 'location': 'interior'}
-```
-
-TDW includes convenient wrapper classes for metadata records and collections of records. For scenes, records are stored in a [`SceneLibrarian`](../../python/librarian/scene_librarian.md#scenerecord-api). To access the record listed above:
-
-```python
-from tdw.librarian import SceneLibrarian
-
-librarian = SceneLibrarian()
-record = librarian.get_record("tdw_room")
-
-# tdw_room
-print(record.name)
-
-# Prints the URL for your operating system. 
-# For example, if you're using Linux, this will print record.urls["Linux"]
-print(record.get_url()) 
-```
-
-Records are stored in a list: `librarian.records`. You can iterate through the list. This will print the names of each streamed scene in TDW:
-
-```python
-from tdw.librarian import SceneLibrarian
-
-librarian = SceneLibrarian()
-for record in librarian.records:
-    print(record.name)
-```
-
-### Images of each scene
-
-**[Images of each scene can be found here.](https://github.com/threedworld-mit/tdw/tree/master/Documentation/lessons/core_concepts/images/scenes)**
-
-## Option C: Other options for creating a scene
-
-### Perlin noise terrain
-
-Send [`perlin_noise_terrain`](../../api/command_api.md#perlin_noise_terrain)  to generate a "terrain" mesh using Perlin noise. This controller:
-
-```python
-from tdw.controller import Controller
-
-c = Controller()
-c.communicate({"$type": "perlin_noise_terrain",
-               "size": {"x": 24, "y": 24},
-               "subdivisions": 1,
-               "turbulence": 1.75,
-               "origin": {"x": 0.5, "y": 0.5},
-               "texture_scale": {"x": 4, "y": 2},
-               "dynamic_friction": 0.25,
-               "static_friction": 0.4,
-               "bounciness": 0.2,
-               "max_y": 10})
-```
-
-...will create this scene:
-
-![](images/perlin_noise.png)
-
-### An empty scene
-
-It's possible to create a totally empty scene with the  [`create_empty_environment`](../../api/command_api.md#create_empty_environment) command. This is mainly for debugging TDW.
 
 ***
 
-**Next: [Avatars and cameras](avatars.md)**
+**This is the last document in the "Core Concepts" section. We recommend you next read our guide on [troubleshooting and good coding practices in TDW](../troubleshooting/common_errors.md).**
 
 [Return to the README](../../../README.md)
 
 ***
 
+Example Controllers
+
+- [determinism_rng.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/determinism_rng.py) Assert random number generator determinism.
+- [determinism_log.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/core_concepts/determinism_log.py) Load a log file and test determinism.
+
 Python API:
 
-- [`SceneLibrarian`](../../python/librarian/scene_librarian.md#scenerecord-api) (A collection of scene metadata records)
-- [`Controller.get_add_scene(scene_name)`](../../python/tdw_utils.md)
-- [`TDWUtils.create_empty_room(width, length)`](../../python/tdw_utils.md)
+- [`Logger`](../../python/add_ons/logger.md)
+- [`LogPlayback`](../../python/add_ons/log_playback.md)
 
 Command API:
 
-- [`create_exterior_walls`](../../api/command_api.md#create_exterior_walls)
-- [`create_interior_walls`](../../api/command_api.md#create_interior_walls)
-- [`perlin_noise_terrain`](../../api/command_api.md#perlin_noise_terrain)
-- [`create_empty_environment`](../../api/command_api.md#create_empty_environment)
-- [`add_scene`](../../api/command_api.md#add_scene)
+- [`set_random`](../../api/command_api.md#set_random)
 

@@ -159,7 +159,7 @@ Larger jpg images will look better than smaller images, as will larger images th
 
 ***
 
-**This is the last document in the "Core Concepts" section. We recommend you next read our guide on [troubleshooting and good coding practices in TDW](../troubleshooting/common_errors.md).**
+**Next: [Random Numbers](random.md)**
 
 [Return to the README](../../../README.md)
 

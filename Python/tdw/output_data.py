@@ -61,6 +61,7 @@ from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
+from tdw.FBOutput import Random as Rand
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1663,3 +1664,11 @@ class Drones(OutputData):
 
     def get_motor_on(self, index: int) -> bool:
         return bool(self._motor_ons[index])
+
+
+class Random(OutputData):
+    def get_data(self) -> Rand.Random:
+        return Rand.Random.GetRootAsRandom(self.bytes, 0)
+
+    def get_seed(self) -> int:
+        return int(self.data.Seed())

@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Union
 from json import dumps
-from tdw.output_data import OutputData, LogMessage
+from tdw.output_data import OutputData, LogMessage, Random
 from tdw.add_ons.add_on import AddOn
 
 
@@ -44,6 +44,7 @@ class Logger(AddOn):
         # Remove an existing log file.
         if overwrite and self._path.exists():
             self._path.unlink()
+        self._need_to_set_random_seed: bool = True
 
     def on_send(self, resp: List[bytes]) -> None:
         for i in range(len(resp) - 1):
@@ -52,9 +53,18 @@ class Logger(AddOn):
             if r_id == "logm":
                 log = LogMessage(resp[i])
                 print(f"[FROM BUILD] {log.get_message_type()} from {log.get_object_type()}: {log.get_message()}")
+            # Get the random seed.
+            elif r_id == "rand" and self._need_to_set_random_seed:
+                self._need_to_set_random_seed = False
+                # Insert a random seed command at the start of the log.
+                text = self._path.read_text(encoding="utf-8")
+                text = dumps([{"$type": "set_random", "seed": Random(resp[i]).get_seed()}]) + "\n" + text
+                self._path.write_text(text)
 
     def get_initialization_commands(self) -> List[dict]:
-        commands = [{"$type": "send_log_messages"}]
+        # Log messages. Request the random seed.
+        commands = [{"$type": "send_log_messages"},
+                    {"$type": "send_random"}]
         if self._log_commands_in_build:
             commands.append({"$type": "set_network_logging",
                              "value": True})
@@ -84,3 +94,4 @@ class Logger(AddOn):
         # Delete an existing log.
         if overwrite and self._path.exists():
             self._path.unlink()
+        self._need_to_set_random_seed = True

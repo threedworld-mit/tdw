@@ -975,7 +975,7 @@
     },
     "savanna_6km": {
       "description": "A large outdoor terrain, 6 km square.",
-      "hdri": false,
+      "hdri": true,
       "location": "exterior",
       "name": "savanna_6km",
       "rooms": [],

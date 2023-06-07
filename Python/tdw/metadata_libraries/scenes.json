@@ -961,18 +961,6 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/suburb_scene_2023"
       }
     },
-	 "terrain_3x3_scene": {
-      "description": "A large outdoor terrain, 6 km square.",
-      "hdri": false,
-      "location": "exterior",
-      "name": "terrain_3x3_scene",
-      "rooms": [],
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/terrain_3x3_scene",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/terrain_3x3_scene",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/terrain_3x3_scene"
-      }
-    },
     "tdw_room": {
       "description": "An interior space lit by sunlight from outside.",
       "hdri": true,
@@ -983,6 +971,18 @@
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
+      }
+    },
+    "terrain_3x3_scene": {
+      "description": "A large outdoor terrain, 6 km square.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "terrain_3x3_scene",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/terrain_3x3_scene",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/terrain_3x3_scene",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/terrain_3x3_scene"
       }
     }
   }

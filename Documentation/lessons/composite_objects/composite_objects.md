@@ -299,7 +299,7 @@ Result:
 
 ## Randomness and composite sub-object IDs
 
-Composite sub-object IDs are generated randomly by the build. This is usually not a problem, but it will cause errors if you [log a controller with a composite object in it](../read_write/logger.md). It is possible to seed the build's random number generator and generate the same sub-object IDs every time you run your controller. [Read this for more information.](../core_concepts/random.md)
+Composite sub-object IDs (motor IDs, hinge IDs, etc.) are generated randomly by the build and will be different every time you run your controller. This is usually not a problem because your controller probably doesn't need to hard-code sub-object ID values. If you intend to use a [`Logger`](../read_write/logger.md), it will log the current random seed, ensuring that the sub-object IDs are always the same every time you play back the log file with a [`LogPlayback`](../read_write/logger.md).
 
 ***
 

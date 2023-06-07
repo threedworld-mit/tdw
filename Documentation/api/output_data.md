@@ -91,6 +91,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
+| [Random](#Random) | The random seed. | `rand` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
 | [ReplicantSegmentationColors](#ReplicantSegmentationColors) | Color segmentation data for Replicants in the scene. | `rseg` |
@@ -776,6 +777,18 @@ A message sent by the build when it quits.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_ok()` | If True, the build quit gracefully. If False, the build quit because there was an error or exception. | `bool` |
+
+## Random
+
+`r = Random(byte_array)`
+
+**Identifier:** `rand`
+
+The random seed.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_seed()` | The random seed. | `int` |
 
 ## Raycast
 

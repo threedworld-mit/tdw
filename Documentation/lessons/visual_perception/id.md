@@ -136,7 +136,7 @@ jug05 is in the frame! 0.003204345703125
 
 ## Random numbers and segmentation colors generation
 
-Segmentation colors are generated randomly by the build. It is possible to seed the build's random number generator and generate the same segmentation colors every time you run your controller. [Read this for more information.](../core_concepts/random.md)
+Segmentation colors are generated randomly by the build. It is possible to seed the build's random number generator and generate the same segmentation colors every time you run your controller by sending  [`set_random`](../../api/command_api.md#set_random) before adding any objects. If you intend to use a [`Logger`](../read_write/logger.md), you don't need to send `set_random` because the `Logger` will log the current random seed for you.
 
 ## `IdPassSegmentationColors` output data
 
@@ -231,6 +231,7 @@ Command API:
 
 - [`send_segmentation_colors`](../../api/command_api.md#send_segmentation_colors)
 - [`send_id_pass_segmentation_colors`](../../api/command_api.md#send_id_pass_segmentation_colors)
+- [`set_random`](../../api/command_api.md#set_random)
 
 Output Data API:
 

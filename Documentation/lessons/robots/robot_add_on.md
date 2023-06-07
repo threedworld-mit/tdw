@@ -361,7 +361,7 @@ c.communicate({"$type": "terminate"})
 
 ## Randomness and robot joint IDs
 
-Robot joint IDs are generated randomly by the build. This is usually not a problem, but it will cause errors if you [log a controller with a robot in it](../read_write/logger.md). It is possible to seed the build's random number generator and generate the same joint IDs every time you run your controller. [Read this for more information.](../core_concepts/random.md)
+Robot joint IDs are generated randomly by the build and will be different every time you run your controller. This is usually not a problem because your controller probably doesn't need to hard-code joint ID values. If you intend to use a [`Logger`](../read_write/logger.md), it will log the current random seed, ensuring that the joint IDs are always the same every time you play back the log file with a [`LogPlayback`](../read_write/logger.md).
 
 ***
 

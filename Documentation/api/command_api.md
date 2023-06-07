@@ -713,6 +713,7 @@
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
+| [`send_random`](#send_random) | Request the build to send the random seed.  |
 | [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
 | [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
@@ -9313,6 +9314,38 @@ Send data for buttons pressed on Oculus Touch controllers.
 
 ```python
 {"$type": "send_oculus_touch_buttons", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_random`**
+
+Request the build to send the random seed. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Random`](output_data.md#Random)</font>
+
+```python
+{"$type": "send_random"}
+```
+
+```python
+{"$type": "send_random", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

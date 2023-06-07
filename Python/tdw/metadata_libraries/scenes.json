@@ -973,16 +973,16 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
       }
     },
-    "terrain_3x3_scene": {
+    "savanna_6km": {
       "description": "A large outdoor terrain, 6 km square.",
       "hdri": false,
       "location": "exterior",
-      "name": "terrain_3x3_scene",
+      "name": "savanna_6km",
       "rooms": [],
       "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/terrain_3x3_scene",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/terrain_3x3_scene",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/terrain_3x3_scene"
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_6km",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_6km",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_6km"
       }
     }
   }

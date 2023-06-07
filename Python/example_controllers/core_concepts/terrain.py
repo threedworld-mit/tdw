@@ -15,7 +15,7 @@ path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("terrain")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], path=path)
 c.add_ons.extend([camera, capture])
-c.communicate([c.get_add_scene(scene_name="terrain_3x3_scene"),
+c.communicate([c.get_add_scene(scene_name="savanna_6km"),
                {"$type": "set_screen_size",
                 "width": 1280,
                 "height": 720}])

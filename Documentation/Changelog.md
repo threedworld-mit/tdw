@@ -4,6 +4,32 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.20
+
+### Command API
+
+#### New Commands
+
+| Command           | Description            |
+| ----------------- | ---------------------- |
+| `set_drone_speed` | Set the drone's speed. |
+
+### `tdw` module
+
+- Added: `drone.set_speed(forward, backward)`
+
+### Example Controllers
+
+- Added: `drone/set_speed.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                 | Description                                    |
+| ------------------------ | ---------------------------------------------- |
+| `lessons/drone/drone.md` | Added a section for setting the drone's speed. |
+
 ## v1.11.19
 
 ### New Features

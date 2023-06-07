@@ -6,7 +6,42 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 ## v1.11.21
 
+### Command API
 
+#### New Commands
+
+| Command       | Description                      |
+| ------------- | -------------------------------- |
+| `set_random`  | Set the build's random seed.     |
+| `send_random` | Request the build's random seed. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description              |
+| ----------- | ------------------------ |
+| `Random`    | The build's random seed. |
+
+### `tdw` module
+
+- The controller automatically sends `set_random` as part of its first communicate() call.
+- Fixed: Various crashes if a `LogPlayback` is used in a scene with robots or composite objects. These crashes were caused by the build generating different robot joint IDs and composite sub-object IDs. Now, the `Logger` sends `send_random` as part of its initialization process and then, using the returned random seed, prepends a `set_random` command to the start of the log, ensuring that the same random seed is used when the log is played back via a `LogPlayback`.
+
+### Build
+
+- **The build generates random numbers from a random seed that can be set by the controller.** This makes it possible to regenerate the same random values for segmentation colors, robot joint IDs, and composite sub-object IDs (assuming that the controller itself isn't edited).
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                         | Modification                                              |
+| ------------------------------------------------ | --------------------------------------------------------- |
+| `lessons/composite_objects/composite_objects.md` | Added a section about randomness and sub-object IDs.      |
+| `lessons/read_write/logger.md`                   | Added a section about how the random seed is logged.      |
+| `lessons/robots/robot_add_on.md`                 | Added a section about randomness and joint IDs.           |
+| `lessons/visual_perception/id.md`                | Added a section about randomness and segmentation colors. |
 
 ## v1.11.20
 

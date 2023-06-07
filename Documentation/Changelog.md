@@ -26,7 +26,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 ### `tdw` module
 
 - The controller automatically sends `set_random` as part of its first communicate() call.
-- Fixed: Various crashes if a `LogPlayback` is used in a scene with robots or composite objects. These crashes were caused by the build generating different robot joint IDs and composite sub-object IDs. Now, the `Logger` sends `send_random` as part of its initialization process and then, using the returned random seed, prepends a `set_random` command to the start of the log, ensuring that the same random seed is used when the log is played back via a `LogPlayback`.
+- Fixed: Various crashes if a `LogPlayback` is used in a scene with robots or composite objects. These crashes were caused by the build generating different robot joint IDs and composite sub-object IDs. Now, the `Logger` sends `send_random` as part of its initialization process and then, using the returned random seed, prepends a `set_random` command to the start of the log, ensuring that the same random seed is used when the log is played back via a `LogPlayback`. *Note: There is now a slightly heightened chance of ID and segmentation color collisions. If you're getting errors from the build about object IDs already existing, please let us know.*
 
 ### Build
 

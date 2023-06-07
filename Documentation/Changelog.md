@@ -4,6 +4,20 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.21
+
+### Scene Library
+
+- Added: `savanna_6km` A large outdoor scene.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                  | Description                |
+| ----------------------------------------- | -------------------------- |
+| `lessons/core_concepts/outdoor_scenes.md` | Overview of outdoor scenes |
+
 ## v1.11.20
 
 ### Command API

@@ -56,7 +56,7 @@ Result:
 
 Without setting the clipping planes and focus distance, we'd get this image instead:
 
-![](D:\tdw\Documentation\lessons\core_concepts\images\savanna_6km_no_clipping_planes.jpg)
+![](images/savanna_6km_no_clipping_planes.jpg)
 
 ## Medium-sized outdoor scenes
 

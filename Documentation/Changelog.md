@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.21
+## v1.11.22
 
 ### New Features
 
@@ -88,6 +88,20 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact.md`          | Moved to `py_impact/py_impact.md`                            |
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
+
+## v1.11.22
+
+### Scene Library
+
+- Added: `savanna_6km` A large outdoor scene.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                  | Description                |
+| ----------------------------------------- | -------------------------- |
+| `lessons/core_concepts/outdoor_scenes.md` | Overview of outdoor scenes |
 
 ## v1.11.20
 

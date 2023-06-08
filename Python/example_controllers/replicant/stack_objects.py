@@ -68,7 +68,7 @@ class StackObjects(Controller):
         # This tracks the current state of the Replicant.
         self.replicant_state: ReplicantState = ReplicantState.moving_to_object
 
-        # A list of IDs of each object object in the scene.
+        # A list of IDs of each object in the scene.
         self.objects: List[int] = list()
         # The index in `self.objects` of the object the Replicant is trying to put on the stack.
         self.object_index: int = 0
@@ -251,6 +251,7 @@ class StackObjects(Controller):
                                          arm=Arm.right,
                                          from_held=True,
                                          held_point="top",
+                                         duration=0.5,
                                          plan=IkPlanType.vertical_horizontal)
         # Reach above the stack.
         elif self.replicant_state == ReplicantState.reaching_above_stack:

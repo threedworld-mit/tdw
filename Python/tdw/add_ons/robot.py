@@ -192,7 +192,6 @@ class Robot(RobotBase):
 
     def _cache_static_data(self, resp: List[bytes]) -> None:
         self.static = RobotStatic(robot_id=self.robot_id, resp=resp)
-        self._set_robot_joint_ids()
 
     def _set_dynamic_data(self, resp: List[bytes]) -> None:
         dynamic = RobotDynamic(resp=resp,

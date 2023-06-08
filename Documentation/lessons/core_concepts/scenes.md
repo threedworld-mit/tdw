@@ -124,7 +124,7 @@ for record in librarian.records:
 
 ### Outdoor scenes
 
-Outdoor scenes are essentially the same as any other scene but involves some extra camera settings. Because we haven't described [avatars and cameras](avatars.md) yet, outdoor scenes are described in their own document later in "Core Concepts", which you read [here](outdoors.md) if you want to skip ahead.
+Outdoor scenes are essentially the same as any other scene but involves some extra camera settings. Because we haven't described [avatars and cameras](avatars.md) yet, outdoor scenes are described in their own document later in "Core Concepts", which you read [here](outdoor_scenes.md) if you want to skip ahead.
 
 ## Option C: Other options for creating a scene
 

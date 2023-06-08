@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
-## v1.11.21
+## v1.11.22
 
 ### `tdw` module
 
@@ -12,13 +12,13 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
   - (Backend) added `Reset` subclass of `IkPlan`.
 - (Backend) Fixed: `IKMotion` scales the duration after sending initialization commands.
 
-### Build
-
-- Fixed: All Replicant IK motions have non-deterministic durations. Now, the framerate is always the same (`Time.fixedDeltaTime`).
-
 ### Example Controllers
 
 - Fixed: `replicant/carry_couch.py` doesn't work as intended (regression in 1.11.19)
+- 
+### Build
+
+- Fixed: All Replicant IK motions have non-deterministic durations. Now, the framerate is always the same (`Time.fixedDeltaTime`).
 
 ### Documentation
 
@@ -27,6 +27,20 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | Document                             | Description     |
 | ------------------------------------ | --------------- |
 | `Python/replicant/ik_plans/reset.md` | API for `Reset` |
+
+## v1.11.21
+
+### Scene Library
+
+- Added: `savanna_6km` A large outdoor scene.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                  | Description                |
+| ----------------------------------------- | -------------------------- |
+| `lessons/core_concepts/outdoor_scenes.md` | Overview of outdoor scenes |
 
 ## v1.11.20
 

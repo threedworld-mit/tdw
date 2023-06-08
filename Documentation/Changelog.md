@@ -4,6 +4,30 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.22
+
+### `tdw` module
+
+- Added a new `IkPlanType`: `reset` (reset to a neutral position and then reach for the target).
+  - (Backend) added `Reset` subclass of `IkPlan`.
+- (Backend) Fixed: `IKMotion` scales the duration after sending initialization commands.
+
+### Example Controllers
+
+- Fixed: `replicant/carry_couch.py` doesn't work as intended (regression in 1.11.19)
+- 
+### Build
+
+- Fixed: All Replicant IK motions have non-deterministic durations. Now, the framerate is always the same (`Time.fixedDeltaTime`).
+
+### Documentation
+
+#### New Documentation
+
+| Document                             | Description     |
+| ------------------------------------ | --------------- |
+| `Python/replicant/ik_plans/reset.md` | API for `Reset` |
+
 ## v1.11.21
 
 ### Scene Library

@@ -8,6 +8,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 ### `tdw` module
 
+- Added new Replicant model: `woman_casual`
 - Added a new `IkPlanType`: `reset` (reset to a neutral position and then reach for the target).
   - (Backend) added `Reset` subclass of `IkPlan`.
 - (Backend) Fixed: `IKMotion` scales the duration after sending initialization commands.

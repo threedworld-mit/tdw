@@ -141,8 +141,8 @@ class CarryCouch(Controller):
         self.replicant_1.turn_to(target=center)
         self.do_actions()
         # Reach for the couch.
-        self.replicant_0.reach_for(target=self.object_id, arm=[Arm.left, Arm.right])
-        self.replicant_1.reach_for(target=self.object_id, arm=[Arm.left, Arm.right])
+        self.replicant_0.reach_for(target=[self.object_id, self.object_id], arm=[Arm.left, Arm.right])
+        self.replicant_1.reach_for(target=[self.object_id, self.object_id], arm=[Arm.left, Arm.right])
         self.do_actions()
         # Only the first Replicant grasps the couch.
         self.replicant_0.grasp(target=self.object_id, arm=Arm.left, angle=None)

@@ -1,14 +1,8 @@
-# IkPlan
+# Reset
 
-`from tdw.replicant.ik_plans.ik_plan import IkPlan`
+`from tdw.replicant.ik_plans.reset import Reset`
 
-An `IkPlan` takes the reach-for parameters and converts them into a list of actions.
-
-The parameters of `IkPlan` are similar to that of a `ReachFor` action, but an `IkPlan` is *not* an action.
-
-This is an abstract class. Subclasses of `IkPlan` define how the list of `ReachFor` actions is set.
-
-An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.md) action. (From the Replicant API, this is combined with the `reach_for(target, arm)` function).
+Reset the Replicant to its neutral position and then reach for the target.
 
 ***
 
@@ -42,7 +36,9 @@ An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.m
 
 #### \_\_init\_\_
 
-**`IkPlan(targets, absolute, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
+\_\_init\_\_
+
+**`Reset(targets, absolute, arrived_at, max_distance, arms, dynamic, collision_detection, previous, duration, scale_duration, from_held, held_point)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

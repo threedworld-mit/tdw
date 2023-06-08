@@ -7,3 +7,4 @@ Enum values defining IK plans.
 | Value | Description |
 | --- | --- |
 | `vertical_horizontal` | [`VerticalHorizontal`](vertical_horizontal.md) |
+| `reset` | [`Reset`](reset.md) |

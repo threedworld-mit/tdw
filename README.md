@@ -598,6 +598,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [IkPlan](Documentation/python/replicant/ik_plans/ik_plan.md)
 - [IkPlanType](Documentation/python/replicant/ik_plans/ik_plan_type.md)
+- [Reset](Documentation/python/replicant/ik_plans/reset.md)
 - [VerticalHorizontal](Documentation/python/replicant/ik_plans/vertical_horizontal.md)
 
 **tdw.robot_data**

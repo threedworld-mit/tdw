@@ -10,7 +10,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 - **Fixed: `_depth` and `_depth_simple` passes don't work on Apple Silicon.**
 
-## `tdw` module
+### `tdw` module
 
 - Fixed: `RobotCreator` can't clone a repo if the branch is named anything other than `"master"`.
 

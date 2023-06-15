@@ -403,7 +403,6 @@ class RobotCreator(AssetBundleCreator):
         :return: The expected name of the robot.
         """
 
-        print(TDWUtils.get_path(urdf_path).read_text(encoding="utf-8"))
         return re.search(r'<robot(.*?)name=[\'|"](.*?)[\'|"]',
                          TDWUtils.get_path(urdf_path).read_text(encoding="utf-8"),
                          flags=re.MULTILINE).group(2).strip()

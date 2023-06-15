@@ -13,6 +13,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 ### `tdw` module
 
 - Fixed: `RobotCreator` can't clone a repo if the branch is named anything other than `"master"`.
+- Fixed: `FloorplanFlood` doesn't work in any `floorplan_3` scenes due to a bad key in `floorplan_floods.json`.
 
 ### Model Library
 

@@ -63,11 +63,11 @@ Without setting the clipping planes and focus distance, we'd get this image inst
 Right now, there are two medium-sized outdoor scenes in TDW:
 
 - `suburb_scene_2023` An outdoor suburb scene.
-- `suburb_scene_2018` This is included only for legacy reasons.
+- `downtown_alleys` an outdoor city scene.
 
 ## Small outdoor scenes
 
-TDW includes several small outdoor scenes such as `abandoned_factory`. These scenes are meant for static photorealistic image generation, and are probably too small for anything involving a mobile agent.
+TDW includes several small outdoor scenes such as `dead_grotto`. These scenes are meant for static photorealistic image generation, and are probably too small for anything involving a mobile agent.
 
 ***
 

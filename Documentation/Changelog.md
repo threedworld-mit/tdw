@@ -19,6 +19,10 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 - Added to `models_core.json`: 104_sprite_can_12_fl_oz_vray, 699264_shoppingcart_2013, apple_ipod_touch_grey_vray, apple_ipod_touch_pink_vray, b01_bag, b02_bag, b03_backpack, b03_basket, b03_beats_solo_hd_headphone_03_2010, b03_cocacola_can_cage, b03_dollarstack, b03_shopping_cart, b03_shopping_cart_walmart, b03_shoppingcart_2013, b04_1106_backpack, b04_armani_handbag, b04_basket, b04_bottle_20ml, b04_bottle_max, b04_can, b04_cgaxis_models_31_12_vray, b04_dump, b04_money, b04_shoppping_cart, b05_shopping_cart3, b06_backpack, b06_backpack_new
 
+### Scene Library
+
+- Added: `savanna_flat_6km`
+
 ## v1.11.22
 
 ### Command API

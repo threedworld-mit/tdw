@@ -984,6 +984,18 @@
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_6km",
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_6km"
       }
+    },
+	"savanna_flat_6km": {
+      "description": "A large outdoor terrain, 6 km square, completely flat.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "savanna_flat_6km",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_flat_6km",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_flat_6km",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_flat_6km"
+      }
     }
   }
 }

@@ -403,7 +403,7 @@
             ],
             "do_not_use": false,
             "do_not_use_reason": "",
-            "flex": true,
+            "flex": false,
             "name": "dishwasher_4_counter_top",
             "physics_quality": 0.5680550766426401,
             "scale_factor": 1,

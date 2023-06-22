@@ -64903,6 +64903,7 @@
             "wnid": "n04442312"
         },
         "vray_077_composite": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 1891039,
                 "Linux": 2306751,
@@ -64952,8 +64953,8 @@
             },
             "composite_object": true,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect configureable joint. MeshCollider group49 doesn't have a mesh.",
             "flex": false,
             "name": "vray_077_composite",
             "physics_quality": 0.9800953581862236,
@@ -65261,6 +65262,7 @@
             "wnid": "n04442312"
         },
         "vray_084_composite": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 462606,
                 "Linux": 844232,
@@ -65310,8 +65312,8 @@
             },
             "composite_object": true,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect configureable joint",
             "flex": false,
             "name": "vray_084_composite",
             "physics_quality": 1.2229561250480188,
@@ -65433,6 +65435,7 @@
             "wnid": "n04442312"
         },
         "vray_085_composite": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 248359,
                 "Linux": 430490,
@@ -65482,8 +65485,8 @@
             },
             "composite_object": true,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect configureable joint",
             "flex": false,
             "name": "vray_085_composite",
             "physics_quality": 1.2555309160884582,

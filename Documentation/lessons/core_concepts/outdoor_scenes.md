@@ -17,7 +17,7 @@ for record in lib.records:
 
 ## Large outdoor scenes
 
-Right now, TDW has one large outdoor scene, `savanna_6km`, which is 6 square kilometers.  The TDW team will add more large outdoor scenes in the future.
+Right now, TDW has two large outdoor scenes, `savanna_6km`, which is 6 square kilometers, and `savanna_flat_6km`, which is the same scene but the terrain is totally flat.  The TDW team will add more large outdoor scenes in the future.
 
 For large outdoor scenes with long view distances, the camera clipping planes need to be set via [`set_camera_clipping_planes`](../../api/command_api.md#set_camera_clipping_planes) so that far-away terrain is included in the image.
 
@@ -63,11 +63,11 @@ Without setting the clipping planes and focus distance, we'd get this image inst
 Right now, there are two medium-sized outdoor scenes in TDW:
 
 - `suburb_scene_2023` An outdoor suburb scene.
-- `suburb_scene_2018` This is included only for legacy reasons.
+- `downtown_alleys` an outdoor city scene.
 
 ## Small outdoor scenes
 
-TDW includes several small outdoor scenes such as `abandoned_factory`. These scenes are meant for static photorealistic image generation, and are probably too small for anything involving a mobile agent.
+TDW includes several small outdoor scenes such as `dead_grotto`. These scenes are meant for static photorealistic image generation, and are probably too small for anything involving a mobile agent.
 
 ***
 

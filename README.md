@@ -38,6 +38,7 @@
 8. [Objects](Documentation/lessons/core_concepts/objects.md)
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
+11. [Outdoor scenes](Documentation/lessons/core_concepts/outdoor_scenes.md)
 
 ## Troubleshooting
 
@@ -579,6 +580,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [IkPlan](Documentation/python/replicant/ik_plans/ik_plan.md)
 - [IkPlanType](Documentation/python/replicant/ik_plans/ik_plan_type.md)
+- [Reset](Documentation/python/replicant/ik_plans/reset.md)
 - [VerticalHorizontal](Documentation/python/replicant/ik_plans/vertical_horizontal.md)
 
 **tdw.robot_data**

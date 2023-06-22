@@ -11,6 +11,7 @@ from tdw.replicant.arm import Arm
 from tdw.replicant.ik_plans.ik_plan import IkPlan
 from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
 from tdw.replicant.ik_plans.vertical_horizontal import VerticalHorizontal
+from tdw.replicant.ik_plans.reset import Reset
 
 
 class ReachForWithPlan(Action):
@@ -62,6 +63,8 @@ class ReachForWithPlan(Action):
         super().__init__()
         if plan == IkPlanType.vertical_horizontal:
             ctor = VerticalHorizontal
+        elif plan == IkPlanType.reset:
+            ctor = Reset
         else:
             raise Exception(f"Undefined IK plan: {plan}")
         """:field

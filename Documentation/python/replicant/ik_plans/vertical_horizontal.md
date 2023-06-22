@@ -69,4 +69,4 @@ Split a [`ReachFor`](../actions/reach_for.md) action into two actions:
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
 
-_Returns:_  A list of [`ReachFor`](../actions/reach_for.md) actions.
+_Returns:_  A list of [`Action`](../actions/action.md).

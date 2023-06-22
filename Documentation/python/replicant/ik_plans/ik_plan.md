@@ -2,9 +2,7 @@
 
 `from tdw.replicant.ik_plans.ik_plan import IkPlan`
 
-A data class that stores a list of [`ReachFor`](../actions/reach_for.md) actions.
-
-An `IkPlan` takes the reach-for parameters and converts them into a list of [`ReachFor`](../actions/reach_for.md) actions.
+An `IkPlan` takes the reach-for parameters and converts them into a list of actions.
 
 The parameters of `IkPlan` are similar to that of a `ReachFor` action, but an `IkPlan` is *not* an action.
 
@@ -72,4 +70,4 @@ An `IkPlan` is used by the [`ReachForWithPlan`](../actions/reach_for_with_plan.m
 | static |  ReplicantStatic |  | The [`ReplicantStatic`](../replicant_static.md) data that doesn't change after the Replicant is initialized. |
 | dynamic |  ReplicantDynamic |  | The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call. |
 
-_Returns:_  A list of [`ReachFor`](../actions/reach_for.md) actions.
+_Returns:_  A list of [`Action`](../actions/action.md).

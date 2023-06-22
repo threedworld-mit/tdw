@@ -270,12 +270,15 @@ output_directory/
 
 **`self.clone_repo(url)`**
 
+**`self.clone_repo(url, branch=None)`**
+
 Clone a repo to a temporary directory.
 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | url |  str |  | The URL to the .urdf or .xacro file or the repo. |
+| branch |  str  | None | The name of the branch of the repo. If None, defaults to `"master"`. |
 
 _Returns:_  The temporary directory.
 

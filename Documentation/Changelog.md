@@ -4,6 +4,13 @@
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.24
+
+### Build
+
+- **OS X builds now use the Metal graphics API.** Previously, Mac computers with Intel CPUs opted for OpenGL while Mac computers with Silicon CPUs used Metal. If you're using a Silicon CPU (M1, M2, etc.), this upgrade should not affect you. If you're using an Intel CPU, this upgrade should fix a variety of graphics glitches in TDW. 
+- Fixed: `_depth` and `_depth_simple` passes don't work on OS X. This problem wasn't actually fixed in 1.11.23, and in fact got worse (it affected Apple Intel). This was due to some corrupted internal Unity files and has now been fixed.
+
 ## v1.11.23
 
 ### Build

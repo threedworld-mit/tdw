@@ -2,7 +2,7 @@ from typing import Dict, List
 import numpy as np
 from tdw.output_data import OutputData, Replicants, ReplicantSegmentationColors
 from tdw.replicant.arm import Arm
-from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, ABLE_BODIED_BODY_PARTS
 
 
 class ReplicantStatic:
@@ -38,6 +38,9 @@ class ReplicantStatic:
         The Replicant's segmentation color.
         """
         self.segmentation_color: np.ndarray = np.zeros(3)
+        # Get a list of body parts per Replicant.
+        body_parts: List[ReplicantBodyPart] = ReplicantStatic.get_body_parts()
+        # Cache the data.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get Replicants data.
@@ -47,9 +50,9 @@ class ReplicantStatic:
                     object_id = replicants.get_id(j)
                     # We found the ID of this replicant.
                     if object_id == self.replicant_id:
-                        for k in range(len(BODY_PARTS)):
+                        for k in range(len(body_parts)):
                             # Cache the ID.
-                            self.body_parts[BODY_PARTS[k]] = replicants.get_body_part_id(j, k)
+                            self.body_parts[body_parts[k]] = replicants.get_body_part_id(j, k)
             elif r_id == "rseg":
                 replicant_segmentation_colors = ReplicantSegmentationColors(resp[i])
                 for j in range(replicant_segmentation_colors.get_num()):
@@ -66,3 +69,7 @@ class ReplicantStatic:
         Body parts by ID. Key = Object ID. Value = [`ReplicantBodyPart`](replicant_body_part.md).
         """
         self.body_parts_by_id: Dict[int, ReplicantBodyPart] = {v: k for k, v in self.body_parts.items()}
+
+    @staticmethod
+    def get_body_parts() -> List[ReplicantBodyPart]:
+        return ABLE_BODIED_BODY_PARTS

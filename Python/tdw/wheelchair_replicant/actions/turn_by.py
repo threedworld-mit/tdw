@@ -11,37 +11,39 @@ from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairRepl
 from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
 
-class MoveBy(Action):
+class TurnBy(Action):
     """:class_var
-    While moving, the WheelchairReplicant will cast an overlap shape in front of or behind it, depending on whether it is moving forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
+    While turning, the WheelchairReplicant will cast an overlap shape to the right or left of it, depending on the turn direction. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
     """
     OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
 
     def __init__(self, distance: float, dynamic: WheelchairReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, brake_at: float, motor_torque: float,
-                 brake_torque: float):
+                 scale_reset_arms_duration: bool, arrived_at: float, brake_at: float, left_motor_torque: float,
+                 right_motor_torque: float, brake_torque: float, steer_angle: float):
         """
-        :param distance: The target distance. If less than 0, the Replicant will move backwards.
+        :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
-        :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param brake_at: Start to brake at this distance in meters from the target.
-        :param motor_torque: The torque that will be applied to the rear wheels at the start of the action.
+        :param left_motor_torque: The torque that will be applied to the left rear wheel at the start of the action.
+        :param right_motor_torque: The torque that will be applied to the right rear wheel at the start of the action.
         :param brake_torque: The torque that will be applied to the rear wheels at the end of the action.
+        :param steer_angle: The steer angle in degrees that will applied to the front wheels at the start of the action.
         """
 
         super().__init__()
         """:field
-        The target distance. If less than 0, the Replicant will move backwards.
+        The target distance. If less than 0, the Replicant will walk backwards.
         """
         self.distance: float = distance
         """:field
-        If True, reset the arms to their neutral positions while beginning to move.
+        If True, reset the arms to their neutral positions while beginning the walk cycle.
         """
         self.reset_arms: bool = reset_arms
         """:field
@@ -61,20 +63,28 @@ class MoveBy(Action):
         """
         self.brake_at: float = brake_at
         """:field
-        The torque that will be applied to the rear wheels at the start of the action.
+        The torque that will be applied to the left rear wheel at the start of the action.
         """
-        self.motor_torque: float = motor_torque
+        self.left_motor_torque: float = left_motor_torque
+        """:field
+        The torque that will be applied to the right rear wheel at the start of the action.
+        """
+        self.right_motor_torque: float = right_motor_torque
         """:field
         The torque that will be applied to the rear wheels at the end of the action.
         """
         self.brake_torque: float = brake_torque
+        """:field
+        The steer angle in degrees that will applied to the front wheels at the start of the action.
+        """
+        self.steer_angle: float = steer_angle
         self._braking: bool = False
         """:field
         The [`CollisionDetection`](../collision_detection.md) rules.
         """
         self.collision_detection: CollisionDetection = collision_detection
         self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
-        # Don't try to move in the same direction twice.
+        # Don't try to walk in the same direction twice.
         if self.collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
                 previous.status == ActionStatus.collision and np.sign(previous.distance) == np.sign(self.distance):
             self.status = ActionStatus.collision
@@ -108,11 +118,14 @@ class MoveBy(Action):
                          "set_status": False})
         # Request an initial overlap.
         commands.extend(self._overlap(static=static, dynamic=dynamic))
-        # Set the motor torque.
-        commands.append({"$type": "set_wheelchair_motor_torque",
-                         "id": static.replicant_id,
-                         "left": self.motor_torque,
-                         "right": self.motor_torque})
+        # Set the motor torque and steer angle.
+        commands.extend([{"$type": "set_wheelchair_motor_torque",
+                          "id": static.replicant_id,
+                          "left": self.left_motor_torque,
+                          "right": self.right_motor_torque},
+                         {"$type": "set_wheelchair_replicant_steer_angle",
+                          "id": static.replicant_id,
+                          "angle": self.steer_angle}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
@@ -177,7 +190,10 @@ class MoveBy(Action):
                 {"$type": "set_wheelchair_replicant_brake_torque",
                  "id": replicant_id,
                  "left": self.brake_torque,
-                 "right": self.brake_torque}]
+                 "right": self.brake_torque},
+                {"$type": "set_wheelchair_replicant_steer_angle",
+                 "id": replicant_id,
+                 "angle": 0}]
 
     def _overlap(self, static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
         """

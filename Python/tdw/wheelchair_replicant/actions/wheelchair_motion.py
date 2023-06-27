@@ -8,6 +8,7 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.wheelchair_replicant.wheel_values import WheelValues
 from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
 from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
@@ -22,26 +23,25 @@ class WheelchairMotion(Action, ABC):
     """
     OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
 
-    def __init__(self, dynamic: WheelchairReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, brake_at: float, brake_torque: float,
-                 left_motor_torque: float, right_motor_torque: float, steer_angle: float):
+    def __init__(self, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
+                 collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
         """
+        :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
         :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
-        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
+        :param collision_detection: The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: A distance or time determines whether the WheelchairReplicant arrived at the target.
-        :param brake_at: Start to brake at this distance or angle.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action.
-        :param left_motor_torque: The torque that will be applied to the left rear wheel at the start of the action.
-        :param right_motor_torque: The torque that will be applied to the right rear wheel at the start of the action.
-        :param steer_angle: The steer angle in degrees that will applied to the front wheels at the start of the action.
         """
 
         super().__init__()
+        """:field
+        The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
+        """
+        self.wheel_values: WheelValues = wheel_values
         """:field
         If True, reset the arms to their neutral positions while beginning to move.
         """
@@ -58,26 +58,6 @@ class WheelchairMotion(Action, ABC):
         A distance or time determines whether the WheelchairReplicant arrived at the target.
         """
         self.arrived_at: float = arrived_at
-        """:field
-        Start to brake at this distance or angle.
-        """
-        self.brake_at: float = brake_at
-        """:field
-        The torque that will be applied to the rear wheels at the end of the action.
-        """
-        self.brake_torque: float = brake_torque
-        """:field
-        The torque that will be applied to the left rear wheel at the start of the action.
-        """
-        self.left_motor_torque: float = left_motor_torque
-        """:field
-        The torque that will be applied to the right rear wheel at the start of the action.
-        """
-        self.right_motor_torque: float = right_motor_torque
-        """:field
-        The steer angle in degrees that will applied to the front wheels at the start of the action.
-        """
-        self.steer_angle: float = steer_angle
         self._braking: bool = False
         """:field
         The [`CollisionDetection`](../collision_detection.md) rules.
@@ -116,15 +96,15 @@ class WheelchairMotion(Action, ABC):
         # Set the motor torques, brake torques, and steer angles.
         commands.extend([{"$type": "set_wheelchair_motor_torque",
                           "id": static.replicant_id,
-                          "left": self.left_motor_torque,
-                          "right": self.right_motor_torque},
+                          "left": self.wheel_values.left_motor_torque,
+                          "right": self.wheel_values.right_motor_torque},
                          {"$type": "set_wheelchair_replicant_brake_torque",
                           "id": static.replicant_id,
                           "left": 0,
                           "right": 0},
                          {"$type": "set_wheelchair_replicant_steer_angle",
                           "id": static.replicant_id,
-                          "angle": self.steer_angle}])
+                          "angle": self.wheel_values.steer_angle}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
@@ -196,8 +176,8 @@ class WheelchairMotion(Action, ABC):
                  "right": 0},
                 {"$type": "set_wheelchair_replicant_brake_torque",
                  "id": replicant_id,
-                 "left": self.brake_torque,
-                 "right": self.brake_torque},
+                 "left": self.wheel_values.brake_torque,
+                 "right": self.wheel_values.brake_torque},
                 {"$type": "set_wheelchair_replicant_steer_angle",
                  "id": replicant_id,
                  "angle": 0}]

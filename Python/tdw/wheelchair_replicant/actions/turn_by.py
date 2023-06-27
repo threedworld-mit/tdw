@@ -5,6 +5,7 @@ from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.wheelchair_replicant.wheel_values import WheelValues
 from tdw.wheelchair_replicant.actions.wheelchair_motion import WheelchairMotion
 from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
 from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
@@ -30,12 +31,12 @@ class TurnBy(WheelchairMotion):
       - Otherwise, the action ends in failure.
     """
 
-    def __init__(self, angle: float, dynamic: WheelchairReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, brake_at: float, brake_torque: float,
-                 left_motor_torque: float, right_motor_torque: float, steer_angle: float):
+    def __init__(self, angle: float, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
+                 collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
         """
         :param angle: The angle in degrees.
+        :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
         :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
@@ -43,11 +44,6 @@ class TurnBy(WheelchairMotion):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
-        :param brake_at: Start to brake at this angle.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action.
-        :param left_motor_torque: The torque that will be applied to the left rear wheel at the start of the action.
-        :param right_motor_torque: The torque that will be applied to the right rear wheel at the start of the action.
-        :param steer_angle: The steer angle in degrees that will applied to the front wheels at the start of the action.
         """
 
         """:field
@@ -64,11 +60,9 @@ class TurnBy(WheelchairMotion):
         self._initial_forward_vector: np.ndarray = np.zeros(3)
         # The initial yaw rotation.
         self._initial_rotation: float = 0
-        super().__init__(dynamic=dynamic, collision_detection=collision_detection, previous=previous,
-                         reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
-                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at, brake_at=brake_at,
-                         brake_torque=brake_torque, left_motor_torque=left_motor_torque,
-                         right_motor_torque=right_motor_torque, steer_angle=steer_angle)
+        super().__init__(wheel_values=wheel_values, dynamic=dynamic, collision_detection=collision_detection,
+                         previous=previous, reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
+                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
     def get_initialization_commands(self, resp: List[bytes],
                                     static: WheelchairReplicantStatic,
@@ -103,7 +97,7 @@ class TurnBy(WheelchairMotion):
                           static: WheelchairReplicantStatic,
                           dynamic: WheelchairReplicantDynamic) -> bool:
         delta_rotation: float = self._get_delta_rotation(dynamic=dynamic)
-        return abs(delta_rotation) < self.brake_at
+        return abs(delta_rotation) < self.wheel_values.brake_at
 
     def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
         overlap_d = 0.5

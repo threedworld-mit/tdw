@@ -13,7 +13,7 @@ from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.wheelchair_replicant.wheel_parameters import get_turn_values
+from tdw.wheelchair_replicant.wheel_values import WheelValues, get_turn_values, get_move_values
 from tdw.wheelchair_replicant.actions.turn_by import TurnBy
 from tdw.wheelchair_replicant.actions.turn_to import TurnTo
 from tdw.wheelchair_replicant.actions.move_by import MoveBy
@@ -24,7 +24,6 @@ from tdw.wheelchair_replicant.actions.reach_for import ReachFor
 """
 TODO:
 
-turn_to
 move_to
 """
 
@@ -51,10 +50,8 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                          "frequency": "always"})
         return commands
 
-    def turn_by(self, angle: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                scale_reset_arms_duration: bool = True, arrived_at: float = 1, brake_at: float = None,
-                brake_torque: float = None, left_motor_torque: float = None, right_motor_torque: float = None,
-                steer_angle: float = None):
+    def turn_by(self, angle: float, wheel_values: WheelValues = None, reset_arms: bool = True,
+                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 1):
         """
         Turn by an angle.
 
@@ -74,31 +71,23 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
           - Otherwise, the action ends in failure.
 
         :param angle: The angle in degrees.
+        :param wheel_values: The [`WheelValues`](../wheelchair_replicant/wheel_values.md) that will be applied to the wheelchair's wheels. If None, values will be derived from `angle`.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
-        :param brake_at: Start to brake at this angle. If None, a default value derived from `angle` will be used.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action. If None, a default value derived from `angle` will be used.
-        :param left_motor_torque: The torque that will be applied to the left rear wheel at the start of the action. If None, a default value derived from `angle` will be used.
-        :param right_motor_torque: The torque that will be applied to the right rear wheel at the start of the action. If None, a default value derived from `angle` will be used.
-        :param steer_angle: The steer angle in degrees that will applied to the front wheels at the start of the action. If None, a default value derived from `angle` will be used.
         """
 
         # Derive wheel parameters from the angle.
-        if brake_at is None or brake_torque is None or left_motor_torque is None or right_motor_torque is None or steer_angle is None:
-            brake_at, brake_torque, left_motor_torque, right_motor_torque, steer_angle = get_turn_values(angle=angle)
-        self.action = TurnBy(angle=angle, dynamic=self.dynamic, collision_detection=self.collision_detection,
-                             previous=self._previous_action, reset_arms=reset_arms,
-                             reset_arms_duration=reset_arms_duration,
-                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
-                             brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=left_motor_torque,
-                             right_motor_torque=right_motor_torque, steer_angle=steer_angle)
+        if wheel_values is None:
+            wheel_values = get_turn_values(angle=angle)
+        self.action = TurnBy(angle=angle, wheel_values=wheel_values, dynamic=self.dynamic,
+                             collision_detection=self.collision_detection, previous=self._previous_action,
+                             reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
-    def turn_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                scale_reset_arms_duration: bool = True, arrived_at: float = 1, brake_at: float = None,
-                brake_torque: float = None, left_motor_torque: float = None, right_motor_torque: float = None,
-                steer_angle: float = None):
+    def turn_to(self, target: TARGET, wheel_values: WheelValues = None, reset_arms: bool = True,
+                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 1):
         """
         Turn to a target object or position.
 
@@ -118,27 +107,22 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
           - Otherwise, the action ends in failure.
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param wheel_values: The [`WheelValues`](../wheelchair_replicant/wheel_values.md) that will be applied to the wheelchair's wheels. If None, values will be derived from `angle`.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
-        :param brake_at: Start to brake at this angle. If None, a default value derived from `angle` will be used.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action. If None, a default value derived from `angle` will be used.
-        :param left_motor_torque: The torque that will be applied to the left rear wheel at the start of the action. If None, a default value derived from `angle` will be used.
-        :param right_motor_torque: The torque that will be applied to the right rear wheel at the start of the action. If None, a default value derived from `angle` will be used.
-        :param steer_angle: The steer angle in degrees that will applied to the front wheels at the start of the action. If None, a default value derived from `angle` will be used.
         """
 
-        self.action = TurnTo(target=target, dynamic=self.dynamic, collision_detection=self.collision_detection,
-                             previous=self._previous_action, reset_arms=reset_arms,
-                             reset_arms_duration=reset_arms_duration,
-                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
-                             brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=left_motor_torque,
-                             right_motor_torque=right_motor_torque, steer_angle=steer_angle)
+        # If `wheel_values` is None, the `TurnTo` will set it.
+        # It needs to be this way because we don't know the angle if `target` is an object ID.
+        self.action = TurnTo(target=target, wheel_values=wheel_values, dynamic=self.dynamic,
+                             collision_detection=self.collision_detection, previous=self._previous_action,
+                             reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
-    def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, brake_at: float = None,
-                motor_torque: float = None, brake_torque: float = None):
+    def move_by(self, distance: float, wheel_values: WheelValues = None, reset_arms: bool = True,
+                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 0.1):
         """
         Move by a given distance by applying torques to the rear wheel motors.
 
@@ -155,34 +139,20 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
           - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
           - Otherwise, the action ends in failure.
 
-        :param distance: The target distance. If less than 0, the Replicant will walk backwards.
+        :param distance: The target distance. If less than 0, the Replicant will move backwards.
+        :param wheel_values: The [`WheelValues`](../wheelchair_replicant/wheel_values.md) that will be applied to the wheelchair's wheels. If None, values will be derived from `angle`.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param brake_at: Start to brake at this distance or angle.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action.
-        :param motor_torque: The torque that will be applied to the rear wheels at the start of the action.
         """
 
-        if brake_at is None or motor_torque is None or brake_torque is None:
-            d = abs(distance)
-            brake_at = distance * 0.9
-            if d < 1:
-                brake_torque = 2.5
-                motor_torque = 2.5
-            else:
-                brake_torque = 5
-                motor_torque = 5
-            if distance < 0:
-                brake_at *= -1
-                brake_torque *= -1
-                motor_torque *= -1
-        self.action = MoveBy(distance=distance, dynamic=self.dynamic, collision_detection=self.collision_detection,
-                             previous=self._previous_action, reset_arms=reset_arms,
-                             reset_arms_duration=reset_arms_duration,
-                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
-                             brake_at=brake_at, brake_torque=brake_torque, motor_torque=motor_torque)
+        if wheel_values is None:
+            wheel_values = get_move_values(distance)
+        self.action = MoveBy(distance=distance, wheel_values=wheel_values, dynamic=self.dynamic,
+                             collision_detection=self.collision_detection, previous=self._previous_action,
+                             reset_arms=reset_arms,reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
     def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
                   offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,

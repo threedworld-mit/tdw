@@ -4,6 +4,7 @@ from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.actions.action import Action
+from tdw.wheelchair_replicant.wheel_values import WheelValues
 from tdw.wheelchair_replicant.actions.wheelchair_motion import WheelchairMotion
 from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
 from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
@@ -27,12 +28,12 @@ class MoveBy(WheelchairMotion):
       - Otherwise, the action ends in failure.
     """
 
-    def __init__(self, distance: float, dynamic: WheelchairReplicantDynamic, collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, brake_at: float, brake_torque: float,
-                 motor_torque: float):
+    def __init__(self, distance: float, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
+                 collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
+        :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
         :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
@@ -40,20 +41,15 @@ class MoveBy(WheelchairMotion):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param brake_at: Start to brake at this distance or angle.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action.
-        :param motor_torque: The torque that will be applied to the rear wheels at the start of the action.
         """
 
         """:field
         The target distance. If less than 0, the Replicant will move backwards.
         """
         self.distance: float = distance
-        super().__init__(dynamic=dynamic, collision_detection=collision_detection, previous=previous,
+        super().__init__(wheel_values=wheel_values, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
                          reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
-                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at, brake_at=brake_at,
-                         brake_torque=brake_torque, left_motor_torque=motor_torque, right_motor_torque=motor_torque,
-                         steer_angle=0)
+                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
         self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
         # The initial position. This is used to determine the distance traversed. This is set in `get_initialization_commands()`.
         self._initial_position: np.ndarray = np.zeros(shape=3)
@@ -91,7 +87,7 @@ class MoveBy(WheelchairMotion):
                           static: WheelchairReplicantStatic,
                           dynamic: WheelchairReplicantDynamic) -> bool:
         distance_to_target, distance_traversed = self._get_distance(dynamic=dynamic)
-        return distance_to_target < self.brake_torque or distance_traversed > abs(self.distance) - self.arrived_at
+        return distance_to_target < self.wheel_values.brake_at or distance_traversed > abs(self.distance) - self.arrived_at
 
     def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
         overlap_z = 0.5

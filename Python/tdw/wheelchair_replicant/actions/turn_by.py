@@ -60,10 +60,6 @@ class TurnBy(WheelchairMotion):
                 self.angle -= 360
             else:
                 self.angle += 360
-        # The current angle to turn by.
-        self._delta_angle: float = self.angle
-        # The previous angle to turn by.
-        self._previous_delta_angle: float = self.angle
         # The initial forward directional vector of the Magnebot.
         self._initial_forward_vector: np.ndarray = np.zeros(3)
         # The initial yaw rotation.

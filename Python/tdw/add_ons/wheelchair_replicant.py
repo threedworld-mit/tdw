@@ -53,9 +53,20 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                 scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, brake_at: float = None,
                 motor_torque: float = None, brake_torque: float = None):
         """
-        Apply torque to the rear wheels to move by a given distance.
+        Move by a given distance by applying torques to the rear wheel motors.
 
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
+        Stop moving by setting the motor torques to 0 and applying the brakes.
+
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+
+        - If the Replicant moves the target distance, the action succeeds.
+        - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
 
         :param distance: The target distance. If less than 0, the Replicant will move backwards.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.

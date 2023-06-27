@@ -67,15 +67,15 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
         - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
           - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
           - Otherwise, the action ends in failure.
-
-        :param distance: The target distance. If less than 0, the Replicant will move backwards.
+        
+        :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param brake_at: Start to brake at this distance in meters from the target. If None, a default value derived from `distance` will be used.
-        :param motor_torque: The torque that will be applied to the rear wheels at the start of the action. If None, a default value derived from `distance` will be used.
-        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action. If None, a default value derived from `distance` will be used.
+        :param brake_at: Start to brake at this distance or angle.
+        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action.
+        :param motor_torque: The torque that will be applied to the rear wheels at the start of the action.
         """
 
         if brake_at is None or motor_torque is None or brake_torque is None:
@@ -84,7 +84,7 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                              previous=self._previous_action, reset_arms=reset_arms,
                              reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
-                             brake_at=brake_at, motor_torque=motor_torque, brake_torque=brake_torque)
+                             brake_at=brake_at, brake_torque=brake_torque, motor_torque=motor_torque)
 
     def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
                   offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,

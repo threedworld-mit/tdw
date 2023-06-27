@@ -107,7 +107,7 @@ class TurnBy(WheelchairMotion):
                           static: WheelchairReplicantStatic,
                           dynamic: WheelchairReplicantDynamic) -> bool:
         delta_rotation: float = self._get_delta_rotation(dynamic=dynamic)
-        return np.linalg.norm(self.angle - delta_rotation) < self.brake_at
+        return abs(delta_rotation) < self.brake_at
 
     def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
         overlap_d = 0.5

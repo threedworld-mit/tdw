@@ -13,6 +13,7 @@ from tdw.replicant.arm import Arm
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.wheelchair_replicant.actions.turn_by import TurnBy
 from tdw.wheelchair_replicant.actions.move_by import MoveBy
 from tdw.wheelchair_replicant.actions.reset_arm import ResetArm
 from tdw.wheelchair_replicant.actions.reach_for import ReachFor
@@ -49,6 +50,69 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                          "frequency": "always"})
         return commands
 
+    def turn_by(self, angle: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
+                scale_reset_arms_duration: bool = True, arrived_at: float = 1, brake_at: float = None,
+                brake_torque: float = None, left_motor_torque: float = None, right_motor_torque: float = None,
+                steer_angle: float = None):
+        """
+        Turn by an angle.
+
+        The wheelchair turns by applying motor torques to the rear wheels and a steer angle to the front wheels.
+
+        Therefore, the wheelchair is not guaranteed to turn in place.
+
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+
+        - If the Replicant turns by the target angle, the action succeeds.
+        - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+
+        :param angle: The angle in degrees.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
+        :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param arrived_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
+        :param brake_at: Start to brake at this angle. If None, a default value derived from `angle` will be used.
+        :param brake_torque: The torque that will be applied to the rear wheels at the end of the action. If None, a default value derived from `angle` will be used.
+        :param left_motor_torque: The torque that will be applied to the left rear wheel at the start of the action. If None, a default value derived from `angle` will be used.
+        :param right_motor_torque: The torque that will be applied to the right rear wheel at the start of the action. If None, a default value derived from `angle` will be used.
+        :param steer_angle: The steer angle in degrees that will applied to the front wheels at the start of the action. If None, a default value derived from `angle` will be used.
+        """
+
+        # Derive wheel parameters from the angle.
+        if brake_at is None or brake_torque is None or left_motor_torque is None or right_motor_torque is None or steer_angle is None:
+            brake_at = angle * 0.9
+            a = abs(angle)
+            if a < 5:
+                brake_torque = 2.5
+                outer_motor_torque = -2.5
+                inner_motor_torque = 5
+                steer_angle = 25
+            else:
+                brake_torque = 5
+                outer_motor_torque = -5
+                inner_motor_torque = 10
+                steer_angle = 45
+            if angle > 0:
+                left_motor_torque = outer_motor_torque
+                right_motor_torque = inner_motor_torque
+            else:
+                left_motor_torque = inner_motor_torque
+                right_motor_torque = outer_motor_torque
+                brake_torque *= -1
+                steer_angle *= -1
+        self.action = TurnBy(angle=angle, dynamic=self.dynamic, collision_detection=self.collision_detection,
+                             previous=self._previous_action, reset_arms=reset_arms,
+                             reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
+                             brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=left_motor_torque,
+                             right_motor_torque=right_motor_torque, steer_angle=steer_angle)
+
     def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
                 scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, brake_at: float = None,
                 motor_torque: float = None, brake_torque: float = None):
@@ -67,7 +131,7 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
         - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
           - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
           - Otherwise, the action ends in failure.
-        
+
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
@@ -79,7 +143,18 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
         """
 
         if brake_at is None or motor_torque is None or brake_torque is None:
-            brake_at, motor_torque, brake_torque = WheelchairReplicant._get_wheel_move_parameters(distance)
+            d = abs(distance)
+            brake_at = distance * 0.9
+            if d < 1:
+                brake_torque = 2.5
+                motor_torque = 2.5
+            else:
+                brake_torque = 5
+                motor_torque = 5
+            if distance < 0:
+                brake_at *= -1
+                brake_torque *= -1
+                motor_torque *= -1
         self.action = MoveBy(distance=distance, dynamic=self.dynamic, collision_detection=self.collision_detection,
                              previous=self._previous_action, reset_arms=reset_arms,
                              reset_arms_duration=reset_arms_duration,
@@ -176,25 +251,3 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
 
     def _get_send_replicants_command(self) -> str:
         return "send_wheelchair_replicants"
-
-    @staticmethod
-    def _get_wheel_move_parameters(distance: float) -> (float, float, float):
-        """
-        :param distance: The target distance.
-
-        :return: Wheel parameters derived from the distance.
-        """
-
-        d = abs(distance)
-        brake_at = distance * 0.9
-        if d < 1:
-            brake_torque = 2.5
-            motor_torque = 2.5
-        else:
-            brake_torque = 5
-            motor_torque = 5
-        if distance < 0:
-            brake_at *= -1
-            brake_torque *= -1
-            motor_torque *= -1
-        return brake_at, motor_torque, brake_torque

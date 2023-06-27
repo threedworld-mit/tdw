@@ -1,33 +1,18 @@
-from typing import List, Optional, Dict, Union
-from copy import deepcopy
-import numpy as np
-from tdw.type_aliases import TARGET, POSITION, ROTATION
+from typing import List, Union
+from tdw.type_aliases import TARGET
 from tdw.add_ons.replicant_base import ReplicantBase
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
-from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.actions.action import Action
-from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.turn_by import TurnBy
 from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
 from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.actions.reach_for_with_plan import ReachForWithPlan
-from tdw.replicant.actions.grasp import Grasp
-from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
-from tdw.replicant.actions.look_at import LookAt
-from tdw.replicant.actions.rotate_head import RotateHead
-from tdw.replicant.actions.reset_head import ResetHead
-from tdw.replicant.actions.do_nothing import DoNothing
-from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
 from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
-from tdw.librarian import HumanoidRecord, HumanoidLibrarian
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
 
 
 class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):

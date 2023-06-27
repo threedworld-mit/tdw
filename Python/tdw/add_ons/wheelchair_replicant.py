@@ -1,31 +1,16 @@
-from typing import List, Optional, Dict, Union
-from copy import deepcopy
-import numpy as np
-from tdw.type_aliases import TARGET, POSITION, ROTATION
+from typing import List, Optional, Union
+from tdw.type_aliases import TARGET
 from tdw.add_ons.replicant_base import ReplicantBase
 from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.replicant.collision_detection import CollisionDetection
-from tdw.replicant.actions.action import Action
-from tdw.replicant.action_status import ActionStatus
-from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
-from tdw.librarian import HumanoidRecord, HumanoidLibrarian
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
 from tdw.wheelchair_replicant.wheel_values import WheelValues, get_turn_values, get_move_values
 from tdw.wheelchair_replicant.actions.turn_by import TurnBy
 from tdw.wheelchair_replicant.actions.turn_to import TurnTo
 from tdw.wheelchair_replicant.actions.move_by import MoveBy
+from tdw.wheelchair_replicant.actions.move_to import MoveTo
 from tdw.wheelchair_replicant.actions.reset_arm import ResetArm
 from tdw.wheelchair_replicant.actions.reach_for import ReachFor
-
-
-"""
-TODO:
-
-move_to
-"""
 
 
 class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairReplicantStatic):
@@ -153,6 +138,41 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                              collision_detection=self.collision_detection, previous=self._previous_action,
                              reset_arms=reset_arms,reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
+
+    def move_to(self, target: TARGET, turn_wheel_values: Optional[WheelValues] = None,
+                move_wheel_values: Optional[WheelValues] = None, reset_arms: bool = True,
+                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, aligned_at: float = 1,
+                arrived_at: float = 0.25):
+        """
+        Turn the wheelchair to a target position or object and then move to it.
+
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+
+        - If the Replicant moves the target distance (i.e. it reaches its target), the action succeeds.
+        - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+        - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+        - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+          - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+          - Otherwise, the action ends in failure.
+
+        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param turn_wheel_values: The [`WheelValues`](../wheelchair_replicant/wheel_values.md) that will be applied to the wheelchair's wheels while it's turning. If None, values will be derived from the angle.
+        :param move_wheel_values: The [`WheelValues`](../wheelchair_replicant/wheel_values.md) that will be applied to the wheelchair's wheels while it's moving. If None, values will be derived from the distance.
+        :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
+        :param reset_arms_duration: The speed at which the arms are reset in seconds.
+        :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param aligned_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
+        :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        """
+
+        self.action = MoveTo(target=target, turn_wheel_values=turn_wheel_values, move_wheel_values=move_wheel_values,
+                             dynamic=self.dynamic, collision_detection=self.collision_detection,
+                             previous=self._previous_action, reset_arms=reset_arms,
+                             reset_arms_duration=reset_arms_duration,
+                             scale_reset_arms_duration=scale_reset_arms_duration, aligned_at=aligned_at,
+                             arrived_at=arrived_at)
 
     def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
                   offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,

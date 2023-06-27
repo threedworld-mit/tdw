@@ -14,6 +14,21 @@ from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairRepli
 
 
 class MoveTo(Action):
+    """
+    Turn the wheelchair to a target position or object and then move to it.
+
+    The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+
+    - If the Replicant moves the target distance (i.e. it reaches its target), the action succeeds.
+    - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
+    - If `self.collision_detection.avoid_obstacles == True` and the Replicant encounters a wall or object in its path:
+      - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+      - Otherwise, the action ends in failure.
+    - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
+      - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
+      - Otherwise, the action ends in failure.
+    """
+
     def __init__(self, target: TARGET, turn_wheel_values: Optional[WheelValues],
                  move_wheel_values: Optional[WheelValues], dynamic: WheelchairReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,

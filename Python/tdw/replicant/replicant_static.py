@@ -38,6 +38,10 @@ class ReplicantStatic:
         The Replicant's segmentation color.
         """
         self.segmentation_color: np.ndarray = np.zeros(3)
+        """:field
+        If True, this static data for a [`Replicant`](../add_ons/replicant.md). If False, this static data for a [`WheelchairReplicant`](../add_ons/wheelchair_replicant.md).
+        """
+        self.can_walk: bool = self._can_walk()
         # Get a list of body parts per Replicant.
         body_parts: List[ReplicantBodyPart] = self.get_body_parts()
         # Cache the data.
@@ -72,3 +76,10 @@ class ReplicantStatic:
 
     def get_body_parts(self) -> List[ReplicantBodyPart]:
         return ABLE_BODIED_BODY_PARTS
+
+    def _can_walk(self) -> bool:
+        """
+        :return: True if this Replicant can walk.
+        """
+
+        return True

@@ -10,3 +10,6 @@ class WheelchairReplicantStatic(ReplicantStatic):
 
     def get_body_parts(self) -> List[ReplicantBodyPart]:
         return WHEELCHAIR_BODY_PARTS
+
+    def _can_walk(self) -> bool:
+        return False

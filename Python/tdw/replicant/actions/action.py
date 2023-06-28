@@ -45,9 +45,10 @@ class Action(ABC):
         """
 
         commands = [{"$type": "replicant_step",
-                     "id": static.replicant_id},
-                    {"$type": "stop_replicant_animation",
                      "id": static.replicant_id}]
+        if static.can_walk:
+            commands.append({"$type": "stop_replicant_animation",
+                             "id": static.replicant_id})
         # If we only want images at the start of the action or never, disable the camera now.
         if image_frequency == ImageFrequency.once or image_frequency == ImageFrequency.never:
             commands.extend([{"$type": "enable_image_sensor",

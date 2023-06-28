@@ -29,6 +29,15 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
     """
     LIBRARY_NAME: str = "replicants.json"
 
+    def get_initialization_commands(self) -> List[dict]:
+        commands = super().get_initialization_commands()
+        commands.insert(1, {"$type": "add_replicant_rigidbody",
+                            "id": self.replicant_id})
+        commands.insert(2, {"$type": "set_rigidbody_constraints",
+                            "id": self.replicant_id,
+                            "freeze_position_axes": {"x": 0, "y": 1, "z": 0}})
+        return commands
+
     def turn_by(self, angle: float) -> None:
         """
         Turn the Replicant by an angle.
@@ -231,6 +240,9 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                                previous=self._previous_action,
                                duration=duration,
                                scale_duration=scale_duration)
+
+    def _get_replicant_static(self, resp: List[bytes]) -> ReplicantStatic:
+        return ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
 
     def _set_dynamic_data(self, resp: List[bytes]) -> None:
         """

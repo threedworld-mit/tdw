@@ -70,6 +70,8 @@ class TurnBy(WheelchairMotion):
                                     image_frequency: ImageFrequency) -> List[dict]:
         self._initial_forward_vector = dynamic.transform.forward.copy()
         self._initial_rotation = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
+        if self._initial_rotation > 180:
+            self._initial_rotation = 360 - self._initial_rotation
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                    image_frequency=image_frequency)
 
@@ -81,6 +83,8 @@ class TurnBy(WheelchairMotion):
         """
 
         rotation: float = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
+        if rotation > 180:
+            rotation = 360 - rotation
         return np.linalg.norm(self._initial_rotation - rotation)
 
     def _previous_was_collision(self, previous: Optional[Action]) -> bool:
@@ -97,7 +101,7 @@ class TurnBy(WheelchairMotion):
                           static: WheelchairReplicantStatic,
                           dynamic: WheelchairReplicantDynamic) -> bool:
         delta_rotation: float = self._get_delta_rotation(dynamic=dynamic)
-        return abs(delta_rotation) < self.wheel_values.brake_at
+        return abs(delta_rotation) >= self.wheel_values.brake_at
 
     def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
         overlap_d = 0.5

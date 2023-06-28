@@ -81,13 +81,13 @@ class MoveBy(WheelchairMotion):
                     static: WheelchairReplicantStatic,
                     dynamic: WheelchairReplicantDynamic) -> bool:
         distance_to_target, distance_traversed = self._get_distance(dynamic=dynamic)
-        return distance_to_target < self.arrived_at or distance_traversed > abs(self.distance) - self.arrived_at
+        return abs(distance_to_target) <= self.arrived_at
 
     def _is_time_to_brake(self, resp: List[bytes],
                           static: WheelchairReplicantStatic,
                           dynamic: WheelchairReplicantDynamic) -> bool:
         distance_to_target, distance_traversed = self._get_distance(dynamic=dynamic)
-        return distance_to_target < self.wheel_values.brake_at or distance_traversed > abs(self.distance) - self.arrived_at
+        return distance_traversed >= self.wheel_values.brake_at or abs(distance_to_target) <= self.arrived_at
 
     def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
         overlap_z = 0.5

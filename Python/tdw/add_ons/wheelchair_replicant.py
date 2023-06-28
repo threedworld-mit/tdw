@@ -1,9 +1,10 @@
 from typing import List, Optional, Union
-from tdw.type_aliases import TARGET
+from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.add_ons.replicant_base import ReplicantBase
+from tdw.replicant.arm import Arm
+from tdw.replicant.image_frequency import ImageFrequency
 from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.replicant.arm import Arm
 from tdw.wheelchair_replicant.wheel_values import WheelValues, get_turn_values, get_move_values
 from tdw.wheelchair_replicant.actions.turn_by import TurnBy
 from tdw.wheelchair_replicant.actions.turn_to import TurnTo
@@ -15,13 +16,28 @@ from tdw.wheelchair_replicant.actions.reach_for import ReachFor
 
 class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairReplicantStatic):
     """
-    A WheelchairReplicant is an wheelchairbound human-like agent that can interact with the scene with pseudo-physics behavior.
+    A WheelchairReplicant is an wheelchair-bound human-like agent that can interact with the scene with pseudo-physics behavior.
     """
 
     """:class_var
     The WheelchairReplicants library file. You can override this to use a custom library (e.g. a local library).
     """
     LIBRARY_NAME: str = "wheelchair_replicants.json"
+
+    def __init__(self, replicant_id: int = 0, position: POSITION = None, rotation: ROTATION = None,
+                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "man_casual",
+                 target_framerate: int = 100):
+        """
+        :param replicant_id: The ID of the Replicant.
+        :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
+        :param image_frequency: An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
+        :param name: The name of the Replicant model.
+        :param target_framerate: The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement.
+        """
+
+        super().__init__(replicant_id=replicant_id, position=position, rotation=rotation,
+                         image_frequency=image_frequency, name=name, target_framerate=target_framerate)
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -244,6 +260,9 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                                previous=self._previous_action,
                                duration=duration,
                                scale_duration=scale_duration)
+
+    def _get_replicant_static(self, resp: List[bytes]) -> WheelchairReplicantStatic:
+        return WheelchairReplicantStatic(replicant_id=self.replicant_id, resp=resp)
 
     def _set_dynamic_data(self, resp: List[bytes]) -> None:
         """

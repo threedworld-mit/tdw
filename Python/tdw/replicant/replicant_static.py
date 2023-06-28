@@ -39,7 +39,7 @@ class ReplicantStatic:
         """
         self.segmentation_color: np.ndarray = np.zeros(3)
         # Get a list of body parts per Replicant.
-        body_parts: List[ReplicantBodyPart] = ReplicantStatic.get_body_parts()
+        body_parts: List[ReplicantBodyPart] = self.get_body_parts()
         # Cache the data.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -70,6 +70,5 @@ class ReplicantStatic:
         """
         self.body_parts_by_id: Dict[int, ReplicantBodyPart] = {v: k for k, v in self.body_parts.items()}
 
-    @staticmethod
-    def get_body_parts() -> List[ReplicantBodyPart]:
+    def get_body_parts(self) -> List[ReplicantBodyPart]:
         return ABLE_BODIED_BODY_PARTS

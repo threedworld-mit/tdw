@@ -98,11 +98,10 @@ class WheelchairMotion(Action, ABC):
                           "id": static.replicant_id,
                           "left": self.wheel_values.left_motor_torque,
                           "right": self.wheel_values.right_motor_torque},
-                         {"$type": "set_wheelchair_replicant_brake_torque",
+                         {"$type": "set_wheelchair_brake_torque",
                           "id": static.replicant_id,
-                          "left": 0,
-                          "right": 0},
-                         {"$type": "set_wheelchair_replicant_steer_angle",
+                          "torque": 0},
+                         {"$type": "set_wheelchair_steer_angle",
                           "id": static.replicant_id,
                           "angle": self.wheel_values.steer_angle}])
         return commands
@@ -159,6 +158,9 @@ class WheelchairMotion(Action, ABC):
         commands = super().get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)
         # Hit the brakes.
         commands.extend(self._get_brake_commands(replicant_id=static.replicant_id))
+        commands.append({"$type": "set_wheelchair_steer_angle",
+                         "id": static.replicant_id,
+                         "angle": 0})
         return commands
 
     def _get_brake_commands(self, replicant_id: int) -> List[dict]:
@@ -174,13 +176,9 @@ class WheelchairMotion(Action, ABC):
                  "id": replicant_id,
                  "left": 0,
                  "right": 0},
-                {"$type": "set_wheelchair_replicant_brake_torque",
+                {"$type": "set_wheelchair_brake_torque",
                  "id": replicant_id,
-                 "left": self.wheel_values.brake_torque,
-                 "right": self.wheel_values.brake_torque},
-                {"$type": "set_wheelchair_replicant_steer_angle",
-                 "id": replicant_id,
-                 "angle": 0}]
+                 "torque": self.wheel_values.brake_torque}]
 
     def _overlap(self, static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
         """

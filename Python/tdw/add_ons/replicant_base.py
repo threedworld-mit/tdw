@@ -32,7 +32,7 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
     """
 
     def __init__(self, replicant_id: int = 0, position: POSITION = None, rotation: ROTATION = None,
-                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "man_casual",
+                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
                  target_framerate: int = 100):
         """
         :param replicant_id: The ID of the Replicant.
@@ -104,11 +104,6 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
                      "rotation": self.initial_rotation,
                      "url": self._record.get_url(),
                      "id": self.replicant_id},
-                    {"$type": "add_replicant_rigidbody",
-                     "id": self.replicant_id},
-                    {"$type": "set_rigidbody_constraints",
-                     "id": self.replicant_id,
-                     "freeze_position_axes": {"x": 0, "y": 1, "z": 0}},
                     {"$type": "set_target_framerate",
                      "framerate": self._target_framerate},
                     {"$type": self._get_send_replicants_command(),
@@ -326,7 +321,7 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         :param resp: The response from the build.
         """
 
-        self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
+        self.static = self._get_replicant_static(resp=resp)
         # Set an initial action.
         self.action = DoNothing()
         # Add an avatar and set up its camera.
@@ -345,6 +340,16 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
                                "avatar_id": self.static.avatar_id},
                               {"$type": "set_img_pass_encoding",
                                "value": False}])
+
+    @abstractmethod
+    def _get_replicant_static(self, resp: List[bytes]) -> S:
+        """
+        :param resp: The response from the build.
+
+        :return: Static Replicant data.
+        """
+
+        raise Exception()
 
     @staticmethod
     def _arms_to_list(arm: Union[Arm, List[Arm]]) -> List[Arm]:

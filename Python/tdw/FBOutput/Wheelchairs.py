@@ -41,7 +41,7 @@ class Wheelchairs(object):
         return 0
 
     # Wheelchairs
-    def Wheels(self, j):
+    def Velocities(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             a = self._tab.Vector(o)
@@ -49,22 +49,70 @@ class Wheelchairs(object):
         return 0
 
     # Wheelchairs
-    def WheelsAsNumpy(self):
+    def VelocitiesAsNumpy(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # Wheelchairs
-    def WheelsLength(self):
+    def VelocitiesLength(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def WheelchairsStart(builder): builder.StartObject(2)
+    # Wheelchairs
+    def Sleepings(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
+
+    # Wheelchairs
+    def SleepingsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
+        return 0
+
+    # Wheelchairs
+    def SleepingsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Wheelchairs
+    def Wheels(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Wheelchairs
+    def WheelsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # Wheelchairs
+    def WheelsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def WheelchairsStart(builder): builder.StartObject(4)
 def WheelchairsAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
 def WheelchairsStartIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def WheelchairsAddWheels(builder, wheels): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(wheels), 0)
+def WheelchairsAddVelocities(builder, velocities): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(velocities), 0)
+def WheelchairsStartVelocitiesVector(builder, numElems): return builder.StartVector(4, numElems, 4)
+def WheelchairsAddSleepings(builder, sleepings): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(sleepings), 0)
+def WheelchairsStartSleepingsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def WheelchairsAddWheels(builder, wheels): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(wheels), 0)
 def WheelchairsStartWheelsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def WheelchairsEnd(builder): return builder.EndObject()

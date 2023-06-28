@@ -57,7 +57,7 @@ class ReplicantDynamic(AgentDynamic):
                             self.held_objects[Arm.right] = replicants.get_held_right(j)
                         # Get the body part transforms.
                         num_body_parts = replicants.get_num_body_parts()
-                        for k in range(num_body_parts):
+                        for k in range(num_body_parts - 1):
                             # Cache the transform.
                             body_part_id = replicants.get_body_part_id(j, k)
                             self.body_parts[body_part_id] = Transform(position=replicants.get_body_part_position(j, k),

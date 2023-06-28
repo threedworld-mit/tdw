@@ -1508,7 +1508,8 @@ class Replicants(OutputData):
     def __init__(self, b):
         super().__init__(b)
         num_body_parts: int = self.get_num_body_parts()
-        self._ids = self.data.IdsAsNumpy().reshape(-1, num_body_parts)
+        q = self.data.IdsAsNumpy()
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, num_body_parts)
         self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, num_body_parts, 3)
         self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, num_body_parts, 4)
         self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, num_body_parts, 3)
@@ -1577,6 +1578,11 @@ class Wheelchairs(OutputData):
         super().__init__(b)
         self._ids: np.ndarray = self.data.IdsAsNumpy()
         self._wheels: np.ndarray = self.data.WheelsAsNumpy().reshape(-1, 4, 3)
+        self._velocities: np.ndarray = self.data.VelocitiesAsNumpy().reshape(-1, 2, 3)
+        self._sleepings: np.ndarray = self.data.SleepingsAsNumpy()
+
+    def get_data(self) -> WChairs.Wheelchairs:
+        return WChairs.Wheelchairs.GetRootAsWheelchairs(self.bytes, 0)
 
     def get_num(self) -> int:
         return int(self._ids.shape[0])
@@ -1584,8 +1590,18 @@ class Wheelchairs(OutputData):
     def get_id(self, index: int) -> int:
         return int(self._ids[index])
 
+    def get_velocity(self, index: int) -> np.ndarray:
+        return self._velocities[index][0]
+
+    def get_angular_velocity(self, index: int) -> np.ndarray:
+        return self._velocities[index][1]
+
+    def get_sleeping(self, index: int) -> bool:
+        return bool(self._sleepings[index])
+
     def get_wheel(self, index: int, wheel_index: int) -> np.ndarray:
         return self._wheels[index][wheel_index]
+
 
 
 class ReplicantSegmentationColors(OutputData):

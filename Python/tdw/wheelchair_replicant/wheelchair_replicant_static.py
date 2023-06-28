@@ -8,6 +8,5 @@ class WheelchairReplicantStatic(ReplicantStatic):
     Static data for the WheelchairReplicant.
     """
 
-    @staticmethod
-    def get_body_parts() -> List[ReplicantBodyPart]:
+    def get_body_parts(self) -> List[ReplicantBodyPart]:
         return WHEELCHAIR_BODY_PARTS

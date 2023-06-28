@@ -50,17 +50,15 @@ def get_turn_values(angle: float) -> WheelValues:
     :return: Wheel values for a turn action.
     """
 
-    brake_at = angle * 0.9
+    brake_at = abs(angle) * 0.9
     if abs(angle) < 5:
-        brake_torque = 2.5
-        outer_motor_torque = -2.5
-        inner_motor_torque = 5
-        steer_angle = 25
-    else:
         brake_torque = 5
         outer_motor_torque = -5
         inner_motor_torque = 10
-        steer_angle = 45
+    else:
+        brake_torque = 20
+        outer_motor_torque = -20
+        inner_motor_torque = 5
     if angle > 0:
         left_motor_torque = outer_motor_torque
         right_motor_torque = inner_motor_torque
@@ -68,9 +66,8 @@ def get_turn_values(angle: float) -> WheelValues:
         left_motor_torque = inner_motor_torque
         right_motor_torque = outer_motor_torque
         brake_torque *= -1
-        steer_angle *= -1
     return WheelValues(brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=left_motor_torque,
-                       right_motor_torque=right_motor_torque, steer_angle=steer_angle)
+                       right_motor_torque=right_motor_torque, steer_angle=angle)
 
 
 def get_move_values(distance: float) -> WheelValues:
@@ -82,11 +79,11 @@ def get_move_values(distance: float) -> WheelValues:
 
     brake_at = distance * 0.9
     if abs(distance) < 1:
-        brake_torque = 2.5
-        motor_torque = 2.5
-    else:
         brake_torque = 5
         motor_torque = 5
+    else:
+        brake_torque = 10
+        motor_torque = 10
     if distance < 0:
         brake_at *= -1
         brake_torque *= -1

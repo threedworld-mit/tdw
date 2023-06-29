@@ -117,11 +117,6 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
                     {"$type": "send_framerate",
                      "frequency": "always"},
                     {"$type": "send_replicant_segmentation_colors"}]
-        # Add empty objects to the Replicant for relative IK motion targets.
-        commands.extend([{"$type": "attach_empty_object",
-                          "id": self.replicant_id,
-                          "empty_object_id": arm.value,
-                          "position": {"x": 0, "y": 0, "z": 0}} for arm in [Arm.left, Arm.right]])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

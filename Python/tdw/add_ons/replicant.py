@@ -36,6 +36,11 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         commands.insert(2, {"$type": "set_rigidbody_constraints",
                             "id": self.replicant_id,
                             "freeze_position_axes": {"x": 0, "y": 1, "z": 0}})
+        # Add empty objects to the Replicant for relative IK motion targets.
+        commands.extend([{"$type": "attach_empty_object",
+                          "id": self.replicant_id,
+                          "empty_object_id": arm.value,
+                          "position": {"x": 0, "y": 0, "z": 0}} for arm in [Arm.left, Arm.right]])
         return commands
 
     def turn_by(self, angle: float) -> None:

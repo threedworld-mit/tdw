@@ -16,7 +16,7 @@ from tdw.wheelchair_replicant.actions.reach_for import ReachFor
 
 class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairReplicantStatic):
     """
-    A WheelchairReplicant is an wheelchair-bound human-like agent that can interact with the scene with pseudo-physics behavior.
+    A WheelchairReplicant is a wheelchair-bound human-like agent that can interact with the scene with pseudo-physics behavior.
     """
 
     """:class_var

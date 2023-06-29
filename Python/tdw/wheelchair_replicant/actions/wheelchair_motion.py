@@ -258,3 +258,4 @@ class WheelchairMotion(Action, ABC):
         """
 
         raise Exception()
+

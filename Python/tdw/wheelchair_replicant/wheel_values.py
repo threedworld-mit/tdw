@@ -54,7 +54,7 @@ def get_turn_values(angle: float, arrived_at: float) -> WheelValues:
     :return: Wheel values for a turn action.
     """
 
-    brake_at = angle - arrived_at / 2
+    brake_at = abs(angle - arrived_at / 2)
     brake_torque = 5
     a = abs(angle)
     if a <= 5:

@@ -93,7 +93,8 @@ class MoveBy(WheelchairMotion):
         return distance_traversed >= self.wheel_values.brake_at or abs(distance_to_target) <= self.arrived_at
 
     def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
-        overlap_z = 0.5
-        if self.distance < 0:
-            overlap_z *= -1
+        if self.distance > 0:
+            overlap_z = 0.8
+        else:
+            overlap_z = -0.6
         return dynamic.transform.forward * overlap_z

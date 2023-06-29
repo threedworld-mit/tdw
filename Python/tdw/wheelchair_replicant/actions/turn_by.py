@@ -49,13 +49,7 @@ class TurnBy(WheelchairMotion):
         """:field
         The target angle in degrees.
         """
-        self.angle: float = angle
-        # Clamp the angle.
-        if np.abs(self.angle) > 180:
-            if self.angle > 0:
-                self.angle -= 360
-            else:
-                self.angle += 360
+        self.angle: float = TurnBy._clamp_angle(angle)
         # The initial forward directional vector of the Magnebot.
         self._initial_forward_vector: np.ndarray = np.zeros(3)
         # The initial yaw rotation.
@@ -70,10 +64,27 @@ class TurnBy(WheelchairMotion):
                                     image_frequency: ImageFrequency) -> List[dict]:
         self._initial_forward_vector = dynamic.transform.forward.copy()
         self._initial_rotation = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
-        if self._initial_rotation > 180:
-            self._initial_rotation = 360 - self._initial_rotation
+        self._initial_rotation = TurnBy._clamp_angle(self._initial_rotation)
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                    image_frequency=image_frequency)
+
+    @staticmethod
+    def _clamp_angle(angle: float) -> float:
+        """
+        :param angle: an angle.
+
+        :return: The angle between -180 and 180 degrees.
+        """
+
+        a = abs(angle)
+        if a > 180:
+            a = (360 - a)
+            if angle < 0:
+                return -a
+            else:
+                return a
+        else:
+            return angle
 
     def _get_delta_rotation(self, dynamic: WheelchairReplicantDynamic) -> float:
         """
@@ -83,8 +94,7 @@ class TurnBy(WheelchairMotion):
         """
 
         rotation: float = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
-        if rotation > 180:
-            rotation = 360 - rotation
+        rotation = TurnBy._clamp_angle(rotation)
         return np.linalg.norm(self._initial_rotation - rotation)
 
     def _get_fail_status(self) -> ActionStatus:

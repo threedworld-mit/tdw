@@ -74,8 +74,10 @@ class TurnTo(TurnBy):
         v2 = target_position - dynamic.transform.position
         v2 = v2 / np.linalg.norm(v2)
         self.angle = TDWUtils.get_angle_between(v1=dynamic.transform.forward, v2=v2)
+        if self.angle > 180:
+            self.angle = -(360 - self.angle)
         # Set wheel parameters.
         if self._need_to_set_wheel_parameters:
-            self.wheel_values = get_turn_values(angle=self.angle)
+            self.wheel_values = get_turn_values(angle=self.angle, arrived_at=self.arrived_at)
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                    image_frequency=image_frequency)

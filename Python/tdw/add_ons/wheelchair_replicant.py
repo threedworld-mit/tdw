@@ -81,7 +81,7 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
 
         # Derive wheel parameters from the angle.
         if wheel_values is None:
-            wheel_values = get_turn_values(angle=angle)
+            wheel_values = get_turn_values(angle=angle, arrived_at=arrived_at)
         self.action = TurnBy(angle=angle, wheel_values=wheel_values, dynamic=self.dynamic,
                              collision_detection=self.collision_detection, previous=self._previous_action,
                              reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
@@ -158,7 +158,7 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
     def move_to(self, target: TARGET, turn_wheel_values: Optional[WheelValues] = None,
                 move_wheel_values: Optional[WheelValues] = None, reset_arms: bool = True,
                 reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, aligned_at: float = 1,
-                arrived_at: float = 0.25):
+                arrived_at: float = 0.5):
         """
         Turn the wheelchair to a target position or object and then move to it.
 

@@ -100,10 +100,10 @@ class MoveTo(Action):
                     else:
                         raise Exception(f"Invalid MoveBy target: {self._target}")
                     distance = np.linalg.norm(dynamic.transform.position - target)
-                    # Get the direction.
                     d0 = dynamic.transform.position + dynamic.transform.forward
                     d1 = dynamic.transform.position - dynamic.transform.forward
-                    if np.linalg.norm(self._target - d1) < np.linalg.norm(self._target - d0):
+                    # Reverse the direction.
+                    if np.linalg.norm(self._target - d1) > np.linalg.norm(self._target - d0):
                         distance *= -1
                     # Get wheel values.
                     if self._move_wheel_values is None:

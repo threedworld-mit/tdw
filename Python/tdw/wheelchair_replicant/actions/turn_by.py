@@ -87,6 +87,9 @@ class TurnBy(WheelchairMotion):
             rotation = 360 - rotation
         return np.linalg.norm(self._initial_rotation - rotation)
 
+    def _get_fail_status(self) -> ActionStatus:
+        return ActionStatus.failed_to_turn
+
     def _previous_was_collision(self, previous: Optional[Action]) -> bool:
         return self.collision_detection.previous_was_same and previous is not None and isinstance(previous, TurnBy) and \
                previous.status == ActionStatus.collision and np.sign(previous.angle) == np.sign(self.angle)

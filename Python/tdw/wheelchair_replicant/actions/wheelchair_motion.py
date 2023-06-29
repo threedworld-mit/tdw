@@ -148,6 +148,10 @@ class WheelchairMotion(Action, ABC):
                                     # We detected an object.
                                     if object_id != static.replicant_id and object_id not in self.collision_detection.exclude_objects:
                                         self.status = ActionStatus.detected_obstacle
+            # The wheelchair isn't moving but failed to reach its target.
+            if dynamic.rigidbody.sleeping or round(np.linalg.norm(dynamic.rigidbody.velocity), 6) <= 0 or \
+                    round(np.linalg.norm(dynamic.rigidbody.angular_velocity), 6) <= 0:
+                self.status = self._get_fail_status()
             return commands
 
     def get_end_commands(self, resp: List[bytes], static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic,
@@ -199,6 +203,14 @@ class WheelchairMotion(Action, ABC):
                  "half_extents": WheelchairMotion.OVERLAP_HALF_EXTENTS,
                  "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
                  "position": TDWUtils.array_to_vector3(overlap_position)}]
+
+    @abstractmethod
+    def _get_fail_status(self) -> ActionStatus:
+        """
+        :return: The ActionStatus when the action fails.
+        """
+
+        raise Exception()
 
     @abstractmethod
     def _previous_was_collision(self, previous: Optional[Action]) -> bool:

@@ -73,6 +73,9 @@ class MoveBy(WheelchairMotion):
         distance_traversed = np.linalg.norm(dynamic.transform.position - self._initial_position)
         return distance_to_target, distance_traversed
 
+    def _get_fail_status(self) -> ActionStatus:
+        return ActionStatus.failed_to_move
+
     def _previous_was_collision(self, previous: Optional[Action]) -> bool:
         return self.collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
                previous.status == ActionStatus.collision and np.sign(previous.distance) == np.sign(self.distance)

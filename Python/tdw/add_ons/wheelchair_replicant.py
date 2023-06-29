@@ -152,7 +152,7 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
             wheel_values = get_move_values(distance)
         self.action = MoveBy(distance=distance, wheel_values=wheel_values, dynamic=self.dynamic,
                              collision_detection=self.collision_detection, previous=self._previous_action,
-                             reset_arms=reset_arms,reset_arms_duration=reset_arms_duration,
+                             reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
     def move_to(self, target: TARGET, turn_wheel_values: Optional[WheelValues] = None,

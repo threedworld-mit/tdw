@@ -61,15 +61,7 @@ class TurnTo(TurnBy):
                                     static: WheelchairReplicantStatic,
                                     dynamic: WheelchairReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        # Get the target position.
-        if isinstance(self._target, int):
-            target_position = self._get_object_position(object_id=self._target, resp=resp)
-        elif isinstance(self._target, dict):
-            target_position = TDWUtils.vector3_to_array(self._target)
-        elif isinstance(self._target, np.ndarray):
-            target_position = self._target
-        else:
-            raise Exception(f"Invalid TurnTo target: {self._target}")
+        target_position = self._get_target_array(target=self._target, resp=resp)
         # Set the target angle.
         v2 = target_position - dynamic.transform.position
         v2 = v2 / np.linalg.norm(v2)

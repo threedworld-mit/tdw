@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional, List, Dict
 import numpy as np
+from tdw.type_aliases import TARGET
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Overlap
 from tdw.replicant.arm import Arm
@@ -76,7 +77,6 @@ class WheelchairMotion(Action, ABC):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        self._initial_position = dynamic.transform.position
         # Scale the reset arms motion duration.
         if self.scale_reset_arms_duration:
             self.reset_arms_duration = Action._get_scaled_duration(duration=self.reset_arms_duration, resp=resp)
@@ -204,6 +204,25 @@ class WheelchairMotion(Action, ABC):
                  "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
                  "position": TDWUtils.array_to_vector3(overlap_position)}]
 
+    @staticmethod
+    def _get_target_array(target: TARGET, resp: List[bytes]) -> np.ndarray:
+        """
+        :param target: A target object, numpy array position, or dictionary position.
+        :param resp: The response from the build.
+
+        :return: A target numpy array position.
+        """
+
+        # Get the target position.
+        if isinstance(target, int):
+            return WheelchairMotion._get_object_position(object_id=target, resp=resp)
+        elif isinstance(target, dict):
+            return TDWUtils.vector3_to_array(target)
+        elif isinstance(target, np.ndarray):
+            return target
+        else:
+            raise Exception(f"Invalid target: {target}")
+
     @abstractmethod
     def _get_fail_status(self) -> ActionStatus:
         """
@@ -258,4 +277,3 @@ class WheelchairMotion(Action, ABC):
         """
 
         raise Exception()
-

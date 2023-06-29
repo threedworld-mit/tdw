@@ -91,19 +91,12 @@ class MoveTo(Action):
                 if self.turning:
                     self.turning = False
                     # Get the distance.
-                    if isinstance(self._target, int):
-                        target: np.ndarray = self._get_object_position(object_id=self._target, resp=resp)
-                    elif isinstance(self._target, dict):
-                        target = TDWUtils.vector3_to_array(self._target)
-                    elif isinstance(self._target, np.ndarray):
-                        target = self._target
-                    else:
-                        raise Exception(f"Invalid MoveBy target: {self._target}")
-                    distance = np.linalg.norm(dynamic.transform.position - target)
+                    target_position = MoveBy._get_target_array(target=self._target, resp=resp)
+                    distance = np.linalg.norm(dynamic.transform.position - target_position)
                     d0 = dynamic.transform.position + dynamic.transform.forward
                     d1 = dynamic.transform.position - dynamic.transform.forward
                     # Reverse the direction.
-                    if np.linalg.norm(self._target - d1) > np.linalg.norm(self._target - d0):
+                    if np.linalg.norm(target_position - d1) < np.linalg.norm(target_position - d0):
                         distance *= -1
                     # Get wheel values.
                     if self._move_wheel_values is None:

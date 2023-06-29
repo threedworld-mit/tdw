@@ -79,6 +79,11 @@ class ReachFor(ArmMotion):
         The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
         """
         self.held_point: str = held_point
+        self._excluding_targets: bool = False
+        for target in self.targets:
+            if isinstance(target, int) and target not in self.collision_detection.exclude_objects:
+                self._excluding_targets = True
+                self.collision_detection.exclude_objects.append(target)
 
     def get_initialization_commands(self, resp: List[bytes],
                                     static: WheelchairReplicantStatic,
@@ -116,6 +121,17 @@ class ReachFor(ArmMotion):
             else:
                 raise Exception(f"Invalid target: {target} for arm {arm.name}")
         return commands
+
+    def get_end_commands(self, resp: List[bytes],
+                         static: WheelchairReplicantStatic,
+                         dynamic: WheelchairReplicantDynamic,
+                         image_frequency: ImageFrequency) -> List[dict]:
+        if self._excluding_targets:
+            for target in self.targets:
+                if isinstance(target, int):
+                    self.collision_detection.exclude_objects.remove(target)
+        return super().get_end_commands(resp=resp, static=static, dynamic=dynamic,
+                                        image_frequency=image_frequency)
 
     def _get_reach_for_position(self, target: Dict[str, float], arm: Arm, resp: List[bytes],
                                 static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:

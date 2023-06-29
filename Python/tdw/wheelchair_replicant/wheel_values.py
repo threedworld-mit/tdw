@@ -86,7 +86,7 @@ def get_turn_values(angle: float, arrived_at: float) -> WheelValues:
         outer_motor_torque = 20
         inner_motor_torque = -10
     # Map outer/inner to left/right.
-    if angle > 0:
+    if angle < 0:
         left_motor_torque = outer_motor_torque
         right_motor_torque = inner_motor_torque
     else:

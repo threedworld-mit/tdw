@@ -112,7 +112,6 @@ def get_move_values(distance: float) -> WheelValues:
         motor_torque = 10
     if distance < 0:
         brake_at *= -1
-        brake_torque *= -1
         motor_torque *= -1
     return WheelValues(brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=motor_torque,
                        right_motor_torque=motor_torque, steer_angle=0)

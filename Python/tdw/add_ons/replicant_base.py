@@ -15,7 +15,6 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.actions.action import Action
 from tdw.replicant.actions.do_nothing import DoNothing
-from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.look_at import LookAt
 from tdw.replicant.actions.reset_head import ResetHead
@@ -178,6 +177,42 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
                 # Remember the previous action.
                 self._previous_action = deepcopy(self.action)
 
+    @abstractmethod
+    def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
+                  offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,
+                  duration: float = 0.25, scale_duration: bool = True, from_held: bool = False,
+                  held_point: str = "bottom") -> None:
+        """
+        Reach for a target object or position. One or both hands can reach for the same or separate targets.
+
+        If target is an object, the target position is a point on the object.
+        If the object has affordance points, the target position is the affordance point closest to the hand.
+        Otherwise, the target position is the bounds position closest to the hand.
+
+        The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
+
+        - If the hand is near the target at the end of the action, the action succeeds.
+        - If the target is too far away at the start of the action, the action fails.
+        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
+        - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
+
+        Unlike [`Replicant`](replicant.md), this action doesn't support [IK plans](../replicant/ik_plans/ik_plan_type.md).
+
+        :param target: The target(s). This can be a list (one target per hand) or a single value (the hand's target). If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for each target as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
+        :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int.
+        :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
+        :param max_distance: The maximum distance from the hand to the target position.
+        :param duration: The duration of the motion in seconds.
+        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param from_held: If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object.
+        :param held_point: The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
+        """
+
+        raise Exception()
+
+    @abstractmethod
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch",
               relative_to_hand: bool = True, offset: float = 0) -> None:
         """
@@ -195,14 +230,9 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         :param offset: Offset the object's position from the Replicant's hand by this distance.
         """
 
-        self.action = Grasp(target=target,
-                            arm=arm,
-                            dynamic=self.dynamic,
-                            angle=angle,
-                            axis=axis,
-                            relative_to_hand=relative_to_hand,
-                            offset=offset)
+        raise Exception()
 
+    @abstractmethod
     def drop(self, arm: Arm, max_num_frames: int = 100, offset: Union[float, np.ndarray, Dict[str, float]] = 0.1) -> None:
         """
         Drop a held target object.
@@ -216,7 +246,7 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         :param offset: Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
         """
 
-        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset=offset)
+        raise Exception()
 
     def look_at(self, target: TARGET, duration: float = 0.1, scale_duration: bool = True):
         """

@@ -1,4 +1,5 @@
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
+import numpy as np
 from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.add_ons.replicant_base import ReplicantBase
 from tdw.replicant.arm import Arm
@@ -12,6 +13,8 @@ from tdw.wheelchair_replicant.actions.move_by import MoveBy
 from tdw.wheelchair_replicant.actions.move_to import MoveTo
 from tdw.wheelchair_replicant.actions.reset_arm import ResetArm
 from tdw.wheelchair_replicant.actions.reach_for import ReachFor
+from tdw.wheelchair_replicant.actions.wheelchair_replicant_grasp import WheelchairReplicantGrasp
+from tdw.wheelchair_replicant.actions.wheelchair_replicant_drop import WheelchairReplicantDrop
 
 
 class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairReplicantStatic):
@@ -239,6 +242,46 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                                max_distance=max_distance,
                                from_held=from_held,
                                held_point=held_point)
+
+    def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch",
+              relative_to_hand: bool = True, offset: float = 0) -> None:
+        """
+        Grasp a target object.
+
+        The action fails if the hand is already holding an object. Otherwise, the action succeeds.
+
+        When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../lessons/semantic_states/containment.md).
+
+        :param target: The target object ID.
+        :param arm: The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object.
+        :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
+        :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
+        :param relative_to_hand: If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
+        :param offset: Offset the object's position from the Replicant's hand by this distance.
+        """
+
+        self.action = WheelchairReplicantGrasp(target=target,
+                                               arm=arm,
+                                               dynamic=self.dynamic,
+                                               angle=angle,
+                                               axis=axis,
+                                               relative_to_hand=relative_to_hand,
+                                               offset=offset)
+
+    def drop(self, arm: Arm, max_num_frames: int = 100, offset: Union[float, np.ndarray, Dict[str, float]] = 0.1) -> None:
+        """
+        Drop a held target object.
+
+        The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
+
+        When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../lessons/semantic_states/containment.md).
+
+        :param arm: The [`Arm`](../replicant/arm.md) holding the object.
+        :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        :param offset: Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
+        """
+
+        self.action = WheelchairReplicantDrop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset=offset)
 
     def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25, scale_duration: bool = True) -> None:
         """

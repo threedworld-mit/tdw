@@ -57,6 +57,8 @@ class Grasp(Action):
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
+        # The IDs of the object we're grasping and all objects contained by it.
+        self._grasping_ids: List[int] = [target]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -82,13 +84,15 @@ class Grasp(Action):
                     # Ignore Replicants.
                     overlap_ids = [o_id for o_id in overlap_ids if o_id not in replicant_ids]
                     for overlap_id in overlap_ids:
+                        child_id = int(overlap_id)
                         commands.extend([{"$type": "parent_object_to_object",
                                           "parent_id": self.target,
-                                          "id": int(overlap_id)},
+                                          "id": child_id},
                                          {"$type": "set_kinematic_state",
-                                          "id": int(overlap_id),
+                                          "id": child_id,
                                           "is_kinematic": True,
                                           "use_gravity": False}])
+                        self._grasping_ids.append(child_id)
         # Grasp the object. Disable the NavMeshObstacle, if any.
         commands.extend([{"$type": "replicant_grasp_object",
                          "id": static.replicant_id,

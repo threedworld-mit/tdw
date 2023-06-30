@@ -22,7 +22,7 @@ class WheelchairMotion(Action, ABC):
     """:class_var
     While moving or turning, the WheelchairReplicant will cast an overlap shape in the direction it is traveling. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
     """
-    OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
+    OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.2}
 
     def __init__(self, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
@@ -148,6 +148,7 @@ class WheelchairMotion(Action, ABC):
                                     # We detected an object.
                                     if object_id != static.replicant_id and object_id not in self.collision_detection.exclude_objects:
                                         self.status = ActionStatus.detected_obstacle
+                                        commands.extend(self._get_brake_commands(replicant_id=static.replicant_id))
             # The wheelchair isn't moving but failed to reach its target.
             if dynamic.rigidbody.sleeping or round(np.linalg.norm(dynamic.rigidbody.velocity), 6) <= 0 or \
                     round(np.linalg.norm(dynamic.rigidbody.angular_velocity), 6) <= 0:
@@ -196,7 +197,7 @@ class WheelchairMotion(Action, ABC):
             return []
         # Get the position of the overlap shape.
         overlap_position = dynamic.transform.position + self._get_overlap_direction(dynamic=dynamic)
-        overlap_position[1] += 1
+        overlap_position[1] = 0
         # Send the next overlap command.
         return [{"$type": "send_overlap_box",
                  "id": static.replicant_id,

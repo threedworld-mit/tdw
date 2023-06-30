@@ -1,7 +1,6 @@
 from typing import Optional, List
 import numpy as np
 from tdw.type_aliases import TARGET
-from tdw.tdw_utils import TDWUtils
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency

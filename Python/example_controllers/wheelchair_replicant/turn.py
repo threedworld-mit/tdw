@@ -7,7 +7,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.replicant.action_status import ActionStatus
 
 """
-Move a WheelchairReplicant.
+Turn a WheelchairReplicant.
 """
 
 
@@ -18,11 +18,11 @@ def do_action():
 
 
 c = Controller()
-replicant = WheelchairReplicant(position={"x": 0, "y": 0, "z": 2})
-camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
-                           look_at=replicant.replicant_id,
+replicant = WheelchairReplicant(position={"x": 0, "y": 0, "z": 0})
+camera = ThirdPersonCamera(position={"x": -1.27, "y": 1.65, "z": -1.75},
+                           look_at={"x": 1.5, "y": 0.5, "z": 1},
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("wheelchair_replicant_move")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("wheelchair_replicant_turn")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"],
                        path=path)
@@ -35,16 +35,13 @@ commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=object_id,
                                                   position={"x": 3, "y": 0, "z": 1.5}))
 c.communicate(commands)
-# Move by a distance.
-replicant.move_by(distance=2)
+# Turn by an angle.
+replicant.turn_by(angle=-45)
 do_action()
-# Move to an object.
-replicant.move_to(target=object_id)
+# Turn to a target object.
+replicant.turn_to(target=object_id)
 do_action()
-# Move to a position.
-replicant.move_to(target={"x": 5, "y": 0, "z": 1})
-do_action()
-# Move by a negative distance.
-replicant.move_by(distance=-1.5)
+# Turn to a target position.
+replicant.turn_to(target={"x": -3, "y": 0, "z": -1})
 do_action()
 c.communicate({"$type": "terminate"})

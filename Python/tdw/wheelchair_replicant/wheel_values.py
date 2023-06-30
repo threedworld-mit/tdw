@@ -54,9 +54,10 @@ def get_turn_values(angle: float, arrived_at: float) -> WheelValues:
     :return: Wheel values for a turn action.
     """
 
-    brake_at = abs(angle - arrived_at / 2)
+    brake_at = abs(angle) - arrived_at / 2
     brake_torque = 5
     a = abs(angle)
+    steer_angle = angle
     if a <= 5:
         outer_motor_torque = 11
         inner_motor_torque = -12
@@ -64,15 +65,15 @@ def get_turn_values(angle: float, arrived_at: float) -> WheelValues:
     elif a <= 15:
         t = TDWUtils.inv_lerp(a=5, b=15, v=a)
         outer_motor_torque = TDWUtils.lerp(a=11, b=12, t=t)
-        inner_motor_torque = 1 - TDWUtils.lerp(a=-17, b=-12, t=t)
+        inner_motor_torque = TDWUtils.lerp(a=-17, b=-12, t=1 - t)
     elif a <= 25:
-        t = TDWUtils.inv_lerp(a=15, b=25, v=a)
-        outer_motor_torque = 1 - TDWUtils.lerp(a=11, b=12, t=t)
-        inner_motor_torque = 1 - TDWUtils.lerp(a=-19, b=-17, t=t)
+        t = 1 - TDWUtils.inv_lerp(a=15, b=25, v=a)
+        outer_motor_torque = TDWUtils.lerp(a=11, b=12, t=t)
+        inner_motor_torque = TDWUtils.lerp(a=-19, b=-17, t=t)
     elif a <= 45:
-        t = TDWUtils.inv_lerp(a=25, b=45, v=a)
-        outer_motor_torque = 1 - TDWUtils.lerp(a=10, b=11, t=t)
-        inner_motor_torque = 1 - TDWUtils.lerp(a=-20, b=-19, t=t)
+        t = 1 - TDWUtils.inv_lerp(a=25, b=45, v=a)
+        outer_motor_torque = TDWUtils.lerp(a=10, b=11, t=t)
+        inner_motor_torque = TDWUtils.lerp(a=-20, b=-19, t=t)
     elif a <= 90:
         t = TDWUtils.inv_lerp(a=45, b=90, v=a)
         outer_motor_torque = TDWUtils.lerp(a=10, b=19, t=t)
@@ -80,20 +81,26 @@ def get_turn_values(angle: float, arrived_at: float) -> WheelValues:
     elif a <= 120:
         t = TDWUtils.inv_lerp(a=90, b=120, v=a)
         outer_motor_torque = TDWUtils.lerp(a=19, b=20, t=t)
-        inner_motor_torque = 1 - TDWUtils.lerp(a=-18, b=-10, t=t)
+        inner_motor_torque = TDWUtils.lerp(a=-18, b=-10, t=1 - t)
     # Use the values for 120 degrees.
     else:
         outer_motor_torque = 20
         inner_motor_torque = -10
+        # Clamp the steer angle. It's unclear why we need to do this.
+        max_steer_angle = 150
+        if a > max_steer_angle:
+            steer_angle = max_steer_angle
+            if angle < 0:
+                steer_angle *= -1
     # Map outer/inner to left/right.
-    if angle < 0:
+    if angle > 0:
         left_motor_torque = outer_motor_torque
         right_motor_torque = inner_motor_torque
     else:
         left_motor_torque = inner_motor_torque
         right_motor_torque = outer_motor_torque
     return WheelValues(brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=left_motor_torque,
-                       right_motor_torque=right_motor_torque, steer_angle=angle)
+                       right_motor_torque=right_motor_torque, steer_angle=steer_angle)
 
 
 def get_move_values(distance: float) -> WheelValues:

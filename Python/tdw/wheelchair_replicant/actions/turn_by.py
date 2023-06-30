@@ -76,13 +76,10 @@ class TurnBy(WheelchairMotion):
         :return: The angle between -180 and 180 degrees.
         """
 
-        a = abs(angle)
-        if a > 180:
-            a = (360 - a)
-            if angle < 0:
-                return -a
-            else:
-                return a
+        if angle > 180:
+            return -360 + angle
+        elif angle < -180:
+            return 360 - angle
         else:
             return angle
 
@@ -95,7 +92,7 @@ class TurnBy(WheelchairMotion):
 
         rotation: float = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
         rotation = TurnBy._clamp_angle(rotation)
-        return np.linalg.norm(self._initial_rotation - rotation)
+        return np.linalg.norm(self._initial_rotation - rotation) * np.sign(self.angle)
 
     def _get_fail_status(self) -> ActionStatus:
         return ActionStatus.failed_to_turn

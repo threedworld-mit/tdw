@@ -32,6 +32,10 @@ class _ReplicantState(Enum):
 
 
 class Give(Controller):
+    """
+    A Magnebot picks up an object and gives it to a WheelchairReplicant.
+    """
+
     def run(self) -> None:
         # Set the IDs.
         cabinet_id: int = Controller.get_unique_id()

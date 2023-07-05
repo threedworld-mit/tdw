@@ -110,15 +110,14 @@ def get_move_values(distance: float) -> WheelValues:
     :return: Wheel values for a move action.
     """
 
-    brake_at = distance * 0.9
-    if abs(distance) < 1:
-        brake_torque = 5
+    d = abs(distance)
+    brake_at = d * 0.9
+    brake_torque = 5
+    if d < 1:
         motor_torque = 5
     else:
-        brake_torque = 10
         motor_torque = 10
     if distance < 0:
-        brake_at *= -1
         motor_torque *= -1
     return WheelValues(brake_at=brake_at, brake_torque=brake_torque, left_motor_torque=motor_torque,
                        right_motor_torque=motor_torque, steer_angle=0)

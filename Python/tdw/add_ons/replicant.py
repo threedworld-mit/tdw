@@ -1,4 +1,5 @@
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Dict
+import numpy as np
 from tdw.type_aliases import TARGET
 from tdw.add_ons.replicant_base import ReplicantBase
 from tdw.replicant.replicant_static import ReplicantStatic

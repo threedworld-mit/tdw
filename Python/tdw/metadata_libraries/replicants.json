@@ -9,6 +9,14 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/fireman"
       }
     },
+	"girl_casual": {
+      "name": "girl_casual",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/replicants/osx/2020.3/girl_casual",
+        "Linux": "https://tdw-public.s3.amazonaws.com/replicants/linux/2020.3/girl_casual",
+        "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/girl_casual"
+      }
+    },
     "man_casual": {
       "name": "man_casual",
       "urls": {

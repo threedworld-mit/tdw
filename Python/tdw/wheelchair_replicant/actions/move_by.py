@@ -97,8 +97,6 @@ class MoveBy(WheelchairMotion):
         return dynamic.transform.forward * overlap_z
 
     def _is_failure(self, dynamic: ReplicantDynamic) -> bool:
-        if np.linalg.norm(dynamic.transform.position - self._position) < 0.0001:
-            print(np.linalg.norm(dynamic.transform.position - self._position))
         return np.linalg.norm(dynamic.transform.position - self._position) < 0.0001
 
     def _continue_action(self, dynamic: ReplicantDynamic):

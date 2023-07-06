@@ -543,7 +543,7 @@ The [Replicant version of this document](../replicant/custom_actions.md) include
 
 ***
 
-**Next: [Multiple Replicants](multiple_replicants.md)**
+**Next: [Multiple Agents](multiple_agents.md)**
 
 [Return to the README](../../../README.md)
 

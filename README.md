@@ -240,27 +240,44 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 14. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
 15. [Reset](Documentation/lessons/replicants/reset.md)
 
-### 11.4 Drones
+### 11.4 Wheelchair Replicants
+
+1. [Overview](Documentation/lessons/wheelchair_replicants/overview.md)
+2. [Actions](Documentation/lessons/wheelchair_replicants/actions.md)
+3. [Output data](Documentation/lessons/wheelchair_replicants/output_data.md)
+4. [Collision detection](Documentation/lessons/wheelchair_replicants/collision_detection.md)
+5. [Movement](Documentation/lessons/wheelchair_replicants/movement.md)
+6. [Animations](Documentation/lessons/wheelchair_replicants/animations.md)
+7. [Arm articulation, pt. 1: Basics](Documentation/lessons/wheelchair_replicants/arm_articulation_1.md)
+8. [Arm articulation, pt. 2: Grasp and drop objects](Documentation/lessons/wheelchair_replicants/arm_articulation_2.md)
+9. [Arm articulation, pt. 3: Advanced topics](Documentation/lessons/wheelchair_replicants/arm_articulation_3.md)
+10. [Head rotation](Documentation/lessons/wheelchair_replicants/head_rotation.md)
+11. [Navigation](Documentation/lessons/wheelchair_replicants/navigation.md)
+12. [Custom actions](Documentation/lessons/wheelchair_replicants/custom_actions.md)
+13. [Multiple Agents](Documentation/lessons/wheelchair_replicants/multiple_replicants.md)
+14. [Reset](Documentation/lessons/wheelchair_replicants/reset.md)
+
+### 11.5 Drones
 
 1. [Drones](Documentation/lessons/drone/drone.md)
 
-### 11.5 Vehicles
+### 11.6 Vehicles
 
 1. [Vehicles](Documentation/lessons/vehicle/vehicle.md)
 
-### 11.6 Virtual Reality (VR)
+### 11.7 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
 
-### 11.7 Keyboard and Mouse
+### 11.8 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.8 Embodied avatars
+### 11.9 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 

@@ -8,8 +8,8 @@ from tdw.add_ons.wheelchair_replicant import WheelchairReplicant
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.action_status import ActionStatus
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.arm import Arm
 from tdw.replicant.image_frequency import ImageFrequency
@@ -28,14 +28,12 @@ class Clap(ArmMotion):
 
     POSITION: Dict[str, float] = {"x": 0, "y": 0.9, "z": 0.2}
 
-    def __init__(self, dynamic: WheelchairReplicantDynamic, collision_detection: CollisionDetection):
+    def __init__(self, dynamic: ReplicantDynamic, collision_detection: CollisionDetection):
         super().__init__(arms=[Arm.left, Arm.right], dynamic=dynamic, collision_detection=collision_detection,
                          duration=0.25, previous=None, scale_duration=False)
         self.clap_state: ClapState = ClapState.raising_hands
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         # Get the standard initialization commands.
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
@@ -44,9 +42,7 @@ class Clap(ArmMotion):
         commands.extend(self.get_initial_position_commands(static=static))
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes],
-                             static: WheelchairReplicantStatic,
-                             dynamic: WheelchairReplicantDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         # Continue the action, checking for collisions.
         commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
         # The motion ended. Decide if we need to do more motions.
@@ -80,7 +76,7 @@ class Clap(ArmMotion):
                 self.status = ActionStatus.success
         return commands
 
-    def get_initial_position_commands(self, static: WheelchairReplicantStatic) -> List[dict]:
+    def get_initial_position_commands(self, static: ReplicantStatic) -> List[dict]:
         commands = []
         # Reach for the initial positions.
         for arm, position in zip(self.arms, [{"x": -0.2, "y": Clap.POSITION["y"], "z": Clap.POSITION["z"]},

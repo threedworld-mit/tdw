@@ -374,7 +374,7 @@ The action continues until there is a collision or until `replicant.dynamic.outp
 
 From a user-end perspective, basic Wheelchair Replicant and Replicant arm articulation is mostly the same. The Wheelchair Replicant has, of course, more limited range. It also uses an IK solver that tends to be much simpler but less fluid in motion. The user-end APIs are nearly the same, except that Wheelchair Replicants can't use [IK plans](../replicant/arm_articulation_3.md).
 
-Because the solvers are different, the Wheelchair Replicant and Replicant use actions with identical names that are actually different classes. The Wheelchair Replicant uses `tdw.wheelchair_replicant.actions.reach_for` and `tdw.wheelchair_replicant.actions.reset_arm`, while the Replicant uses `tdw.replicant.actions.reach_for` and `tdw.replicant.actions.reset_arm` .
+Because the solvers are different, the Wheelchair Replicant and Replicant use actions with identical names that are actually different classes. The Wheelchair Replicant uses `tdw.wheelchair_replicant.actions.reach_for` and `tdw.wheelchair_replicant.actions.reset_arm`, while the Replicant uses `tdw.replicant.actions.reach_for` and `tdw.replicant.actions.reset_arm`. Likewise, different commands are used within those actions.
 
 ***
 

@@ -16,8 +16,6 @@ The `WheelchairReplicant` has a pre-defined action space, divided into separate 
 - `rotate_head(angle, axis)`
 - `reset_head()`
 
-This is the same as the Replicant's action space, except that the `WheelchairReplicant` action space doesn't include [`animate(animation)`](../replicants/animations.md).
-
 Calling one of these action functions will *start* the action but won't actually *do* the action. This means that a Wheelchair Replicant can move concurrently with other agents in a [multi-agent simulation](../multi_agent/overview.md).
 
 This example doesn't actually do anything:
@@ -38,7 +36,7 @@ replicant.move_by(2)
 
 All actions require multiple `communicate()` calls to complete.
 
-In this example, we'll tell the Wheelchair Replicant to move 2 meters forward. We'll also add a [camera](../core_concepts/add_ons.md) to the scene and enable [image capture](../core_concepts/images.md). Note that this example is *not* an optimal way to use a Replicant and that subsequent examples will fix some naïve assumptions we're making. 
+In this example, we'll tell the Wheelchair Replicant to move 2 meters forward. We'll also add a [camera](../core_concepts/add_ons.md) to the scene and enable [image capture](../core_concepts/images.md). Note that this example is *not* an optimal way to use a Wheelchair Replicant and that subsequent examples will fix some naïve assumptions we're making. 
 
 ```python
 from tdw.controller import Controller
@@ -138,12 +136,6 @@ ActionStatus.success
 
 It is *not* necessary to wrap all Wheelchair Replicant actions in a loop like this. For example, in the context of a multi-agent simulation you won't want to loop like this because you'll want to be checking multiple agent actions at the same time. For the sake of subsequent example code, we know we have only one agent, so this simple loop is good enough for showcasing the rest of the Wheelchair Replicant's behavior.
 
-## Wheelchair Replicant actions vs. Replicant actions
-
-The `Action` base class is shared by the `Replicant` and the `WheelchairReplicant`. Some of the sub-class actions, such as `LookAt`, are shared as well. `MoveBy` is an example of an action that is *not* the same: `Replicant` uses `tdw.replicant.move_by` and `WheelchairReplicant` uses `tdw.wheelchair_replicant.move_by`. There needs to be two different MoveBy classes because Replicants and Wheelchair Replicants have completely different means of locomotion. If there is no difference in behavior, the two agents can use the same class.
-
-Most frontend users will never need to use the underlying `Action` classes, but if you want to create [custom actions](custom_actions.md), be sure to check the API for whether you need to create a subclass of an existing Wheelchair Replicant action, as opposed to an identically-named Replicant action.
-
 ## Low-level description
 
 Actions are very similar to add-ons in that they have a list of commands that can be returned. Actions are handled within `replicant.on_send(resp)`. Thus, the full sequence of how commands are injected into the controller is:
@@ -180,6 +172,16 @@ When the action ends, it returns `get_end_commands(resp, static, dynamic, image_
 - [`replicant_step`](../../api/command_api.md#replicant_step)
 - Depending on the [`image_frequency`](../../python/replicant/image_frequency.md) value, [`enable_image_sensor`](../../api/command_api.md#enable_image_sensor),  [`send_images`](../../api/command_api.md#send_images), and/or  [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices). 
 - Some actions will include additional commands, e.g. commands to stop an animation.
+
+## Wheelchair Replicants and Replicants
+
+The action space of the `Replicant` and the `WheelchairReplicant` is nearly the same. The only major difference is that the `WheelchairReplicant` action space doesn't include [`animate(animation)`](../replicants/animations.md).
+
+The behaviors of the actions, for example what actually happens when the agent moves, as well as the API used to control each action, may or may not differ between the `WheelchairReplicant` and the `Replicant` actions. Per-action differences will be covered in subsequent documents in this lesson.
+
+The `Action` base class is used by both the `Replicant` and the `WheelchairReplicant`. Some of the sub-class actions, such as `LookAt`, are use by both agent types as well. `MoveBy` is an example of an action that is *not* the same: `Replicant` uses `tdw.replicant.move_by` and `WheelchairReplicant` uses `tdw.wheelchair_replicant.move_by`. There needs to be two different MoveBy classes because Replicants and Wheelchair Replicants have completely different means of locomotion. The two agent types can share the same action class if their behavior and underlying API commands are exactly the same. Most frontend users will never need to use the underlying `Action` classes, but if you want to create [custom actions](custom_actions.md), be sure to check the API for whether you need to create a subclass of an existing Wheelchair Replicant action, as opposed to an identically-named Replicant action.
+
+In the [Replicant's Action documentation](../replicant/actions.md) there is a section regarding framerate. This section has been omitted in this document. It is still possible to control the framerate of a Wheelchair Replicant simulation, or any TDW simulation, but it's less relevant to the Wheelchair Replicant than a Replicant because its movements aren't animation-driven. Arm articulation *is* still influenced by framerate, and will be covered later in this lesson.
 
 ***
 

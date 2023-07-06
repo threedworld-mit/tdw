@@ -41,13 +41,13 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 There are additional constructor parameters that will be covered in subsequent documents.
 
-## Differences between Wheelchair Replicants and Replicants
+## Wheelchair Replicants and Replicants
 
 The Replicant and Wheelchair Replicant are very similar. In many cases, they share the same code; the add-ons themselves are subclasses of the same [`ReplicantBase`](../../python/add_ons/replicant_base.md) abstract class. There are some important differences, however, especially in how Replicants and Wheelchair Replicants move and turn.
 
-**Each document in this lesson will have a "Differences between Wheelchair Replicants and Replicants" section to compare the two agents.** 
+**Each document in this lesson will have a "Wheelchair Replicants and Replicants" section to compare the two agents.** 
 
-## Differences between  Wheelchair Replicants and Robots
+## Differences between Wheelchair Replicants and Robots
 
 Wheelchair Replicants are similar to [robots](../robots/overview.md)  in that they can induce and respond to physics events, and that they move by applying forces to their wheels.  Like robots, Wheelchair Replicants are agents but are *not* [avatars](../core_concepts/avatars.md) in TDW. Avatar commands won't work with Wheelchair Replicants. Wheelchair Replicants differ from robots in three key ways:
 

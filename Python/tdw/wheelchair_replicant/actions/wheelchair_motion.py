@@ -158,7 +158,7 @@ class WheelchairMotion(Action, ABC):
                                         self.status = ActionStatus.detected_obstacle
                                         commands.extend(self._get_brake_commands(replicant_id=static.replicant_id))
             # Wait a few frames for the wheelchair to start moving.
-            if self._frame < 20:
+            if self._frame < 100:
                 self._frame += 1
             else:
                 # The wheelchair isn't moving.

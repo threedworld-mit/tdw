@@ -57,7 +57,7 @@ Wheelchair Replicants are similar to [robots](../robots/overview.md)  in that th
 
 ## Wheelchair Replicant asset bundles
 
-Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes.md), Wheelchair Replicants are **asset bundles** stored on a remote S3 server that must be downloaded before they can be added to the scene. This means that when you first add a Wheelchair Replicant to the scene, there will be a brief pause while it is downloaded and loaded into memory. For subsequent scene resets, the Wheelchair Replicant will already in memory and will appear immediately.
+Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes.md), and Replicants, Wheelchair Replicants are **asset bundles** stored on a remote S3 server that must be downloaded before they can be added to the scene. This means that when you first add a Wheelchair Replicant to the scene, there will be a brief pause while it is downloaded and loaded into memory. For subsequent scene resets, the Wheelchair Replicant will already in memory and will appear immediately.
 
 Like all other asset bundle types in TDW, Replicants have metadata records stored in the TDW Python module. Each Replicant has a corresponding [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md), which is stored in a [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md). To print the name of each available Wheelchair Replicant:
 

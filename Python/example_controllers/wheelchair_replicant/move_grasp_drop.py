@@ -46,11 +46,12 @@ class MoveGraspDrop(Controller):
                                                           position={"x": -1.6, "y": 0.6108887, "z": 1.358}))
         self.communicate(commands)
         self.replicant.collision_detection.avoid = False
+        self.replicant.collision_detection.objects = False
         self.replicant.move_to(target={"x": -1.05, "y": 0, "z": 1.485}, arrived_at=0.1)
         self.do_action()
         self.replicant.reach_for(target=self.mug_id, arm=Arm.left)
         self.do_action()
-        self.replicant.grasp(target=self.mug_id, arm=Arm.left)
+        self.replicant.grasp(target=self.mug_id, arm=Arm.left, offset=0.2, relative_to_hand=False, angle=0)
         self.do_action()
         self.replicant.move_by(-2, reset_arms=False)
         self.do_action()

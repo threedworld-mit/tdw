@@ -45,41 +45,6 @@ Result:
 
 ![](images/arm_articulation/reach_for_position.gif)
 
-### Reach with both hands at the same time
-
-The Wheelchair Replicant can reach with both hands at the same time. To do this, set  `arm` to a list of arms:
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.wheelchair_replicant import WheelchairReplicant
-from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
-from tdw.replicant.action_status import ActionStatus
-from tdw.replicant.arm import Arm
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
-c = Controller()
-replicant = WheelchairReplicant()
-camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.1},
-                           look_at=replicant.replicant_id,
-                           avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("wheelchair_replicant_reach_for_two_targets")
-print(f"Images will be saved to: {path}")
-capture = ImageCapture(avatar_ids=[camera.avatar_id], path=path)
-c.add_ons.extend([replicant, camera, capture])
-c.communicate(TDWUtils.create_empty_room(12, 12))
-replicant.reach_for(target=[{"x": -0.3, "y": 0.9, "z": 0.3},
-                            {"x": 0.3, "y": 0.9, "z": 0.3}],
-                    arm=[Arm.left, Arm.right])
-while replicant.action.status == ActionStatus.ongoing:
-    c.communicate([])
-c.communicate([])
-c.communicate({"$type": "terminate"})
-```
-
-![](images/arm_articulation/reach_for_position_both_hands.gif)
-
 ### Reach for a target object
 
 To reach for a target object, set `target` to an object ID integer:
@@ -424,7 +389,6 @@ Example controllers:
 - [reach_for_position.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_position.py) Reach for a target position.
 - [reach_for_object.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_object.py) Reach for a target object.
 - [reach_for_relative.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_relative.py) Reach for a relative target position.
-- [reach_for_two_targets.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_two_targets.py) Reach for two target positions, one per hand.
 - [move_grasp_drop.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/move_grasp_drop.py) Move to an object, grasp it, move away, and drop it.
 - [reset_arm.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reset_arm.py) Reach for a target position and then reset the arm.
 

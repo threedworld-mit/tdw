@@ -57,8 +57,6 @@ class Grasp(Action):
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
-        # The IDs of the object we're grasping and all objects contained by it.
-        self._grasping_ids: List[int] = [target]
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -73,6 +71,7 @@ class Grasp(Action):
                 for j in range(replicants.get_num()):
                     replicant_ids.append(replicants.get_id(j))
                 break
+        grasping_ids: List[int] = [self.target]
         # Get all of the objects contained by the grasped object. Parent them to the container and make them kinematic.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
@@ -92,7 +91,7 @@ class Grasp(Action):
                                           "id": child_id,
                                           "is_kinematic": True,
                                           "use_gravity": False}])
-                        self._grasping_ids.append(child_id)
+                        grasping_ids.append(child_id)
         # Grasp the object. Disable the NavMeshObstacle, if any.
         commands.extend([{"$type": "replicant_grasp_object",
                          "id": static.replicant_id,
@@ -110,6 +109,12 @@ class Grasp(Action):
                              "angle": self.angle,
                              "axis": self.axis,
                              "relative_to_hand": self.relative_to_hand})
+        # Ignore collisions.
+        for object_id in grasping_ids:
+            commands.append({"$type": "ignore_collisions",
+                             "id": object_id,
+                             "other_id": static.replicant_id,
+                             "ignore": True})
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

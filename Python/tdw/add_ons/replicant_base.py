@@ -18,6 +18,8 @@ from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.actions.look_at import LookAt
 from tdw.replicant.actions.reset_head import ResetHead
 from tdw.replicant.actions.rotate_head import RotateHead
+from tdw.replicant.actions.drop import Drop
+from tdw.replicant.actions.grasp import Grasp
 
 
 class ReplicantBase(AddOn, ABC):
@@ -209,7 +211,6 @@ class ReplicantBase(AddOn, ABC):
 
         raise Exception()
 
-    @abstractmethod
     def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch",
               relative_to_hand: bool = True, offset: float = 0) -> None:
         """
@@ -227,9 +228,14 @@ class ReplicantBase(AddOn, ABC):
         :param offset: Offset the object's position from the Replicant's hand by this distance.
         """
 
-        raise Exception()
+        self.action = Grasp(target=target,
+                            arm=arm,
+                            dynamic=self.dynamic,
+                            angle=angle,
+                            axis=axis,
+                            relative_to_hand=relative_to_hand,
+                            offset=offset)
 
-    @abstractmethod
     def drop(self, arm: Arm, max_num_frames: int = 100, offset: Union[float, np.ndarray, Dict[str, float]] = 0.1) -> None:
         """
         Drop a held target object.
@@ -243,7 +249,7 @@ class ReplicantBase(AddOn, ABC):
         :param offset: Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
         """
 
-        raise Exception()
+        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset=offset)
 
     def look_at(self, target: TARGET, duration: float = 0.1, scale_duration: bool = True):
         """

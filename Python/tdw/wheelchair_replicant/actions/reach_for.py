@@ -2,8 +2,8 @@ from typing import List, Dict, Optional
 import numpy as np
 from tdw.type_aliases import TARGET
 from tdw.tdw_utils import TDWUtils
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.arm_motion import ArmMotion
 from tdw.replicant.actions.action import Action
 from tdw.replicant.collision_detection import CollisionDetection
@@ -25,12 +25,10 @@ class ReachFor(ArmMotion):
     - If the target is too far away at the start of the action, the action fails.
     - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
     - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
-
-    See also: [`ReachForWithPlan`](reach_for_with_plan.md).
     """
 
-    def __init__(self, targets: List[TARGET], absolute: bool, offhand_follows: bool,
-                 arrived_at: float, max_distance: float, arms: List[Arm], dynamic: WheelchairReplicantDynamic,
+    def __init__(self, targets: List[TARGET], absolute: bool, offhand_follows: bool, arrived_at: float,
+                 max_distance: float, arms: List[Arm], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
                  scale_duration: bool, from_held: bool, held_point: str):
         """
@@ -40,7 +38,7 @@ class ReachFor(ArmMotion):
         :param arrived_at: If the motion ends and the hand is this distance or less from the target, the action succeeds.
         :param max_distance: If the target is further away from this distance at the start of the action, the action fails.
         :param arms: A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
-        :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action. Can be None.
         :param duration: The duration of the motion in seconds.
@@ -85,9 +83,7 @@ class ReachFor(ArmMotion):
                 self._excluding_targets = True
                 self.collision_detection.exclude_objects.append(target)
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
@@ -122,9 +118,7 @@ class ReachFor(ArmMotion):
                 raise Exception(f"Invalid target: {target} for arm {arm.name}")
         return commands
 
-    def get_end_commands(self, resp: List[bytes],
-                         static: WheelchairReplicantStatic,
-                         dynamic: WheelchairReplicantDynamic,
+    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
         if self._excluding_targets:
             for target in self.targets:
@@ -134,7 +128,7 @@ class ReachFor(ArmMotion):
                                         image_frequency=image_frequency)
 
     def _get_reach_for_position(self, target: Dict[str, float], arm: Arm, resp: List[bytes],
-                                static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
+                                static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = [{"$type": "wheelchair_replicant_reach_for_position",
                      "id": static.replicant_id,
                      "position": target,
@@ -164,8 +158,7 @@ class ReachFor(ArmMotion):
                              "offset": self._get_offset(arm=offhand, resp=resp, static=static, dynamic=dynamic)})
         return commands
 
-    def _get_offset(self, arm: Arm, resp: List[bytes], static: WheelchairReplicantStatic,
-                    dynamic: WheelchairReplicantDynamic) -> Dict[str, float]:
+    def _get_offset(self, arm: Arm, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> Dict[str, float]:
         if self.from_held and arm in dynamic.held_objects:
             bounds = self._get_object_bounds(object_id=dynamic.held_objects[arm], resp=resp)
             object_position = bounds[self.held_point]

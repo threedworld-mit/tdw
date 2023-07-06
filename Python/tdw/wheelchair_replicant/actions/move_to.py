@@ -2,14 +2,14 @@ from typing import Optional, List
 import numpy as np
 from tdw.type_aliases import TARGET
 from tdw.replicant.action_status import ActionStatus
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.actions.action import Action
 from tdw.wheelchair_replicant.wheel_values import WheelValues, get_move_values
 from tdw.wheelchair_replicant.actions.turn_to import TurnTo
 from tdw.wheelchair_replicant.actions.move_by import MoveBy
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
 
 class MoveTo(Action):
@@ -29,14 +29,14 @@ class MoveTo(Action):
     """
 
     def __init__(self, target: TARGET, turn_wheel_values: Optional[WheelValues],
-                 move_wheel_values: Optional[WheelValues], dynamic: WheelchairReplicantDynamic,
+                 move_wheel_values: Optional[WheelValues], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
                  reset_arms_duration: float, scale_reset_arms_duration: bool, aligned_at: float, arrived_at: float):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param turn_wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels while it's turning. If None, values will be derived from the angle.
         :param move_wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels while it's moving. If None, values will be derived from the distance.
-        :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
@@ -67,17 +67,13 @@ class MoveTo(Action):
         self.arrived_at: float = arrived_at
         self._move_wheel_values: Optional[WheelValues] = move_wheel_values
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         self._image_frequency = image_frequency
         return self.action.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
 
-    def get_ongoing_commands(self, resp: List[bytes],
-                             static: WheelchairReplicantStatic,
-                             dynamic: WheelchairReplicantDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         commands = self.action.get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
         # The sub-action is ongoing.
         if self.action.status == ActionStatus.ongoing:
@@ -114,8 +110,6 @@ class MoveTo(Action):
                 self.status = self.action.status
                 return commands
 
-    def get_end_commands(self, resp: List[bytes],
-                         static: WheelchairReplicantStatic,
-                         dynamic: WheelchairReplicantDynamic,
+    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
         return self.action.get_end_commands(resp=resp, static=static, dynamic=dynamic, image_frequency=image_frequency)

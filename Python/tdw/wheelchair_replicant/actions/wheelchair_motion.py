@@ -5,13 +5,13 @@ from tdw.type_aliases import TARGET
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Overlap
 from tdw.replicant.arm import Arm
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.actions.action import Action
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.wheelchair_replicant.wheel_values import WheelValues
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
 
 class WheelchairMotion(Action, ABC):
@@ -24,12 +24,12 @@ class WheelchairMotion(Action, ABC):
     """
     OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.2}
 
-    def __init__(self, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
-                 collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
-                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
+    def __init__(self, wheel_values: WheelValues, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
+                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
+                 scale_reset_arms_duration: bool, arrived_at: float):
         """
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
-        :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
@@ -70,11 +70,19 @@ class WheelchairMotion(Action, ABC):
         self.__held_objects: List[int] = [v for v in dynamic.held_objects.values() if
                                           v not in self.collision_detection.exclude_objects]
         self.collision_detection.exclude_objects.extend(self.__held_objects)
+        self._frame: int = 0
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
+        """
+        :param resp: The response from the build.
+        :param static: The [`ReplicantStatic`](../../replicant/replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
+        :param image_frequency: An [`ImageFrequency`](../../replicant/image_frequency.md) value describing how often image data will be captured.
+
+        :return: A list of commands to initialize this action.
+        """
+
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
         # Scale the reset arms motion duration.
@@ -106,13 +114,13 @@ class WheelchairMotion(Action, ABC):
                           "angle": self.wheel_values.steer_angle}])
         return commands
 
-    def get_ongoing_commands(self, resp: List[bytes], static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
+    def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         """
         Evaluate an action per-frame to determine whether it's done.
 
         :param resp: The response from the build.
-        :param static: The [`WheelchairReplicantStatic`](../wheelchair_replicant_static.md) data that doesn't change after the Replicant is initialized.
-        :param dynamic: The [`WheelchairReplicantStatic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param static: The [`ReplicantStatic`](../../replicant/replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
 
         :return: A list of commands to send to the build to continue the action.
         """
@@ -149,14 +157,29 @@ class WheelchairMotion(Action, ABC):
                                     if object_id != static.replicant_id and object_id not in self.collision_detection.exclude_objects:
                                         self.status = ActionStatus.detected_obstacle
                                         commands.extend(self._get_brake_commands(replicant_id=static.replicant_id))
-            # The wheelchair isn't moving but failed to reach its target.
-            if dynamic.rigidbody.sleeping or round(np.linalg.norm(dynamic.rigidbody.velocity), 6) <= 0 or \
-                    round(np.linalg.norm(dynamic.rigidbody.angular_velocity), 6) <= 0:
-                self.status = self._get_fail_status()
+            # Wait a few frames for the wheelchair to start moving.
+            if self._frame < 20:
+                self._frame += 1
+            else:
+                # The wheelchair isn't moving.
+                if self._is_failure(dynamic=dynamic):
+                    self.status = self._get_fail_status()
+                # Continue the action.
+                else:
+                    self._continue_action(dynamic=dynamic)
             return commands
 
-    def get_end_commands(self, resp: List[bytes], static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic,
+    def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                          image_frequency: ImageFrequency) -> List[dict]:
+        """
+        :param resp: The response from the build.
+        :param static: The [`ReplicantStatic`](../../replicant/replicant_static.md) data that doesn't change after the Replicant is initialized.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
+        :param image_frequency: An [`ImageFrequency`](../../replicant/image_frequency.md) value describing how often image data will be captured.
+
+        :return: A list of commands that must be sent to end any action.
+        """
+
         # Stop excluding held objects.
         for object_id in self.__held_objects:
             self.collision_detection.exclude_objects.remove(object_id)
@@ -185,7 +208,7 @@ class WheelchairMotion(Action, ABC):
                  "id": replicant_id,
                  "torque": self.wheel_values.brake_torque}]
 
-    def _overlap(self, static: WheelchairReplicantStatic, dynamic: WheelchairReplicantDynamic) -> List[dict]:
+    def _overlap(self, static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
         """
         :param static: The static Replicant data.
         :param dynamic: The dynamic Replicant data.
@@ -243,13 +266,11 @@ class WheelchairMotion(Action, ABC):
         raise Exception()
 
     @abstractmethod
-    def _is_success(self, resp: List[bytes],
-                    static: WheelchairReplicantStatic,
-                    dynamic: WheelchairReplicantDynamic) -> bool:
+    def _is_success(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
         """
         :param resp: The response from the build.
-        :param static: The `WheelchairReplicantStatic` data that doesn't change after the Replicant is initialized.
-        :param dynamic: The `WheelchairReplicantStatic` data that changes per `communicate()` call.
+        :param static: The `ReplicantStatic` data that doesn't change after the Replicant is initialized.
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
 
         :return: True if the action ended in success.
         """
@@ -257,24 +278,41 @@ class WheelchairMotion(Action, ABC):
         raise Exception()
 
     @abstractmethod
-    def _is_time_to_brake(self, resp: List[bytes],
-                          static: WheelchairReplicantStatic,
-                          dynamic: WheelchairReplicantDynamic) -> bool:
+    def _is_time_to_brake(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
         """
         :param resp: The response from the build.
-        :param static: The `WheelchairReplicantStatic` data that doesn't change after the Replicant is initialized.
-        :param dynamic: The `WheelchairReplicantStatic` data that changes per `communicate()` call.
+        :param static: The `ReplicantStatic` data that doesn't change after the Replicant is initialized.
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
 
         :return: True if it's time to start braking.
         """
         raise Exception()
 
     @abstractmethod
-    def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
+    def _get_overlap_direction(self, dynamic: ReplicantDynamic) -> np.ndarray:
         """
-        :param dynamic: The `WheelchairReplicantStatic` data that changes per `communicate()` call.
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
 
         :return: The overlap direction.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def _is_failure(self, dynamic: ReplicantDynamic) -> bool:
+        """
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
+
+        :return: True if the action failed.
+        """
+
+        raise Exception()
+
+    def _continue_action(self, dynamic: ReplicantDynamic):
+        """
+        Do something to continue the action if it didn't fail.
+
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
         """
 
         raise Exception()

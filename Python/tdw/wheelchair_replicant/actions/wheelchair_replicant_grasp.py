@@ -1,8 +1,8 @@
 from typing import List
 from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.image_frequency import ImageFrequency
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
 
 
 class WheelchairReplicantGrasp(Grasp):
@@ -14,9 +14,7 @@ class WheelchairReplicantGrasp(Grasp):
     When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
     """
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)

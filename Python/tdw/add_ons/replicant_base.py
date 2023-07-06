@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Optional, Generic, TypeVar, Union
+from typing import List, Dict, Optional, Union
 from copy import deepcopy
 import numpy as np
 from tdw.controller import Controller
@@ -15,17 +15,12 @@ from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.actions.action import Action
 from tdw.replicant.actions.do_nothing import DoNothing
-from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.look_at import LookAt
 from tdw.replicant.actions.reset_head import ResetHead
 from tdw.replicant.actions.rotate_head import RotateHead
 
 
-D = TypeVar("D", bound=ReplicantDynamic)
-S = TypeVar("S", bound=ReplicantStatic)
-
-
-class ReplicantBase(AddOn, Generic[D, S], ABC):
+class ReplicantBase(AddOn, ABC):
     """
     Abstract base class for Replicants.
     """
@@ -83,11 +78,11 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         """:field
         The [`ReplicantStatic`](../replicant/replicant_static.md) data.
         """
-        self.static: Optional[S] = None
+        self.static: Optional[ReplicantStatic] = None
         """:field
         The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data.
         """
-        self.dynamic: Optional[D] = None
+        self.dynamic: Optional[ReplicantDynamic] = None
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -132,7 +127,9 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         if self.static is None:
             self._cache_static_data(resp=resp)
         # Update the dynamic data per `communicate()` call.
-        self._set_dynamic_data(resp=resp)
+        self.dynamic = ReplicantDynamic(resp=resp, replicant_id=self.replicant_id, frame_count=self._frame_count)
+        if self.dynamic.got_images:
+             self._frame_count += 1
         # Don't do anything if there isn't an action or if the action is done.
         if self.action is None or self.action.done:
             return
@@ -330,11 +327,9 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         raise Exception()
 
     @abstractmethod
-    def _set_dynamic_data(self, resp: List[bytes]) -> None:
+    def _can_walk(self) -> bool:
         """
-        Set dynamic data.
-
-        :param resp: The response from the build.
+        :return: True if this type of Replicant can walk.
         """
 
         raise Exception()
@@ -346,7 +341,7 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
         :param resp: The response from the build.
         """
 
-        self.static = self._get_replicant_static(resp=resp)
+        self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp, can_walk=self._can_walk())
         # Set an initial action.
         self.action = DoNothing()
         # Add an avatar and set up its camera.
@@ -365,16 +360,6 @@ class ReplicantBase(AddOn, Generic[D, S], ABC):
                                "avatar_id": self.static.avatar_id},
                               {"$type": "set_img_pass_encoding",
                                "value": False}])
-
-    @abstractmethod
-    def _get_replicant_static(self, resp: List[bytes]) -> S:
-        """
-        :param resp: The response from the build.
-
-        :return: Static Replicant data.
-        """
-
-        raise Exception()
 
     @staticmethod
     def _arms_to_list(arm: Union[Arm, List[Arm]]) -> List[Arm]:

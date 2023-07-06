@@ -62,7 +62,6 @@ from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
-from tdw.FBOutput import Wheelchairs as WChairs
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1571,37 +1570,6 @@ class Replicants(OutputData):
 
     def get_num_body_parts(self) -> int:
         return int(self.data.NumBodyParts())
-
-
-class Wheelchairs(OutputData):
-    def __init__(self, b):
-        super().__init__(b)
-        self._ids: np.ndarray = self.data.IdsAsNumpy()
-        self._wheels: np.ndarray = self.data.WheelsAsNumpy().reshape(-1, 4, 3)
-        self._velocities: np.ndarray = self.data.VelocitiesAsNumpy().reshape(-1, 2, 3)
-        self._sleepings: np.ndarray = self.data.SleepingsAsNumpy()
-
-    def get_data(self) -> WChairs.Wheelchairs:
-        return WChairs.Wheelchairs.GetRootAsWheelchairs(self.bytes, 0)
-
-    def get_num(self) -> int:
-        return int(self._ids.shape[0])
-
-    def get_id(self, index: int) -> int:
-        return int(self._ids[index])
-
-    def get_velocity(self, index: int) -> np.ndarray:
-        return self._velocities[index][0]
-
-    def get_angular_velocity(self, index: int) -> np.ndarray:
-        return self._velocities[index][1]
-
-    def get_sleeping(self, index: int) -> bool:
-        return bool(self._sleepings[index])
-
-    def get_wheel(self, index: int, wheel_index: int) -> np.ndarray:
-        return self._wheels[index][wheel_index]
-
 
 
 class ReplicantSegmentationColors(OutputData):

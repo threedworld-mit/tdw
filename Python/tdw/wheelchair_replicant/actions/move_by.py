@@ -3,11 +3,11 @@ import numpy as np
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.actions.action import Action
 from tdw.wheelchair_replicant.wheel_values import WheelValues
 from tdw.wheelchair_replicant.actions.wheelchair_motion import WheelchairMotion
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
 
 class MoveBy(WheelchairMotion):
@@ -28,13 +28,13 @@ class MoveBy(WheelchairMotion):
       - Otherwise, the action ends in failure.
     """
 
-    def __init__(self, distance: float, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
+    def __init__(self, distance: float, wheel_values: WheelValues, dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
                  reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
-        :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
@@ -53,18 +53,19 @@ class MoveBy(WheelchairMotion):
         self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
         # The initial position. This is used to determine the distance traversed. This is set in `get_initialization_commands()`.
         self._initial_position: np.ndarray = np.zeros(shape=3)
+        # This will be updated per-frame.
+        self._position: np.ndarray = np.zeros(shape=3)
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         self._initial_position = dynamic.transform.position
+        self._position = dynamic.transform.position
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                    image_frequency=image_frequency)
 
-    def _get_distance(self, dynamic: WheelchairReplicantDynamic) -> Tuple[np.ndarray, np.ndarray]:
+    def _get_distance(self, dynamic: ReplicantDynamic) -> Tuple[np.ndarray, np.ndarray]:
         """
-        :param dynamic: The `WheelchairReplicantStatic` data that changes per `communicate()` call.
+        :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
 
         :return: Tuple: The distance to target, the distance traversed.
         """
@@ -80,21 +81,23 @@ class MoveBy(WheelchairMotion):
         return self.collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
                previous.status == ActionStatus.collision and np.sign(previous.distance) == np.sign(self.distance)
 
-    def _is_success(self, resp: List[bytes],
-                    static: WheelchairReplicantStatic,
-                    dynamic: WheelchairReplicantDynamic) -> bool:
+    def _is_success(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
         distance_to_target, distance_traversed = self._get_distance(dynamic=dynamic)
         return abs(distance_to_target) <= self.arrived_at
 
-    def _is_time_to_brake(self, resp: List[bytes],
-                          static: WheelchairReplicantStatic,
-                          dynamic: WheelchairReplicantDynamic) -> bool:
+    def _is_time_to_brake(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
         distance_to_target, distance_traversed = self._get_distance(dynamic=dynamic)
         return distance_traversed >= self.wheel_values.brake_at or abs(distance_to_target) <= self.arrived_at
 
-    def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
+    def _get_overlap_direction(self, dynamic: ReplicantDynamic) -> np.ndarray:
         if self.distance > 0:
             overlap_z = 0.8
         else:
             overlap_z = -0.6
         return dynamic.transform.forward * overlap_z
+
+    def _is_failure(self, dynamic: ReplicantDynamic) -> bool:
+        return np.linalg.norm(dynamic.transform.position - self._position) < 0.001
+
+    def _continue_action(self, dynamic: ReplicantDynamic):
+        self._position = dynamic.transform.position

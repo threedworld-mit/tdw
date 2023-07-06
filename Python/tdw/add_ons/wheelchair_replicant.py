@@ -4,8 +4,6 @@ from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.add_ons.replicant_base import ReplicantBase
 from tdw.replicant.arm import Arm
 from tdw.replicant.image_frequency import ImageFrequency
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
 from tdw.wheelchair_replicant.wheel_values import WheelValues, get_turn_values, get_move_values
 from tdw.wheelchair_replicant.actions.turn_by import TurnBy
 from tdw.wheelchair_replicant.actions.turn_to import TurnTo
@@ -17,7 +15,7 @@ from tdw.wheelchair_replicant.actions.wheelchair_replicant_grasp import Wheelcha
 from tdw.wheelchair_replicant.actions.wheelchair_replicant_drop import WheelchairReplicantDrop
 
 
-class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairReplicantStatic):
+class WheelchairReplicant(ReplicantBase):
     """
     A WheelchairReplicant is a wheelchair-bound human-like agent that can interact with the scene with pseudo-physics behavior.
     """
@@ -41,18 +39,6 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
 
         super().__init__(replicant_id=replicant_id, position=position, rotation=rotation,
                          image_frequency=image_frequency, name=name, target_framerate=target_framerate)
-
-    def get_initialization_commands(self) -> List[dict]:
-        """
-        This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
-
-        :return: A list of commands that will initialize this add-on.
-        """
-
-        commands = super().get_initialization_commands()
-        commands.append({"$type": "send_wheelchairs",
-                         "frequency": "always"})
-        return commands
 
     def turn_by(self, angle: float, wheel_values: WheelValues = None, reset_arms: bool = True,
                 reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 1):
@@ -304,20 +290,6 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
                                duration=duration,
                                scale_duration=scale_duration)
 
-    def _get_replicant_static(self, resp: List[bytes]) -> WheelchairReplicantStatic:
-        return WheelchairReplicantStatic(replicant_id=self.replicant_id, resp=resp)
-
-    def _set_dynamic_data(self, resp: List[bytes]) -> None:
-        """
-        Set dynamic data.
-
-        :param resp: The response from the build.
-        """
-
-        self.dynamic = WheelchairReplicantDynamic(resp=resp, replicant_id=self.replicant_id, frame_count=self._frame_count)
-        if self.dynamic.got_images:
-            self._frame_count += 1
-
     def _get_library_name(self) -> str:
         return WheelchairReplicant.LIBRARY_NAME
 
@@ -326,3 +298,6 @@ class WheelchairReplicant(ReplicantBase, WheelchairReplicantDynamic, WheelchairR
 
     def _get_send_replicants_command(self) -> str:
         return "send_wheelchair_replicants"
+
+    def _can_walk(self) -> bool:
+        return False

@@ -1,14 +1,14 @@
 from typing import Optional, List
 import numpy as np
 from tdw.quaternion_utils import QuaternionUtils
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.action import Action
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.wheelchair_replicant.wheel_values import WheelValues
 from tdw.wheelchair_replicant.actions.wheelchair_motion import WheelchairMotion
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
 
 class TurnBy(WheelchairMotion):
@@ -31,13 +31,13 @@ class TurnBy(WheelchairMotion):
       - Otherwise, the action ends in failure.
     """
 
-    def __init__(self, angle: float, wheel_values: WheelValues, dynamic: WheelchairReplicantDynamic,
+    def __init__(self, angle: float, wheel_values: WheelValues, dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
                  reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
         """
         :param angle: The angle in degrees.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
-        :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
@@ -54,36 +54,22 @@ class TurnBy(WheelchairMotion):
         self._initial_forward_vector: np.ndarray = np.zeros(3)
         # The initial yaw rotation.
         self._initial_rotation: float = 0
+        # The current yaw rotation.
+        self._rotation: float = 0
         super().__init__(wheel_values=wheel_values, dynamic=dynamic, collision_detection=collision_detection,
                          previous=previous, reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
                          scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         self._initial_forward_vector = dynamic.transform.forward.copy()
         self._initial_rotation = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
         self._initial_rotation = TurnBy._clamp_angle(self._initial_rotation)
+        self._rotation = self._initial_rotation
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                    image_frequency=image_frequency)
 
-    @staticmethod
-    def _clamp_angle(angle: float) -> float:
-        """
-        :param angle: an angle.
-
-        :return: The angle between -180 and 180 degrees.
-        """
-
-        if angle > 180:
-            return -360 + angle
-        elif angle < -180:
-            return 360 - angle
-        else:
-            return angle
-
-    def _get_delta_rotation(self, dynamic: WheelchairReplicantDynamic) -> float:
+    def _get_delta_rotation(self, dynamic: ReplicantDynamic) -> float:
         """
         :param dynamic: The `WheelchairReplicantStatic` data that changes per `communicate()` call.
 
@@ -101,21 +87,40 @@ class TurnBy(WheelchairMotion):
         return self.collision_detection.previous_was_same and previous is not None and isinstance(previous, TurnBy) and \
                previous.status == ActionStatus.collision and np.sign(previous.angle) == np.sign(self.angle)
 
-    def _is_success(self, resp: List[bytes],
-                    static: WheelchairReplicantStatic,
-                    dynamic: WheelchairReplicantDynamic) -> bool:
+    def _is_success(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
         delta_rotation: float = self._get_delta_rotation(dynamic=dynamic)
         return (0 < self.angle < delta_rotation) or (0 > self.angle > -delta_rotation) or np.linalg.norm(self.angle - delta_rotation) < self.arrived_at
 
-    def _is_time_to_brake(self, resp: List[bytes],
-                          static: WheelchairReplicantStatic,
-                          dynamic: WheelchairReplicantDynamic) -> bool:
+    def _is_time_to_brake(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> bool:
         delta_rotation: float = self._get_delta_rotation(dynamic=dynamic)
         return abs(delta_rotation) >= self.wheel_values.brake_at
 
-    def _get_overlap_direction(self, dynamic: WheelchairReplicantDynamic) -> np.ndarray:
+    def _get_overlap_direction(self, dynamic: ReplicantDynamic) -> np.ndarray:
         overlap_d = 0.5
         if self.angle < 0:
             overlap_d *= -1
         right = QuaternionUtils.multiply_by_vector(dynamic.transform.rotation, QuaternionUtils.RIGHT)
         return right * overlap_d
+
+    def _is_failure(self, dynamic: ReplicantDynamic) -> bool:
+        angle = TurnBy._clamp_angle(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1])
+        return np.linalg.norm(angle - self._rotation) < 0.0001
+
+    def _continue_action(self, dynamic: ReplicantDynamic):
+        self._rotation = TurnBy._clamp_angle(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1])
+
+    @staticmethod
+    def _clamp_angle(angle: float) -> float:
+        """
+        :param angle: an angle.
+
+        :return: The angle between -180 and 180 degrees.
+        """
+
+        if angle > 180:
+            return -360 + angle
+        elif angle < -180:
+            return 360 - angle
+        else:
+            return angle
+

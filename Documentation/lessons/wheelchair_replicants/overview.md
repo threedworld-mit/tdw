@@ -8,31 +8,9 @@ A Wheelchair Replicant moves and turns by applying torques and steering angles t
 
 ![](images/move_grasp_drop.gif)
 
-## Wheelchair Replicants and Robots
-
-Wheelchair Replicants differ from [robots](../robots/overview.md) in that they aren't *entirely* physics-driven. In addition  to being massless, Wheelchair  Replicant joints aren't defined as motorized drives. Joint velocity, momentum, etc. aren't concepts that exist in the context of a Wheelchair  Replicant.
-
-Wheelchair  Replicants are thus a compromise on realism: It is far easier to achieve complex behavior with a Wheelchair  Replicant than with a robot. On the other hand, the Wheelchair  Replicant's motion itself isn't driven by physics to the extent that a robot's would be.
-
-Like robots, Wheelchair Replicants are agents but are *not* [avatars](../core_concepts/avatars.md) in TDW. Avatar commands won't work with Wheelchair Replicants.
-
-## Wheelchair Replicants and Replicants
-
-The Replicant and Wheelchair Replicant have nearly the same action space APIs, though there are some important differences. For the sake of describing Wheelchair Replicants, it can be helpful to compare to them to Replicants. 
-
-- A Replicant is often used as an "able-bodied" agent, but it is actually more flexible than that. A Replicant can walking with a limping animation, for example. Or, the controller can constrain which objects it can grasp by mass, thus making the Replicant "weak". Or, the Replicant can ignore its image output data, thus becoming "blind". The last two examples, as well as many others, are just as applicable to a Wheelchair Replicant. The primary difference between the two agent types is their means of locomotion:
-
-  - A Replicant moves via a looping walk animation. This is pseduo-physical behavior because the Replicant is kinematic. For more information, [read this](../replicants/movement.md).
-
-  - A Wheelchair Replicant moves by applying torques and steering angles to its wheels. It is thus much more physically-driven than a Replicant. For more information, [read this](movement.md).
-- Wheelchair Replicant can't be [animated with pre-recorded animations](../replicants/animations.md).
-- The Replicant and Wheelchair Replicant arm articulation APIs are nearly the same. The arm motions are somewhat different because the Wheelchair Replicant uses a different IK solver. Unlike the Replicant, a Wheelchair Replicant can't apply [IK plans](../replicants/arm_articulation_4.md).
-- The Replicant and Wheelchair Replicant head rotation APIs are exactly the same.
-- The Replicant and Wheelchair Replicant collision detection systems are exactly the same.
-
 ## The `WheelchairReplicant` add-on
 
-Like robots and Replicants, WheelchairReplicants are best controlled via the [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md) add-on. Like all other add-ons, the `WheelchairReplicant` add-on decomposes into low-level TDW commands but, given the complexity of the agent, we recommend that you *always* use the `WheelchairReplicant` add-on rather than directly manipulating the agent with low-level commands.
+WheelchairReplicants are best controlled via the [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md) add-on. Like all other add-ons, the `WheelchairReplicant` add-on decomposes into low-level TDW commands but, given the complexity of the agent, we recommend that you *always* use the `WheelchairReplicant` add-on rather than directly manipulating the agent with low-level commands.
 
 Adding a Wheelchair Replicant to a scene is simple:
 
@@ -63,9 +41,33 @@ c.communicate(TDWUtils.create_empty_room(12, 12))
 
 There are additional constructor parameters that will be covered in subsequent documents.
 
+## Differences between Wheelchair Replicants and Replicants
+
+The Replicant and Wheelchair Replicant are very similar. In many cases, they share the same code; the add-ons themselves are subclasses of the same [`ReplicantBase`](../../python/add_ons/replicant_base.md) abstract class. There are some important differences, however, especially in how Replicants and Wheelchair Replicants move and turn.
+
+**Each document in this lesson will have a "Differences between Wheelchair Replicants and Replicants" section to compare the two agents.** 
+
+## Differences between  Wheelchair Replicants and Robots
+
+Wheelchair Replicants are similar to [robots](../robots/overview.md)  in that they can induce and respond to physics events, and that they move by applying forces to their wheels.  Like robots, Wheelchair Replicants are agents but are *not* [avatars](../core_concepts/avatars.md) in TDW. Avatar commands won't work with Wheelchair Replicants. Wheelchair Replicants differ from robots in three key ways:
+
+1. Robots articulate their arms by applying forces to each joint. Wheelchair Replicants move their arms via inverse kinematics (IK), thus making their arm articulation less realistic than robots (albeit significantly easier to use).
+2. Wheelchair Replicants don't have a realistic grasping mechanic.
+3. Wheelchair Replicants use different Unity components than Robots, resulting in simulated movement that is more suitable for the hybrid nature of the physically-driven wheelchair and the IK-driven arms. At a high level, this means that Wheelchair Replicants and Robots require different types of output data and the add-ons therefore need to be structured in different ways.
+
 ## Wheelchair Replicant asset bundles
 
-Wheelchair asset bundles are handled exactly the same way as Replicant asset bundles. [Read this for more information.](../replicants/overview.md) The only difference is that Wheelchair Replicant metadata records are stored in a different library: `wheelchair_replicants.json`.
+Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes.md), Wheelchair Replicants are **asset bundles** stored on a remote S3 server that must be downloaded before they can be added to the scene. This means that when you first add a Wheelchair Replicant to the scene, there will be a brief pause while it is downloaded and loaded into memory. For subsequent scene resets, the Wheelchair Replicant will already in memory and will appear immediately.
+
+Like all other asset bundle types in TDW, Replicants have metadata records stored in the TDW Python module. Each Replicant has a corresponding [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md), which is stored in a [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md). To print the name of each available Wheelchair Replicant:
+
+```python
+from tdw.librarian import HumanoidLibrarian
+
+library = HumanoidLibrarian("wheelchair_replicants.json")
+for record in library.records:
+    print(record.name)
+```
 
 ***
 
@@ -79,3 +81,4 @@ Python API:
 
 - [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md)
 - [`Replicant`](../../python/add_ons/replicant.md)
+- [`ReplicantBase`](../../python/add_ons/replicant_base.md)

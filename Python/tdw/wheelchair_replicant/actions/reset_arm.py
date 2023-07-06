@@ -1,6 +1,6 @@
 from typing import List
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.actions.arm_motion import ArmMotion
 
@@ -15,9 +15,7 @@ class ResetArm(ArmMotion):
     - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
     """
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)

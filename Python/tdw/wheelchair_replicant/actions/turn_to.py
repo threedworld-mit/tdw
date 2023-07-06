@@ -3,12 +3,12 @@ import numpy as np
 from tdw.type_aliases import TARGET
 from tdw.tdw_utils import TDWUtils
 from tdw.replicant.actions.action import Action
+from tdw.replicant.replicant_static import ReplicantStatic
+from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.wheelchair_replicant.wheel_values import WheelValues, get_turn_values, get_default_values
 from tdw.wheelchair_replicant.actions.turn_by import TurnBy
-from tdw.wheelchair_replicant.wheelchair_replicant_dynamic import WheelchairReplicantDynamic
-from tdw.wheelchair_replicant.wheelchair_replicant_static import WheelchairReplicantStatic
 
 
 class TurnTo(TurnBy):
@@ -31,13 +31,13 @@ class TurnTo(TurnBy):
       - Otherwise, the action ends in failure.
     """
 
-    def __init__(self, target: TARGET, wheel_values: Optional[WheelValues], dynamic: WheelchairReplicantDynamic,
+    def __init__(self, target: TARGET, wheel_values: Optional[WheelValues], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
                  reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels. If None, values will be derived from `angle`.
-        :param dynamic: The [`WheelchairReplicantDynamic`](../wheelchair_replicant_dynamic.md) data that changes per `communicate()` call.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
@@ -57,9 +57,7 @@ class TurnTo(TurnBy):
                          previous=previous, reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
                          scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
 
-    def get_initialization_commands(self, resp: List[bytes],
-                                    static: WheelchairReplicantStatic,
-                                    dynamic: WheelchairReplicantDynamic,
+    def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         target_position = self._get_target_array(target=self._target, resp=resp)
         # Set the target angle.

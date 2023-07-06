@@ -112,10 +112,11 @@ def get_move_values(distance: float) -> WheelValues:
 
     d = abs(distance)
     brake_at = d * 0.9
-    brake_torque = 5
     if d < 1:
+        brake_torque = 5
         motor_torque = 5
     else:
+        brake_torque = 10
         motor_torque = 10
     if distance < 0:
         motor_torque *= -1

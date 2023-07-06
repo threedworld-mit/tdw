@@ -288,20 +288,6 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                                duration=duration,
                                scale_duration=scale_duration)
 
-    def _get_replicant_static(self, resp: List[bytes]) -> ReplicantStatic:
-        return ReplicantStatic(replicant_id=self.replicant_id, resp=resp)
-
-    def _set_dynamic_data(self, resp: List[bytes]) -> None:
-        """
-        Set dynamic data.
-
-        :param resp: The response from the build.
-        """
-
-        self.dynamic = ReplicantDynamic(resp=resp, replicant_id=self.replicant_id, frame_count=self._frame_count)
-        if self.dynamic.got_images:
-            self._frame_count += 1
-
     def _get_library_name(self) -> str:
         return Replicant.LIBRARY_NAME
 
@@ -310,3 +296,6 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
 
     def _get_send_replicants_command(self) -> str:
         return "send_replicants"
+
+    def _can_walk(self) -> bool:
+        return True

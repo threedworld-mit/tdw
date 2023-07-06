@@ -75,7 +75,7 @@ Result:
 
 In the previous example, we didn't actually check whether the action succeeded or ended.
 
-In the case of `move_by(distance)`, the action can end in success (the Replicant walked the target distance), or failure ([a collision or near-collision](movement.md)).
+In the case of `move_by(distance)`, the action can end in success (the Wheelchair Replicant , moved the target distance), or failure ([a collision or near-collision](movement.md)).
 
 Within the add-on, every action is a data object: `replicant.action`. This is a subclass of [`Action`](../../python/replicant/actions/action.md).
 

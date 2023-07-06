@@ -10,7 +10,7 @@ The Wheelchair Replicant includes static data about the agent (such as body part
 
 ## Static Replicant Data
 
-Static Replicant data is stored in `replicant.static`. This is a [`WheelchairReplicantStatic` object](../../python/wheelchair_replicant/wheelchair_replicant_static.md), a subclass of [`ReplicantStatic`](../../python/replicant/replicant_static.md). The only difference between the two is that they expect different body parts: the Replicant expects there to be upper and lower legs, and the Wheelchair Replicant doesn't.
+Static Replicant data is stored in `replicant.static`. This is a [`ReplicantStatic` object](../../python/replicant/replicant_static.md).
 
 In addition to the replicant's ID (`static.replicant_id`), each body part has a separate ID.
 
@@ -78,24 +78,6 @@ Output:
 [0. 0. 0.]
 ```
 
-- `dynamic.rigidbody` is a [`Rigidbody`](../../python/object_data/rigidbody.md) (velocity, angular velocity, sleeping) of the Wheelchair Replicant. This is used internally to determine if the wheelchair is moving.
-- `dynamic.body_parts` is a dictionary. The key is a body part ID. The value is a [`Transform`](../../python/object_data/transform.md). This example prints the position of the Wheelchair Replicant's left hand. Note that we use the `static` data to get the hand's ID.
-
-```python
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.wheelchair_replicant import WheelchairReplicant
-from tdw.replicant.arm import Arm
-
-c = Controller()
-replicant = WheelchairReplicant()
-c.add_ons.append(replicant)
-c.communicate(TDWUtils.create_empty_room(12, 12))
-hand_id = replicant.static.hands[Arm.left]
-print(replicant.dynamic.body_parts[hand_id].position)
-c.communicate({"$type": "terminate"})
-```
-
 - `dynamic.held_objects` records whether an object is held in each hand and if so what the object's ID is. The key is an [`Arm`](../../python/replicant/arm.md) enum value and the value is an ID of an object. If the hand isn't holding an object, the key won't be in the dictionary:
 
 ```python
@@ -142,7 +124,6 @@ Output:
 False
 ```
 
-- `dynamic.wheels` is a dictionary where the key is a [`WheelPosition`](../../python/add_ons/wheelchair_replicant/wheel_position.md) (an enum value describing the location of the wheel on the wheelchair) and the value is a [`Wheel`](../../python/add_ons/wheelchair_replicant/wheel.md) (the  torque and steer angle of a given wheel).
 - `dynamic.got_images` is a boolean that indicates whether there is image data.
 - `dynamic.images` is a dictionary of image data. The key is the [pass mask as a string](../core_concepts/images.md). See below for more information:
 
@@ -193,7 +174,7 @@ dict_keys([])
 dict_keys(['img', 'id', 'depth'])
 ```
 
-If you want to capture images on every `communicate()` call, or never capture images, set the `image_frequency` parameter in the Replicant constructor, which accepts an [`ImageFrequency`](../../python/replicant/image_frequency.md) value:
+If you want to capture images on every `communicate()` call, or never capture images, set the `image_frequency` parameter in the Wheelchair Replicant constructor, which accepts an [`ImageFrequency`](../../python/replicant/image_frequency.md) value:
 
 ```python
 from tdw.controller import Controller
@@ -297,9 +278,7 @@ In addition to the the `_img` pass, the Wheelchair Replicant will capture `_id` 
 
 ## Low-level description
 
-When the `WheelchairReplicant` add-on initializes, it sends [`send_wheelchair_replicants`](../../api/command_api.md#send_wheelchair_replicants) and [`send_wheelchairs`](../../api/command_api.md#send_wheelchairs)  in order to receive [`Replicants`](../../api/output_data.md#Replicants) and  [`Wheelchairs`](../../api/output_data.md#WheelchairReplicants) output data, respecitvely, per `communicate()` call. 
-
-`send_wheelchair_replicants` returns nearly the same data as `send_replicants` but it is expecting a different quantity and ordering of body parts; both commands return `Replicants` output data. `send_wheelchairs` returns wheelchair-specific data. This data has been optimized for speed, not human usage; this one of many reasons that we recommend using the `WheelchairReplicant` add-on instead of low-level TDW commands and output data. Both `WheelchairReplicantStatic` and `WheelchairReplicantDynamic` parse`Replicants` output data. 
+When the `WheelchairReplicant` add-on initializes, it sends [`send_wheelchair_replicants`](../../api/command_api.md#send_wheelchair_replicants)  in order to receive [`Replicants`](../../api/output_data.md#Replicants) output data `communicate()` call. This data has been optimized for speed, not human usage; this one of many reasons that we recommend using the `Replicant` add-on instead of low-level TDW commands and output data. Both `ReplicantStatic` and `ReplicantDynamic` parse`Replicants` output data. 
 
 Some [actions](actions.md) require additional output data. When the `WheelchairReplicant` add-on initializes, it also sends [`send_transforms`](../../api/command_api.md#send_transforms), [`send_bounds`](../../api/command_api.md#send_bounds), and [`send_containment`](../../api/command_api.md#send_containment) to receive  [`Transforms`](../../api/output_data.md#Transforms),  [`Bounds`](../../api/output_data.md#Bounds), and  [`Containment`](../../api/output_data.md#Containment) respectively per `communicate()` call.
 
@@ -308,6 +287,12 @@ The `WheelchairReplicant`'s `static` and `dynamic` data are initially `None`. Bo
 On the *second* `communicate()` call (i.e. one call after initialization), the `Replicant` add-on sends [`create_avatar`](../../api/command_api.md#create_avatar) and [`parent_avatar_to_replicant`](../../api/command_api.md#parent_avatar_to_replicant) to attach an [avatar (camera)](../core_concepts/avatars.md) to its head. This is how it receives image data.
 
 The `WheelchairReplicant` sends [`send_images`](../../api/command_api.md#send_images) and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) to receive [`Images`](../../api/output_data.md#Images) and [`CameraMatrices`](../../api/output_data.md#CameraMatrices) output data, respectively. The frequency at which this data is sent depends on the value of the `image_frequency` value in the constructor. By default, these commands are only sent when an action ends; accordingly, they are actually passed from the `action`, to the `WheelchairReplicant`, to the controller.
+
+## Wheelchair Replicants and Replicants
+
+`WheelchairReplicant` and `Replicant` output data is nearly exactly the same. The only difference is which body parts appear in the output data. `WheelchairReplicant` includes the agent's shoulders but not its upper and lower legs. `Replicant` doesn't include the agent's shoulders (due to how the agent's skeleton is structured) but does include its upper and lower legs.
+
+`WheelchairReplicant` sends `send_wheelchair_replicants` while `Replicant` sends `send_replicants`. The returned output data, `Replicants`, is the same class that will include data for different body parts depending on which agent/command was used.
 
 ***
 
@@ -336,7 +321,6 @@ Command API:
 Output Data API:
 
 - [`Replicants`](../../api/output_data.md#Replicants)
-- [`Wheelchairs`](../../api/output_data.md#Wheelchairs)
 - [`Transforms`](../../api/output_data.md#Transforms)
 - [`Bounds`](../../api/output_data.md#Bounds)
 - [`Containment`](../../api/output_data.md#Containment)
@@ -346,10 +330,10 @@ Output Data API:
 Python API:
 
 - [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md)
-- [`WheelchairReplicantStatic`](../../python/wheelchair_replicant/wheelchair_replicant_static.md)
-- [`WheelchairReplicantDynamic`](../../python/wheelchair_replicant/wheelchair_replicant_dynamic.md)
+- [`ReplicantStatic`](../../python/replicant/replicant_static.md)
+- [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md)
 - [`Arm`](../../python/replicant/arm.md)
 - [`ReplicantBodyPart`](../../python/replicant/replicant_body_part.md)
 - [`ImageFrequency`](../../python/replicant/image_frequency.md)
 - [`Transform`](../../python/object_data/transform.md)
-- [`Rigidbody`](../../python/object_data/rigidbody.md)
+

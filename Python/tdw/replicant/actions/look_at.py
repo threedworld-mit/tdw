@@ -1,6 +1,7 @@
-from typing import List, Dict, Union
+from typing import List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
+from tdw.type_aliases import TARGET
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.actions.head_motion import HeadMotion
@@ -14,7 +15,7 @@ class LookAt(HeadMotion):
     The head will continuously move over multiple `communicate()` calls until it is looking at the target.
     """
 
-    def __init__(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float, scale_duration: bool):
+    def __init__(self, target: TARGET, duration: float, scale_duration: bool):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param duration: The duration of the motion in seconds.
@@ -25,7 +26,7 @@ class LookAt(HeadMotion):
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
-        self.target: Union[int, np.ndarray, Dict[str,  float]] = target
+        self.target: TARGET = target
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:

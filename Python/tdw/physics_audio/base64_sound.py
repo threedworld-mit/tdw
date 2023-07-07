@@ -11,7 +11,7 @@ class Base64Sound:
     A sound encoded as a base64 string.
     """
 
-    def __init__(self, snd: np.array):
+    def __init__(self, snd: np.ndarray):
         """
         :param snd: The sound byte array.
         """

@@ -46,8 +46,8 @@ class OculusTouch(VR):
         self._button_press_events_left: Dict[OculusTouchButton, Callable[[], None]] = dict()
         self._button_press_events_right: Dict[OculusTouchButton, Callable[[], None]] = dict()
         # Axis events.
-        self._axis_events_left: List[Callable[[np.array], None]] = list()
-        self._axis_events_right: List[Callable[[np.array], None]] = list()
+        self._axis_events_left: List[Callable[[np.ndarray], None]] = list()
+        self._axis_events_right: List[Callable[[np.ndarray], None]] = list()
         # Non-graspable objects.
         if non_graspable is None:
             self._non_graspable: List[int] = list()
@@ -140,7 +140,7 @@ class OculusTouch(VR):
         else:
             self._button_press_events_right[button] = function
 
-    def listen_to_axis(self, is_left: bool, function: Callable[[np.array], None]) -> None:
+    def listen_to_axis(self, is_left: bool, function: Callable[[np.ndarray], None]) -> None:
         """
         Listen for Oculus Touch controller axis events.
 

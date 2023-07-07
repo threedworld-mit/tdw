@@ -60,6 +60,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [Containment](#Containment) | The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag. | `cont` |
+| [Drones](#Drones) | Data for each drone in the scene. | `dron` |
 | [DynamicCompositeObjects](#DynamicCompositeObjects) | Dynamic data for composite objects. | `dcom` |
 | [DynamicEmptyObjects](#DynamicEmptyObjects) | The position of each empty object in the scene. | `dyem` |
 | [DynamicRobots](#DynamicRobots) | Dynamic robot output data. | `drob` |
@@ -93,6 +94,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
+| [ReplicantSegmentationColors](#ReplicantSegmentationColors) | Color segmentation data for Replicants in the scene. | `rseg` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
@@ -136,7 +138,7 @@ Audio data for each object in a scene. Note that this will only tell you if any 
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_is_playing(index)` | If true, the audio source is currently playing a sound. | `bool` |
-| `get_samples()` | Audio samples from the audio listener. | `np.array` |
+| `get_samples()` | Audio samples from the audio listener. | `np.ndarray` |
 
 ## AvatarKinematic
 
@@ -217,13 +219,13 @@ Rotated bounds data.
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_front(index)` | The front. | `np.array` |
-| `get_back(index)` | The back. | `np.array` |
-| `get_left(index)` | The left. | `np.array` |
-| `get_right(index)` | The right. | `np.array` |
-| `get_top(index)` | The top. | `np.array` |
-| `get_bottom(index)` | The bottom. | `np.array` |
-| `get_center(index)` | The center. | `np.array` |
+| `get_front(index)` | The front. | `np.ndarray` |
+| `get_back(index)` | The back. | `np.ndarray` |
+| `get_left(index)` | The left. | `np.ndarray` |
+| `get_right(index)` | The right. | `np.ndarray` |
+| `get_top(index)` | The top. | `np.ndarray` |
+| `get_bottom(index)` | The bottom. | `np.ndarray` |
+| `get_center(index)` | The center. | `np.ndarray` |
 
 ## CameraMatrices
 
@@ -237,8 +239,8 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar. | `str` |
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
-| `get_projection_matrix()` | The projection matrix. | `np.array` |
-| `get_camera_matrix()` | The camera matrix. | `np.array` |
+| `get_projection_matrix()` | The projection matrix. | `np.ndarray` |
+| `get_camera_matrix()` | The camera matrix. | `np.ndarray` |
 
 ## Categories
 
@@ -290,6 +292,22 @@ The IDs of every object that a shape overlaps plus parent IDs and the semantic c
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
+## Drones
+
+`d = Drones(byte_array)`
+
+**Identifier:** `dron`
+
+Data for each drone in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_raycast_hit(index)` | The hit of the raycast. | `bool` |
+| `get_raycast(index)` | The raycast. | `np.ndarray` |
+| `get_motor_on(index)` | If true, the drone's motor is on. | `bool` |
+
 ## DynamicCompositeObjects
 
 `d = DynamicCompositeObjects(byte_array)`
@@ -334,11 +352,11 @@ Dynamic robot output data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_immovable(index)` | An array indicating whether the root object of each robot is immovable. | `bool` |
-| `get_robot_position(index)` | The position of the robot. | `np.array` |
-| `get_robot_rotation(index)` | The rotation of the robot. | `np.array` |
-| `get_robot_forward(index)` | The forward of the robot. | `np.array` |
-| `get_joint_position(index)` | The position of the joint. | `np.array` |
-| `get_joint_angles(index)` | The angles of the joint. | `np.array` |
+| `get_robot_position(index)` | The position of the robot. | `np.ndarray` |
+| `get_robot_rotation(index)` | The rotation of the robot. | `np.ndarray` |
+| `get_robot_forward(index)` | The forward of the robot. | `np.ndarray` |
+| `get_joint_position(index)` | The position of the joint. | `np.ndarray` |
+| `get_joint_angles(index)` | The angles of the joint. | `np.ndarray` |
 | `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
 
 ## EnvironmentColliderIntersection
@@ -412,8 +430,8 @@ NVIDIA Flex data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num_objects()` | The number of objects. | `int` |
-| `get_particles(index)` | The Flex particle positions and inverse mass. | `np.array` |
-| `get_velocities(index)` | The Flex particle velocities. | `np.array` |
+| `get_particles(index)` | The Flex particle positions and inverse mass. | `np.ndarray` |
+| `get_velocities(index)` | The Flex particle velocities. | `np.ndarray` |
 | `get_id(index)` | The unique ID of the object. | `int` |
 
 ## Framerate
@@ -456,7 +474,7 @@ All segmentation colors in an _id pass.
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
 | `get_num_segmentation_colors()` | The number of segmentation colors. | `int` |
-| `get_segmentation_color(index)` | The color of the segmentation. | `np.array` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.ndarray` |
 
 ## Images
 
@@ -472,7 +490,7 @@ The images and associated metadata that were captured by an avatar.
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_num_passes()` | The number of passes. | `int` |
 | `get_pass_mask(index)` | The ID of the environment. | `str` |
-| `get_image(index)` | The image. | `np.array` |
+| `get_image(index)` | The image. | `np.ndarray` |
 | `get_extension(index)` | The image file extension (.png or .jpg). | `str` |
 | `get_width()` | The width of the screen in pixels. | `int` |
 | `get_height()` | The height of the screen in pixels. | `int` |
@@ -577,10 +595,10 @@ Data about the Transform component of objects (position and rotation) relative t
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.array` |
-| `get_forward(index)` | The forward. | `np.array` |
-| `get_rotation(index)` | The rotation. | `np.array` |
-| `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.array` |
+| `get_position(index)` | The position. | `np.ndarray` |
+| `get_forward(index)` | The forward. | `np.ndarray` |
+| `get_rotation(index)` | The rotation. | `np.ndarray` |
+| `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.ndarray` |
 
 ## LogMessage
 
@@ -607,8 +625,8 @@ Data for a Magnebot.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_id()` | The unique ID of the Magnebot. | `int` |
-| `get_held_left()` | The IDs of the objects held by the left magnet. | `np.array` |
-| `get_held_right()` | The IDs of the objects held by the right magnet. | `np.array` |
+| `get_held_left()` | The IDs of the objects held by the left magnet. | `np.ndarray` |
+| `get_held_right()` | The IDs of the objects held by the right magnet. | `np.ndarray` |
 | `get_top()` | The position of the top point of the Magnebot. | `Tuple[float, float, float]` |
 
 ## MagnebotWheels
@@ -636,8 +654,8 @@ Mesh data from readable objects.
 | --- | --- | --- |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_num()` | The number of objects. | `int` |
-| `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.array` |
-| `get_triangles(index)` | Each triangle of the mesh. | `np.array` |
+| `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.ndarray` |
+| `get_triangles(index)` | Each triangle of the mesh. | `np.ndarray` |
 
 ## Mouse
 
@@ -649,8 +667,8 @@ Data for mouse input and movement.
 
 | Function | Description | Return type |
 | --- | --- | --- |
-| `get_position()` | The (x, y) screen position of the mouse. | `np.array` |
-| `get_scroll_delta()` | The (x, y) delta of the scroll wheel. | `np.array` |
+| `get_position()` | The (x, y) screen position of the mouse. | `np.ndarray` |
+| `get_scroll_delta()` | The (x, y) delta of the scroll wheel. | `np.ndarray` |
 | `get_is_left_button_pressed()` | The pressed of the is left button. | `bool` |
 | `get_is_left_button_held()` | The held of the is left button. | `bool` |
 | `get_is_left_button_released()` | The released of the is left button. | `bool` |
@@ -672,7 +690,7 @@ A path on the scene's NavMesh.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_state()` | The state of the path: "complete", "partial", or "invalid". | `str` |
-| `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.array` |
+| `get_path()` | Waypoints on the path as a numpy array of (x, y, z) coordinates. | `np.ndarray` |
 | `get_id()` | The ID of this path. Use this to differentiate between different NavMeshPaths. | `int` |
 
 ## ObiParticles
@@ -686,13 +704,13 @@ Obi particle data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_num_solvers()` | The number of solvers. | `int` |
-| `get_positions(index)` | The positions of the particles. | `np.array` |
-| `get_velocities(index)` | The velocities of the particles. | `np.array` |
+| `get_positions(index)` | The positions of the particles. | `np.ndarray` |
+| `get_velocities(index)` | The velocities of the particles. | `np.ndarray` |
 | `get_num_objects()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
 | `get_solver_id(index)` | The ID of the actor's solver. | `int` |
 | `get_count(index)` | The number of active particles. | `int` |
-| `get_solver_indices(index)` | Indices of the particles in the solver. | `np.array` |
+| `get_solver_indices(index)` | Indices of the particles in the solver. | `np.ndarray` |
 
 ## ObjectColliderIntersection
 
@@ -749,8 +767,8 @@ Which Oculus Touch controller buttons have been pressed.
 | --- | --- | --- |
 | `get_left()` | Bitwise sum of buttons pressed on the left controller. | `List[OculusTouchButton]` |
 | `get_right()` | Bitwise sum of buttons pressed on the right controller. | `List[OculusTouchButton]` |
-| `get_left_axis()` | Left control stick direction as an `[x, y]` vector (values range from -1 to 1). | `np.array` |
-| `get_right_axis()` | Right control stick direction as an `[x, y]` vector (values range from -1 to 1). | `np.array` |
+| `get_left_axis()` | Left control stick direction as an `[x, y]` vector (values range from -1 to 1). | `np.ndarray` |
+| `get_right_axis()` | Right control stick direction as an `[x, y]` vector (values range from -1 to 1). | `np.ndarray` |
 
 ## Overlap
 
@@ -763,7 +781,7 @@ The IDs of every object that a shape overlaps.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_id()` | The identity of this overlap (useful if you've requested multiple Overlap objects). | `int` |
-| `get_object_ids()` | The IDs of every object in the overlap shape. | `np.array` |
+| `get_object_ids()` | The IDs of every object in the overlap shape. | `np.ndarray` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
 
@@ -823,6 +841,20 @@ Data about each Replicant in the scene.
 | `get_collision_id(index, body_part_index, collision_index)` | The ID of the collision. | `int` |
 | `get_status(index)` | The status. | `ActionStatus` |
 
+## ReplicantSegmentationColors
+
+`r = ReplicantSegmentationColors(byte_array)`
+
+**Identifier:** `rseg`
+
+Color segmentation data for Replicants in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_segmentation_color(index)` | The color of the segmentation. | `np.ndarray` |
+
 ## Rigidbodies
 
 `r = Rigidbodies(byte_array)`
@@ -835,8 +867,8 @@ Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scen
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_velocity(index)` | The velocity. | `np.array` |
-| `get_angular_velocity(index)` | The angular velocity. | `np.array` |
+| `get_velocity(index)` | The velocity. | `np.ndarray` |
+| `get_angular_velocity(index)` | The angular velocity. | `np.ndarray` |
 | `get_sleeping(index)` | The sleeping. | `bool` |
 
 ## RobotJointVelocities
@@ -852,8 +884,8 @@ Velocity for a robot in the scene.
 | `get_id()` | The ID of the robot. | `int` |
 | `get_num_joints()` | The number of joints. | `int` |
 | `get_joint_id(index)` | The ID of the joint. | `int` |
-| `get_joint_velocity(index)` | The velocity of the joint. | `np.array` |
-| `get_joint_angular_velocity(index)` | The angular velocity of the joint. | `np.array` |
+| `get_joint_velocity(index)` | The velocity of the joint. | `np.ndarray` |
+| `get_joint_angular_velocity(index)` | The angular velocity of the joint. | `np.ndarray` |
 | `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
 
 ## SceneRegions
@@ -899,7 +931,7 @@ Color segmentation data for objects in the scene.
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_object_id(index)` | The ID of the object. | `int` |
-| `get_object_color(index)` | The color of the object. | `np.array` |
+| `get_object_color(index)` | The color of the object. | `np.ndarray` |
 | `get_object_name(index)` | The name of the object. | `str` |
 | `get_object_category(index)` | The category of the object. | `str` |
 
@@ -1024,7 +1056,7 @@ Static data for a robot in the scene.
 | `get_non_moving_id(index)` | The ID of the non moving. | `int` |
 | `get_non_moving_name(index)` | The name of the non moving. | `str` |
 | `get_non_moving_segmentation_color(index)` | The color of the non moving segmentation. | `Tuple[float, float, float]` |
-| `get_joint_indices()` | The joint IDs and their indices in the static data. | `np.array` |
+| `get_joint_indices()` | The joint IDs and their indices in the static data. | `np.ndarray` |
 | `get_robot_index()` | The index of the robot. | `int` |
 
 ## Substructure
@@ -1054,9 +1086,9 @@ Data about the Transform component of objects (position and rotation).
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.array` |
-| `get_forward(index)` | The forward. | `np.array` |
-| `get_rotation(index)` | The rotation. | `np.array` |
+| `get_position(index)` | The position. | `np.ndarray` |
+| `get_forward(index)` | The forward. | `np.ndarray` |
+| `get_rotation(index)` | The rotation. | `np.ndarray` |
 
 ## TriggerCollision
 
@@ -1123,6 +1155,6 @@ Data about the VR rig currently in the scene.
 | `get_head_position()` | The position of the head. | `Tuple[float, float, float]` |
 | `get_head_rotation()` | The rotation of the head. | `Tuple[float, float, float, float]` |
 | `get_head_forward()` | The forward of the head. | `Tuple[float, float, float]` |
-| `get_held_left()` | The IDs of the objects held by the left hand. | `np.array` |
-| `get_held_right()` | The IDs of the objects held by the right hand. | `np.array` |
+| `get_held_left()` | The IDs of the objects held by the left hand. | `np.ndarray` |
+| `get_held_right()` | The IDs of the objects held by the right hand. | `np.ndarray` |
 

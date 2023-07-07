@@ -38,6 +38,7 @@
 8. [Objects](Documentation/lessons/core_concepts/objects.md)
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
+11. [Outdoor scenes](Documentation/lessons/core_concepts/outdoor_scenes.md)
 
 ## Troubleshooting
 
@@ -239,20 +240,28 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 14. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
 15. [Reset](Documentation/lessons/replicants/reset.md)
 
-### 11.4 Virtual Reality (VR)
+### 11.4 Drones
+
+1. [Drones](Documentation/lessons/drone/drone.md)
+
+### 11.5 Vehicles
+
+1. [Vehicles](Documentation/lessons/vehicle/vehicle.md)
+
+### 11.6 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch](Documentation/lessons/vr/oculus_touch.md)
 3. [Oculus Leap Motion](Documentation/lessons/vr/oculus_leap_motion.md)
 
-### 11.5 Keyboard and Mouse
+### 11.7 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.6 Embodied avatars
+### 11.8 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
@@ -314,6 +323,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [QuaternionUtils](Documentation/python/quaternion_utils.md)
 - [RemoteBuildLauncher](Documentation/python/remote_build_launcher.md)
 - [TDWUtils](Documentation/python/tdw_utils.md)
+- [TypeAliases](Documentation/python/type_aliases.md)
 
 **tdw.add_ons**
 
@@ -326,6 +336,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
+- [Drone](Documentation/python/add_ons/drone.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
 - [EmptyObjectManager](Documentation/python/add_ons/empty_object_manager.md)
 - [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
@@ -360,8 +371,13 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [UI](Documentation/python/add_ons/ui.md)
+- [Vehicle](Documentation/python/add_ons/vehicle.md)
 - [VR](Documentation/python/add_ons/vr.md)
 - [Writer](Documentation/python/add_ons/writer.md)
+
+**tdw.agent_data**
+
+- [AgentDynamic](Documentation/python/agent_data/agent_dynamic.md)
 
 **tdw.asset_bundle_creator**
 
@@ -390,12 +406,17 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CylinderContainer](Documentation/python/container_data/cylinder_container.md)
 - [SphereContainer](Documentation/python/container_data/sphere_container.md)
 
+**tdw.drone**
+
+- [DroneDynamic](Documentation/python/drone/drone_dynamic.md)
+
 **tdw.flex_data**
 
 - [FluidType](Documentation/python/flex_data/fluid_type.md)
 
 **tdw.librarian**
 
+- [DroneLibrarian](Documentation/python/librarian/drone_librarian.md)
 - [HdriSkyboxLibrarian](Documentation/python/librarian/hdri_skybox_librarian.md)
 - [HumanoidAnimationLibrarian](Documentation/python/librarian/humanoid_animation_librarian.md)
 - [HumanoidLibrarian](Documentation/python/librarian/humanoid_librarian.md)
@@ -403,6 +424,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+- [VehicleLibrarian](Documentation/python/librarian/vehicle_librarian.md)
 - [VisualEffectLibrarian](Documentation/python/librarian/visual_effect_librarian.md)
 
 **tdw.lisdf_data**
@@ -560,6 +582,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [IkPlan](Documentation/python/replicant/ik_plans/ik_plan.md)
 - [IkPlanType](Documentation/python/replicant/ik_plans/ik_plan_type.md)
+- [Reset](Documentation/python/replicant/ik_plans/reset.md)
 - [VerticalHorizontal](Documentation/python/replicant/ik_plans/vertical_horizontal.md)
 
 **tdw.robot_data**
@@ -578,6 +601,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [RegionBounds](Documentation/python/scene_data/region_bounds.md)
 - [Room](Documentation/python/scene_data/room.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
+
+**tdw.vehicle**
+
+- [VehicleDynamic](Documentation/python/vehicle/vehicle_dynamic.md)
 
 **tdw.vr_data**
 

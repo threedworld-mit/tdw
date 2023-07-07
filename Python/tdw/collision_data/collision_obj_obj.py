@@ -17,8 +17,8 @@ class CollisionObjObj(CollisionBase):
         """:field
         The relative velocity of the objects.
         """
-        self.relative_velocity: np.array = np.array(collision.get_relative_velocity())
+        self.relative_velocity: np.ndarray = np.array(collision.get_relative_velocity())
         """:field
         The total impulse applied to the pair of objects to resolve the collision.
         """
-        self.impulse: np.array = np.array(collision.get_impulse())
+        self.impulse: np.ndarray = np.array(collision.get_impulse())

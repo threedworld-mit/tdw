@@ -17,11 +17,11 @@ class CollisionBase(ABC):
         """:field
         The contact point positions.
         """
-        self.points: List[np.array] = list()
+        self.points: List[np.ndarray] = list()
         """:field
         The contact point normals.
         """
-        self.normals: List[np.array] = list()
+        self.normals: List[np.ndarray] = list()
         for i in range(collision.get_num_contacts()):
             self.points.append(np.array(collision.get_contact_point(i)))
             self.normals.append(np.array(collision.get_contact_normal(i)))

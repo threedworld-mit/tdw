@@ -468,9 +468,9 @@
 
 | Command | Description |
 | --- | --- |
-| [`wheelchair_replicant_reach_for_object`](#wheelchair_replicant_reach_for_object) | Tell the WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
+| [`wheelchair_replicant_reach_for_object`](#wheelchair_replicant_reach_for_object) | Tell a WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
 | [`wheelchair_replicant_reach_for_position`](#wheelchair_replicant_reach_for_position) | Tell a WheelchairReplicant to start to reach for a target position.  |
-| [`wheelchair_replicant_reset_arm`](#wheelchair_replicant_reset_arm) | Tell the WheelchairReplicant to start to reset the arm to its neutral position.  |
+| [`wheelchair_replicant_reset_arm`](#wheelchair_replicant_reset_arm) | Tell a WheelchairReplicant to start to reset the arm to its neutral position.  |
 
 **Replicant Look At Command**
 
@@ -6233,7 +6233,7 @@ These commands instruct a replicant to start to reach for a target.
 
 ## **`wheelchair_replicant_reach_for_object`**
 
-Tell the WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
+Tell a WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
@@ -6308,7 +6308,7 @@ A left or right arm.
 
 ## **`wheelchair_replicant_reset_arm`**
 
-Tell the WheelchairReplicant to start to reset the arm to its neutral position. 
+Tell a WheelchairReplicant to start to reset the arm to its neutral position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>

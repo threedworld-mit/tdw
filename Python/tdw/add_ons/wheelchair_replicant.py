@@ -8,7 +8,6 @@ from tdw.wheelchair_replicant.actions.turn_by import TurnBy
 from tdw.wheelchair_replicant.actions.turn_to import TurnTo
 from tdw.wheelchair_replicant.actions.move_by import MoveBy
 from tdw.wheelchair_replicant.actions.move_to import MoveTo
-from tdw.wheelchair_replicant.actions.reset_arm import ResetArm
 from tdw.wheelchair_replicant.actions.reach_for import ReachFor
 
 
@@ -46,7 +45,7 @@ class WheelchairReplicant(ReplicantBase):
 
         Therefore, the wheelchair is not guaranteed to turn in place.
 
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
 
         - If the Replicant turns by the target angle, the action succeeds.
         - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
@@ -82,7 +81,7 @@ class WheelchairReplicant(ReplicantBase):
 
         Therefore, the wheelchair is not guaranteed to turn in place.
 
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
 
         - If the Replicant turns by the target angle, the action succeeds.
         - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
@@ -115,7 +114,7 @@ class WheelchairReplicant(ReplicantBase):
 
         Stop moving by setting the motor torques to 0 and applying the brakes.
 
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
 
         - If the Replicant moves the target distance, the action succeeds.
         - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
@@ -148,7 +147,7 @@ class WheelchairReplicant(ReplicantBase):
         """
         Turn the wheelchair to a target position or object and then move to it.
 
-        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../collision_detection.md).
+        The action can end for several reasons depending on the collision detection rules (see [`self.collision_detection`](../replicant/collision_detection.md).
 
         - If the Replicant moves the target distance (i.e. it reaches its target), the action succeeds.
         - If `self.collision_detection.previous_was_same == True`, and the previous action was `MoveBy` or `MoveTo`, and it was in the same direction (forwards/backwards), and the previous action ended in failure, this action ends immediately.
@@ -225,27 +224,6 @@ class WheelchairReplicant(ReplicantBase):
                                max_distance=max_distance,
                                from_held=from_held,
                                held_point=held_point)
-
-    def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25, scale_duration: bool = True) -> None:
-        """
-        Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
-
-        The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
-
-        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
-        - If `self.collision_detection.previous_was_same == True`, and if the previous action was an arm motion, and it ended in a collision, this action ends immediately.
-
-        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
-        :param duration: The duration of the motion in seconds.
-        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        """
-
-        self.action = ResetArm(arms=WheelchairReplicant._arms_to_list(arm),
-                               dynamic=self.dynamic,
-                               collision_detection=self.collision_detection,
-                               previous=self._previous_action,
-                               duration=duration,
-                               scale_duration=scale_duration)
 
     def _get_library_name(self) -> str:
         return WheelchairReplicant.LIBRARY_NAME

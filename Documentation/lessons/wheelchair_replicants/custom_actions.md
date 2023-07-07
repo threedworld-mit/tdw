@@ -201,7 +201,7 @@ class ClapState(Enum):
 
 ### 2.2 Create the `Clap` constructor
 
-Now we're going to start to write our `Clap` action. Instead of being a subclass of `Action`, this will be a subclass of [`ArmMotion`](../../python/replicant/actions/arm_motion.md), the abstract class used by [`ReachFor`](../../python/wheelchair_replicant/actions/reach_for.md) and [`ResetArm`](../../python/wheelchair_replicant/actions/reset_arm.md). We want to subclass `ArmMotion` because it automatically handles [collision detection](collision_detection.md) for us while the arms are moving.
+Now we're going to start to write our `Clap` action. Instead of being a subclass of `Action`, this will be a subclass of [`ArmMotion`](../../python/replicant/actions/arm_motion.md), the abstract class used by [`ReachFor`](../../python/wheelchair_replicant/actions/reach_for.md) and [`ResetArm`](../../python/replicant/actions/reset_arm.md). We want to subclass `ArmMotion` because it automatically handles [collision detection](collision_detection.md) for us while the arms are moving.
 
 We also need to define a local position for where the hands we'll meet, which will make a class variable called POSITION:
 
@@ -539,7 +539,7 @@ if __name__ == "__main__":
 
 Custom actions work the same for Wheelchair Replicants and Replicants. They may require different action subclasses, commands, etc. but the underlying logic and best-practices are the same.
 
-The [Replicant version of this document](../replicant/custom_actions.md) includes an additional section that describes how to create a basic pathfinding action. This document doesn't include that section because Wheelchair Replicants don't work well with NavMeshes. For more information, [read the last section of this document](navigation.md).
+The [Replicant version of this document](../replicants/custom_actions.md) includes an additional section that describes how to create a basic pathfinding action. This document doesn't include that section because Wheelchair Replicants don't work well with NavMeshes. For more information, [read the last section of this document](navigation.md).
 
 ***
 

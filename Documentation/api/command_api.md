@@ -67,6 +67,7 @@
 | [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
 | [`add_replicant`](#add_replicant) | Add a Replicant to the scene.  |
 | [`add_smpl_humanoid`](#add_smpl_humanoid) | Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters.  |
+| [`add_wheelchair_replicant`](#add_wheelchair_replicant) | Add a WheelchairReplicant to the scene.  |
 
 **Add Material Command**
 
@@ -334,6 +335,7 @@
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`enable_nav_mesh_obstacle`](#enable_nav_mesh_obstacle) | Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing. |
+| [`ignore_collisions`](#ignore_collisions) | Set whether one object should ignore collisions with another object. By default, objects never ignore any collisions. |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
@@ -428,18 +430,15 @@
 | [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.  |
 | [`stop_humanoid_animation`](#stop_humanoid_animation) | Stop a motion capture animation on a humanoid. |
 
-**Replicant Command**
+**Replicant Base Command**
 
 | Command | Description |
 | --- | --- |
-| [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
 | [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant. |
-| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 | [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
-| [`stop_replicant_animation`](#stop_replicant_animation) | Stop an ongoing Replicant animation. |
 
-**Replicant Arm Command**
+**Replicant Base Arm Command**
 
 | Command | Description |
 | --- | --- |
@@ -447,19 +446,31 @@
 | [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object.  |
 | [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped.  |
 
+**Replicant Arm Command**
+
 **Replicant Arm Motion Command**
 
 | Command | Description |
 | --- | --- |
-| [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm on a humanoid to its neutral position.  |
+| [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm to its neutral position.  |
 
 **Replicant Reach For Command**
 
 | Command | Description |
 | --- | --- |
 | [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
-| [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
+| [`replicant_reach_for_position`](#replicant_reach_for_position) | Tell a Replicant to start to reach for a target position.  |
 | [`replicant_reach_for_relative_position`](#replicant_reach_for_relative_position) | Instruct a Replicant to start to reach for a target position relative to the Replicant.  |
+
+**Wheelchair Replicant Arm Command**
+
+**Wheelchair Replicant Reach For Command**
+
+| Command | Description |
+| --- | --- |
+| [`wheelchair_replicant_reach_for_object`](#wheelchair_replicant_reach_for_object) | Tell the WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
+| [`wheelchair_replicant_reach_for_position`](#wheelchair_replicant_reach_for_position) | Tell a WheelchairReplicant to start to reach for a target position.  |
+| [`wheelchair_replicant_reset_arm`](#wheelchair_replicant_reset_arm) | Tell the WheelchairReplicant to start to reset the arm to its neutral position.  |
 
 **Replicant Look At Command**
 
@@ -469,6 +480,14 @@
 | [`replicant_look_at_position`](#replicant_look_at_position) | Tell the Replicant to start to look at a position.  |
 | [`replicant_reset_head`](#replicant_reset_head) | Tell the Replicant to start to reset its head to its neutral position.  |
 | [`replicant_rotate_head_by`](#replicant_rotate_head_by) | Rotate the Replicant's head by an angle around an axis. |
+
+**Replicant Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
+| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
+| [`stop_replicant_animation`](#stop_replicant_animation) | Stop an ongoing Replicant animation. |
 
 **Sub Object Command**
 
@@ -498,6 +517,14 @@
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
 | [`set_visual_material_smoothness`](#set_visual_material_smoothness) | Set the smoothness (glossiness) of an object's visual material. |
+
+**Wheelchair Replicant Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_wheelchair_brake_torque`](#set_wheelchair_brake_torque) | Set the brake torque of the wheelchair's wheels. |
+| [`set_wheelchair_motor_torque`](#set_wheelchair_motor_torque) | Set the motor torque of the wheelchair's rear wheels. |
+| [`set_wheelchair_steer_angle`](#set_wheelchair_steer_angle) | Set the steer angle of the wheelchair's front wheels. |
 
 **Set Flex Actor**
 
@@ -712,7 +739,6 @@
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
-| [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
 | [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
@@ -739,6 +765,13 @@
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
+
+**Send Replicants Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
+| [`send_wheelchair_replicants`](#send_wheelchair_replicants) | Send data of each WheelchairReplicant in the scene.  |
 
 **Ui Command**
 
@@ -1719,6 +1752,30 @@ Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.
 | `"torso_height"` | float | The height of the torso from the chest. Must be between -1 and 1. | 0 |
 | `"left_right_symmetry"` | float | The extent to which the left side of the mesh is slightly narrower or vice versa. Must be between -1 and 1. | 0 |
 | `"shoulder_and_torso_width"` | float | The width of the shoulders and torso combined. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique ID of the humanoid. | |
+| `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_wheelchair_replicant`**
+
+Add a WheelchairReplicant to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/replicant_librarian.md`</font>
+
+```python
+{"$type": "add_wheelchair_replicant", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_wheelchair_replicant", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique ID of the humanoid. | |
 | `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
@@ -4389,6 +4446,27 @@ Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavM
 
 ***
 
+## **`ignore_collisions`**
+
+Set whether one object should ignore collisions with another object. By default, objects never ignore any collisions.
+
+
+```python
+{"$type": "ignore_collisions", "other_id": 1, "id": 1}
+```
+
+```python
+{"$type": "ignore_collisions", "other_id": 1, "id": 1, "ignore": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"other_id"` | int | The ID of the other object. | |
+| `"ignore"` | bool | If True, ignore collisions with the other object. If False, listen for collisions with the other object. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`make_nav_mesh_obstacle`**
 
 Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command. 
@@ -5818,30 +5896,9 @@ Stop a motion capture animation on a humanoid.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
-# ReplicantCommand
+# ReplicantBaseCommand
 
 These commands affect a Replicant currently in the scene.
-
-***
-
-## **`add_replicant_rigidbody`**
-
-Add a Rigidbody to a Replicant.
-
-
-```python
-{"$type": "add_replicant_rigidbody", "id": 1}
-```
-
-```python
-{"$type": "add_replicant_rigidbody", "id": 1, "is_kinematic": True, "use_gravity": False}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | True |
-| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
-| `"id"` | int | The unique object ID. | |
 
 ***
 
@@ -5862,29 +5919,6 @@ Parent an avatar to a Replicant. The avatar's position and rotation will always 
 | --- | --- | --- | --- |
 | `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
 | `"position"` | Vector3 | The position of the avatar relative to the Replicant's head. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`play_replicant_animation`**
-
-Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
-
-
-```python
-{"$type": "play_replicant_animation", "name": "string", "id": 1}
-```
-
-```python
-{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"name"` | string | The name of the animation clip to play. | |
-| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
-| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
-| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5918,22 +5952,7 @@ Advance the Replicant's IK solvers by 1 frame.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
-***
-
-## **`stop_replicant_animation`**
-
-Stop an ongoing Replicant animation.
-
-
-```python
-{"$type": "stop_replicant_animation", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
-
-# ReplicantArmCommand
+# ReplicantBaseArmCommand
 
 These commands involve a Replicant's arm.
 
@@ -5982,13 +6001,12 @@ Grasp a target object.
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The target object ID. | |
-| `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | float | Offset the object from the hand by this distance. | |
 | `"arm"` | Arm | The arm doing the action. | |
@@ -6047,6 +6065,10 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
+# ReplicantArmCommand
+
+These commands involve a Replicant's arm.
+
 # ReplicantArmMotionCommand
 
 These commands involve the motion of a Replicant's arm.
@@ -6055,7 +6077,7 @@ These commands involve the motion of a Replicant's arm.
 
 ## **`replicant_reset_arm`**
 
-Tell the Replicant to start to reset the arm on a humanoid to its neutral position. 
+Tell the Replicant to start to reset the arm to its neutral position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
@@ -6129,7 +6151,7 @@ A left or right arm.
 
 ## **`replicant_reach_for_position`**
 
-Instruct a Replicant to start to reach for a target position. 
+Tell a Replicant to start to reach for a target position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
@@ -6182,6 +6204,125 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The target position relative to the Replicant. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# WheelchairReplicantArmCommand
+
+These commands involve a WheelchairReplicant's arm.
+
+# WheelchairReplicantReachForCommand
+
+These commands instruct a replicant to start to reach for a target.
+
+***
+
+## **`wheelchair_replicant_reach_for_object`**
+
+Tell the WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The target object ID. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`wheelchair_replicant_reach_for_position`**
+
+Tell a WheelchairReplicant to start to reach for a target position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position. | |
+| `"absolute"` | bool | If True, the target position is in absolute world space coordinates. If False, it's in local space coordinates. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`wheelchair_replicant_reset_arm`**
+
+Tell the WheelchairReplicant to start to reset the arm to its neutral position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
@@ -6307,6 +6448,69 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
+
+# ReplicantCommand
+
+These commands affect a Replicant currently in the scene.
+
+***
+
+## **`add_replicant_rigidbody`**
+
+Add a Rigidbody to a Replicant.
+
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1}
+```
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1, "is_kinematic": True, "use_gravity": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | True |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`play_replicant_animation`**
+
+Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
+
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1}
+```
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
+| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`stop_replicant_animation`**
+
+Stop an ongoing Replicant animation.
+
+
+```python
+{"$type": "stop_replicant_animation", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
 
 # SubObjectCommand
 
@@ -6599,6 +6803,59 @@ Set the smoothness (glossiness) of an object's visual material.
 | `"smoothness"` | float | The material smoothness. Must be between 0 and 1. | 0 |
 | `"material_index"` | int | The index of the material in the sub-object's list of materials. | 0 |
 | `"object_name"` | string | The name of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+# WheelchairReplicantCommand
+
+These commands affect a WheelchairReplicant currently in the scene.
+
+***
+
+## **`set_wheelchair_brake_torque`**
+
+Set the brake torque of the wheelchair's wheels.
+
+
+```python
+{"$type": "set_wheelchair_brake_torque", "torque": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | float | The torque. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_wheelchair_motor_torque`**
+
+Set the motor torque of the wheelchair's rear wheels.
+
+
+```python
+{"$type": "set_wheelchair_motor_torque", "left": 0.125, "right": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"left"` | float | The torque for the left rear wheel. | |
+| `"right"` | float | The torque for the right rear wheel. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_wheelchair_steer_angle`**
+
+Set the steer angle of the wheelchair's front wheels.
+
+
+```python
+{"$type": "set_wheelchair_steer_angle", "angle": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle in degrees. | |
 | `"id"` | int | The unique object ID. | |
 
 # SetFlexActor
@@ -9317,38 +9574,6 @@ Options for when to send data.
 
 ***
 
-## **`send_replicants`**
-
-Send data of each Replicant in the scene. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
-
-```python
-{"$type": "send_replicants"}
-```
-
-```python
-{"$type": "send_replicants", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_replicant_segmentation_colors`**
 
 Send the segmentationColor of each Replicant in the scene. 
@@ -9877,6 +10102,74 @@ Send spatial volume data of objects in the scene. Volume is calculated from the 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendReplicantsCommand
+
+These commands send Replicants output data for different types of Replicants.
+
+***
+
+## **`send_replicants`**
+
+Send data of each Replicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
+
+```python
+{"$type": "send_replicants"}
+```
+
+```python
+{"$type": "send_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_wheelchair_replicants`**
+
+Send data of each WheelchairReplicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
+
+```python
+{"$type": "send_wheelchair_replicants"}
+```
+
+```python
+{"$type": "send_wheelchair_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

@@ -34,8 +34,8 @@ class MoveBy(WheelchairMotion):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
-        :param dynamic: The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
-        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
+        :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
+        :param collision_detection: The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
         :param previous: The previous action, if any.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning to move.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.

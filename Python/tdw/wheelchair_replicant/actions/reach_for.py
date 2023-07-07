@@ -37,9 +37,9 @@ class ReachFor(ArmMotion):
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `len(arms) > 1` or if `target` is an object ID.
         :param arrived_at: If the motion ends and the hand is this distance or less from the target, the action succeeds.
         :param max_distance: If the target is further away from this distance at the start of the action, the action fails.
-        :param arms: A list of [`Arm`](../arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
+        :param arms: A list of [`Arm`](../../replicant/arm.md) values that will reach for the `target`. Example: `[Arm.left, Arm.right]`.
         :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
-        :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
+        :param collision_detection: The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
         :param previous: The previous action. Can be None.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.

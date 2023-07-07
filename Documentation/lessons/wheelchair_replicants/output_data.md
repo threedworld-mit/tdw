@@ -55,7 +55,7 @@ c.communicate({"$type": "terminate"})
 
 ## Dynamic Replicant Data
 
-Dynamic Replicant data is stored in `self.replicant.dynamic`. This is a [`WheelchairReplicantDynamic`](../../python/wheelchair_replicant/wheelchair_replicant_dynamic.md). It is updated every `communicate()` call. It is a subclass of [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md), and includes some wheelchair-specific information.
+Dynamic Replicant data is stored in `replicant.dynamic`. This is a [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md). It is updated every `communicate()` call.
 
 - `dynamic.transform` is the [`Transform`](../../python/object_data/transform.md) (position, rotation, and forward) of the Wheelchair Replicant. This prints the position of the Wheelchair Replicant:
 

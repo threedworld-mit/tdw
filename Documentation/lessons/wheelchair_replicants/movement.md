@@ -410,7 +410,7 @@ At a high level, the APIs of the two agents are similar. They both have the acti
 
 Beyond that, the move/turn actions are very different. The underlying actions, `TurnBy`, `MoveBy`, etc. are named the same but are actually different classes. For example, the Replicant uses `tdw.replicant.actions.turn_by` while the Wheelchair Replicant uses `tdw.wheelchair_replicant.actions.turn_by`.
 
-The Wheelchair Replicant's wheels are driven by physics, while the Replicant's legs are driven by a walk animation. The Wheelchair Replicant's can be fine-tuned by using different wheel values; the Replicant doesn't have an analogue to this. Wheelchair Replicants don't need to [resolve collider intersections](../replicant/movement.md) like Replicants do.
+The Wheelchair Replicant's wheels are driven by physics, while the Replicant's legs are driven by a walk animation. The Wheelchair Replicant's can be fine-tuned by using different wheel values; the Replicant doesn't have an analogue to this. Wheelchair Replicants don't need to [resolve collider intersections](../replicants/movement.md) like Replicants do.
 
 A Wheelchair Replicant turns by applying torques and steer angles to its wheels. A Replicant turns instanteously in a non-physical motion.
 
@@ -430,7 +430,7 @@ Example controllers:
 
 - [move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/move.py) Move the Wheelchair Replicant by distances and to targets.
 - [turn.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/turn.py) Turn the Wheelchair Replicant by angles and to targets.
-- [crash.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/crash.py) Collide with an obstacle.
+- [collision_detection.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/collision_detection.py) A minimal demo of how collision detection parameters affect agent movement.
 - [reach_for_move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_move.py) Reach for a target position and then move forward, resetting the arm.
 - [wheel_values.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/wheel_values.py) Turn and move with explicit wheel values.
 

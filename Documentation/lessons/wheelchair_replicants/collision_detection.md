@@ -46,6 +46,6 @@ Output Data API:
 
 Python API:
 
-- [`WheelchairReplicant`](../../python/add_ons/WheelchairReplicant.md)
+- [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md)
 - [`CollisionDetection`](../../python/replicant/collision_detection.md)
 - [`ReplicantDynamic`](../../python/replicant/replicant_dynamic.md)

@@ -120,7 +120,7 @@ Result:
 
 ## Wheelchair Replicants and Replicants
 
-Unlike the [Replicant version of this document](../replicant/navigation.md), this document omits information on how to use a Wheelchair Replicant with a NavMesh. Unity's NavMeshes are inflexible and some aspects of them must be decided *at compile time*, the most important property being the expected radius of the agent. The radius used in TDW works reasonably well for a Replicant or Magnebot but it is too small for a Wheelchair Replicant, meaning that the paths the NavMesh returns paths that the Wheelchair Replicant can't use because the path is too close to obstacles that the wheelchair will collide with.
+Unlike the [Replicant version of this document](../replicants/navigation.md), this document omits information on how to use a Wheelchair Replicant with a NavMesh. Unity's NavMeshes are inflexible and some aspects of them must be decided *at compile time*, the most important property being the expected radius of the agent. The radius used in TDW works reasonably well for a Replicant or Magnebot but it is too small for a Wheelchair Replicant, meaning that the paths the NavMesh returns paths that the Wheelchair Replicant can't use because the path is too close to obstacles that the wheelchair will collide with.
 
 ***
 

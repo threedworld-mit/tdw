@@ -9,7 +9,6 @@ from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
 from tdw.replicant.actions.reach_for import ReachFor
 from tdw.replicant.actions.reach_for_with_plan import ReachForWithPlan
-from tdw.replicant.actions.reset_arm import ResetArm
 from tdw.replicant.actions.animate import Animate
 from tdw.replicant.arm import Arm
 from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
@@ -224,27 +223,6 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                               library=library,
                               previous=self._previous_action,
                               ik_body_parts=[])
-
-    def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25, scale_duration: bool = True) -> None:
-        """
-        Move arm(s) back to rest position(s). One or both arms can be reset at the same time.
-
-        The Replicant's arm(s) will continuously over multiple `communicate()` calls move until either the motion is complete or the arm collides with something (see `self.collision_detection`).
-
-        - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
-        - If `self.collision_detection.previous_was_same == True`, and if the previous action was an arm motion, and it ended in a collision, this action ends immediately.
-       
-        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
-        :param duration: The duration of the motion in seconds.
-        :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
-        """
-
-        self.action = ResetArm(arms=Replicant._arms_to_list(arm),
-                               dynamic=self.dynamic,
-                               collision_detection=self.collision_detection,
-                               previous=self._previous_action,
-                               duration=duration,
-                               scale_duration=scale_duration)
 
     def _get_library_name(self) -> str:
         return Replicant.LIBRARY_NAME

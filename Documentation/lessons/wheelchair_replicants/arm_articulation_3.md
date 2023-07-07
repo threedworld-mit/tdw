@@ -273,11 +273,11 @@ Result:
 
 ## Wheelchair Replicants and Replicants
 
-Nearly all of these optional parameters exist for both the Wheelchair Replicant and Replicant and behave the same way, despite the some of the underlying actions being different. The only major difference is that `wheelchair_replicant.grasp(target, arm)` lacks an optional `plan` parameter; Wheelchair Replicants can't use IK plans. Because of this, this lesson lacks a Wheelchair Replicant variant of [stacking objects](../replicant/arm_articulation_4.md).
+Nearly all of these optional parameters exist for both the Wheelchair Replicant and Replicant and behave the same way, despite the some of the underlying actions being different. The only major difference is that `wheelchair_replicant.grasp(target, arm)` lacks an optional `plan` parameter; Wheelchair Replicants can't use IK plans. Because of this, this lesson lacks a Wheelchair Replicant variant of [stacking objects](../replicants/arm_articulation_4.md).
 
 ***
 
-**Next: [Head rotation](head_rotationmd)**
+**Next: [Head rotation](head_rotation.md)**
 
 [Return to the README](../../../README.md)
 
@@ -288,7 +288,6 @@ Example controllers:
 - [reach_for_follow.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_follow.py) Reach for a target position and have the offhand follow the main hand.
 - [reach_for_two_targets.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_two_targets.py) Reach for two target positions, one per hand.
 - [reach_for_offset.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_offset.py) A minimal example of how to reach for a position that is offset by a held object.
-- [reach_for_with_plan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/wheelchair_replicant/reach_for_with_plan.py) An example of the difference between a `reach_for()` action with and without a plan.
 
 Python API:
 

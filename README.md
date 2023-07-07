@@ -247,15 +247,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 3. [Output data](Documentation/lessons/wheelchair_replicants/output_data.md)
 4. [Collision detection](Documentation/lessons/wheelchair_replicants/collision_detection.md)
 5. [Movement](Documentation/lessons/wheelchair_replicants/movement.md)
-6. [Animations](Documentation/lessons/wheelchair_replicants/animations.md)
-7. [Arm articulation, pt. 1: Basics](Documentation/lessons/wheelchair_replicants/arm_articulation_1.md)
-8. [Arm articulation, pt. 2: Grasp and drop objects](Documentation/lessons/wheelchair_replicants/arm_articulation_2.md)
-9. [Arm articulation, pt. 3: Advanced topics](Documentation/lessons/wheelchair_replicants/arm_articulation_3.md)
-10. [Head rotation](Documentation/lessons/wheelchair_replicants/head_rotation.md)
-11. [Navigation](Documentation/lessons/wheelchair_replicants/navigation.md)
-12. [Custom actions](Documentation/lessons/wheelchair_replicants/custom_actions.md)
-13. [Multiple Agents](Documentation/lessons/wheelchair_replicants/multiple_replicants.md)
-14. [Reset](Documentation/lessons/wheelchair_replicants/reset.md)
+6. [Arm articulation, pt. 1: Basics](Documentation/lessons/wheelchair_replicants/arm_articulation_1.md)
+7. [Arm articulation, pt. 2: Grasp and drop objects](Documentation/lessons/wheelchair_replicants/arm_articulation_2.md)
+8. [Arm articulation, pt. 3: Advanced topics](Documentation/lessons/wheelchair_replicants/arm_articulation_3.md)
+9. [Head rotation](Documentation/lessons/wheelchair_replicants/head_rotation.md)
+10. [Navigation](Documentation/lessons/wheelchair_replicants/navigation.md)
+11. [Custom actions](Documentation/lessons/wheelchair_replicants/custom_actions.md)
+12. [Multiple Agents](Documentation/lessons/wheelchair_replicants/multiple_agents.md)
+13. [Reset](Documentation/lessons/wheelchair_replicants/reset.md)
 
 ### 11.5 Drones
 
@@ -377,6 +376,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
 - [Replicant](Documentation/python/add_ons/replicant.md)
+- [ReplicantBase](Documentation/python/add_ons/replicant_base.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
 - [RobotArm](Documentation/python/add_ons/robot_arm.md)
@@ -388,6 +388,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [UI](Documentation/python/add_ons/ui.md)
 - [Vehicle](Documentation/python/add_ons/vehicle.md)
 - [VR](Documentation/python/add_ons/vr.md)
+- [WheelchairReplicant](Documentation/python/add_ons/wheelchair_replicant.md)
 - [Writer](Documentation/python/add_ons/writer.md)
 
 **tdw.agent_data**
@@ -625,6 +626,19 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
 - [RigType](Documentation/python/vr_data/rig_type.md)
+
+**tdw.wheelchair_replicant**
+
+- [WheelValues](Documentation/python/wheelchair_replicant/wheel_values.md)
+
+**tdw.wheelchair_replicant.actions**
+
+- [MoveBy](Documentation/python/wheelchair_replicant/actions/move_by.md)
+- [MoveTo](Documentation/python/wheelchair_replicant/actions/move_to.md)
+- [ReachFor](Documentation/python/wheelchair_replicant/actions/reach_for.md)
+- [TurnBy](Documentation/python/wheelchair_replicant/actions/turn_by.md)
+- [TurnTo](Documentation/python/wheelchair_replicant/actions/turn_to.md)
+- [WheelchairMotion](Documentation/python/wheelchair_replicant/actions/wheelchair_motion.md)
 
 # Performance benchmarks
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)

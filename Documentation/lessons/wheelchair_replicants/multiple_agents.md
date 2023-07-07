@@ -52,7 +52,7 @@ class ReplicantState(Enum):
 
 ### 2. Scene setup
 
-The scene setup is pretty typical. We'll run our trial in a `run()` function. Within that, we'll add a [`ThirdPersonCamera`](../core_concepts/avatar.md), [`ImageCapture`](../core_concepts/images.md), and [`ObjectManager`](../core_concepts/objects.md) to the scene. The `ObjectManager` is a little unusual; we will use it to easily get the positions of the kitchen cabinet and the target object.
+The scene setup is pretty typical. We'll run our trial in a `run()` function. Within that, we'll add a [`ThirdPersonCamera`](../core_concepts/avatars.md), [`ImageCapture`](../core_concepts/images.md), and [`ObjectManager`](../core_concepts/objects.md) to the scene. The `ObjectManager` is a little unusual; we will use it to easily get the positions of the kitchen cabinet and the target object.
 
 After that, we need to add the scene, the objects, the Wheelchair Replicant, and the Magnebot. We also need to define two variables that are set to each state machine: `magnebot_state` and `replicant_state`.
 

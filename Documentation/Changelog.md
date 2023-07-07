@@ -1,8 +1,8 @@
 # CHANGELOG
 
-# v1.11.x
+# v1.12.x
 
-To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
+To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
 ## v1.12.0
 
@@ -98,6 +98,10 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 | Document                     | Modification                               |
 | ---------------------------- | ------------------------------------------ |
 | `lessons/agents/overview.md` | Added a section for Wheelchair Replicants. |
+
+# v1.11.x
+
+To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
 ## v1.11.23
 

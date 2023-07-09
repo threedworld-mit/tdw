@@ -36,6 +36,7 @@ class MoveBy(Animate):
     While walking, the Replicant will cast an overlap shape in front of or behind it, depending on whether it is walking forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
     """
     OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
+    #OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.13875, "y": 0.5814, "z": 0.0475}
     # The body parts which will maintain IK positions and rotations, assuming `self.reset_arms == False`.
     _ARM_BODY_PARTS: List[str] = [ReplicantBodyPart.hand_l, ReplicantBodyPart.hand_r,
                                   ReplicantBodyPart.lowerarm_l, ReplicantBodyPart.lowerarm_r,
@@ -191,7 +192,7 @@ class MoveBy(Animate):
         if not self.collision_detection.avoid:
             return []
         # Get the position of the overlap shape.
-        overlap_z = 0.5
+        overlap_z = 0.2
         if self.distance < 0:
             overlap_z *= -1
         overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)

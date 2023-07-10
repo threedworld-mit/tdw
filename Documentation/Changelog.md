@@ -76,6 +76,14 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - Removed `abandoned_factory` because the file size is too big to be useful (over 3 GB)
 - Removed `floorplan_3a`, `floorplan_3b`, and `floorplan_3c` because they aren't used in the `Floorplan` add-on
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                           | Modification                                                 |
+| ---------------------------------- | ------------------------------------------------------------ |
+| `lessons/audio/resonance_audio.md` | Added a warning about trying to run Resonance Audio on Apple Silicon (it will crash the build). |
+
 ## v1.11.22
 
 ### Command API

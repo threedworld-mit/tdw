@@ -535,6 +535,10 @@ if __name__ == "__main__":
     c.communicate({"$type": "terminate"})
 ```
 
+Result:
+
+![](images/arm_articulation/clap.gif)
+
 ## Wheelchair Replicants and Replicants
 
 Custom actions work the same for Wheelchair Replicants and Replicants. They may require different action subclasses, commands, etc. but the underlying logic and best-practices are the same.

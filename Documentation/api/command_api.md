@@ -53,9 +53,11 @@
 
 | Command | Description |
 | --- | --- |
+| [`add_drone`](#add_drone) | Add a drone to the scene.  |
 | [`add_hdri_skybox`](#add_hdri_skybox) | Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange.  |
 | [`add_humanoid_animation`](#add_humanoid_animation) | Load an animation clip asset bundle into memory.  |
 | [`add_robot`](#add_robot) | Add a robot to the scene. For further documentation, see: Documentation/lessons/robots/overview.md  |
+| [`add_vehicle`](#add_vehicle) | Add a vehicle to the scene.  |
 | [`add_visual_effect`](#add_visual_effect) | Add a non-physics visual effect to the scene from an asset bundle.  |
 
 **Add Humanoid Command**
@@ -385,6 +387,7 @@
 | --- | --- |
 | [`add_constant_force`](#add_constant_force) | Add a constant force to an object. Every frame, this force will be applied to the Rigidbody. Unlike other force commands, this command will provide gradual acceleration rather than immediate impulse; it is thus more useful for animation than a deterministic physics simulation. |
 | [`add_fixed_joint`](#add_fixed_joint) | Attach the object to a parent object using a FixedJoint. |
+| [`add_floorplan_flood_buoyancy`](#add_floorplan_flood_buoyancy) | Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on.  |
 | [`apply_force_at_position`](#apply_force_at_position) | Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large. |
 | [`apply_force_magnitude_to_object`](#apply_force_magnitude_to_object) | Apply a force of a given magnitude along the forward directional vector of the object. |
 | [`apply_force_to_obi_cloth`](#apply_force_to_obi_cloth) | Apply a uniform force to an Obi cloth actor.  |
@@ -402,9 +405,20 @@
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
-| [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique. |
+| [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.  |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
 | [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
+
+**Drone Command**
+
+| Command | Description |
+| --- | --- |
+| [`apply_drone_drive`](#apply_drone_drive) | Fly a drone forwards or backwards, based on an input force value. Positive values fly forwards, negative values fly backwards. Zero value hovers drone. |
+| [`apply_drone_lift`](#apply_drone_lift) | Control the drone's elevation above the ground. Positive numbers cause the drone to rise, negative numbers cause it to descend. A zero value will cause it to maintain its current elevation. |
+| [`apply_drone_turn`](#apply_drone_turn) | Turn a drone left or right, based on an input force value. Positive values turn right, negative values turn left. Zero value flies straight. |
+| [`parent_avatar_to_drone`](#parent_avatar_to_drone) | Parent an avatar to a drone. Usually you'll want to do this to add a camera to the drone. |
+| [`set_drone_motor`](#set_drone_motor) | Turns the drone's motor on or off. |
+| [`set_drone_speed`](#set_drone_speed) | Set the forward and/or backward speed of the drone. |
 
 **Humanoid Command**
 
@@ -423,6 +437,7 @@
 | [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 | [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
+| [`stop_replicant_animation`](#stop_replicant_animation) | Stop an ongoing Replicant animation. |
 
 **Replicant Arm Command**
 
@@ -444,6 +459,7 @@
 | --- | --- |
 | [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
 | [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
+| [`replicant_reach_for_relative_position`](#replicant_reach_for_relative_position) | Instruct a Replicant to start to reach for a target position relative to the Replicant.  |
 
 **Replicant Look At Command**
 
@@ -465,6 +481,15 @@
 | [`set_spring_force`](#set_spring_force) | Set the force of a spring.  |
 | [`set_spring_target_position`](#set_spring_target_position) | Set the target position of a spring.  |
 | [`set_sub_object_light`](#set_sub_object_light) | Turn a light on or off.  |
+
+**Vehicle Command**
+
+| Command | Description |
+| --- | --- |
+| [`apply_vehicle_brake`](#apply_vehicle_brake) | Set the vehicle's brake value. |
+| [`apply_vehicle_drive`](#apply_vehicle_drive) | Move the vehicle forward or backward. |
+| [`apply_vehicle_turn`](#apply_vehicle_turn) | Turn the vehicle left or right. |
+| [`parent_avatar_to_vehicle`](#parent_avatar_to_vehicle) | Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle. |
 
 **Visual Material Command**
 
@@ -559,7 +584,7 @@
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
-| [`set_robot_joint_id`](#set_robot_joint_id) | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique. |
+| [`set_robot_joint_id`](#set_robot_joint_id) | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.  |
 | [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
 
@@ -676,6 +701,7 @@
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
 | [`send_avatar_transform_matrices`](#send_avatar_transform_matrices) | Send 4x4 transform matrix data for all avatars in the scene.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
+| [`send_drones`](#send_drones) | Send data for each drone in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
 | [`send_dynamic_empty_objects`](#send_dynamic_empty_objects) | Send the positions of each empty object in the scene.  |
 | [`send_dynamic_robots`](#send_dynamic_robots) | Send dynamic robot data for each robot in the scene.  |
@@ -688,6 +714,7 @@
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
+| [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
@@ -706,6 +733,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
+| [`send_euler_angles`](#send_euler_angles) | Send the rotations of each object expressed as Euler angles.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
@@ -1461,6 +1489,42 @@ These commands load an asset bundle with a specific object (model, material, etc
 
 ***
 
+## **`add_drone`**
+
+Add a drone to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/drone_librarian.md`</font>
+
+```python
+{"$type": "add_drone", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_drone", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "forward_speed": 7, "backward_speed": 5, "right_speed": 5, "left_speed": 5, "rise_speed": 5, "drop_speed": 5, "acceleration": 0.3, "deceleration": 0.2, "stability": 0.1, "turn_sensitivity": 2, "motor_on": True, "enable_lights": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the drone. | |
+| `"position"` | Vector3 | The position of the drone. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the drone, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"forward_speed"` | float | Sets the drone's max forward speed. | 7 |
+| `"backward_speed"` | float | Sets the drone's max backward speed. | 5 |
+| `"right_speed"` | float | Sets the drone's max right strafe speed. | 5 |
+| `"left_speed"` | float | Sets the drone's max left strafe speed. | 5 |
+| `"rise_speed"` | float | Sets the drone's max vertical rise speed. | 5 |
+| `"drop_speed"` | float | Sets the drone's max vertical drop speed. | 5 |
+| `"acceleration"` | float | Sets the drone's acceleration. | 0.3 |
+| `"deceleration"` | float | Sets the drone's deceleration. | 0.2 |
+| `"stability"` | float | A factor that determinates how easily the drone is affected by outside forces. | 0.1 |
+| `"turn_sensitivity"` | float | Sets the drone's rotation speed. | 2 |
+| `"motor_on"` | bool | Sets whether or not the drone is active on start. | True |
+| `"enable_lights"` | bool | Sets whether or not the drone's lights are on. | False |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
 ## **`add_hdri_skybox`**
 
 Add a single HDRI skybox to the scene. It is highly recommended that the values of all parameters match those in the record metadata. If you assign your own values, the lighting will probably be strange. 
@@ -1522,6 +1586,32 @@ Add a robot to the scene. For further documentation, see: Documentation/lessons/
 | `"id"` | int | The unique ID of the robot. | 0 |
 | `"position"` | Vector3 | The initial position of the robot. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | The initial rotation of the robot in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_vehicle`**
+
+Add a vehicle to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/vehicle_librarian.md`</font>
+
+```python
+{"$type": "add_vehicle", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_vehicle", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}, "forward_speed": 30, "reverse_speed": 12}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the vehicle. | |
+| `"position"` | Vector3 | The position of the vehicle. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | The rotation of the vehicle, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"forward_speed"` | float | Sets the vehicle's max forward speed. | 30 |
+| `"reverse_speed"` | float | Sets the vehicle's max reverse speed. | 12 |
 | `"name"` | string | The name of the asset bundle. | |
 | `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
 
@@ -5074,6 +5164,22 @@ Attach the object to a parent object using a FixedJoint.
 
 ***
 
+## **`add_floorplan_flood_buoyancy`**
+
+Make an object capable of floating in a floorplan-flooded room. This is meant to be used only with the FloorplanFlood add-on. 
+
+- <font style="color:orange">**Expensive**: This command is computationally expensive.</font>
+
+```python
+{"$type": "add_floorplan_flood_buoyancy", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`apply_force_at_position`**
 
 Apply a force to an object from a position. From Unity documentation: For realistic effects position should be approximately in the range of the surface of the rigidbody. Note that when position is far away from the center of the rigidbody the applied torque will be unrealistically large.
@@ -5463,8 +5569,9 @@ An enum value representation of a semantic material category.
 
 ## **`set_sub_object_id`**
 
-Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
+Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_sub_object_id", "sub_object_name": "string", "sub_object_id": 1, "id": 1}
@@ -5525,6 +5632,131 @@ A group of particles from which an Obi cloth sheet can be tethered to another ob
 | `"east_edge"` |  |
 | `"west_edge"` |  |
 | `"center"` |  |
+
+# DroneCommand
+
+These commands affect a drone currently in the scene.
+
+***
+
+## **`apply_drone_drive`**
+
+Fly a drone forwards or backwards, based on an input force value. Positive values fly forwards, negative values fly backwards. Zero value hovers drone.
+
+
+```python
+{"$type": "apply_drone_drive", "id": 1}
+```
+
+```python
+{"$type": "apply_drone_drive", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | int | The force value. Must be -1, 0, or 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_drone_lift`**
+
+Control the drone's elevation above the ground. Positive numbers cause the drone to rise, negative numbers cause it to descend. A zero value will cause it to maintain its current elevation.
+
+
+```python
+{"$type": "apply_drone_lift", "id": 1}
+```
+
+```python
+{"$type": "apply_drone_lift", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | int | The force value. Must be -1, 0, or 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_drone_turn`**
+
+Turn a drone left or right, based on an input force value. Positive values turn right, negative values turn left. Zero value flies straight.
+
+
+```python
+{"$type": "apply_drone_turn", "id": 1}
+```
+
+```python
+{"$type": "apply_drone_turn", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | int | The force value. Must be -1, 0, or 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`parent_avatar_to_drone`**
+
+Parent an avatar to a drone. Usually you'll want to do this to add a camera to the drone.
+
+
+```python
+{"$type": "parent_avatar_to_drone", "id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_drone", "id": 1, "avatar_id": "a"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_drone_motor`**
+
+Turns the drone's motor on or off.
+
+
+```python
+{"$type": "set_drone_motor", "id": 1}
+```
+
+```python
+{"$type": "set_drone_motor", "id": 1, "motor_on": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"motor_on"` | bool | Toggles whether the motor is on. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_drone_speed`**
+
+Set the forward and/or backward speed of the drone.
+
+
+```python
+{"$type": "set_drone_speed", "id": 1}
+```
+
+```python
+{"$type": "set_drone_speed", "id": 1, "forward_speed": 3.0, "backward_speed": 3.0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"forward_speed"` | float | The drone's max forward speed. | 3.0 |
+| `"backward_speed"` | float | The drone's max backward speed. | 3.0 |
+| `"id"` | int | The unique object ID. | |
 
 # HumanoidCommand
 
@@ -5688,6 +5920,21 @@ Advance the Replicant's IK solvers by 1 frame.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
+***
+
+## **`stop_replicant_animation`**
+
+Stop an ongoing Replicant animation.
+
+
+```python
+{"$type": "stop_replicant_animation", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
 # ReplicantArmCommand
 
 These commands involve a Replicant's arm.
@@ -5733,11 +5980,11 @@ Grasp a target object.
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1}
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "rotate": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5745,6 +5992,7 @@ Grasp a target object.
 | `"object_id"` | int | The target object ID. | |
 | `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | float | Offset the object from the hand by this distance. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -5770,13 +6018,14 @@ Start to rotate a grasped object relative to the rotation of the hand. This will
 ```
 
 ```python
-{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "set_status": True}
+{"$type": "replicant_set_grasped_object_rotation", "angle": 0.125, "axis": "pitch", "arm": "left", "id": 1, "relative_to_hand": True, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"angle"` | float | Rotate the object by this many degrees relative to the hand's rotation. | |
 | `"axis"` | Axis | Rotate the object around this axis relative to the hand's rotation. | |
+| `"relative_to_hand"` | bool | If True, rotate the object relative to the hand that is holding it. If false, rotate relative to the Replicant. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -5855,7 +6104,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5864,6 +6113,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -5891,7 +6141,7 @@ Instruct a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
 ```
 
 | Parameter | Type | Description | Default |
@@ -5900,6 +6150,44 @@ Instruct a Replicant to start to reach for a target position.
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`replicant_reach_for_relative_position`**
+
+Instruct a Replicant to start to reach for a target position relative to the Replicant. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position relative to the Replicant. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6162,6 +6450,91 @@ Turn a light on or off.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"is_on"` | bool | If true, the light will be on. | |
+| `"id"` | int | The unique object ID. | |
+
+# VehicleCommand
+
+These commands affect a vehicle currently in the scene.
+
+***
+
+## **`apply_vehicle_brake`**
+
+Set the vehicle's brake value.
+
+
+```python
+{"$type": "apply_vehicle_brake", "id": 1}
+```
+
+```python
+{"$type": "apply_vehicle_brake", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force value. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_vehicle_drive`**
+
+Move the vehicle forward or backward.
+
+
+```python
+{"$type": "apply_vehicle_drive", "id": 1}
+```
+
+```python
+{"$type": "apply_vehicle_drive", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force value. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`apply_vehicle_turn`**
+
+Turn the vehicle left or right.
+
+
+```python
+{"$type": "apply_vehicle_turn", "id": 1}
+```
+
+```python
+{"$type": "apply_vehicle_turn", "id": 1, "force": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"force"` | float | The force value. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`parent_avatar_to_vehicle`**
+
+Parent an avatar to the vehicle. Usually you'll want to do this to add a camera to the vehicle.
+
+
+```python
+{"$type": "parent_avatar_to_vehicle", "id": 1}
+```
+
+```python
+{"$type": "parent_avatar_to_vehicle", "id": 1, "avatar_id": "a", "position": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
+| `"position"` | Vector3 | The camera position. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 # VisualMaterialCommand
@@ -7049,8 +7422,9 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 
 ## **`set_robot_joint_id`**
 
-Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.
+Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "set_robot_joint_id", "joint_name": "string", "joint_id": 1}
@@ -8591,6 +8965,38 @@ Options for when to send data.
 
 ***
 
+## **`send_drones`**
+
+Send data for each drone in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Drones`](output_data.md#Drones)</font>
+
+```python
+{"$type": "send_drones"}
+```
+
+```python
+{"$type": "send_drones", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_dynamic_composite_objects`**
 
 Send dynamic data for every composite object in the scene. 
@@ -8980,6 +9386,38 @@ Options for when to send data.
 
 ***
 
+## **`send_replicant_segmentation_colors`**
+
+Send the segmentationColor of each Replicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ReplicantSegmentationColors`](output_data.md#ReplicantSegmentationColors)</font>
+
+```python
+{"$type": "send_replicant_segmentation_colors"}
+```
+
+```python
+{"$type": "send_replicant_segmentation_colors", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_scene_regions`**
 
 Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene. 
@@ -9231,6 +9669,42 @@ Send rotated bounds data of objects in the scene.
 
 ```python
 {"$type": "send_bounds", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_euler_angles`**
+
+Send the rotations of each object expressed as Euler angles. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`EulerAngles`](output_data.md#EulerAngles)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_euler_angles", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_euler_angles", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |

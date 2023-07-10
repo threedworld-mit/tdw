@@ -1,7 +1,7 @@
-from __future__ import annotations
-from typing import Union, Dict, List, Optional
+from typing import List, Optional
 import numpy as np
 from tdw.tdw_utils import TDWUtils
+from tdw.type_aliases import TARGET
 from tdw.output_data import OutputData, Bounds
 from tdw.replicant.actions.action import Action
 from tdw.replicant.actions.turn_to import TurnTo
@@ -31,9 +31,9 @@ class MoveTo(Action):
     - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    def __init__(self, target: Union[int, Dict[str, float], np.ndarray], collision_detection: CollisionDetection,
-                 previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int, bounds_position: str):
+    def __init__(self, target: TARGET, collision_detection: CollisionDetection, previous: Optional[Action],
+                 reset_arms: bool, reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
+                 max_walk_cycles: int, bounds_position: str):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
@@ -49,7 +49,7 @@ class MoveTo(Action):
         """:field
         The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         """
-        self.target: Union[int, Dict[str, float], np.ndarray] = target
+        self.target: TARGET = target
         """:field
         The [`CollisionDetection`](../collision_detection.md) rules.
         """

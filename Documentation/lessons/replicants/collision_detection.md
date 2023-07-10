@@ -20,7 +20,7 @@ The Replicant has a set of collision detection rules stored in `replicant.collis
 
 These are *rules* that don't actually affect the physics behavior. They are just booleans that are referenced in the Python code to decide how to respond to physics events. For example, if `replicant.collision_detection.objects == True`, the Replicant will stop an action if it collides with an object. This *doesn't* affect whether a Replicant *can* collide with objects; it always can collide with objects.
 
-Exactly how this works, and how to adjust the Replicant's behavior, differs between actions; see [Movement](movement.md), [Animation](animations.md), and [Arm articulation](arm_articulation.md) for more information.
+Exactly how this works, and how to adjust the Replicant's behavior, differs between actions; see [Movement](movement.md), [Animation](animations.md), and [Arm articulation](arm_articulation_1.md) for more information.
 
 ## Enabling and disabling collision detection rules
 

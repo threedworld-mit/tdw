@@ -24,7 +24,7 @@ A sound encoded as a base64 string.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| snd |  np.array |  | The sound byte array. |
+| snd |  np.ndarray |  | The sound byte array. |
 
 #### write
 

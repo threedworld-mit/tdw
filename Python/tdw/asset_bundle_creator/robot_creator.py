@@ -78,11 +78,13 @@ class RobotCreator(AssetBundleCreator):
 
         if required_repo_urls is None:
             required_repo_urls = list()
+        if branch is None:
+            branch = "master"
         # Clone the repo.
         repo_paths: Dict[str, Path] = dict()
-        local_repo_path = self.clone_repo(url=url)
+        local_repo_path = self.clone_repo(url=url, branch=branch)
         if description_infix is None:
-            description_infix = RobotCreator._get_description_infix(url=url)
+            description_infix = RobotCreator._get_description_infix(url=url, branch=branch)
         repo_paths[description_infix] = local_repo_path
         # Clone the required repos.
         for description in required_repo_urls:
@@ -177,21 +179,24 @@ class RobotCreator(AssetBundleCreator):
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
-    def clone_repo(self, url: str) -> Path:
+    def clone_repo(self, url: str, branch: str = None) -> Path:
         """
         Clone a repo to a temporary directory.
 
         :param url: The URL to the .urdf or .xacro file or the repo.
+        :param branch: The name of the branch of the repo. If None, defaults to `"master"`.
 
         :return: The temporary directory.
         """
 
         if not RobotCreator.TEMP_ROOT.exists():
             RobotCreator.TEMP_ROOT.mkdir(parents=True)
+        if branch is None:
+            branch = "master"
         # This is a .urdf or .xacro file. Parse the repo URL accordingly.
         if url.endswith(".xacro") or url.endswith(".urdf"):
-            local_repo_path = RobotCreator._get_local_repo_path(url=url)
-            repo_url = RobotCreator._get_repo_url(url=url)
+            local_repo_path = RobotCreator._get_local_repo_path(url=url, branch=branch)
+            repo_url = RobotCreator._get_repo_url(url=url, branch=branch)
         # This is the base URL of the repo. Parse it accordingly.
         else:
             local_repo_path = RobotCreator.TEMP_ROOT.joinpath(Path(url).name)
@@ -221,10 +226,10 @@ class RobotCreator(AssetBundleCreator):
         :return: The path to the local .urdf file.
         """
 
-        # Get the page URL.
-        page_url = self._raw_to_page(url=url)
         if branch is None:
             branch = "master"
+        # Get the page URL.
+        page_url = self._raw_to_page(url=url, branch=branch)
         # Get the repo path.
         repo_path = re.search(r"(.*)/blob/" + branch + r"/(.*)", page_url).group(2)
         return local_repo_path.joinpath(repo_path)
@@ -398,7 +403,7 @@ class RobotCreator(AssetBundleCreator):
         :return: The expected name of the robot.
         """
 
-        return re.search(r'<robot(.*?)name="(.*?)"',
+        return re.search(r'<robot(.*?)name=[\'|"](.*?)[\'|"]',
                          TDWUtils.get_path(urdf_path).read_text(encoding="utf-8"),
                          flags=re.MULTILINE).group(2).strip()
 
@@ -465,11 +470,12 @@ class RobotCreator(AssetBundleCreator):
             raise Exception(f"Unexpected URL: {url}")
 
     @staticmethod
-    def _raw_to_page(url: str):
+    def _raw_to_page(url: str, branch: str) -> str:
         """
         Convert the URL of a raw text file to the corresponding GitHub page.
 
         :param url: A URL to a text file page.
+        :param branch: The branch name.
 
         :return: The URL to the corresponding GitHub page.
         """
@@ -477,20 +483,21 @@ class RobotCreator(AssetBundleCreator):
         if "https://github.com" in url:
             return url
         elif "https://raw.githubusercontent.com" in url:
-            return re.sub(r"https://raw\.githubusercontent\.com/(.*)/master/(.*)",
-                          r"https://github.com/\1/blob/master/\2", url)
+            return re.sub(r"https://raw\.githubusercontent\.com/(.*)/" + branch + r"/(.*)",
+                          r"https://github.com/\1/blob/" + branch + r"/\2", url)
         else:
             raise Exception(f"Unexpected URL: {url}")
 
     @staticmethod
-    def _get_repo_url(url: str) -> str:
+    def _get_repo_url(url: str, branch: str) -> str:
         """
         :param url: The URL of the .urdf or .xacro file.
+        :param branch: The branch name.
 
         :return: The base repo of a .urdf or .xacro file.
         """
 
-        page_url = RobotCreator._raw_to_page(url=url)
+        page_url = RobotCreator._raw_to_page(url=url, branch=branch)
         return re.sub(r"https://github\.com/(.*)/blob/(.*)", r"https://github.com/\1", page_url)
 
     @staticmethod
@@ -504,30 +511,32 @@ class RobotCreator(AssetBundleCreator):
         return repo_url.split("/")[-1]
 
     @staticmethod
-    def _get_local_repo_path(url: str) -> Path:
+    def _get_local_repo_path(url: str, branch: str) -> Path:
         """
         :param url: The URL of the .urdf or .xacro file.
+        :param branch: The branch name.
 
         :return: The path to the local repo.
         """
 
         if not RobotCreator.TEMP_ROOT.exists():
             RobotCreator.TEMP_ROOT.mkdir(parents=True)
-        repo_url = RobotCreator._get_repo_url(url=url)
+        repo_url = RobotCreator._get_repo_url(url=url, branch=branch)
         repo_name = RobotCreator._get_repo_name(repo_url=repo_url)
         return RobotCreator.TEMP_ROOT.joinpath(repo_name)
 
     @staticmethod
-    def _get_description_infix(url: str) -> str:
+    def _get_description_infix(url: str, branch: str) -> str:
         """
         :param url: The URL of the .urdf or .xacro file.
+        :param branch: The branch name.
 
         :return: The string between the repo URL and the /urdf/ directory.
         """
 
-        page = RobotCreator._raw_to_page(url=url)
-        s = re.search(r"(.*)/blob/master/(.*)/urdf", page)
+        page = RobotCreator._raw_to_page(url=url, branch=branch)
+        s = re.search(r"(.*)/blob/" + branch + r"/(.*)/urdf", page)
         if s is None:
-            return re.search(r"(.*)/blob/master/((.*)_description)/", page).group(2)
+            return re.search(r"(.*)/blob/" + branch + r"/((.*)_description)/", page).group(2)
         else:
             return s.group(2)

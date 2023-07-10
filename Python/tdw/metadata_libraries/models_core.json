@@ -207,6 +207,92 @@
             "wcategory": "soda can",
             "wnid": "n04255586"
         },
+        "104_sprite_can_12_fl_oz_vray": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 7071357,
+                "Linux": 7346896,
+                "Windows": 6867822
+            },
+            "bounds": {
+                "back": {
+                    "x": 7.450581e-09,
+                    "y": 0.06326563,
+                    "z": -0.03300366
+                },
+                "bottom": {
+                    "x": 7.450581e-09,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 7.450581e-09,
+                    "y": 0.06326563,
+                    "z": 0
+                },
+                "front": {
+                    "x": 7.450581e-09,
+                    "y": 0.06326563,
+                    "z": 0.03300366
+                },
+                "left": {
+                    "x": -0.03300365,
+                    "y": 0.06326563,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.03300367,
+                    "y": 0.06326563,
+                    "z": 0
+                },
+                "top": {
+                    "x": 7.450581e-09,
+                    "y": 0.1265313,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "104_sprite_can_12_fl_oz_vray",
+            "physics_quality": 0.8186804921789741,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "can_part_02"
+                },
+                {
+                    "materials": [
+                        "can"
+                    ],
+                    "name": "can_part_05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "can_ring01"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/104_sprite_can_12_fl_oz_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/104_sprite_can_12_fl_oz_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/104_sprite_can_12_fl_oz_vray"
+            },
+            "volume": 0.0005485839210450649,
+            "wcategory": "soda can",
+            "wnid": "n04255586"
+        },
         "12_06_001": {
             "asset_bundle_sizes": {
                 "Darwin": 296925,
@@ -1482,6 +1568,356 @@
             "wcategory": "shelf",
             "wnid": "n04190052"
         },
+        "699264_shoppingcart_2013": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 2172619,
+                "Linux": 2388090,
+                "Windows": 1970668
+            },
+            "bounds": {
+                "back": {
+                    "x": 8.940697e-08,
+                    "y": 0.4790761,
+                    "z": -0.497785
+                },
+                "bottom": {
+                    "x": 8.940697e-08,
+                    "y": -2.980232e-08,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": 8.940697e-08,
+                    "y": 0.4790761,
+                    "z": 2.980232e-08
+                },
+                "front": {
+                    "x": 8.940697e-08,
+                    "y": 0.4790761,
+                    "z": 0.497785
+                },
+                "left": {
+                    "x": -0.3497317,
+                    "y": 0.4790761,
+                    "z": 2.980232e-08
+                },
+                "right": {
+                    "x": 0.3497319,
+                    "y": 0.4790761,
+                    "z": 2.980232e-08
+                },
+                "top": {
+                    "x": 8.940697e-08,
+                    "y": 0.9581522,
+                    "z": 2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "699264_shoppingcart_2013",
+            "physics_quality": 0.8791912234126583,
+            "scale_factor": 1.1,
+            "substructure": [
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_longitudinal_01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_longitudinal_02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_longitudinal_03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_longitudinal_04"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_longitudinal_05"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_rim_01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_rim_02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_rim_03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Top_01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_04"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_05"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_06"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_transverse_07"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Axis"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Axis01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Axis02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Axis03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base04"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base05"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base06"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base07"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base_Box"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base_Box01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base_Box02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Base_Box03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Main_Axis"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Main_Axis01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Main_Axis02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Main_Axis03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Metal"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Metal01"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Metal02"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "SC_Basket_Wheel_Metal03"
+                },
+                {
+                    "materials": [
+                        "ShoppingCart_Rubber"
+                    ],
+                    "name": "SC_Basket_Wheel_Rubber"
+                },
+                {
+                    "materials": [
+                        "ShoppingCart_Rubber"
+                    ],
+                    "name": "SC_Basket_Wheel_Rubber01"
+                },
+                {
+                    "materials": [
+                        "ShoppingCart_Rubber"
+                    ],
+                    "name": "SC_Basket_Wheel_Rubber02"
+                },
+                {
+                    "materials": [
+                        "ShoppingCart_Rubber"
+                    ],
+                    "name": "SC_Basket_Wheel_Rubber03"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "ShoppingCart_Base"
+                },
+                {
+                    "materials": [
+                        "KitchenFixtureMetal"
+                    ],
+                    "name": "ShoppingCart_Handle"
+                },
+                {
+                    "materials": [
+                        "Black_Plastic"
+                    ],
+                    "name": "ShoppingCart_Handle_Plastic"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/699264_shoppingcart_2013",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/699264_shoppingcart_2013",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/699264_shoppingcart_2013"
+            },
+            "volume": 0.10315503925085068,
+            "wcategory": "shopping cart",
+            "wnid": "n04204347"
+        },
         "6ft_shelf_metal": {
             "asset_bundle_sizes": {
                 "Darwin": 408711,
@@ -2674,6 +3110,622 @@
             "volume": 0.0002724681980907917,
             "wcategory": "apple",
             "wnid": "n07739125"
+        },
+        "apple_ipod_touch_grey_vray": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 4658124,
+                "Linux": 4914844,
+                "Windows": 4447669
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.117587e-08,
+                    "y": 0.06187503,
+                    "z": -0.003235625
+                },
+                "bottom": {
+                    "x": 1.117587e-08,
+                    "y": 0,
+                    "z": -1.629815e-09
+                },
+                "center": {
+                    "x": 1.117587e-08,
+                    "y": 0.06187503,
+                    "z": -1.629815e-09
+                },
+                "front": {
+                    "x": 1.117587e-08,
+                    "y": 0.06187503,
+                    "z": 0.003235622
+                },
+                "left": {
+                    "x": -0.02950493,
+                    "y": 0.06187503,
+                    "z": -1.629815e-09
+                },
+                "right": {
+                    "x": 0.02950495,
+                    "y": 0.06187503,
+                    "z": -1.629815e-09
+                },
+                "top": {
+                    "x": 1.117587e-08,
+                    "y": 0.1237501,
+                    "z": -1.629815e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "apple_ipod_touch_grey_vray",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_01_txt01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_02_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_02_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_07"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_rim01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cap_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cap_03"
+                },
+                {
+                    "materials": [
+                        "aluminium_circle"
+                    ],
+                    "name": "fixture01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "flash_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "flash_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "flash_rim01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass_camera01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass_flash01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass_screen01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod_txt01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod_txt_info01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "lattice_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "lattice_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_rim01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "logo_apple01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "mini_jack_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "mini_jack_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "mini_jack_contact01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "rim01"
+                },
+                {
+                    "materials": [
+                        "screen"
+                    ],
+                    "name": "screen01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "screen_background_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "screen_background_03"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/apple_ipod_touch_grey_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/apple_ipod_touch_grey_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/apple_ipod_touch_grey_vray"
+            },
+            "volume": 1.2723093277600128e-05,
+            "wcategory": "ipod",
+            "wnid": "n03584254"
+        },
+        "apple_ipod_touch_pink_vray": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 3557821,
+                "Linux": 3830389,
+                "Windows": 3332328
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.117587e-08,
+                    "y": 0.06187503,
+                    "z": -0.003235625
+                },
+                "bottom": {
+                    "x": 1.117587e-08,
+                    "y": 0,
+                    "z": -1.629815e-09
+                },
+                "center": {
+                    "x": 1.117587e-08,
+                    "y": 0.06187503,
+                    "z": -1.629815e-09
+                },
+                "front": {
+                    "x": 1.117587e-08,
+                    "y": 0.06187503,
+                    "z": 0.003235622
+                },
+                "left": {
+                    "x": -0.02950493,
+                    "y": 0.06187503,
+                    "z": -1.629815e-09
+                },
+                "right": {
+                    "x": 0.02950495,
+                    "y": 0.06187503,
+                    "z": -1.629815e-09
+                },
+                "top": {
+                    "x": 1.117587e-08,
+                    "y": 0.1237501,
+                    "z": -1.629815e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "apple_ipod_touch_pink_vray",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_01_txt01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_02_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_02_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "button_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_07"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "camera_rim01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cap_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cap_03"
+                },
+                {
+                    "materials": [
+                        "aluminium_circle"
+                    ],
+                    "name": "fixture01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "flash_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "flash_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "flash_rim01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass_camera01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass_flash01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "glass_screen01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod_txt01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ipod_txt_info01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "lattice_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "lattice_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ligtning_rim01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "logo_apple01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "mini_jack_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "mini_jack_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "mini_jack_contact01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "rim01"
+                },
+                {
+                    "materials": [
+                        "screen"
+                    ],
+                    "name": "screen01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "screen_background_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "screen_background_03"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/apple_ipod_touch_pink_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/apple_ipod_touch_pink_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/apple_ipod_touch_pink_vray"
+            },
+            "volume": 1.2723083273158409e-05,
+            "wcategory": "ipod",
+            "wnid": "n03584254"
         },
         "apple_ipod_touch_yellow_vray": {
             "asset_bundle_sizes": {
@@ -3902,6 +4954,260 @@
             "wcategory": "globe",
             "wnid": "n03440512"
         },
+        "b01_bag": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 47878642,
+                "Linux": 48043652,
+                "Windows": 47751689
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.1333261,
+                    "z": -0.1560803
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.1333261,
+                    "z": 0
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.1333261,
+                    "z": 0.1560803
+                },
+                "left": {
+                    "x": -0.1754918,
+                    "y": 0.1333261,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.1754918,
+                    "y": 0.1333261,
+                    "z": 0
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.2666522,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b01_bag",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "01"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cylinder004"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Line001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line005"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line006"
+                },
+                {
+                    "materials": [
+                        "map2"
+                    ],
+                    "name": "Line007"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line008"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line009"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line010"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line011"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Object001"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Object003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object006"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object008"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Object009"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Object010"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Object011"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Object012"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Plane001"
+                },
+                {
+                    "materials": [
+                        "map1"
+                    ],
+                    "name": "Shape001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Sphere001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Tube003"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b01_bag",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b01_bag",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b01_bag"
+            },
+            "volume": 0.011984428390860558,
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
+        },
         "b01_spatula": {
             "asset_bundle_sizes": {
                 "Darwin": 2657578,
@@ -4049,6 +5355,146 @@
             "volume": 0.00038821532507427037,
             "wcategory": "trumpet",
             "wnid": "n03110669"
+        },
+        "b02_bag": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 27139941,
+                "Linux": 27297569,
+                "Windows": 27006441
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.2892086,
+                    "z": -0.3133196
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.2892086,
+                    "z": 0
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.2892086,
+                    "z": 0.3133196
+                },
+                "left": {
+                    "x": -0.4233744,
+                    "y": 0.2892086,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.4233744,
+                    "y": 0.2892086,
+                    "z": 0
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.5784172,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b02_bag",
+            "physics_quality": -1,
+            "scale_factor": 0.12,
+            "substructure": [
+                {
+                    "materials": [
+                        "FabricTexture"
+                    ],
+                    "name": "FabricTexture"
+                },
+                {
+                    "materials": [
+                        "FabricTexture"
+                    ],
+                    "name": "FabricTexture001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Leather"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Leather001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Leather_1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Leather_002"
+                },
+                {
+                    "materials": [
+                        "FabricTexture"
+                    ],
+                    "name": "LeatherBlack"
+                },
+                {
+                    "materials": [
+                        "FabricTexture"
+                    ],
+                    "name": "LeatherBlack001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Metal"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Metal001"
+                },
+                {
+                    "materials": [
+                        "MilitaryTexture"
+                    ],
+                    "name": "MilitaryTexture"
+                },
+                {
+                    "materials": [
+                        "RedFabric"
+                    ],
+                    "name": "MilitaryTexture001"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b02_bag",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b02_bag",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b02_bag"
+            },
+            "volume": 0.06661032885313034,
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "b03_696615_object001": {
             "asset_bundle_sizes": {
@@ -4339,6 +5785,150 @@
             "wcategory": "pot",
             "wnid": "n03990474"
         },
+        "b03_backpack": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 56972172,
+                "Linux": 57168295,
+                "Windows": 56834698
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.2738639,
+                    "z": -0.1806279
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -2.980232e-08,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.2738639,
+                    "z": 2.980232e-08
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.2738639,
+                    "z": 0.1806279
+                },
+                "left": {
+                    "x": -0.1737872,
+                    "y": 0.2738639,
+                    "z": 2.980232e-08
+                },
+                "right": {
+                    "x": 0.1737872,
+                    "y": 0.2738639,
+                    "z": 2.980232e-08
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.5477277,
+                    "z": 2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_backpack",
+            "physics_quality": -1,
+            "scale_factor": 0.1337343,
+            "substructure": [
+                {
+                    "materials": [
+                        "01_-_Default_001",
+                        "02_-_Default_000",
+                        "03_-_Default"
+                    ],
+                    "name": "body"
+                },
+                {
+                    "materials": [
+                        "01_-_Default_000"
+                    ],
+                    "name": "handle"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Line07"
+                },
+                {
+                    "materials": [
+                        "01_-_Default_000"
+                    ],
+                    "name": "parte inferior tira"
+                },
+                {
+                    "materials": [
+                        "01_-_Default_000"
+                    ],
+                    "name": "parte inferior tira01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rectangle03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rectangle04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rectangle05"
+                },
+                {
+                    "materials": [
+                        "02_-_Default",
+                        "01_-_Default"
+                    ],
+                    "name": "tira superior "
+                },
+                {
+                    "materials": [
+                        "02_-_Default",
+                        "01_-_Default"
+                    ],
+                    "name": "tira superior 01"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_backpack",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_backpack",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_backpack"
+            },
+            "volume": 0.04556715860962868,
+            "wcategory": "backpack",
+            "wnid": "n02769748"
+        },
         "b03_banana_01_high": {
             "asset_bundle_sizes": {
                 "Darwin": 8946969,
@@ -4411,6 +6001,498 @@
             "volume": 0.0002918539976235479,
             "wcategory": "banana",
             "wnid": "n07753592"
+        },
+        "b03_basket": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 20246040,
+                "Linux": 20385773,
+                "Windows": 20142192
+            },
+            "bounds": {
+                "back": {
+                    "x": 5.960464e-08,
+                    "y": 0.2568237,
+                    "z": -0.2416308
+                },
+                "bottom": {
+                    "x": 5.960464e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": 5.960464e-08,
+                    "y": 0.2568237,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": 5.960464e-08,
+                    "y": 0.2568237,
+                    "z": 0.2416308
+                },
+                "left": {
+                    "x": -0.2395695,
+                    "y": 0.2568237,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.2395697,
+                    "y": 0.2568237,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": 5.960464e-08,
+                    "y": 0.5136473,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_basket",
+            "physics_quality": -1,
+            "scale_factor": 0.06396466,
+            "substructure": [
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle001"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle002"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle003"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle004"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle005"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle006"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle007"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle008"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle011"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Circle013"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder002"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder003"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder004"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder005"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder006"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder007"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder008"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder009"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder010"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder011"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder012"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Cylinder013"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line001"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line002"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line003"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line004"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line005"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line006"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line007"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line008"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line009"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line010"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line013"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Line023"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Object001"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Object003"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Object004"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Object005"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape001"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape002"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape003"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape004"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape005"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape006"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape007"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape008"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape009"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape010"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape011"
+                },
+                {
+                    "materials": [
+                        "01_-_Default"
+                    ],
+                    "name": "Shape012"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_basket",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_basket",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_basket"
+            },
+            "volume": 0.029518011957406998,
+            "wcategory": "basket",
+            "wnid": "n02801938"
+        },
+        "b03_beats_solo_hd_headphone_03_2010": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 49201168,
+                "Linux": 49569731,
+                "Windows": 49601594
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.490116e-08,
+                    "y": 0.09797409,
+                    "z": -0.04514524
+                },
+                "bottom": {
+                    "x": 1.490116e-08,
+                    "y": -7.450581e-09,
+                    "z": -3.72529e-09
+                },
+                "center": {
+                    "x": 1.490116e-08,
+                    "y": 0.09797409,
+                    "z": -3.72529e-09
+                },
+                "front": {
+                    "x": 1.490116e-08,
+                    "y": 0.09797409,
+                    "z": 0.04514523
+                },
+                "left": {
+                    "x": -0.111045,
+                    "y": 0.09797409,
+                    "z": -3.72529e-09
+                },
+                "right": {
+                    "x": 0.1110451,
+                    "y": 0.09797409,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": 1.490116e-08,
+                    "y": 0.1959482,
+                    "z": -3.72529e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_beats_solo_hd_headphone_03_2010",
+            "physics_quality": -1,
+            "scale_factor": 0.5314409,
+            "substructure": [
+                {
+                    "materials": [
+                        "006"
+                    ],
+                    "name": "Object001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object002"
+                },
+                {
+                    "materials": [
+                        "007"
+                    ],
+                    "name": "Object003"
+                },
+                {
+                    "materials": [
+                        "009"
+                    ],
+                    "name": "Object004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "004",
+                        "005"
+                    ],
+                    "name": "Plane001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Text004"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_beats_solo_hd_headphone_03_2010",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_beats_solo_hd_headphone_03_2010",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_beats_solo_hd_headphone_03_2010"
+            },
+            "volume": 0.0010746523039415479,
+            "wcategory": "headphone",
+            "wnid": "n03261776"
         },
         "b03_bosch_cbg675bs1b_2013__vray_composite": {
             "asset_bundle_sizes": {
@@ -4879,6 +6961,80 @@
             "volume": 0.0009040400036610663,
             "wcategory": "sandwich",
             "wnid": "n07695965"
+        },
+        "b03_cocacola_can_cage": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 3780726,
+                "Linux": 3920378,
+                "Windows": 3680690
+            },
+            "bounds": {
+                "back": {
+                    "x": 3.72529e-09,
+                    "y": 0.04580291,
+                    "z": 0.02424287
+                },
+                "bottom": {
+                    "x": 7.450581e-09,
+                    "y": 5.551115e-17,
+                    "z": 1.862645e-09
+                },
+                "center": {
+                    "x": 7.450581e-09,
+                    "y": 0.04580291,
+                    "z": 0
+                },
+                "front": {
+                    "x": 1.117587e-08,
+                    "y": 0.04580291,
+                    "z": -0.02424286
+                },
+                "left": {
+                    "x": 0.02424288,
+                    "y": 0.04580291,
+                    "z": 3.72529e-09
+                },
+                "right": {
+                    "x": -0.02424286,
+                    "y": 0.04580291,
+                    "z": -3.72529e-09
+                },
+                "top": {
+                    "x": 7.450581e-09,
+                    "y": 0.09160581,
+                    "z": -1.862645e-09
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": -90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b03_cocacola_can_cage",
+            "physics_quality": 0.7825076464082849,
+            "scale_factor": 1.1,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_25"
+                    ],
+                    "name": "b03_cocacola_can_cage"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_cocacola_can_cage",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_cocacola_can_cage",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_cocacola_can_cage"
+            },
+            "volume": 0.00021438927797134966,
+            "wcategory": "soda can",
+            "wnid": "n04255586"
         },
         "b03_cooking_pot_01": {
             "asset_bundle_sizes": {
@@ -5409,6 +7565,86 @@
             "volume": 0.16208922863006592,
             "wcategory": "dishwasher",
             "wnid": "n03207941"
+        },
+        "b03_dollarstack": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 18999149,
+                "Linux": 19151270,
+                "Windows": 18855703
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.013934,
+                    "z": -0.04650297
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.013934,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.013934,
+                    "z": 0.04650297
+                },
+                "left": {
+                    "x": -0.08312249,
+                    "y": 0.013934,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.08312249,
+                    "y": 0.013934,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.027868,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_dollarstack",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_81"
+                    ],
+                    "name": "dollarStack_1"
+                },
+                {
+                    "materials": [
+                        "dollarStack"
+                    ],
+                    "name": "dollarStack_2"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_dollarstack",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_dollarstack",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_dollarstack"
+            },
+            "volume": 0.00029554555658251047,
+            "wcategory": "money",
+            "wnid": "n13384557"
         },
         "b03_hair_comb_2010": {
             "asset_bundle_sizes": {
@@ -7574,6 +9810,373 @@
             "wcategory": "skate",
             "wnid": "n04225729"
         },
+        "b03_shopping_cart": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 1025613,
+                "Linux": 1177341,
+                "Windows": 885871
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.788139e-07,
+                    "y": 0.6539077,
+                    "z": -0.8994157
+                },
+                "bottom": {
+                    "x": 1.788139e-07,
+                    "y": -1.192093e-07,
+                    "z": 5.960464e-08
+                },
+                "center": {
+                    "x": 1.788139e-07,
+                    "y": 0.6539077,
+                    "z": 5.960464e-08
+                },
+                "front": {
+                    "x": 1.788139e-07,
+                    "y": 0.6539077,
+                    "z": 0.8994158
+                },
+                "left": {
+                    "x": -0.8867835,
+                    "y": 0.6539077,
+                    "z": 5.960464e-08
+                },
+                "right": {
+                    "x": 0.8867839,
+                    "y": 0.6539077,
+                    "z": 5.960464e-08
+                },
+                "top": {
+                    "x": 1.788139e-07,
+                    "y": 1.307815,
+                    "z": 5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_shopping_cart",
+            "physics_quality": -1,
+            "scale_factor": 5.394784,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Object002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "polySurface77"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_shopping_cart",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_shopping_cart",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_shopping_cart"
+            },
+            "volume": 0.5375810861587524,
+            "wcategory": "shopping cart",
+            "wnid": "n04204347"
+        },
+        "b03_shopping_cart_walmart": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 1679839,
+                "Linux": 1841346,
+                "Windows": 1542665
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.788139e-07,
+                    "y": 0.5559793,
+                    "z": -0.2982518
+                },
+                "bottom": {
+                    "x": 1.788139e-07,
+                    "y": -5.960464e-08,
+                    "z": 2.980232e-08
+                },
+                "center": {
+                    "x": 1.788139e-07,
+                    "y": 0.5559793,
+                    "z": 2.980232e-08
+                },
+                "front": {
+                    "x": 1.788139e-07,
+                    "y": 0.5559793,
+                    "z": 0.2982519
+                },
+                "left": {
+                    "x": -0.5914592,
+                    "y": 0.5559793,
+                    "z": 2.980232e-08
+                },
+                "right": {
+                    "x": 0.5914596,
+                    "y": 0.5559793,
+                    "z": 2.980232e-08
+                },
+                "top": {
+                    "x": 1.788139e-07,
+                    "y": 1.111959,
+                    "z": 2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_shopping_cart_walmart",
+            "physics_quality": -1,
+            "scale_factor": 0.03090313,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Back & Side Parts"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Wallmart_front_logo"
+                    ],
+                    "name": "Front Logo"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Lower Body"
+                },
+                {
+                    "materials": [
+                        "Wallmart_handle_logo"
+                    ],
+                    "name": "Object014"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_shopping_cart_walmart",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_shopping_cart_walmart",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_shopping_cart_walmart"
+            },
+            "volume": 0.09664063155651093,
+            "wcategory": "shopping cart",
+            "wnid": "n04204347"
+        },
+        "b03_shoppingcart_2013": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 3584230,
+                "Linux": 3692731,
+                "Windows": 3468501
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.788139e-07,
+                    "y": 0.5185233,
+                    "z": -0.2715791
+                },
+                "bottom": {
+                    "x": 1.788139e-07,
+                    "y": -5.960464e-08,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 1.788139e-07,
+                    "y": 0.5185233,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 1.788139e-07,
+                    "y": 0.5185233,
+                    "z": 0.271579
+                },
+                "left": {
+                    "x": -0.5181924,
+                    "y": 0.5185233,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.5181927,
+                    "y": 0.5185233,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 1.788139e-07,
+                    "y": 1.037047,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b03_shoppingcart_2013",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Back_Part"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cart"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Clips"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Front_Part"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nub_L"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Nub_R"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Plastic_Red"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rubber_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rubber_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Seat"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Seat_Base"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_Base_01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_Base_02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_Base_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Wheel_Base_04"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b03_shoppingcart_2013",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b03_shoppingcart_2013",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b03_shoppingcart_2013"
+            },
+            "volume": 0.06227540969848633,
+            "wcategory": "shopping cart",
+            "wnid": "n04204347"
+        },
         "b03_spoon_001": {
             "asset_bundle_sizes": {
                 "Darwin": 1084337,
@@ -8007,6 +10610,82 @@
             "wcategory": "dining table",
             "wnid": "n03201208"
         },
+        "b04_1106_backpack": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 48272480,
+                "Linux": 48450236,
+                "Windows": 48152809
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.490116e-08,
+                    "y": 0.2142279,
+                    "z": -0.1585814
+                },
+                "bottom": {
+                    "x": -1.490116e-08,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -1.490116e-08,
+                    "y": 0.2142279,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -1.490116e-08,
+                    "y": 0.2142279,
+                    "z": 0.1585814
+                },
+                "left": {
+                    "x": -0.162272,
+                    "y": 0.2142279,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.162272,
+                    "y": 0.2142279,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -1.490116e-08,
+                    "y": 0.4284558,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_1106_backpack",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Backpack",
+                        "Backpack_plastic",
+                        "Metal_BP"
+                    ],
+                    "name": "B04_1106_BACKPACK"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_1106_backpack",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_1106_backpack",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_1106_backpack"
+            },
+            "volume": 0.02489524707198143,
+            "wcategory": "backpack",
+            "wnid": "n02769748"
+        },
         "b04_11_02_041": {
             "asset_bundle_sizes": {
                 "Darwin": 2280011,
@@ -8172,6 +10851,878 @@
             "volume": 0.0016970352735370398,
             "wcategory": "jar",
             "wnid": "n03593526"
+        },
+        "b04_armani_handbag": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 10542178,
+                "Linux": 10673697,
+                "Windows": 10476554
+            },
+            "bounds": {
+                "back": {
+                    "x": 7.450581e-09,
+                    "y": 0.1825081,
+                    "z": -0.2103265
+                },
+                "bottom": {
+                    "x": 7.450581e-09,
+                    "y": -1.490116e-08,
+                    "z": 0
+                },
+                "center": {
+                    "x": 7.450581e-09,
+                    "y": 0.1825081,
+                    "z": 0
+                },
+                "front": {
+                    "x": 7.450581e-09,
+                    "y": 0.1825081,
+                    "z": 0.2103265
+                },
+                "left": {
+                    "x": -0.07700817,
+                    "y": 0.1825081,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.07700818,
+                    "y": 0.1825081,
+                    "z": 0
+                },
+                "top": {
+                    "x": 7.450581e-09,
+                    "y": 0.3650161,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_armani_handbag",
+            "physics_quality": 0.9288063955023068,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "leather"
+                    ],
+                    "name": "Box014"
+                },
+                {
+                    "materials": [
+                        "leather"
+                    ],
+                    "name": "Box015"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box018"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box019"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box020"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box021"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box022"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box023"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box024"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box025"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box026"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box027"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box028"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box029"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box030"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box031"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box032"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box033"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box034"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box035"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box036"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box037"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box038"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box039"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box040"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box041"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box042"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box043"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box044"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box045"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box046"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box047"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box048"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Box049"
+                },
+                {
+                    "materials": [
+                        "leather"
+                    ],
+                    "name": "Box050"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "ChamferCyl001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Donut002"
+                },
+                {
+                    "materials": [
+                        "leather_white"
+                    ],
+                    "name": "Line004"
+                },
+                {
+                    "materials": [
+                        "leather_white"
+                    ],
+                    "name": "Line006"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rectangle003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rectangle004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rectangle005"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle029"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle030"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle031"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle032"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle033"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle034"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle035"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle036"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle037"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle038"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle039"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle040"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle041"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle042"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle043"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle044"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle045"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle046"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle047"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle048"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle049"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle050"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle051"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle052"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle054"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle055"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle056"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle057"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle058"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle059"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle060"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle061"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle062"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle063"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle064"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle065"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle066"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle067"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle068"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle069"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle070"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle071"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle072"
+                },
+                {
+                    "materials": [
+                        "leather_bez"
+                    ],
+                    "name": "Rectangle073"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle075"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle076"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle077"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle079"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle080"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle081"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle082"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle083"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle084"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle085"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle086"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle087"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle088"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle089"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle090"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle091"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle092"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle093"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle094"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle095"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle096"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle097"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle098"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle099"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle100"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle101"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle102"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle103"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle104"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle105"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle106"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle107"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle108"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle109"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle110"
+                },
+                {
+                    "materials": [
+                        "leather_white_000"
+                    ],
+                    "name": "Rectangle111"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Rectangle112"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Rectangle113"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rings 001"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rings 002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rings 003"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Rings 004"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Torus001"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Tube002"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Tube003"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Tube004"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Tube005"
+                },
+                {
+                    "materials": [
+                        "leather_bez_000"
+                    ],
+                    "name": "Tube006"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_armani_handbag",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_armani_handbag",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_armani_handbag"
+            },
+            "volume": 0.012340402230620384,
+            "wcategory": "bag, handbag, pocketbook, purse",
+            "wnid": "n02774152"
         },
         "b04_b200003_01": {
             "asset_bundle_sizes": {
@@ -8488,6 +12039,80 @@
             "volume": 0.0026094273198395967,
             "wcategory": "baseball bat",
             "wnid": "n02799175"
+        },
+        "b04_basket": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 15162665,
+                "Linux": 15395700,
+                "Windows": 15009652
+            },
+            "bounds": {
+                "back": {
+                    "x": -8.940697e-08,
+                    "y": 0.3882089,
+                    "z": -0.2638283
+                },
+                "bottom": {
+                    "x": -8.940697e-08,
+                    "y": 0,
+                    "z": -2.980232e-08
+                },
+                "center": {
+                    "x": -8.940697e-08,
+                    "y": 0.3882089,
+                    "z": -2.980232e-08
+                },
+                "front": {
+                    "x": -8.940697e-08,
+                    "y": 0.3882089,
+                    "z": 0.2638282
+                },
+                "left": {
+                    "x": -0.2638284,
+                    "y": 0.3882089,
+                    "z": -2.980232e-08
+                },
+                "right": {
+                    "x": 0.2638282,
+                    "y": 0.3882089,
+                    "z": -2.980232e-08
+                },
+                "top": {
+                    "x": -8.940697e-08,
+                    "y": 0.7764177,
+                    "z": -2.980232e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_basket",
+            "physics_quality": -1,
+            "scale_factor": 0.007289999,
+            "substructure": [
+                {
+                    "materials": [
+                        "wicker_weave"
+                    ],
+                    "name": "B04_Basket"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_basket",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_basket",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_basket"
+            },
+            "volume": 0.0459265299141407,
+            "wcategory": "basket",
+            "wnid": "n02801938"
         },
         "b04_baterijska_busilica": {
             "asset_bundle_sizes": {
@@ -9253,6 +12878,104 @@
             "wcategory": "bottle",
             "wnid": "n02876657"
         },
+        "b04_bottle_20ml": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 3405153,
+                "Linux": 3819896,
+                "Windows": 3112503
+            },
+            "bounds": {
+                "back": {
+                    "x": 3.72529e-09,
+                    "y": 0.03972488,
+                    "z": -0.01391567
+                },
+                "bottom": {
+                    "x": 3.72529e-09,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 3.72529e-09,
+                    "y": 0.03972488,
+                    "z": 0
+                },
+                "front": {
+                    "x": 3.72529e-09,
+                    "y": 0.03972488,
+                    "z": 0.01391567
+                },
+                "left": {
+                    "x": -0.0139804,
+                    "y": 0.03972488,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.0139804,
+                    "y": 0.03972488,
+                    "z": 0
+                },
+                "top": {
+                    "x": 3.72529e-09,
+                    "y": 0.07944976,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_bottle_20ml",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "bottle_20ml"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_white"
+                    ],
+                    "name": "bottle_20ml_cap"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "bottle_20ml_dropper"
+                },
+                {
+                    "materials": [
+                        "plastic_vinyl_glossy_white"
+                    ],
+                    "name": "bottle_20ml_seal"
+                },
+                {
+                    "materials": [
+                        "bottle_20ml_label"
+                    ],
+                    "name": "bottle_20ml_wrapper"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_bottle_20ml",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_bottle_20ml",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_bottle_20ml"
+            },
+            "volume": 5.5002892622724175e-05,
+            "wcategory": "bottle",
+            "wnid": "n02876657"
+        },
         "b04_bottle_2_max": {
             "asset_bundle_sizes": {
                 "Darwin": 9721035,
@@ -9335,6 +13058,122 @@
                 "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_bottle_2_max"
             },
             "volume": 0.00012186582171125337,
+            "wcategory": "bottle",
+            "wnid": "n02876657"
+        },
+        "b04_bottle_max": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 4328789,
+                "Linux": 4598328,
+                "Windows": 4121432
+            },
+            "bounds": {
+                "back": {
+                    "x": 2.980232e-08,
+                    "y": 0.1077509,
+                    "z": -0.05299677
+                },
+                "bottom": {
+                    "x": 2.980232e-08,
+                    "y": -1.490116e-08,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": 2.980232e-08,
+                    "y": 0.1077509,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": 2.980232e-08,
+                    "y": 0.1077509,
+                    "z": 0.05299674
+                },
+                "left": {
+                    "x": -0.08525103,
+                    "y": 0.1077509,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.08525109,
+                    "y": 0.1077509,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": 2.980232e-08,
+                    "y": 0.2155017,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_bottle_max",
+            "physics_quality": -1,
+            "scale_factor": 0.254,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "Bottle 1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "Bottle 002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cap 1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Cap 002"
+                },
+                {
+                    "materials": [
+                        "Stiker_1"
+                    ],
+                    "name": "Stiker 1"
+                },
+                {
+                    "materials": [
+                        "Stiker"
+                    ],
+                    "name": "Stiker 002"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "Water 1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "Water 002"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_bottle_max",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_bottle_max",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_bottle_max"
+            },
+            "volume": 0.002088090404868126,
             "wcategory": "bottle",
             "wnid": "n02876657"
         },
@@ -9428,6 +13267,87 @@
             "volume": 0.0016161754028871655,
             "wcategory": "bowl",
             "wnid": "n03206908"
+        },
+        "b04_can": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 563060,
+                "Linux": 657038,
+                "Windows": 501777
+            },
+            "bounds": {
+                "back": {
+                    "x": 7.450581e-09,
+                    "y": 0.07035839,
+                    "z": -0.04302562
+                },
+                "bottom": {
+                    "x": 7.450581e-09,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 7.450581e-09,
+                    "y": 0.07035839,
+                    "z": 0
+                },
+                "front": {
+                    "x": 7.450581e-09,
+                    "y": 0.07035839,
+                    "z": 0.04302562
+                },
+                "left": {
+                    "x": -0.04292061,
+                    "y": 0.07035839,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.04292063,
+                    "y": 0.07035839,
+                    "z": 0
+                },
+                "top": {
+                    "x": 7.450581e-09,
+                    "y": 0.1407168,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_can",
+            "physics_quality": 0.8521262047473623,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "chrome2"
+                    ],
+                    "name": "Can_02"
+                },
+                {
+                    "materials": [
+                        "chrome2",
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Can_03"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_can",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_can",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_can"
+            },
+            "volume": 0.001031433348543942,
+            "wcategory": "soda can",
+            "wnid": "n04255586"
         },
         "b04_candle_holder_metal": {
             "asset_bundle_sizes": {
@@ -9759,6 +13679,110 @@
             "volume": 2.2313524823402986e-05,
             "wcategory": "cassette",
             "wnid": "n02978881"
+        },
+        "b04_cgaxis_models_31_12_vray": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 7906115,
+                "Linux": 8218215,
+                "Windows": 7676804
+            },
+            "bounds": {
+                "back": {
+                    "x": 7.450581e-09,
+                    "y": 0.04573213,
+                    "z": -0.09821814
+                },
+                "bottom": {
+                    "x": 7.450581e-09,
+                    "y": -3.72529e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 7.450581e-09,
+                    "y": 0.04573213,
+                    "z": 0
+                },
+                "front": {
+                    "x": 7.450581e-09,
+                    "y": 0.04573213,
+                    "z": 0.09821814
+                },
+                "left": {
+                    "x": -0.08800443,
+                    "y": 0.04573213,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.08800445,
+                    "y": 0.04573213,
+                    "z": 0
+                },
+                "top": {
+                    "x": 7.450581e-09,
+                    "y": 0.09146427,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_cgaxis_models_31_12_vray",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "cgaxis_models_31_12_01"
+                    ],
+                    "name": "cgaxis_models_31_12_01"
+                },
+                {
+                    "materials": [
+                        "rubber_black"
+                    ],
+                    "name": "cgaxis_models_31_12_02"
+                },
+                {
+                    "materials": [
+                        "cgaxis_models_31_12_03"
+                    ],
+                    "name": "cgaxis_models_31_12_03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cgaxis_models_31_12_04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cgaxis_models_31_12_05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cgaxis_models_31_12_06"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_cgaxis_models_31_12_vray",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_cgaxis_models_31_12_vray",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_cgaxis_models_31_12_vray"
+            },
+            "volume": 0.0009864921448752284,
+            "wcategory": "headphone",
+            "wnid": "n03261776"
         },
         "b04_champions_trophy": {
             "asset_bundle_sizes": {
@@ -10305,6 +14329,418 @@
             "volume": 9.285306987294462e-06,
             "wcategory": "calculator",
             "wnid": "n02938886"
+        },
+        "b04_dump": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 4043201,
+                "Linux": 4548476,
+                "Windows": 3646356
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 1.583909,
+                    "z": -4.564087
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 1.583909,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 1.583909,
+                    "z": 4.564087
+                },
+                "left": {
+                    "x": -1.514051,
+                    "y": 1.583909,
+                    "z": 0
+                },
+                "right": {
+                    "x": 1.514051,
+                    "y": 1.583909,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 3.167818,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b04_dump",
+            "physics_quality": 0.915257173637681,
+            "scale_factor": 0.04304671,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "crisal faro delantero01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "crisal faro delantero02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal antiniebla01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal antiniebla02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal antiniebla03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal antiniebla04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal faro01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal faro02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal intermitente01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal intermitente02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal intermitente03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal intermitente04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal luz techo01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal luz techo02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal luz techo03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal luz techo04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal trasero01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal trasero02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal trasero03"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "cristal trasero04"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal trasero05"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "cristal trasero06"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "dump cristal del "
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "dump cristal ven"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Transparent"
+                    ],
+                    "name": "dump cristal ven 1"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "dump t bajos"
+                },
+                {
+                    "materials": [
+                        "plastic_no-stripes 1"
+                    ],
+                    "name": "dump t cabina"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "dump t cromados"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "dump t elementos"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "dump_t_matricula"
+                    ],
+                    "name": "dump t matricula del"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "dump_t_matricula"
+                    ],
+                    "name": "dump t matricula trasera"
+                },
+                {
+                    "materials": [
+                        "plastic_no-stripes 1"
+                    ],
+                    "name": "dump t puerta der"
+                },
+                {
+                    "materials": [
+                        "plastic_no-stripes 1"
+                    ],
+                    "name": "dump t puerta izq"
+                },
+                {
+                    "materials": [
+                        "dump_t_parrilla"
+                    ],
+                    "name": "dump t rejilla motor"
+                },
+                {
+                    "materials": [
+                        "plastic_no-stripes 1"
+                    ],
+                    "name": "dumper"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma01"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma02"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma03"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma04"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma05"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma06"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma07"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma08"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma09"
+                },
+                {
+                    "materials": [
+                        "dump_t_neumatico"
+                    ],
+                    "name": "goma10"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda delantera"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda delantera01"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda repuesto"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda trasera exterior"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda trasera exterior01"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda trasera exterior02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "rueda trasera interior"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "rueda trasera interior01"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "rueda trasera interior02"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "rueda trasera interior03"
+                },
+                {
+                    "materials": [
+                        "steel_brushed"
+                    ],
+                    "name": "rueda trasera izq"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_dump",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_dump",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_dump"
+            },
+            "volume": 33.94969940185547,
+            "wcategory": "truck",
+            "wnid": "n04490091"
         },
         "b04_faucet1": {
             "asset_bundle_sizes": {
@@ -11238,6 +15674,82 @@
             "wcategory": "jug",
             "wnid": "n03603722"
         },
+        "b04_money": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 4415057,
+                "Linux": 4575121,
+                "Windows": 4278885
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.005235953,
+                    "z": -0.03802461
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": -2.793968e-09,
+                    "z": 0
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.005235953,
+                    "z": 0
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.005235953,
+                    "z": 0.03802461
+                },
+                "left": {
+                    "x": -0.0669523,
+                    "y": 0.005235953,
+                    "z": 0
+                },
+                "right": {
+                    "x": 0.0669523,
+                    "y": 0.005235953,
+                    "z": 0
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.01047191,
+                    "z": 0
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_money",
+            "physics_quality": 1.0,
+            "scale_factor": 0.00539027,
+            "substructure": [
+                {
+                    "materials": [
+                        "KORDELA",
+                        "UP",
+                        "SIDE"
+                    ],
+                    "name": "B04_MONEY"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_money",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_money",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_money"
+            },
+            "volume": 9.664202661952004e-05,
+            "wcategory": "money",
+            "wnid": "n13384557"
+        },
         "b04_new": {
             "asset_bundle_sizes": {
                 "Darwin": 7915921,
@@ -12086,6 +16598,82 @@
             "volume": 1.6391355529776774e-05,
             "wcategory": "screwdriver",
             "wnid": "n04154565"
+        },
+        "b04_shoppping_cart": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 517361,
+                "Linux": 677622,
+                "Windows": 381404
+            },
+            "bounds": {
+                "back": {
+                    "x": -1.192093e-07,
+                    "y": 0.426297,
+                    "z": -0.5167546
+                },
+                "bottom": {
+                    "x": -1.192093e-07,
+                    "y": 0,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": -1.192093e-07,
+                    "y": 0.426297,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": -1.192093e-07,
+                    "y": 0.426297,
+                    "z": 0.5167544
+                },
+                "left": {
+                    "x": -0.2471382,
+                    "y": 0.426297,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.2471379,
+                    "y": 0.426297,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": -1.192093e-07,
+                    "y": 0.852594,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b04_shoppping_cart",
+            "physics_quality": 0.9536286218555259,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "SolidTiles_Opaque",
+                        "Material_4539",
+                        "Material_4540"
+                    ],
+                    "name": "B04_shoppping_cart"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b04_shoppping_cart",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b04_shoppping_cart",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b04_shoppping_cart"
+            },
+            "volume": 0.09189215302467346,
+            "wcategory": "shopping cart",
+            "wnid": "n04204347"
         },
         "b04_wallmounted_soap_dispenser_composite": {
             "asset_bundle_sizes": {
@@ -16339,6 +20927,80 @@
             "wcategory": "racquet",
             "wnid": "n04039381"
         },
+        "b05_shopping_cart3": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 34792739,
+                "Linux": 34968198,
+                "Windows": 34660605
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.5125378,
+                    "z": -0.5336076
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -5.960464e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.5125378,
+                    "z": -5.960464e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.5125378,
+                    "z": 0.5336075
+                },
+                "left": {
+                    "x": -0.2969794,
+                    "y": 0.5125378,
+                    "z": -5.960464e-08
+                },
+                "right": {
+                    "x": 0.2969794,
+                    "y": 0.5125378,
+                    "z": -5.960464e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 1.025076,
+                    "z": -5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": true,
+            "name": "b05_shopping_cart3",
+            "physics_quality": -1,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "shopping_cart3"
+                    ],
+                    "name": "B05_shopping_cart3"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b05_shopping_cart3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b05_shopping_cart3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b05_shopping_cart3"
+            },
+            "volume": 0.10871357470750809,
+            "wcategory": "shopping cart",
+            "wnid": "n04204347"
+        },
         "b05_snickers": {
             "asset_bundle_sizes": {
                 "Darwin": 4861891,
@@ -17496,6 +22158,370 @@
             "volume": 0.00453308317810297,
             "wcategory": "toaster",
             "wnid": "n04442312"
+        },
+        "b06_backpack": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 28832423,
+                "Linux": 28986384,
+                "Windows": 28694013
+            },
+            "bounds": {
+                "back": {
+                    "x": -2.980232e-08,
+                    "y": 0.4447505,
+                    "z": -0.1981215
+                },
+                "bottom": {
+                    "x": -2.980232e-08,
+                    "y": -5.960464e-08,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": -2.980232e-08,
+                    "y": 0.4447505,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": -2.980232e-08,
+                    "y": 0.4447505,
+                    "z": 0.1981215
+                },
+                "left": {
+                    "x": -0.2980298,
+                    "y": 0.4447505,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.2980297,
+                    "y": 0.4447505,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": -2.980232e-08,
+                    "y": 0.8895011,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 180.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b06_backpack",
+            "physics_quality": 0.981904015809642,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_30"
+                    ],
+                    "name": "Back_Strap1"
+                },
+                {
+                    "materials": [
+                        "Material_30"
+                    ],
+                    "name": "Back_Strap2"
+                },
+                {
+                    "materials": [
+                        "Material_35"
+                    ],
+                    "name": "Bag_side"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Beading2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Beading3"
+                },
+                {
+                    "materials": [
+                        "Material_36"
+                    ],
+                    "name": "Beading4"
+                },
+                {
+                    "materials": [
+                        "Material_36"
+                    ],
+                    "name": "Beading5"
+                },
+                {
+                    "materials": [
+                        "Material_25"
+                    ],
+                    "name": "Beading6"
+                },
+                {
+                    "materials": [
+                        "Material_27"
+                    ],
+                    "name": "Big_Foam1"
+                },
+                {
+                    "materials": [
+                        "Material_35"
+                    ],
+                    "name": "Bottom"
+                },
+                {
+                    "materials": [
+                        "Material_35"
+                    ],
+                    "name": "Bottom1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Bottom_lug1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Bottom_lug2"
+                },
+                {
+                    "materials": [
+                        "Material_25"
+                    ],
+                    "name": "Bottom_Main_Area1"
+                },
+                {
+                    "materials": [
+                        "Material_35"
+                    ],
+                    "name": "Bottom_Small_part1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Front__Red2"
+                },
+                {
+                    "materials": [
+                        "Material_36"
+                    ],
+                    "name": "Front_Shell"
+                },
+                {
+                    "materials": [
+                        "Material_26"
+                    ],
+                    "name": "Handle_Strap1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Logo1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Logo2"
+                },
+                {
+                    "materials": [
+                        "Material_30"
+                    ],
+                    "name": "pasted__polySurface766"
+                },
+                {
+                    "materials": [
+                        "Material_28"
+                    ],
+                    "name": "Small_Foam1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zip"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zip1"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zip2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zip3"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zip4"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper2"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper3"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper4"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper5"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper6"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper7"
+                },
+                {
+                    "materials": [
+                        "SolidTiles_Opaque"
+                    ],
+                    "name": "Zipper8"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b06_backpack",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b06_backpack",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b06_backpack"
+            },
+            "volume": 0.10055164247751236,
+            "wcategory": "backpack",
+            "wnid": "n02769748"
+        },
+        "b06_backpack_new": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 72281125,
+                "Linux": 72710212,
+                "Windows": 72003485
+            },
+            "bounds": {
+                "back": {
+                    "x": 0,
+                    "y": 0.1422931,
+                    "z": -0.1144984
+                },
+                "bottom": {
+                    "x": 0,
+                    "y": 0,
+                    "z": -1.490116e-08
+                },
+                "center": {
+                    "x": 0,
+                    "y": 0.1422931,
+                    "z": -1.490116e-08
+                },
+                "front": {
+                    "x": 0,
+                    "y": 0.1422931,
+                    "z": 0.1144983
+                },
+                "left": {
+                    "x": -0.1301194,
+                    "y": 0.1422931,
+                    "z": -1.490116e-08
+                },
+                "right": {
+                    "x": 0.1301194,
+                    "y": 0.1422931,
+                    "z": -1.490116e-08
+                },
+                "top": {
+                    "x": 0,
+                    "y": 0.2845862,
+                    "z": -1.490116e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 90.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "b06_backpack_new",
+            "physics_quality": 0.9197018234032036,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "Material_26"
+                    ],
+                    "name": "bag"
+                },
+                {
+                    "materials": [
+                        "Material_25"
+                    ],
+                    "name": "belts"
+                },
+                {
+                    "materials": [
+                        "antique_bronze_darkened"
+                    ],
+                    "name": "gem"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/b06_backpack_new",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/b06_backpack_new",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/b06_backpack_new"
+            },
+            "volume": 0.0037951937410980463,
+            "wcategory": "backpack",
+            "wnid": "n02769748"
         },
         "b06_circle": {
             "asset_bundle_sizes": {
@@ -59877,6 +64903,7 @@
             "wnid": "n04442312"
         },
         "vray_077_composite": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 1891039,
                 "Linux": 2306751,
@@ -59926,8 +64953,8 @@
             },
             "composite_object": true,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect configureable joint. MeshCollider group49 doesn't have a mesh.",
             "flex": false,
             "name": "vray_077_composite",
             "physics_quality": 0.9800953581862236,
@@ -60235,6 +65262,7 @@
             "wnid": "n04442312"
         },
         "vray_084_composite": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 462606,
                 "Linux": 844232,
@@ -60284,8 +65312,8 @@
             },
             "composite_object": true,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect configureable joint",
             "flex": false,
             "name": "vray_084_composite",
             "physics_quality": 1.2229561250480188,
@@ -60407,6 +65435,7 @@
             "wnid": "n04442312"
         },
         "vray_085_composite": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 248359,
                 "Linux": 430490,
@@ -60456,8 +65485,8 @@
             },
             "composite_object": true,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Incorrect configureable joint",
             "flex": false,
             "name": "vray_085_composite",
             "physics_quality": 1.2555309160884582,

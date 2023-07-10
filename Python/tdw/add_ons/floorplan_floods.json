@@ -1,0 +1,415 @@
+{
+  "1": {
+    "1": {
+		"scene": "floorplan_1",
+        "name": "fplan1_floor1",
+		"adjacent_floors": ["2"],
+        "position": {
+          "x": 10.99,
+          "y": -0.099,
+          "z": -2.78
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"2": {
+		"scene": "floorplan_1",
+        "name": "fplan1_floor2",
+		"adjacent_floors": ["1", "3"],
+        "position": {
+          "x": 6.49,
+          "y": -0.099,
+          "z": -2.78
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"3": {
+		"scene": "floorplan_1",
+        "name": "fplan1_floor3",
+		"adjacent_floors": ["2","4"],
+        "position": {
+          "x": 0.7399,
+          "y": -0.099,
+          "z": -2.78
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+	  },
+   "4": {
+		"scene": "floorplan_1",
+        "name": "fplan1_floor4",
+		"adjacent_floors": ["3", "5"],
+        "position": {
+          "x": 0.2399,
+          "y": -0.099,
+          "z": 2.72
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"5": {
+		"scene": "floorplan_1",
+        "name": "fplan1_floor5",
+		"adjacent_floors": ["4", "6"],
+        "position": {
+          "x": -5.76,
+          "y": -0.099,
+          "z": 2.72
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"6": {
+		"scene": "floorplan_1",
+        "name": "fplan1_floor6",
+		"adjacent_floors": ["5"],
+        "position": {
+          "x": -11.26,
+          "y": -0.099,
+          "z": 2.72
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+	},
+  "2": {
+    "1": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor1",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"2": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor2",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"3": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor3",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+	  },
+   "4": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor4",
+		"adjacent_floors": ["1", "2", "3", "5", "6", "7", "8"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"5": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor5",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"6": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor6",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"7": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor7",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"8": {
+		"scene": "floorplan_2",
+        "name": "fplan2_floor8",
+		"adjacent_floors": ["4"],
+        "position": {
+          "x": 8.933,
+          "y": -0.1,
+          "z": 2.676
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+	},
+  "4": {
+    "1": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor1",
+		"adjacent_floors": ["2"],
+        "position": {
+          "x": 5.15,
+          "y": -0.099,
+          "z": 3.7
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"2": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor2",
+		"adjacent_floors": ["1", "3"],
+        "position": {
+          "x": 5.15,
+          "y": -0.099,
+          "z": -0.049
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"3": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor3",
+		"adjacent_floors": ["2", "4"],
+        "position": {
+          "x": 4.15,
+          "y": -0.099,
+          "z": -3.55
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+	  },
+   "4": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor4",
+		"adjacent_floors": ["3", "5"],
+        "position": {
+          "x": -1.35,
+          "y": -0.099,
+          "z": -3.55
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"5": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor5",
+		"adjacent_floors": ["4", "6"],
+        "position": {
+          "x": -6.1,
+          "y": -0.099,
+          "z": -2.8
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"6": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor6",
+		"adjacent_floors": ["5", "7"],
+        "position": {
+          "x": -6.1,
+          "y": -0.099,
+          "z": 1.2
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"7": {
+		"scene": "floorplan_4",
+        "name": "fplan4_floor7",
+		"adjacent_floors": ["6"],
+        "position": {
+         "x": -6.1,
+          "y": -0.099,
+          "z": 4.2
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+	  }
+	},
+  "5": {
+    "1": {
+		"scene": "floorplan_5",
+        "name": "fplan5_floor1",
+		"adjacent_floors": ["2"],
+        "position": {
+          "x": 8.391,
+          "y": 0,
+          "z": -2.793
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"2": {
+		"scene": "floorplan_5",
+        "name": "fplan5_floor2",
+		"adjacent_floors": ["1", "3", "6"],
+        "position": {
+          "x": 3.391,
+          "y": 0,
+          "z": -2.793
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"3": {
+		"scene": "floorplan_5",
+        "name": "fplan5_floor3",
+		"adjacent_floors": ["2", "4", "5"],
+        "position": {
+          "x": -2.608,
+          "y": 0,
+          "z":  -2.793
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+	  },
+   "4": {
+		"scene": "floorplan_5",
+        "name": "fplan5_floor4",
+		"adjacent_floors": ["3"],
+        "position": {
+          "x": -8.358,
+          "y": 0,
+          "z":  -2.793
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"5": {
+		"scene": "floorplan_5",
+        "name": "fplan5_floor5",
+		"adjacent_floors": ["3", "6"],
+        "position": {
+          "x": -2.608,
+          "y": 0,
+          "z": 2.706
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      },
+	"6": {
+		"scene": "floorplan_5",
+        "name": "fplan5_floor6",
+		"adjacent_floors": ["5", "2"],
+        "position": {
+          "x": 3.391,
+          "y": 0,
+          "z": 2.706
+        },
+        "scale_factor": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+   }
+}

@@ -548,7 +548,7 @@ Result:
 
 ## Example D: Carry a Couch
 
-In this example, two Replicants will move to opposite ends of a couch, lift it, carry it, and drop it. As we've already learned, [only one Replicant can grasp an object at a time](grasp_drop.md), so technically the Replicants are moving synchronously rather than carrying the object together.
+In this example, two Replicants will move to opposite ends of a couch, lift it, carry it, and drop it. As we've already learned, [only one Replicant can grasp an object at a time](arm_articulation_2.md), so technically the Replicants are moving synchronously rather than carrying the object together.
 
 Because we want to coordinate most of the movements of these Replicants, we're going to use a NavMesh but we don't need or want a `Navigate` action; we'll handle the multiple `move_to(target)` actions manually.
 
@@ -597,9 +597,6 @@ class CarryCouch(Controller):
         commands.extend(Controller.get_add_physics_object(model_name="arflex_strips_sofa",
                                                           object_id=self.object_id,
                                                           position={"x": 0, "y": 0, "z": 1}))
-        commands.append({"$type": "make_nav_mesh_obstacle",
-                         "id": self.object_id,
-                         "carve_type": "stationary"})
         self.communicate(commands)
 
     def carry_sofa(self) -> None:
@@ -631,10 +628,10 @@ class CarryCouch(Controller):
         # Offset the bounds positions.
         v = left - center
         v = v / np.linalg.norm(v)
-        left += v * 0.25
+        left += v * 0.45
         v = right - center
         v = v / np.linalg.norm(v)
-        right += v * 0.25
+        right += v * 0.45
         # Set target positions for each.
         distance_left = np.linalg.norm(self.replicant_0.dynamic.transform.position - left)
         distance_right = np.linalg.norm(self.replicant_0.dynamic.transform.position - right)
@@ -685,14 +682,14 @@ class CarryCouch(Controller):
                 if replicant_0_path_index >= replicant_0_path.shape[0]:
                     replicant_0_done = True
                 else:
-                    self.replicant_0.move_to(replicant_0_path[replicant_0_path_index])
+                    self.replicant_0.move_to(replicant_0_path[replicant_0_path_index], arrived_at=0.05)
             replicant_1_done = False
             if self.replicant_1.action.status != ActionStatus.ongoing:
                 replicant_1_path_index += 1
                 if replicant_1_path_index >= replicant_1_path.shape[0]:
                     replicant_1_done = True
                 else:
-                    self.replicant_1.move_to(replicant_1_path[replicant_1_path_index])
+                    self.replicant_1.move_to(replicant_1_path[replicant_1_path_index], arrived_at=0.05)
             done = replicant_0_done and replicant_1_done
             # Continue the loop.
             self.communicate([])
@@ -701,8 +698,8 @@ class CarryCouch(Controller):
         self.replicant_1.turn_to(target=center)
         self.do_actions()
         # Reach for the couch.
-        self.replicant_0.reach_for(target=self.object_id, arm=[Arm.left, Arm.right])
-        self.replicant_1.reach_for(target=self.object_id, arm=[Arm.left, Arm.right])
+        self.replicant_0.reach_for(target=[self.object_id, self.object_id], arm=[Arm.left, Arm.right])
+        self.replicant_1.reach_for(target=[self.object_id, self.object_id], arm=[Arm.left, Arm.right])
         self.do_actions()
         # Only the first Replicant grasps the couch.
         self.replicant_0.grasp(target=self.object_id, arm=Arm.left, angle=None)

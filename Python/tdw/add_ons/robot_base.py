@@ -172,15 +172,3 @@ class RobotBase(AddOn, ABC):
             for joint_id in dynamic.joints:
                 dynamic.joints[joint_id].moving = True
         return dynamic
-
-    @final
-    def _set_robot_joint_ids(self) -> None:
-        """
-        Explicitly set the robot joint IDs. This ensures that the IDs are the same when reading a log file.
-        """
-
-        self.commands.extend([{"$type": "set_robot_joint_id",
-                               "joint_name": self.static.joints[joint_id].name,
-                               "joint_id": self.static.joints[joint_id].joint_id,
-                               "id": self.robot_id}
-                              for joint_id in self.static.joints])

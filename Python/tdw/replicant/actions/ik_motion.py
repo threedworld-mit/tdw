@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import List
 from abc import ABC
 from tdw.replicant.actions.action import Action
@@ -30,9 +29,9 @@ class IkMotion(Action, ABC):
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
-        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
-                                                       image_frequency=image_frequency)
         # Scale the duration by the framerate.
         if self.scale_duration:
             self.duration = Action._get_scaled_duration(duration=self.duration, resp=resp)
+        commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
+                                                       image_frequency=image_frequency)
         return commands

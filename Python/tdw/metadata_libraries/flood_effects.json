@@ -1,0 +1,248 @@
+{
+    "description": "Visual effects for the FloorplanFlood add-on",
+    "records": {
+        "fplan1_floor1": {
+            "audio": false,
+            "name": "fplan1_floor1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan1_floor1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan1_floor1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan1_floor1"
+            }
+        },
+        "fplan1_floor2": {
+            "audio": false,
+            "name": "fplan1_floor2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan1_floor2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan1_floor2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan1_floor2"
+            }
+        },
+        "fplan1_floor3": {
+            "audio": false,
+            "name": "fplan1_floor3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan1_floor3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan1_floor3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan1_floor3"
+            }
+        },
+        "fplan1_floor4": {
+            "audio": false,
+            "name": "fplan1_floor4",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan1_floor4",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan1_floor4",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan1_floor4"
+            }
+        },
+        "fplan1_floor5": {
+            "audio": false,
+            "name": "fplan1_floor5",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan1_floor5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan1_floor5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan1_floor5"
+            }
+        },
+        "fplan1_floor6": {
+            "audio": false,
+            "name": "fplan1_floor6",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan1_floor6",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan1_floor6",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan1_floor6"
+            }
+        },
+        "fplan2_floor1": {
+            "audio": false,
+            "name": "fplan2_floor1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor1"
+            }
+        },
+        "fplan2_floor2": {
+            "audio": false,
+            "name": "fplan2_floor2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor2"
+            }
+        },
+        "fplan2_floor3": {
+            "audio": false,
+            "name": "fplan2_floor3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor3"
+            }
+        },
+        "fplan2_floor4": {
+            "audio": false,
+            "name": "fplan2_floor4",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor4",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor4",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor4"
+            }
+        },
+        "fplan2_floor5": {
+            "audio": false,
+            "name": "fplan2_floor5",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor5"
+            }
+        },
+        "fplan2_floor6": {
+            "audio": false,
+            "name": "fplan2_floor6",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor6",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor6",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor6"
+            }
+        },
+        "fplan2_floor7": {
+            "audio": false,
+            "name": "fplan2_floor7",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor7",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor7",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor7"
+            }
+        },
+        "fplan2_floor8": {
+            "audio": false,
+            "name": "fplan2_floor8",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan2_floor8",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan2_floor8",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan2_floor8"
+            }
+        },
+        "fplan4_floor1": {
+            "audio": false,
+            "name": "fplan4_floor1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor1"
+            }
+        },
+        "fplan4_floor2": {
+            "audio": false,
+            "name": "fplan4_floor2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor2"
+            }
+        },
+        "fplan4_floor3": {
+            "audio": false,
+            "name": "fplan4_floor3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor3"
+            }
+        },
+        "fplan4_floor4": {
+            "audio": false,
+            "name": "fplan4_floor4",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor4",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor4",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor4"
+            }
+        },
+        "fplan4_floor5": {
+            "audio": false,
+            "name": "fplan4_floor5",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor5"
+            }
+        },
+        "fplan4_floor6": {
+            "audio": false,
+            "name": "fplan4_floor6",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor6",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor6",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor6"
+            }
+        },
+        "fplan4_floor7": {
+            "audio": false,
+            "name": "fplan4_floor7",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan4_floor7",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan4_floor7",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan4_floor7"
+            }
+        },
+        "fplan5_floor1": {
+            "audio": false,
+            "name": "fplan5_floor1",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan5_floor1",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan5_floor1",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan5_floor1"
+            }
+        },
+        "fplan5_floor2": {
+            "audio": false,
+            "name": "fplan5_floor2",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan5_floor2",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan5_floor2",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan5_floor2"
+            }
+        },
+        "fplan5_floor3": {
+            "audio": false,
+            "name": "fplan5_floor3",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan5_floor3",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan5_floor3",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan5_floor3"
+            }
+        },
+        "fplan5_floor4": {
+            "audio": false,
+            "name": "fplan5_floor4",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan5_floor4",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan5_floor4",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan5_floor4"
+            }
+        },
+        "fplan5_floor5": {
+            "audio": false,
+            "name": "fplan5_floor5",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan5_floor5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan5_floor5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan5_floor5"
+            }
+        },
+        "fplan5_floor6": {
+            "audio": false,
+            "name": "fplan5_floor6",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/visual_effects/osx/2020.3/fplan5_floor6",
+                "Linux": "https://tdw-public.s3.amazonaws.com/visual_effects/linux/2020.3/fplan5_floor6",
+                "Windows": "https://tdw-public.s3.amazonaws.com/visual_effects/windows/2020.3/fplan5_floor6"
+            }
+        }
+    }
+}

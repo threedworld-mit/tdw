@@ -1,7 +1,7 @@
-from __future__ import annotations
 from typing import List, Optional, Dict, Union
 from copy import deepcopy
 import numpy as np
+from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.add_ons.add_on import AddOn
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -13,6 +13,7 @@ from tdw.replicant.actions.turn_to import TurnTo
 from tdw.replicant.actions.move_by import MoveBy
 from tdw.replicant.actions.move_to import MoveTo
 from tdw.replicant.actions.reach_for import ReachFor
+from tdw.replicant.actions.reach_for_with_plan import ReachForWithPlan
 from tdw.replicant.actions.grasp import Grasp
 from tdw.replicant.actions.drop import Drop
 from tdw.replicant.actions.reset_arm import ResetArm
@@ -23,6 +24,7 @@ from tdw.replicant.actions.reset_head import ResetHead
 from tdw.replicant.actions.do_nothing import DoNothing
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.arm import Arm
+from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
@@ -42,15 +44,16 @@ class Replicant(AddOn):
     """
     LIBRARY_NAME: str = "replicants.json"
 
-    def __init__(self, replicant_id: int = 0, position: Union[Dict[str, float], np.ndarray] = None,
-                 rotation: Union[Dict[str, float], np.ndarray] = None,
-                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0"):
+    def __init__(self, replicant_id: int = 0, position: POSITION = None, rotation: ROTATION = None,
+                 image_frequency: ImageFrequency = ImageFrequency.once, name: str = "replicant_0",
+                 target_framerate: int = 100):
         """
         :param replicant_id: The ID of the Replicant.
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param image_frequency: An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
         :param name: The name of the Replicant model.
+        :param target_framerate: The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement.
         """
 
         super().__init__()
@@ -91,11 +94,13 @@ class Replicant(AddOn):
         self._previous_action: Optional[Action] = None
         # This is used when saving images.
         self._frame_count: int = 0
-        # Initialize the Replicant metdata library.
+        # Initialize the Replicant metadata library.
         if Replicant.LIBRARY_NAME not in Controller.HUMANOID_LIBRARIANS:
             Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME] = HumanoidLibrarian(Replicant.LIBRARY_NAME)
         # The Replicant metadata record.
         self._record: HumanoidRecord = Controller.HUMANOID_LIBRARIANS[Replicant.LIBRARY_NAME].get_record(name)
+        # The target framerate.
+        self._target_framerate: int = target_framerate
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -104,7 +109,7 @@ class Replicant(AddOn):
         :return: A list of commands that will initialize this add-on.
         """
 
-        # Add the replicant. Send output data: Replicants, Transforms, Bounds, Containment.
+        # Add the replicant. Send output data: Replicants, Transforms, Bounds, Containment, and Framerate.
         commands = [{"$type": "add_replicant",
                      "name": self._record.name,
                      "position": self.initial_position,
@@ -116,6 +121,8 @@ class Replicant(AddOn):
                     {"$type": "set_rigidbody_constraints",
                      "id": self.replicant_id,
                      "freeze_position_axes": {"x": 0, "y": 1, "z": 0}},
+                    {"$type": "set_target_framerate",
+                     "framerate": self._target_framerate},
                     {"$type": "send_replicants",
                      "frequency": "always"},
                     {"$type": "send_transforms",
@@ -125,7 +132,13 @@ class Replicant(AddOn):
                     {"$type": "send_containment",
                      "frequency": "always"},
                     {"$type": "send_framerate",
-                     "frequency": "always"}]
+                     "frequency": "always"},
+                    {"$type": "send_replicant_segmentation_colors"}]
+        # Add empty objects to the Replicant for relative IK motion targets.
+        commands.extend([{"$type": "attach_empty_object",
+                          "id": self.replicant_id,
+                          "empty_object_id": arm.value,
+                          "position": {"x": 0, "y": 0, "z": 0}} for arm in [Arm.left, Arm.right]])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -198,7 +211,7 @@ class Replicant(AddOn):
 
         self.action = TurnBy(angle=angle)
 
-    def turn_to(self, target: Union[int, Dict[str, float], np.ndarray]) -> None:
+    def turn_to(self, target: TARGET) -> None:
         """
         Turn the Replicant to face a target object or position.
 
@@ -246,9 +259,9 @@ class Replicant(AddOn):
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles)
 
-    def move_to(self, target: Union[int, Dict[str, float], np.ndarray], reset_arms: bool = True,
-                reset_arms_duration: float = 0.25, scale_reset_arms_duration: bool = True, arrived_at: float = 0.1,
-                max_walk_cycles: int = 100, bounds_position: str = "center") -> None:
+    def move_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
+                bounds_position: str = "center") -> None:
         """
         Turn the Replicant to a target position or object and then walk to it.
 
@@ -285,11 +298,12 @@ class Replicant(AddOn):
                              max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position)
 
-    def reach_for(self, target: Union[int, Dict[str,  float], np.ndarray], arm: Union[Arm, List[Arm]],
-                  absolute: bool = True, offhand_follows: bool = False, arrived_at: float = 0.09,
-                  max_distance: float = 1.5, duration: float = 0.25, scale_duration: bool = True) -> None:
+    def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
+                  offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,
+                  duration: float = 0.25, scale_duration: bool = True, from_held: bool = False,
+                  held_point: str = "bottom", plan: IkPlanType = None) -> None:
         """
-        Reach for a target object or position. One or both hands can reach for the target at the same time.
+        Reach for a target object or position. One or both hands can reach for the same or separate targets.
 
         If target is an object, the target position is a point on the object.
         If the object has affordance points, the target position is the affordance point closest to the hand.
@@ -302,34 +316,54 @@ class Replicant(AddOn):
         - The collision detection will respond normally to walls, objects, obstacle avoidance, etc.
         - If `self.collision_detection.previous_was_same == True`, and if the previous action was a subclass of `ArmMotion`, and it ended in a collision, this action ends immediately.
 
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
-        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
+        :param target: The target(s). This can be a list (one target per hand) or a single value (the hand's target). If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param arm: The [`Arm`](../replicant/arm.md) value(s) that will reach for each target as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param offhand_follows: If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int.
         :param arrived_at: If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds.
         :param max_distance: The maximum distance from the hand to the target position.
         :param duration: The duration of the motion in seconds.
         :param scale_duration: If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
+        :param from_held: If False, the Replicant will try to move its hand to the `target`. If True, the Replicant will try to move its held object to the `target`. This is ignored if the hand isn't holding an object.
+        :param held_point: The bounds point of the held object from which the offset will be calculated. Can be `"bottom"`, `"top"`, etc. For example, if this is `"bottom"`, the Replicant will move the bottom point of its held object to the `target`. This is ignored if `from_held == False` or ths hand isn't holding an object.
+        :param plan: An optional [`IkPlanType`](../replicant/ik_plans/ik_plan_type.md) that splits this action into multiple sub-actions. If None, there is a single `ReachFor` action. If `arm` is a list, only the first element is used. `offhand_follows` is ignored. `duration` is divided by the number of sub-actions.
         """
 
-        # Convert the relative position to an absolute position.
-        if not isinstance(target, int) and not absolute:
-            if isinstance(target, np.ndarray):
-                target = self.dynamic.transform.position + target
-            elif isinstance(target, dict):
-                target = self.dynamic.transform.position + TDWUtils.vector3_to_array(target)
-        self.action = ReachFor(target=target,
-                               arms=Replicant._arms_to_list(arm),
-                               dynamic=self.dynamic,
-                               collision_detection=self.collision_detection,
-                               offhand_follows=offhand_follows,
-                               arrived_at=arrived_at,
-                               previous=self._previous_action,
-                               duration=duration,
-                               scale_duration=scale_duration,
-                               max_distance=max_distance)
+        if isinstance(target, list):
+            targets = target
+        else:
+            targets = [target]
+        if plan is None:
+            self.action = ReachFor(targets=targets,
+                                   arms=Replicant._arms_to_list(arm),
+                                   absolute=absolute,
+                                   dynamic=self.dynamic,
+                                   collision_detection=self.collision_detection,
+                                   offhand_follows=offhand_follows,
+                                   arrived_at=arrived_at,
+                                   previous=self._previous_action,
+                                   duration=duration,
+                                   scale_duration=scale_duration,
+                                   max_distance=max_distance,
+                                   from_held=from_held,
+                                   held_point=held_point)
+        else:
+            self.action = ReachForWithPlan(targets=targets,
+                                           arms=Replicant._arms_to_list(arm),
+                                           absolute=absolute,
+                                           dynamic=self.dynamic,
+                                           collision_detection=self.collision_detection,
+                                           arrived_at=arrived_at,
+                                           previous=self._previous_action,
+                                           duration=duration,
+                                           scale_duration=scale_duration,
+                                           max_distance=max_distance,
+                                           from_held=from_held,
+                                           held_point=held_point,
+                                           plan=plan)
 
-    def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch") -> None:
+    def grasp(self, target: int, arm: Arm, angle: Optional[float] = 90, axis: Optional[str] = "pitch",
+              relative_to_hand: bool = True, offset: float = 0) -> None:
         """
         Grasp a target object.
 
@@ -341,15 +375,19 @@ class Replicant(AddOn):
         :param arm: The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object.
         :param angle: Continuously (per `communicate()` call, including after this action ends), rotate the the grasped object by this many degrees relative to the hand. If None, the grasped object will maintain its initial rotation.
         :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
+        :param relative_to_hand: If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
+        :param offset: Offset the object's position from the Replicant's hand by this distance.
         """
 
         self.action = Grasp(target=target,
                             arm=arm,
                             dynamic=self.dynamic,
                             angle=angle,
-                            axis=axis)
+                            axis=axis,
+                            relative_to_hand=relative_to_hand,
+                            offset=offset)
 
-    def drop(self, arm: Arm, max_num_frames: int = 100) -> None:
+    def drop(self, arm: Arm, max_num_frames: int = 100, offset: Union[float, np.ndarray, Dict[str, float]] = 0.1) -> None:
         """
         Drop a held target object.
 
@@ -359,9 +397,10 @@ class Replicant(AddOn):
 
         :param arm: The [`Arm`](../replicant/arm.md) holding the object.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.
+        :param offset: Prior to being dropped, set the object's positional offset. This can be a float (a distance along the object's forward directional vector). Or it can be a dictionary or numpy array (a world space position).
         """
 
-        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames)
+        self.action = Drop(arm=arm, dynamic=self.dynamic, max_num_frames=max_num_frames, offset=offset)
 
     def animate(self, animation: str, library: str = "humanoid_animations.json") -> None:
         """
@@ -404,8 +443,7 @@ class Replicant(AddOn):
                                duration=duration,
                                scale_duration=scale_duration)
 
-    def look_at(self, target: Union[int, np.ndarray, Dict[str,  float]], duration: float = 0.1,
-                scale_duration: bool = True):
+    def look_at(self, target: TARGET, duration: float = 0.1, scale_duration: bool = True):
         """
         Look at a target object or position.
 
@@ -444,8 +482,7 @@ class Replicant(AddOn):
 
         self.action = ResetHead(duration=duration, scale_duration=scale_duration)
 
-    def reset(self, position: Union[Dict[str, float], np.ndarray] = None,
-              rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def reset(self, position: POSITION = None, rotation: ROTATION = None) -> None:
         """
         Reset the Replicant. Call this when you reset the scene.
 
@@ -463,10 +500,9 @@ class Replicant(AddOn):
         self._set_initial_position_and_rotation(position=position, rotation=rotation)
         self.commands.clear()
 
-    def _set_initial_position_and_rotation(self, position: Union[Dict[str, float], np.ndarray] = None,
-                                           rotation: Union[Dict[str, float], np.ndarray] = None) -> None:
+    def _set_initial_position_and_rotation(self, position: POSITION = None, rotation: ROTATION = None) -> None:
         """
-        Set the intial position and rotation.
+        Set the initial position and rotation.
 
         :param position: The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.

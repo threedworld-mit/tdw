@@ -260,6 +260,24 @@ class HumanoidRecord(_Record):
         super().__init__(data)
 
 
+class DroneRecord(_Record):
+    """
+    A record for a drone asset bundle.
+    """
+
+    def __init__(self, data: Optional[dict] = None):
+        super().__init__(data)
+
+
+class VehicleRecord(_Record):
+    """
+    A record for a vehicle asset bundle.
+    """
+
+    def __init__(self, data: Optional[dict] = None):
+        super().__init__(data)
+
+
 class RobotRecord(_Record):
     """
     A record for a robot asset bundle.
@@ -627,10 +645,36 @@ class HumanoidLibrarian(_Librarian[HumanoidRecord]):
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["humanoids.json", "smpl_humanoids.json"]
+        return ["humanoids.json", "smpl_humanoids.json", "replicants.json"]
 
     def _generate_record(self, data: dict) -> T:
         return HumanoidRecord(data)
+
+
+class DroneLibrarian(_Librarian[DroneRecord]):
+    """
+    Librarian class for drone metadata.
+    """
+
+    @staticmethod
+    def get_library_filenames() -> List[str]:
+        return ["drones.json"]
+
+    def _generate_record(self, data: dict) -> T:
+        return DroneRecord(data)
+
+
+class VehicleLibrarian(_Librarian[VehicleRecord]):
+    """
+    Librarian class for vehicle metadata.
+    """
+
+    @staticmethod
+    def get_library_filenames() -> List[str]:
+        return ["vehicles.json"]
+
+    def _generate_record(self, data: dict) -> T:
+        return VehicleRecord(data)
 
 
 class RobotLibrarian(_Librarian[RobotRecord]):
@@ -653,7 +697,7 @@ class VisualEffectLibrarian(_Librarian[VisualEffectRecord]):
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["visual_effects.json"]
+        return ["visual_effects.json", "flood_effects.json"]
 
     def _generate_record(self, data: dict) -> T:
         return VisualEffectRecord(data)

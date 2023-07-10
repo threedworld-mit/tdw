@@ -17,6 +17,14 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/man_casual"
       }
     },
+	"man_casual_weighting_test": {
+      "name": "man_casual_weighting_test",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/replicants/osx/2020.3/man_casual_weighting_test",
+        "Linux": "https://tdw-public.s3.amazonaws.com/replicants/linux/2020.3/man_casual_weighting_test",
+        "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/man_casual_weighting_test"
+      }
+    },
     "replicant_0": {
       "name": "replicant_0",
       "urls": {

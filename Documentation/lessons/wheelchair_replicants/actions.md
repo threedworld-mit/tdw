@@ -119,7 +119,7 @@ c.add_ons.extend([replicant, camera, capture])
 c.communicate(TDWUtils.create_empty_room(12, 12))
 # Start moving.
 replicant.move_by(2)
-# Continue walking until the action ends.
+# Continue moving until the action ends.
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 # End the action.

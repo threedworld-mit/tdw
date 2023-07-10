@@ -6,11 +6,11 @@
 
 So far, the "simple action loop" of calling `c.communicate([])` until an action ends has been sufficient. This is because all of our controllers have assumed that there is only one agent in the scene, that the agent is a Wheelchair Replicant, and that we don't need to interrupt an action.
 
-Actions and Replicants are designed for multi-agent simulations in which behavior can be interrupted. The "simple action loop" is useful when showcasing *other* aspects of the Replicant but it's *not necessary*.
+Actions and Wheelchair  Replicants are designed for multi-agent simulations in which behavior can be interrupted. The "simple action loop" is useful when showcasing *other* aspects of the Wheelchair Replicant but it's *not necessary*.
 
 ## Agents and actions
 
-So far, the Wheelchair Replicant document has focused on the Wheelchair Replicant and has compared it to the Replicant, which works similarly and shares many of the same action classes. TDW has a third agent that uses actions--the [Magnebot](https://github.com/alters-mit/magnebot). The Magnebot works *very* differently that either type of Replicant, so different that it's out of the scope of this document to compare them. However the Magnebot's Python is similarly structured around action classes. These action classes can only be used by the Magnebot (and vice versa) but they have the same [code organization](custom_actions.md). 
+So far, the Wheelchair Replicant document has focused on the Wheelchair Replicant and has compared it to the Replicant, which works similarly and shares many of the same action classes. TDW has a third agent that uses actions--the [Magnebot](https://github.com/alters-mit/magnebot). The Magnebot works *very* differently that either type of Replicant, so different that it's out of the scope of this document to compare them. However the Magnebot's API is similarly structured around action classes. These action classes can only be used by the Magnebot (and vice versa) but they have the same [code organization](custom_actions.md). 
 
 It's relatively easy to structure a controller that can handle a Magnebot and a Wheelchair Replicant because the high-level logic is similar. Conversely, it's very difficult to structure a controller that can *swap* one agent type for another because they have very different physical rules, shapes, movement patterns, etc.
 

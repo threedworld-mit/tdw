@@ -12,7 +12,7 @@ The Wheelchair Replicant includes static data about the agent (such as body part
 
 Static Replicant data is stored in `replicant.static`. This is a [`ReplicantStatic` object](../../python/replicant/replicant_static.md).
 
-In addition to the replicant's ID (`static.replicant_id`), each body part has a separate ID.
+In addition to the Wheelchair Replicant's ID (`static.replicant_id`), each body part has a separate ID.
 
 - `static.body_parts` is a dictionary. The key is a [`ReplicantBodyPart`](../../python/replicant/replicant_body_part.md) enum value. The value is the body part ID:
 
@@ -31,10 +31,8 @@ print(replicant.static.body_parts[ReplicantBodyPart.hand_l])
 c.communicate({"$type": "terminate"})
 ```
 
-- `static.body_parts_by_id` is the reciprocal dictionary: the key is the body part ID and the value is a [`ReplicantBodyPart`](../../python/replicant/replicant_body_part.md) enum value.
-- 
-
-- Internally, the Replicant often needs to refer to each hand quickly. For ease of use, the static data includes `static.hands`, a dictionary with the key is an [`Arm`](../../python/replicant/arm.md) enum value and the value is an ID of a hand:
+- `static.body_parts_by_id` is the reciprocal dictionary of `body_parts`: the key is the body part ID and the value is a [`ReplicantBodyPart`](../../python/replicant/replicant_body_part.md) enum value.
+- Internally, the Wheelchair Replicant often needs to refer to each hand quickly. For ease of use, the static data includes `static.hands`, a dictionary with the key is an [`Arm`](../../python/replicant/arm.md) enum value and the value is an ID of a hand:
 
 ```python
 from tdw.controller import Controller
@@ -51,7 +49,7 @@ print(replicant.static.hands[Arm.left])
 c.communicate({"$type": "terminate"})
 ```
 
--  `static.avatar_id` is the ID of the Replicant's avatar (camera). This is always the string-ified version of `replicant_id`. If `replicant_id` is `0` then `avatar_id` is `"0"`.
+-  `static.avatar_id` is the ID of the Wheelchair Replicant's avatar (camera). This is always the string-ified version of `replicant_id`. If `replicant_id` is `0` then `avatar_id` is `"0"`.
 
 ## Dynamic Replicant Data
 
@@ -278,13 +276,13 @@ In addition to the the `_img` pass, the Wheelchair Replicant will capture `_id` 
 
 ## Low-level description
 
-When the `WheelchairReplicant` add-on initializes, it sends [`send_wheelchair_replicants`](../../api/command_api.md#send_wheelchair_replicants)  in order to receive [`Replicants`](../../api/output_data.md#Replicants) output data `communicate()` call. This data has been optimized for speed, not human usage; this one of many reasons that we recommend using the `Replicant` add-on instead of low-level TDW commands and output data. Both `ReplicantStatic` and `ReplicantDynamic` parse`Replicants` output data. 
+When the `WheelchairReplicant` add-on initializes, it sends [`send_wheelchair_replicants`](../../api/command_api.md#send_wheelchair_replicants)  in order to receive [`Replicants`](../../api/output_data.md#Replicants) output data per `communicate()` call. This data has been optimized for speed, not human usage; this one of many reasons that we recommend using the `WheelchairReplicant` add-on instead of low-level TDW commands and output data. Both `ReplicantStatic` and `ReplicantDynamic` parse `Replicants` output data. 
 
 Some [actions](actions.md) require additional output data. When the `WheelchairReplicant` add-on initializes, it also sends [`send_transforms`](../../api/command_api.md#send_transforms), [`send_bounds`](../../api/command_api.md#send_bounds), and [`send_containment`](../../api/command_api.md#send_containment) to receive  [`Transforms`](../../api/output_data.md#Transforms),  [`Bounds`](../../api/output_data.md#Bounds), and  [`Containment`](../../api/output_data.md#Containment) respectively per `communicate()` call.
 
 The `WheelchairReplicant`'s `static` and `dynamic` data are initially `None`. Both are set *after* the first `communicate()` call (because the Wheelchair Replicant needs one `communicate()` call to start requesting output data).
 
-On the *second* `communicate()` call (i.e. one call after initialization), the `Replicant` add-on sends [`create_avatar`](../../api/command_api.md#create_avatar) and [`parent_avatar_to_replicant`](../../api/command_api.md#parent_avatar_to_replicant) to attach an [avatar (camera)](../core_concepts/avatars.md) to its head. This is how it receives image data.
+On the *second* `communicate()` call (i.e. one call after initialization), the `WheelchairReplicant` add-on sends [`create_avatar`](../../api/command_api.md#create_avatar) and [`parent_avatar_to_replicant`](../../api/command_api.md#parent_avatar_to_replicant) to attach an [avatar (camera)](../core_concepts/avatars.md) to its head. This is how it receives image data.
 
 The `WheelchairReplicant` sends [`send_images`](../../api/command_api.md#send_images) and [`send_camera_matrices`](../../api/command_api.md#send_camera_matrices) to receive [`Images`](../../api/output_data.md#Images) and [`CameraMatrices`](../../api/output_data.md#CameraMatrices) output data, respectively. The frequency at which this data is sent depends on the value of the `image_frequency` value in the constructor. By default, these commands are only sent when an action ends; accordingly, they are actually passed from the `action`, to the `WheelchairReplicant`, to the controller.
 

@@ -124,7 +124,7 @@ Output:
 ActionStatus.success
 ```
 
-You can wrap the new `DoNothing` action in a Wheelchair Replicant function such as `replicant.do_nothing()`. This is totally optional, though. If you wish to do this, create a custom subclass of Replicant and add your function:
+You can wrap the new `DoNothing` action in a Wheelchair Replicant function such as `replicant.do_nothing()`. This is totally optional, though. If you wish to do this, create a custom subclass of `WheelchairReplicant` and add your function:
 
 ```python
 from typing import List
@@ -182,9 +182,9 @@ Now we're going to define a much more complicated action: `Clap`, which tells th
 
 We're going to use a *state machine* to handle the motion. A state machine is a basic concept in algorithms that just means that the action has been divided into discrete *states*. In this case, there are three states:
 
-1. The Replicant raises its hands.
-2. The Replicant brings its hands together.
-3. The Replicant pulls its hands apart.
+1. The Wheelchair Replicant raises its hands.
+2. The Wheelchair Replicant brings its hands together.
+3. The Wheelchair Replicant pulls its hands apart.
 
 When state 1 ends, state 2 begins. When state 2 ends, state 3 begins. When state 3 ends, the action ends.
 
@@ -333,7 +333,7 @@ class Clap(ArmMotion):
 
 ### 2.5 Define `get_ongoing_commands()`
 
-This is where most of any action's logic is handled. This action gets call on every `communicate()` call. We'll use it to evaluate the current state of the Replicant and update the state if needed.
+This is where most of any action's logic is handled. This action gets call on every `communicate()` call. We'll use it to evaluate the current state of the Wheelchair Replicant and update the state if needed.
 
 First, we'll call `super()`, which, because this is a subclass of `ArmMotion`, will check for collisions:
 
@@ -343,7 +343,7 @@ First, we'll call `super()`, which, because this is a subclass of `ArmMotion`, w
         commands = super().get_ongoing_commands(resp=resp, static=static, dynamic=dynamic)
 ```
 
-If `self.status != ActionStatus.ongoing`, that doesn't mean that action has *actually* ended; it just means that the current *motion* has ended. Every time the Replicant finishes reaching for a target, the build will signal that the motion is complete. We're going to use that information to check whether we need to start the next *clap state*:
+If `self.status != ActionStatus.ongoing`, that doesn't mean that action has *actually* ended; it just means that the current *motion* has ended. Every time the Wheelchair Replicant finishes reaching for a target, the build will signal that the motion is complete. We're going to use that information to check whether we need to start the next *clap state*:
 
 ```
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

@@ -8,7 +8,7 @@ This document describes how to use the Wheelchair Replicant API's more advanced 
 
 ## When to set optional parameters
 
-**There is no bounded solution for when to set optional parameters.** There is no way to determine using a simple algorithm which optional parameter, if any, is correct for any given situation, because "correctness" is impossible to define. It is often possible for a Replicant to achieve a desired behavior without using an optional parameters, or by using several different combinations. It is up to the user or the training system to decide how to best use the full capabilities of the Replicant arm articulation API.
+**There is no bounded solution for when to set optional parameters.** There is no way to determine using a simple algorithm which optional parameter, if any, is correct for any given situation, because "correctness" is impossible to define. It is often possible for a Wheelchair Replicant to achieve a desired behavior without using an optional parameters, or by using several different combinations. It is up to the user or the training system to decide how to best use the full capabilities of the Wheelchair Replicant arm articulation API.
 
 ## `reach_for(target, arm)` for two arms at the same time
 
@@ -184,24 +184,24 @@ Result:
 
 By default, a grasped object sets its [grasped affordance point](arm_articulation_1.md) (i.e. its pivot) to the same position as the hand holding the object.
 
-For some objects, especially boxier ones that might collide with the Replicant's lower arm, you might want to offset the distance from the pivot to the hand by setting the optional `offset` parameter, for example: `grasp(target, arm, offset=0.3)`. `offset` is a distance. The direction of the offset is always the local up vector from the hand.
+For some objects, especially boxier ones that might collide with the Wheelchair Replicant's lower arm, you might want to offset the distance from the pivot to the hand by setting the optional `offset` parameter, for example: `grasp(target, arm, offset=0.3)`. `offset` is a distance. The direction of the offset is always the local up vector from the hand.
 
 ## Set the `drop(arm)`  offset
 
-When the Replicant drops an object, the object can optionally be positioned at an offset before falling. This is controlled by the optional `offset` parameter, which can be either a float, dictionary, or numpy array. By default, `offset` is set to `0.1`.
+When the Wheelchair Replicant drops an object, the object can optionally be positioned at an offset before falling. This is controlled by the optional `offset` parameter, which can be either a float, dictionary, or numpy array. By default, `offset` is set to `0.1`.
 
 - If `offset` is a float, it is a distance along the object's forward directional vector: `replicant.drop(arm=Arm.right, offset=0.1)`. If you want the object to fall directly downward, set `offset=0`. 
 - If `offset` is a dictionary or numpy array, it is a world space position. `replicant.drop(arm=Arm.right, offset={"x": 0, "y": 1.1, "z": 0})`. If you need to object to fall onto a target position, set `offset={"x": position["x"], "y": y, "z": position["z"]}` where `position` is the target position and `y` is the current y coordinate of the object.
 
 ## `reach_for(target, arm)` and offset the target by a held object
 
-In many scenarios, you might want the target position to change if the Replicant is holding an object. For example, if you want the Replicant to place a plate on a table, then you will want the Replicant to move the *plate* to the target position rather than the *hand*. You can achieve this by setting two optional parameters in the `reach_for()` action: `from_held` and `held_point`.
+In many scenarios, you might want the target position to change if the Wheelchair  Replicant is holding an object. For example, if you want the Wheelchair Replicant to place a plate on a table, then you will want the Wheelchair Replicant to move the *plate* to the target position rather than the *hand*. You can achieve this by setting two optional parameters in the `reach_for()` action: `from_held` and `held_point`.
 
-`from_held` is a boolean that by default is False. If True, the Replicant will offset the action's target position by a point on the held object. If the hand isn't holding an object, this is ignored.
+`from_held` is a boolean that by default is False. If True, the Wheelchair Replicant will offset the action's target position by a point on the held object. If the hand isn't holding an object, this is ignored.
 
-`held_point` is a string describing a bounds position such as `"bottom"`, `"top"`, etc. that will be used to calculate the offset from the hand. It defaults to `"bottom"` and is only used if `from_held=True` (and if the Replicant is actually holding an object). In the above scenario, where we want the Replicant to place a plate on a table,  we probably want to set `held_point="bottom"`. 
+`held_point` is a string describing a bounds position such as `"bottom"`, `"top"`, etc. that will be used to calculate the offset from the hand. It defaults to `"bottom"` and is only used if `from_held=True` (and if the Wheelchair Replicant is actually holding an object). In the above scenario, where we want the Wheelchair Replicant to place a plate on a table,  we probably want to set `held_point="bottom"`. 
 
-In this example, the Replicant will grasp an object and then reach for the same positioning but applying different offsets per trial. For more information regarding the `grasp()` action, read [the previous document in this lesson](arm_articulation_2.md).
+In this example, the Wheelchair Replicant will grasp an object and then reach for the same positioning but applying different offsets per trial. For more information regarding the `grasp()` action, read [the previous document in this lesson](arm_articulation_2.md).
 
 ```python
 from tdw.controller import Controller

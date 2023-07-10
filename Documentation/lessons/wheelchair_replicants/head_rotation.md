@@ -2,7 +2,7 @@
 
 # Head rotation
 
-The Wheelchair Replicant can look at a target object or position, and can reset the rotation of its head. The Replicant's head moves continuously over multiple `communicate()` calls. The [camera](../core_concepts/avatars.md) attached to the head always matches the rotation of the head.
+The Wheelchair Replicant can look at a target object or position, and can reset the rotation of its head. The Wheelchair Replicant's head moves continuously over multiple `communicate()` calls. The [camera](../core_concepts/avatars.md) attached to the head always matches the rotation of the head.
 
 ## The `look_at(target)` command
 
@@ -110,7 +110,7 @@ The action ends when the head stops moving (as announced by the build in the out
 
 ## The `rotate_head(angle, axis)` command
 
-The `rotate_head(target)` command will tell the Replicant to start to rotate its head by an angle (in degrees) around an axis. The axis options are: `"pitch"`, `"yaw"`, `"roll"`.
+The `rotate_head(target)` command will tell the Wheelchair Replicant to start to rotate its head by an angle (in degrees) around an axis. The axis options are: `"pitch"`, `"yaw"`, `"roll"`.
 
 ### Optional parameters
 

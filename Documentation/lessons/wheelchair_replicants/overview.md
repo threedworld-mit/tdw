@@ -10,7 +10,7 @@ A Wheelchair Replicant moves and turns by applying torques and steering angles t
 
 ## The `WheelchairReplicant` add-on
 
-WheelchairReplicants are best controlled via the [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md) add-on. Like all other add-ons, the `WheelchairReplicant` add-on decomposes into low-level TDW commands but, given the complexity of the agent, we recommend that you *always* use the `WheelchairReplicant` add-on rather than directly manipulating the agent with low-level commands.
+Wheelchair Replicants are best controlled via the [`WheelchairReplicant`](../../python/add_ons/wheelchair_replicant.md) add-on. Like all other add-ons, the `WheelchairReplicant` add-on decomposes into low-level TDW commands but, given the complexity of the agent, we recommend that you *always* use the `WheelchairReplicant` add-on rather than directly manipulating the agent with low-level commands.
 
 Adding a Wheelchair Replicant to a scene is simple:
 
@@ -25,7 +25,7 @@ c.add_ons.append(replicant)
 c.communicate(TDWUtils.create_empty_room(12, 12))
 ```
 
-You can set the initial position and rotation of the Replicant in the constructor:
+You can set the initial position and rotation of the Wheelchair Replicant in the constructor:
 
 ```python
 from tdw.controller import Controller
@@ -59,7 +59,7 @@ Wheelchair Replicants are similar to [robots](../robots/overview.md)  in that th
 
 Like [objects](../core_concepts/objects.md) and [scenes](../core_concepts/scenes.md), and Replicants, Wheelchair Replicants are **asset bundles** stored on a remote S3 server that must be downloaded before they can be added to the scene. This means that when you first add a Wheelchair Replicant to the scene, there will be a brief pause while it is downloaded and loaded into memory. For subsequent scene resets, the Wheelchair Replicant will already in memory and will appear immediately.
 
-Like all other asset bundle types in TDW, Replicants have metadata records stored in the TDW Python module. Each Replicant has a corresponding [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md), which is stored in a [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md). To print the name of each available Wheelchair Replicant:
+Like all other asset bundle types in TDW, Wheelchair Replicants have metadata records stored in the TDW Python module. Each Wheelchair Replicant has a corresponding [`HumanoidRecord`](../../python/librarian/humanoid_librarian.md), which is stored in a [`HumanoidLibrarian`](../../python/librarian/humanoid_librarian.md). To print the name of each available Wheelchair Replicant:
 
 ```python
 from tdw.librarian import HumanoidLibrarian

@@ -20,7 +20,7 @@ Exactly how this works, and how to adjust the Wheelchair Replicant's behavior, d
 
 ## Enabling and disabling collision detection rules
 
-`WheelchairReplicant.collision_detection` is designed to be adjusted during a simulation. You can, for example, tell the Wheelchair Replicant to ignore objects while walking and, once it is at its destination,  you can start an animation but tell the Wheelchair Replicant to stop the animation on object collisions.
+`WheelchairReplicant.collision_detection` is designed to be adjusted during a simulation. You can, for example, tell the Wheelchair Replicant to ignore objects while moving and, once it is at its destination, re-enable object detection.
 
 ## Low-level description
 

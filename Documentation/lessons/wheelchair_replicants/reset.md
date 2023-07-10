@@ -2,7 +2,7 @@
 
 # Reset
 
-Call `replicant.reset()` to reset a Wheelchair Replicant when you start a new scene. This will destroy the current Replicant and reset the add-on's state (e.g. static and dynamic data, collision detection rules, etc.). To properly reset a Replicant, you must also destroy and recreate the scene; otherwise, a copy of this Replicant will be created without destroying the current one.
+Call `replicant.reset()` to reset a Wheelchair Replicant when you start a new scene. This will destroy the current Wheelchair Replicant and reset the add-on's state (e.g. static and dynamic data, collision detection rules, etc.). To properly reset a Wheelchair Replicant, you must also destroy and recreate the scene; otherwise, a copy of this Wheelchair Replicant will be created without destroying the current one.
 
 In this controller, we'll run several "trials" and reset the scene each time. To end the scene, we'll clear the add-ons to prevent them from resetting and then send `{"$type": "terminate"}`:
 

@@ -6,7 +6,7 @@
 
 Like all other [agents](../agents/overview.md), the Wheelchair Replicant doesn't have a built-in navigation system. In most cases, the best way to handle navigation is to train a model for navigation planning using the Wheelchair Replicant's [images, depth maps, and other output data](output_data.md).
 
-This controller has a very basic system for handling obstacles. If the Wheelchair Replicant [detects an obstacle while moving](movement.md), the controller tells the Replicant to back up, turn by 45 degrees, and try moving again:
+This controller has a very basic system for handling obstacles. If the Wheelchair Replicant [detects an obstacle while moving](movement.md), the controller tells the Wheelchair Replicant to back up, turn by 45 degrees, and try moving again:
 
 ```python
 from tdw.controller import Controller
@@ -120,7 +120,7 @@ Result:
 
 ## Wheelchair Replicants and Replicants
 
-Unlike the [Replicant version of this document](../replicants/navigation.md), this document omits information on how to use a Wheelchair Replicant with a NavMesh. Unity's NavMeshes are inflexible and some aspects of them must be decided *at compile time*, the most important property being the expected radius of the agent. The radius used in TDW works reasonably well for a Replicant or Magnebot but it is too small for a Wheelchair Replicant, meaning that the paths the NavMesh returns paths that the Wheelchair Replicant can't use because the path is too close to obstacles that the wheelchair will collide with.
+Unlike the [Replicant version of this document](../replicants/navigation.md), this document omits information on how to use a Wheelchair Replicant with a NavMesh. Unity's NavMeshes are inflexible and some aspects of them must be decided *at compile time*, the most important property being the expected radius of the agent. The radius used in TDW works reasonably well for a Replicant or Magnebot but it is too small for a Wheelchair Replicant, meaning that the NavMesh returns paths that the Wheelchair Replicant can't use because the path is too close to obstacles that the wheelchair will collide with.
 
 ***
 

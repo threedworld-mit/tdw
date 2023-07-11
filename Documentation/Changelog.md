@@ -9,6 +9,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### New Features
 
 - **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
+- **Upgraded OS X graphics API to Metal.**
 
 ### Command API
 
@@ -55,6 +56,11 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
   - (Backend) `Replicants` output data now reshapes its arrays by number of body parts rather than a constant
 - Added: `QuaternionUtils.RIGHT`
 - Added: `TDWUtils.lerp(a, b, t)` and `TDWUtils.inv_lerp(a, b, v)`.
+
+### Build
+
+- **Upgraded OS X graphics API to Metal.** Previously, TDW on a Mac Intel computer used the OpenGL graphics API while TDW on a Mac Apple Silicon computer used the Metal graphics API. Because Apple has deprecated OpenGL support, TDW will now use Metal on Mac Intel computers. This won't affect you if you're running TDW on an Apple Silicon CPU and should fix a variety of graphics glitches on Mac Intel computers.
+- Fixed: `_depth` and `_depth_simple` passes don't work on OS X. This problem wasn't actually fixed in 1.11.23, and in fact got worse (it affected Apple Intel). This was due to some corrupted internal Unity files and has now been fixed.
 
 ### Example Controllers
 

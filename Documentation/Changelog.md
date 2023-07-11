@@ -55,7 +55,6 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | ------------ | ----------------------------- |
 | `Replicants` | Added: `get_num_body_parts()` |
 
-
 ### `tdw` module
 
 - **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
@@ -323,7 +322,6 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 ### Command API
 
 #### New Commands
-
 
 | Command                  | Description                            |
 | ------------------------ | -------------------------------------- |

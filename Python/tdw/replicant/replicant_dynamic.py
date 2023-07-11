@@ -1,7 +1,6 @@
 from typing import List, Dict
 from tdw.output_data import OutputData, Replicants
 from tdw.object_data.transform import Transform
-from tdw.replicant.replicant_body_part import BODY_PARTS
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.arm import Arm
@@ -10,7 +9,7 @@ from tdw.agent_data.agent_dynamic import AgentDynamic
 
 class ReplicantDynamic(AgentDynamic):
     """
-    Dynamic data for a replicant that can change per `communicate()` call (such as the position of the Replicant).
+    Dynamic data for a Replicant that can change per `communicate()` call (such as the position of the Replicant).
     """
 
     def __init__(self, resp: List[bytes], replicant_id: int, frame_count: int):
@@ -57,7 +56,8 @@ class ReplicantDynamic(AgentDynamic):
                         if replicants.get_is_holding_right(j):
                             self.held_objects[Arm.right] = replicants.get_held_right(j)
                         # Get the body part transforms.
-                        for k in range(len(BODY_PARTS)):
+                        num_body_parts = replicants.get_num_body_parts()
+                        for k in range(num_body_parts - 1):
                             # Cache the transform.
                             body_part_id = replicants.get_body_part_id(j, k)
                             self.body_parts[body_part_id] = Transform(position=replicants.get_body_part_position(j, k),

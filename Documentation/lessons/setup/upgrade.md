@@ -6,7 +6,7 @@
 
 1. OS X and Linux: **`sudo pip3 install tdw -U`** Windows: **`pip3 install tdw -U --user`**
 2. The next time you run a controller, the TDW simulation application (the build) will automatically be updated. You can optionally download [the latest build of TDW](https://github.com/threedworld-mit/tdw/releases/latest/).
-3. If this is a major upgrade (for example, from TDW v1.9.0 to TDW v1.10.0), read the [upgrade guide](../../upgrade_guides/v1.7_to_v1.8.md).
+3. If this is a major upgrade (for example, from TDW v1.9.0 to TDW v1.10.0), read the [upgrade guide](../../upgrade_guides/v1.11_to_v1.12.md).
 4. Read the [changelog](../../Changelog.md).
 
 ## Upgrade TDW on a remote Linux server

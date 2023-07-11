@@ -55,6 +55,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarNonKinematic](#AvatarNonKinematic) | Data of a non-kinematic (physics-enabled) avatar with a single body object. | `avnk` |
 | [AvatarSegmentationColor](#AvatarSegmentationColor) | Color segmentation data for an avatar. | `avsc` |
 | [AvatarSimpleBody](#AvatarSimpleBody) | Data of a SimpleBodyAvatar. | `avsb` |
+| [AvatarTransformMatrices](#AvatarTransformMatrices) | 4x4 transform matrices for avatars and sensor containers. | `atrm` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
@@ -106,6 +107,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
+| [TransformMatrices](#TransformMatrices) | 4x4 transform matrices for each object in the scene. | `trma` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
 | [TriggerCollision](#TriggerCollision) | Data for a non-physics trigger collision event. | `trco` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
@@ -206,6 +208,21 @@ Data of a SimpleBodyAvatar.
 | `get_mass()` | The mass. | `float` |
 | `get_sleeping()` | True if the rigidbody is sleeping. | `bool` |
 | `get_visible_body()` | The name of the current visible body. | `str` |
+
+## AvatarTransformMatrices
+
+`a = AvatarTransformMatrices(byte_array)`
+
+**Identifier:** `atrm`
+
+4x4 transform matrices for avatars and sensor containers.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `str` |
+| `get_avatar_matrix(index)` | The matrix of the avatar. | `np.array` |
+| `get_sensor_matrix(index)` | The matrix of the sensor. | `np.array` |
 
 ## Bounds
 
@@ -840,6 +857,7 @@ Data about each Replicant in the scene.
 | `get_is_collision(index, body_part_index, collision_index)` | The collision of the is. | `bool` |
 | `get_collision_id(index, body_part_index, collision_index)` | The ID of the collision. | `int` |
 | `get_status(index)` | The status. | `ActionStatus` |
+| `get_num_body_parts()` | The number of body parts per Replicant. | `int` |
 
 ## ReplicantSegmentationColors
 
@@ -1073,6 +1091,20 @@ The substructure of a model. This should be used mainly for backend debugging.
 | `get_sub_object_name(index)` | The name of the sub object. | `str` |
 | `get_num_sub_object_materials(index)` | The number of sub object materials. | `int` |
 | `get_sub_object_material(index, material_index)` | The material of the sub object. | `str` |
+
+## TransformMatrices
+
+`t = TransformMatrices(byte_array)`
+
+**Identifier:** `trma`
+
+4x4 transform matrices for each object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_matrix(index)` | The matrix. | `np.array` |
 
 ## Transforms
 

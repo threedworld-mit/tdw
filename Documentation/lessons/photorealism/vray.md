@@ -22,6 +22,8 @@ These are the requirements for the machine running the V-Ray renderer:
 - [Chaos Vantage (the V-Ray renderer)](https://www.chaos.com/vantage) For pricing, [read this](https://www.chaos.com/education/licenses/academic-calculator). A free 30-day trial is available.
 - An NVidia RTX-type video card (RTX 3090 or newer)
 
+It is technically possible to render on a headless server, although the TDW development team hasn't tested this yet.
+
 You can optionally render using any cloud rendering service that supports V-Ray rendering (e.g. Chaos Cloud, Rebus etc.); the cost structures for utilizing cloud rendering services vary by service, and users should refer to the specific service websites for additional information.
 
 ### TDW

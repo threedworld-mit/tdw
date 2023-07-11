@@ -10,6 +10,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
 - **Upgraded OS X graphics API to Metal.**
+- **Added the `VRayExporter` add-on. Render TDW scenes offline using V-Ray for enhanced photorealism.**
 
 ### Command API
 
@@ -26,6 +27,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `set_wheelchair_motor_torque`             | Set the motor torque of the wheelchair's rear wheels.        |
 | `set_wheelchair_steer_angle`              | Set the steer angle of the wheelchair's front wheels.        |
 | `send_wheelchair_replicants`              | Send data of each WheelchairReplicant in the scene.          |
+| `send_avatar_transform_matrices` | Send 4x4 transform matrix data for all avatars in the scene. |
+| `send_transform_matrices`        | Send 4x4 matrix data for each object, describing their positions and rotations. |
 
 #### Modified Commands
 
@@ -34,6 +37,13 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `replicant_grasp_object` | Removed `rotate` parameter because it wasn't being used in the build. |
 
 ### Output Data
+
+#### New Output Data
+
+| Output Data               | Description                                               |
+| ------------------------- | --------------------------------------------------------- |
+| `AvatarTransformMatrices` | 4x4 transform matrices for avatars and sensor containers. |
+| `TransformMatrices`       | 4x4 transform matrices for each object in the scene.      |
 
 #### Modified Output Data
 
@@ -54,6 +64,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
   - (Backend) `Replicant` is now a subclass of abstract class `ReplicantBase` (as is `WheelchairReplicant`).
   - (Backend) Added metadata library: `wheelchair_replicants.json`
   - (Backend) `Replicants` output data now reshapes its arrays by number of body parts rather than a constant
+- **Added the `VRayExporter` add-on. Render TDW scenes offline using V-Ray for enhanced photorealism.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+  - (Backend) Added `VRayMatrix` data class.
 - Added: `QuaternionUtils.RIGHT`
 - Added: `TDWUtils.lerp(a, b, t)` and `TDWUtils.inv_lerp(a, b, v)`.
 
@@ -86,6 +98,9 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 - Added: `wheelchair_replicants/reset_arm.py`
 - Added: `wheelchair_replicants/turn.py`
 - Added: `wheelchair_replicants/wheel_values.py`
+- Added: `photorealism/vray_dynamic_camera.py`
+- Added: `photorealism/vray_dynamic_objects.py`
+- Added: `photorealism/vray_minimal.py`
 
 ### Documentation
 
@@ -98,6 +113,9 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `python/add_ons/wheelchair_replicant.md`                     | API documentation for `WheelchairReplicant`.                 |
 | `python/wheelchair_replicant/actions/move_by.md`<br/>`python/wheelchair_replicant/actions/move_to.md`<br/>`python/wheelchair_replicant/actions/reach_for.md`<br/>`python/wheelchair_replicant/actions/turn_by.md`<br/>`python/wheelchair_replicant/actions/turn_to.md`<br/>`python/wheelchair_replicant/actions/wheelchair_motion.md` | API documentation for Wheelchair Replicant actions.          |
 | `python/wheelchair_replicant/wheel_values.md`                | API documentation for `WheelValues`.                         |
+| `lessons/photorealism/vray.md`    | How to render with V-Ray and use the `VRayExporter` add-on. |
+| `python/add_ons/vray_exporter.md` | API documentation for the `VRayExporter` add-on.            |
+| `python/vray_data/vray_matrix.md` | API documentation for the `VRayMatrix` data class.          |
 | `upgrade_guides/v1.11_to_v1.12.md`                           | TDW 1.12.0 upgrade guide.                                    |
 
 #### Modified Documentation

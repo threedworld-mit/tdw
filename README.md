@@ -137,8 +137,9 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
 3. [Post-processing](Documentation/lessons/photorealism/post_processing.md)
-3. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
-4. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+4. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
+5. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+6. [V-Ray Rendering](Documentation/lessons/photorealism/vray.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
@@ -388,6 +389,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [UI](Documentation/python/add_ons/ui.md)
 - [Vehicle](Documentation/python/add_ons/vehicle.md)
 - [VR](Documentation/python/add_ons/vr.md)
+- [VrayExporter](Documentation/python/add_ons/vray_exporter.md)
 - [WheelchairReplicant](Documentation/python/add_ons/wheelchair_replicant.md)
 - [Writer](Documentation/python/add_ons/writer.md)
 
@@ -621,6 +623,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 **tdw.vehicle**
 
 - [VehicleDynamic](Documentation/python/vehicle/vehicle_dynamic.md)
+
+**tdw.vray_data**
+
+- [VrayMatrix](Documentation/python/vray_data/vray_matrix.md)
 
 **tdw.vr_data**
 

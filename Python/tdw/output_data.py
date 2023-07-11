@@ -54,6 +54,8 @@ from tdw.FBOutput import ObiParticles as ObiP
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
+from tdw.FBOutput import TransformMatrices as TranMat
+from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
@@ -1486,6 +1488,46 @@ class Mouse(OutputData):
         return self._buttons[2][2]
 
 
+class TransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._matrices = self.data.MatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> TranMat.TransformMatrices:
+        return TranMat.TransformMatrices.GetRootAsTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_matrix(self, index: int) -> np.array:
+        return self._matrices[index]
+
+
+class AvatarTransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._avatar_matrices = self.data.AvatarMatricesAsNumpy().reshape(-1, 4, 4)
+        self._sensor_container_matrices = self.data.SensorContainerMatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> AvTranMat.AvatarTransformMatrices:
+        return AvTranMat.AvatarTransformMatrices.GetRootAsAvatarTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.AvatarIdsLength()
+
+    def get_id(self, index: int) -> str:
+        return self.data.AvatarIds(index).decode('utf-8')
+
+    def get_avatar_matrix(self, index: int) -> np.array:
+        return self._avatar_matrices[index]
+
+    def get_sensor_matrix(self, index: int) -> np.array:
+        return self._sensor_container_matrices[index]
+        
 class FieldOfView(OutputData):
     def get_data(self) -> Fov.FieldOfView:
         return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)

@@ -9,10 +9,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### New Features
 
 - **Added Clatter to TDW.** Clatter is an upgrade to PyImpact that mostly exists in the build, as opposed to being a collection of Python scripts in the `tdw` module.
-- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
 - **Upgraded OS X graphics API to Metal.**
-- **Added the `VRayExporter` add-on.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
 - **Added: Oculus Leap Motion VR rig.** This VR rig includes hand tracking and physically embodied hands. It requires the Oculus headset and an UltraLeap device.
+- **Added the `VRayExporter` add-on.** Render TDW scenes offline using V-Ray for enhanced photorealism.
 
 ### Command API
 

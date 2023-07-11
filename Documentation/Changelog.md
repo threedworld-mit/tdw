@@ -8,7 +8,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ### New Features
 
-- **Added: Wheelchair Replicant, a wheelchair-bound humanoid agent.**
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
 
 ### Command API
 
@@ -42,7 +42,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ### `tdw` module
 
-- **Added: `WheelchairReplicant` add-on for the wheelchair-bound agent.**
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
   - Added new Wheelchair Replicant classes: `WheelMotion` (abstract class), `TurnBy`, `TurnTo`, `MoveBy`, `MoveTo`, and `ReachFor`. These have the same name as Replicant classes but have different code and different import paths.
   - Added: `WheelValues`. Wheel values for a move or turn action.
   - When `replicant.grasp(target, arm)`  (Replicant and Wheelchair Replicant) initializes, it ignores collisions with the grasped object.
@@ -92,6 +92,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `python/add_ons/wheelchair_replicant.md`                     | API documentation for `WheelchairReplicant`.                 |
 | `python/wheelchair_replicant/actions/move_by.md`<br/>`python/wheelchair_replicant/actions/move_to.md`<br/>`python/wheelchair_replicant/actions/reach_for.md`<br/>`python/wheelchair_replicant/actions/turn_by.md`<br/>`python/wheelchair_replicant/actions/turn_to.md`<br/>`python/wheelchair_replicant/actions/wheelchair_motion.md` | API documentation for Wheelchair Replicant actions.          |
 | `python/wheelchair_replicant/wheel_values.md`                | API documentation for `WheelValues`.                         |
+| `upgrade_guides/v1.11_to_v1.12.md`                           | TDW 1.12.0 upgrade guide.                                    |
 
 #### Modified Documentation
 

@@ -1040,3 +1040,27 @@ class TDWUtils:
         else:
             raise Exception(path)
         return p.replace("\\", "/")
+
+    @staticmethod
+    def lerp(a: float, b: float, t: float) -> float:
+        """
+        :param a: The first value.
+        :param b: The second value. This must be greater than `a`.
+        :param t: The lerp value (0 to 1).
+
+        :return: A linearly interpolated value at point `t` between `a` and `b`.
+        """
+
+        return (1 - t) * a + t * b
+
+    @staticmethod
+    def inv_lerp(a: float, b: float, v: float) -> float:
+        """
+        :param a: The first value.
+        :param b: The second value. This must be greater than `a`.
+        :param v: The value. This must be between `a` and `b` (inclusive).
+
+        :return: A value between 0 and 1 describing where `v` is with respect to `a` and `b`.
+        """
+
+        return (v - a) / (b - a)

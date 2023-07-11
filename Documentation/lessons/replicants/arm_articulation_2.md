@@ -135,7 +135,7 @@ Result:
 
 `replicant.grasp(target, arm)` sets `replicant.action` to a [`Grasp`](../../python/replicant/actions/grasp.md) action. 
 
-In addition to [the usual `Action` initialization commands](actions.md), `Grasp` sends [`replicant_grasp_object`](../../api/command_api.md#replicant_grasp_object). An object can be grasped only if it has a non-kinematic Rigidbody that isn't held by another Replicant. If grasped, the object will become kinematic. The action additionally reads [`Containment`](../../api/output_data.md#Containment) for any objects [contained by the target object](../semantic_states/containment.md). Every contained object is parented to the grasped object via [`parent_object_to_object`](../../api/command_api.md#parent_object_to_object) and made kinematic via [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state).
+In addition to [the usual `Action` initialization commands](actions.md), `Grasp` sends [`replicant_grasp_object`](../../api/command_api.md#replicant_grasp_object). An object can be grasped only if it has a non-kinematic Rigidbody that isn't held by another Replicant. If grasped, the object will become kinematic. The action additionally reads [`Containment`](../../api/output_data.md#Containment) for any objects [contained by the target object](../semantic_states/containment.md). Every contained object is parented to the grasped object via [`parent_object_to_object`](../../api/command_api.md#parent_object_to_object) and made kinematic via [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state).  To prevent collisions between the grasped object(s) and the agent, the action also sends [`ignore_collisions`](../../api/command_api.md#ignore_collisions).
 
 If `angle` is not None and `axis` is not None, the action initializes object rotation via [`replicant_set_grasped_object_rotation`](../../api/command_api.md#replicant_set_grasped_object_rotation).
 
@@ -231,7 +231,7 @@ Certain objects such as spheres tend to roll for a long time after being dropped
 
 `replicant.drop(arm)` sets `replicant.action` to a [`Drop`](../../python/replicant/actions/drop.md) action. 
 
-In addition to [the usual `Action` initialization commands](actions.md), `Drop` sends [`replicant_drop_object`](../../api/command_api.md#replicant_drop_object).
+In addition to [the usual `Action` initialization commands](actions.md), `Drop` sends [`replicant_drop_object`](../../api/command_api.md#replicant_drop_object). To enable collisions between the grasped object(s) and the agent, the action also sends [`ignore_collisions`](../../api/command_api.md#ignore_collisions).
 
 Per `communicate()` call, the `Drop` action checks if the object has stopped moving using [`Transforms`](../../api/output_data.md#Transforms) output data. If so, the action succeeds.
 
@@ -258,6 +258,7 @@ Command API:
 - [`set_kinematic_state`](../../api/command_api.md#set_kinematic_state)
 - [`replicant_set_grasped_object_rotation`](../../api/command_api.md#replicant_set_grasped_object_rotation)
 - [`replicant_drop_object`](../../api/command_api.md#replicant_drop_object)
+- [`ignore_collisions`](../../api/command_api.md#ignore_collisions)
 
 Output Data API:
 

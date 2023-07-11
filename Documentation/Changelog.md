@@ -10,7 +10,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
 - **Upgraded OS X graphics API to Metal.**
-- **Added the `VRayExporter` add-on. Render TDW scenes offline using V-Ray for enhanced photorealism.**
+- **Added the `VRayExporter` add-on.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+- **Added: Oculus Leap Motion VR rig.** This VR rig includes hand tracking and physically embodied hands. It requires the Oculus headset and an UltraLeap device.
 
 ### Command API
 
@@ -29,6 +30,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `send_wheelchair_replicants`              | Send data of each WheelchairReplicant in the scene.          |
 | `send_avatar_transform_matrices` | Send 4x4 transform matrix data for all avatars in the scene. |
 | `send_transform_matrices`        | Send 4x4 matrix data for each object, describing their positions and rotations. |
+| `send_leap_motion`                   | Send Leap Motion hand tracking data.                        |
+| `ignore_leap_motion_physics_helpers` | Make the object ignore a Leap Motion rig's physics helpers. |
 
 #### Modified Commands
 
@@ -40,16 +43,18 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 #### New Output Data
 
-| Output Data               | Description                                               |
-| ------------------------- | --------------------------------------------------------- |
+| Output Data  | Description                    |
+| ------------ | ------------------------------ |
 | `AvatarTransformMatrices` | 4x4 transform matrices for avatars and sensor containers. |
 | `TransformMatrices`       | 4x4 transform matrices for each object in the scene.      |
+| `LeapMotion` | LeapMotion hand-tracking data. |
 
 #### Modified Output Data
 
 | Output Data  | Modification                  |
 | ------------ | ----------------------------- |
 | `Replicants` | Added: `get_num_body_parts()` |
+
 
 ### `tdw` module
 
@@ -66,6 +71,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
   - (Backend) `Replicants` output data now reshapes its arrays by number of body parts rather than a constant
 - **Added the `VRayExporter` add-on. Render TDW scenes offline using V-Ray for enhanced photorealism.** Render TDW scenes offline using V-Ray for enhanced photorealism.
   - (Backend) Added `VRayMatrix` data class.
+- **Added: `OculusLeapMotion` add-on for the Oculus Leap Motion VR rig.**
+  - Added: `FingerBone` enum values for finger bones.
 - Added: `QuaternionUtils.RIGHT`
 - Added: `TDWUtils.lerp(a, b, t)` and `TDWUtils.inv_lerp(a, b, v)`.
 
@@ -101,6 +108,12 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 - Added: `photorealism/vray_dynamic_camera.py`
 - Added: `photorealism/vray_dynamic_objects.py`
 - Added: `photorealism/vray_minimal.py`
+- Added: `vr/oculus_leap_motion_minimal.py`
+- Added: `vr/oculus_leap_motion_basket.py`
+- Added: `vr/oculus_leap_motion_interior_scene.py`
+- Added: `vr/oculus_leap_motion_output_data.py`
+- Added: `vr/oculus_leap_motion_ui.py`
+- Added: `vr/oculus_leap_motion_reset.py`
 
 ### Documentation
 
@@ -116,6 +129,9 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `lessons/photorealism/vray.md`    | How to render with V-Ray and use the `VRayExporter` add-on. |
 | `python/add_ons/vray_exporter.md` | API documentation for the `VRayExporter` add-on.            |
 | `python/vray_data/vray_matrix.md` | API documentation for the `VRayMatrix` data class.          |
+| `lessons/vr/oculus_leap_motion.md`     | How to use the Oculus Leap Motion VR rig. |
+| `python/add_ons/oculus_leap_motion.md` | API documentation for `OculusLeapMotion`. |
+| `python/vr_data/finger_bone.md`        | API documentation for `FingerBone`.       |
 | `upgrade_guides/v1.11_to_v1.12.md`                           | TDW 1.12.0 upgrade guide.                                    |
 
 #### Modified Documentation
@@ -307,6 +323,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 ### Command API
 
 #### New Commands
+
 
 | Command                  | Description                            |
 | ------------------------ | -------------------------------------- |

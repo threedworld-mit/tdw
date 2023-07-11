@@ -268,7 +268,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 ### 11.7 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
-2. [Oculus Touch rigs](Documentation/lessons/vr/oculus_touch.md)
+2. [Oculus Touch](Documentation/lessons/vr/oculus_touch.md)
+3. [Oculus Leap Motion](Documentation/lessons/vr/oculus_leap_motion.md)
 
 ### 11.8 Keyboard and Mouse
 
@@ -371,6 +372,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Obi](Documentation/python/add_ons/obi.md)
 - [ObjectManager](Documentation/python/add_ons/object_manager.md)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)
+- [OculusLeapMotion](Documentation/python/add_ons/oculus_leap_motion.md)
 - [OculusTouch](Documentation/python/add_ons/oculus_touch.md)
 - [OutputDataWriter](Documentation/python/add_ons/output_data_writer.md)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
@@ -630,6 +632,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 **tdw.vr_data**
 
+- [FingerBone](Documentation/python/vr_data/finger_bone.md)
 - [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
 - [RigType](Documentation/python/vr_data/rig_type.md)
 

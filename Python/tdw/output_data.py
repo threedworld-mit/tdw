@@ -59,6 +59,7 @@ from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import LeapMotion as Leap
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
@@ -1612,6 +1613,49 @@ class Replicants(OutputData):
 
     def get_num_body_parts(self) -> int:
         return int(self.data.NumBodyParts())
+
+
+class LeapMotion(OutputData):
+    _NUM_BONES_PER_HAND: int = 16
+
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy()
+        self._max_num_collisions: int = self._collision_ids.shape[0] // (LeapMotion._NUM_BONES_PER_HAND * 2)
+        self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._angles: np.ndarray = self.data.AnglesAsNumpy().reshape(2, 25)
+        self._button_presses: np.ndarray = self.data.ButtonsAsNumpy()
+
+    def get_data(self) -> Leap.LeapMotion:
+        return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)
+
+    def get_num_collisions_per_bone(self) -> int:
+        return self._max_num_collisions
+
+    def get_position(self, index: int, bone_index: int) -> np.ndarray:
+        return self._positions[index][bone_index]
+
+    def get_rotation(self, index: int, bone_index: int) -> np.ndarray:
+        return self._rotations[index][bone_index]
+
+    def get_forward(self, index: int, bone_index: int) -> np.ndarray:
+        return self._forwards[index][bone_index]
+
+    def get_is_collision(self, index: int, bone_index: int, collision_index: int) -> bool:
+        return bool(self._is_collisions[index][bone_index][collision_index])
+
+    def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
+        return int(self._collision_ids[index][bone_index][collision_index])
+
+    def get_angles(self, index: int, start_bone_index: int, end_bone_index: int) -> np.ndarray:
+        return np.rad2deg(self._angles[index][start_bone_index: end_bone_index])
+
+    def get_is_button_pressed(self, index: int) -> bool:
+        return bool(self._button_presses[index])
 
 
 class ReplicantSegmentationColors(OutputData):

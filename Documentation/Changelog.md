@@ -44,6 +44,12 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | ------------------------ | ------------------------------------------------------------ |
 | `replicant_grasp_object` | Removed `rotate` parameter because it wasn't being used in the build. |
 
+### Deprecated Commands
+
+| Command                       | Reason                                                       |
+| ----------------------------- | ------------------------------------------------------------ |
+| `send_robot_joint_velocities` | This command is slow and is only used in PyImpact, which is obsolete. |
+
 ### Output Data
 
 #### New Output Data

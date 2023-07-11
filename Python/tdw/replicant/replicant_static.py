@@ -2,7 +2,7 @@ from typing import Dict, List
 import numpy as np
 from tdw.output_data import OutputData, Replicants, ReplicantSegmentationColors
 from tdw.replicant.arm import Arm
-from tdw.replicant.replicant_body_part import ReplicantBodyPart, BODY_PARTS
+from tdw.replicant.replicant_body_part import ReplicantBodyPart, ABLE_BODIED_BODY_PARTS, WHEELCHAIR_BODY_PARTS
 
 
 class ReplicantStatic:
@@ -16,10 +16,11 @@ class ReplicantStatic:
     ARM_JOINTS: Dict[Arm, List[ReplicantBodyPart]] = {Arm.left: [__b for __b in ReplicantBodyPart if __b.name.endswith("_l")],
                                                       Arm.right: [__b for __b in ReplicantBodyPart if __b.name.endswith("_r")]}
 
-    def __init__(self, replicant_id: int, resp: List[bytes]):
+    def __init__(self, replicant_id: int, resp: List[bytes], can_walk: bool):
         """
         :param replicant_id: The ID of the Replicant.
         :param resp: The response from the build.
+        :param can_walk: If True, this static data for a [`Replicant`](../add_ons/replicant.md). If False, this static data for a [`WheelchairReplicant`](../add_ons/wheelchair_replicant.md).
         """
 
         """:field
@@ -38,6 +39,13 @@ class ReplicantStatic:
         The Replicant's segmentation color.
         """
         self.segmentation_color: np.ndarray = np.zeros(3)
+        """:field
+        If True, this static data for a [`Replicant`](../add_ons/replicant.md). If False, this static data for a [`WheelchairReplicant`](../add_ons/wheelchair_replicant.md).
+        """
+        self.can_walk: bool = can_walk
+        # Get a list of body parts per Replicant.
+        body_parts: List[ReplicantBodyPart] = ABLE_BODIED_BODY_PARTS.copy() if self.can_walk else WHEELCHAIR_BODY_PARTS.copy()
+        # Cache the data.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Get Replicants data.
@@ -47,9 +55,9 @@ class ReplicantStatic:
                     object_id = replicants.get_id(j)
                     # We found the ID of this replicant.
                     if object_id == self.replicant_id:
-                        for k in range(len(BODY_PARTS)):
+                        for k in range(len(body_parts)):
                             # Cache the ID.
-                            self.body_parts[BODY_PARTS[k]] = replicants.get_body_part_id(j, k)
+                            self.body_parts[body_parts[k]] = replicants.get_body_part_id(j, k)
             elif r_id == "rseg":
                 replicant_segmentation_colors = ReplicantSegmentationColors(resp[i])
                 for j in range(replicant_segmentation_colors.get_num()):

@@ -1,3 +1,5 @@
+##### Photorealism
+
 # Manipulating Depth of Field to Reduce Image "Blurriness"
 
 Perceived "blurriness" in a rendered image, especially in the foreground of the image, is actually a camera effect that is typically due to the depth of field settings in TDW's post-processing.  We recognize that this may be an unwanted effect, therefore this document explains how the various components of depth of field work, and how to use TDW's API commands to change depth of field settings in order to modify or remove blurriness.
@@ -59,7 +61,7 @@ The following images illustrate the effect of different settings for Focus Dista
 
 ***
 
-**This is the last document in the "Photorealism" tutorial.**
+**Next: [V-Ray Rendering](vray.md).**
 
 [Return to the README](../../../README.md)
 

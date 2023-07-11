@@ -710,8 +710,6 @@ On the backend, the root body and hands are cached as objects with their own IDs
 
 ***
 
-**This is the last document in the "Virtual Reality (VR)" tutorial.**
-
 [Return to the README](../../../README.md)
 
 ***

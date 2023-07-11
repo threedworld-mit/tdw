@@ -8,21 +8,127 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ### New Features
 
-- **Added Clatter to TDW.** Clatter is an upgrade to PyImpact that mostly exists in the build, as opposed to being a collection of Python scripts in the `tdw` module. Clatter is significantly faster than PyImpact, especially in simulations in which there are concurrent audio events, and fixes several significant bugs in PyImpact. For documentation on Clatter, start with `lessons/clatter/overview.md`. For a comprehensive comparison to PyImpact and upgrade guide, read `lessons/py_impact/py_impact_and_clatter.md`.
+- **Added Clatter to TDW.** Clatter is an upgrade to PyImpact that mostly exists in the build, as opposed to being a collection of Python scripts in the `tdw` module.
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
+- **Upgraded OS X graphics API to Metal.**
+- **Added the `VRayExporter` add-on.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+- **Added: Oculus Leap Motion VR rig.** This VR rig includes hand tracking and physically embodied hands. It requires the Oculus headset and an UltraLeap device.
 
 ### Command API
 
 #### New Commands
 
-| Command                  | Description                              |
-| ------------------------ | ---------------------------------------- |
+| Command                                   | Description                                                  |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| `add_wheelchair_replicant`                | Add a WheelchairReplicant to the scene.                      |
+| `ignore_collisions`                       | Set whether one object should ignore collisions with another object. |
+| `wheelchair_replicant_reach_for_object`   | Tell a WheelchairReplicant to start to reach for a target object. |
+| `wheelchair_replicant_reach_for_position` | Tell a WheelchairReplicant to start to reach for a target position. |
+| `wheelchair_replicant_reset_arm`          | Tell a WheelchairReplicant to start to reset the arm to its neutral position. |
+| `set_wheelchair_brake_torque`             | Set the brake torque of the wheelchair's wheels.             |
+| `set_wheelchair_motor_torque`             | Set the motor torque of the wheelchair's rear wheels.        |
+| `set_wheelchair_steer_angle`              | Set the steer angle of the wheelchair's front wheels.        |
+| `send_wheelchair_replicants`              | Send data of each WheelchairReplicant in the scene.          |
+| `send_avatar_transform_matrices` | Send 4x4 transform matrix data for all avatars in the scene. |
+| `send_transform_matrices`        | Send 4x4 matrix data for each object, describing their positions and rotations. |
+| `send_leap_motion`                   | Send Leap Motion hand tracking data.                        |
+| `ignore_leap_motion_physics_helpers` | Make the object ignore a Leap Motion rig's physics helpers. |
 | `initialize_clatter`     | Initialize Clatter.                      |
 | `clatterize_object`      | Make an object respond to Clatter audio. |
 | `clatterize_robot_joint` | Make a robot respond to Clatter audio.   |
 | `set_dsp_buffer_size`    | Set the DSP buffer size.                 |
 
+#### Modified Commands
+
+| Command                  | Modification                                                 |
+| ------------------------ | ------------------------------------------------------------ |
+| `replicant_grasp_object` | Removed `rotate` parameter because it wasn't being used in the build. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                    |
+| ------------ | ------------------------------ |
+| `AvatarTransformMatrices` | 4x4 transform matrices for avatars and sensor containers. |
+| `TransformMatrices`       | 4x4 transform matrices for each object in the scene.      |
+| `LeapMotion` | LeapMotion hand-tracking data. |
+
+#### Modified Output Data
+
+| Output Data  | Modification                  |
+| ------------ | ----------------------------- |
+| `Replicants` | Added: `get_num_body_parts()` |
+
+### `tdw` module
+
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
+  - Added new Wheelchair Replicant classes: `WheelMotion` (abstract class), `TurnBy`, `TurnTo`, `MoveBy`, `MoveTo`, and `ReachFor`. These have the same name as Replicant classes but have different code and different import paths.
+  - Added: `WheelValues`. Wheel values for a move or turn action.
+  - When `replicant.grasp(target, arm)`  (Replicant and Wheelchair Replicant) initializes, it ignores collisions with the grasped object.
+  - When `replicant.drop(arm)` (Replicant and Wheelchair Replicant) initializes, it stops ignoring collisions with the dropped object.
+  - Added: `ReplicantStatic.can_walk` This is a boolean that is used in some actions to determine whether to send Replicant commands or Wheelchair Replicant commands.
+  - Added new values to `ReplicantBodyPart` for the Wheelchair Replicant: `shoulder_l` and `shoulder_r`.
+  - (Backend) Added: `replicant_body_part.WHEELCHAIR_BODY_PARTS`
+  - (Backend) `Replicant` is now a subclass of abstract class `ReplicantBase` (as is `WheelchairReplicant`).
+  - (Backend) Added metadata library: `wheelchair_replicants.json`
+  - (Backend) `Replicants` output data now reshapes its arrays by number of body parts rather than a constant
+- **Added the `VRayExporter` add-on. Render TDW scenes offline using V-Ray for enhanced photorealism.** Render TDW scenes offline using V-Ray for enhanced photorealism.
+  - (Backend) Added `VRayMatrix` data class.
+- **Added: `OculusLeapMotion` add-on for the Oculus Leap Motion VR rig.**
+  - Added: `FingerBone` enum values for finger bones.
+- **Added `Clatter` add-on.**
+  - Added: `ClatterObject` Clatter audio object data.
+  - Added: `ImpactMaterial`. This is the same as `AudioMaterial` but renamed to match Clatter's internal naming convention and to differentiate it from scrape materials.
+- Deprecated PyImpact. Please use Clatter instead.
+  - Deprecated `Base64Sound`, `CollisionAudioEvent`, `CollisionAudioInfo`, `CollisionAudioType`, and `Modes`. These classes are only used by PyImpact, not Clatter.
+- Removed `audio_material` field from `ScrapeModel` because neither Clatter nor PyImpact needs it.
+- Changes to audio initializer add-ons:
+  - Added optional parameter `physics_time_step` to `AudioInitializer` and `ResonanceAudioInitializer` that defaults to 0.02 (instead of TDW's default 0.01).
+  - The default value of `framerate` in `AudioInitializer` and `ResonanceAudioInitializer` is now 30 (was 60).
+  - Renamed `ResonanceAudioInitializer.AUDIO_MATERIALS` to `ResonanceAudioInitializer.IMPACT_MATERIALS`.
+  - Added: `ResonanceAudioInitializer.RESONANCE_AUDIO_MATERIALS`
+- Added: `QuaternionUtils.RIGHT`
+- Added: `TDWUtils.lerp(a, b, t)` and `TDWUtils.inv_lerp(a, b, v)`.
+
+### Build
+
+- **Upgraded OS X graphics API to Metal.** Previously, TDW on a Mac Intel computer used the OpenGL graphics API while TDW on a Mac Apple Silicon computer used the Metal graphics API. Because Apple has deprecated OpenGL support, TDW will now use Metal on Mac Intel computers. This won't affect you if you're running TDW on an Apple Silicon CPU and should fix a variety of graphics glitches on Mac Intel computers.
+- Fixed: `_depth` and `_depth_simple` passes don't work on OS X. This problem wasn't actually fixed in 1.11.23, and in fact got worse (it affected Apple Intel). This was due to some corrupted internal Unity files and has now been fixed.
+
 ### Example Controllers
 
+- Added: `wheelchair_replicants/clap.py`
+- Added: `wheelchair_replicants/collision_detection.py`
+- Added: `wheelchair_replicants/egocentric_images.py`
+- Added: `wheelchair_replicants/give.py`
+- Added: `wheelchair_replicants/grasp_rotate.py`
+- Added: `wheelchair_replicants/look_at.py`
+- Added: `wheelchair_replicants/minimal_custom_action.py`
+- Added: `wheelchair_replicants/move.py`
+- Added: `wheelchair_replicants/move_grasp_drop.py`
+- Added: `wheelchair_replicants/multi_replicant.py`
+- Added: `wheelchair_replicants/obstacle_avoidance.py`
+- Added: `wheelchair_replicants/reach_for_follow.py`
+- Added: `wheelchair_replicants/reach_for_move.py`
+- Added: `wheelchair_replicants/reach_for_object.py`
+- Added: `wheelchair_replicants/reach_for_offset.py`
+- Added: `wheelchair_replicants/reach_for_position.py`
+- Added: `wheelchair_replicants/reach_for_relative.py`
+- Added: `wheelchair_replicants/reach_for_two_targets.py`
+- Added: `wheelchair_replicants/reset.py`
+- Added: `wheelchair_replicants/reset_arm.py`
+- Added: `wheelchair_replicants/turn.py`
+- Added: `wheelchair_replicants/wheel_values.py`
+- Added: `photorealism/vray_dynamic_camera.py`
+- Added: `photorealism/vray_dynamic_objects.py`
+- Added: `photorealism/vray_minimal.py`
+- Added: `vr/oculus_leap_motion_minimal.py`
+- Added: `vr/oculus_leap_motion_basket.py`
+- Added: `vr/oculus_leap_motion_interior_scene.py`
+- Added: `vr/oculus_leap_motion_output_data.py`
+- Added: `vr/oculus_leap_motion_ui.py`
+- Added: `vr/oculus_leap_motion_reset.py`
 - Removed from `audio/`:
   - `collision_events.py`
   - `impact_with_controller.py`
@@ -46,26 +152,23 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 - Edited ffmpeg example controllers in `video/` to use Clatter instead of PyImpact.
 - Replaced `vr/oculus_touch_py_impact.py` with `vr/oculus_touch_clatter.py`
 
-### `tdw` module
-
-- **Added `Clatter` add-on.**
-  - Added: `ClatterObject` Clatter audio object data.
-  - Added: `ImpactMaterial`. This is the same as `AudioMaterial` but renamed to match Clatter's internal naming convention and to differentiate it from scrape materials.
-- Deprecated PyImpact. Please use Clatter instead.
-  - Deprecated `Base64Sound`, `CollisionAudioEvent`, `CollisionAudioInfo`, `CollisionAudioType`, and `Modes`. These classes are only used by PyImpact, not Clatter.
-- Removed `audio_material` field from `ScrapeModel` because neither Clatter nor PyImpact needs it.
-- Changes to audio initializer add-ons:
-  - Added optional parameter `physics_time_step` to `AudioInitializer` and `ResonanceAudioInitializer` that defaults to 0.02 (instead of TDW's default 0.01).
-  - The default value of `framerate` in `AudioInitializer` and `ResonanceAudioInitializer` is now 30 (was 60).
-  - Renamed `ResonanceAudioInitializer.AUDIO_MATERIALS` to `ResonanceAudioInitializer.IMPACT_MATERIALS`.
-  - Added: `ResonanceAudioInitializer.RESONANCE_AUDIO_MATERIALS`
-
 ### Documentation
 
 #### New Documentation
 
 | Document                                     | Description                                                |
 | -------------------------------------------- | ---------------------------------------------------------- |
+| `lessons/wheelchair_replicants/actions.md`<br/>`lessons/wheelchair_replicants/arm_articulation_1.md`<br/>`lessons/wheelchair_replicants/arm_articulation_2.md`<br/>`lessons/wheelchair_replicants/arm_articulation_3.md`<br/>`lessons/wheelchair_replicants/collision_detection.md`<br/>`lessons/wheelchair_replicants/custom_actions.md`<br/>`lessons/wheelchair_replicants/head_rotation.md`<br/>`lessons/wheelchair_replicants/movement.md`<br/>`lessons/wheelchair_replicants/multiple_agents.md`<br/>`lessons/wheelchair_replicants/navigation.md`<br/>`lessons/wheelchair_replicants/output_data.md`<br/>`lessons/wheelchair_replicants/overview.md`<br/>`lessons/wheelchair_replicants/reset.md` | Tutorial documentation for how to use a Wheelchair Replicant. |
+| `python/add_ons/replicant_base.md`                           | API documentation for abstract base class `ReplicantBase`.   |
+| `python/add_ons/wheelchair_replicant.md`                     | API documentation for `WheelchairReplicant`.                 |
+| `python/wheelchair_replicant/actions/move_by.md`<br/>`python/wheelchair_replicant/actions/move_to.md`<br/>`python/wheelchair_replicant/actions/reach_for.md`<br/>`python/wheelchair_replicant/actions/turn_by.md`<br/>`python/wheelchair_replicant/actions/turn_to.md`<br/>`python/wheelchair_replicant/actions/wheelchair_motion.md` | API documentation for Wheelchair Replicant actions.          |
+| `python/wheelchair_replicant/wheel_values.md`                | API documentation for `WheelValues`.                         |
+| `lessons/photorealism/vray.md`    | How to render with V-Ray and use the `VRayExporter` add-on. |
+| `python/add_ons/vray_exporter.md` | API documentation for the `VRayExporter` add-on.            |
+| `python/vray_data/vray_matrix.md` | API documentation for the `VRayMatrix` data class.          |
+| `lessons/vr/oculus_leap_motion.md`     | How to use the Oculus Leap Motion VR rig. |
+| `python/add_ons/oculus_leap_motion.md` | API documentation for `OculusLeapMotion`. |
+| `python/vr_data/finger_bone.md`        | API documentation for `FingerBone`.       |
 | `lessons/clatter/overview.md`                | Overview of Clatter.                                       |
 | `lessons/clatter/clatter_objects.md`         | How to define and set per-object data in Clatter.          |
 | `lessons/clatter/record_clatter.md`          | How to use Clatter with the `PhysicsAudioRecorder` add-on. |
@@ -77,13 +180,15 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | `lessons/py_impact/py_impact_and_clatter.md` | A comparison of PyImpact and Clatter.                      |
 | `python/add_ons/clatter.md`                  | API documentation for `Clatter`.                           |
 | `python/physics_audio/impact_material.md`    | API documentation for `ImpactMaterial`.                    |
+| `upgrade_guides/v1.11_to_v1.12.md`                           | TDW 1.12.0 upgrade guide.                                    |
 
 #### Modified Documentation
 
 Throughout the `lessons/` documentation, references to PyImpact (text, links, example code, etc.) have been replaced with references to Clatter. Additionally, deprecation warnings have been added to PyImpact API documents. Below is a list of more significant changes:
 
-| Document                              | Modification                                                 |
-| ------------------------------------- | ------------------------------------------------------------ |
+| Document                     | Modification                               |
+| ---------------------------- | ------------------------------------------ |
+| `lessons/agents/overview.md` | Added a section for Wheelchair Replicants. |
 | `lessons/audio/overview.md`           | Added a section about Clatter.                               |
 | `lessons/audio/py_impact.md`          | Moved to `py_impact/py_impact.md`                            |
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |

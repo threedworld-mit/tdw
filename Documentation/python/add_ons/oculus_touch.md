@@ -6,7 +6,7 @@ Add a VR rig to the scene that uses Oculus Touch controllers.
 
 Make all non-kinematic objects graspable by the rig.
 
-Per-frame, update the positions of the VR rig, its hands, and its head, as well as which objects it is grasping and the controller button presses.
+Per `communicate()` call, this add-on updates the positions of the VR rig, its hands, and its head, as well as which objects it is grasping and the controller button presses.
 
 ## Class Variables
 

@@ -6,7 +6,7 @@
 
 *For more information regarding TDW image output data, [read this](../core_concepts/images.md).*
 
-The Replicant  includes static data about the agent (such as body part IDs) and dynamic data (such as body part positions). 
+The Replicant includes static data about the agent (such as body part IDs) and dynamic data (such as body part positions). 
 
 ## Static Replicant Data
 

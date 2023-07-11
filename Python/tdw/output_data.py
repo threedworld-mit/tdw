@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
@@ -1547,13 +1548,15 @@ class FieldOfView(OutputData):
 class Replicants(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy().reshape(-1, 15)
-        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 15, 3)
-        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 15, 4)
-        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
+        num_body_parts: int = self.get_num_body_parts()
+        q = self.data.IdsAsNumpy()
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, num_body_parts)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, num_body_parts, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, num_body_parts, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, num_body_parts, 3)
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
-        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
-        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, 14, 10)
+        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, num_body_parts - 1, 10)
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, num_body_parts - 1, 10)
         self._statuses: np.ndarray = self.data.StatusesAsNumpy()
 
     def get_data(self) -> Repl.Replicants:
@@ -1606,6 +1609,9 @@ class Replicants(OutputData):
 
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
+
+    def get_num_body_parts(self) -> int:
+        return int(self.data.NumBodyParts())
 
 
 class ReplicantSegmentationColors(OutputData):

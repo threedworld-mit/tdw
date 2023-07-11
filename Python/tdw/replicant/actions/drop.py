@@ -1,6 +1,7 @@
 from typing import List, Union, Dict
 import numpy as np
 from tdw.tdw_utils import TDWUtils
+from tdw.output_data import OutputData, Replicants, Containment
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
@@ -83,6 +84,36 @@ class Drop(Action):
             commands.append({"$type": "teleport_object",
                              "id": self.object_id,
                              "position": TDWUtils.array_to_vector3(self.offset)})
+        # Stop ignoring collisions with the held object.
+        commands.append({"$type": "ignore_collisions",
+                         "id": self.object_id,
+                         "other_id": static.replicant_id,
+                         "ignore": False})
+        # Stop ignoring collisions with the contained objects.
+        replicant_ids: List[int] = list()
+        # Get all Replicant IDs.
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "repl":
+                replicants = Replicants(resp[i])
+                for j in range(replicants.get_num()):
+                    replicant_ids.append(replicants.get_id(j))
+                break
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "cont":
+                containment = Containment(resp[i])
+                object_id = containment.get_object_id()
+                if object_id == self.object_id:
+                    overlap_ids = containment.get_overlap_ids()
+                    # Ignore Replicants.
+                    overlap_ids = [o_id for o_id in overlap_ids if o_id not in replicant_ids]
+                    for overlap_id in overlap_ids:
+                        child_id = int(overlap_id)
+                        commands.append({"$type": "ignore_collisions",
+                                         "id": child_id,
+                                         "other_id": static.replicant_id,
+                                         "ignore": False})
         self.object_position = self._get_object_position(object_id=self.object_id, resp=resp)
         return commands
 

@@ -2,6 +2,8 @@
 
 `from tdw.add_ons.py_impact import PyImpact`
 
+**PyImpact has been deprecated. Use [`Clatter`](clatter.md) instead.**
+
 Generate impact sounds from physics data. Sounds can be synthesized automatically (for general use-cases) or manually (for advanced use-cases).
 
 ```python

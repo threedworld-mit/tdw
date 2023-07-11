@@ -1,6 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.clatter import Clatter
 from tdw.add_ons.resonance_audio_initializer import ResonanceAudioInitializer
 from tdw.add_ons.robot import Robot
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
@@ -26,13 +26,14 @@ c.communicate(TDWUtils.create_empty_room(6, 6))
 while robot.joints_are_moving():
     c.communicate([])
 
-# Initialize audio. Initialize PyImpact. Add an audio recorder.
+# Initialize audio. Initialize Clatter. Add an audio recorder.
 floor_material = "tile"
 audio_initializer = ResonanceAudioInitializer(avatar_id=avatar_id)
-py_impact = PyImpact(initial_amp=0.5,
-                     resonance_audio=True,
-                     floor=ResonanceAudioInitializer.AUDIO_MATERIALS[floor_material])
-c.add_ons.extend([audio_initializer, py_impact])
+clatter = Clatter(simulation_amp=0.5,
+                  resonance_audio=True,
+                  environment=ResonanceAudioInitializer.IMPACT_MATERIALS[floor_material],
+                  min_time_between_impacts=0.25)
+c.add_ons.extend([audio_initializer, clatter])
 
 # Add an object above the robot.
 c.communicate(c.get_add_physics_object(model_name="rh10",

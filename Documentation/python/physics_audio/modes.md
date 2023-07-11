@@ -2,6 +2,8 @@
 
 `from tdw.physics_audio.modes import Modes`
 
+This class is used only in PyImpact, which has been deprecated. See: [`Clatter`](../add_ons/clatter.md).
+
 Resonant mode properties: Frequencies, powers, and times.
 
 ***

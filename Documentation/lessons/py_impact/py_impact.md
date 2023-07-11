@@ -2,6 +2,10 @@
 
 # `PyImpact` (dynamic impact sounds)
 
+**PyImpact has been deprecated. [Use Clatter instead.](../clatter/overview.md)** This documentation is here only for users with ongoing projects that include PyImpact.
+
+***
+
 *PyImpact uses data from the PhysX physics engine to generate audio. If you haven't done so already, we strongly recommend you read the [physics tutorial](../physx/overview.md).*
 
 `PyImpact` can synthesize novel plausible impact sounds for any object. Upon every call the sound resonant modes will be randomly sampled and the impacts will sound slightly different.  Thus, two different objects in the same scene with the same material will create similar but unique sounds.  And the same scene run repeatedly will generate similar but unique sounds at every run.  This is designed to emulate the real world, where tapping the same object repeatedly yields slightly different sounds on each impact.
@@ -33,7 +37,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 ## Requirements
 
-- [See requirements for audio playback.](overview.md) 
+- [See requirements for audio playback.](../audio/overview.md) 
 - If you add to a script `from tdw.py_impact import PyImpact`, your script might print a warning about ffmpeg  when you run it. This is because ffmpeg isn't installed on  your machine. The warning can be ignored (`PyImpact` doesn't actually use ffmpeg). If you want to suppress it, install ffmpeg:
   - Windows: [Download from here](https://ffmpeg.org/download.html#build-windows) and then [add ffmpeg to your system path](https://windowsloop.com/install-ffmpeg-windows-10/).
   - OS X: [Install via brew](https://formulae.brew.sh/formula/ffmpeg)
@@ -44,7 +48,7 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 1. [Create a scene.](../core_concepts/scenes.md)
 2. [Add an avatar.](../core_concepts/avatars.md)
-3. [Initialize audio.](initialize_audio.md) (Optionally, initialize [Resonance Audio](resonance_audio.md) instead.)
+3. [Initialize audio.](../audio/initialize_audio.md) (Optionally, initialize [Resonance Audio](../audio/../audio/resonance_audio.md) instead.)
 4. [Add an object.](../core_concepts/objects.md)
 5. Add a [`PyImpact`](../../python/add_ons/py_impact.md) add-on.
 
@@ -103,7 +107,7 @@ py_impact.floor = AudioMaterial.metal
 
 ## Resonance audio materials
 
-An `AudioMaterial` is not quite the same thing as a [Resonance Audio material](resonance_audio.md); the latter is defined by third-party software. However, TDW does include a dictionary to map `AudioMaterial` to Resonance Audio material.
+An `AudioMaterial` is not quite the same thing as a [Resonance Audio material](../audio/resonance_audio.md); the latter is defined by third-party software. However, TDW does include a dictionary to map `AudioMaterial` to Resonance Audio material.
 
 Note that when using Resonance Audio, you must set `resonance_audio=True` in the `PyImpact` constructor.
 
@@ -471,17 +475,9 @@ if __name__ == "__main__":
 
 ***
 
-**Next: [Recording audio](record_audio.md)**
-
 [Return to the README](../../../README.md)
 
 ***
-
-Example controllers:
-
-- [py_impact.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/py_impact.py) A minimal implementation of `PyImpact`.
-- [robot_impact_sound.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/robot_impact_sound.py) Create an impact sound between an object and a robot.
-- [reset_py_impact.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/robot_impact_sound.py) Reset PyImpact after every trial.
 
 Python API:
 

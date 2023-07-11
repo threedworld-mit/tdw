@@ -2,7 +2,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.audio_initializer import AudioInitializer
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.clatter import Clatter
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
@@ -17,9 +17,9 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            avatar_id="a")
 # Initialize audio.
 audio_initializer = AudioInitializer(avatar_id="a")
-# Add PyImpact.
-py_impact = PyImpact()
-c.add_ons.extend([camera, audio_initializer, py_impact])
+# Add Clatter.
+clatter = Clatter()
+c.add_ons.extend([camera, audio_initializer, clatter])
 # Set the output path.
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")

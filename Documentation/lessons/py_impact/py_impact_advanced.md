@@ -2,6 +2,10 @@
 
 # `PyImpact` (advanced API)
 
+**PyImpact has been deprecated. [Use Clatter instead.](../clatter/overview.md)** This documentation is here only for users with ongoing projects that include PyImpact.
+
+***
+
 In the [previous document](py_impact.md) we discussed how to use the basic automated functionality of PyImpact. PyImpact supports a more advanced API for researchers who need more granular controls.
 
 This document is divided into examples of how to used the PyImpact API.
@@ -198,7 +202,7 @@ It is possible to generate and play impact sounds in TDW without there being an 
 
 In this example, impact sounds will be generated near the listener. Each time there is a new impact sound, it will be 15 degrees clockwise of the previous sound. This is best experienced with headphones.
 
-- This uses [Resonance Audio](resonance_audio.md) for spatialization.
+- This uses [Resonance Audio](../audio/resonance_audio.md) for spatialization.
 - `contact_points` is the points of the collision. Every collision in [PhysX](../physx/physx.md) generates *n* contact points and contact normals, where *n* is a multiple of 3. PyImpact uses these points to decide where to place the audio source.
 - `get_impact_sound_command()` is a wrapper for `get_impact_sound()` (see above) with the addition of `contact_points`. It creates a sound and then converts a command ([`play_audio_data`](../../api/command_api.md#play_audio_data) if using Unity's built-in audio system or [`play_point_source_data`](../../api/command_api.md#play_audio_data) if using Resonance Audio).
 
@@ -539,20 +543,9 @@ Roll sounds have not yet been implemented in PyImpact.
 
 ***
 
-**Next: [Audio perception](audio_perception.md)**
-
 [Return to the README](../../../README.md)
 
 ***
-
-Example controllers:
-
-- [collision_events.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/collision_events.py) Get collision audio event types without using PyImpact.
-- [implausible_audio.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/implausible_audio.py) Generate audio using audio physics parameters that don't match the object's actual physics parameters.
-- [impact_with_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/impact_with_controller.py) Generate impact sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
-- [impact_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/impact_without_controller.py) Generate impact sounds with PyImpact without using a TDW controller.
-- [scrape_with_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape_with_controller.py) Generate impact sounds with PyImpact without using physics data and play the audio in a circle around the avatar listener.
-- [scrape_without_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/scrape_without_controller.py) Generate scrape sounds with PyImpact without using a TDW controller.
 
 Python API:
 

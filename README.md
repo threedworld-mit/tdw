@@ -189,10 +189,25 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/audio/overview.md)
 2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
 3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
-4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
-6. [Recording audio](Documentation/lessons/audio/record_audio.md)
-6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
-7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+4. [Recording audio](Documentation/lessons/audio/record_audio.md)
+5. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+
+### 9.1 Clatter (Physically-derived audio)
+
+1. [Overview](Documentation/lessons/clatter/overview.md)
+2. [Object audio data](Documentation/lessons/clatter/clatter_objects.md)
+3. [Recording Clatter audio with the `PhysicsAudioRecorder` add-on](Documentation/lessons/clatter/record_clatter.md)
+4. [Clatter and Resonance Audio](Documentation/lessons/clatter/resonance_audio.md)
+5. [Reset Clatter](Documentation/lessons/clatter/reset.md)
+6. [Manually generate audio (Clatter CLI)](Documentation/lessons/clatter/cli.md)
+7. [Troubleshooting Clatter](Documentation/lessons/clatter/troubleshooting.md)
+8. [How to contribute to Clatter](Documentation/lessons/clatter/contribute.md)
+
+### 9.2 PyImpact (obsolete predecessor to Clatter)
+
+1. [PyImpact](Documentation/lessons/py_impact/py_impact.md)
+2. [PyImpact advanced](Documentation/lessons/py_impact/py_impact_advanced.md)
+3. [PyImpact and Clatter](Documentation/lessons/py_impact/py_impact_and_clatter.md)
 
 ## 10. Video Recording
 
@@ -318,7 +333,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
-2. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
+3. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
 
 # API Documentation
 
@@ -350,6 +365,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [AvatarBody](Documentation/python/add_ons/avatar_body.md)
 - [Benchmark](Documentation/python/add_ons/benchmark.md)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
+- [Clatter](Documentation/python/add_ons/clatter.md)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
@@ -519,9 +535,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [AudioMaterial](Documentation/python/physics_audio/audio_material.md)
 - [Base64Sound](Documentation/python/physics_audio/base64_sound.md)
+- [ClatterObject](Documentation/python/physics_audio/clatter_object.md)
 - [CollisionAudioEvent](Documentation/python/physics_audio/collision_audio_event.md)
 - [CollisionAudioInfo](Documentation/python/physics_audio/collision_audio_info.md)
 - [CollisionAudioType](Documentation/python/physics_audio/collision_audio_type.md)
+- [ImpactMaterial](Documentation/python/physics_audio/impact_material.md)
 - [Modes](Documentation/python/physics_audio/modes.md)
 - [ObjectAudioStatic](Documentation/python/physics_audio/object_audio_static.md)
 - [ScrapeMaterial](Documentation/python/physics_audio/scrape_material.md)

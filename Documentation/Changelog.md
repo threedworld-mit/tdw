@@ -1,5 +1,105 @@
 # CHANGELOG
 
+# v1.12.x
+
+To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
+
+## v1.12.0
+
+### New Features
+
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
+
+### Command API
+
+#### New Commands
+
+| Command                                   | Description                                                  |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| `add_wheelchair_replicant`                | Add a WheelchairReplicant to the scene.                      |
+| `ignore_collisions`                       | Set whether one object should ignore collisions with another object. |
+| `wheelchair_replicant_reach_for_object`   | Tell a WheelchairReplicant to start to reach for a target object. |
+| `wheelchair_replicant_reach_for_position` | Tell a WheelchairReplicant to start to reach for a target position. |
+| `wheelchair_replicant_reset_arm`          | Tell a WheelchairReplicant to start to reset the arm to its neutral position. |
+| `set_wheelchair_brake_torque`             | Set the brake torque of the wheelchair's wheels.             |
+| `set_wheelchair_motor_torque`             | Set the motor torque of the wheelchair's rear wheels.        |
+| `set_wheelchair_steer_angle`              | Set the steer angle of the wheelchair's front wheels.        |
+| `send_wheelchair_replicants`              | Send data of each WheelchairReplicant in the scene.          |
+
+#### Modified Commands
+
+| Command                  | Modification                                                 |
+| ------------------------ | ------------------------------------------------------------ |
+| `replicant_grasp_object` | Removed `rotate` parameter because it wasn't being used in the build. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data  | Modification                  |
+| ------------ | ----------------------------- |
+| `Replicants` | Added: `get_num_body_parts()` |
+
+### `tdw` module
+
+- **Added: `WheelchairReplicant`, a wheelchair-bound humanoid agent.**
+  - Added new Wheelchair Replicant classes: `WheelMotion` (abstract class), `TurnBy`, `TurnTo`, `MoveBy`, `MoveTo`, and `ReachFor`. These have the same name as Replicant classes but have different code and different import paths.
+  - Added: `WheelValues`. Wheel values for a move or turn action.
+  - When `replicant.grasp(target, arm)`  (Replicant and Wheelchair Replicant) initializes, it ignores collisions with the grasped object.
+  - When `replicant.drop(arm)` (Replicant and Wheelchair Replicant) initializes, it stops ignoring collisions with the dropped object.
+  - Added: `ReplicantStatic.can_walk` This is a boolean that is used in some actions to determine whether to send Replicant commands or Wheelchair Replicant commands.
+  - Added new values to `ReplicantBodyPart` for the Wheelchair Replicant: `shoulder_l` and `shoulder_r`.
+  - (Backend) Added: `replicant_body_part.WHEELCHAIR_BODY_PARTS`
+  - (Backend) `Replicant` is now a subclass of abstract class `ReplicantBase` (as is `WheelchairReplicant`).
+  - (Backend) Added metadata library: `wheelchair_replicants.json`
+  - (Backend) `Replicants` output data now reshapes its arrays by number of body parts rather than a constant
+- Added: `QuaternionUtils.RIGHT`
+- Added: `TDWUtils.lerp(a, b, t)` and `TDWUtils.inv_lerp(a, b, v)`.
+
+### Example Controllers
+
+- Added: `wheelchair_replicants/clap.py`
+- Added: `wheelchair_replicants/collision_detection.py`
+- Added: `wheelchair_replicants/egocentric_images.py`
+- Added: `wheelchair_replicants/give.py`
+- Added: `wheelchair_replicants/grasp_rotate.py`
+- Added: `wheelchair_replicants/look_at.py`
+- Added: `wheelchair_replicants/minimal_custom_action.py`
+- Added: `wheelchair_replicants/move.py`
+- Added: `wheelchair_replicants/move_grasp_drop.py`
+- Added: `wheelchair_replicants/multi_replicant.py`
+- Added: `wheelchair_replicants/obstacle_avoidance.py`
+- Added: `wheelchair_replicants/reach_for_follow.py`
+- Added: `wheelchair_replicants/reach_for_move.py`
+- Added: `wheelchair_replicants/reach_for_object.py`
+- Added: `wheelchair_replicants/reach_for_offset.py`
+- Added: `wheelchair_replicants/reach_for_position.py`
+- Added: `wheelchair_replicants/reach_for_relative.py`
+- Added: `wheelchair_replicants/reach_for_two_targets.py`
+- Added: `wheelchair_replicants/reset.py`
+- Added: `wheelchair_replicants/reset_arm.py`
+- Added: `wheelchair_replicants/turn.py`
+- Added: `wheelchair_replicants/wheel_values.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/wheelchair_replicants/actions.md`<br/>`lessons/wheelchair_replicants/arm_articulation_1.md`<br/>`lessons/wheelchair_replicants/arm_articulation_2.md`<br/>`lessons/wheelchair_replicants/arm_articulation_3.md`<br/>`lessons/wheelchair_replicants/collision_detection.md`<br/>`lessons/wheelchair_replicants/custom_actions.md`<br/>`lessons/wheelchair_replicants/head_rotation.md`<br/>`lessons/wheelchair_replicants/movement.md`<br/>`lessons/wheelchair_replicants/multiple_agents.md`<br/>`lessons/wheelchair_replicants/navigation.md`<br/>`lessons/wheelchair_replicants/output_data.md`<br/>`lessons/wheelchair_replicants/overview.md`<br/>`lessons/wheelchair_replicants/reset.md` | Tutorial documentation for how to use a Wheelchair Replicant. |
+| `python/add_ons/replicant_base.md`                           | API documentation for abstract base class `ReplicantBase`.   |
+| `python/add_ons/wheelchair_replicant.md`                     | API documentation for `WheelchairReplicant`.                 |
+| `python/wheelchair_replicant/actions/move_by.md`<br/>`python/wheelchair_replicant/actions/move_to.md`<br/>`python/wheelchair_replicant/actions/reach_for.md`<br/>`python/wheelchair_replicant/actions/turn_by.md`<br/>`python/wheelchair_replicant/actions/turn_to.md`<br/>`python/wheelchair_replicant/actions/wheelchair_motion.md` | API documentation for Wheelchair Replicant actions.          |
+| `python/wheelchair_replicant/wheel_values.md`                | API documentation for `WheelValues`.                         |
+| `upgrade_guides/v1.11_to_v1.12.md`                           | TDW 1.12.0 upgrade guide.                                    |
+
+#### Modified Documentation
+
+| Document                     | Modification                               |
+| ---------------------------- | ------------------------------------------ |
+| `lessons/agents/overview.md` | Added a section for Wheelchair Replicants. |
+
 # v1.11.x
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).

@@ -2,7 +2,7 @@
 
 # Head rotation
 
-The Replicant can look at a target object or position, and can reset the rotation of its head. The Replicant's head moves continously over multiple `communicate()` calls. The [camera](../core_concepts/avatars.md) attached to the head always matches the rotation of the head.
+The Replicant can look at a target object or position, and can reset the rotation of its head. The Replicant's head moves continuously over multiple `communicate()` calls. The [camera](../core_concepts/avatars.md) attached to the head always matches the rotation of the head.
 
 ## The `look_at(target)` command
 

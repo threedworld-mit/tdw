@@ -820,6 +820,7 @@ Data about each Replicant in the scene.
 | `get_is_collision(index, body_part_index, collision_index)` | The collision of the is. | `bool` |
 | `get_collision_id(index, body_part_index, collision_index)` | The ID of the collision. | `int` |
 | `get_status(index)` | The status. | `ActionStatus` |
+| `get_num_body_parts()` | The number of body parts per Replicant. | `int` |
 
 ## ReplicantSegmentationColors
 

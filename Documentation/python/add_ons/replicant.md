@@ -2,11 +2,35 @@
 
 `from tdw.add_ons.replicant import Replicant`
 
-A Replicant is a human-like agent that can interact with the scene with pseudo-physics behavior.
+A Replicant is an able-bodied human-like agent that can interact with the scene with pseudo-physics behavior.
 
 When a Replicant collides with objects, it initiates a physics-driven collision. The Replicant's own movements are driven by non-physics animation.
 
 A Replicant can walk, turn, reach for positions or objects, grasp and drop objects, and turn its head to look around.
+
+***
+
+## Fields
+
+- `initial_position` The initial position of the Replicant.
+
+- `initial_rotation` The initial rotation of the Replicant.
+
+- `replicant_id` The ID of this replicant.
+
+- `action` The Replicant's current [action](../replicant/actions/action.md). Can be None (no ongoing action).
+
+- `image_frequency` An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
+
+- `collision_detection` [The collision detection rules.](../replicant/collision_detection.md) This determines whether the Replicant will immediately stop moving or turning when it collides with something.
+
+- `static` The [`ReplicantStatic`](../replicant/replicant_static.md) data.
+
+- `dynamic` The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -18,29 +42,11 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 
 ***
 
-## Fields
-
-- `initial_position` The initial position of the Replicant.
-
-- `initial_rotation` The initial rotation of the Replicant.
-
-- `static` The [`ReplicantStatic`](../replicant/replicant_static.md) data.
-
-- `dynamic` The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data.
-
-- `replicant_id` The ID of this replicant.
-
-- `action` The Replicant's current [action](../replicant/actions/action.md). Can be None (no ongoing action).
-
-- `image_frequency` An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
-
-- `collision_detection` [The collision detection rules.](../replicant/collision_detection.md) This determines whether the Replicant will immediately stop moving or turning when it collides with something.
-
-***
-
 ## Functions
 
 #### \_\_init\_\_
+
+\_\_init\_\_
 
 **`Replicant()`**
 
@@ -335,6 +341,19 @@ The animation will end either when the animation clip is finished or if the Repl
 
 Misc. non-action functions.
 
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(position=None, rotation=None)`**
+
+Reset the Replicant. Call this when you reset the scene.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  POSITION  | None | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  ROTATION  | None | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+
 #### get_initialization_commands
 
 **`self.get_initialization_commands()`**
@@ -355,19 +374,6 @@ Any commands in the `self.commands` list will be sent on the *next* `Controller.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
-
-#### reset
-
-**`self.reset()`**
-
-**`self.reset(position=None, rotation=None)`**
-
-Reset the Replicant. Call this when you reset the scene.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| position |  POSITION  | None | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  ROTATION  | None | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 
 ***
 

@@ -21,6 +21,10 @@ class QuaternionUtils:
     """
     FORWARD: np.ndarray = np.array([0, 0, 1])
     """:class_var
+    The global right directional vector.
+    """
+    RIGHT: np.ndarray = np.array([1, 0, 0])
+    """:class_var
     The quaternion identity rotation.
     """
     IDENTITY: np.ndarray = np.array([0, 0, 0, 1])

@@ -2,7 +2,7 @@
 
 `from tdw.replicant.replicant_dynamic import ReplicantDynamic`
 
-Dynamic data for a replicant that can change per `communicate()` call (such as the position of the Replicant).
+Dynamic data for a Replicant that can change per `communicate()` call (such as the position of the Replicant).
 
 ***
 

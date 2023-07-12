@@ -27,7 +27,7 @@ class Animate(Action):
         :param animation: The name of the animation.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param forward: If True, play the animation forwards. If False, play the animation backwards.
-        :param library: The name animation library.
+        :param library: The name of the animation's library.
         :param previous: The previous action. Can be None.
         :param ik_body_parts: Maintain the IK positions of these body parts.
         """

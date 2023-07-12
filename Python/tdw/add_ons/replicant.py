@@ -65,7 +65,8 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         self.action = TurnTo(target=target)
 
     def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100) -> None:
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
+                animation: str = "walking_2", library: str = "humanoid_animations.json") -> None:
         """
         Walk a given distance.
 
@@ -89,6 +90,8 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
+        :param animation: The name of the walk animation.
+        :param library: The name of the walk animation's library.
         """
 
         self.action = MoveBy(distance=distance,
@@ -99,11 +102,14 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                              reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
-                             max_walk_cycles=max_walk_cycles)
+                             max_walk_cycles=max_walk_cycles,
+                             animation=animation,
+                             library=library)
 
     def move_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
                 scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
-                bounds_position: str = "center") -> None:
+                bounds_position: str = "center", animation: str = "walking_2",
+                library: str = "humanoid_animations.json") -> None:
         """
         Turn the Replicant to a target position or object and then walk to it.
 
@@ -128,6 +134,8 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
+        :param animation: The name of the walk animation.
+        :param library: The name of the walk animation's library.
         """
 
         self.action = MoveTo(target=target,

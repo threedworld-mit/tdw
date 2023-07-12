@@ -43,7 +43,8 @@ class MoveBy(Animate):
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int):
+                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int,
+                 animation: str = "walking_2", library: str = "humanoid_animations.json"):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
@@ -54,6 +55,8 @@ class MoveBy(Animate):
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
+        :param animation: The name of the walk animation.
+        :param library: The name of the walk animation's library.
         """
 
         """:field
@@ -76,9 +79,9 @@ class MoveBy(Animate):
         If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         """
         self.arrived_at: float = arrived_at
-        super().__init__(animation="walking_2",
+        super().__init__(animation=animation,
                          collision_detection=collision_detection,
-                         library="humanoid_animations.json",
+                         library=library,
                          previous=previous,
                          forward=self.distance > 0,
                          ik_body_parts=[] if self.reset_arms else MoveBy._ARM_BODY_PARTS)

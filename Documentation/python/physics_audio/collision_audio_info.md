@@ -2,6 +2,8 @@
 
 `from tdw.physics_audio.collision_audio_info import CollisionAudioInfo`
 
+This class is used only in PyImpact, which has been deprecated. See: [`Clatter`](../add_ons/clatter.md).
+
 Class containing information about collisions required by PyImpact to determine the volume of impact sounds.
 
 ***

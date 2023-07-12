@@ -19,7 +19,7 @@ class ResetArm(ArmMotion):
                                     image_frequency: ImageFrequency) -> List[dict]:
         commands = super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                        image_frequency=image_frequency)
-        commands.extend([{"$type": "replicant_reset_arm",
+        commands.extend([{"$type": "replicant_reset_arm" if static.can_walk else "wheelchair_replicant_reset_arm",
                           "id": static.replicant_id,
                           "duration": self.duration,
                           "arm": arm.name} for arm in self.arms])

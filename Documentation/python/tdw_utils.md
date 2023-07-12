@@ -764,3 +764,33 @@ _(Static)_
 
 _Returns:_  The path as a string.
 
+#### lerp
+
+**`TDWUtils.lerp(a, b, t)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| a |  float |  | The first value. |
+| b |  float |  | The second value. This must be greater than `a`. |
+| t |  float |  | The lerp value (0 to 1). |
+
+_Returns:_  A linearly interpolated value at point `t` between `a` and `b`.
+
+#### inv_lerp
+
+**`TDWUtils.inv_lerp(a, b, v)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| a |  float |  | The first value. |
+| b |  float |  | The second value. This must be greater than `a`. |
+| v |  float |  | The value. This must be between `a` and `b` (inclusive). |
+
+_Returns:_  A value between 0 and 1 describing where `v` is with respect to `a` and `b`.
+

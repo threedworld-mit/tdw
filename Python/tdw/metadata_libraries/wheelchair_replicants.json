@@ -1,0 +1,13 @@
+{
+    "description": "Wheelchair Replicants",
+    "records": {
+        "man_casual": {
+            "name": "man_casual",
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/wheelchair_replicants/osx/2020.3/man_casual",
+                "Linux": "https://tdw-public.s3.amazonaws.com/wheelchair_replicants/linux/2020.3/man_casual",
+                "Windows": "https://tdw-public.s3.amazonaws.com/wheelchair_replicants/windows/2020.3/man_casual"
+            }
+        }
+    }
+}

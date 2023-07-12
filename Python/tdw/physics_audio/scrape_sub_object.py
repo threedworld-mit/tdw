@@ -6,7 +6,7 @@ class ScrapeSubObject:
     def __init__(self, name: str, material_index: int):
         """
         :param name: The name of the sub-object.
-        :param material_index: The index of the material.
+        :param material_index: The index of the material. If you're not sure what this should be, try 0.
         """
 
         """:field
@@ -14,6 +14,6 @@ class ScrapeSubObject:
         """
         self.name: str = name
         """:field
-        The index of the material.
+        The index of the material. If you're not sure what this should be, try 0.
         """
         self.material_index: int = material_index

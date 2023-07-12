@@ -17,10 +17,11 @@ class AudioInitializerBase(AddOn, ABC):
     Abstract base class for an audio initializer add-on.
     """
 
-    def __init__(self, avatar_id: str = "a", framerate: int = 60):
+    def __init__(self, avatar_id: str = "a", framerate: int = 30, physics_time_step: float = 0.02):
         """
         :param avatar_id: The ID of the listening avatar.
         :param framerate: The target simulation framerate.
+        :param physics_time_step: The physics timestep.
         """
 
         super().__init__()
@@ -30,6 +31,7 @@ class AudioInitializerBase(AddOn, ABC):
         self.avatar_id: str = avatar_id
         # The target framerate.
         self._target_framerate: int = framerate
+        self._physics_time_step: float = physics_time_step
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -40,6 +42,8 @@ class AudioInitializerBase(AddOn, ABC):
 
         return [{"$type": "set_target_framerate",
                  "framerate": self._target_framerate},
+                {"$type": "set_time_step",
+                 "time_step": self._physics_time_step},
                 {"$type": self._get_sensor_command_name(),
                  "avatar_id": self.avatar_id}]
 

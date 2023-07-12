@@ -204,7 +204,8 @@ class AssetBundleCreator(ABC):
         ~/asset_bundle_creator/
         ....Assets/
         ........prefabs/
-        ............name.prefab
+        ............name/
+        ................name.prefab
         ........source_files/
         ............name/
         ................name.obj

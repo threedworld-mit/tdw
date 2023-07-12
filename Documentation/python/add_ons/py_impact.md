@@ -2,6 +2,8 @@
 
 `from tdw.add_ons.py_impact import PyImpact`
 
+**PyImpact has been deprecated. Use [`Clatter`](clatter.md) instead.**
+
 Generate impact sounds from physics data. Sounds can be synthesized automatically (for general use-cases) or manually (for advanced use-cases).
 
 ```python
@@ -58,20 +60,20 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `SILENCE_100MS` | AudioSegment | 100ms of silence. Used for scrapes. | `AudioSegment.silent(duration=100, frame_rate=SAMPLE_RATE)` |
-| `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. | `1` |
-| `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. | `1394.068 * 10 ** -9` |
 | `DEFAULT_AMP` | float | The default amp value for objects. | `0.2` |
 | `DEFAULT_MATERIAL` | AudioMaterial | The default [material](../physics_audio/audio_material.md) for objects. | `AudioMaterial.plastic_hard` |
 | `DEFAULT_RESONANCE` | float | The default resonance value for objects. | `0.45` |
 | `DEFAULT_SIZE` | int | The default audio size "bucket" for objects. | `1` |
+| `FLOOR_AMP` | float | The amp value for the floor. | `0.5` |
+| `FLOOR_MASS` | int | The mass of the floor. | `100` |
+| `FLOOR_SIZE` | int | The size "bucket" for the floor. | `4` |
 | `ROBOT_JOINT_BOUNCINESS` | float | The assumed bounciness value for robot joints. | `0.6` |
 | `ROBOT_JOINT_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for robot joints. | `AudioMaterial.metal` |
-| `VR_HUMAN_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for human body parts in VR. | `AudioMaterial.cardboard` |
+| `SCRAPE_MAX_VELOCITY` | float | The maximum velocity allowed for a scrape. | `1` |
+| `SCRAPE_M_PER_PIXEL` | float | Meters per pixel on the scrape surface. | `1394.068 * 10 ** -9` |
+| `SILENCE_100MS` | AudioSegment | 100ms of silence. Used for scrapes. | `AudioSegment.silent(duration=100, frame_rate=SAMPLE_RATE)` |
 | `VR_HUMAN_BOUNCINESS` | float | The assumed bounciness value for human body parts such as in VR. | `0.3` |
-| `FLOOR_AMP` | float | The amp value for the floor. | `0.5` |
-| `FLOOR_SIZE` | int | The size "bucket" for the floor. | `4` |
-| `FLOOR_MASS` | int | The mass of the floor. | `100` |
+| `VR_HUMAN_MATERIAL` | AudioMaterial | The [material](../physics_audio/audio_material.md) used for human body parts in VR. | `AudioMaterial.cardboard` |
 
 ***
 
@@ -103,6 +105,18 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 
 - `collision_events` Collision events on this frame. Key = Object ID. Value = [`CollisionAudioEvent`](../physics_audio/collision_audio_event.md).
 
+- `obj_collisions` All collisions between two objects that occurred on the frame.
+
+- `env_collisions` All collisions between an object and the environment that occurred on the frame.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
 ***
 
 ## Functions
@@ -127,37 +141,31 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | scrape_objects |  Dict[int, ScrapeModel] | None | If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md). |
 | min_time_between_impact_events |  float  | 0.25 | The minimum time in seconds between two impact events that involve the same primary object. |
 
-#### get_initialization_commands
+***
 
-**`self.get_initialization_commands()`**
+### General
 
-#### on_send
+These functions are meant for most use-cases. For general use-cases, PyImpact will generate audio automatically. In *all* use-cases, you'll need to manually reset PyImapct whenevery you reset the scene.
 
-**`self.on_send()`**
+#### reset
 
-#### get_impact_sound
+**`self.reset()`**
 
-**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+**`self.reset(initial_amp=0.5, static_audio_data_overrides=None, scrape_objects=None)`**
 
-Produce sound of two colliding objects as a byte array.
-
+Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| primary_id |  int |  | The object ID for the primary (target) object. |
-| primary_material |  str |  | The material label for the primary (target) object. |
-| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
-| secondary_material |  str |  | The material label for the secondary (other) object. |
-| primary_amp |  float |  | Sound amplitude of primary (target) object. |
-| secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| primary_resonance |  float |  | The resonance of the primary (target) object. |
-| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
-| velocity |  np.ndarray |  | The velocity. |
-| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
-| primary_mass |  float |  | The mass of the primary (target) object. |
-| secondary_mass |  float |  | The mass of the secondary (target) object. |
+| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
+| static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
+| scrape_objects |  Dict[int, ScrapeModel] | None | A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor. |
 
-_Returns:_  Sound data as a Base64Sound object.
+***
+
+### Advanced
+
+These functions manually create audio data, including .wav data and TDW commands.
 
 #### get_impact_sound_command
 
@@ -210,6 +218,30 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 
 _Returns:_  A command to play a scrape sound.
 
+#### get_impact_sound
+
+**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+
+Produce sound of two colliding objects as a byte array.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| primary_id |  int |  | The object ID for the primary (target) object. |
+| primary_material |  str |  | The material label for the primary (target) object. |
+| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
+| secondary_material |  str |  | The material label for the secondary (other) object. |
+| primary_amp |  float |  | Sound amplitude of primary (target) object. |
+| secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
+| primary_resonance |  float |  | The resonance of the primary (target) object. |
+| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
+| velocity |  np.ndarray |  | The velocity. |
+| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
+| primary_mass |  float |  | The mass of the primary (target) object. |
+| secondary_mass |  float |  | The mass of the secondary (target) object. |
+
+_Returns:_  Sound data as a Base64Sound object.
+
 #### get_scrape_sound
 
 **`self.get_scrape_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass, scrape_material)`**
@@ -239,7 +271,7 @@ _Returns:_  A [`Base64Sound`](../physics_audio/base64_sound.md) object or None i
 
 #### get_size
 
-**`PyImpact(CollisionManager).get_size(model)`**
+**`PyImpact.get_size(model)`**
 
 _(Static)_
 
@@ -250,17 +282,5 @@ _(Static)_
 
 _Returns:_  The `size` integer of the object.
 
-#### reset
-
-**`self.reset()`**
-
-**`self.reset(initial_amp=0.5, static_audio_data_overrides=None, scrape_objects=None)`**
-
-Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
-| static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
-| scrape_objects |  Dict[int, ScrapeModel] | None | A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor. |
+***
 

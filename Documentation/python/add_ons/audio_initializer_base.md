@@ -22,12 +22,13 @@ Abstract base class for an audio initializer add-on.
 
 **`AudioInitializerBase()`**
 
-**`AudioInitializerBase(avatar_id="a", framerate=60)`**
+**`AudioInitializerBase(avatar_id="a", framerate=30, physics_time_step=0.02)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | avatar_id |  str  | "a" | The ID of the listening avatar. |
-| framerate |  int  | 60 | The target simulation framerate. |
+| framerate |  int  | 30 | The target simulation framerate. |
+| physics_time_step |  float  | 0.02 | The physics timestep. |
 
 #### get_initialization_commands
 

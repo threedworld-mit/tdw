@@ -25,6 +25,14 @@
         "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/man_casual"
       }
     },
+    "man_casual_wheelchair": {
+      "name": "man_casual_wheelchair",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/replicants/osx/2020.3/man_casual_wheelchair",
+        "Linux": "https://tdw-public.s3.amazonaws.com/replicants/linux/2020.3/man_casual_wheelchair",
+        "Windows": "https://tdw-public.s3.amazonaws.com/replicants/windows/2020.3/man_casual_wheelchair"
+      }
+    },	
     "replicant_0": {
       "name": "replicant_0",
       "urls": {

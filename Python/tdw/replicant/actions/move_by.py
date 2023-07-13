@@ -32,11 +32,6 @@ class MoveBy(Animate):
     - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
-    """:class_var
-    While walking, the Replicant will cast an overlap shape in front of or behind it, depending on whether it is walking forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
-    """
-    OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.0875}
-    #OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.13875, "y": 0.5814, "z": 0.0475}
     # The body parts which will maintain IK positions and rotations, assuming `self.reset_arms == False`.
     _ARM_BODY_PARTS: List[str] = [ReplicantBodyPart.hand_l, ReplicantBodyPart.hand_r,
                                   ReplicantBodyPart.lowerarm_l, ReplicantBodyPart.lowerarm_r,
@@ -44,7 +39,8 @@ class MoveBy(Animate):
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int):
+                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int,
+                 collision_avoidance_distance: float, collision_avoidance_half_extents: Dict[str, float]):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
@@ -55,6 +51,8 @@ class MoveBy(Animate):
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         """:field
@@ -77,6 +75,14 @@ class MoveBy(Animate):
         If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         """
         self.arrived_at: float = arrived_at
+        """:field
+        If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        """
+        self.collision_avoidance_distance: float = collision_avoidance_distance
+        """:field
+        If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+        """
+        self.collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
         super().__init__(animation="walking_2",
                          collision_detection=collision_detection,
                          library="humanoid_animations.json",
@@ -192,7 +198,7 @@ class MoveBy(Animate):
         if not self.collision_detection.avoid:
             return []
         # Get the position of the overlap shape.
-        overlap_z = 0.2
+        overlap_z = self.collision_avoidance_distance
         if self.distance < 0:
             overlap_z *= -1
         overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
@@ -200,6 +206,6 @@ class MoveBy(Animate):
         # Send the next overlap command.
         return [{"$type": "send_overlap_box",
                  "id": static.replicant_id,
-                 "half_extents": MoveBy.OVERLAP_HALF_EXTENTS,
+                 "half_extents": self.collision_avoidance_half_extents,
                  "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
                  "position": TDWUtils.array_to_vector3(overlap_position)}]

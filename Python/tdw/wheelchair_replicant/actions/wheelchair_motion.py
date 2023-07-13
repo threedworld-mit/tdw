@@ -19,14 +19,10 @@ class WheelchairMotion(Action, ABC):
     Abstract base class for actions involving wheelchair motion (motor torques, brake torques, etc.)
     """
 
-    """:class_var
-    While moving or turning, the WheelchairReplicant will cast an overlap shape in the direction it is traveling. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape.
-    """
-    OVERLAP_HALF_EXTENTS: Dict[str, float] = {"x": 0.31875, "y": 0.8814, "z": 0.2}
-
     def __init__(self, wheel_values: WheelValues, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float):
+                 scale_reset_arms_duration: bool, arrived_at: float, collision_avoidance_distance: float,
+                 collision_avoidance_half_extents: Dict[str, float]):
         """
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
         :param dynamic: The [`ReplicantDynamic`](../../replicant/replicant_dynamic.md) data that changes per `communicate()` call.
@@ -36,6 +32,8 @@ class WheelchairMotion(Action, ABC):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: A distance or time determines whether the WheelchairReplicant arrived at the target.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         super().__init__()
@@ -64,6 +62,14 @@ class WheelchairMotion(Action, ABC):
         The [`CollisionDetection`](../collision_detection.md) rules.
         """
         self.collision_detection: CollisionDetection = collision_detection
+        """:field
+        If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        """
+        self.collision_avoidance_distance: float = collision_avoidance_distance
+        """:field
+        If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+        """
+        self.collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
         if self._previous_was_collision(previous=previous):
             self.status = ActionStatus.collision
         # Ignore collision detection for held items.
@@ -224,7 +230,7 @@ class WheelchairMotion(Action, ABC):
         # Send the next overlap command.
         return [{"$type": "send_overlap_box",
                  "id": static.replicant_id,
-                 "half_extents": WheelchairMotion.OVERLAP_HALF_EXTENTS,
+                 "half_extents": self.collision_avoidance_half_extents,
                  "rotation": TDWUtils.array_to_vector4(dynamic.transform.rotation),
                  "position": TDWUtils.array_to_vector3(overlap_position)}]
 

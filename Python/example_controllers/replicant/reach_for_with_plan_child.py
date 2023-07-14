@@ -80,4 +80,4 @@ if __name__ == "__main__":
     for p in [None, IkPlanType.vertical_horizontal]:
         s = c.trial(plan=p)
         print(s)
-    #c.communicate({"$type": "terminate"})
+    c.communicate({"$type": "terminate"})

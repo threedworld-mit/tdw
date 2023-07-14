@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.type_aliases import TARGET
@@ -33,7 +33,8 @@ class MoveTo(Action):
 
     def __init__(self, target: TARGET, collision_detection: CollisionDetection, previous: Optional[Action],
                  reset_arms: bool, reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
-                 max_walk_cycles: int, bounds_position: str):
+                 max_walk_cycles: int, bounds_position: str, collision_avoidance_distance: float,
+                 collision_avoidance_half_extents: Dict[str, float]):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
@@ -44,6 +45,8 @@ class MoveTo(Action):
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         """:field
@@ -78,6 +81,14 @@ class MoveTo(Action):
         If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
         """
         self.bounds_position: str = bounds_position
+        """:field
+        If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        """
+        self.collision_avoidance_distance: float = collision_avoidance_distance
+        """:field
+        If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+        """
+        self.collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
         self._turning: bool = True
         self._image_frequency: ImageFrequency = ImageFrequency.once
         self._move_by: Optional[MoveBy] = None
@@ -131,7 +142,9 @@ class MoveTo(Action):
                                    reset_arms_duration=self.reset_arms_duration,
                                    scale_reset_arms_duration=self.scale_reset_arms_duration,
                                    arrived_at=self.arrived_at,
-                                   max_walk_cycles=self.max_walk_cycles,)
+                                   max_walk_cycles=self.max_walk_cycles,
+                                   collision_avoidance_distance=self.collision_avoidance_distance,
+                                   collision_avoidance_half_extents=self.collision_avoidance_half_extents)
             commands = self._move_by.get_initialization_commands(resp=resp,
                                                                  static=static,
                                                                  dynamic=dynamic,

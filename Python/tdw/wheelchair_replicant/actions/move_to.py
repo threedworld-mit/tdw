@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 import numpy as np
 from tdw.type_aliases import TARGET
 from tdw.replicant.action_status import ActionStatus
@@ -31,7 +31,8 @@ class MoveTo(Action):
     def __init__(self, target: TARGET, turn_wheel_values: Optional[WheelValues],
                  move_wheel_values: Optional[WheelValues], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
-                 reset_arms_duration: float, scale_reset_arms_duration: bool, aligned_at: float, arrived_at: float):
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, aligned_at: float, arrived_at: float,
+                 collision_avoidance_distance: float, collision_avoidance_half_extents: Dict[str, float]):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param turn_wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels while it's turning. If None, values will be derived from the angle.
@@ -44,6 +45,8 @@ class MoveTo(Action):
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param aligned_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         super().__init__()
@@ -57,7 +60,9 @@ class MoveTo(Action):
         self.action = TurnTo(target=target, wheel_values=turn_wheel_values, dynamic=dynamic,
                              collision_detection=collision_detection, previous=previous, reset_arms=reset_arms,
                              reset_arms_duration=reset_arms_duration,
-                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=aligned_at)
+                             scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=aligned_at,
+                             collision_avoidance_distance=collision_avoidance_distance,
+                             collision_avoidance_half_extents=collision_avoidance_half_extents)
         self._target: TARGET = target
         self._image_frequency: ImageFrequency = ImageFrequency.once
         self._collision_detection: CollisionDetection = collision_detection
@@ -66,6 +71,8 @@ class MoveTo(Action):
         """
         self.arrived_at: float = arrived_at
         self._move_wheel_values: Optional[WheelValues] = move_wheel_values
+        self._collision_avoidance_distance: float = collision_avoidance_distance
+        self._collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -99,7 +106,9 @@ class MoveTo(Action):
                     self.action = MoveBy(distance=distance, wheel_values=self._move_wheel_values, dynamic=dynamic,
                                          collision_detection=self._collision_detection, previous=None,
                                          reset_arms=False, reset_arms_duration=0, scale_reset_arms_duration=False,
-                                         arrived_at=self.arrived_at)
+                                         arrived_at=self.arrived_at,
+                                         collision_avoidance_distance=self._collision_avoidance_distance,
+                                         collision_avoidance_half_extents=self._collision_avoidance_half_extents)
                     return self.action.get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                                    image_frequency=self._image_frequency)
                 # We're done!

@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 import numpy as np
 from tdw.quaternion_utils import QuaternionUtils
 from tdw.replicant.replicant_static import ReplicantStatic
@@ -33,7 +33,8 @@ class TurnBy(WheelchairMotion):
 
     def __init__(self, angle: float, wheel_values: WheelValues, dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
-                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
+                 collision_avoidance_distance: float, collision_avoidance_half_extents: Dict[str, float]):
         """
         :param angle: The angle in degrees.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
@@ -44,6 +45,8 @@ class TurnBy(WheelchairMotion):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         """:field
@@ -58,7 +61,9 @@ class TurnBy(WheelchairMotion):
         self._rotation: float = 0
         super().__init__(wheel_values=wheel_values, dynamic=dynamic, collision_detection=collision_detection,
                          previous=previous, reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
-                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
+                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
+                         collision_avoidance_distance=collision_avoidance_distance,
+                         collision_avoidance_half_extents=collision_avoidance_half_extents)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
@@ -96,7 +101,7 @@ class TurnBy(WheelchairMotion):
         return abs(delta_rotation) >= self.wheel_values.brake_at
 
     def _get_overlap_direction(self, dynamic: ReplicantDynamic) -> np.ndarray:
-        overlap_d = 0.5
+        overlap_d = self.collision_avoidance_distance * 0.625
         if self.angle < 0:
             overlap_d *= -1
         right = QuaternionUtils.multiply_by_vector(dynamic.transform.rotation, QuaternionUtils.RIGHT)

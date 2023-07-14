@@ -99,7 +99,9 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                              reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
-                             max_walk_cycles=max_walk_cycles)
+                             max_walk_cycles=max_walk_cycles,
+                             collision_avoidance_distance=self._record.collision_avoidance_distance,
+                             collision_avoidance_half_extents=self._record.collision_avoidance_half_extents)
 
     def move_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
                 scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
@@ -138,7 +140,9 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                              scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
                              max_walk_cycles=max_walk_cycles,
-                             bounds_position=bounds_position)
+                             bounds_position=bounds_position,
+                             collision_avoidance_distance=self._record.collision_avoidance_distance,
+                             collision_avoidance_half_extents=self._record.collision_avoidance_half_extents)
 
     def reach_for(self, target: Union[TARGET, List[TARGET]], arm: Union[Arm, List[Arm]], absolute: bool = True,
                   offhand_follows: bool = False, arrived_at: float = 0.09, max_distance: float = 1.5,

@@ -356,6 +356,6 @@ class StackObjects(Controller):
 
 
 if __name__ == "__main__":
-    c = StackObjects(launch_build=False)
+    c = StackObjects()
     c.run(random_seed=0)
     c.communicate({"$type": "terminate"})

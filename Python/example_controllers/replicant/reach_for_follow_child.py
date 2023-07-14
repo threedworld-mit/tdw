@@ -11,7 +11,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 Reach for a target position and have the offhand follow the main hand.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 replicant = Replicant(name="girl_casual")
 camera = ThirdPersonCamera(position={"x": 0, "y": 1.5, "z": 2.5},
                            look_at=replicant.replicant_id,

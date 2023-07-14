@@ -76,7 +76,7 @@ class ReachForWithPlan(Controller):
 
 
 if __name__ == "__main__":
-    c = ReachForWithPlan(launch_build=False)
+    c = ReachForWithPlan()
     for p in [None, IkPlanType.vertical_horizontal]:
         s = c.trial(plan=p)
         print(s)

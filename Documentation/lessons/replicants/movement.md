@@ -120,7 +120,7 @@ The duration of the reset arm motion is controlled by the optional parameter `re
 
 ### Move with a different animation
 
-You can optionally tell a Replicant to move with a different walk animation by setting the `animation` parameter, like this: `replicant.move_by(distance=2, animation="limping")`:
+You can optionally tell a Replicant to move with a different walk animation by setting the `animation` parameter, like this: `replicant.move_by(distance=2, animation="running_medium")`:
 
 ```python
 from tdw.controller import Controller
@@ -136,17 +136,13 @@ replicant = Replicant(position={"x": 0, "y": 0, "z": -2})
 camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_limp")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_run")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"],
                        path=path)
-# Note the order in which the add-ons are added. The replicant needs to be first so that the camera can look at it.
 c.add_ons.extend([replicant, camera, capture])
-# Create the scene.
 c.communicate(TDWUtils.create_empty_room(12, 12))
-# Start walking.
-replicant.move_by(distance=6, animation="limping")
-# Continue walking until the action ends.
+replicant.move_by(distance=6, animation="running_medium")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
@@ -537,7 +533,7 @@ Example controllers:
 - [collision_detection_tests.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/collision_detection_tests.py) Tests for collision detection while walking.
 - [non_kinematic.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/non_kinematic.py) Walk through an object and a wall.
 - [reach_for_move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_move.py) Reach for a target position and then move forward, resetting the arm.
-- [limp.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/limp.py) Tell the Replicant to walk with a limping animation.
+- [run.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/run.py) Tell the Replicant to walk with a running animation.
 
 Command API:
 

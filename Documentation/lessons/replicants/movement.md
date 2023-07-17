@@ -118,6 +118,10 @@ Result:
 
 The duration of the reset arm motion is controlled by the optional parameter `reset_arms_duration`, which by default is 0.25 seconds. This is then scaled dynamically with the actual framerate: `reset_arms_duration *= 60 / (1 / framerate)`. This is usually desireable as it will match the arm speed relative to the walk animation speed. To suppress this, set `scale_reset_arms_duration=False`.
 
+### Move with a different animation
+
+
+
 ## The `turn_by(angle)` action
 
 Call [`replicant.turn_by(angle)`](../../python/add_ons/replicant.md) to turn the Replicant by an angle in degrees.

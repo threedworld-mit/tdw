@@ -38,6 +38,10 @@ The action can end for several reasons depending on the collision detection rule
 
 - `bounds_position` If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
 
+- `collision_avoidance_distance` If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+
+- `collision_avoidance_half_extents` If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -50,7 +54,7 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveTo(target, collision_detection, previous, reset_arms, reset_arms_duration, arrived_at, max_walk_cycles, bounds_position)`**
+**`MoveTo(target, collision_detection, previous, reset_arms, reset_arms_duration, arrived_at, max_walk_cycles, bounds_position, collision_avoidance_distance, collision_avoidance_half_extents)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -62,6 +66,8 @@ The action can end for several reasons depending on the collision detection rule
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
 | max_walk_cycles |  int |  | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 | bounds_position |  str |  | If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`. |
+| collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
+| collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
 
 #### get_initialization_commands
 

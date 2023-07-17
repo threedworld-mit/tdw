@@ -32,10 +32,12 @@ record = HumanoidRecord(data=data) # Creates a record from JSON data.
 
 ### Fields
 
-| Field  | Type           | Description                                                  |
-| ------ | -------------- | ------------------------------------------------------------ |
-| `name` | str            | The name of the humanoid.                                    |
-| `urls` | Dict[str, str] | A dictionary of URLs or local filepaths of asset bundles per platform. See: `HumanoidRecord.get_url()` |
+| Field                              | Type             | Description                                                  |
+| ---------------------------------- | ---------------- | ------------------------------------------------------------ |
+| `name`                             | str              | The name of the humanoid.                                    |
+| `urls`                             | Dict[str, str]   | A dictionary of URLs or local filepaths of asset bundles per platform. See: `HumanoidRecord.get_url()` |
+| `collision_avoidance_distance`     | float            | A field used by Replicants for collision detection; the avoidance overlap is cast this far ahead or behind the Replicant. |
+| `collision_avoidance_half_extents` | Dict[str, float] | Defines the size of the avoidance overlap used by Replicants for collision detection. |
 
 ### Functions
 

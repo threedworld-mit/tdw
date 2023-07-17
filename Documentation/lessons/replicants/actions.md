@@ -175,6 +175,15 @@ ActionStatus.success
 
 It is *not* necessary to wrap all Replicant actions in a loop like this. For example, in the context of a multi-agent simulation you won't want to loop like this because you'll want to be checking multiple agent actions at the same time. For the sake of subsequent example code, we know we have only one agent, so this simple loop is good enough for showcasing the rest of the Replicant's behavior.
 
+## Actions and Replicant types
+
+As explained in the [previous document](overview.md), you can set the type of Replicant like this: `replicant = Replicant(name="fireman")`. All Replicant types share the following rules:
+
+ 1. **Every action will always work with every type of Replicant.**  In other word, every Replicant can always `move_by(distance)`, `reach_for(target, arm)`, etc. This rule doesn't apply to [Wheelchair Replicants](../wheelchair_replicants/overview.md) because they aren't Replicants and in many cases have similar, but not the same, APIs.
+ 2. **Different types of Replicants may require different action parameters.** With a few exceptions, actions won't check the physical size of a Replicant. For example, the `reach_for(target, arm)` action *won't* scale the `target` depending on the Replicant's height. If you plan to use different types of Replicants, be prepared to have different target, distance, rotation, etc. parameter values. 
+
+To see an example of these two rules,, you can compare these example controllers: [reach_for_with_plan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_with_plan.py) and [reach_for_with_plan_child.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_with_plan_child.py). The controllers are nearly the same but they have different Replicants (adult and child), different object scales (to set the height of the table), and different `reach_for` target positions.
+
 ## Low-level description
 
 Actions are very similar to add-ons in that they have a list of commands that can be returned. Actions are handled within `replicant.on_send(resp)`. Thus, the full sequence of how commands are injected into the controller is:
@@ -221,7 +230,8 @@ When the action ends, it returns `get_end_commands(resp, static, dynamic, image_
 ***
 
 Example controllers:
-
+- [reach_for_with_plan.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_with_plan.py)
+- [reach_for_with_plan_child.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_with_plan_child.py)
 - [move_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_by.py) Move a Replicant by a target distance and print its status.
 
 Commands API:

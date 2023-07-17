@@ -10,7 +10,7 @@ from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
-class ReachForWithPlan(Controller):
+class ReachForWithPlanChild(Controller):
     """
     An example of the difference between a `reach_for()` action with and without a plan.
     """
@@ -21,7 +21,7 @@ class ReachForWithPlan(Controller):
         self.camera = ThirdPersonCamera(position={"x": -3.5, "y": 1.175, "z": 3},
                                         avatar_id="a",
                                         look_at=self.replicant.replicant_id)
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_with_plan")
+        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_reach_for_with_plan_child")
         print(f"Images will be saved to: {path}")
         self.capture = ImageCapture(avatar_ids=["a"], path=path)
         self.add_ons.extend([self.replicant, self.camera, self.capture])
@@ -76,7 +76,7 @@ class ReachForWithPlan(Controller):
 
 
 if __name__ == "__main__":
-    c = ReachForWithPlan()
+    c = ReachForWithPlanChild()
     for p in [None, IkPlanType.vertical_horizontal]:
         s = c.trial(plan=p)
         print(s)

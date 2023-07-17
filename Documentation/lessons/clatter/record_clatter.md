@@ -76,7 +76,7 @@ c.add_ons.extend([audio, recorder])
 
 ## "Rube Goldberg" example controller
 
-[rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/audio/rube_goldberg.py) combines a [photorealistic environment](../photorealism/overview.md), a [physics simulation](../physx/physx.md), and Clatter. It creates a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.
+[rube_goldberg.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/clatter/rube_goldberg.py) combines a [photorealistic environment](../photorealism/overview.md), a [physics simulation](../physx/physx.md), and Clatter. It creates a "Rube Goldberg machine" from a set of objects that will collide when the first is struck by a ball.
 
 Usage: `python3 rube_goldberg.py [ARGUMENTS]` 
 

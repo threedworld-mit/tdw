@@ -120,7 +120,61 @@ The duration of the reset arm motion is controlled by the optional parameter `re
 
 ### Move with a different animation
 
+You can optionally tell a Replicant to move with a different walk animation by setting the `animation` parameter, like this: `replicant.move_by(distance=2, animation="limping")`:
 
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.replicant import Replicant
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+from tdw.replicant.action_status import ActionStatus
+
+c = Controller()
+replicant = Replicant(position={"x": 0, "y": 0, "z": -2})
+camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
+                           look_at=replicant.replicant_id,
+                           avatar_id="a")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_limp")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"],
+                       path=path)
+# Note the order in which the add-ons are added. The replicant needs to be first so that the camera can look at it.
+c.add_ons.extend([replicant, camera, capture])
+# Create the scene.
+c.communicate(TDWUtils.create_empty_room(12, 12))
+# Start walking.
+replicant.move_by(distance=6, animation="limping")
+# Continue walking until the action ends.
+while replicant.action.status == ActionStatus.ongoing:
+    c.communicate([])
+c.communicate([])
+print(replicant.action.status)
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+**TODO**
+
+You can also optionally set the `library` parameter to access animations in different libraries: `replicant.move_by(distance=2, animation="walk_forward", library="smpl_animations.json")`.
+
+A subset of [Replicant animations](animations.md) are suitable for walking: They must be a walking motion and they must loop back to the initial frame.
+
+To find valid walk animations, search for the `walk` parameter in the animation records, like this:
+
+```python
+from tdw.librarian import HumanoidAnimationLibrarian
+
+for f in HumanoidAnimationLibrarian.get_library_filenames():
+    lib = HumanoidAnimationLibrarian(f)
+    print(f)
+    for record in lib.records:
+        if record.walk:
+            print(record.name)
+    print("")
+```
 
 ## The `turn_by(angle)` action
 
@@ -477,12 +531,13 @@ In addition to [the usual `Action` end commands](actions.md), `MoveBy` and `Move
 
 Example controllers:
 
-- [move_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_by.py) Tell the Replicant to walk a target distance.
+- [move_by.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_by.py) Tell the Replicant to walk to a target distance.
 - [move_to.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/move_to.py) Tell the Replicant to walk to a target position.
 - [crash.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/crash.py) Collide with an obstacle.
 - [collision_detection_tests.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/collision_detection_tests.py) Tests for collision detection while walking.
 - [non_kinematic.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/non_kinematic.py) Walk through an object and a wall.
 - [reach_for_move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_move.py) Reach for a target position and then move forward, resetting the arm.
+- [limp.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/limp.py) Tell the Replicant to walk with a limping animation.
 
 Command API:
 

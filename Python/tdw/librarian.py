@@ -238,10 +238,12 @@ class HumanoidAnimationRecord(_Record):
             self.duration: float = 0
             self.loop: bool = False
             self.framerate: int = 0
+            self.walk: bool = False
         else:
             self.duration: float = data["duration"]
             self.loop: bool = data["loop"]
             self.framerate: int = data["framerate"]
+            self.walk: bool = data["walk"]
 
     def get_num_frames(self) -> int:
         """

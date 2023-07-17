@@ -96,6 +96,11 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
   - Added: `ResonanceAudioInitializer.RESONANCE_AUDIO_MATERIALS`
 - Added: `QuaternionUtils.RIGHT`
 - Added: `TDWUtils.lerp(a, b, t)` and `TDWUtils.inv_lerp(a, b, v)`.
+- (Backend) Added Replicant-type-dependent collision detection rules i.e. different rules depending on whether the Replicant is an adult, child, etc.
+  - (Backend) Added optional parameters `collision_avoidance_distance` and `collision_avoidance_half_extents` to `MoveBy` and `MoveTo`. These parameters are *not* in `replicant.move_by()` or `replicant.move_to()`; they are automatically set within each function.
+  - (Backend) Added `collision_avoidance_distance` and `collision_avoidance_half_extents` fields to `HumanoidRecord` (and, by proxy, each humanoid library .json file)
+  - (Backend) Removed `MoveBy.OVERLAP_HALF_EXTENTS`
+
 
 ### Build
 
@@ -157,6 +162,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 - Moved `footsteps.py` from `camera_controls/` to `clatter/` and replaced PyImpact with Clatter.
 - Edited ffmpeg example controllers in `video/` to use Clatter instead of PyImpact.
 - Replaced `vr/oculus_touch_py_impact.py` with `vr/oculus_touch_clatter.py`
+- Added: `replicant/reach_for_with_plan_child.py`
 
 ### Documentation
 
@@ -199,6 +205,7 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 | `lessons/audio/py_impact.md`          | Moved to `py_impact/py_impact.md`                            |
 | `lessons/audio/py_impact_advanced.md` | Moved to `py_impact/py_impact_advanced.md`                   |
 | `lessons/audio/record_audio.md`       | Moved the sections about `PhysicsAudioRecorder` and the Rube Goldberg controller to `lessons/clatter/record_clatter.md` |
+| `lessons/replicant/actions.md` | Added a section about action parameters and different types of Replicants |
 
 # v1.11.x
 

@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Dict
 import numpy as np
 from tdw.type_aliases import TARGET
 from tdw.tdw_utils import TDWUtils
@@ -33,7 +33,8 @@ class TurnTo(TurnBy):
 
     def __init__(self, target: TARGET, wheel_values: Optional[WheelValues], dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
-                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
+                 collision_avoidance_distance: float, collision_avoidance_half_extents: Dict[str, float]):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels. If None, values will be derived from `angle`.
@@ -44,6 +45,8 @@ class TurnTo(TurnBy):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         self._target: TARGET = target
@@ -55,7 +58,9 @@ class TurnTo(TurnBy):
         # We'll set the angle in `get_initialization_commands()`.
         super().__init__(angle=0, wheel_values=wheel_values, dynamic=dynamic, collision_detection=collision_detection,
                          previous=previous, reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
-                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
+                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
+                         collision_avoidance_distance=collision_avoidance_distance,
+                         collision_avoidance_half_extents=collision_avoidance_half_extents)
 
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:

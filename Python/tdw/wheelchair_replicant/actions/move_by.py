@@ -1,4 +1,4 @@
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Dict
 import numpy as np
 from tdw.replicant.action_status import ActionStatus
 from tdw.replicant.collision_detection import CollisionDetection
@@ -30,7 +30,8 @@ class MoveBy(WheelchairMotion):
 
     def __init__(self, distance: float, wheel_values: WheelValues, dynamic: ReplicantDynamic,
                  collision_detection: CollisionDetection, previous: Optional[Action], reset_arms: bool,
-                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float):
+                 reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
+                 collision_avoidance_distance: float, collision_avoidance_half_extents: Dict[str, float]):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param wheel_values: The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
@@ -41,6 +42,8 @@ class MoveBy(WheelchairMotion):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+        :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+        :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
 
         """:field
@@ -49,7 +52,9 @@ class MoveBy(WheelchairMotion):
         self.distance: float = distance
         super().__init__(wheel_values=wheel_values, dynamic=dynamic, collision_detection=collision_detection, previous=previous,
                          reset_arms=reset_arms, reset_arms_duration=reset_arms_duration,
-                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at)
+                         scale_reset_arms_duration=scale_reset_arms_duration, arrived_at=arrived_at,
+                         collision_avoidance_distance=collision_avoidance_distance,
+                         collision_avoidance_half_extents=collision_avoidance_half_extents)
         self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
         # The initial position. This is used to determine the distance traversed. This is set in `get_initialization_commands()`.
         self._initial_position: np.ndarray = np.zeros(shape=3)
@@ -91,9 +96,9 @@ class MoveBy(WheelchairMotion):
 
     def _get_overlap_direction(self, dynamic: ReplicantDynamic) -> np.ndarray:
         if self.distance > 0:
-            overlap_z = 0.8
+            overlap_z = self.collision_avoidance_distance
         else:
-            overlap_z = -0.6
+            overlap_z = -(self.collision_avoidance_distance * 0.75)
         return dynamic.transform.forward * overlap_z
 
     def _is_failure(self, dynamic: ReplicantDynamic) -> bool:

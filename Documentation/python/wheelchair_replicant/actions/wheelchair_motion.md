@@ -6,14 +6,6 @@ Abstract base class for actions involving wheelchair motion (motor torques, brak
 
 ***
 
-## Class Variables
-
-| Variable | Type | Description | Value |
-| --- | --- | --- | --- |
-| `OVERLAP_HALF_EXTENTS` | Dict[str, float] | While moving or turning, the WheelchairReplicant will cast an overlap shape in the direction it is traveling. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape. | `{"x": 0.31875, "y": 0.8814, "z": 0.2}` |
-
-***
-
 ## Fields
 
 - `wheel_values` The [`WheelValues`](../wheel_values.md) that will be applied to the wheelchair's wheels.
@@ -28,6 +20,10 @@ Abstract base class for actions involving wheelchair motion (motor torques, brak
 
 - `collision_detection` The [`CollisionDetection`](../../replicant/collision_detection.md) rules.
 
+- `collision_avoidance_distance` If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+
+- `collision_avoidance_half_extents` If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+
 - `status` [The current status of the action.](../../replicant/action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -40,7 +36,7 @@ Abstract base class for actions involving wheelchair motion (motor torques, brak
 
 #### \_\_init\_\_
 
-**`WheelchairMotion(wheel_values, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at)`**
+**`WheelchairMotion(wheel_values, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -52,6 +48,8 @@ Abstract base class for actions involving wheelchair motion (motor torques, brak
 | reset_arms_duration |  float |  | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool |  | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float |  | A distance or time determines whether the WheelchairReplicant arrived at the target. |
+| collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
+| collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
 
 #### get_initialization_commands
 

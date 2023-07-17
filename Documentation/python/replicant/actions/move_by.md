@@ -20,14 +20,6 @@ The action can end for several reasons depending on the collision detection rule
 
 ***
 
-## Class Variables
-
-| Variable | Type | Description | Value |
-| --- | --- | --- | --- |
-| `OVERLAP_HALF_EXTENTS` | Dict[str, float] | While walking, the Replicant will cast an overlap shape in front of or behind it, depending on whether it is walking forwards or backwards. The overlap is used to detect object prior to collision (see `self.collision_detection.avoid_obstacles`). These are the half-extents of the overlap shape. | `{"x": 0.31875, "y": 0.8814, "z": 0.0875}` |
-
-***
-
 ## Fields
 
 - `distance` The target distance. If less than 0, the Replicant will walk backwards.
@@ -39,6 +31,10 @@ The action can end for several reasons depending on the collision detection rule
 - `scale_reset_arms_duration` If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
 
 - `arrived_at` If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
+
+- `collision_avoidance_distance` If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+
+- `collision_avoidance_half_extents` If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
 
 - `max_walk_cycles` The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
 
@@ -68,7 +64,7 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, max_walk_cycles)`**
+**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, max_walk_cycles, collision_avoidance_distance, collision_avoidance_half_extents)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -81,6 +77,8 @@ The action can end for several reasons depending on the collision detection rule
 | scale_reset_arms_duration |  bool |  | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
 | max_walk_cycles |  int |  | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
+| collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
+| collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
 
 #### get_initialization_commands
 

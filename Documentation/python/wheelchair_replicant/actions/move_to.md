@@ -37,7 +37,7 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveTo(target, turn_wheel_values, move_wheel_values, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, aligned_at, arrived_at)`**
+**`MoveTo(target, turn_wheel_values, move_wheel_values, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, aligned_at, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -52,6 +52,8 @@ The action can end for several reasons depending on the collision detection rule
 | scale_reset_arms_duration |  bool |  | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | aligned_at |  float |  | If the angle between the traversed angle and the target angle is less than this threshold in degrees, the action succeeds. |
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
+| collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
+| collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
 
 #### get_initialization_commands
 

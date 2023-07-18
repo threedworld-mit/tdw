@@ -146,15 +146,16 @@ replicant.move_by(distance=6, animation="running_medium")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
-print(replicant.action.status)
 c.communicate({"$type": "terminate"})
 ```
 
 Result:
 
-**TODO**
+![](images/movement/run.gif)
 
 You can also optionally set the `library` parameter to access animations in different libraries: `replicant.move_by(distance=2, animation="walk_forward", library="smpl_animations.json")`.
+
+### How to find walk animations
 
 A subset of [Replicant animations](animations.md) are suitable for walking: They must be a walking motion and they must loop back to the initial frame.
 

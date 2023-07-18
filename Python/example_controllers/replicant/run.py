@@ -25,5 +25,4 @@ replicant.move_by(distance=6, animation="running_medium")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
-print(replicant.action.status)
 c.communicate({"$type": "terminate"})

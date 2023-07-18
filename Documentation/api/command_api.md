@@ -6604,11 +6604,11 @@ Play a Replicant animation. Optionally, maintain the positions and rotations of 
 
 
 ```python
-{"$type": "play_replicant_animation", "name": "string", "id": 1}
+{"$type": "play_replicant_animation", "name": "string", "loop": True, "id": 1}
 ```
 
 ```python
-{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
+{"$type": "play_replicant_animation", "name": "string", "loop": True, "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6617,6 +6617,7 @@ Play a Replicant animation. Optionally, maintain the positions and rotations of 
 | `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
 | `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
 | `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
+| `"loop"` | bool | If True, this animation will loop without announcing that it's done. | |
 | `"id"` | int | The unique object ID. | |
 
 ***

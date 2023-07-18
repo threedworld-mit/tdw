@@ -95,7 +95,7 @@ This is a non-animated action, meaning that the Replicant will immediately snap 
 
 **`self.move_by(distance)`**
 
-**`self.move_by(distance, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, max_walk_cycles=100)`**
+**`self.move_by(distance, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, animation="walking_2", library="humanoid_animations.json")`**
 
 Walk a given distance.
 
@@ -111,7 +111,6 @@ The action can end for several reasons depending on the collision detection rule
 - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
 - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
 - Otherwise, the action ends in failure.
-- If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -120,13 +119,14 @@ The action can end for several reasons depending on the collision detection rule
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float  | 0.1 | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
-| max_walk_cycles |  int  | 100 | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
+| animation |  str  | "walking_2" | The name of the walk animation. |
+| library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 
 #### move_to
 
 **`self.move_to(target)`**
 
-**`self.move_to(target, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, max_walk_cycles=100, bounds_position="center")`**
+**`self.move_to(target, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, bounds_position="center", animation="walking_2", library="humanoid_animations.json")`**
 
 Turn the Replicant to a target position or object and then walk to it.
 
@@ -142,7 +142,6 @@ The action can end for several reasons depending on the collision detection rule
 - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
 - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
 - Otherwise, the action ends in failure.
-- If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -151,8 +150,9 @@ The action can end for several reasons depending on the collision detection rule
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float  | 0.1 | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
-| max_walk_cycles |  int  | 100 | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 | bounds_position |  str  | "center" | If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`. |
+| animation |  str  | "walking_2" | The name of the walk animation. |
+| library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 
 ***
 
@@ -321,7 +321,7 @@ These actions play arbitrary humanoid animations.
 
 **`self.animate(animation)`**
 
-**`self.animate(animation, library="humanoid_animations.json")`**
+**`self.animate(animation, library="humanoid_animations.json", loop=None)`**
 
 Play an animation.
 
@@ -334,6 +334,7 @@ The animation will end either when the animation clip is finished or if the Repl
 | --- | --- | --- | --- |
 | animation |  str |  | The name of the animation. |
 | library |  str  | "humanoid_animations.json" | The animation library. |
+| loop |  bool  | None | If None, the animation will loop if this is a looping animation (see `HumanoidAnimationRecord.loop`); this is almost always what you want the animation to do. If True, the animation will continuously loop and the action will continue until interrupted. If False, the action ends when the animation ends. |
 
 ***
 

@@ -4,6 +4,39 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.1
+
+### Command API
+
+#### Modified Commands
+
+| Command                    | Modification            |
+| -------------------------- | ----------------------- |
+| `play_replicant_animation` | Added parameter `loop`. |
+
+### `tdw` module
+
+- Added optional parameters `animation` and `library` to `replicant.move_by()` and `replicant.move_to()` to set a non-default walking animation.
+- Added optional parameter `loop` to `animate`. This is normally set automatically from the animation metadata record but can be manually overridden.
+- Fixed: Replicant walk animation doesn't loop correctly.
+- Replicants no longer check the number of walk cycles because the animation now loops correctly. Removed optional parameter `max_walk_cycles` from `replicant.move_by()` and `replicant.move_to()`.
+
+### Humanoid Animation Library
+
+- Added field `walk` for looping walk animations.
+
+### Example Controllers
+
+- Added: `replicant/limp.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                         | Description                                                  |
+| -------------------------------- | ------------------------------------------------------------ |
+| `lessons/replicants/movement.md` | Added a section explaining how to set a non-default walk animation. |
+
 ## v1.12.0
 
 ### New Features

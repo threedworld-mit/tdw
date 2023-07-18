@@ -16,7 +16,6 @@ The action can end for several reasons depending on the collision detection rule
 - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
   - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
   - Otherwise, the action ends in failure.
-- If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
 ***
 
@@ -36,15 +35,13 @@ The action can end for several reasons depending on the collision detection rule
 
 - `collision_avoidance_half_extents` If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
 
-- `max_walk_cycles` The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
-
-- `walk_cycle` The current walk cycle.
-
 - `record` The `HumanoidAnimationRecord` of the animation.
 
 - `collision_detection` The [`CollisionDetection`](../collision_detection.md) rules.
 
 - `forward` If True, play the animation forwards. If False, play the animation backwards.
+
+- `loop` If True, the animation will continuously loop and the action will continue until interrupted.
 
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
@@ -64,7 +61,9 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, max_walk_cycles, collision_avoidance_distance, collision_avoidance_half_extents)`**
+**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents)`**
+
+**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents, animation="walking_2", library="humanoid_animations.json")`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -76,9 +75,10 @@ The action can end for several reasons depending on the collision detection rule
 | reset_arms_duration |  float |  | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool |  | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
-| max_walk_cycles |  int |  | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 | collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
 | collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
+| animation |  str  | "walking_2" | The name of the walk animation. |
+| library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 
 #### get_initialization_commands
 

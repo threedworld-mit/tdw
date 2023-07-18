@@ -43,6 +43,7 @@ record = HumanoidAnimationRecord(data=data) # Creates a record from JSON data.
 | `duration`  | float          | The duration of the animation in seconds.                    |
 | `framerate` | int            | Animation frames per second. This is _not_ the same thing as TDW framerate. |
 | `loop`      | bool           | Whether this animation is a seamless loop.                   |
+| `walk`      | bool           | True if this is a walk cycle animation.                      |
 
 ### Functions
 

@@ -19,6 +19,8 @@ The animation will end either when the animation clip is finished or if the Repl
 
 - `forward` If True, play the animation forwards. If False, play the animation backwards.
 
+- `loop` If True, the animation will continuously loop and the action will continue until interrupted.
+
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -31,16 +33,17 @@ The animation will end either when the animation clip is finished or if the Repl
 
 #### \_\_init\_\_
 
-**`Animate(animation, collision_detection, forward, library, previous, ik_body_parts)`**
+**`Animate(animation, collision_detection, forward, library, previous, ik_body_parts, loop)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | animation |  str |  | The name of the animation. |
 | collision_detection |  CollisionDetection |  | The [`CollisionDetection`](../collision_detection.md) rules. |
 | forward |  bool |  | If True, play the animation forwards. If False, play the animation backwards. |
-| library |  str |  | The name animation library. |
+| library |  str |  | The name of the animation's library. |
 | previous |  Optional[Action] |  | The previous action. Can be None. |
 | ik_body_parts |  List[ReplicantBodyPart] |  | Maintain the IK positions of these body parts. |
+| loop |  bool |  | If True, the animation will continuously loop and the action will continue until interrupted. |
 
 #### get_initialization_commands
 

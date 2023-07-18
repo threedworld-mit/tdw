@@ -29,7 +29,6 @@ class MoveBy(Animate):
     - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
       - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
       - Otherwise, the action ends in failure.
-    - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
     """
 
     # The body parts which will maintain IK positions and rotations, assuming `self.reset_arms == False`.
@@ -39,8 +38,9 @@ class MoveBy(Animate):
 
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
-                 scale_reset_arms_duration: bool, arrived_at: float, max_walk_cycles: int,
-                 collision_avoidance_distance: float, collision_avoidance_half_extents: Dict[str, float]):
+                 scale_reset_arms_duration: bool, arrived_at: float, collision_avoidance_distance: float,
+                 collision_avoidance_half_extents: Dict[str, float], animation: str = "walking_2",
+                 library: str = "humanoid_animations.json"):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
@@ -50,9 +50,10 @@ class MoveBy(Animate):
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
         :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+        :param animation: The name of the walk animation.
+        :param library: The name of the walk animation's library.
         """
 
         """:field
@@ -83,21 +84,14 @@ class MoveBy(Animate):
         If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
         self.collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
-        super().__init__(animation="walking_2",
+        super().__init__(animation=animation,
                          collision_detection=collision_detection,
-                         library="humanoid_animations.json",
+                         library=library,
                          previous=previous,
                          forward=self.distance > 0,
-                         ik_body_parts=[] if self.reset_arms else MoveBy._ARM_BODY_PARTS)
+                         ik_body_parts=[] if self.reset_arms else MoveBy._ARM_BODY_PARTS,
+                         loop=True)
         self._destination: np.ndarray = dynamic.transform.position + (dynamic.transform.forward * distance)
-        """:field
-        The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
-        """
-        self.max_walk_cycles: int = max_walk_cycles
-        """:field
-        The current walk cycle.
-        """
-        self.walk_cycle: int = 0
         # Don't try to walk in the same direction twice.
         if self.collision_detection.previous_was_same and previous is not None and isinstance(previous, MoveBy) and \
                 previous.status == ActionStatus.collision and np.sign(previous.distance) == np.sign(self.distance):
@@ -166,18 +160,6 @@ class MoveBy(Animate):
                                     if object_id != static.replicant_id and object_id not in self.collision_detection.exclude_objects:
                                         self.status = ActionStatus.detected_obstacle
                                         return commands
-                # We're at the end of the walk cycle. Continue the animation.
-                if dynamic.output_data_status == ActionStatus.success:
-                    commands.append({"$type": "play_replicant_animation",
-                                     "name": self.record.name,
-                                     "id": static.replicant_id,
-                                     "framerate": self.record.framerate,
-                                     "forward": self.distance > 0,
-                                     "ik_body_parts": [] if self.reset_arms else MoveBy._ARM_BODY_PARTS})
-                    # Too many walk cycles. End the action.
-                    self.walk_cycle += 1
-                    if self.walk_cycle >= self.max_walk_cycles:
-                        self.status = ActionStatus.failed_to_move
             return commands
 
     def get_end_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,

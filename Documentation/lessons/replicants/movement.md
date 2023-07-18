@@ -33,7 +33,7 @@ In addition to `distance` there are other optional parameters; [read the API doc
 
 The `move_by(distance)` action succeeds (i.e. `replicant.action.status == ActionStatus.success`) if the Replicant moves the target distance minus a small offset (see the `arrived_at` optional parameter).
 
-The action can end in failure due to a [collision](collision_detection.md) or because the Replicant took too long to arrive (see the `max_walk_cycles` optional parameter).
+The action can end in failure due to a [collision](collision_detection.md).
 
 ### Why there is a pause at the start of movement
 

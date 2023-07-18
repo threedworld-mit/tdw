@@ -1,4 +1,6 @@
 from typing import List, Union
+from tdw.controller import Controller
+from tdw.librarian import HumanoidAnimationLibrarian
 from tdw.type_aliases import TARGET
 from tdw.add_ons.replicant_base import ReplicantBase
 from tdw.replicant.replicant_static import ReplicantStatic
@@ -65,8 +67,8 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         self.action = TurnTo(target=target)
 
     def move_by(self, distance: float, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
-                animation: str = "walking_2", library: str = "humanoid_animations.json") -> None:
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, animation: str = "walking_2",
+                library: str = "humanoid_animations.json") -> None:
         """
         Walk a given distance.
 
@@ -82,14 +84,12 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
           - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
           - Otherwise, the action ends in failure.
-        - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param animation: The name of the walk animation.
         :param library: The name of the walk animation's library.
         """
@@ -102,16 +102,14 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                              reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
-                             max_walk_cycles=max_walk_cycles,
                              animation=animation,
                              library=library,
                              collision_avoidance_distance=self._record.collision_avoidance_distance,
                              collision_avoidance_half_extents=self._record.collision_avoidance_half_extents)
 
     def move_to(self, target: TARGET, reset_arms: bool = True, reset_arms_duration: float = 0.25,
-                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, max_walk_cycles: int = 100,
-                bounds_position: str = "center", animation: str = "walking_2",
-                library: str = "humanoid_animations.json") -> None:
+                scale_reset_arms_duration: bool = True, arrived_at: float = 0.1, bounds_position: str = "center",
+                animation: str = "walking_2", library: str = "humanoid_animations.json") -> None:
         """
         Turn the Replicant to a target position or object and then walk to it.
 
@@ -127,14 +125,12 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
         - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
           - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
           - Otherwise, the action ends in failure.
-        - If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param reset_arms: If True, reset the arms to their neutral positions while beginning the walk cycle.
         :param reset_arms_duration: The speed at which the arms are reset in seconds.
         :param scale_reset_arms_duration: If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds.
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
-        :param max_walk_cycles: The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
         :param animation: The name of the walk animation.
         :param library: The name of the walk animation's library.
@@ -147,7 +143,6 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                              reset_arms_duration=reset_arms_duration,
                              scale_reset_arms_duration=scale_reset_arms_duration,
                              arrived_at=arrived_at,
-                             max_walk_cycles=max_walk_cycles,
                              bounds_position=bounds_position,
                              animation=animation,
                              library=library,
@@ -218,7 +213,7 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
                                            held_point=held_point,
                                            plan=plan)
 
-    def animate(self, animation: str, library: str = "humanoid_animations.json") -> None:
+    def animate(self, animation: str, library: str = "humanoid_animations.json", loop: bool = None) -> None:
         """
         Play an animation.
 
@@ -229,14 +224,25 @@ class Replicant(ReplicantBase, ReplicantStatic, ReplicantDynamic):
 
         :param animation: The name of the animation.
         :param library: The animation library.
+        :param loop: If None, the animation will loop if this is a looping animation (see `HumanoidAnimationRecord.loop`); this is almost always what you want the animation to do. If True, the animation will continuously loop and the action will continue until interrupted. If False, the action ends when the animation ends.
         """
+
+        if loop is None:
+            # Add the library.
+            if library not in Controller.HUMANOID_ANIMATION_LIBRARIANS:
+                Controller.HUMANOID_ANIMATION_LIBRARIANS[library] = HumanoidAnimationLibrarian(library)
+            # Get the record.
+            record = Controller.HUMANOID_ANIMATION_LIBRARIANS[library].get_record(animation)
+            # Get the loop value.
+            loop = record.loop
 
         self.action = Animate(animation=animation,
                               collision_detection=self.collision_detection,
                               forward=True,
                               library=library,
                               previous=self._previous_action,
-                              ik_body_parts=[])
+                              ik_body_parts=[],
+                              loop=loop)
 
     def _get_library_name(self) -> str:
         return Replicant.LIBRARY_NAME

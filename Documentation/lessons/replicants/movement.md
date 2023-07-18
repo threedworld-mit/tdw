@@ -116,11 +116,11 @@ Result:
 
 ![](images/movement/reach_for_move_no_reset.gif)
 
-The duration of the reset arm motion is controlled by the optional parameter `reset_arms_duration`, which by default is 0.25 seconds. This is then scaled dynamically with the actual framerate: `reset_arms_duration *= 60 / (1 / framerate)`. This is usually desireable as it will match the arm speed relative to the walk animation speed. To suppress this, set `scale_reset_arms_duration=False`.
+The duration of the reset arm motion is controlled by the optional parameter `reset_arms_duration`, which by default is 0.25 seconds. This is then scaled dynamically with the actual framerate: `reset_arms_duration *= 60 / (1 / framerate)`. This is usually desirable as it will match the arm speed relative to the walk animation speed. To suppress this, set `scale_reset_arms_duration=False`.
 
 ### Move with a different animation
 
-You can optionally tell a Replicant to move with a different walk animation by setting the `animation` parameter, like this: `replicant.move_by(distance=2, animation="running_medium")`:
+You can optionally tell a Replicant to move with a different walk animation by setting the `animation` parameter, like this: `replicant.move_by(distance=2, animation="limping")`:
 
 ```python
 from tdw.controller import Controller
@@ -136,13 +136,13 @@ replicant = Replicant(position={"x": 0, "y": 0, "z": -2})
 camera = ThirdPersonCamera(position={"x": 2, "y": 1.6, "z": 1},
                            look_at=replicant.replicant_id,
                            avatar_id="a")
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_run")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("replicant_limp")
 print(f"Images will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"],
                        path=path)
 c.add_ons.extend([replicant, camera, capture])
 c.communicate(TDWUtils.create_empty_room(12, 12))
-replicant.move_by(distance=6, animation="running_medium")
+replicant.move_by(distance=6, animation="limping")
 while replicant.action.status == ActionStatus.ongoing:
     c.communicate([])
 c.communicate([])
@@ -151,7 +151,7 @@ c.communicate({"$type": "terminate"})
 
 Result:
 
-![](images/movement/run.gif)
+![](images/movement/limp.gif)
 
 You can also optionally set the `library` parameter to access animations in different libraries: `replicant.move_by(distance=2, animation="walk_forward", library="smpl_animations.json")`.
 
@@ -534,7 +534,7 @@ Example controllers:
 - [collision_detection_tests.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/collision_detection_tests.py) Tests for collision detection while walking.
 - [non_kinematic.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/non_kinematic.py) Walk through an object and a wall.
 - [reach_for_move.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/reach_for_move.py) Reach for a target position and then move forward, resetting the arm.
-- [run.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/run.py) Tell the Replicant to walk with a running animation.
+- [limp.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/replicant/limp.py) Tell the Replicant to walk with a limping animation.
 
 Command API:
 

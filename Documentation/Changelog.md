@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.2
+
+### Build
+
+- Fixed: Obi simulations quit with an error if there is no VR rig in the scene. This was caused by the `Obi` add-on attempting to receive VR data and the build logging an error that no VR rig is present. Now, the build logs a warning instead, allowing the simulation to continue.
+
 ## v1.12.1
 
 ### Command API

@@ -1064,3 +1064,33 @@ class TDWUtils:
         """
 
         return (v - a) / (b - a)
+
+    @staticmethod
+    def lerp_array(a: np.ndarray, b: np.ndarray, t: float) -> np.ndarray:
+        """
+        :param a: The first array.
+        :param b: The second array.
+        :param t: The lerp value (0 to 1).
+
+        :return: A linearly interpolated array at point `t` between `a` and `b`.
+        """
+
+        return (1 - t) * a + t * b
+
+    @staticmethod
+    def slerp(a: np.ndarray, b: np.ndarray, t: float) -> np.ndarray:
+        """
+        Spherical interpolation. This is useful for quaternions.
+
+        Source: https://stackoverflow.com/a/2880012
+
+        :param a: The first array.
+        :param b: The second array.
+        :param t: The lerp value (0 to 1).
+
+        :return: A spherically interpolated array at point `t` between `a` and `b`.
+        """
+
+        omega = np.arccos(np.dot(a / np.linalg.norm(a), b / np.linalg.norm(b)))
+        so = np.sin(omega)
+        return np.sin((1.0 - t) * omega) / so * a + np.sin(t * omega) / so * b

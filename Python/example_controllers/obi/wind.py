@@ -1,8 +1,6 @@
 from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.obi_data.fluids.cube_emitter import CubeEmitter
-from tdw.obi_data.fluids.fluid import Fluid
 from tdw.obi_data.wind_source import WindSource
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
@@ -11,7 +9,7 @@ from tdw.tdw_utils import TDWUtils
 
 
 """
-Add a custom fluid to the scene.
+Add a wind source to the scene and control its speed to knock over some block and push a tethered cloth.
 """
 
 c = Controller()

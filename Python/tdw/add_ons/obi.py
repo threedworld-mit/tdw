@@ -12,6 +12,7 @@ from tdw.obi_data.cloth.volume_type import ClothVolumeType
 from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.tether_type import TetherType
+from tdw.obi_data.wind_source import WindSource
 from tdw.controller import Controller
 
 
@@ -48,6 +49,10 @@ class Obi(AddOn):
             self._vr_material: CollisionMaterial = CollisionMaterial()
         else:
             self._vr_material = vr_material
+        """:field
+        A dictionary of wind sources. Key = Wind source ID. Value = [`WindSource`](../obi_data/wind_source.md). To add a wind source, add a new `WindSource` to this dictionary; it will be automatically created and updated. See the `WindSource` API for how to dynamically set wind parameters.
+        """
+        self.wind_sources: Dict[int, WindSource] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "destroy_obi_solver"},
@@ -121,6 +126,9 @@ class Obi(AddOn):
                 # Update the particles.
                 for object_id in self.actors:
                     self.actors[object_id].on_communicate(obi_particles=obi_particles)
+        # Update each wind source.
+        for wind_id in self.wind_sources:
+            self.commands.extend(self.wind_sources[wind_id].update())
 
     def create_fluid(self, object_id: int, fluid: Union[str, Fluid, GranularFluid], shape: EmitterShape,
                      position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 0,

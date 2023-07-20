@@ -1,87 +1,12 @@
-from abc import ABC, abstractmethod
-from copy import copy
-from typing import Dict, List, Generic, TypeVar
+from typing import Dict, List
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.obi_data.fluids.fluid import Fluid
 from tdw.obi_data.fluids.disk_emitter import DiskEmitter
 from tdw.type_aliases import POSITION, ROTATION
-
-
-T = TypeVar("T")
-
-
-class _Lerpable(Generic[T], ABC):
-    def __init__(self, value: T, dt: T = 0):
-        self.v: T = self._copy(value)
-        self._a: T = self._copy(value)
-        self._b: T = self._copy(value)
-        self._dt: float = self._get_dt(dt=dt)
-        self.is_at_target: bool = True
-        self._t: float = 0
-        self._increase: bool = True
-
-    def update(self) -> None:
-        # Increment the t value.
-        if self._increase:
-            self._t += self._dt
-            if self._t >= 1:
-                self._t = 1
-                self.is_at_target = True
-        else:
-            self._t -= self._dt
-            if self._t <= 0:
-                self._t = 0
-                self.is_at_target = True
-        # Lerp.
-        self.v = self._lerp()
-
-    def set_target(self, target: T, dt: float) -> None:
-        self._a = self.v
-        self._b = target
-        if self._a < self._b:
-            self._increase = True
-            self._t = 0
-        else:
-            self._increase = False
-            self._t = 1
-        self._dt = self._get_dt(dt=dt)
-        self.is_at_target = False
-
-    def _get_dt(self, dt: float) -> float:
-        return abs(dt) / np.linalg.norm(self._b - self._a)
-
-    @abstractmethod
-    def _lerp(self) -> T:
-        raise Exception()
-
-    @abstractmethod
-    def _copy(self, v: T) -> T:
-        raise Exception()
-
-
-class _LerpableFloat(_Lerpable[float]):
-    def _lerp(self) -> float:
-        return TDWUtils.lerp(self._a, self._b, self._t)
-
-    def _copy(self, v: float) -> float:
-        return copy(v)
-
-
-class _LerpableVector(_Lerpable[np.ndarray]):
-    def _lerp(self) -> np.ndarray:
-        return TDWUtils.lerp_array(self._a, self._b, self._t)
-
-    def _copy(self, v: np.ndarray) -> np.ndarray:
-        return np.copy(v)
-
-
-class _LerpableQuaternion(_Lerpable[np.ndarray]):
-    def _lerp(self) -> np.ndarray:
-        return TDWUtils.slerp(self._a, self._b, self._t)
-
-    def _copy(self, v: np.ndarray) -> np.ndarray:
-        return np.copy(v)
+from tdw.lerp.lerpable_float import LerpableFloat
+from tdw.lerp.lerpable_vector import LerpableVector
+from tdw.lerp.lerpable_quaternion import LerpableQuaternion
 
 
 class WindSource:
@@ -95,9 +20,28 @@ class WindSource:
                  emitter_radius: float = 0.25, solver_id: int = 0):
         """
         :param wind_id: The ID of this wind source.
+        :param position: The position of the wind source.
+        :param rotation: The rotation of the wind source as a quaternion.
+        :param capacity: The maximum amount of emitted particles.
+        :param speed: The emission speed in meters per second.
+        :param lifespan: The particle lifespan in seconds. A higher lifespan will result in "gustier" wind because particles will linger in the scene and prevent new particles from being created.
+        :param smoothing: A percentage of the particle radius used to define the radius of the zone around each particle when calculating fluid density. A lower value will create a more scattered fluid.
+        :param resolution: The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter. For larger wind sources, consider lowering this value.
+        :param vorticity: Amount of vorticity confinement, it will contribute to maintain vortical details in the fluid. This value should always be between approximately 0 and 0.5. This will increase turbulence, although the difference is relatively minor.
+        :param random_velocity: The maximum random speed in meters per second that can be applied to a particle. This will increase turbulence.
+        :param minimum_pool_size: The minimum amount of inactive particles available before the emitter is allowed to resume emission.
+        :param visible: If True, make the fluid visible. This is useful for debugging.
+        :param emitter_radius: The radius of the wind source.
+        :param solver_id: The ID of the Obi solver.
         """
 
+        """:field
+        The ID of this wind source.
+        """
         self.wind_id: int = wind_id
+        """:field
+        The wind's [`Fluid`](fluids/fluid.md).
+        """
         self.fluid: Fluid = Fluid(capacity=capacity,
                                   smoothing=smoothing,
                                   resolution=resolution,
@@ -110,7 +54,7 @@ class WindSource:
                                   atmospheric_pressure=0,
                                   particle_z_write=False,
                                   thickness_downsample=2,
-                                  radius_scale=1,
+                                  radius_scale=10,
                                   surface_tension=0,
                                   vorticity=vorticity,
                                   random_velocity=random_velocity,
@@ -126,50 +70,141 @@ class WindSource:
                                   reflection=0,
                                   refraction=0,
                                   foam_downsample=1)
+        """:field
+        The fluid's [`DiskEmitter`](fluids/disk_emitter.md).
+        """
         self.emitter: DiskEmitter = DiskEmitter(radius=emitter_radius)
-        self._capacity: _LerpableFloat = _LerpableFloat(value=capacity)
-        self._lifespan: _LerpableFloat = _LerpableFloat(value=lifespan)
-        self._speed: _LerpableFloat = _LerpableFloat(value=speed)
-        self._smoothing: _LerpableFloat = _LerpableFloat(value=smoothing)
-        self._resolution: _LerpableFloat = _LerpableFloat(value=resolution)
-        self._vorticity: _LerpableFloat = _LerpableFloat(value=vorticity)
-        self._random_velocity: _LerpableFloat = _LerpableFloat(value=random_velocity)
+        self._capacity: LerpableFloat = LerpableFloat(value=capacity)
+        self._lifespan: LerpableFloat = LerpableFloat(value=lifespan)
+        self._speed: LerpableFloat = LerpableFloat(value=speed)
+        self._smoothing: LerpableFloat = LerpableFloat(value=smoothing)
+        self._resolution: LerpableFloat = LerpableFloat(value=resolution)
+        self._vorticity: LerpableFloat = LerpableFloat(value=vorticity)
+        self._random_velocity: LerpableFloat = LerpableFloat(value=random_velocity)
         if isinstance(position, np.ndarray):
             self._position_dict: Dict[str, float] = TDWUtils.array_to_vector3(position)
-            self._position: _LerpableVector = _LerpableVector(value=position)
+            self._position: LerpableVector = LerpableVector(value=position)
         elif isinstance(position, dict):
             self._position_dict = position
-            self._position = _LerpableVector(value=TDWUtils.vector3_to_array(position))
+            self._position = LerpableVector(value=TDWUtils.vector3_to_array(position))
         else:
             raise Exception(f"Invalid position: {position}")
         if isinstance(rotation, np.ndarray):
             self._rotation_dict: Dict[str, float] = TDWUtils.array_to_vector3(rotation)
-            self._rotation: _LerpableQuaternion = _LerpableQuaternion(value=rotation)
+            self._rotation: LerpableQuaternion = LerpableQuaternion(value=rotation)
         elif isinstance(rotation, dict):
             self._rotation_dict = rotation
-            self._rotation = _LerpableQuaternion(value=TDWUtils.vector3_to_array(rotation))
+            self._rotation = LerpableQuaternion(value=TDWUtils.vector3_to_array(rotation))
         else:
             raise Exception(f"Invalid rotation: {rotation}")
         self._minimum_pool_size: float = minimum_pool_size
         self._solver_id: int = solver_id
         self._created: bool = False
 
-    def set_gustiness(self, capacity: int, dc: float, lifespan: float, dl: float) -> None:
+    def set_gustiness(self, capacity: int, dc: int, lifespan: float, dl: float) -> None:
+        """
+        Set the "gustiness" of the wind.
+
+        If the gustiness is high, then there will be pauses between emitted particles. The pauses *won't* vary in duration, nor will the parameters of each "gust"; if  you want to vary the gusts, you can repeatedly call this function.
+
+        If the gustiness is low, there will be a steady stream of emitted particles.
+
+        The two values controlling gustiness are `capacity` and `lifespan` and are not immediately set: The current values will be lerped (linearly interpolated) to the new values.
+
+        :param capacity: The maximum number of particles. A higher particle count will create a steadier stream of particles but can significantly impact simulation performance.
+        :param dc: The capacity lerp rate per `communicate()` call. i.e. if this is set to 10, then current capacity will be incremented by 10 per `communicate()` call.
+        :param lifespan: The particle lifespan in seconds. A higher lifespan will result in "gustier" wind because particles will linger in the scene and prevent new particles from being created.
+        :param dl: The lifespan lerp rate per `communicate()` call. i.e. if this is set to 0.1, then current lifespan will be incremented by 0.1 per `communicate()` call.
+        """
+
         self._capacity.set_target(target=capacity, dt=dc)
         self._lifespan.set_target(target=lifespan, dt=dl)
 
     def set_speed(self, speed: float, ds: float) -> None:
+        """
+        Set a new wind speed.
+
+        The current speed will be linearly interpolated (lerped) to the new speed per `communicate()` call.
+
+        :param speed: The speed in meters per second.
+        :param ds: The speed lerp rate per `communicate()` call. i.e. if this is set to 0.1, then current speed will be incremented by 0.1 per `communicate()` call.
+        """
+
         self._speed.set_target(target=speed, dt=ds)
 
     def set_spread(self, smoothing: float, ds: float, resolution: float, dr: float) -> None:
+        """
+        Set how far the wind fluid can spread.
+
+        The two values controlling wind spread are `smoothing` and `resolution` and are not immediately set: The current values will be lerped (linearly interpolated) to the new values.
+
+        :param smoothing: A percentage of the particle radius used to define the radius of the zone around each particle when calculating fluid density. A lower value will create a more scattered fluid.
+        :param ds: The smoothing lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current smoothing value will be incremented by 0.01 per `communicate()` call.
+        :param resolution: The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter. For larger wind sources, consider lowering this value.
+        :param dr: The resolution lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current resolution value will be incremented by 0.01 per `communicate()` call.
+        """
+
         self._smoothing.set_target(target=smoothing, dt=ds)
         self._resolution.set_target(target=resolution, dt=dr)
 
-    def set_turbulence(self, vorticity: float, dv: float, random_velocity: float, drv: float) -> None:
+    def set_turbulence(self, vorticity: float, dv: float, random_velocity: float, dr: float) -> None:
+        """
+        Set the wind turbulence.
+
+        The two values controlling turbulence are `vorticity` and `random_velocity` and are not immediately set: The current values will be lerped (linearly interpolated) to the new values.
+
+        :param vorticity: Amount of vorticity confinement, it will contribute to maintain vortical details in the fluid. This value should always be between approximately 0 and 0.5. This will increase turbulence, although the difference is relatively minor.
+        :param dv: The vorticity lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current vorticity value will be incremented by 0.01 per `communicate()` call.
+        :param random_velocity: The maximum random speed in meters per second that can be applied to a particle. This will increase turbulence.
+        :param dr: The random_velocity lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current random_velocity value will be incremented by 0.01 per `communicate()` call.
+        """
+
         self._vorticity.set_target(target=vorticity, dt=dv)
-        self._random_velocity.set_target(target=random_velocity, dt=drv)
+        self._random_velocity.set_target(target=random_velocity, dt=dr)
+
+    def set_position(self, position: POSITION, dp: float) -> None:
+        """
+        Set the position of the wind fluid emitter.
+
+        The current position will be linearly interpolated (lerped) to the new position per `communicate()` call.
+
+        :param position: The new position.
+        :param dp: The lerp rate in meters per `communicate()` call.
+        """
+
+        if isinstance(position, np.ndarray):
+            pos = position
+        elif isinstance(position, dict):
+            pos = TDWUtils.vector3_to_array(position)
+        else:
+            raise Exception(f"Invalid position: {position}")
+        self._position.set_target(target=pos, dt=dp)
+
+    def set_rotation(self, rotation: ROTATION, dr: float) -> None:
+        """
+        Set the rotation of the wind fluid emitter.
+
+        The current rotation will be linearly interpolated (lerped) to the new rotation per `communicate()` call.
+
+        :param rotation: The new position.
+        :param dr: The lerp rate in radians per `communicate()` call.
+        """
+
+        if isinstance(rotation, np.ndarray):
+            rot = rotation
+        elif isinstance(rotation, dict):
+            rot = TDWUtils.vector4_to_array(rotation)
+        else:
+            raise Exception(f"Invalid rotation: {rotation}")
+        self._rotation.set_target(target=rot, dt=dr)
 
     def update(self) -> List[dict]:
+        """
+        Update the wind. Create the fluid actor if it doesn't exist. Lerp all values that need lerping.
+
+        :return: A list of commands.
+        """
+
         # Update an existing fluid.
         if self._created:
             commands = []
@@ -208,6 +243,16 @@ class WindSource:
                 commands.append({"$type": "set_obi_fluid_random_velocity",
                                  "id": self.wind_id,
                                  "random_velocity": self._random_velocity.v})
+            if not self._position.is_at_target:
+                self._position.update()
+                commands.append({"$type": "set_obi_fluid_emitter_position",
+                                 "id": self.wind_id,
+                                 "position": TDWUtils.array_to_vector3(self._position.v)})
+            if not self._rotation.is_at_target:
+                self._rotation.update()
+                commands.append({"$type": "set_obi_fluid_emitter_rotation",
+                                 "id": self.wind_id,
+                                 "position": TDWUtils.array_to_vector4(self._rotation.v)})
             return commands
         # Create a new fluid.
         else:

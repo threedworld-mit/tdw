@@ -47,8 +47,7 @@ class WindDirection(Controller):
                                  capacity=2000,
                                  lifespan=0.5,
                                  smoothing=1,
-                                 speed=14,
-                                 visible=False)
+                                 speed=14)
         self.obi.wind_sources[self.wind_id] = wind_source
         # Create the scene.
         commands = [Controller.get_add_scene(scene_name=scene_name)]

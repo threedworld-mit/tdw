@@ -40,19 +40,22 @@ commands.extend(Controller.get_add_physics_object(model_name="chair_billiani_dol
 c.communicate(commands)
 wind_id = Controller.get_unique_id()
 camera = ThirdPersonCamera(position={"x": 1.1, "y": 1.32, "z": -1.9},
-                           look_at={"x": -2, "y": 0, "z": 0})
+                           look_at={"x": -2, "y": 0, "z": 0},
+                           avatar_id="a")
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("wind")
 print(f"Image will be saved to: {path}")
 capture = ImageCapture(avatar_ids=["a"], path=path)
 obi = Obi()
-c.add_ons.extend([camera, obi, capture])
+c.add_ons.extend([camera, capture, obi])
 # Add a wind source.
 wind_source = WindSource(wind_id=wind_id,
                          position={"x": -0.1, "y": 0, "z": 0.25},
                          rotation={"x": 0, "y": -90, "z": 0},
                          emitter_radius=1,
                          capacity=5000,
-                         speed=0.1)
+                         speed=30,
+                         lifespan=2,
+                         smoothing=0.75)
 obi.wind_sources[wind_id] = wind_source
 # Create a tethered cloth.
 cloth_id = Controller.get_unique_id()
@@ -63,8 +66,6 @@ obi.create_cloth_sheet(cloth_material="canvas",
                        sheet_type=SheetType.cloth,
                        tether_positions={TetherParticleGroup.north_edge: TetherType(object_id=cloth_id, is_static=True)})
 c.communicate([])
-# Start to increase the speed.
-wind_source.set_speed(speed=30, ds=0.1)
 for i in range(200):
     c.communicate([])
 # Decrease the speed.

@@ -1,11 +1,13 @@
 from tdw.controller import Controller
 from tdw.add_ons.obi import Obi
+from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.obi_data.wind_source import WindSource
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.tether_type import TetherType
 from tdw.tdw_utils import TDWUtils
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 """
@@ -39,8 +41,11 @@ c.communicate(commands)
 wind_id = Controller.get_unique_id()
 camera = ThirdPersonCamera(position={"x": 1.1, "y": 1.32, "z": -1.9},
                            look_at={"x": -2, "y": 0, "z": 0})
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("wind")
+print(f"Image will be saved to: {path}")
+capture = ImageCapture(avatar_ids=["a"], path=path)
 obi = Obi()
-c.add_ons.extend([camera, obi])
+c.add_ons.extend([camera, obi, capture])
 # Add a wind source.
 wind_source = WindSource(wind_id=wind_id,
                          position={"x": -0.1, "y": 0, "z": 0.25},

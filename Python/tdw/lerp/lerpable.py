@@ -26,6 +26,7 @@ class Lerpable(Generic[T], ABC):
         self._b: T = self._copy(value)
         # The change in `self._t` per `update()` call.
         self._dt: float = 0
+        self._true_dt: float = 0
         """:field
         If True, `self.v` is at its target (the minimum if increasing, the maximum if decreasing).
         """
@@ -70,18 +71,19 @@ class Lerpable(Generic[T], ABC):
 
         self._a = self.v
         self._b = target
-        if self._a < self._b:
-            self._increase = True
-            self._t = 0
-        else:
-            self._increase = False
-            temp = self._b
-            self._b = self._a
-            self._a = temp
-            self._t = 1
+        self._set_increase()
         # Convert the time delta to a value between 0 and 1.
         self._dt = abs(dt) / np.linalg.norm(self._b - self._a)
+        self._true_dt = abs(dt)
         self.is_at_target = False
+
+    @abstractmethod
+    def get_dt(self) -> float:
+        """
+        :return: The signed change in value.
+        """
+
+        raise Exception()
 
     @abstractmethod
     def _lerp(self) -> T:
@@ -97,6 +99,14 @@ class Lerpable(Generic[T], ABC):
         :param v: A value.
 
         :return: A copy of `v`.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def _set_increase(self) -> None:
+        """
+        :return: Set `self._increase` and `self._t`.
         """
 
         raise Exception()

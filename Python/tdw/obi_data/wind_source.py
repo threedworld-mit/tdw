@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import numpy as np
 from tdw.tdw_utils import TDWUtils
 from tdw.obi_data.fluids.fluid import Fluid
@@ -6,7 +6,6 @@ from tdw.obi_data.fluids.disk_emitter import DiskEmitter
 from tdw.type_aliases import POSITION, ROTATION
 from tdw.lerp.lerpable_float import LerpableFloat
 from tdw.lerp.lerpable_vector import LerpableVector
-from tdw.lerp.lerpable_quaternion import LerpableQuaternion
 
 
 class WindSource:
@@ -21,7 +20,7 @@ class WindSource:
         """
         :param wind_id: The ID of this wind source.
         :param position: The position of the wind source.
-        :param rotation: The rotation of the wind source as a quaternion.
+        :param rotation: The rotation of the wind in Euler angles.
         :param capacity: The maximum amount of emitted particles.
         :param speed: The emission speed in meters per second.
         :param lifespan: The particle lifespan in seconds. A higher lifespan will result in "gustier" wind because particles will linger in the scene and prevent new particles from being created.
@@ -46,7 +45,7 @@ class WindSource:
                                   smoothing=smoothing,
                                   resolution=resolution,
                                   color={"r": 0, "g": 0, "b": 1, "a": 1},
-                                  transparency=1 if visible else 0,
+                                  transparency=0 if visible else 1,
                                   thickness_cutoff=1 if visible else 100,
                                   viscosity=0,
                                   rest_density=1.293,
@@ -54,7 +53,7 @@ class WindSource:
                                   atmospheric_pressure=0,
                                   particle_z_write=False,
                                   thickness_downsample=2,
-                                  radius_scale=10,
+                                  radius_scale=1,
                                   surface_tension=0,
                                   vorticity=vorticity,
                                   random_velocity=random_velocity,
@@ -90,13 +89,13 @@ class WindSource:
         else:
             raise Exception(f"Invalid position: {position}")
         if isinstance(rotation, np.ndarray):
-            self._rotation_dict: Dict[str, float] = TDWUtils.array_to_vector3(rotation)
-            self._rotation: LerpableQuaternion = LerpableQuaternion(value=rotation)
+            self._rotation_eulers: Dict[str, float] = TDWUtils.array_to_vector3(rotation)
         elif isinstance(rotation, dict):
-            self._rotation_dict = rotation
-            self._rotation = LerpableQuaternion(value=TDWUtils.vector3_to_array(rotation))
+            self._rotation_eulers = rotation
         else:
             raise Exception(f"Invalid rotation: {rotation}")
+        self._rotation: LerpableFloat = LerpableFloat(value=0)
+        self._rotation_axis: str = "yaw"
         self._minimum_pool_size: float = minimum_pool_size
         self._solver_id: int = solver_id
         self._created: bool = False
@@ -162,14 +161,12 @@ class WindSource:
         self._vorticity.set_target(target=vorticity, dt=dv)
         self._random_velocity.set_target(target=random_velocity, dt=dr)
 
-    def set_position(self, position: POSITION, dp: float) -> None:
+    def move_to(self, position: POSITION, dp: float) -> None:
         """
-        Set the position of the wind fluid emitter.
-
-        The current position will be linearly interpolated (lerped) to the new position per `communicate()` call.
+        Start moving to the target position.
 
         :param position: The new position.
-        :param dp: The lerp rate in meters per `communicate()` call.
+        :param dp: Move this many meters per `communicate()` call.
         """
 
         if isinstance(position, np.ndarray):
@@ -180,23 +177,59 @@ class WindSource:
             raise Exception(f"Invalid position: {position}")
         self._position.set_target(target=pos, dt=dp)
 
-    def set_rotation(self, rotation: ROTATION, dr: float) -> None:
+    def rotate_by(self, angle: float, da: float, axis: str = "yaw") -> None:
         """
-        Set the rotation of the wind fluid emitter.
+        Rotate the wind fluid emitter with an angle and an axis.
 
-        The current rotation will be linearly interpolated (lerped) to the new rotation per `communicate()` call.
-
-        :param rotation: The new position.
-        :param dr: The lerp rate in radians per `communicate()` call.
+        :param angle: The target angle in degrees.
+        :param da: Increment `angle` by this many degrees per `communicate()` call.
+        :param axis: The axis of rotation: `"pitch"`, `"yaw"`, or `"roll"`.
         """
 
-        if isinstance(rotation, np.ndarray):
-            rot = rotation
-        elif isinstance(rotation, dict):
-            rot = TDWUtils.vector4_to_array(rotation)
-        else:
-            raise Exception(f"Invalid rotation: {rotation}")
-        self._rotation.set_target(target=rot, dt=dr)
+        self._rotation_axis = axis
+        self._rotation.set_target(target=angle, dt=da)
+
+    def get_position(self) -> np.ndarray:
+        """
+        :return: The position of the wind source.
+        """
+
+        return self._position.v
+
+    def is_moving(self) -> bool:
+        """
+        :return: True if the wind source is moving.
+        """
+
+        return not self._position.is_at_target
+
+    def get_rotation(self) -> Tuple[float, str]:
+        """
+        :return: Tuple: The angle of rotation in degrees, the axis of rotation.
+        """
+
+        return self._rotation.v, self._rotation_axis
+
+    def is_rotating(self) -> bool:
+        """
+        :return: True if the wind source is rotating.
+        """
+
+        return not self._rotation.is_at_target
+
+    def get_speed(self) -> float:
+        """
+        :return: The current wind speed.
+        """
+
+        return self._speed.v
+
+    def is_accelerating(self) -> bool:
+        """
+        :return: True if the speed is accelerating or decelerating.
+        """
+
+        return not self._speed.is_at_target
 
     def update(self) -> List[dict]:
         """
@@ -245,14 +278,15 @@ class WindSource:
                                  "random_velocity": self._random_velocity.v})
             if not self._position.is_at_target:
                 self._position.update()
-                commands.append({"$type": "set_obi_fluid_emitter_position",
+                commands.append({"$type": "teleport_obi_actor",
                                  "id": self.wind_id,
                                  "position": TDWUtils.array_to_vector3(self._position.v)})
             if not self._rotation.is_at_target:
                 self._rotation.update()
-                commands.append({"$type": "set_obi_fluid_emitter_rotation",
-                                 "id": self.wind_id,
-                                 "position": TDWUtils.array_to_vector4(self._rotation.v)})
+                commands.extend([{"$type": "rotate_obi_actor_by",
+                                  "id": self.wind_id,
+                                  "angle": self._rotation.get_dt(),
+                                  "axis": self._rotation_axis}])
             return commands
         # Create a new fluid.
         else:
@@ -262,7 +296,7 @@ class WindSource:
                      "fluid": self.fluid.to_dict(),
                      "shape": self.emitter.to_dict(),
                      "position": self._position_dict,
-                     "rotation": self._rotation_dict,
+                     "rotation": self._rotation_eulers,
                      "lifespan": self._lifespan.v,
                      "minimum_pool_size": self._minimum_pool_size,
                      "solver_id": self._solver_id,

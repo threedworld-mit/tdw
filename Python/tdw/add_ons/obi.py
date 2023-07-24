@@ -285,15 +285,13 @@ class Obi(AddOn):
                               "id": object_id,
                               "tether_position": tether_position.name})
 
-    def set_solver(self, solver_id: int = 0, substeps: int = 1, scale_factor: float = 1,
-                   gravity: Dict[str, float] = None) -> None:
+    def set_solver(self, solver_id: int = 0, substeps: int = 1, scale_factor: float = 1) -> None:
         """
         Set the parameters of a solver.
 
         :param solver_id: The solver ID.
         :param substeps: The number of substeps. More substeps can increase accuracy at the cost of performance.
         :param scale_factor: The scale of the solver. This will uniformly scale all objects assigned to the solver.
-        :param gravity: The gravity vector. If None, the gravity vector won't be set.
         """
 
         self.commands.extend([{"$type": "set_obi_solver_substeps",
@@ -302,10 +300,6 @@ class Obi(AddOn):
                               {"$type": "set_obi_solver_scale",
                                "solver_id": solver_id,
                                "scale_factor": scale_factor}])
-        if gravity is not None:
-            self.commands.append({"$type": "set_obi_solver_gravity",
-                                  "solver_id": solver_id,
-                                  "gravity": gravity})
 
     def reset(self, floor_material: CollisionMaterial = None, object_materials: Dict[int, CollisionMaterial] = None,
               vr_material: CollisionMaterial = None) -> None:

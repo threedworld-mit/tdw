@@ -28,7 +28,7 @@ class Lerpable(Generic[T], ABC):
         self._dt: float = 0
         self._true_dt: float = 0
         """:field
-        If True, `self.v` is at its target (the minimum if increasing, the maximum if decreasing).
+        If True, `self.value` is at its target (the minimum if increasing, the maximum if decreasing).
         """
         self.is_at_target: bool = True
         # The current t value on the line between `self._a` and `self._b`.
@@ -40,7 +40,7 @@ class Lerpable(Generic[T], ABC):
         """
         Interpolate. If we're done interpolating, stop.
 
-        This will set `self.v` to a value between the minimum and maximum.
+        This will set `self.value` to a value between the minimum and maximum.
         """
 
         if self.is_at_target:
@@ -61,9 +61,9 @@ class Lerpable(Generic[T], ABC):
 
     def set_target(self, target: T, dt: float) -> None:
         """
-        Set a new target for `self.v`.
+        Set a new target for `self.value`.
 
-        One end of the line between a and b will be `self.v` and the other will be `target`.
+        One end of the line between a and b will be `self.value` and the other will be `target`.
 
         :param target: The target value.
         :param dt: The *true* value delta per `update()` call. For example, if this is a position and you want move the position by 0.1 meters per `update()` call, then this value should be 0.1.
@@ -88,7 +88,7 @@ class Lerpable(Generic[T], ABC):
     @abstractmethod
     def _lerp(self) -> T:
         """
-        :return: A new value for `self.v` that is between `self._a` and `self._b` at point `self._t`.
+        :return: A new value for `self.value` that is between `self._a` and `self._b` at point `self._t`.
         """
 
         raise Exception()

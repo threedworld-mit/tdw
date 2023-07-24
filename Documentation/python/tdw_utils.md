@@ -794,3 +794,18 @@ _(Static)_
 
 _Returns:_  A value between 0 and 1 describing where `v` is with respect to `a` and `b`.
 
+#### lerp_array
+
+**`TDWUtils.lerp_array(a, b, t)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| a |  np.ndarray |  | The first array. |
+| b |  np.ndarray |  | The second array. |
+| t |  float |  | The lerp value (0 to 1). |
+
+_Returns:_  A linearly interpolated array at point `t` between `a` and `b`.
+

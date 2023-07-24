@@ -12,7 +12,7 @@ TDW's implementation of [fluids](fluids.md) assumes a relatively static simulati
 
 A wind fluid emitter's parameters and state are contained in the [`WindSource`](../../python/obi_data/wind_source.md) data class.
 
-To add a wind source to the scene, create an [`Obi` add-on](overview.md), create a wind source, and add it to `obi.wind_sources`, a dictionary:
+To add a wind source to the scene, create an [`Obi` add-on](obi.md), create a wind source, and add it to `obi.wind_sources`, a dictionary:
 
 ```python
 from tdw.add_ons.obi import Obi

@@ -451,6 +451,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [FluidType](Documentation/python/flex_data/fluid_type.md)
 
+**tdw.lerp**
+
+- [Lerpable](Documentation/python/lerp/lerpable.md)
+- [LerpableFloat](Documentation/python/lerp/lerpable_float.md)
+- [LerpableVector](Documentation/python/lerp/lerpable_vector.md)
+
 **tdw.librarian**
 
 - [DroneLibrarian](Documentation/python/librarian/drone_librarian.md)
@@ -480,6 +486,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [ForceMode](Documentation/python/obi_data/force_mode.md)
 - [ObiActor](Documentation/python/obi_data/obi_actor.md)
+- [WindSource](Documentation/python/obi_data/wind_source.md)
 
 **tdw.obi_data.cloth**
 

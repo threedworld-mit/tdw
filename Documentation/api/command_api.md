@@ -405,7 +405,6 @@
 | [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
-| [`set_obi_fluid_emission_speed`](#set_obi_fluid_emission_speed) | Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted.  |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
 | [`set_object_drag`](#set_object_drag) | Set the drag of an object's RigidBody. Both drag and angular_drag can be safely changed on-the-fly. |
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
@@ -413,7 +412,6 @@
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
 | [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.  |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
-| [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
 **Drone Command**
 
@@ -433,6 +431,32 @@
 | [`destroy_humanoid`](#destroy_humanoid) | Destroy a humanoid.  |
 | [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.  |
 | [`stop_humanoid_animation`](#stop_humanoid_animation) | Stop a motion capture animation on a humanoid. |
+
+**Obi Actor Command**
+
+| Command | Description |
+| --- | --- |
+| [`rotate_obi_actor_by`](#rotate_obi_actor_by) | Rotate an Obi actor by a given angle around a given axis.  |
+| [`rotate_obi_actor_to`](#rotate_obi_actor_to) | Set an Obi actor's rotation.  |
+| [`teleport_obi_actor`](#teleport_obi_actor) | Teleport an Obi actor to a new position.  |
+| [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
+
+**Obi Fluid Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_obi_fluid_capacity`](#set_obi_fluid_capacity) | Set a fluid emitter's particle capacity.  |
+| [`set_obi_fluid_emission_speed`](#set_obi_fluid_emission_speed) | Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted.  |
+| [`set_obi_fluid_lifespan`](#set_obi_fluid_lifespan) | Set a fluid emitter's particle lifespan.  |
+| [`set_obi_fluid_random_velocity`](#set_obi_fluid_random_velocity) | Set a fluid emitter's random velocity.  |
+| [`set_obi_fluid_resolution`](#set_obi_fluid_resolution) | Set a fluid emitter's resolution.  |
+
+**Obi Fluid Fluid Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_obi_fluid_smoothing`](#set_obi_fluid_smoothing) | Set a fluid's smoothing value.  |
+| [`set_obi_fluid_vorticity`](#set_obi_fluid_vorticity) | Set a fluid's vorticity.  |
 
 **Replicant Base Command**
 
@@ -5617,27 +5641,6 @@ Set the mass of an object.
 
 ***
 
-## **`set_obi_fluid_emission_speed`**
-
-Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted. 
-
-- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
-
-```python
-{"$type": "set_obi_fluid_emission_speed", "id": 1}
-```
-
-```python
-{"$type": "set_obi_fluid_emission_speed", "id": 1, "speed": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"speed"` | float | The speed of emitted particles in meters per second. Set this to 0 to stop emission. | 0 |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_object_collision_detection_mode`**
 
 Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. 
@@ -5796,40 +5799,6 @@ Show the collider hulls of the object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
-
-***
-
-## **`untether_obi_cloth_sheet`**
-
-Untether a cloth sheet at a specified position. 
-
-- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
-
-```python
-{"$type": "untether_obi_cloth_sheet", "tether_position": "four_corners", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"tether_position"` | TetherParticleGroup | The position that will be un-tethered. | |
-| `"id"` | int | The unique object ID. | |
-
-#### TetherParticleGroup
-
-A group of particles from which an Obi cloth sheet can be tethered to another object. All directions are from the vantage point of looking down at a sheet spread out on the floor.
-
-| Value | Description |
-| --- | --- |
-| `"four_corners"` |  |
-| `"north_corners"` |  |
-| `"south_corners"` |  |
-| `"east_corners"` |  |
-| `"west_corners"` |  |
-| `"north_edge"` |  |
-| `"south_edge"` |  |
-| `"east_edge"` |  |
-| `"west_edge"` |  |
-| `"center"` |  |
 
 # DroneCommand
 
@@ -6016,6 +5985,250 @@ Stop a motion capture animation on a humanoid.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
+
+# ObiActorCommand
+
+These commands affect Obi actors in the scene.
+
+***
+
+## **`rotate_obi_actor_by`**
+
+Rotate an Obi actor by a given angle around a given axis. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "rotate_obi_actor_by", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "rotate_obi_actor_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"is_world"` | bool | If True, the object will rotate around global axes. If False, the object will around local axes. Ignored if use_centroid == False. | True |
+| `"id"` | int | The unique object ID. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_obi_actor_to`**
+
+Set an Obi actor's rotation. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "rotate_obi_actor_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`teleport_obi_actor`**
+
+Teleport an Obi actor to a new position. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "teleport_obi_actor", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`untether_obi_cloth_sheet`**
+
+Untether a cloth sheet at a specified position. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "untether_obi_cloth_sheet", "tether_position": "four_corners", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tether_position"` | TetherParticleGroup | The position that will be un-tethered. | |
+| `"id"` | int | The unique object ID. | |
+
+#### TetherParticleGroup
+
+A group of particles from which an Obi cloth sheet can be tethered to another object. All directions are from the vantage point of looking down at a sheet spread out on the floor.
+
+| Value | Description |
+| --- | --- |
+| `"four_corners"` |  |
+| `"north_corners"` |  |
+| `"south_corners"` |  |
+| `"east_corners"` |  |
+| `"west_corners"` |  |
+| `"north_edge"` |  |
+| `"south_edge"` |  |
+| `"east_edge"` |  |
+| `"west_edge"` |  |
+| `"center"` |  |
+
+# ObiFluidCommand
+
+These commands affect and Obi fluid actor in the scene.
+
+***
+
+## **`set_obi_fluid_capacity`**
+
+Set a fluid emitter's particle capacity. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_capacity", "capacity": 1000, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"capacity"` | uint | The maximum amount of emitted particles. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_emission_speed`**
+
+Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_emission_speed", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_emission_speed", "id": 1, "speed": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"speed"` | float | The speed of emitted particles in meters per second. Set this to 0 to stop emission. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_lifespan`**
+
+Set a fluid emitter's particle lifespan. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_lifespan", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_lifespan", "id": 1, "lifespan": 4}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_random_velocity`**
+
+Set a fluid emitter's random velocity. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_random_velocity", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_random_velocity", "id": 1, "random_velocity": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"random_velocity"` | float | Random velocity of emitted particles. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_resolution`**
+
+Set a fluid emitter's resolution. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_resolution", "resolution": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"resolution"` | float | The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter. | |
+| `"id"` | int | The unique object ID. | |
+
+# ObiFluidFluidCommand
+
+These (admittedly awkwardly-named) commands affect an Obi fluid emitter's fluid. They can't be used if the emitter has a granular fluid.
+
+***
+
+## **`set_obi_fluid_smoothing`**
+
+Set a fluid's smoothing value. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_smoothing", "smoothing": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"smoothing"` | float | A percentage of the particle radius used to define the radius of the zone around each particle when calculating fluid density. Larger values will create smoother fluids, which are also less performant. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_vorticity`**
+
+Set a fluid's vorticity. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_vorticity", "vorticity": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"vorticity"` | float | Amount of vorticity confinement, it will contribute to maintain vortical details in the fluid. This value should always be between approximately 0 and 0.5. | |
 | `"id"` | int | The unique object ID. | |
 
 # ReplicantBaseCommand

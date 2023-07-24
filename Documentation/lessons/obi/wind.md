@@ -517,6 +517,10 @@ Result:
 
 ![](images/wind/visible.gif)
 
+## Output Data
+
+The wind fluid is an Obi fluid. It behaves exactly the same as any other fluid and will appear in the [output data](obi_particles.md) as a fluid.
+
 ## Limitations
 
 - **This is a fluid simulation.** Wind is often modeled using fluid dynamics but some this simulation can't emulate pressure and other aspects of gases.

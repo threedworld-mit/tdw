@@ -8,13 +8,13 @@ from tdw.obi_data.wind_source import WindSource
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
-class WindDirection(Controller):
+class MoveWind(Controller):
     """
     Line up a row of small objects on a table.
 
-    Add a wind source. Rotate the wind source per communicate() call to knock over the objects.
+    Add a wind source. Move the wind source per communicate() call to knock over the objects.
 
-    Add a cone to point in the direction of the wind.
+    Add a cone indicate the position and direction of the wind.
     """
 
     def __init__(self, port: int = 1071, check_version: bool = True, launch_build: bool = True):
@@ -28,7 +28,7 @@ class WindDirection(Controller):
         camera = ThirdPersonCamera(avatar_id="a",
                                    position={"x": 2.27, "y": 2.2, "z": 1.86},
                                    look_at={"x": 0, "y": 0.6, "z": 0})
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("wind_direction")
+        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("move_wind")
         print(f"Images will be saved to: {path}")
         capture = ImageCapture(avatar_ids=["a"],
                                path=path)
@@ -39,10 +39,9 @@ class WindDirection(Controller):
         wind_x = 0
         wind_y = 0.75
         wind_z = -1.1
-        wind_rotation = -60
         wind_source = WindSource(wind_id=self.wind_id,
                                  position={"x": wind_x, "y": wind_y, "z": wind_z},
-                                 rotation={"x": 0, "y": wind_rotation, "z": 0},
+                                 rotation={"x": 0, "y": 0, "z": 0},
                                  emitter_radius=0.2,
                                  capacity=2000,
                                  lifespan=0.5,
@@ -51,13 +50,12 @@ class WindDirection(Controller):
         self.obi.wind_sources[self.wind_id] = wind_source
         # Create the scene.
         commands = [Controller.get_add_scene(scene_name=scene_name)]
-        # Add a cone. This will indicate wind direction.
-        cone_euler_angles = {"x": 90, "y": wind_rotation, "z": 0}
+        # Add a cone.
         commands.extend(Controller.get_add_physics_object(model_name="cone",
                                                           object_id=self.cone_id,
                                                           library="models_flex.json",
                                                           position={"x": wind_x, "y": wind_y, "z": wind_z - 0.3},
-                                                          rotation=cone_euler_angles,
+                                                          rotation={"x": 90, "y": 0, "z": 0},
                                                           kinematic=True,
                                                           scale_factor={"x": 0.2, "y": 0.3, "z": 0.2}))
         commands.append({"$type": "set_color",
@@ -98,24 +96,27 @@ class WindDirection(Controller):
                                                               position={"x": float(vase_x), "y": h, "z": z},
                                                               library="models_core.json"))
         self.communicate(commands)
-        # Rotate the wind.
-        for angle in [90, -10]:
-            self.rotate_wind_by(angle=angle, initial_angle=wind_rotation)
+        # Move the wind.
+        for x in [-2.5, 2.5]:
+            self.move_wind(position=np.array([x, wind_y, wind_z]))
 
-    def rotate_wind_by(self, angle: float, initial_angle: float) -> None:
+    def move_wind(self, position: np.ndarray) -> None:
         wind: WindSource = self.obi.wind_sources[self.wind_id]
-        # Start rotating by the angle.
-        wind.rotate_by(angle=angle, da=0.2, axis="yaw")
+        wind.move_to(position=position, dp=0.025)
         self.communicate([])
-        while wind.is_rotating():
-            # Rotate the cone to match the rotation of the wind. Continue until the wind emitter is done rotating.
-            wind_angle, axis = wind.get_rotation()
-            self.communicate([{"$type": "rotate_object_to_euler_angles",
+        while wind.is_moving():
+            # Move the cone and the wind.
+            wind_position = wind.get_position()
+            # Get the position of the cone. It's behind the wind source.
+            cone_position = {"x": float(wind_position[0]),
+                             "y": float(wind_position[1]),
+                             "z": float(wind_position[2]) - 0.3}
+            self.communicate([{"$type": "teleport_object",
                                "id": self.cone_id,
-                               "euler_angles": {"x": 90, "y": wind_angle + initial_angle, "z": 0}}])
+                               "position": cone_position}])
 
 
 if __name__ == "__main__":
-    c = WindDirection()
+    c = MoveWind()
     c.trial(scene_name="box_room_2018")
     c.communicate({"$type": "terminate"})

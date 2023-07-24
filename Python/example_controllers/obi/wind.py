@@ -69,7 +69,7 @@ c.communicate([])
 for i in range(200):
     c.communicate([])
 # Decrease the speed.
-wind_source.set_speed(speed=0.1, ds=0.1)
-for i in range(400):
+obi.wind_sources[wind_id].set_speed(speed=0.1, ds=0.1)
+while obi.wind_sources[wind_id].is_accelerating():
     c.communicate([])
 c.communicate({"$type": "terminate"})

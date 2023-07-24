@@ -100,66 +100,93 @@ class WindSource:
         self._solver_id: int = solver_id
         self._created: bool = False
 
+    def set_speed(self, speed: float, ds: float) -> None:
+        """
+        Set a target wind speed.
+
+        :param speed: The target speed in meters per second.
+        :param ds: The current speed will increase/decrease by this delta per `communicate()` call until it is at the target.
+        """
+
+        self._speed.set_target(target=speed, dt=ds)
+
+    def get_speed(self) -> float:
+        """
+        :return: The current wind speed.
+        """
+
+        return self._speed.v
+
+    def is_accelerating(self) -> bool:
+        """
+        :return: True if the speed is accelerating or decelerating.
+        """
+
+        return not self._speed.is_at_target
+
     def set_gustiness(self, capacity: int, dc: int, lifespan: float, dl: float) -> None:
         """
-        Set the "gustiness" of the wind.
+        Set the "gustiness" of the wind i.e. the duration of pauses between emitted particles.
 
-        If the gustiness is high, then there will be pauses between emitted particles. The pauses *won't* vary in duration, nor will the parameters of each "gust"; if  you want to vary the gusts, you can repeatedly call this function.
+        This tends to "override" the wind speed, which merely controls the velocity of particles in the scene.
 
-        If the gustiness is low, there will be a steady stream of emitted particles.
+        The resulting gusts will always be periodic. If you want gusts to be more random, call this function with different values every *n* `communicate()` calls.
 
-        The two values controlling gustiness are `capacity` and `lifespan` and are not immediately set: The current values will be lerped (linearly interpolated) to the new values.
-
-        :param capacity: The maximum number of particles. A higher particle count will create a steadier stream of particles but can significantly impact simulation performance.
-        :param dc: The capacity lerp rate per `communicate()` call. i.e. if this is set to 10, then current capacity will be incremented by 10 per `communicate()` call.
+        :param capacity: The target maximum number of particles. A higher particle count will create a steadier stream of particles but can significantly impact simulation performance.
+        :param dc: The current capacity will increase/decrease by this delta per `communicate()` call until it is at the target.
         :param lifespan: The particle lifespan in seconds. A higher lifespan will result in "gustier" wind because particles will linger in the scene and prevent new particles from being created.
-        :param dl: The lifespan lerp rate per `communicate()` call. i.e. if this is set to 0.1, then current lifespan will be incremented by 0.1 per `communicate()` call.
+        :param dl: The current lifespan will increase/decrease by this delta per `communicate()` call until it is at the target.
         """
 
         self._capacity.set_target(target=capacity, dt=dc)
         self._lifespan.set_target(target=lifespan, dt=dl)
 
-    def set_speed(self, speed: float, ds: float) -> None:
+    def is_gusting(self) -> Tuple[bool, bool]:
         """
-        Set a new wind speed.
-
-        The current speed will be linearly interpolated (lerped) to the new speed per `communicate()` call.
-
-        :param speed: The speed in meters per second.
-        :param ds: The speed lerp rate per `communicate()` call. i.e. if this is set to 0.1, then current speed will be incremented by 0.1 per `communicate()` call.
+        :return: Tuple: True if we're at the target capacity, True if we're at the target lifespan.
         """
 
-        self._speed.set_target(target=speed, dt=ds)
+        return not self._capacity.is_at_target, not self._lifespan.is_at_target
 
     def set_spread(self, smoothing: float, ds: float, resolution: float, dr: float) -> None:
         """
         Set how far the wind fluid can spread.
 
-        The two values controlling wind spread are `smoothing` and `resolution` and are not immediately set: The current values will be lerped (linearly interpolated) to the new values.
-
         :param smoothing: A percentage of the particle radius used to define the radius of the zone around each particle when calculating fluid density. A lower value will create a more scattered fluid.
-        :param ds: The smoothing lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current smoothing value will be incremented by 0.01 per `communicate()` call.
+        :param ds: The current smoothing will increase/decrease by this delta per `communicate()` call until it is at the target.
         :param resolution: The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter. For larger wind sources, consider lowering this value.
-        :param dr: The resolution lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current resolution value will be incremented by 0.01 per `communicate()` call.
+        :param dr: The current resolution will increase/decrease by this delta per `communicate()` call until it is at the target.
         """
 
         self._smoothing.set_target(target=smoothing, dt=ds)
         self._resolution.set_target(target=resolution, dt=dr)
 
+    def is_spreading(self) -> Tuple[bool, bool]:
+        """
+        :return: Tuple: True if the smoothing value is at the target, True if the resolution value is at the target.
+        """
+
+        return not self._smoothing.is_at_target, not self._resolution.is_at_target
+
     def set_turbulence(self, vorticity: float, dv: float, random_velocity: float, dr: float) -> None:
         """
         Set the wind turbulence.
 
-        The two values controlling turbulence are `vorticity` and `random_velocity` and are not immediately set: The current values will be lerped (linearly interpolated) to the new values.
-
         :param vorticity: Amount of vorticity confinement, it will contribute to maintain vortical details in the fluid. This value should always be between approximately 0 and 0.5. This will increase turbulence, although the difference is relatively minor.
-        :param dv: The vorticity lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current vorticity value will be incremented by 0.01 per `communicate()` call.
+        :param dv: The current vorticity will increase/decrease by this delta per `communicate()` call until it is at the target.
         :param random_velocity: The maximum random speed in meters per second that can be applied to a particle. This will increase turbulence.
-        :param dr: The random_velocity lerp rate per `communicate()` call. i.e. if this is set to 0.01, then current random_velocity value will be incremented by 0.01 per `communicate()` call.
+        :param dr: The current random velocity will increase/decrease by this delta per `communicate()` call until it is at the target.
         """
 
         self._vorticity.set_target(target=vorticity, dt=dv)
         self._random_velocity.set_target(target=random_velocity, dt=dr)
+
+    def is_turbulating(self) -> Tuple[bool, bool]:
+        """
+        :return: Tuple: True if the vorticity value is at the target, True if the random velocity value is at the target.
+        """
+
+        return not self._vorticity.is_at_target, not self._random_velocity.is_at_target
 
     def move_to(self, position: POSITION, dp: float) -> None:
         """
@@ -177,18 +204,6 @@ class WindSource:
             raise Exception(f"Invalid position: {position}")
         self._position.set_target(target=pos, dt=dp)
 
-    def rotate_by(self, angle: float, da: float, axis: str = "yaw") -> None:
-        """
-        Rotate the wind fluid emitter with an angle and an axis.
-
-        :param angle: The target angle in degrees.
-        :param da: Increment `angle` by this many degrees per `communicate()` call.
-        :param axis: The axis of rotation: `"pitch"`, `"yaw"`, or `"roll"`.
-        """
-
-        self._rotation_axis = axis
-        self._rotation.set_target(target=angle, dt=da)
-
     def get_position(self) -> np.ndarray:
         """
         :return: The position of the wind source.
@@ -202,6 +217,18 @@ class WindSource:
         """
 
         return not self._position.is_at_target
+
+    def rotate_by(self, angle: float, da: float, axis: str = "yaw") -> None:
+        """
+        Rotate the wind fluid emitter with an angle and an axis.
+
+        :param angle: The target angle in degrees.
+        :param da: Increment `angle` by this many degrees per `communicate()` call.
+        :param axis: The axis of rotation: `"pitch"`, `"yaw"`, or `"roll"`.
+        """
+
+        self._rotation_axis = axis
+        self._rotation.set_target(target=angle, dt=da)
 
     def get_rotation(self) -> Tuple[float, str]:
         """
@@ -217,22 +244,10 @@ class WindSource:
 
         return not self._rotation.is_at_target
 
-    def get_speed(self) -> float:
-        """
-        :return: The current wind speed.
-        """
-
-        return self._speed.v
-
-    def is_accelerating(self) -> bool:
-        """
-        :return: True if the speed is accelerating or decelerating.
-        """
-
-        return not self._speed.is_at_target
-
     def update(self) -> List[dict]:
         """
+        Don't call this in your controller. This is called internally by the `Obi` add-on.
+
         Update the wind. Create the fluid actor if it doesn't exist. Lerp all values that need lerping.
 
         :return: A list of commands.

@@ -115,7 +115,7 @@ class WindSource:
         :return: The current wind speed.
         """
 
-        return self._speed.v
+        return self._speed.value
 
     def is_accelerating(self) -> bool:
         """
@@ -209,7 +209,7 @@ class WindSource:
         :return: The position of the wind source.
         """
 
-        return self._position.v
+        return self._position.value
 
     def is_moving(self) -> bool:
         """
@@ -235,7 +235,7 @@ class WindSource:
         :return: Tuple: The angle of rotation in degrees, the axis of rotation.
         """
 
-        return self._rotation.v, self._rotation_axis
+        return self._rotation.value, self._rotation_axis
 
     def is_rotating(self) -> bool:
         """
@@ -260,42 +260,42 @@ class WindSource:
                 self._capacity.update()
                 commands.append({"$type": "set_obi_fluid_capacity",
                                  "id": self.wind_id,
-                                 "capacity": int(self._capacity.v)})
+                                 "capacity": int(self._capacity.value)})
             if not self._lifespan.is_at_target:
                 self._lifespan.update()
                 commands.append({"$type": "set_obi_fluid_lifespan",
                                  "id": self.wind_id,
-                                 "lifespan": self._lifespan.v})
+                                 "lifespan": self._lifespan.value})
             if not self._speed.is_at_target:
                 self._speed.update()
                 commands.append({"$type": "set_obi_fluid_emission_speed",
                                  "id": self.wind_id,
-                                 "speed": self._speed.v})
+                                 "speed": self._speed.value})
             if not self._smoothing.is_at_target:
                 self._smoothing.update()
                 commands.append({"$type": "set_obi_fluid_smoothing",
                                  "id": self.wind_id,
-                                 "smoothing": self._smoothing.v})
+                                 "smoothing": self._smoothing.value})
             if not self._resolution.is_at_target:
                 self._resolution.update()
                 commands.append({"$type": "set_obi_fluid_resolution",
                                  "id": self.wind_id,
-                                 "resolution": self._resolution.v})
+                                 "resolution": self._resolution.value})
             if not self._vorticity.is_at_target:
                 self._vorticity.update()
                 commands.append({"$type": "set_obi_fluid_vorticity",
                                  "id": self.wind_id,
-                                 "vorticity": self._vorticity.v})
+                                 "vorticity": self._vorticity.value})
             if not self._random_velocity.is_at_target:
                 self._random_velocity.update()
                 commands.append({"$type": "set_obi_fluid_random_velocity",
                                  "id": self.wind_id,
-                                 "random_velocity": self._random_velocity.v})
+                                 "random_velocity": self._random_velocity.value})
             if not self._position.is_at_target:
                 self._position.update()
                 commands.append({"$type": "teleport_obi_actor",
                                  "id": self.wind_id,
-                                 "position": TDWUtils.array_to_vector3(self._position.v)})
+                                 "position": TDWUtils.array_to_vector3(self._position.value)})
             if not self._rotation.is_at_target:
                 self._rotation.update()
                 commands.extend([{"$type": "rotate_obi_actor_by",
@@ -312,7 +312,7 @@ class WindSource:
                      "shape": self.emitter.to_dict(),
                      "position": self._position_dict,
                      "rotation": self._rotation_eulers,
-                     "lifespan": self._lifespan.v,
+                     "lifespan": self._lifespan.value,
                      "minimum_pool_size": self._minimum_pool_size,
                      "solver_id": self._solver_id,
-                     "speed": self._speed.v}]
+                     "speed": self._speed.value}]

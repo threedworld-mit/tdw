@@ -19,7 +19,7 @@ class Lerpable(Generic[T], ABC):
         """:field
         The current value.
         """
-        self.v: T = self._copy(value)
+        self.value: T = self._copy(value)
         # The minimum value.
         self._a: T = self._copy(value)
         # The maximum value.
@@ -57,7 +57,7 @@ class Lerpable(Generic[T], ABC):
                 self._t = 0
                 self.is_at_target = True
         # Lerp.
-        self.v = self._lerp()
+        self.value = self._lerp()
 
     def set_target(self, target: T, dt: float) -> None:
         """
@@ -69,7 +69,7 @@ class Lerpable(Generic[T], ABC):
         :param dt: The *true* value delta per `update()` call. For example, if this is a position and you want move the position by 0.1 meters per `update()` call, then this value should be 0.1.
         """
 
-        self._a = self.v
+        self._a = self.value
         self._b = target
         self._set_increase()
         # Convert the time delta to a value between 0 and 1.

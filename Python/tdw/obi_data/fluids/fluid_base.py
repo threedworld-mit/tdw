@@ -24,7 +24,7 @@ class FluidBase(ABC):
         """
         self.capacity: int = capacity
         """:field
-        The size and amount of particles in 1 cubic meter.
+        The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter.
         """
         self.resolution: float = resolution
         """:field

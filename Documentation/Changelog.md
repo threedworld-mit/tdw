@@ -4,6 +4,55 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.3
+
+### New Features
+
+- **Added a wind simulation using Obi fluids.**
+
+### Command API
+
+#### New Commands
+
+| Command                         | Description                                               |
+| ------------------------------- | --------------------------------------------------------- |
+| `rotate_obi_actor_by`           | Rotate an Obi actor by a given angle around a given axis. |
+| `rotate_obi_actor_to`           | Set an Obi actor's rotation.                              |
+| `teleport_obi_actor`            | Teleport an Obi actor to a new position.                  |
+| `set_obi_fluid_capacity`        | Set a fluid emitter's particle capacity.                  |
+| `set_obi_fluid_lifespan`        | Set a fluid emitter's particle lifespan.                  |
+| `set_obi_fluid_random_velocity` | Set a fluid emitter's random velocity.                    |
+| `set_obi_fluid_resolution`      | Set a fluid emitter's resolution.                         |
+| `set_obi_fluid_smoothing`       | Set a fluid's smoothing value.                            |
+| `set_obi_fluid_vorticity`       | Set a fluid's vorticity.                                  |
+
+### `tdw` module
+
+- Added wind to the `Obi` add-on:
+  - Added: `WindSource` An invisible Obi fluid that can dynamically adjust its rotation, speed, etc.
+  - Added: `obi.wind_source` A dictionary for storing `WindSource` objects.
+- Added optional parameter `exclude` to the `Obi` constructor. Exclude these objects from receiving Obi collision materials.
+- Added classes for lerping data: `Lerpable` (abstract base class), `LerpableFloat`, and `LerpableVector`.
+- Added: `TDWUtils.lerp_array(a, b, t)`.
+
+### Example Controllers
+
+- Added: `obi/gust.py`
+- Added: `obi/move_wind.py`
+- Added: `obi/rotate_wind.py`
+- Added: `obi/visible_wind.py`
+- Added: `obi/wind.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                                                     | Description                             |
+| ------------------------------------------------------------ | --------------------------------------- |
+| `lessons/obi/wind.md`                                        | Wind simulation lesson.                 |
+| `python/lerp/lerpable.md`<br>`python/lerp/lerpable_float.md`<br>`python/lerp/lerpable_vector.md` | API documentation for lerpable classes. |
+| `python/obi_data/wind_source.md`                             | API documentation for `WindSource`.     |
+
 ## v1.12.2
 
 ### Build

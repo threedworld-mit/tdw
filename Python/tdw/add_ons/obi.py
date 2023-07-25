@@ -12,6 +12,7 @@ from tdw.obi_data.cloth.volume_type import ClothVolumeType
 from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.tether_type import TetherType
+from tdw.obi_data.wind_source import WindSource
 from tdw.controller import Controller
 
 
@@ -21,12 +22,14 @@ class Obi(AddOn):
     """
 
     def __init__(self, output_data: bool = True, floor_material: CollisionMaterial = None,
-                 object_materials: Dict[int, CollisionMaterial] = None, vr_material: CollisionMaterial = None):
+                 object_materials: Dict[int, CollisionMaterial] = None, vr_material: CollisionMaterial = None,
+                 exclude: List[int] = None):
         """
         :param output_data: If True, receive [`ObiParticles`](../../api/output_data.md#ObiParticles) per frame.
         :param floor_material: The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
         :param object_materials: Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md).
         :param vr_material: If there is a VR rig in the scene, its hands will have this [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
+        :param exclude: Exclude these objects from receiving Obi collision materials.
         """
 
         super().__init__()
@@ -48,6 +51,14 @@ class Obi(AddOn):
             self._vr_material: CollisionMaterial = CollisionMaterial()
         else:
             self._vr_material = vr_material
+        if exclude is None:
+            self._exclude: List[int] = list()
+        else:
+            self._exclude = exclude[:]
+        """:field
+        A dictionary of wind sources. Key = Wind source ID. Value = [`WindSource`](../obi_data/wind_source.md). To add a wind source, add a new `WindSource` to this dictionary; it will be automatically created and updated. See the `WindSource` API for how to dynamically set wind parameters.
+        """
+        self.wind_sources: Dict[int, WindSource] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "destroy_obi_solver"},
@@ -78,6 +89,9 @@ class Obi(AddOn):
                                               "id": object_id})
                         material_command = {"$type": "set_obi_collision_material",
                                             "id": object_id}
+                        # Ignore this object.
+                        if object_id in self._exclude:
+                            continue
                         # Use override values.
                         if object_id in self._object_materials:
                             material_command.update(self._object_materials[object_id].to_dict())
@@ -121,6 +135,9 @@ class Obi(AddOn):
                 # Update the particles.
                 for object_id in self.actors:
                     self.actors[object_id].on_communicate(obi_particles=obi_particles)
+        # Update each wind source.
+        for wind_id in self.wind_sources:
+            self.commands.extend(self.wind_sources[wind_id].update())
 
     def create_fluid(self, object_id: int, fluid: Union[str, Fluid, GranularFluid], shape: EmitterShape,
                      position: Dict[str, float] = None, rotation: Dict[str, float] = None, speed: float = 0,

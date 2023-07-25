@@ -163,12 +163,13 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Obi](Documentation/lessons/obi/obi.md)
 2. [Fluids](Documentation/lessons/obi/fluids.md)
-2. [Cloth](Documentation/lessons/obi/cloth.md)
-3. [`ObiParticles` output data](Documentation/lessons/obi/obi_particles.md)
-4. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
-5. [Solvers](Documentation/lessons/obi/solvers.md)
-6. [Obi and robots](Documentation/lessons/obi/robots.md)
-6. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
+3. [Wind](Documentation/lessons/obi/wind.md)
+4. [Cloth](Documentation/lessons/obi/cloth.md)
+5. [`ObiParticles` output data](Documentation/lessons/obi/obi_particles.md)
+6. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
+7. [Solvers](Documentation/lessons/obi/solvers.md)
+8. [Obi and robots](Documentation/lessons/obi/robots.md)
+9. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
 
 ### 8.3 Physics (Flex)
 
@@ -450,6 +451,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [FluidType](Documentation/python/flex_data/fluid_type.md)
 
+**tdw.lerp**
+
+- [Lerpable](Documentation/python/lerp/lerpable.md)
+- [LerpableFloat](Documentation/python/lerp/lerpable_float.md)
+- [LerpableVector](Documentation/python/lerp/lerpable_vector.md)
+
 **tdw.librarian**
 
 - [DroneLibrarian](Documentation/python/librarian/drone_librarian.md)
@@ -479,6 +486,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [ForceMode](Documentation/python/obi_data/force_mode.md)
 - [ObiActor](Documentation/python/obi_data/obi_actor.md)
+- [WindSource](Documentation/python/obi_data/wind_source.md)
 
 **tdw.obi_data.cloth**
 

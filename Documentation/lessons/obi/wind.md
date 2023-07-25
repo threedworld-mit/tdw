@@ -347,7 +347,7 @@ Result:
 
 ### Rotation
 
-Set the target position and rotation by calling `wind_source.rotate_by(angle, axis, da)`.
+Set the target rotation by calling `wind_source.rotate_by(angle, axis, da)`.
 
 To check whether the wind is rotating, call `wind_source.is_rotating()`, which returns a boolean. 
 
@@ -481,7 +481,7 @@ Despite being divided into separate functions, the speed, gustiness parameters, 
 
 - Without a high speed the capacity and lifespan parameters won't do anything because the wind fluid particles will never reach the target objects. 
 - A narrow spread will ensure that more particles collide with the objects, which will create a more sustained wind, albeit in a smaller volume.
-- A narrow spread can affect turbulence. If there are many particles in a narrow emission then the turbulence values can become irrelevant.\
+- A narrow spread can affect turbulence. If there are many particles in a narrow emission then the turbulence values can become irrelevant.
 
 ## Visibility
 

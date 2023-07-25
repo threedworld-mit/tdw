@@ -2,9 +2,9 @@
 
 # Wind
 
-Obi can be used to simulate wind.
+Obi can be used to simulate wind by adding an invisible fluid to the scene:
 
-**In TDW's implementation of Obi, wind is an invisible fluid.** There is technically nothing the the wind simulation can do that you couldn't do with a custom fluid. The wind simulation merely provides good default values and better controls over a wind-like fluid.
+![](images/wind/wind.gif)
 
 ## The `WindSource` data class
 
@@ -34,6 +34,16 @@ And then you can add `obi` to a controller as you normally would:
 There are many optional parameters in the `WindSource` constructor. All of these parameters are the same as those used to define a [fluid](fluids.md), the main difference being that a `WindSource` exposes only some of the parameters. For example, any parameter related to rendering is hidden since we always want wind to be invisible. 
 
 **For a full list of optional constructor parameters, read [the API documentation](../../python/obi_data/wind_source.md).**
+
+## Wind and Fluids
+
+**In TDW's implementation of Obi, wind is an invisible [fluid](fluids.md).** In the build, there is *no difference* between wind and a fluid. The underlying parameters of wind and fluids are exactly the same. Wind particles will appear in [Obi output data](obi_particles.md) and wind and fluids have the same [collision detection logic](colliders_and_collision_materials.md).
+
+The only differences between wind and non-wind fluids are at a very high level, in the Python code:
+
+- `WindSource` doesn't use the [`Fluid`](../../python/obi_data/fluids/fluid.md) to store its instantiation data.
+- `WindSource` hides many of the fluid parameters that aren't relevant to wind, for example rendering parameters.
+- Wind sources are added to a dictionary and can be dynamically adjusted during runtime.
 
 ## Dynamic wind API
 
@@ -516,10 +526,6 @@ c.communicate({"$type": "terminate"})
 Result:
 
 ![](images/wind/visible.gif)
-
-## Output Data
-
-The wind fluid is an Obi fluid. It behaves exactly the same as any other fluid and will appear in the [output data](obi_particles.md) as a fluid.
 
 ## Limitations
 

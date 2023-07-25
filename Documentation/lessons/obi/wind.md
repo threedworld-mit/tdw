@@ -216,7 +216,7 @@ To control the wind turbulence, call `wind_source.set_turbulence(vorticity, dv, 
 
 ### Position
 
-Set the target position and rotation by calling `wind_source.move_to(position, dp)`. 
+Set the target position by calling `wind_source.move_to(position, dp)`. 
 
 To check whether the wind is moving, call `wind_source.is_moving()`, which returns a boolean. 
 

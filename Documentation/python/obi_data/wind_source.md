@@ -10,10 +10,6 @@ A source of wind: An invisible Obi fluid that can dynamically adjust its rotatio
 
 - `wind_id` The ID of this wind source.
 
-- `fluid` The wind's [`Fluid`](fluids/fluid.md).
-
-- `emitter` The fluid's [`DiskEmitter`](fluids/disk_emitter.md).
-
 ***
 
 ## Functions

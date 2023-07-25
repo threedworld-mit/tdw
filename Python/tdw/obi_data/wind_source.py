@@ -38,42 +38,38 @@ class WindSource:
         The ID of this wind source.
         """
         self.wind_id: int = wind_id
-        """:field
-        The wind's [`Fluid`](fluids/fluid.md).
-        """
-        self.fluid: Fluid = Fluid(capacity=capacity,
-                                  smoothing=smoothing,
-                                  resolution=resolution,
-                                  vorticity=vorticity,
-                                  random_velocity=random_velocity,
-                                  color={"r": 0, "g": 0, "b": 1, "a": 1},
-                                  transparency=0 if visible else 1,
-                                  thickness_cutoff=1 if visible else 100,
-                                  absorption=0,
-                                  ambient_multiplier=1,
-                                  atmospheric_drag=0,
-                                  atmospheric_pressure=0,
-                                  blur_radius=0.02,
-                                  buoyancy=0,
-                                  diffusion=0,
-                                  diffusion_data=None,
-                                  foam_downsample=1,
-                                  metalness=0,
-                                  particle_z_write=False,
-                                  radius_scale=4 if visible else 1,
-                                  reflection=0.25 if visible else 0,
-                                  refraction=-0.034 if visible else 0,
-                                  refraction_downsample=1,
-                                  render_smoothness=0.8 if visible else 0,
-                                  rest_density=1.293,
-                                  surface_downsample=1,
-                                  surface_tension=0,
-                                  thickness_downsample=2,
-                                  viscosity=0)
-        """:field
-        The fluid's [`DiskEmitter`](fluids/disk_emitter.md).
-        """
-        self.emitter: DiskEmitter = DiskEmitter(radius=emitter_radius)
+        # The wind's fluid.
+        self._fluid: Fluid = Fluid(capacity=capacity,
+                                   smoothing=smoothing,
+                                   resolution=resolution,
+                                   vorticity=vorticity,
+                                   random_velocity=random_velocity,
+                                   color={"r": 0, "g": 0, "b": 1, "a": 1},
+                                   transparency=0 if visible else 1,
+                                   thickness_cutoff=1 if visible else 100,
+                                   absorption=0,
+                                   ambient_multiplier=1,
+                                   atmospheric_drag=0,
+                                   atmospheric_pressure=0,
+                                   blur_radius=0.02,
+                                   buoyancy=0,
+                                   diffusion=0,
+                                   diffusion_data=None,
+                                   foam_downsample=1,
+                                   metalness=0,
+                                   particle_z_write=False,
+                                   radius_scale=4 if visible else 1,
+                                   reflection=0.25 if visible else 0,
+                                   refraction=-0.034 if visible else 0,
+                                   refraction_downsample=1,
+                                   render_smoothness=0.8 if visible else 0,
+                                   rest_density=1.293,
+                                   surface_downsample=1,
+                                   surface_tension=0,
+                                   thickness_downsample=2,
+                                   viscosity=0)
+        # The fluid's disk emitter.
+        self._emitter: DiskEmitter = DiskEmitter(radius=emitter_radius)
         self._capacity: LerpableFloat = LerpableFloat(value=capacity)
         self._lifespan: LerpableFloat = LerpableFloat(value=lifespan)
         self._speed: LerpableFloat = LerpableFloat(value=speed)
@@ -309,8 +305,8 @@ class WindSource:
             self._created = True
             return [{"$type": "create_obi_fluid",
                      "id": self.wind_id,
-                     "fluid": self.fluid.to_dict(),
-                     "shape": self.emitter.to_dict(),
+                     "fluid": self._fluid.to_dict(),
+                     "shape": self._emitter.to_dict(),
                      "position": self._position_dict,
                      "rotation": self._rotation_eulers,
                      "lifespan": self._lifespan.value,

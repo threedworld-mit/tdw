@@ -41,9 +41,10 @@ There are many optional parameters in the `WindSource` constructor. All of these
 
 The only differences between wind and non-wind fluids are at a very high level, in the Python code:
 
-- `WindSource` doesn't use the [`Fluid`](../../python/obi_data/fluids/fluid.md) to store its instantiation data.
-- `WindSource` hides many of the fluid parameters that aren't relevant to wind, for example rendering parameters.
-- Wind sources are added to a dictionary and can be dynamically adjusted during runtime.
+- `WindSource` hides many of the fluid parameters that aren't relevant to wind, for example rendering parameters (internally, it does create a [`Fluid`](../../python/obi_data/fluids/fluid.md) that is used to create the fluid).
+- `WindSource` always uses a [`DiskEmitter`](../../python/obi_data/fluids/disk_emitter.md).
+- `WindSource` is added to a dictionary and can be accessed after being created.
+- `WindSource` can be dynamically adjusted during runtime.
 
 ## Dynamic wind API
 
@@ -529,7 +530,7 @@ Result:
 
 ## Limitations
 
-- **This is a fluid simulation.** Wind is often modeled using fluid dynamics but some this simulation can't emulate pressure and other aspects of gases.
+- **This is a fluid simulation.** Wind is often modeled using fluid dynamics but some aspects of wind can't be modeled as a fluid. Notably, although there is are parameters for setting atmospheric pressure, it's impossible to set vary the air pressure for different sub-volumes of a fluid.
 - **This is a particle-based simulation.** There are many parameters, such as particle capacity and lifespan, that don't have any real-world analogue yet can significantly affect the simulation. There are likewise real-world parameters that are not easily translated into this simulation.
 - **Obi fluids have performance issues.** Obi runs on the CPU, as opposed to the GPU. This wind simulation is suitable for small rooms and *not* for large outdoor spaces, where the required particle count would be too high.
 - **Visible wind (for debugging) won't work correctly if there are other Obi objects (fluids, cloth, etc.) in the scene**. This is due to how Obi fluid rendering works.
@@ -574,10 +575,11 @@ Example controllers:
 Python API:
 
 - [`Obi`](../../python/add_ons/obi.md)
-- Fluid types:
 - [`WindSource`](../../python/obi_data/wind_source.md)
 - [`LerpableFloat`](../../python/lerp/lerpable_float.md)
 - [`LerpableVector`](../../python/lerp/lerpable_vector.md)
+- [`Fluid`](../../python/obi_data/fluids/fluid.md)
+- [`DiskEmitter`](../../python/obi_data/fluids/disk_emitter.md)
 
 Command API:
 

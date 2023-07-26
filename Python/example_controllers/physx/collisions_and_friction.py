@@ -14,7 +14,7 @@ class CollisionsAndFriction(Controller):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         # Add a collision manager and an object manager.
         self.collision_manager: CollisionManager = CollisionManager(enter=True, exit=True, stay=True, objects=True, environment=True)
-        self.object_manager: ObjectManager = ObjectManager(transforms=False, rigidbodies=True, bounds=False)
+        self.object_manager: ObjectManager = ObjectManager(transforms=True, rigidbodies=True, bounds=False)
         self.add_ons.extend([self.collision_manager, self.object_manager])
 
     def trial(self, fridge_dynamic_friction: float, fridge_static_friction: float, fridge_bounciness: float,
@@ -73,7 +73,7 @@ class CollisionsAndFriction(Controller):
             done = True
             # Check if all objects stopped moving.
             for object_id in self.object_manager.rigidbodies:
-                if not self.object_manager.rigidbodies[object_id].sleeping:
+                if not self.object_manager.rigidbodies[object_id].sleeping and self.object_manager.transforms[object_id].position[1] >= 0:
                     done = False
                     break
             # Print collision data.

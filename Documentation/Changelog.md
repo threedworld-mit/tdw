@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.4
+
+### Build
+
+- **Fixed: loading a new scene doesn't unload previous scenes.**
+
 ## v1.12.3
 
 ### New Features

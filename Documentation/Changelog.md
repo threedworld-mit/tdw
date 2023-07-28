@@ -10,6 +10,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - **Fixed: loading a new scene doesn't unload previous scenes.**
 
+### Material Library
+
+- Removed alcantara_microfibre_brushed_right because the `materials_med.json` version caused a crash if glass_clear was also loaded.
+
 ## v1.12.3
 
 ### New Features

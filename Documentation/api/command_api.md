@@ -17,6 +17,7 @@
 | [`destroy_all_objects`](#destroy_all_objects) | Destroy all objects and avatars in the scene.  |
 | [`do_nothing`](#do_nothing) | Do nothing. Useful for benchmarking.  |
 | [`enable_reflection_probes`](#enable_reflection_probes) | Enable or disable the reflection probes in the scene. By default, the reflection probes are enabled. Disabling the reflection probes will yield less realistic images but will improve the speed of the simulation. |
+| [`initialize_clatter`](#initialize_clatter) | Initialize Clatter. This command must be sent after each ClatterizeObject command has been sent (though it can be in the same list of commands). |
 | [`load_scene`](#load_scene) | Loads a new locally-stored scene. Unloads an existing scene (if any). This command must be sent before create_exterior_walls or create_empty_environment This command does not need to be sent along with an add_scene command. |
 | [`parent_audio_source_to_object`](#parent_audio_source_to_object) | Parent an audio source to an object. When the object moves, the audio source will move with it. |
 | [`pause_editor`](#pause_editor) | Pause Unity Editor.  |
@@ -25,6 +26,7 @@
 | [`set_ambient_intensity`](#set_ambient_intensity) | Set how much the ambient light fom the source affects the scene. Low values will darken the scene overall, to simulate evening /night light levels. |
 | [`set_cursor`](#set_cursor) | Set cursor parameters. |
 | [`set_download_timeout`](#set_download_timeout) | Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry a download. The default timeout is 30 minutes, which should always be sufficient. Send this command only if your computer or Internet connection is very slow. |
+| [`set_dsp_buffer_size`](#set_dsp_buffer_size) | Set the DSP buffer size. A lower value will result in less latency. |
 | [`set_error_handling`](#set_error_handling) | Set whether TDW will quit when it logs different types of messages.  |
 | [`set_floorplan_roof`](#set_floorplan_roof) | Show or hide the roof of a floorplan scene. This command only works if the current scene is a floorplan added via the add_scene command: "floorplan_1a", "floorplan_4b", etc.  |
 | [`set_gravity_vector`](#set_gravity_vector) | Set the gravity vector in the scene. |
@@ -67,6 +69,7 @@
 | [`add_humanoid`](#add_humanoid) | Add a humanoid model to the scene.  |
 | [`add_replicant`](#add_replicant) | Add a Replicant to the scene.  |
 | [`add_smpl_humanoid`](#add_smpl_humanoid) | Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.mpg.de/en">SMPL</ulink>. Each parameter scales an aspect of the humanoid and must be between -1 and 1. For example, if the height is -1, then the humanoid will be the shortest possible height. Because all of these parameters blend together to create the overall shape, it isn't possible to document specific body shape values, such as overall height, that might correspond to this command's parameters.  |
+| [`add_wheelchair_replicant`](#add_wheelchair_replicant) | Add a WheelchairReplicant to the scene.  |
 
 **Add Material Command**
 
@@ -331,9 +334,12 @@
 | Command | Description |
 | --- | --- |
 | [`add_trigger_collider`](#add_trigger_collider) | Add a trigger collider to an object. Trigger colliders are non-physics colliders that will merely detect if they intersect with something. You can use this to detect whether one object is inside another. The side, position, and rotation of the trigger collider always matches that of the parent object. Per trigger event, the trigger collider will send output data depending on which of the enter, stay, and exit booleans are True.  |
+| [`clatterize_object`](#clatterize_object) | Make an object respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each object prior to sending InitializeClatter (though they can all be in the same list of commands). |
 | [`create_obi_colliders`](#create_obi_colliders) | Create Obi colliders for an object if there aren't any.  |
 | [`destroy_object`](#destroy_object) | Destroy an object.  |
 | [`enable_nav_mesh_obstacle`](#enable_nav_mesh_obstacle) | Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavMeshObstacle, this command does nothing. |
+| [`ignore_collisions`](#ignore_collisions) | Set whether one object should ignore collisions with another object. By default, objects never ignore any collisions. |
+| [`ignore_leap_motion_physics_helpers`](#ignore_leap_motion_physics_helpers) | Make the object ignore a Leap Motion rig's physics helpers. This is useful for objects that shouldn't be moved, such as kinematic objects.  |
 | [`make_nav_mesh_obstacle`](#make_nav_mesh_obstacle) | Make a specific object a NavMesh obstacle. If it is already a NavMesh obstacle, change its properties. An object is already a NavMesh obstacle if you've sent the bake_nav_mesh or make_nav_mesh_obstacle command.  |
 | [`object_look_at`](#object_look_at) | Set the object's rotation such that its forward directional vector points towards another object's position. |
 | [`object_look_at_position`](#object_look_at_position) | Set the object's rotation such that its forward directional vector points towards another position. |
@@ -399,7 +405,6 @@
 | [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
 | [`set_mass`](#set_mass) | Set the mass of an object. |
-| [`set_obi_fluid_emission_speed`](#set_obi_fluid_emission_speed) | Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted.  |
 | [`set_object_collision_detection_mode`](#set_object_collision_detection_mode) | Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object.  |
 | [`set_object_drag`](#set_object_drag) | Set the drag of an object's RigidBody. Both drag and angular_drag can be safely changed on-the-fly. |
 | [`set_object_physics_solver_iterations`](#set_object_physics_solver_iterations) | Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: [set_physics_solver_iterations](#set_physics_solver_iterations) which sets the global default number of solver iterations. |
@@ -407,7 +412,6 @@
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
 | [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.  |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
-| [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
 
 **Drone Command**
 
@@ -428,18 +432,41 @@
 | [`play_humanoid_animation`](#play_humanoid_animation) | Play a motion capture animation on a humanoid. The animation must already be in memory via the add_humanoid_animation command.  |
 | [`stop_humanoid_animation`](#stop_humanoid_animation) | Stop a motion capture animation on a humanoid. |
 
-**Replicant Command**
+**Obi Actor Command**
 
 | Command | Description |
 | --- | --- |
-| [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
+| [`rotate_obi_actor_by`](#rotate_obi_actor_by) | Rotate an Obi actor by a given angle around a given axis.  |
+| [`rotate_obi_actor_to`](#rotate_obi_actor_to) | Set an Obi actor's rotation.  |
+| [`teleport_obi_actor`](#teleport_obi_actor) | Teleport an Obi actor to a new position.  |
+| [`untether_obi_cloth_sheet`](#untether_obi_cloth_sheet) | Untether a cloth sheet at a specified position.  |
+
+**Obi Fluid Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_obi_fluid_capacity`](#set_obi_fluid_capacity) | Set a fluid emitter's particle capacity.  |
+| [`set_obi_fluid_emission_speed`](#set_obi_fluid_emission_speed) | Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted.  |
+| [`set_obi_fluid_lifespan`](#set_obi_fluid_lifespan) | Set a fluid emitter's particle lifespan.  |
+| [`set_obi_fluid_random_velocity`](#set_obi_fluid_random_velocity) | Set a fluid emitter's random velocity.  |
+| [`set_obi_fluid_resolution`](#set_obi_fluid_resolution) | Set a fluid emitter's resolution.  |
+
+**Obi Fluid Fluid Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_obi_fluid_smoothing`](#set_obi_fluid_smoothing) | Set a fluid's smoothing value.  |
+| [`set_obi_fluid_vorticity`](#set_obi_fluid_vorticity) | Set a fluid's vorticity.  |
+
+**Replicant Base Command**
+
+| Command | Description |
+| --- | --- |
 | [`parent_avatar_to_replicant`](#parent_avatar_to_replicant) | Parent an avatar to a Replicant. The avatar's position and rotation will always be relative to the Replicant's head. Usually you'll want to do this to add a camera to the Replicant. |
-| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
 | [`replicant_resolve_collider_intersections`](#replicant_resolve_collider_intersections) | Try to resolve intersections between the Replicant's colliders and any other colliders. If there are other objects intersecting with the Replicant, the objects will be moved away along a given directional vector. |
 | [`replicant_step`](#replicant_step) | Advance the Replicant's IK solvers by 1 frame. |
-| [`stop_replicant_animation`](#stop_replicant_animation) | Stop an ongoing Replicant animation. |
 
-**Replicant Arm Command**
+**Replicant Base Arm Command**
 
 | Command | Description |
 | --- | --- |
@@ -447,19 +474,31 @@
 | [`replicant_grasp_object`](#replicant_grasp_object) | Grasp a target object.  |
 | [`replicant_set_grasped_object_rotation`](#replicant_set_grasped_object_rotation) | Start to rotate a grasped object relative to the rotation of the hand. This will update per communicate() call until the object is dropped.  |
 
+**Replicant Arm Command**
+
 **Replicant Arm Motion Command**
 
 | Command | Description |
 | --- | --- |
-| [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm on a humanoid to its neutral position.  |
+| [`replicant_reset_arm`](#replicant_reset_arm) | Tell the Replicant to start to reset the arm to its neutral position.  |
 
 **Replicant Reach For Command**
 
 | Command | Description |
 | --- | --- |
 | [`replicant_reach_for_object`](#replicant_reach_for_object) | Tell the Replicant to start to reach for a target object. The Replicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
-| [`replicant_reach_for_position`](#replicant_reach_for_position) | Instruct a Replicant to start to reach for a target position.  |
+| [`replicant_reach_for_position`](#replicant_reach_for_position) | Tell a Replicant to start to reach for a target position.  |
 | [`replicant_reach_for_relative_position`](#replicant_reach_for_relative_position) | Instruct a Replicant to start to reach for a target position relative to the Replicant.  |
+
+**Wheelchair Replicant Arm Command**
+
+**Wheelchair Replicant Reach For Command**
+
+| Command | Description |
+| --- | --- |
+| [`wheelchair_replicant_reach_for_object`](#wheelchair_replicant_reach_for_object) | Tell a WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position.  |
+| [`wheelchair_replicant_reach_for_position`](#wheelchair_replicant_reach_for_position) | Tell a WheelchairReplicant to start to reach for a target position.  |
+| [`wheelchair_replicant_reset_arm`](#wheelchair_replicant_reset_arm) | Tell a WheelchairReplicant to start to reset the arm to its neutral position.  |
 
 **Replicant Look At Command**
 
@@ -469,6 +508,14 @@
 | [`replicant_look_at_position`](#replicant_look_at_position) | Tell the Replicant to start to look at a position.  |
 | [`replicant_reset_head`](#replicant_reset_head) | Tell the Replicant to start to reset its head to its neutral position.  |
 | [`replicant_rotate_head_by`](#replicant_rotate_head_by) | Rotate the Replicant's head by an angle around an axis. |
+
+**Replicant Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_replicant_rigidbody`](#add_replicant_rigidbody) | Add a Rigidbody to a Replicant. |
+| [`play_replicant_animation`](#play_replicant_animation) | Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step. |
+| [`stop_replicant_animation`](#stop_replicant_animation) | Stop an ongoing Replicant animation. |
 
 **Sub Object Command**
 
@@ -498,6 +545,14 @@
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
 | [`set_visual_material_smoothness`](#set_visual_material_smoothness) | Set the smoothness (glossiness) of an object's visual material. |
+
+**Wheelchair Replicant Command**
+
+| Command | Description |
+| --- | --- |
+| [`set_wheelchair_brake_torque`](#set_wheelchair_brake_torque) | Set the brake torque of the wheelchair's wheels. |
+| [`set_wheelchair_motor_torque`](#set_wheelchair_motor_torque) | Set the motor torque of the wheelchair's rear wheels. |
+| [`set_wheelchair_steer_angle`](#set_wheelchair_steer_angle) | Set the steer angle of the wheelchair's front wheels. |
 
 **Set Flex Actor**
 
@@ -612,6 +667,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`clatterize_robot_joint`](#clatterize_robot_joint) | Make a robot respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each robot prior to sending InitializeClatter (though they can all be in the same list of commands). |
 | [`set_robot_joint_drive`](#set_robot_joint_drive) | Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are. |
 | [`set_robot_joint_friction`](#set_robot_joint_friction) | Set the friction coefficient of a robot joint. |
 | [`set_robot_joint_mass`](#set_robot_joint_mass) | Set the mass of a robot joint. To get the default mass, see the StaticRobot output data. |
@@ -675,7 +731,6 @@
 | [`send_magnebots`](#send_magnebots) | Send data for each Magnebot in the scene.  |
 | [`send_occupancy_map`](#send_occupancy_map) | Request an occupancy map, which will divide the environment into a grid with values indicating whether each cell is occupied or free.  |
 | [`send_robot_joint_velocities`](#send_robot_joint_velocities) | Send velocity data for each joint of each robot in the scene. This is separate from DynamicRobots output data for the sake of speed in certain simulations.  |
-| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 | [`send_static_robots`](#send_static_robots) | Send static data that doesn't update per frame (such as segmentation colors) for each robot in the scene. See also: send_robots  |
 | [`send_substructure`](#send_substructure) | Send visual material substructure data for a single object.  |
 
@@ -699,6 +754,7 @@
 | Command | Description |
 | --- | --- |
 | [`send_audio_sources`](#send_audio_sources) | Send data regarding whether each object in the scene is currently playing a sound.  |
+| [`send_avatar_transform_matrices`](#send_avatar_transform_matrices) | Send 4x4 transform matrix data for all avatars in the scene.  |
 | [`send_categories`](#send_categories) | Send data for the category names and colors of each object in the scene.  |
 | [`send_drones`](#send_drones) | Send data for each drone in the scene.  |
 | [`send_dynamic_composite_objects`](#send_dynamic_composite_objects) | Send dynamic data for every composite object in the scene.  |
@@ -711,8 +767,6 @@
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
 | [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
-| [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
-| [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
 | [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
@@ -738,7 +792,23 @@
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
+| [`send_transform_matrices`](#send_transform_matrices) | Send 4x4 matrix data for each object, describing their positions and rotations.  |
 | [`send_volumes`](#send_volumes) | Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value.  |
+
+**Send Replicants Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_replicants`](#send_replicants) | Send data of each Replicant in the scene.  |
+| [`send_wheelchair_replicants`](#send_wheelchair_replicants) | Send data of each WheelchairReplicant in the scene.  |
+
+**Send Vr Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data. |
+| [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
+| [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 
 **Ui Command**
 
@@ -929,6 +999,7 @@ The type of VR rig to add to the scene.
 | --- | --- |
 | `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
 | `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
+| `"oculus_leap_motion"` | A VR rig based on an Oculus headset (Rift S, Quest 2) with Leap Motion hand tracking. &lt;/summary |
 
 ***
 
@@ -973,6 +1044,52 @@ Enable or disable the reflection probes in the scene. By default, the reflection
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"enable"` | bool | If True, the reflection probes will be enabled. | True |
+
+***
+
+## **`initialize_clatter`**
+
+Initialize Clatter. This command must be sent after each ClatterizeObject command has been sent (though it can be in the same list of commands).
+
+
+```python
+{"$type": "initialize_clatter"}
+```
+
+```python
+{"$type": "initialize_clatter", "generate_random_seed": True, "random_seed": 0, "simulation_amp": 0.5, "min_collision_speed": 0.00001, "area_new_collision": 1e-5, "scrape_angle": 80, "impact_area_ratio": 5, "roll_angular_speed": 1, "max_contact_separation": 1e-8, "filter_duplicates": True, "max_num_contacts": 16, "sound_timeout": 0.1, "prevent_impact_distortion": True, "clamp_impact_contact_time": True, "min_time_between_impacts": 0.25, "max_time_between_impacts": 3, "scrape_amp": 1, "roughness_ratio_exponent": 0.7, "max_scrape_speed": 5, "loop_scrape_audio": True, "environment_impact_material": "wood_medium", "environment_size": 4, "environment_amp": 0.5, "environment_resonance": 0.1, "environment_mass": 100, "resonance_audio": False, "max_num_events": 200, "roll_substitute": "impact"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"generate_random_seed"` | bool | If True, the random seed will be explicitly set. | True |
+| `"random_seed"` | int | The random seed. Ignored if generate_random_seed == False. | 0 |
+| `"simulation_amp"` | float | The overall amplitude of the simulation. The amplitude of generated audio is scaled by this factor. Must be between 0 and 0.99 | 0.5 |
+| `"min_collision_speed"` | float | The minimum collision speed in meters per second. If a <computeroutput>CollisionEvent</computeroutput> has a speed less than this, it is ignored. | 0.00001 |
+| `"area_new_collision"` | float | On a collision stay event, if the previous area is None and the current area is greater than this, the audio event is either an impact or a scrape; see scrape_angle. | 1e-5 |
+| `"scrape_angle"` | float | On a collision stay event, there is a large new contact area (see area_new_collision), if the angle in degrees between Vector3.up and the normalized relative velocity of the collision is greater than this value, then the audio event is a scrape. Otherwise, it's an impact. | 80 |
+| `"impact_area_ratio"` | float | On a collision stay event, if the area of the collision increases by at least this factor, the audio event is an impact. | 5 |
+| `"roll_angular_speed"` | float | On a collision stay event, if the angular speed in meters per second is greater than or equal to this value, the audio event is a roll; otherwise, it's a scrape. | 1 |
+| `"max_contact_separation"` | float | On a collision stay event, if we think the collision is an impact but any of the contact points are this far away or greater, the audio event is none. | 1e-8 |
+| `"filter_duplicates"` | bool | Each object in Clatter tries to filter duplicate collision events in two ways. First, it will remove any reciprocal pairs of objects, i.e. it will accept a collision between objects 0 and 1 but not objects 1 and 0. Second, it will register only the first collision between objects per main-thread update (multiple collisions can be registered because there are many physics fixed update calls in between). To allow duplicate events, set this field to False. | True |
+| `"max_num_contacts"` | int | The maximum number of contact points that will be evaluated when setting the contact area and speed. A higher number can mean somewhat greater precision but at the cost of performance. | 16 |
+| `"sound_timeout"` | float | Timeout and destroy a Sound if it hasn't received new samples data after this many seconds. | 0.1 |
+| `"prevent_impact_distortion"` | bool | If True, clamp impact audio amplitude values to less than or equal to 0.99, preventing distortion. | True |
+| `"clamp_impact_contact_time"` | bool | If True, clamp impact contact time values to a plausible value. Set this to False if you want to generate impacts with unusually long contact times. | True |
+| `"min_time_between_impacts"` | float | The minimum time in seconds between impacts. If an impact occurs an this much time hasn't yet elapsed, the impact will be ignored. This can prevent strange "droning" sounds caused by too many impacts in rapid succession. | 0.25 |
+| `"max_time_between_impacts"` | float | The maximum time in seconds between impacts. After this many seconds, this impact series will end and a subsequent impact collision will start a new Impact. | 3 |
+| `"scrape_amp"` | float | When setting the amplitude for a scrape, multiply simulation_amp by this factor. | 1 |
+| `"roughness_ratio_exponent"` | float | An exponent for each scrape material's roughness ratio. A lower value will cause all scrape audio to be louder relative to impact audio. | 0.7 |
+| `"max_scrape_speed"` | float | For the purposes of scrape audio generation, the collision speed is clamped to this maximum value. | 5 |
+| `"loop_scrape_audio"` | bool | If True, fill in silences while scrape audio is being generated by continuously looping the current chunk of scrape audio until either there is new scrape audio or the scrape event ends. | True |
+| `"environment_impact_material"` | ImpactMaterialUnsized | The impact material for the environment (floors, walls, etc.). | "wood_medium" |
+| `"environment_size"` | int | The impact material size bucket for the environment (floors, walls, etc.). | 4 |
+| `"environment_amp"` | float | The amp value for the environment (floors, walls, etc.). | 0.5 |
+| `"environment_resonance"` | float | The resonance value for the environment (floors, walls, etc.). | 0.1 |
+| `"environment_mass"` | float | For the purposes of audio generation, this is the mass of the environment (floors, walls, etc.). | 100 |
+| `"resonance_audio"` | bool | If True, use Resonance Audio to play audio. | False |
+| `"max_num_events"` | int | The maximum number of impacts, scrapes, and rolls that can be processed on a single communicate() call. | 200 |
+| `"roll_substitute"` | AudioEventType | Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. | "impact" |
 
 ***
 
@@ -1133,6 +1250,25 @@ Set the timeout after which an Asset Bundle Command (e.g. add_object) will retry
 | --- | --- | --- | --- |
 | `"timeout"` | int | The time in seconds until the asset bundle download request will timeout. | 1800 |
 | `"retry"` | bool | If true, if a download times out, the build will try to download it again. | True |
+
+***
+
+## **`set_dsp_buffer_size`**
+
+Set the DSP buffer size. A lower value will result in less latency.
+
+
+```python
+{"$type": "set_dsp_buffer_size"}
+```
+
+```python
+{"$type": "set_dsp_buffer_size", "size": 1024}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"size"` | int | The DSP buffer size. | 1024 |
 
 ***
 
@@ -1719,6 +1855,30 @@ Add a parameterized humanoid to the scene using <ulink url="https://smpl.is.tue.
 | `"torso_height"` | float | The height of the torso from the chest. Must be between -1 and 1. | 0 |
 | `"left_right_symmetry"` | float | The extent to which the left side of the mesh is slightly narrower or vice versa. Must be between -1 and 1. | 0 |
 | `"shoulder_and_torso_width"` | float | The width of the shoulders and torso combined. Must be between -1 and 1. | 0 |
+| `"id"` | int | The unique ID of the humanoid. | |
+| `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
+| `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
+| `"name"` | string | The name of the asset bundle. | |
+| `"url"` | string | The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///" | |
+
+***
+
+## **`add_wheelchair_replicant`**
+
+Add a WheelchairReplicant to the scene. 
+
+- <font style="color:orange">**Downloads an asset bundle**: This command will download an asset bundle from TDW's asset bundle library. The first time this command is sent during a simulation, it will be slow (because it needs to download the file). Afterwards, the file data will be cached until the simulation is terminated, and this command will be much faster. See: `python/librarian/replicant_librarian.md`</font>
+
+```python
+{"$type": "add_wheelchair_replicant", "id": 1, "name": "string", "url": "string"}
+```
+
+```python
+{"$type": "add_wheelchair_replicant", "id": 1, "name": "string", "url": "string", "position": {"x": 0, "y": 0, "z": 0}, "rotation": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique ID of the humanoid. | |
 | `"position"` | Vector3 | Position of the humanoid. | {"x": 0, "y": 0, "z": 0} |
 | `"rotation"` | Vector3 | Rotation of the humanoid, in Euler angles. | {"x": 0, "y": 0, "z": 0} |
@@ -4340,6 +4500,33 @@ The shape of the trigger collider.
 
 ***
 
+## **`clatterize_object`**
+
+Make an object respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each object prior to sending InitializeClatter (though they can all be in the same list of commands).
+
+
+```python
+{"$type": "clatterize_object", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "id": 1}
+```
+
+```python
+{"$type": "clatterize_object", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "id": 1, "has_scrape_material": False, "scrape_material": "ceramic", "set_fake_mass": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"impact_material"` | ImpactMaterialUnsized | The impact material. See: tdw.physics_audio.audio_material (which is the same thing as an impact material). | |
+| `"size"` | int | The size bucket value (0-5); smaller objects should use smaller values. | |
+| `"amp"` | float | The audio amplitude (0-1). | |
+| `"resonance"` | float | The resonance value (0-1). | |
+| `"has_scrape_material"` | bool | If true, the object has a scrape material. | False |
+| `"scrape_material"` | ScrapeMaterial | The object's scrape material. Ignored if has_scrape_material == False. See: tdw.physics_audio.scrape_material | "ceramic" |
+| `"set_fake_mass"` | bool | If True, set a fake audio mass (see below). | False |
+| `"fake_mass"` | float | If set_fake_mass == True, this is the fake mass, which will be used for audio synthesis instead of the true mass. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`create_obi_colliders`**
 
 Create Obi colliders for an object if there aren't any. 
@@ -4385,6 +4572,43 @@ Enable or disable an object's NavMeshObstacle. If the object doesn't have a NavM
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"enable"` | bool | If True, enable the NavMeshObstacle. If False, disable the NavMeshObstacle. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`ignore_collisions`**
+
+Set whether one object should ignore collisions with another object. By default, objects never ignore any collisions.
+
+
+```python
+{"$type": "ignore_collisions", "other_id": 1, "id": 1}
+```
+
+```python
+{"$type": "ignore_collisions", "other_id": 1, "id": 1, "ignore": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"other_id"` | int | The ID of the other object. | |
+| `"ignore"` | bool | If True, ignore collisions with the other object. If False, listen for collisions with the other object. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`ignore_leap_motion_physics_helpers`**
+
+Make the object ignore a Leap Motion rig's physics helpers. This is useful for objects that shouldn't be moved, such as kinematic objects. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "ignore_leap_motion_physics_helpers", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5417,27 +5641,6 @@ Set the mass of an object.
 
 ***
 
-## **`set_obi_fluid_emission_speed`**
-
-Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted. 
-
-- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
-
-```python
-{"$type": "set_obi_fluid_emission_speed", "id": 1}
-```
-
-```python
-{"$type": "set_obi_fluid_emission_speed", "id": 1, "speed": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"speed"` | float | The speed of emitted particles in meters per second. Set this to 0 to stop emission. | 0 |
-| `"id"` | int | The unique object ID. | |
-
-***
-
 ## **`set_object_collision_detection_mode`**
 
 Set the collision mode of an objects's Rigidbody. This doesn't need to be sent continuously, but does need to be sent per object. 
@@ -5596,40 +5799,6 @@ Show the collider hulls of the object.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
-
-***
-
-## **`untether_obi_cloth_sheet`**
-
-Untether a cloth sheet at a specified position. 
-
-- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
-
-```python
-{"$type": "untether_obi_cloth_sheet", "tether_position": "four_corners", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"tether_position"` | TetherParticleGroup | The position that will be un-tethered. | |
-| `"id"` | int | The unique object ID. | |
-
-#### TetherParticleGroup
-
-A group of particles from which an Obi cloth sheet can be tethered to another object. All directions are from the vantage point of looking down at a sheet spread out on the floor.
-
-| Value | Description |
-| --- | --- |
-| `"four_corners"` |  |
-| `"north_corners"` |  |
-| `"south_corners"` |  |
-| `"east_corners"` |  |
-| `"west_corners"` |  |
-| `"north_edge"` |  |
-| `"south_edge"` |  |
-| `"east_edge"` |  |
-| `"west_edge"` |  |
-| `"center"` |  |
 
 # DroneCommand
 
@@ -5818,30 +5987,253 @@ Stop a motion capture animation on a humanoid.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
-# ReplicantCommand
+# ObiActorCommand
 
-These commands affect a Replicant currently in the scene.
+These commands affect Obi actors in the scene.
 
 ***
 
-## **`add_replicant_rigidbody`**
+## **`rotate_obi_actor_by`**
 
-Add a Rigidbody to a Replicant.
+Rotate an Obi actor by a given angle around a given axis. 
 
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
 
 ```python
-{"$type": "add_replicant_rigidbody", "id": 1}
+{"$type": "rotate_obi_actor_by", "angle": 0.125, "id": 1}
 ```
 
 ```python
-{"$type": "add_replicant_rigidbody", "id": 1, "is_kinematic": True, "use_gravity": False}
+{"$type": "rotate_obi_actor_by", "angle": 0.125, "id": 1, "axis": "yaw", "is_world": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | True |
-| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
+| `"axis"` | Axis | The axis of rotation. | "yaw" |
+| `"angle"` | float | The angle of rotation in degrees. | |
+| `"is_world"` | bool | If True, the object will rotate around global axes. If False, the object will around local axes. Ignored if use_centroid == False. | True |
 | `"id"` | int | The unique object ID. | |
+
+#### Axis
+
+An axis of rotation.
+
+| Value | Description |
+| --- | --- |
+| `"pitch"` | Nod your head "yes". |
+| `"yaw"` | Shake your head "no". |
+| `"roll"` | Put your ear to your shoulder. |
+
+***
+
+## **`rotate_obi_actor_to`**
+
+Set an Obi actor's rotation. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "rotate_obi_actor_to", "rotation": {"w": 0.6, "x": 3.5, "y": -45, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rotation"` | Quaternion | The rotation. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`teleport_obi_actor`**
+
+Teleport an Obi actor to a new position. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "teleport_obi_actor", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`untether_obi_cloth_sheet`**
+
+Untether a cloth sheet at a specified position. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "untether_obi_cloth_sheet", "tether_position": "four_corners", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"tether_position"` | TetherParticleGroup | The position that will be un-tethered. | |
+| `"id"` | int | The unique object ID. | |
+
+#### TetherParticleGroup
+
+A group of particles from which an Obi cloth sheet can be tethered to another object. All directions are from the vantage point of looking down at a sheet spread out on the floor.
+
+| Value | Description |
+| --- | --- |
+| `"four_corners"` |  |
+| `"north_corners"` |  |
+| `"south_corners"` |  |
+| `"east_corners"` |  |
+| `"west_corners"` |  |
+| `"north_edge"` |  |
+| `"south_edge"` |  |
+| `"east_edge"` |  |
+| `"west_edge"` |  |
+| `"center"` |  |
+
+# ObiFluidCommand
+
+These commands affect and Obi fluid actor in the scene.
+
+***
+
+## **`set_obi_fluid_capacity`**
+
+Set a fluid emitter's particle capacity. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_capacity", "capacity": 1000, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"capacity"` | uint | The maximum amount of emitted particles. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_emission_speed`**
+
+Set the emission speed of a fluid emitter. Larger values will cause more particles to be emitted. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_emission_speed", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_emission_speed", "id": 1, "speed": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"speed"` | float | The speed of emitted particles in meters per second. Set this to 0 to stop emission. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_lifespan`**
+
+Set a fluid emitter's particle lifespan. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_lifespan", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_lifespan", "id": 1, "lifespan": 4}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"lifespan"` | float | The particle lifespan in seconds. | 4 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_random_velocity`**
+
+Set a fluid emitter's random velocity. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_random_velocity", "id": 1}
+```
+
+```python
+{"$type": "set_obi_fluid_random_velocity", "id": 1, "random_velocity": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"random_velocity"` | float | Random velocity of emitted particles. | 0 |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_resolution`**
+
+Set a fluid emitter's resolution. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_resolution", "resolution": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"resolution"` | float | The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter. | |
+| `"id"` | int | The unique object ID. | |
+
+# ObiFluidFluidCommand
+
+These (admittedly awkwardly-named) commands affect an Obi fluid emitter's fluid. They can't be used if the emitter has a granular fluid.
+
+***
+
+## **`set_obi_fluid_smoothing`**
+
+Set a fluid's smoothing value. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_smoothing", "smoothing": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"smoothing"` | float | A percentage of the particle radius used to define the radius of the zone around each particle when calculating fluid density. Larger values will create smoother fluids, which are also less performant. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_obi_fluid_vorticity`**
+
+Set a fluid's vorticity. 
+
+- <font style="color:blue">**Obi**: This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process.See: [Obi documentation](../lessons/obi/obi.md)</font>
+
+```python
+{"$type": "set_obi_fluid_vorticity", "vorticity": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"vorticity"` | float | Amount of vorticity confinement, it will contribute to maintain vortical details in the fluid. This value should always be between approximately 0 and 0.5. | |
+| `"id"` | int | The unique object ID. | |
+
+# ReplicantBaseCommand
+
+These commands affect a Replicant currently in the scene.
 
 ***
 
@@ -5862,29 +6254,6 @@ Parent an avatar to a Replicant. The avatar's position and rotation will always 
 | --- | --- | --- | --- |
 | `"avatar_id"` | string | The ID of the avatar. It must already exist in the scene. | "a" |
 | `"position"` | Vector3 | The position of the avatar relative to the Replicant's head. | |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`play_replicant_animation`**
-
-Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
-
-
-```python
-{"$type": "play_replicant_animation", "name": "string", "id": 1}
-```
-
-```python
-{"$type": "play_replicant_animation", "name": "string", "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"name"` | string | The name of the animation clip to play. | |
-| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
-| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
-| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5918,22 +6287,7 @@ Advance the Replicant's IK solvers by 1 frame.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
-***
-
-## **`stop_replicant_animation`**
-
-Stop an ongoing Replicant animation.
-
-
-```python
-{"$type": "stop_replicant_animation", "id": 1}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"id"` | int | The unique object ID. | |
-
-# ReplicantArmCommand
+# ReplicantBaseArmCommand
 
 These commands involve a Replicant's arm.
 
@@ -5982,13 +6336,12 @@ Grasp a target object.
 ```
 
 ```python
-{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "rotate": True, "set_status": True}
+{"$type": "replicant_grasp_object", "object_id": 1, "offset": 0.125, "arm": "left", "id": 1, "set_status": True}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"object_id"` | int | The target object ID. | |
-| `"rotate"` | bool | If true, rotate the object to match the rotation of the hand. | True |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | float | Offset the object from the hand by this distance. | |
 | `"arm"` | Arm | The arm doing the action. | |
@@ -6047,6 +6400,10 @@ An axis of rotation.
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
 
+# ReplicantArmCommand
+
+These commands involve a Replicant's arm.
+
 # ReplicantArmMotionCommand
 
 These commands involve the motion of a Replicant's arm.
@@ -6055,7 +6412,7 @@ These commands involve the motion of a Replicant's arm.
 
 ## **`replicant_reset_arm`**
 
-Tell the Replicant to start to reset the arm on a humanoid to its neutral position. 
+Tell the Replicant to start to reset the arm to its neutral position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
@@ -6129,7 +6486,7 @@ A left or right arm.
 
 ## **`replicant_reach_for_position`**
 
-Instruct a Replicant to start to reach for a target position. 
+Tell a Replicant to start to reach for a target position. 
 
 - <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
 - <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
@@ -6182,6 +6539,125 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The target position relative to the Replicant. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+# WheelchairReplicantArmCommand
+
+These commands involve a WheelchairReplicant's arm.
+
+# WheelchairReplicantReachForCommand
+
+These commands instruct a replicant to start to reach for a target.
+
+***
+
+## **`wheelchair_replicant_reach_for_object`**
+
+Tell a WheelchairReplicant to start to reach for a target object. The WheelchairReplicant will try to reach for the nearest empty object attached to the target. If there aren't any empty objects, the Replicant will reach for the nearest bounds position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"object_id"` | int | The target object ID. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`wheelchair_replicant_reach_for_position`**
+
+Tell a WheelchairReplicant to start to reach for a target position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The target position. | |
+| `"absolute"` | bool | If True, the target position is in absolute world space coordinates. If False, it's in local space coordinates. | |
+| `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
+| `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
+| `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
+| `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"duration"` | float | The duration of the motion in seconds. | |
+| `"arm"` | Arm | The arm doing the action. | |
+| `"id"` | int | The unique object ID. | |
+
+#### Arm
+
+A left or right arm.
+
+| Value | Description |
+| --- | --- |
+| `"left"` |  |
+| `"right"` |  |
+
+***
+
+## **`wheelchair_replicant_reset_arm`**
+
+Tell a WheelchairReplicant to start to reset the arm to its neutral position. 
+
+- <font style="color:green">**Replicant motion**: This tells the Replicant to begin a motion. The Replicant will continue the motion per communicate() call until the motion is complete.</font>
+- <font style="color:green">**Replicant status**: This command will sometimes set the action status of the Replicant in the `Replicant` output data. This is usually desirable. In some cases, namely when you're calling several of these commands in sequence, you might want only the last command to set the status. See the `set_status` parameter, below.</font>
+
+```python
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1}
+```
+
+```python
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"max_distance"` | float | The maximum distance that the Replicant can reach. | 1.5 |
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
@@ -6307,6 +6783,70 @@ An axis of rotation.
 | `"pitch"` | Nod your head "yes". |
 | `"yaw"` | Shake your head "no". |
 | `"roll"` | Put your ear to your shoulder. |
+
+# ReplicantCommand
+
+These commands affect a Replicant currently in the scene.
+
+***
+
+## **`add_replicant_rigidbody`**
+
+Add a Rigidbody to a Replicant.
+
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1}
+```
+
+```python
+{"$type": "add_replicant_rigidbody", "id": 1, "is_kinematic": True, "use_gravity": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"is_kinematic"` | bool | If True, the Rigidbody will be kinematic, and won't respond to physics. | True |
+| `"use_gravity"` | bool | If True, the object will respond to gravity. | False |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`play_replicant_animation`**
+
+Play a Replicant animation. Optionally, maintain the positions and rotations of specified body parts as set in the IK sub-step prior to the animation sub-step.
+
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "loop": True, "id": 1}
+```
+
+```python
+{"$type": "play_replicant_animation", "name": "string", "loop": True, "id": 1, "framerate": -1, "forward": True, "ik_body_parts": []}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"name"` | string | The name of the animation clip to play. | |
+| `"framerate"` | int | If greater than zero, play the animation at this framerate instead of the animation's framerate. | -1 |
+| `"forward"` | bool | If True, play the animation normally. If False, play the naimation in reverse. | True |
+| `"ik_body_parts"` | ReplicantBodyPart [] | These body parts will maintain their positions based on inverse kinematics (IK). | [] |
+| `"loop"` | bool | If True, this animation will loop without announcing that it's done. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`stop_replicant_animation`**
+
+Stop an ongoing Replicant animation.
+
+
+```python
+{"$type": "stop_replicant_animation", "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | The unique object ID. | |
 
 # SubObjectCommand
 
@@ -6599,6 +7139,59 @@ Set the smoothness (glossiness) of an object's visual material.
 | `"smoothness"` | float | The material smoothness. Must be between 0 and 1. | 0 |
 | `"material_index"` | int | The index of the material in the sub-object's list of materials. | 0 |
 | `"object_name"` | string | The name of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+# WheelchairReplicantCommand
+
+These commands affect a WheelchairReplicant currently in the scene.
+
+***
+
+## **`set_wheelchair_brake_torque`**
+
+Set the brake torque of the wheelchair's wheels.
+
+
+```python
+{"$type": "set_wheelchair_brake_torque", "torque": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"torque"` | float | The torque. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_wheelchair_motor_torque`**
+
+Set the motor torque of the wheelchair's rear wheels.
+
+
+```python
+{"$type": "set_wheelchair_motor_torque", "left": 0.125, "right": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"left"` | float | The torque for the left rear wheel. | |
+| `"right"` | float | The torque for the right rear wheel. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_wheelchair_steer_angle`**
+
+Set the steer angle of the wheelchair's front wheels.
+
+
+```python
+{"$type": "set_wheelchair_steer_angle", "angle": 0.125, "id": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle in degrees. | |
 | `"id"` | int | The unique object ID. | |
 
 # SetFlexActor
@@ -7674,6 +8267,34 @@ These commands set joint targets or parameters for a robot in the scene.
 
 ***
 
+## **`clatterize_robot_joint`**
+
+Make a robot respond to Clatter audio by setting its audio values and adding a ClatterObject component. You must send ClatterizeObject for each robot prior to sending InitializeClatter (though they can all be in the same list of commands).
+
+
+```python
+{"$type": "clatterize_robot_joint", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "joint_id": 1}
+```
+
+```python
+{"$type": "clatterize_robot_joint", "impact_material": "wood_medium", "size": 1, "amp": 0.125, "resonance": 0.125, "fake_mass": 0.125, "joint_id": 1, "has_scrape_material": False, "scrape_material": "ceramic", "set_fake_mass": False, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"impact_material"` | ImpactMaterialUnsized | The impact material. See: tdw.physics_audio.audio_material (which is the same thing as an impact material). | |
+| `"size"` | int | The size bucket value (0-5); smaller objects should use smaller values. | |
+| `"amp"` | float | The audio amplitude (0-1). | |
+| `"resonance"` | float | The resonance value (0-1). | |
+| `"has_scrape_material"` | bool | If true, the object has a scrape material. | False |
+| `"scrape_material"` | ScrapeMaterial | The object's scrape material. Ignored if has_scrape_material == False. See: tdw.physics_audio.scrape_material | "ceramic" |
+| `"set_fake_mass"` | bool | If True, set a fake audio mass (see below). | False |
+| `"fake_mass"` | float | If set_fake_mass == True, this is the fake mass, which will be used for audio synthesis instead of the true mass. | |
+| `"joint_id"` | int | The ID of the joint. | |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
 ## **`set_robot_joint_drive`**
 
 Set static joint drive parameters for a robot joint. Use the StaticRobot output data to determine which drives (x, y, and z) the joint has and what their default values are.
@@ -8398,6 +9019,7 @@ Send velocity data for each joint of each robot in the scene. This is separate f
 - <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
 
     - <font style="color:red">**Use this command instead:** `send_dynamic_robots`</font>
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "send_robot_joint_velocities"}
@@ -8405,39 +9027,6 @@ Send velocity data for each joint of each robot in the scene. This is separate f
 
 ```python
 {"$type": "send_robot_joint_velocities", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_static_oculus_touch`**
-
-Send static data for the Oculus Touch rig. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "send_static_oculus_touch"}
-```
-
-```python
-{"$type": "send_static_oculus_touch", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -8896,6 +9485,41 @@ Options for when to send data.
 
 ***
 
+## **`send_avatar_transform_matrices`**
+
+Send 4x4 transform matrix data for all avatars in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`AvatarTransformMatrices`](output_data.md#AvatarTransformMatrices)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
+
+```python
+{"$type": "send_avatar_transform_matrices"}
+```
+
+```python
+{"$type": "send_avatar_transform_matrices", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_categories`**
 
 Send data for the category names and colors of each object in the scene. 
@@ -9266,71 +9890,6 @@ Send particle data for all Obi actors in the scene.
 
 ```python
 {"$type": "send_obi_particles", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_oculus_touch_buttons`**
-
-Send data for buttons pressed on Oculus Touch controllers. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`OculusTouchButtons`](output_data.md#OculusTouchButtons)</font>
-- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
-
-```python
-{"$type": "send_oculus_touch_buttons"}
-```
-
-```python
-{"$type": "send_oculus_touch_buttons", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_replicants`**
-
-Send data of each Replicant in the scene. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
-
-```python
-{"$type": "send_replicants"}
-```
-
-```python
-{"$type": "send_replicants", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -9856,6 +10415,42 @@ Options for when to send data.
 
 ***
 
+## **`send_transform_matrices`**
+
+Send 4x4 matrix data for each object, describing their positions and rotations. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`TransformMatrices`](output_data.md#TransformMatrices)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_transform_matrices", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_transform_matrices", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_volumes`**
 
 Send spatial volume data of objects in the scene. Volume is calculated from the physics colliders; it is an approximate value. 
@@ -9877,6 +10472,174 @@ Send spatial volume data of objects in the scene. Volume is calculated from the 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendReplicantsCommand
+
+These commands send Replicants output data for different types of Replicants.
+
+***
+
+## **`send_replicants`**
+
+Send data of each Replicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
+
+```python
+{"$type": "send_replicants"}
+```
+
+```python
+{"$type": "send_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_wheelchair_replicants`**
+
+Send data of each WheelchairReplicant in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Replicants`](output_data.md#Replicants)</font>
+
+```python
+{"$type": "send_wheelchair_replicants"}
+```
+
+```python
+{"$type": "send_wheelchair_replicants", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendVrCommand
+
+These commands send data that is specific to certain types of VR rigs.
+
+***
+
+## **`send_leap_motion`**
+
+Send Leap Motion hand tracking data.
+
+
+```python
+{"$type": "send_leap_motion"}
+```
+
+```python
+{"$type": "send_leap_motion", "max_num_collisions_per_bone": 5, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"max_num_collisions_per_bone"` | int | The maximum number of collisions per bone that will be returned in the output data. | 5 |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_oculus_touch_buttons`**
+
+Send data for buttons pressed on Oculus Touch controllers. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`OculusTouchButtons`](output_data.md#OculusTouchButtons)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_oculus_touch_buttons"}
+```
+
+```python
+{"$type": "send_oculus_touch_buttons", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_static_oculus_touch`**
+
+Send static data for the Oculus Touch rig. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`StaticOculusTouch`](output_data.md#StaticOculusTouch)</font>
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "send_static_oculus_touch"}
+```
+
+```python
+{"$type": "send_static_oculus_touch", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency

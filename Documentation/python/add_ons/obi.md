@@ -10,6 +10,8 @@ This add-on handles most aspects of an Obi physics simulation, including initial
 
 - `actors` A dictionary of Obi actor data. Key = Object ID. Value = [`ObiActor`](../obi_data/obi_actor.md). The particle data is updated if `output_data == True` (see above).
 
+- `wind_sources` A dictionary of wind sources. Key = Wind source ID. Value = [`WindSource`](../obi_data/wind_source.md). To add a wind source, add a new `WindSource` to this dictionary; it will be automatically created and updated. See the `WindSource` API for how to dynamically set wind parameters.
+
 - `commands` These commands will be appended to the commands of the next `communicate()` call.
 
 - `initialized` If True, this module has been initialized.
@@ -22,7 +24,7 @@ This add-on handles most aspects of an Obi physics simulation, including initial
 
 **`Obi()`**
 
-**`Obi(output_data=True, floor_material=None, object_materials=None, vr_material=None)`**
+**`Obi(output_data=True, floor_material=None, object_materials=None, vr_material=None, exclude=None)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -30,6 +32,7 @@ This add-on handles most aspects of an Obi physics simulation, including initial
 | floor_material |  CollisionMaterial  | None | The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values. |
 | object_materials |  Dict[int, CollisionMaterial] | None | Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). |
 | vr_material |  CollisionMaterial  | None | If there is a VR rig in the scene, its hands will have this [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values. |
+| exclude |  List[int] | None | Exclude these objects from receiving Obi collision materials. |
 
 #### get_initialization_commands
 

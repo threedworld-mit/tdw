@@ -12,7 +12,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.audio_initializer import AudioInitializer
-from tdw.add_ons.py_impact import PyImpact
+from tdw.add_ons.clatter import Clatter
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
@@ -27,9 +27,9 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 0.8, "z": 1},
                            avatar_id="a")
 # Initialize audio.
 audio_initializer = AudioInitializer(avatar_id="a")
-# Add PyImpact.
-py_impact = PyImpact()
-c.add_ons.extend([camera, audio_initializer, py_impact])
+# Add Clatter.
+clatter = Clatter()
+c.add_ons.extend([camera, audio_initializer, clatter])
 # Set the output path.
 path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("video_capture").joinpath("video.mp4")
 print(f"Video will be saved to: {path}")
@@ -69,7 +69,7 @@ c.communicate({"$type": "terminate"})
 
 Add a  [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md) and an [`AudioInitializer`](../../python/add_ons/audio_initializer.md) to initialize audio. For more information about audio in TDW, [read this](../audio/overview.md). Set the `framerate` parameter of `AudioInitializer` to match the framerate of the video (see below); this will tell the build to send [`set_target_framerate`](../../api/command_api.md#set_target_framerate).
 
-In this example, we've also added [`PyImpact`](../audio/py_impact.md) to generate impact sounds.
+In this example, we've also added [`Clatter`](../clatter/overview.md) to generate impact sounds.
 
 ## The `output_path` parameter
 
@@ -196,7 +196,7 @@ Python API:
 
 - [`ThirdPersonCamera`](../../python/add_ons/third_person_camera.md)
 - [`AudioInitializer`](../../python/add_ons/audio_initializer.md)
-- [`PyImpact`](../../python/add_ons/py_impact.md)
+- [`Clatter`](../../python/add_ons/clatter.md)
 
 Command API:
 

@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
@@ -53,9 +54,12 @@ from tdw.FBOutput import ObiParticles as ObiP
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
+from tdw.FBOutput import TransformMatrices as TranMat
+from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import LeapMotion as Leap
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
@@ -1485,6 +1489,46 @@ class Mouse(OutputData):
         return self._buttons[2][2]
 
 
+class TransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._matrices = self.data.MatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> TranMat.TransformMatrices:
+        return TranMat.TransformMatrices.GetRootAsTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_matrix(self, index: int) -> np.array:
+        return self._matrices[index]
+
+
+class AvatarTransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._avatar_matrices = self.data.AvatarMatricesAsNumpy().reshape(-1, 4, 4)
+        self._sensor_container_matrices = self.data.SensorContainerMatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> AvTranMat.AvatarTransformMatrices:
+        return AvTranMat.AvatarTransformMatrices.GetRootAsAvatarTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.AvatarIdsLength()
+
+    def get_id(self, index: int) -> str:
+        return self.data.AvatarIds(index).decode('utf-8')
+
+    def get_avatar_matrix(self, index: int) -> np.array:
+        return self._avatar_matrices[index]
+
+    def get_sensor_matrix(self, index: int) -> np.array:
+        return self._sensor_container_matrices[index]
+        
 class FieldOfView(OutputData):
     def get_data(self) -> Fov.FieldOfView:
         return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)
@@ -1505,13 +1549,15 @@ class FieldOfView(OutputData):
 class Replicants(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy().reshape(-1, 15)
-        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 15, 3)
-        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 15, 4)
-        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
+        num_body_parts: int = self.get_num_body_parts()
+        q = self.data.IdsAsNumpy()
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, num_body_parts)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, num_body_parts, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, num_body_parts, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, num_body_parts, 3)
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
-        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
-        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, 14, 10)
+        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, num_body_parts - 1, 10)
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, num_body_parts - 1, 10)
         self._statuses: np.ndarray = self.data.StatusesAsNumpy()
 
     def get_data(self) -> Repl.Replicants:
@@ -1564,6 +1610,52 @@ class Replicants(OutputData):
 
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
+
+    def get_num_body_parts(self) -> int:
+        return int(self.data.NumBodyParts())
+
+
+class LeapMotion(OutputData):
+    _NUM_BONES_PER_HAND: int = 16
+
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy()
+        self._max_num_collisions: int = self._collision_ids.shape[0] // (LeapMotion._NUM_BONES_PER_HAND * 2)
+        self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._angles: np.ndarray = self.data.AnglesAsNumpy().reshape(2, 25)
+        self._button_presses: np.ndarray = self.data.ButtonsAsNumpy()
+
+    def get_data(self) -> Leap.LeapMotion:
+        return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)
+
+    def get_num_collisions_per_bone(self) -> int:
+        return self._max_num_collisions
+
+    def get_position(self, index: int, bone_index: int) -> np.ndarray:
+        return self._positions[index][bone_index]
+
+    def get_rotation(self, index: int, bone_index: int) -> np.ndarray:
+        return self._rotations[index][bone_index]
+
+    def get_forward(self, index: int, bone_index: int) -> np.ndarray:
+        return self._forwards[index][bone_index]
+
+    def get_is_collision(self, index: int, bone_index: int, collision_index: int) -> bool:
+        return bool(self._is_collisions[index][bone_index][collision_index])
+
+    def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
+        return int(self._collision_ids[index][bone_index][collision_index])
+
+    def get_angles(self, index: int, start_bone_index: int, end_bone_index: int) -> np.ndarray:
+        return np.rad2deg(self._angles[index][start_bone_index: end_bone_index])
+
+    def get_is_button_pressed(self, index: int) -> bool:
+        return bool(self._button_presses[index])
 
 
 class ReplicantSegmentationColors(OutputData):

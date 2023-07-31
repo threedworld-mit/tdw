@@ -274,12 +274,10 @@ class MaterialScreenshotter(_Screenshotter):
         self.communicate([self.get_add_material(record.name),
                           {"$type": "set_primitive_visual_material",
                            "id": self.sphere_id,
-                           "name": record.name,
-                           "quality": "high"},
+                           "name": record.name},
                           {"$type": "set_primitive_visual_material",
                            "id": self.cube_id,
-                           "name": record.name,
-                           "quality": "high"}])
+                           "name": record.name}])
         # Capture the image the following frame to allow it to initialize correctly.
         resp = self.communicate([])
         return Images(resp[0])

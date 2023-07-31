@@ -22,14 +22,15 @@ class Animate(Action):
     """
 
     def __init__(self, animation: str, collision_detection: CollisionDetection, forward: bool, library: str,
-                 previous: Optional[Action], ik_body_parts: List[ReplicantBodyPart]):
+                 previous: Optional[Action], ik_body_parts: List[ReplicantBodyPart], loop: bool):
         """
         :param animation: The name of the animation.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param forward: If True, play the animation forwards. If False, play the animation backwards.
-        :param library: The name animation library.
+        :param library: The name of the animation's library.
         :param previous: The previous action. Can be None.
         :param ik_body_parts: Maintain the IK positions of these body parts.
+        :param loop: If True, the animation will continuously loop and the action will continue until interrupted.
         """
 
         super().__init__()
@@ -52,6 +53,10 @@ class Animate(Action):
         If True, play the animation forwards. If False, play the animation backwards.
         """
         self.forward: bool = forward
+        """:field
+        If True, the animation will continuously loop and the action will continue until interrupted.
+        """
+        self.loop: bool = loop
         # Maintain the IK positions of these body parts.
         self._ik_body_parts: List[str] = [b.name for b in ik_body_parts]
 
@@ -68,7 +73,8 @@ class Animate(Action):
                           "id": static.replicant_id,
                           "framerate": self.record.framerate,
                           "forward": self.forward,
-                          "ik_body_parts": self._ik_body_parts}])
+                          "ik_body_parts": self._ik_body_parts,
+                          "loop": self.loop}])
         return commands
 
     def get_ongoing_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:

@@ -10,7 +10,7 @@ Abstract base class for Obi fluids.
 
 - `capacity` The maximum amount of emitted particles.
 
-- `resolution` The size and amount of particles in 1 cubic meter.
+- `resolution` The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter.
 
 - `color` The visual color of the fluid.
 

@@ -309,7 +309,7 @@ Granular fluids don't use render settings and don't have the same limitation. Ho
 
 ***
 
-**Next: [Cloth](cloth.md)**
+**Next: [Wind](wind.md)**
 
 [Return to the README](../../../README.md)
 

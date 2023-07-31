@@ -238,10 +238,12 @@ class HumanoidAnimationRecord(_Record):
             self.duration: float = 0
             self.loop: bool = False
             self.framerate: int = 0
+            self.walk: bool = False
         else:
             self.duration: float = data["duration"]
             self.loop: bool = data["loop"]
             self.framerate: int = data["framerate"]
+            self.walk: bool = data["walk"]
 
     def get_num_frames(self) -> int:
         """
@@ -258,6 +260,8 @@ class HumanoidRecord(_Record):
 
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
+        self.collision_avoidance_distance: float = data["collision_avoidance_distance"]
+        self.collision_avoidance_half_extents: Dict[str, float] = data["collision_avoidance_half_extents"]
 
 
 class DroneRecord(_Record):
@@ -645,7 +649,7 @@ class HumanoidLibrarian(_Librarian[HumanoidRecord]):
 
     @staticmethod
     def get_library_filenames() -> List[str]:
-        return ["humanoids.json", "smpl_humanoids.json", "replicants.json"]
+        return ["humanoids.json", "smpl_humanoids.json", "replicants.json", "wheelchair_replicants.json"]
 
     def _generate_record(self, data: dict) -> T:
         return HumanoidRecord(data)

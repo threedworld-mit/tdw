@@ -19,8 +19,15 @@ class Replicants(object):
         self._tab = tdw.flatbuffers.table.Table(buf, pos)
 
     # Replicants
-    def Ids(self, j):
+    def NumBodyParts(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # Replicants
+    def Ids(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -28,21 +35,21 @@ class Replicants(object):
 
     # Replicants
     def IdsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # Replicants
     def IdsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(4))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def Positions(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -50,21 +57,21 @@ class Replicants(object):
 
     # Replicants
     def PositionsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # Replicants
     def PositionsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def Rotations(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -72,21 +79,21 @@ class Replicants(object):
 
     # Replicants
     def RotationsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # Replicants
     def RotationsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def Forwards(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -94,21 +101,21 @@ class Replicants(object):
 
     # Replicants
     def ForwardsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
         return 0
 
     # Replicants
     def ForwardsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def Held(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -116,21 +123,21 @@ class Replicants(object):
 
     # Replicants
     def HeldAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # Replicants
     def HeldLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def CollisionIds(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
@@ -138,21 +145,21 @@ class Replicants(object):
 
     # Replicants
     def CollisionIdsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
         return 0
 
     # Replicants
     def CollisionIdsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def IsCollisions(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
@@ -160,21 +167,21 @@ class Replicants(object):
 
     # Replicants
     def IsCollisionsAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
         return 0
 
     # Replicants
     def IsCollisionsLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
     # Replicants
     def Statuses(self, j):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
         if o != 0:
             a = self._tab.Vector(o)
             return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
@@ -182,33 +189,34 @@ class Replicants(object):
 
     # Replicants
     def StatusesAsNumpy(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
         if o != 0:
             return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Uint8Flags, o)
         return 0
 
     # Replicants
     def StatusesLength(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(20))
         if o != 0:
             return self._tab.VectorLen(o)
         return 0
 
-def ReplicantsStart(builder): builder.StartObject(8)
-def ReplicantsAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
+def ReplicantsStart(builder): builder.StartObject(9)
+def ReplicantsAddNumBodyParts(builder, numBodyParts): builder.PrependInt32Slot(0, numBodyParts, 0)
+def ReplicantsAddIds(builder, ids): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(ids), 0)
 def ReplicantsStartIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
+def ReplicantsAddPositions(builder, positions): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(positions), 0)
 def ReplicantsStartPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddRotations(builder, rotations): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotations), 0)
+def ReplicantsAddRotations(builder, rotations): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(rotations), 0)
 def ReplicantsStartRotationsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddForwards(builder, forwards): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(forwards), 0)
+def ReplicantsAddForwards(builder, forwards): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(forwards), 0)
 def ReplicantsStartForwardsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddHeld(builder, held): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(held), 0)
+def ReplicantsAddHeld(builder, held): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(held), 0)
 def ReplicantsStartHeldVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddCollisionIds(builder, collisionIds): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(collisionIds), 0)
+def ReplicantsAddCollisionIds(builder, collisionIds): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(collisionIds), 0)
 def ReplicantsStartCollisionIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
-def ReplicantsAddIsCollisions(builder, isCollisions): builder.PrependUOffsetTRelativeSlot(6, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(isCollisions), 0)
+def ReplicantsAddIsCollisions(builder, isCollisions): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(isCollisions), 0)
 def ReplicantsStartIsCollisionsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def ReplicantsAddStatuses(builder, statuses): builder.PrependUOffsetTRelativeSlot(7, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(statuses), 0)
+def ReplicantsAddStatuses(builder, statuses): builder.PrependUOffsetTRelativeSlot(8, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(statuses), 0)
 def ReplicantsStartStatusesVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def ReplicantsEnd(builder): return builder.EndObject()

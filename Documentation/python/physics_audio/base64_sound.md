@@ -2,6 +2,8 @@
 
 `from tdw.physics_audio.base64_sound import Base64Sound`
 
+This class is used only in PyImpact, which has been deprecated. See: [`Clatter`](../add_ons/clatter.md).
+
 A sound encoded as a base64 string.
 
 ***

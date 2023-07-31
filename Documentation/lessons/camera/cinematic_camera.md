@@ -215,13 +215,6 @@ Result:
 
 ![](images/cinematic_camera/field_of_view.gif)
 
-## `footsteps.py` example controller
-
-[`footsteps.py`](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/footsteps.py) adds a `CinematicCamera` to a realistic looking scene. The camera follows a human-like agent as it walks. This controller uses several other features covered in other tutorials:
-
-- The camera follows a [non-physics humanoid](../non_physics_humanoids/overview.md).
-- The controller uses [`PyImpact`](../audio/py_impact_advanced.md) to generate the footstep sounds.
-
 ***
 
 **This is the last document in the "Camera Controls" tutorial.**
@@ -229,10 +222,6 @@ Result:
 [Return to the README](../../../README.md)
 
 ***
-
-Example controllers:
-
-- [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/camera_controls/footsteps.py)
 
 Python API:
 

@@ -4,6 +4,36 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.5
+
+### Command API
+
+#### Modified Commands
+
+| Command             | Modification                        |
+| ------------------- | ----------------------------------- |
+| `create_obi_solver` | Added optional parameter: `backend` |
+
+### `tdw` module
+
+- Added: `ObiBackend` enum class.
+- Added optional parameter `backend` to the Obi constructor.
+
+### Build
+
+- **Fixed: Obi doesn't work on Apple Silicon.**
+- **Fixed: Obi is slow on Linux.**
+- (Backend) Added Burst compiler to the build. For now, this only affects Obi.
+- (Backend) Set Obi solvers' default backend as Burst.
+
+### Documentation
+
+#### New Documentation
+
+| Document                         | Description                        |
+| -------------------------------- | ---------------------------------- |
+| `python/obi_data/obi_backend.md` | API documentation for `ObiBackend` |
+
 ## v1.12.4
 
 ### Build

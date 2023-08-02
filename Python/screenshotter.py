@@ -21,7 +21,7 @@ class _Screenshotter(Controller, ABC):
             output_dir.mkdir(parents=True)
         self.output_dir = str(output_dir.resolve())
         Path(self.output_dir).joinpath("records.json").write_text(
-            json.dumps(self._get_visualizer_metadata()), encoding="utf-8")
+            json.dumps({"records": self._get_visualizer_metadata()}, encoding="utf-8"))
 
         super().__init__(port, launch_build=False)
 

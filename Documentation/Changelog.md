@@ -25,6 +25,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 - **Fixed: Obi is slow on Linux.**
 - (Backend) Added Burst compiler to the build. For now, this only affects Obi.
 - (Backend) Set Obi solvers' default backend as Burst.
+- A *very* small speed improvement loading local asset bundles (as opposed to downloading them)
 
 ### Documentation
 

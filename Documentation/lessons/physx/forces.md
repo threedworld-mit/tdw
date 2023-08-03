@@ -210,6 +210,44 @@ Result:
 
 ![](images/forces/add_constant_force.gif)
 
+## Set an object's velocity
+
+You can directly set an object's velocity and angular velocity by sending [`set_velocity`](../../api/command_api.md#set_velocity) and [`set_angular_velocity`](../../api/command_api.md#set_angular_velocity), respectively. However, you should only send these commands on the same communicate() call in which the object is added to the scene. If you send these commands after the object is in motion, it can lead to glitchy physics behavior.
+
+```python
+from tdw.controller import Controller
+from tdw.tdw_utils import TDWUtils
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+c = Controller()
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("set_velocity")
+print(f"Images will be saved to: {path}")
+camera = ThirdPersonCamera(position={"x": 0.5, "y": 1.1, "z": -4},
+                           look_at={"x": 0, "y": 0, "z": 0},
+                           avatar_id="a")
+capture = ImageCapture(avatar_ids=["a"], path=path)
+c.add_ons.extend([camera, capture])
+commands = [TDWUtils.create_empty_room(12, 12)]
+object_id = Controller.get_unique_id()
+commands.extend(Controller.get_add_physics_object(model_name="chair_billiani_doll",
+                                                  object_id=object_id,
+                                                  position={"x": 0, "y": 1, "z": 0}))
+# Set the object's velocity.
+commands.append({"$type": "set_velocity",
+                 "id": object_id,
+                 "velocity": {"x": 2, "y": 0.5, "z": 0}})
+c.communicate(commands)
+for i in range(200):
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/forces/set_velocity.gif)
+
 ***
 
 **Next: [Skip physics frames](step_physics.md)**
@@ -223,6 +261,7 @@ Example controllers:
 - [ball_bounce.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/ball_bounce.py) Bounce a ball on a table.
 - [collisions_and_friction.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/collisions_and_friction.py) Collide an object with another with varying physics values.
 - [forcefield.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/forcefield.py) Simulate a "forcefield" that objects will bounce off of.
+- [set_velocity.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/physx/set_velocity.py) Set an object's velocity.
 
 Python API
 
@@ -236,3 +275,5 @@ Command API:
 -  [`apply_force_magnitude_to_object`](../../api/command_api.md#apply_force_magnitude_to_object)
 - [`object_look_at_position`](../../api/command_api.md#object_look_at_position)
 - [`add_constant_force`](../../api/command_api.md#add_constant_force)
+- [`set_velocity`](../../api/command_api.md#set_velocity)
+- [`set_angular_velocity`](../../api/command_api.md#set_angular_velocity)

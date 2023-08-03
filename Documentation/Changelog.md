@@ -4,6 +4,29 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.6
+
+### Command API
+
+#### New Commands
+
+| Command                | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| `set_velocity`         | Set an object's velocity. This should ONLY be used on the same communicate() call in which the object is created. Otherwise, sending this command can cause physics glitches. |
+| `set_angular_velocity` | Set an object's angular velocity. This should ONLY be used on the same communicate() call in which the object is created. Otherwise, sending this command can cause physics glitches. |
+
+### Example Controllers
+
+- Added: `physx/set_velocity.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                  | Modification                                     |
+| ------------------------- | ------------------------------------------------ |
+| `lessons/physx/forces.md` | Added a section about setting object velocities. |
+
 ## v1.12.5
 
 ### Command API

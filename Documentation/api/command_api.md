@@ -401,6 +401,7 @@
 | [`apply_torque_to_obi_cloth`](#apply_torque_to_obi_cloth) | Apply a uniform torque to an Obi cloth actor.  |
 | [`apply_torque_to_object`](#apply_torque_to_object) | Apply a torque to the object's rigidbody. |
 | [`scale_object_and_mass`](#scale_object_and_mass) | Scale the object by a factor from its current scale. Scale its mass proportionally. This command assumes that a canonical mass has already been set. |
+| [`set_angular_velocity`](#set_angular_velocity) | Set an object's angular velocity. This should ONLY be used on the same communicate() call in which the object is created. Otherwise, sending this command can cause physics glitches. |
 | [`set_color_in_substructure`](#set_color_in_substructure) | Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API. |
 | [`set_composite_object_kinematic_state`](#set_composite_object_kinematic_state) | Set the top-level Rigidbody of a composite object to be kinematic or not. Optionally, set the same state for all of its sub-objects. A kinematic object won't respond to PhysX physics. |
 | [`set_kinematic_state`](#set_kinematic_state) | Set an object's Rigidbody to be kinematic or not. A kinematic object won't respond to PhysX physics. |
@@ -411,6 +412,7 @@
 | [`set_primitive_visual_material`](#set_primitive_visual_material) | Set the material of an object created via load_primitive_from_resources  |
 | [`set_semantic_material_to`](#set_semantic_material_to) | Sets or creates the semantic material category of an object.  |
 | [`set_sub_object_id`](#set_sub_object_id) | Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.  |
+| [`set_velocity`](#set_velocity) | Set an object's velocity. This should ONLY be used on the same communicate() call in which the object is created. Otherwise, sending this command can cause physics glitches. |
 | [`show_collider_hulls`](#show_collider_hulls) | Show the collider hulls of the object.  |
 
 **Drone Command**
@@ -5582,6 +5584,26 @@ Scale the object by a factor from its current scale. Scale its mass proportional
 
 ***
 
+## **`set_angular_velocity`**
+
+Set an object's angular velocity. This should ONLY be used on the same communicate() call in which the object is created. Otherwise, sending this command can cause physics glitches.
+
+
+```python
+{"$type": "set_angular_velocity", "id": 1}
+```
+
+```python
+{"$type": "set_angular_velocity", "id": 1, "velocity": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"velocity"` | Vector3 | The angular velocity in radians per second. | {"x": 0, "y": 0, "z": 0} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_color_in_substructure`**
 
 Set the color of a specific child object in the model's substructure. See: ModelRecord.substructure in the ModelLibrarian API.
@@ -5799,6 +5821,26 @@ Set the ID of a composite sub-object. This can be useful when loading saved data
 | --- | --- | --- | --- |
 | `"sub_object_name"` | string | The expected name of the sub-object. | |
 | `"sub_object_id"` | int | The new ID of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_velocity`**
+
+Set an object's velocity. This should ONLY be used on the same communicate() call in which the object is created. Otherwise, sending this command can cause physics glitches.
+
+
+```python
+{"$type": "set_velocity", "id": 1}
+```
+
+```python
+{"$type": "set_velocity", "id": 1, "velocity": {"x": 0, "y": 0, "z": 0}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"velocity"` | Vector3 | The velocity in meters per second. | {"x": 0, "y": 0, "z": 0} |
 | `"id"` | int | The unique object ID. | |
 
 ***

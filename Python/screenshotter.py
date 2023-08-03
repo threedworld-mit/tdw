@@ -21,7 +21,7 @@ class _Screenshotter(Controller, ABC):
             output_dir.mkdir(parents=True)
         self.output_dir = str(output_dir.resolve())
         Path(self.output_dir).joinpath("records.json").write_text(
-            json.dumps(self._get_visualizer_metadata()), encoding="utf-8")
+            json.dumps({"records": self._get_visualizer_metadata()}, encoding="utf-8"))
 
         super().__init__(port, launch_build=False)
 
@@ -274,12 +274,10 @@ class MaterialScreenshotter(_Screenshotter):
         self.communicate([self.get_add_material(record.name),
                           {"$type": "set_primitive_visual_material",
                            "id": self.sphere_id,
-                           "name": record.name,
-                           "quality": "high"},
+                           "name": record.name},
                           {"$type": "set_primitive_visual_material",
                            "id": self.cube_id,
-                           "name": record.name,
-                           "quality": "high"}])
+                           "name": record.name}])
         # Capture the image the following frame to allow it to initialize correctly.
         resp = self.communicate([])
         return Images(resp[0])

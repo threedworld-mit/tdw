@@ -24,7 +24,7 @@ This add-on handles most aspects of an Obi physics simulation, including initial
 
 **`Obi()`**
 
-**`Obi(output_data=True, floor_material=None, object_materials=None, vr_material=None, exclude=None)`**
+**`Obi(output_data=True, floor_material=None, object_materials=None, vr_material=None, exclude=None, backend=ObiBackend.burst)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -33,6 +33,7 @@ This add-on handles most aspects of an Obi physics simulation, including initial
 | object_materials |  Dict[int, CollisionMaterial] | None | Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). |
 | vr_material |  CollisionMaterial  | None | If there is a VR rig in the scene, its hands will have this [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values. |
 | exclude |  List[int] | None | Exclude these objects from receiving Obi collision materials. |
+| backend |  ObiBackend  | ObiBackend.burst | The [`ObiBackend`](../obi_data/obi_backend.md) for each solver. |
 
 #### get_initialization_commands
 

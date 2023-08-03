@@ -13,6 +13,7 @@ from tdw.obi_data.cloth.cloth_material import ClothMaterial, CLOTH_MATERIALS
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.tether_type import TetherType
 from tdw.obi_data.wind_source import WindSource
+from tdw.obi_data.obi_backend import ObiBackend
 from tdw.controller import Controller
 
 
@@ -23,13 +24,14 @@ class Obi(AddOn):
 
     def __init__(self, output_data: bool = True, floor_material: CollisionMaterial = None,
                  object_materials: Dict[int, CollisionMaterial] = None, vr_material: CollisionMaterial = None,
-                 exclude: List[int] = None):
+                 exclude: List[int] = None, backend: ObiBackend = ObiBackend.burst):
         """
         :param output_data: If True, receive [`ObiParticles`](../../api/output_data.md#ObiParticles) per frame.
         :param floor_material: The floor's [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
         :param object_materials: Overrides for object and robot collision materials. Key = Object or Robot ID. Value = [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md).
         :param vr_material: If there is a VR rig in the scene, its hands will have this [`CollisionMaterial`](../obi_data/collision_materials/collision_material.md). If None, uses default values.
         :param exclude: Exclude these objects from receiving Obi collision materials.
+        :param backend: The [`ObiBackend`](../obi_data/obi_backend.md) for each solver.
         """
 
         super().__init__()
@@ -55,6 +57,7 @@ class Obi(AddOn):
             self._exclude: List[int] = list()
         else:
             self._exclude = exclude[:]
+        self._backend: ObiBackend = backend
         """:field
         A dictionary of wind sources. Key = Wind source ID. Value = [`WindSource`](../obi_data/wind_source.md). To add a wind source, add a new `WindSource` to this dictionary; it will be automatically created and updated. See the `WindSource` API for how to dynamically set wind parameters.
         """
@@ -62,7 +65,8 @@ class Obi(AddOn):
 
     def get_initialization_commands(self) -> List[dict]:
         commands = [{"$type": "destroy_obi_solver"},
-                    {"$type": "create_obi_solver"},
+                    {"$type": "create_obi_solver",
+                     "backend": self._backend.name},
                     {"$type": "send_static_oculus_touch"},
                     {"$type": "send_static_rigidbodies"},
                     {"$type": "send_static_robots"},

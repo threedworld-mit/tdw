@@ -4283,6 +4283,23 @@ Create an Obi Solver. The solver has a unique ID that is generated sequentially:
 {"$type": "create_obi_solver"}
 ```
 
+```python
+{"$type": "create_obi_solver", "backend": "burst"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"backend"` | ObiBackend | The backend used for this solver. | "burst" |
+
+#### ObiBackend
+
+Obi solver backends.
+
+| Value | Description |
+| --- | --- |
+| `"burst"` | The optimized backend. You should almost always use this. |
+| `"oni"` | The unoptimized legacy backend. This should only be used for ongoing projects. It doesn't work on Apple Silicon. |
+
 ***
 
 ## **`destroy_obi_solver`**

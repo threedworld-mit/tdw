@@ -6,6 +6,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ## v1.12.7
 
+### Build
+
 - **Fixed: depth passes don't work on OS X.** This *should* be *actually* fixed, now.
 
 ## v1.12.6

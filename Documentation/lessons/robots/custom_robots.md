@@ -99,7 +99,7 @@ If the Unity Editor executable is in an unexpected location, you will need to ex
 ```python
 from tdw.asset_bundle_creator.robot_creator import RobotCreator
 
-a = RobotCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.24f1/Editor/Unity.exe")
+a = RobotCreator(quiet=True, unity_editor_path="D:/Unity/2020.3.48f1/Editor/Unity.exe")
 ```
 
 #### 3. `check_version`
@@ -310,7 +310,7 @@ print(ModelCreator().get_base_unity_call())
 Output:
 
 ```
-['C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe', '-projectpath', 'C:/Users/USER Alter/asset_bundle_creator', '-quit', '-batchmode']
+['C:/Program Files/Unity/Hub/Editor/2020.3.48f1/Editor/Unity.exe', '-projectpath', 'C:/Users/USER Alter/asset_bundle_creator', '-quit', '-batchmode']
 ```
 
 `call_unity()` will call the Asset Bundle Creator Unity project as a subprocess with command-line arguments. You can call arbitrary methods this way (assuming you know the [underlying C# API](https://github.com/alters-mit/asset_bundle_creator). This function is used by every function that communicates with Unity, for example `source_file_to_asset_bundles()`.

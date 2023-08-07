@@ -81,7 +81,7 @@ class LisdfReader(AddOn):
         :param send_commands: If True, the commands generated from the .lisdf file will be sent the next time `c.communicate()` is called.
         :param quiet: If True, don't print any messages to console.
         :param display: The display to launch Unity Editor on. Ignored if this isn't Linux.
-        :param unity_editor_path: The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically.
+        :param unity_editor_path: The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.48f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically.
         :param check_version: If True, check if there is an update to the Unity Editor project.
         """
 

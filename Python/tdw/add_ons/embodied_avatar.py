@@ -1,5 +1,6 @@
 from typing import Dict, List, Union
 import numpy as np
+from tdw.type_aliases import TARGET
 from tdw.output_data import OutputData, AvatarSimpleBody, ImageSensors
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera_base import ThirdPersonCameraBase
@@ -47,7 +48,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
         """:field
         The rotation of the camera as an [x, y, z, w] numpy array.
         """
-        self.camera_rotation: np.array = np.array([0, 0, 0, 0])
+        self.camera_rotation: np.ndarray = np.array([0, 0, 0, 0])
         """:field
         If True, the avatar is currently moving or turning.
         """
@@ -166,7 +167,7 @@ class EmbodiedAvatar(ThirdPersonCameraBase):
                                   "angle": rotation[q],
                                   "avatar_id": self.avatar_id})
 
-    def look_at(self, target: Union[int, Dict[str, float], np.ndarray]) -> None:
+    def look_at(self, target: TARGET) -> None:
         """
         Look at a target object or position.
 

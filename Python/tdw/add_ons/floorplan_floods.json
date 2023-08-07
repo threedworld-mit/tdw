@@ -246,7 +246,7 @@
       },
 	"3": {
 		"scene": "floorplan_4",
-        "name": "fplan3_floor4",
+        "name": "fplan4_floor3",
 		"adjacent_floors": ["2", "4"],
         "position": {
           "x": 4.15,

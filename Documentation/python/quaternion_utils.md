@@ -18,6 +18,7 @@ Vectors are always numpy arrays in the following order: `[x, y, z]`.
 | --- | --- | --- | --- |
 | `UP` | np.ndarray | The global up directional vector. | `np.array([0, 1, 0])` |
 | `FORWARD` | np.ndarray | The global forward directional vector. | `np.array([0, 0, 1])` |
+| `RIGHT` | np.ndarray | The global right directional vector. | `np.array([1, 0, 0])` |
 | `IDENTITY` | np.ndarray | The quaternion identity rotation. | `np.array([0, 0, 0, 1])` |
 
 ***

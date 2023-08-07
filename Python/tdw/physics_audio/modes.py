@@ -4,10 +4,12 @@ import numpy as np
 
 class Modes:
     """
+    This class is used only in PyImpact, which has been deprecated. See: [`Clatter`](../add_ons/clatter.md).
+
     Resonant mode properties: Frequencies, powers, and times.
     """
 
-    def __init__(self, frequencies: np.array, powers: np.array, decay_times: np.array):
+    def __init__(self, frequencies: np.ndarray, powers: np.ndarray, decay_times: np.ndarray):
         """
         :param frequencies: A numpy array of mode frequencies in Hz.
         :param powers: A numpy array of mode onset powers in dB re 1.
@@ -17,17 +19,17 @@ class Modes:
         """:field
         A numpy array of mode frequencies in Hz.
         """
-        self.frequencies: np.array = frequencies
+        self.frequencies: np.ndarray = frequencies
         """:field
         A numpy array of mode onset powers in dB re 1.
         """
-        self.powers: np.array = powers
+        self.powers: np.ndarray = powers
         """:field
         A numpy array of mode decay times i.e. the time in ms it takes for each mode to decay 60dB from its onset power.
         """
-        self.decay_times: np.array = decay_times
+        self.decay_times: np.ndarray = decay_times
 
-    def sum_modes(self, fs: int = 44100, resonance: float = 1.0) -> np.array:
+    def sum_modes(self, fs: int = 44100, resonance: float = 1.0) -> np.ndarray:
         """
         Create mode time-series from mode properties and sum them together.
 
@@ -37,7 +39,7 @@ class Modes:
         :return A synthesized sound.
         """
 
-        synth_sound: np.array = np.empty
+        synth_sound: np.ndarray = np.empty
         # Scroll through modes.
         for i in range(len(self.frequencies)):
             H_dB = 80 + self.powers[i]
@@ -61,7 +63,7 @@ class Modes:
         return synth_sound
 
     @staticmethod
-    def mode_add(a: np.array, b: np.array) -> np.array:
+    def mode_add(a: np.ndarray, b: np.ndarray) -> np.ndarray:
         """
         Add together numpy arrays of different lengths by zero-padding the shorter.
 

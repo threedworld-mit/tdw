@@ -12,7 +12,8 @@ This assumes that an avatar corresponding to `avatar_id` has already been added 
 
 | Variable | Type | Description | Value |
 | --- | --- | --- | --- |
-| `AUDIO_MATERIALS` | Dict[str, AudioMaterial] | A dictionary. Key = A Resonance Audio material string. Value = An [`AudioMaterial`](../physics_audio/audio_material.md). | `{k: AudioMaterial[v] for k, v in loads(Path(resource_filename(__name__, "../physics_audio/resonance_audio_materials.json")).read_text()).items()}` |
+| `IMPACT_MATERIALS` | Dict[str, ImpactMaterial] | A dictionary. Key = A Resonance Audio material string. Value = An [`ImpactMaterial`](../physics_audio/impact_material.md). | `{k: ImpactMaterial[v] for k, v in loads(Path(resource_filename(__name__, "../physics_audio/resonance_audio_materials.json")).read_text()).items()}` |
+| `RESONANCE_AUDIO_MATERIALS` | Dict[ImpactMaterial, str] | A dictionary. Key = An [`ImpactMaterial`](../physics_audio/impact_material.md). Value = A Resonance Audio material string. | `{v: k for k, v in IMPACT_MATERIALS.items()}` |
 
 ***
 
@@ -50,7 +51,7 @@ This assumes that an avatar corresponding to `avatar_id` has already been added 
 
 **`ResonanceAudioInitializer()`**
 
-**`ResonanceAudioInitializer(avatar_id="a", region_id=-1, floor="parquet", ceiling="acousticTile", front_wall="smoothPlaster", back_wall="smoothPlaster", left_wall="smoothPlaster", right_wall="smoothPlaster", framerate=60)`**
+**`ResonanceAudioInitializer(avatar_id="a", region_id=-1, floor="parquet", ceiling="acousticTile", front_wall="smoothPlaster", back_wall="smoothPlaster", left_wall="smoothPlaster", right_wall="smoothPlaster", framerate=30, physics_time_step=0.02)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -62,7 +63,8 @@ This assumes that an avatar corresponding to `avatar_id` has already been added 
 | back_wall |  str  | "smoothPlaster" | The back wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
 | left_wall |  str  | "smoothPlaster" | The left wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
 | right_wall |  str  | "smoothPlaster" | The right wall material. [Read this for a list of options.](../../api/command_api.md#set_reverb_space_simple) |
-| framerate |  int  | 60 | The target simulation framerate. |
+| framerate |  int  | 30 | The target simulation framerate. |
+| physics_time_step |  float  | 0.02 | The physics timestep. |
 
 #### get_initialization_commands
 
@@ -107,6 +109,6 @@ The command will be sent on the next `Controller.communicate()` call.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | path |  Union[str, Path] |  | The path to a .wav file. |
-| position |  Union[np.array, Dict[str, float] |  | The position of audio source. Can be a numpy array or x, y, z dictionary. |
+| position |  POSITION |  | The position of audio source. Can be a numpy array or x, y, z dictionary. |
 | audio_id |  int  | None | The unique ID of the audio source. If None, a random ID is generated. |
 | object_id |  int  | None | If not None, parent the audio source to this object. |

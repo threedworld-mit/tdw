@@ -40,7 +40,7 @@ impact_sound_floor = py_impact_floor.name + "_4"
 py_impact = PyImpact(initial_amp=0.9, floor=py_impact_floor, resonance_audio=True, rng=np.random.RandomState(0))
 
 # Generate contact normals and set the collision velocity.
-contact_normals: List[np.array] = list()
+contact_normals: List[np.ndarray] = list()
 for i in range(3):
     contact_normals.append(np.array([0, 1, 0]))
 velocity = np.array([1.5, 0, 0])
@@ -61,7 +61,7 @@ while theta < 360:
     x = np.cos(rad) * distance
     z = np.sin(rad) * distance
     # Generate contact points around the sound's position.
-    contact_points: List[np.array] = list()
+    contact_points: List[np.ndarray] = list()
     contact_angle = 0
     for i in range(3):
         r = np.radians(contact_angle)

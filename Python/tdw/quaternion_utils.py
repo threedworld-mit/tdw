@@ -21,6 +21,10 @@ class QuaternionUtils:
     """
     FORWARD: np.ndarray = np.array([0, 0, 1])
     """:class_var
+    The global right directional vector.
+    """
+    RIGHT: np.ndarray = np.array([1, 0, 0])
+    """:class_var
     The quaternion identity rotation.
     """
     IDENTITY: np.ndarray = np.array([0, 0, 0, 1])
@@ -235,6 +239,6 @@ class QuaternionUtils:
         target_direction = target - origin
         # Normalize the heading.
         target_direction = target_direction / np.linalg.norm(target_direction)
-        perpendicular: np.array = np.cross(forward, target_direction)
+        perpendicular: np.ndarray = np.cross(forward, target_direction)
         direction = np.dot(perpendicular, QuaternionUtils.UP)
         return direction > 0

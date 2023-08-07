@@ -21,7 +21,22 @@ class ReplicantBodyPart(IntEnum):
     upperarm_r = 11
     upperleg_l = 12
     upperleg_r = 13
+    shoulder_l = 14
+    shoulder_r = 15
 
 
-# The body part enum values in a list.
-BODY_PARTS: List[ReplicantBodyPart] = [r for r in ReplicantBodyPart]
+# The able-bodied body part enum values in a list.
+ABLE_BODIED_BODY_PARTS: List[ReplicantBodyPart] = [r for r in ReplicantBodyPart][:-2]
+# The wheelchair-bound body part enum values in a list.
+WHEELCHAIR_BODY_PARTS: List[ReplicantBodyPart] = [ReplicantBodyPart.spine_01,
+                                                  ReplicantBodyPart.spine_02,
+                                                  ReplicantBodyPart.spine_03,
+                                                  ReplicantBodyPart.shoulder_l,
+                                                  ReplicantBodyPart.upperarm_l,
+                                                  ReplicantBodyPart.lowerarm_l,
+                                                  ReplicantBodyPart.hand_l,
+                                                  ReplicantBodyPart.shoulder_r,
+                                                  ReplicantBodyPart.upperarm_r,
+                                                  ReplicantBodyPart.lowerarm_r,
+                                                  ReplicantBodyPart.hand_r,
+                                                  ReplicantBodyPart.head]

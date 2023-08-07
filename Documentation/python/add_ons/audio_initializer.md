@@ -24,12 +24,13 @@ This assumes that an avatar corresponding to `avatar_id` has already been added 
 
 **`AudioInitializer()`**
 
-**`AudioInitializer(avatar_id="a", framerate=60)`**
+**`AudioInitializer(avatar_id="a", framerate=30, physics_time_step=0.02)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | avatar_id |  str  | "a" | The ID of the listening avatar. |
-| framerate |  int  | 60 | The target simulation framerate. |
+| framerate |  int  | 30 | The target simulation framerate. |
+| physics_time_step |  float  | 0.02 | The physics timestep. |
 
 #### get_initialization_commands
 
@@ -64,7 +65,7 @@ The command will be sent on the next `Controller.communicate()` call.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | path |  Union[str, Path] |  | The path to a .wav file. |
-| position |  Union[np.array, Dict[str, float] |  | The position of audio source. Can be a numpy array or x, y, z dictionary. |
+| position |  POSITION |  | The position of audio source. Can be a numpy array or x, y, z dictionary. |
 | audio_id |  int  | None | The unique ID of the audio source. If None, a random ID is generated. |
 | object_id |  int  | None | If not None, parent the audio source to this object. |
 

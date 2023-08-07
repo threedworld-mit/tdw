@@ -12,7 +12,7 @@ Data for an Obi granular fluid. For more information, [read this](http://obi.vir
 
 - `capacity` The maximum amount of emitted particles.
 
-- `resolution` The size and amount of particles in 1 cubic meter.
+- `resolution` The size and amount of particles in 1 cubic meter. A value of 1 will use 1000 particles per cubic meter.
 
 - `color` The visual color of the fluid.
 

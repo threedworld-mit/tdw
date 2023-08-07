@@ -1,0 +1,19 @@
+{
+  "description": "Wheelchair Replicants",
+  "records": {
+    "man_casual": {
+      "collision_avoidance_distance": 0.8,
+      "collision_avoidance_half_extents": {
+        "x": 0.31875,
+        "y": 0.8814,
+        "z": 0.2
+      },
+      "name": "man_casual",
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/wheelchair_replicants/osx/2020.3/man_casual",
+        "Linux": "https://tdw-public.s3.amazonaws.com/wheelchair_replicants/linux/2020.3/man_casual",
+        "Windows": "https://tdw-public.s3.amazonaws.com/wheelchair_replicants/windows/2020.3/man_casual"
+      }
+    }
+  }
+}

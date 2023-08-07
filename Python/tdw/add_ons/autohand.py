@@ -39,8 +39,8 @@ class Autohand(VR, ABC):
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
         # Axis events.
-        self._axis_events_left: List[Callable[[np.array], None]] = list()
-        self._axis_events_right: List[Callable[[np.array], None]] = list()
+        self._axis_events_left: List[Callable[[np.ndarray], None]] = list()
+        self._axis_events_right: List[Callable[[np.ndarray], None]] = list()
         # Non-graspable objects.
         if non_graspable is None:
             self._non_graspable: List[int] = list()
@@ -100,7 +100,7 @@ class Autohand(VR, ABC):
                     break
         super().on_send(resp=resp)
 
-    def listen_to_axis(self, is_left: bool, function: Callable[[np.array], None]) -> None:
+    def listen_to_axis(self, is_left: bool, function: Callable[[np.ndarray], None]) -> None:
         """
         Listen for controller axis events.
 

@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
@@ -53,13 +54,18 @@ from tdw.FBOutput import ObiParticles as ObiP
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
 from tdw.FBOutput import Mouse as Mous
+from tdw.FBOutput import TransformMatrices as TranMat
+from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
 from tdw.FBOutput import FieldOfView as Fov
 from tdw.FBOutput import Replicants as Repl
+from tdw.FBOutput import LeapMotion as Leap
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import ViveProEye as ViveEye
+from tdw.FBOutput import Drones as Dro
+from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -182,13 +188,13 @@ class Transforms(OutputData):
     def get_id(self, index: int) -> int:
         return int(self._ids[index])
 
-    def get_position(self, index: int) -> np.array:
+    def get_position(self, index: int) -> np.ndarray:
         return self._positions[index]
 
-    def get_forward(self, index: int) -> np.array:
+    def get_forward(self, index: int) -> np.ndarray:
         return self._forwards[index]
 
-    def get_rotation(self, index: int) -> np.array:
+    def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]
 
 
@@ -209,10 +215,10 @@ class Rigidbodies(OutputData):
     def get_id(self, index: int) -> int:
         return int(self._ids[index])
 
-    def get_velocity(self, index: int) -> np.array:
+    def get_velocity(self, index: int) -> np.ndarray:
         return self._velocities[index]
 
-    def get_angular_velocity(self, index: int) -> np.array:
+    def get_angular_velocity(self, index: int) -> np.ndarray:
         return self._angular_velocities[index]
 
     def get_sleeping(self, index: int) -> bool:
@@ -266,25 +272,25 @@ class Bounds(OutputData):
     def get_id(self, index: int) -> int:
         return int(self._ids[index])
 
-    def get_front(self, index: int) -> np.array:
+    def get_front(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][0]
 
-    def get_back(self, index: int) -> np.array:
+    def get_back(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][1]
 
-    def get_left(self, index: int) -> np.array:
+    def get_left(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][3]
 
-    def get_right(self, index: int) -> np.array:
+    def get_right(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][2]
 
-    def get_top(self, index: int) -> np.array:
+    def get_top(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][4]
 
-    def get_bottom(self, index: int) -> np.array:
+    def get_bottom(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][5]
 
-    def get_center(self, index: int) -> np.array:
+    def get_center(self, index: int) -> np.ndarray:
         return self._bounds_positions[index][6]
 
 
@@ -315,7 +321,7 @@ class Images(OutputData):
     def get_pass_mask(self, index: int) -> str:
         return Images.PASS_MASKS[self.data.Passes(index).PassMask()]
 
-    def get_image(self, index: int) -> np.array:
+    def get_image(self, index: int) -> np.ndarray:
         return self.data.Passes(index).ImageAsNumpy()
 
     def get_extension(self, index: int) -> str:
@@ -385,7 +391,7 @@ class SegmentationColors(OutputData):
     def get_object_id(self, index: int) -> int:
         return int(self._ids[index])
 
-    def get_object_color(self, index: int) -> np.array:
+    def get_object_color(self, index: int) -> np.ndarray:
         return self._colors[index]
 
     def get_object_name(self, index: int) -> str:
@@ -505,17 +511,17 @@ class CameraMatrices(OutputData):
     def get_sensor_name(self) -> str:
         return self.data.SensorName().decode('utf-8')
 
-    def get_projection_matrix(self) -> np.array:
+    def get_projection_matrix(self) -> np.ndarray:
         return self.data.ProjectionMatrixAsNumpy()
 
-    def get_camera_matrix(self) -> np.array:
+    def get_camera_matrix(self) -> np.ndarray:
         return self.data.CameraMatrixAsNumpy()
 
 
 class IdPassSegmentationColors(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._colors: np.array = self.data.SegmentationColorsAsNumpy().reshape(-1, 3)
+        self._colors: np.ndarray = self.data.SegmentationColorsAsNumpy().reshape(-1, 3)
 
     def get_data(self) -> IdSC.IdPassSegmentationColors:
         return IdSC.IdPassSegmentationColors.GetRootAsIdPassSegmentationColors(self.bytes, 0)
@@ -526,7 +532,7 @@ class IdPassSegmentationColors(OutputData):
     def get_num_segmentation_colors(self) -> int:
         return self._colors.shape[0]
 
-    def get_segmentation_color(self, index: int) -> np.array:
+    def get_segmentation_color(self, index: int) -> np.ndarray:
         return self._colors[index]
 
 
@@ -537,10 +543,10 @@ class FlexParticles(OutputData):
     def get_num_objects(self) -> int:
         return self.data.ObjectsLength()
 
-    def get_particles(self, index: int) -> np.array:
+    def get_particles(self, index: int) -> np.ndarray:
         return self.data.Objects(index).ParticlesAsNumpy().view(dtype=np.float32).reshape(-1, 4)
 
-    def get_velocities(self, index: int) -> np.array:
+    def get_velocities(self, index: int) -> np.ndarray:
         return self.data.Objects(index).VelocitiesAsNumpy().view(dtype=np.float32).reshape(-1, 3)
 
     def get_id(self, index: int) -> int:
@@ -606,10 +612,10 @@ class VRRig(OutputData):
     def get_head_forward(self) -> Tuple[float, float, float]:
         return OutputData._get_vector3(self._get_simple_transform(2).Forward)
 
-    def get_held_left(self) -> np.array:
+    def get_held_left(self) -> np.ndarray:
         return self.data.HeldLeftAsNumpy()
 
-    def get_held_right(self) -> np.array:
+    def get_held_right(self) -> np.ndarray:
         return self.data.HeldRightAsNumpy()
 
 
@@ -625,10 +631,10 @@ class OculusTouchButtons(OutputData):
     def get_right(self) -> List[OculusTouchButton]:
         return self._get_buttons(v=self.data.Right())
 
-    def get_left_axis(self) -> np.array:
+    def get_left_axis(self) -> np.ndarray:
         return self.data.LeftAxisAsNumpy()
 
-    def get_right_axis(self) -> np.array:
+    def get_right_axis(self) -> np.ndarray:
         return self.data.RightAxisAsNumpy()
 
     @staticmethod
@@ -682,10 +688,10 @@ class Meshes(OutputData):
     def get_num(self) -> int:
         return self.data.ObjectsLength()
 
-    def get_vertices(self, index: int) -> np.array:
+    def get_vertices(self, index: int) -> np.ndarray:
         return self.data.Objects(index).VerticesAsNumpy().view(dtype=np.float32).reshape(-1, 3)
 
-    def get_triangles(self, index: int) -> np.array:
+    def get_triangles(self, index: int) -> np.ndarray:
         return self.data.Objects(index).TrianglesAsNumpy().view(dtype=np.int32).reshape(-1, 3)
 
 
@@ -781,7 +787,7 @@ class AudioSources(OutputData):
     def get_is_playing(self, index: int) -> bool:
         return self.data.Objects(index).IsPlaying()
 
-    def get_samples(self) -> np.array:
+    def get_samples(self) -> np.ndarray:
         return self.data.SamplesAsNumpy()
 
 
@@ -823,7 +829,7 @@ class Overlap(OutputData):
     def get_id(self) -> int:
         return self.data.Id()
 
-    def get_object_ids(self) -> np.array:
+    def get_object_ids(self) -> np.ndarray:
         return self.data.ObjectIdsAsNumpy()
 
     def get_env(self) -> bool:
@@ -871,7 +877,7 @@ class NavMeshPath(OutputData):
     def get_state(self) -> str:
         return NavMeshPath._STATES[self.data.State()]
 
-    def get_path(self) -> np.array:
+    def get_path(self) -> np.ndarray:
         return self.data.PathAsNumpy().view(dtype=np.float32).reshape(-1, 3)
 
     def get_id(self) -> int:
@@ -956,7 +962,7 @@ class StaticRobot(OutputData):
     def get_non_moving_segmentation_color(self, index: int) -> Tuple[float, float, float]:
         return OutputData._get_rgb(self.data.NonMoving(index).SegmentationColor())
 
-    def get_joint_indices(self) -> np.array:
+    def get_joint_indices(self) -> np.ndarray:
         return self.data.JointIndicesAsNumpy().reshape(-1, 2)
 
     def get_robot_index(self) -> int:
@@ -976,10 +982,10 @@ class RobotJointVelocities(OutputData):
     def get_joint_id(self, index: int) -> int:
         return self.data.Joints(index).Id()
 
-    def get_joint_velocity(self, index: int) -> np.array:
+    def get_joint_velocity(self, index: int) -> np.ndarray:
         return self.data.Joints(index).VelocityAsNumpy()
 
-    def get_joint_angular_velocity(self, index: int) -> np.array:
+    def get_joint_angular_velocity(self, index: int) -> np.ndarray:
         return self.data.Joints(index).AngularVelocityAsNumpy()
 
     def get_joint_sleeping(self, index: int) -> bool:
@@ -1000,19 +1006,19 @@ class DynamicRobots(OutputData):
     def get_immovable(self, index: int) -> bool:
         return bool(self._immovable[index])
 
-    def get_robot_position(self, index: int) -> np.array:
+    def get_robot_position(self, index: int) -> np.ndarray:
         return self._transforms[index][:3]
 
-    def get_robot_rotation(self, index: int) -> np.array:
+    def get_robot_rotation(self, index: int) -> np.ndarray:
         return self._transforms[index][3:7]
 
-    def get_robot_forward(self, index: int) -> np.array:
+    def get_robot_forward(self, index: int) -> np.ndarray:
         return self._transforms[index][7:]
 
-    def get_joint_position(self, index: int) -> np.array:
+    def get_joint_position(self, index: int) -> np.ndarray:
         return self._joints[index][0]
 
-    def get_joint_angles(self, index: int) -> np.array:
+    def get_joint_angles(self, index: int) -> np.ndarray:
         return np.degrees(self._joints[index][1])
 
     def get_joint_sleeping(self, index: int) -> bool:
@@ -1069,10 +1075,10 @@ class Magnebot(OutputData):
     def get_id(self) -> int:
         return self.data.Id()
 
-    def get_held_left(self) -> np.array:
+    def get_held_left(self) -> np.ndarray:
         return self.data.HeldLeftAsNumpy()
 
-    def get_held_right(self) -> np.array:
+    def get_held_right(self) -> np.ndarray:
         return self.data.HeldRightAsNumpy()
 
     def get_top(self) -> Tuple[float, float, float]:
@@ -1120,16 +1126,16 @@ class LocalTransforms(OutputData):
     def get_id(self, index: int) -> int:
         return int(self._ids[index])
 
-    def get_position(self, index: int) -> np.array:
+    def get_position(self, index: int) -> np.ndarray:
         return self._positions[index]
 
-    def get_forward(self, index: int) -> np.array:
+    def get_forward(self, index: int) -> np.ndarray:
         return self._forwards[index]
 
-    def get_rotation(self, index: int) -> np.array:
+    def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]
 
-    def get_euler_angles(self, index: int) -> np.array:
+    def get_euler_angles(self, index: int) -> np.ndarray:
         return self._euler_angles[index]
 
 
@@ -1420,10 +1426,10 @@ class ObiParticles(OutputData):
     def get_num_solvers(self) -> int:
         return self.data.SolversLength()
 
-    def get_positions(self, index: int) -> np.array:
+    def get_positions(self, index: int) -> np.ndarray:
         return self.data.Solvers(index).PositionsAsNumpy()
 
-    def get_velocities(self, index: int) -> np.array:
+    def get_velocities(self, index: int) -> np.ndarray:
         return self.data.Solvers(index).VelocitiesAsNumpy()
 
     def get_num_objects(self) -> int:
@@ -1438,22 +1444,22 @@ class ObiParticles(OutputData):
     def get_count(self, index: int) -> int:
         return self.data.Actors(index).Count()
 
-    def get_solver_indices(self, index: int) -> np.array:
+    def get_solver_indices(self, index: int) -> np.ndarray:
         return self.data.Actors(index).SolverIndicesAsNumpy()
 
 
 class Mouse(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._buttons: np.array = self.data.ButtonsAsNumpy().reshape(3, 3)
+        self._buttons: np.ndarray = self.data.ButtonsAsNumpy().reshape(3, 3)
 
     def get_data(self) -> Mous.Mouse:
         return Mous.Mouse.GetRootAsMouse(self.bytes, 0)
 
-    def get_position(self) -> np.array:
+    def get_position(self) -> np.ndarray:
         return self.data.PositionAsNumpy()
 
-    def get_scroll_delta(self) -> np.array:
+    def get_scroll_delta(self) -> np.ndarray:
         return self.data.ScrollDeltaAsNumpy()
 
     def get_is_left_button_pressed(self) -> bool:
@@ -1484,6 +1490,46 @@ class Mouse(OutputData):
         return self._buttons[2][2]
 
 
+class TransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._matrices = self.data.MatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> TranMat.TransformMatrices:
+        return TranMat.TransformMatrices.GetRootAsTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+    def get_matrix(self, index: int) -> np.array:
+        return self._matrices[index]
+
+
+class AvatarTransformMatrices(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._avatar_matrices = self.data.AvatarMatricesAsNumpy().reshape(-1, 4, 4)
+        self._sensor_container_matrices = self.data.SensorContainerMatricesAsNumpy().reshape(-1, 4, 4)
+
+    def get_data(self) -> AvTranMat.AvatarTransformMatrices:
+        return AvTranMat.AvatarTransformMatrices.GetRootAsAvatarTransformMatrices(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return self.data.AvatarIdsLength()
+
+    def get_id(self, index: int) -> str:
+        return self.data.AvatarIds(index).decode('utf-8')
+
+    def get_avatar_matrix(self, index: int) -> np.array:
+        return self._avatar_matrices[index]
+
+    def get_sensor_matrix(self, index: int) -> np.array:
+        return self._sensor_container_matrices[index]
+        
 class FieldOfView(OutputData):
     def get_data(self) -> Fov.FieldOfView:
         return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)
@@ -1504,13 +1550,15 @@ class FieldOfView(OutputData):
 class Replicants(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy().reshape(-1, 15)
-        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, 15, 3)
-        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 15, 4)
-        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, 15, 3)
+        num_body_parts: int = self.get_num_body_parts()
+        q = self.data.IdsAsNumpy()
+        self._ids: np.ndarray = self.data.IdsAsNumpy().reshape(-1, num_body_parts)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(-1, num_body_parts, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, num_body_parts, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(-1, num_body_parts, 3)
         self._held: np.ndarray = self.data.HeldAsNumpy().reshape(-1, 2, 2)
-        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, 14, 10)
-        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, 14, 10)
+        self._collision_ids: np.ndarray = self.data.CollisionIdsAsNumpy().reshape(-1, num_body_parts - 1, 10)
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape(-1, num_body_parts - 1, 10)
         self._statuses: np.ndarray = self.data.StatusesAsNumpy()
 
     def get_data(self) -> Repl.Replicants:
@@ -1563,6 +1611,71 @@ class Replicants(OutputData):
 
     def get_status(self, index: int) -> ActionStatus:
         return ActionStatus(self._statuses[index])
+
+    def get_num_body_parts(self) -> int:
+        return int(self.data.NumBodyParts())
+
+
+class LeapMotion(OutputData):
+    _NUM_BONES_PER_HAND: int = 16
+
+    def __init__(self, b):
+        super().__init__(b)
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 4)
+        self._forwards: np.ndarray = self.data.ForwardsAsNumpy().reshape(2, LeapMotion._NUM_BONES_PER_HAND, 3)
+        self._collision_ids: np.ndarray = self.data.CollisionsIdsAsNumpy()
+        self._max_num_collisions: int = self._collision_ids.shape[0] // (LeapMotion._NUM_BONES_PER_HAND * 2)
+        self._collision_ids = self._collision_ids.reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._is_collisions: np.ndarray = self.data.IsCollisionsAsNumpy().reshape((2, LeapMotion._NUM_BONES_PER_HAND, self._max_num_collisions))
+        self._angles: np.ndarray = self.data.AnglesAsNumpy().reshape(2, 25)
+        self._button_presses: np.ndarray = self.data.ButtonsAsNumpy()
+
+    def get_data(self) -> Leap.LeapMotion:
+        return Leap.LeapMotion.GetRootAsLeapMotion(self.bytes, 0)
+
+    def get_num_collisions_per_bone(self) -> int:
+        return self._max_num_collisions
+
+    def get_position(self, index: int, bone_index: int) -> np.ndarray:
+        return self._positions[index][bone_index]
+
+    def get_rotation(self, index: int, bone_index: int) -> np.ndarray:
+        return self._rotations[index][bone_index]
+
+    def get_forward(self, index: int, bone_index: int) -> np.ndarray:
+        return self._forwards[index][bone_index]
+
+    def get_is_collision(self, index: int, bone_index: int, collision_index: int) -> bool:
+        return bool(self._is_collisions[index][bone_index][collision_index])
+
+    def get_collision_id(self, index: int, bone_index: int, collision_index: int) -> int:
+        return int(self._collision_ids[index][bone_index][collision_index])
+
+    def get_angles(self, index: int, start_bone_index: int, end_bone_index: int) -> np.ndarray:
+        return np.rad2deg(self._angles[index][start_bone_index: end_bone_index])
+
+    def get_is_button_pressed(self, index: int) -> bool:
+        return bool(self._button_presses[index])
+
+
+class ReplicantSegmentationColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._colors: np.ndarray = self.data.ColorsAsNumpy().reshape(-1, 3)
+
+    def get_data(self) -> RepSepCo.ReplicantSegmentationColors:
+        return RepSepCo.ReplicantSegmentationColors.GetRootAsReplicantSegmentationColors(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return int(self._ids.shape[0])
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_segmentation_color(self, index: int) -> np.ndarray:
+        return self._colors[index]
 
 
 class Framerate(OutputData):
@@ -1648,3 +1761,30 @@ class ViveProEye(OutputData):
 
     def get_buttons(self) -> np.ndarray:
         return self.data.ButtonsAsNumpy()
+
+
+class Drones(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._raycast_hits: np.ndarray = self.data.RaycastHitsAsNumpy()
+        self._raycasts: np.ndarray = self.data.RaycastsAsNumpy().reshape(-1, 3)
+        self._motor_ons: np.ndarray = self.data.MotorOnAsNumpy()
+
+    def get_data(self) -> Dro.Drones:
+        return Dro.Drones.GetRootAsDrones(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return int(self._ids.shape[0])
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_raycast_hit(self, index: int) -> bool:
+        return bool(self._raycast_hits[index])
+
+    def get_raycast(self, index: int) -> np.ndarray:
+        return self._raycasts[index]
+
+    def get_motor_on(self, index: int) -> bool:
+        return bool(self._motor_ons[index])

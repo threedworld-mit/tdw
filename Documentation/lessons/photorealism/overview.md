@@ -8,6 +8,8 @@ This tutorial will explain some of the best practices for rendering high-quality
 
 Photorealism is best achieved via a combination of reasonable camera positions and angles, and plausible object selection and positions. If you haven't done so already, we strongly recommend you read the [camera controls tutorial](../camera/overview.md) and [Scene Setup tutorials](../scene_setup/overview.md).
 
+With proper hardware, it is also possible to use a superior, albeit non-real-time, render using [the `VRayExporter` add-on](vray.md).
+
 ## The `photoreal.py` example controller
 
 [photoreal.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/photorealism/photoreal.py) is our best example of how to generate a maximum-quality image and TDW. It generates this image:

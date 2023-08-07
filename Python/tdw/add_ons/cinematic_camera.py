@@ -59,9 +59,9 @@ class CinematicCamera(ThirdPersonCameraBase):
         """
         self.field_of_view_speed: float = field_of_view_speed
         # The current forward directional vector of the image sensor.
-        self._sensor_forward: np.array = np.array([0, 0, 0])
+        self._sensor_forward: np.ndarray = np.array([0, 0, 0])
         # The current rotation of the image sensor.
-        self._sensor_rotation: np.array = np.array([0, 0, 0, 0])
+        self._sensor_rotation: np.ndarray = np.array([0, 0, 0, 0])
 
         # A target object ID or position to move towards. Can be None (no target).
         self._move_target: Optional[Union[int, Dict[str, float]]] = None

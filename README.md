@@ -38,6 +38,7 @@
 8. [Objects](Documentation/lessons/core_concepts/objects.md)
 9. [Output data](Documentation/lessons/core_concepts/output_data.md)
 10. [Images](Documentation/lessons/core_concepts/images.md)
+11. [Outdoor scenes](Documentation/lessons/core_concepts/outdoor_scenes.md)
 
 ## Troubleshooting
 
@@ -136,8 +137,9 @@ High-level APs: [Floorplan](Documentation/python/add_ons/floorplan.md) and [Proc
 1. [Overview](Documentation/lessons/photorealism/overview.md)
 2. [Lighting (HDRI skyboxes)](Documentation/lessons/photorealism/lighting.md)
 3. [Post-processing](Documentation/lessons/photorealism/post_processing.md)
-3. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
-4. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+4. [Interior lighting (the `InteriorSceneLighting` add-on)](Documentation/lessons/photorealism/interior_lighting.md)
+5. [Depth of field](Documentation/lessons/photorealism/depth_of_field.md)
+6. [V-Ray Rendering](Documentation/lessons/photorealism/vray.md)
 
 High-level API: [tdw_image_dataset](https://github.com/alters-mit/tdw_image_dataset)
 
@@ -161,12 +163,13 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [Obi](Documentation/lessons/obi/obi.md)
 2. [Fluids](Documentation/lessons/obi/fluids.md)
-2. [Cloth](Documentation/lessons/obi/cloth.md)
-3. [`ObiParticles` output data](Documentation/lessons/obi/obi_particles.md)
-4. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
-5. [Solvers](Documentation/lessons/obi/solvers.md)
-6. [Obi and robots](Documentation/lessons/obi/robots.md)
-6. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
+3. [Wind](Documentation/lessons/obi/wind.md)
+4. [Cloth](Documentation/lessons/obi/cloth.md)
+5. [`ObiParticles` output data](Documentation/lessons/obi/obi_particles.md)
+6. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
+7. [Solvers](Documentation/lessons/obi/solvers.md)
+8. [Obi and robots](Documentation/lessons/obi/robots.md)
+9. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
 
 ### 8.3 Physics (Flex)
 
@@ -187,10 +190,25 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/audio/overview.md)
 2. [Initialize audio and play .wav files](Documentation/lessons/audio/initialize_audio.md)
 3. [Resonance Audio](Documentation/lessons/audio/resonance_audio.md)
-4. [`PyImpact` (dynamic impact sounds)](Documentation/lessons/audio/py_impact.md)
-6. [Recording audio](Documentation/lessons/audio/record_audio.md)
-6. [`PyImpact` (advanced API)](Documentation/lessons/audio/py_impact_advanced.md)
-7. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+4. [Recording audio](Documentation/lessons/audio/record_audio.md)
+5. [Audio perception](Documentation/lessons/audio/audio_perception.md)
+
+### 9.1 Clatter (Physically-derived audio)
+
+1. [Overview](Documentation/lessons/clatter/overview.md)
+2. [Object audio data](Documentation/lessons/clatter/clatter_objects.md)
+3. [Recording Clatter audio with the `PhysicsAudioRecorder` add-on](Documentation/lessons/clatter/record_clatter.md)
+4. [Clatter and Resonance Audio](Documentation/lessons/clatter/resonance_audio.md)
+5. [Reset Clatter](Documentation/lessons/clatter/reset.md)
+6. [Manually generate audio (Clatter CLI)](Documentation/lessons/clatter/cli.md)
+7. [Troubleshooting Clatter](Documentation/lessons/clatter/troubleshooting.md)
+8. [How to contribute to Clatter](Documentation/lessons/clatter/contribute.md)
+
+### 9.2 PyImpact (obsolete predecessor to Clatter)
+
+1. [PyImpact](Documentation/lessons/py_impact/py_impact.md)
+2. [PyImpact advanced](Documentation/lessons/py_impact/py_impact_advanced.md)
+3. [PyImpact and Clatter](Documentation/lessons/py_impact/py_impact_and_clatter.md)
 
 ## 10. Video Recording
 
@@ -239,20 +257,48 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 14. [Multiple Replicants](Documentation/lessons/replicants/multiple_replicants.md)
 15. [Reset](Documentation/lessons/replicants/reset.md)
 
-### 11.4 Virtual Reality (VR)
+### 11.4 Wheelchair Replicants
+
+1. [Overview](Documentation/lessons/wheelchair_replicants/overview.md)
+2. [Actions](Documentation/lessons/wheelchair_replicants/actions.md)
+3. [Output data](Documentation/lessons/wheelchair_replicants/output_data.md)
+4. [Collision detection](Documentation/lessons/wheelchair_replicants/collision_detection.md)
+5. [Movement](Documentation/lessons/wheelchair_replicants/movement.md)
+6. [Arm articulation, pt. 1: Basics](Documentation/lessons/wheelchair_replicants/arm_articulation_1.md)
+7. [Arm articulation, pt. 2: Grasp and drop objects](Documentation/lessons/wheelchair_replicants/arm_articulation_2.md)
+8. [Arm articulation, pt. 3: Advanced topics](Documentation/lessons/wheelchair_replicants/arm_articulation_3.md)
+9. [Head rotation](Documentation/lessons/wheelchair_replicants/head_rotation.md)
+10. [Navigation](Documentation/lessons/wheelchair_replicants/navigation.md)
+11. [Custom actions](Documentation/lessons/wheelchair_replicants/custom_actions.md)
+12. [Multiple Agents](Documentation/lessons/wheelchair_replicants/multiple_agents.md)
+13. [Reset](Documentation/lessons/wheelchair_replicants/reset.md)
+
+### 11.5 Drones
+
+1. [Drones](Documentation/lessons/drone/drone.md)
+
+### 11.6 Vehicles
+
+1. [Vehicles](Documentation/lessons/vehicle/vehicle.md)
+
+### 11.7 Virtual Reality (VR)
 
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch](Documentation/lessons/vr/oculus_touch.md)
+<<<<<<< HEAD
 3. [Vive Pro Eye](Documentation/lessons/vr/vive_pro_eye.md)
+=======
+3. [Oculus Leap Motion](Documentation/lessons/vr/oculus_leap_motion.md)
+>>>>>>> master
 
-### 11.5 Keyboard and Mouse
+### 11.8 Keyboard and Mouse
 
 1. [Overview](Documentation/lessons/keyboard_and_mouse/overview.md)
 2. [Mouse input](Documentation/lessons/keyboard_and_mouse/mouse.md)
 3. [The `FirstPersonAvatar`](Documentation/lessons/keyboard_and_mouse/first_person_avatar.md)
 4. [Keyboard input](Documentation/lessons/keyboard_and_mouse/keyboard.md)
 
-### 11.6 Embodied avatars
+### 11.9 Embodied avatars
 
 1. [The `EmbodiedAvatar`](Documentation/lessons/embodied_avatars/embodied_avatar.md)
 
@@ -292,7 +338,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
-2. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
+3. [Download asset bundles](Documentation/lessons/misc/download_asset_bundles.md)
 
 # API Documentation
 
@@ -314,6 +360,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [QuaternionUtils](Documentation/python/quaternion_utils.md)
 - [RemoteBuildLauncher](Documentation/python/remote_build_launcher.md)
 - [TDWUtils](Documentation/python/tdw_utils.md)
+- [TypeAliases](Documentation/python/type_aliases.md)
 
 **tdw.add_ons**
 
@@ -324,9 +371,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [AvatarBody](Documentation/python/add_ons/avatar_body.md)
 - [Benchmark](Documentation/python/add_ons/benchmark.md)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
+- [Clatter](Documentation/python/add_ons/clatter.md)
 - [CollisionManager](Documentation/python/add_ons/collision_manager.md)
 - [CompositeObjectManager](Documentation/python/add_ons/composite_object_manager.md)
 - [ContainerManager](Documentation/python/add_ons/container_manager.md)
+- [Drone](Documentation/python/add_ons/drone.md)
 - [EmbodiedAvatar](Documentation/python/add_ons/embodied_avatar.md)
 - [EmptyObjectManager](Documentation/python/add_ons/empty_object_manager.md)
 - [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
@@ -345,12 +394,14 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Obi](Documentation/python/add_ons/obi.md)
 - [ObjectManager](Documentation/python/add_ons/object_manager.md)
 - [OccupancyMap](Documentation/python/add_ons/occupancy_map.md)
+- [OculusLeapMotion](Documentation/python/add_ons/oculus_leap_motion.md)
 - [OculusTouch](Documentation/python/add_ons/oculus_touch.md)
 - [OutputDataWriter](Documentation/python/add_ons/output_data_writer.md)
 - [PhysicsAudioRecorder](Documentation/python/add_ons/physics_audio_recorder.md)
 - [ProcGenKitchen](Documentation/python/add_ons/proc_gen_kitchen.md)
 - [PyImpact](Documentation/python/add_ons/py_impact.md)
 - [Replicant](Documentation/python/add_ons/replicant.md)
+- [ReplicantBase](Documentation/python/add_ons/replicant_base.md)
 - [ResonanceAudioInitializer](Documentation/python/add_ons/resonance_audio_initializer.md)
 - [Robot](Documentation/python/add_ons/robot.md)
 - [RobotArm](Documentation/python/add_ons/robot_arm.md)
@@ -360,9 +411,16 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ThirdPersonCameraBase](Documentation/python/add_ons/third_person_camera_base.md)
 - [TriggerCollisionManager](Documentation/python/add_ons/trigger_collision_manager.md)
 - [UI](Documentation/python/add_ons/ui.md)
+- [Vehicle](Documentation/python/add_ons/vehicle.md)
 - [ViveProEye](Documentation/python/add_ons/vive_pro_eye.md)
 - [VR](Documentation/python/add_ons/vr.md)
+- [VrayExporter](Documentation/python/add_ons/vray_exporter.md)
+- [WheelchairReplicant](Documentation/python/add_ons/wheelchair_replicant.md)
 - [Writer](Documentation/python/add_ons/writer.md)
+
+**tdw.agent_data**
+
+- [AgentDynamic](Documentation/python/agent_data/agent_dynamic.md)
 
 **tdw.asset_bundle_creator**
 
@@ -391,12 +449,23 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [CylinderContainer](Documentation/python/container_data/cylinder_container.md)
 - [SphereContainer](Documentation/python/container_data/sphere_container.md)
 
+**tdw.drone**
+
+- [DroneDynamic](Documentation/python/drone/drone_dynamic.md)
+
 **tdw.flex_data**
 
 - [FluidType](Documentation/python/flex_data/fluid_type.md)
 
+**tdw.lerp**
+
+- [Lerpable](Documentation/python/lerp/lerpable.md)
+- [LerpableFloat](Documentation/python/lerp/lerpable_float.md)
+- [LerpableVector](Documentation/python/lerp/lerpable_vector.md)
+
 **tdw.librarian**
 
+- [DroneLibrarian](Documentation/python/librarian/drone_librarian.md)
 - [HdriSkyboxLibrarian](Documentation/python/librarian/hdri_skybox_librarian.md)
 - [HumanoidAnimationLibrarian](Documentation/python/librarian/humanoid_animation_librarian.md)
 - [HumanoidLibrarian](Documentation/python/librarian/humanoid_librarian.md)
@@ -404,6 +473,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelLibrarian](Documentation/python/librarian/model_librarian.md)
 - [RobotLibrarian](Documentation/python/librarian/robot_librarian.md)
 - [SceneLibrarian](Documentation/python/librarian/scene_librarian.md)
+- [VehicleLibrarian](Documentation/python/librarian/vehicle_librarian.md)
 - [VisualEffectLibrarian](Documentation/python/librarian/visual_effect_librarian.md)
 
 **tdw.lisdf_data**
@@ -422,6 +492,8 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [ForceMode](Documentation/python/obi_data/force_mode.md)
 - [ObiActor](Documentation/python/obi_data/obi_actor.md)
+- [ObiBackend](Documentation/python/obi_data/obi_backend.md)
+- [WindSource](Documentation/python/obi_data/wind_source.md)
 
 **tdw.obi_data.cloth**
 
@@ -478,9 +550,11 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [AudioMaterial](Documentation/python/physics_audio/audio_material.md)
 - [Base64Sound](Documentation/python/physics_audio/base64_sound.md)
+- [ClatterObject](Documentation/python/physics_audio/clatter_object.md)
 - [CollisionAudioEvent](Documentation/python/physics_audio/collision_audio_event.md)
 - [CollisionAudioInfo](Documentation/python/physics_audio/collision_audio_info.md)
 - [CollisionAudioType](Documentation/python/physics_audio/collision_audio_type.md)
+- [ImpactMaterial](Documentation/python/physics_audio/impact_material.md)
 - [Modes](Documentation/python/physics_audio/modes.md)
 - [ObjectAudioStatic](Documentation/python/physics_audio/object_audio_static.md)
 - [ScrapeMaterial](Documentation/python/physics_audio/scrape_material.md)
@@ -561,6 +635,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 
 - [IkPlan](Documentation/python/replicant/ik_plans/ik_plan.md)
 - [IkPlanType](Documentation/python/replicant/ik_plans/ik_plan_type.md)
+- [Reset](Documentation/python/replicant/ik_plans/reset.md)
 - [VerticalHorizontal](Documentation/python/replicant/ik_plans/vertical_horizontal.md)
 
 **tdw.robot_data**
@@ -580,12 +655,34 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Room](Documentation/python/scene_data/room.md)
 - [SceneBounds](Documentation/python/scene_data/scene_bounds.md)
 
+**tdw.vehicle**
+
+- [VehicleDynamic](Documentation/python/vehicle/vehicle_dynamic.md)
+
+**tdw.vray_data**
+
+- [VrayMatrix](Documentation/python/vray_data/vray_matrix.md)
+
 **tdw.vr_data**
 
+- [FingerBone](Documentation/python/vr_data/finger_bone.md)
 - [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
 - [RigType](Documentation/python/vr_data/rig_type.md)
 - [ViveButton](Documentation/python/vr_data/vive_button.md)
 - [ViveEyeData](Documentation/python/vr_data/vive_eye_data.md)
+
+**tdw.wheelchair_replicant**
+
+- [WheelValues](Documentation/python/wheelchair_replicant/wheel_values.md)
+
+**tdw.wheelchair_replicant.actions**
+
+- [MoveBy](Documentation/python/wheelchair_replicant/actions/move_by.md)
+- [MoveTo](Documentation/python/wheelchair_replicant/actions/move_to.md)
+- [ReachFor](Documentation/python/wheelchair_replicant/actions/reach_for.md)
+- [TurnBy](Documentation/python/wheelchair_replicant/actions/turn_by.md)
+- [TurnTo](Documentation/python/wheelchair_replicant/actions/turn_to.md)
+- [WheelchairMotion](Documentation/python/wheelchair_replicant/actions/wheelchair_motion.md)
 
 # Performance benchmarks
 1. [Performance benchmarks](Documentation/benchmark/benchmark.md)

@@ -11,7 +11,9 @@
 
 Resonance Audio is best used with interior room environments.
 
-Resonance Audio has the same [system requirements](initialize_audio.md) as Unity's built-in audio system.
+## Requirements
+
+Resonance Audio has the same [system requirements](initialize_audio.md) as Unity's built-in audio system. **However, Resonance Audio does not work on Apple Silicon.** If you try to use Resonance Audio on a Mac with Apple Silicon, the build will crash. 
 
 ## Initialize a scene with Resonance Audio
 
@@ -269,7 +271,7 @@ TDW includes an additional command to create a reverb space: [`set_reverb_space_
 
 ***
 
-**Next: [`PyImpact` (dynamic impact sounds)](py_impact.md)**
+**Next: [Recording audio](record_audio.md)**
 
 [Return to the README](../../../README.md)
 

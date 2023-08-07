@@ -24,7 +24,7 @@ Dynamic object rigidbody data. Note that this excludes *static* rigidbody data s
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| velocity |  np.array |  | The directional velocity of the object. |
-| angular_velocity |  np.array |  | The angular velocity of the object. |
+| velocity |  np.ndarray |  | The directional velocity of the object. |
+| angular_velocity |  np.ndarray |  | The angular velocity of the object. |
 | sleeping |  bool |  | If True, the object isn't moving. |
 

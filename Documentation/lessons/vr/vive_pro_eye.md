@@ -296,7 +296,7 @@ There are many other optional constructor parameters that are likely less-common
 
 *For more information regarding collision detection, [read this](../physx/collisions.md).*
 
-The Vive Pro Eye rig can send basic haptics data. The rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md) as if they were standard TDW objects. If you are using [PyImpact](../audio/py_impact.md) (see below), tapping your hands together will create a faint sound.
+The Vive Pro Eye rig can send basic haptics data. The rig has a small collider at its base. Each palm has a Rigidbody and a collider. The base and the palms will be detected if [collision detection is enabled](../physx/collisions.md) as if they were standard TDW objects.
 
 ### 2. Physics glitches
 

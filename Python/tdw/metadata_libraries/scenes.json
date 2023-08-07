@@ -1,21 +1,9 @@
 {
-  "description": "Streamed scenes.",
-  "records": {
-    "abandoned_factory": {
-      "description": "\"An abandoned shell of a factory \"\"mini-scene\"\".\"",
-      "hdri": true,
-      "location": "exterior",
-      "name": "abandoned_factory",
-      "rooms": [],
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/abandoned_factory",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/abandoned_factory",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/abandoned_factory"
-      }
-    },
-    "archviz_house": {
-      "description": "A very fancy room.",
-      "hdri": true,
+    "description": "Streamed scenes.",
+    "records": {
+        "archviz_house": {
+            "description": "A very fancy room.",
+            "hdri": true,
       "location": "interior",
       "name": "archviz_house",
       "rooms": [],
@@ -154,48 +142,12 @@
       "urls": {
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2c",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2c"
-      }
-    },
-    "floorplan_3a": {
-      "description": "An multi-room interior space lit by sunlight from outside.",
-      "hdri": true,
-      "location": "interior",
-      "name": "floorplan_3a",
-      "rooms": [],
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_3a",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_3a",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_3a"
-      }
-    },
-    "floorplan_3b": {
-      "description": "An multi-room interior space lit by sunlight from outside.",
-      "hdri": true,
-      "location": "interior",
-      "name": "floorplan_3b",
-      "rooms": [],
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_3b",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_3b",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_3b"
-      }
-    },
-    "floorplan_3c": {
-      "description": "An multi-room interior space lit by sunlight from outside.",
-      "hdri": true,
-      "location": "interior",
-      "name": "floorplan_3c",
-      "rooms": [],
-      "urls": {
-        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_3c",
-        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_3c",
-        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_3c"
-      }
-    },
-    "floorplan_4a": {
-      "description": "An multi-room interior space lit by sunlight from outside.",
-      "hdri": true,
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2c"
+            }
+        },
+        "floorplan_4a": {
+            "description": "An multi-room interior space lit by sunlight from outside.",
+            "hdri": true,
       "location": "interior",
       "name": "floorplan_4a",
       "rooms": [],
@@ -971,6 +923,30 @@
         "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
+      }
+    },
+    "savanna_6km": {
+      "description": "A large outdoor terrain, 6 km square.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "savanna_6km",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_6km",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_6km",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_6km"
+      }
+    },
+	"savanna_flat_6km": {
+      "description": "A large outdoor terrain, 6 km square, completely flat.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "savanna_flat_6km",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_flat_6km",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_flat_6km",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_flat_6km"
       }
     }
   }

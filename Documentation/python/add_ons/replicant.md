@@ -2,11 +2,35 @@
 
 `from tdw.add_ons.replicant import Replicant`
 
-A Replicant is a human-like agent that can interact with the scene with pseudo-physics behavior.
+A Replicant is an able-bodied human-like agent that can interact with the scene with pseudo-physics behavior.
 
 When a Replicant collides with objects, it initiates a physics-driven collision. The Replicant's own movements are driven by non-physics animation.
 
 A Replicant can walk, turn, reach for positions or objects, grasp and drop objects, and turn its head to look around.
+
+***
+
+## Fields
+
+- `initial_position` The initial position of the Replicant.
+
+- `initial_rotation` The initial rotation of the Replicant.
+
+- `replicant_id` The ID of this replicant.
+
+- `action` The Replicant's current [action](../replicant/actions/action.md). Can be None (no ongoing action).
+
+- `image_frequency` An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
+
+- `collision_detection` [The collision detection rules.](../replicant/collision_detection.md) This determines whether the Replicant will immediately stop moving or turning when it collides with something.
+
+- `static` The [`ReplicantStatic`](../replicant/replicant_static.md) data.
+
+- `dynamic` The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
 
 ***
 
@@ -18,39 +42,21 @@ A Replicant can walk, turn, reach for positions or objects, grasp and drop objec
 
 ***
 
-## Fields
-
-- `initial_position` The initial position of the Replicant.
-
-- `initial_rotation` The initial rotation of the Replicant.
-
-- `static` The [`ReplicantStatic`](../replicant/replicant_static.md) data.
-
-- `dynamic` The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data.
-
-- `replicant_id` The ID of this replicant.
-
-- `action` The Replicant's current [action](../replicant/actions/action.md). Can be None (no ongoing action).
-
-- `image_frequency` An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured.
-
-- `collision_detection` [The collision detection rules.](../replicant/collision_detection.md) This determines whether the Replicant will immediately stop moving or turning when it collides with something.
-
-***
-
 ## Functions
 
 #### \_\_init\_\_
 
-**`Replicant(position, rotation)`**
+\_\_init\_\_
 
-**`Replicant(replicant_id=0, position, rotation, image_frequency=ImageFrequency.once, name="replicant_0", target_framerate=100)`**
+**`Replicant()`**
+
+**`Replicant(replicant_id=0, position=None, rotation=None, image_frequency=ImageFrequency.once, name="replicant_0", target_framerate=100)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | replicant_id |  int  | 0 | The ID of the Replicant. |
-| position |  Union[Dict[str, float] |  | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Union[Dict[str, float] |  | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| position |  POSITION  | None | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  ROTATION  | None | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 | image_frequency |  ImageFrequency  | ImageFrequency.once | An [`ImageFrequency`](../replicant/image_frequency.md) value that sets how often images are captured. |
 | name |  str  | "replicant_0" | The name of the Replicant model. |
 | target_framerate |  int  | 100 | The target framerate. It's possible to set a higher target framerate, but doing so can lead to a loss of precision in agent movement. |
@@ -83,13 +89,13 @@ This is a non-animated action, meaning that the Replicant will immediately snap 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  TARGET |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 
 #### move_by
 
 **`self.move_by(distance)`**
 
-**`self.move_by(distance, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, max_walk_cycles=100)`**
+**`self.move_by(distance, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, animation="walking_2", library="humanoid_animations.json")`**
 
 Walk a given distance.
 
@@ -105,7 +111,6 @@ The action can end for several reasons depending on the collision detection rule
 - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
 - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
 - Otherwise, the action ends in failure.
-- If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -114,13 +119,14 @@ The action can end for several reasons depending on the collision detection rule
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float  | 0.1 | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
-| max_walk_cycles |  int  | 100 | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
+| animation |  str  | "walking_2" | The name of the walk animation. |
+| library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 
 #### move_to
 
 **`self.move_to(target)`**
 
-**`self.move_to(target, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, max_walk_cycles=100, bounds_position="center")`**
+**`self.move_to(target, reset_arms=True, reset_arms_duration=0.25, scale_reset_arms_duration=True, arrived_at=0.1, bounds_position="center", animation="walking_2", library="humanoid_animations.json")`**
 
 Turn the Replicant to a target position or object and then walk to it.
 
@@ -136,17 +142,17 @@ The action can end for several reasons depending on the collision detection rule
 - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
 - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
 - Otherwise, the action ends in failure.
-- If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  TARGET |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 | reset_arms |  bool  | True | If True, reset the arms to their neutral positions while beginning the walk cycle. |
 | reset_arms_duration |  float  | 0.25 | The speed at which the arms are reset in seconds. |
 | scale_reset_arms_duration |  bool  | True | If True, `reset_arms_duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 | arrived_at |  float  | 0.1 | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
-| max_walk_cycles |  int  | 100 | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 | bounds_position |  str  | "center" | If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`. |
+| animation |  str  | "walking_2" | The name of the walk animation. |
+| library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 
 ***
 
@@ -160,7 +166,7 @@ These actions move and bend the joints of the Replicant's arms.
 
 **`self.reach_for(target, arm, absolute=True, offhand_follows=False, arrived_at=0.09, max_distance=1.5, duration=0.25, scale_duration=True, from_held=False, held_point="bottom", plan=None)`**
 
-Reach for a target object or position. One or both hands can reach for the target at the same time.
+Reach for a target object or position. One or both hands can reach for the same or separate targets.
 
 If target is an object, the target position is a point on the object.
 If the object has affordance points, the target position is the affordance point closest to the hand.
@@ -175,8 +181,8 @@ The Replicant's arm(s) will continuously over multiple `communicate()` calls mov
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
-| arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for the `target` as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
+| target |  Union[TARGET, List[TARGET] |  | The target(s). This can be a list (one target per hand) or a single value (the hand's target). If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| arm |  Union[Arm, List[Arm] |  | The [`Arm`](../replicant/arm.md) value(s) that will reach for each target as a single value or a list. Example: `Arm.left` or `[Arm.left, Arm.right]`. |
 | absolute |  bool  | True | If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int. |
 | offhand_follows |  bool  | False | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. Ignored if `arm` is a list or `target` is an int. |
 | arrived_at |  float  | 0.09 | If at the end of the action the hand(s) is this distance or less from the target position, the action succeeds. |
@@ -269,7 +275,7 @@ The head will continuously move over multiple `communicate()` calls until it is 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, np.ndarray, Dict[str, float] | target | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  TARGET | target | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 | duration |  float  | 0.1 | The duration of the motion in seconds. |
 | scale_duration |  bool  | True | If True, `duration` will be multiplied by `framerate / 60)`, ensuring smoother motions at faster-than-life simulation speeds. |
 
@@ -315,7 +321,7 @@ These actions play arbitrary humanoid animations.
 
 **`self.animate(animation)`**
 
-**`self.animate(animation, library="humanoid_animations.json")`**
+**`self.animate(animation, library="humanoid_animations.json", loop=None)`**
 
 Play an animation.
 
@@ -328,12 +334,26 @@ The animation will end either when the animation clip is finished or if the Repl
 | --- | --- | --- | --- |
 | animation |  str |  | The name of the animation. |
 | library |  str  | "humanoid_animations.json" | The animation library. |
+| loop |  bool  | None | If None, the animation will loop if this is a looping animation (see `HumanoidAnimationRecord.loop`); this is almost always what you want the animation to do. If True, the animation will continuously loop and the action will continue until interrupted. If False, the action ends when the animation ends. |
 
 ***
 
 ### Misc.
 
 Misc. non-action functions.
+
+#### reset
+
+**`self.reset()`**
+
+**`self.reset(position=None, rotation=None)`**
+
+Reset the Replicant. Call this when you reset the scene.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| position |  POSITION  | None | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
+| rotation |  ROTATION  | None | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 
 #### get_initialization_commands
 
@@ -355,17 +375,6 @@ Any commands in the `self.commands` list will be sent on the *next* `Controller.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | resp |  List[bytes] |  | The response from the build. |
-
-#### reset
-
-**`self.reset(position, rotation)`**
-
-Reset the Replicant. Call this when you reset the scene.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| position |  Union[Dict[str, float] |  | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  Union[Dict[str, float] |  | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
 
 ***
 

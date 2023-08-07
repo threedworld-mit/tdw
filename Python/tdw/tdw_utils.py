@@ -450,7 +450,7 @@ class TDWUtils:
         """
 
         if isinstance(camera_matrix, tuple):
-            camera_matrix = np.ndarray(camera_matrix)
+            camera_matrix = np.array(camera_matrix)
         camera_matrix = np.linalg.inv(camera_matrix.reshape((4, 4)))
 
         # Different from real-world camera coordinate system.
@@ -619,13 +619,13 @@ class TDWUtils:
         :return: A dictionary of the bounds. Key = the name of the position. Value = the position as a numpy array.
         """
 
-        return {"top": np.array(bounds.get_top(index)),
-                "bottom": np.array(bounds.get_bottom(index)),
-                "left": np.array(bounds.get_left(index)),
-                "right": np.array(bounds.get_right(index)),
-                "front": np.array(bounds.get_front(index)),
-                "back": np.array(bounds.get_back(index)),
-                "center": np.array(bounds.get_center(index))}
+        return {"top": bounds.get_top(index),
+                "bottom": bounds.get_bottom(index),
+                "left": bounds.get_left(index),
+                "right": bounds.get_right(index),
+                "front": bounds.get_front(index),
+                "back": bounds.get_back(index),
+                "center": bounds.get_center(index)}
 
     @staticmethod
     def get_bounds_extents(bounds: Union[Bounds, Dict[str, Dict[str, float]]], index: int = 0) -> np.ndarray:
@@ -637,9 +637,9 @@ class TDWUtils:
         """
 
         if isinstance(bounds, Bounds):
-            return np.array([np.linalg.norm(np.array(bounds.get_left(index)) - np.array(bounds.get_right(index))),
-                             np.linalg.norm(np.array(bounds.get_top(index)) - np.array(bounds.get_bottom(index))),
-                             np.linalg.norm(np.array(bounds.get_front(index)) - np.array(bounds.get_back(index)))])
+            return np.array([np.linalg.norm(bounds.get_left(index) - bounds.get_right(index)),
+                             np.linalg.norm(bounds.get_top(index) - bounds.get_bottom(index)),
+                             np.linalg.norm(bounds.get_front(index) - bounds.get_back(index))])
         elif isinstance(bounds, dict):
             return np.array([np.linalg.norm(TDWUtils.vector3_to_array(bounds["left"]) - TDWUtils.vector3_to_array(bounds["right"])),
                              np.linalg.norm(TDWUtils.vector3_to_array(bounds["top"]) - TDWUtils.vector3_to_array(bounds["bottom"])),
@@ -1040,3 +1040,39 @@ class TDWUtils:
         else:
             raise Exception(path)
         return p.replace("\\", "/")
+
+    @staticmethod
+    def lerp(a: float, b: float, t: float) -> float:
+        """
+        :param a: The first value.
+        :param b: The second value. This must be greater than `a`.
+        :param t: The lerp value (0 to 1).
+
+        :return: A linearly interpolated value at point `t` between `a` and `b`.
+        """
+
+        return (1 - t) * a + t * b
+
+    @staticmethod
+    def inv_lerp(a: float, b: float, v: float) -> float:
+        """
+        :param a: The first value.
+        :param b: The second value. This must be greater than `a`.
+        :param v: The value. This must be between `a` and `b` (inclusive).
+
+        :return: A value between 0 and 1 describing where `v` is with respect to `a` and `b`.
+        """
+
+        return (v - a) / (b - a)
+
+    @staticmethod
+    def lerp_array(a: np.ndarray, b: np.ndarray, t: float) -> np.ndarray:
+        """
+        :param a: The first array.
+        :param b: The second array.
+        :param t: The lerp value (0 to 1).
+
+        :return: A linearly interpolated array at point `t` between `a` and `b`.
+        """
+
+        return (1 - t) * a + t * b

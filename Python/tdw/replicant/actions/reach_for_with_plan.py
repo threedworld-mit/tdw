@@ -1,5 +1,5 @@
-from typing import List, Dict, Union, Optional
-import numpy as np
+from typing import List, Optional
+from tdw.type_aliases import TARGET
 from tdw.replicant.replicant_static import ReplicantStatic
 from tdw.replicant.replicant_dynamic import ReplicantDynamic
 from tdw.replicant.image_frequency import ImageFrequency
@@ -11,6 +11,7 @@ from tdw.replicant.arm import Arm
 from tdw.replicant.ik_plans.ik_plan import IkPlan
 from tdw.replicant.ik_plans.ik_plan_type import IkPlanType
 from tdw.replicant.ik_plans.vertical_horizontal import VerticalHorizontal
+from tdw.replicant.ik_plans.reset import Reset
 
 
 class ReachForWithPlan(Action):
@@ -20,7 +21,7 @@ class ReachForWithPlan(Action):
     This is similar to [`ReachFor`](reach_for.md) but has the following differences:
 
     - There are multiple `ReachFor` sub-actions defined by an [`IkPlanType`](../ik_plans/ik_plan_type.md) value.
-    - Only one hand may reach the target. There is no option for an offhand to follow the hand to the target.
+    - There is no option for an offhand to follow the hand to the target.
 
     `ReachForWithPlan` can be useful when the agent needs to maneuver its arm in a specific way, such as reaching above a surface and then forward.
 
@@ -40,17 +41,16 @@ class ReachForWithPlan(Action):
     See also: [`ReachFor`](reach_for.md).
     """
 
-    def __init__(self, plan: IkPlanType, target: Union[int, np.ndarray, Dict[str,  float]], absolute: bool,
-                 arrived_at: float, max_distance: float, arm: Arm, dynamic: ReplicantDynamic,
-                 collision_detection: CollisionDetection, previous: Optional[Action], duration: float,
-                 scale_duration: bool, from_held: bool, held_point: str):
+    def __init__(self, plan: IkPlanType, targets: List[TARGET], absolute: bool, arrived_at: float, max_distance: float,
+                 arms: List[Arm], dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
+                 previous: Optional[Action], duration: float, scale_duration: bool, from_held: bool, held_point: str):
         """
         :param plan: An [`IkPlanType`](../ik_plans/ik_plan_type.md) that will define the [`IkPlan`](../ik_plans/ik_plan.md) this action will use.
-        :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
+        :param targets: The targets per arm. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param absolute: If True, the target position is in world space coordinates. If False, the target position is relative to the Replicant. Ignored if `target` is an int.
         :param arrived_at: If the final [`ReachFor`](../actions/reach_for.md) action ends and the hand is this distance or less from the target, the motion succeeds.
         :param max_distance: If at the start of the first [`ReachFor`](../actions/reach_for.md) action the target is further away than this distance from the hand, the action fails.
-        :param arm: The [`Arm`](../arm.md) that will reach for the `target`.
+        :param arms: The [`Arm`](../arm.md)(s) that will reach for each target.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
         :param previous: The previous action. Can be None.
@@ -63,13 +63,15 @@ class ReachForWithPlan(Action):
         super().__init__()
         if plan == IkPlanType.vertical_horizontal:
             ctor = VerticalHorizontal
+        elif plan == IkPlanType.reset:
+            ctor = Reset
         else:
             raise Exception(f"Undefined IK plan: {plan}")
         """:field
         The [`IkPlan`](../ik_plans/ik_plan.md) this action will use.
         """
-        self.ik_plan: IkPlan = ctor(target=target, absolute=absolute, arrived_at=arrived_at, max_distance=max_distance,
-                                    arm=arm, dynamic=dynamic, collision_detection=collision_detection,
+        self.ik_plan: IkPlan = ctor(targets=targets, absolute=absolute, arrived_at=arrived_at, max_distance=max_distance,
+                                    arms=arms, dynamic=dynamic, collision_detection=collision_detection,
                                     previous=previous, duration=duration, scale_duration=scale_duration,
                                     from_held=from_held, held_point=held_point)
         """:field

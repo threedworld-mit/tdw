@@ -26,7 +26,7 @@ This is a non-animated action, meaning that the Replicant will immediately snap 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  TARGET |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 
 #### get_initialization_commands
 

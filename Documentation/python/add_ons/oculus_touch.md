@@ -6,7 +6,7 @@ Add a VR rig to the scene that uses Oculus Touch controllers.
 
 Make all non-kinematic objects graspable by the rig.
 
-Per-frame, update the positions of the VR rig, its hands, and its head, as well as which objects it is grasping and the controller button presses.
+Per `communicate()` call, this add-on updates the positions of the VR rig, its hands, and its head, as well as which objects it is grasping and the controller button presses.
 
 ## Class Variables
 
@@ -160,7 +160,7 @@ Listen for controller axis events.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
-| function |  Callable[[np.array] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |
+| function |  Callable[[np.ndarray] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |
 
 #### listen_to_button
 

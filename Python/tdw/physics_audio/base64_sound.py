@@ -8,10 +8,12 @@ from tdw.audio_constants import SAMPLE_RATE, CHANNELS, SAMPLE_WIDTH
 
 class Base64Sound:
     """
+    This class is used only in PyImpact, which has been deprecated. See: [`Clatter`](../add_ons/clatter.md).
+
     A sound encoded as a base64 string.
     """
 
-    def __init__(self, snd: np.array):
+    def __init__(self, snd: np.ndarray):
         """
         :param snd: The sound byte array.
         """

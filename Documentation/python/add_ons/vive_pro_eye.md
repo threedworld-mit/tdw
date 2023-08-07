@@ -167,7 +167,7 @@ Listen for controller axis events.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
-| function |  Callable[[np.array] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |
+| function |  Callable[[np.ndarray] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |
 
 #### listen_to_button
 

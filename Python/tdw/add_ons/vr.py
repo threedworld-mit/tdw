@@ -66,11 +66,12 @@ class VR(AddOn, ABC):
         """:field
         A numpy of object IDs held by the left hand.
         """
-        self.held_left: np.array = np.array([], dtype=int)
+        self.held_left: np.ndarray = np.array([], dtype=int)
         """:field
         A numpy of object IDs held by the right hand.
         """
-        self.held_right: np.array = np.array([], dtype=int)
+        self.held_right: np.ndarray = np.array([], dtype=int)
+        self._create_rig: bool = True
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -80,17 +81,19 @@ class VR(AddOn, ABC):
         """
 
         # Create the VR rig.
-        commands = [{"$type": "create_vr_rig",
-                     "sync_timestep_with_vr": True,
-                     "rig_type": self._rig_type.name},
-                    {"$type": "set_vr_resolution_scale",
-                     "resolution_scale_factor": self._headset_resolution_scale},
-                    {"$type": "set_post_process",
-                     "value": False},
-                    {"$type": "teleport_vr_rig",
-                     "position": self._initial_position},
-                    {"$type": "rotate_vr_rig_by",
-                     "angle": self._initial_rotation}]
+        commands = []
+        if self._create_rig:
+            commands.extend([{"$type": "create_vr_rig",
+                              "sync_timestep_with_vr": True,
+                              "rig_type": self._rig_type.name},
+                             {"$type": "set_vr_resolution_scale",
+                              "resolution_scale_factor": self._headset_resolution_scale},
+                             {"$type": "set_post_process",
+                              "value": False}])
+        commands.extend([{"$type": "teleport_vr_rig",
+                          "position": self._initial_position},
+                         {"$type": "rotate_vr_rig_by",
+                          "angle": self._initial_rotation}])
         # Send VR data per frame.
         if self._output_data:
             commands.append({"$type": "send_vr_rig",

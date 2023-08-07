@@ -42,7 +42,11 @@ In VR, [post-processing](../photorealism/post_processing.md) is disabled for thr
 
 Other visual effects such as [HDRI skyboxes](../photorealism/lighting.md) *do* work in VR.
 
+## Supported VR rigs
+
+- [Oculus Touch](oculus_touch.md)
+- [Oculus Leap Motion](oculus_leap_motion.md)
+
 ***
 
 [Return to the README](../../../README.md)
-

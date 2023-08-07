@@ -16,7 +16,6 @@ The action can end for several reasons depending on the collision detection rule
 - If the Replicant collides with an object or a wall and `self.collision_detection.objects == True` and/or `self.collision_detection.walls == True` respectively:
   - If the object is in `self.collision_detection.exclude_objects`, the Replicant ignores it.
   - Otherwise, the action ends in failure.
-- If the Replicant takes too long to reach the target distance, the action ends in failure (see `self.max_walk_cycles`).
 
 ***
 
@@ -34,9 +33,15 @@ The action can end for several reasons depending on the collision detection rule
 
 - `arrived_at` If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
 
-- `max_walk_cycles` The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails.
-
 - `bounds_position` If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
+
+- `animation` The name of the walk animation.
+
+- `library` The name of the walk animation's library.
+
+- `collision_avoidance_distance` If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
+
+- `collision_avoidance_half_extents` If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
 
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
@@ -50,18 +55,23 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveTo(target, collision_detection, previous, reset_arms, reset_arms_duration, arrived_at, max_walk_cycles, bounds_position)`**
+**`MoveTo(target, collision_detection, previous, reset_arms, reset_arms_duration, arrived_at, bounds_position, collision_avoidance_distance, collision_avoidance_half_extents)`**
+
+**`MoveTo(target, collision_detection, previous, reset_arms, reset_arms_duration, arrived_at, bounds_position, collision_avoidance_distance, collision_avoidance_half_extents, animation="walking_2", library="humanoid_animations.json")`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| target |  Union[int, Dict[str, float] |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
+| target |  TARGET |  | The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array. |
 | collision_detection |  CollisionDetection |  | The [`CollisionDetection`](../collision_detection.md) rules. |
 | previous |  Optional[Action] |  | The previous action, if any. |
 | reset_arms |  bool |  | If True, reset the arms to their neutral positions while beginning the walk cycle. |
 | reset_arms_duration |  float |  | The speed at which the arms are reset in seconds. |
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
-| max_walk_cycles |  int |  | The walk animation will loop this many times maximum. If by that point the Replicant hasn't reached its destination, the action fails. |
 | bounds_position |  str |  | If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`. |
+| collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
+| collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
+| animation |  str  | "walking_2" | The name of the walk animation. |
+| library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 
 #### get_initialization_commands
 

@@ -122,6 +122,10 @@ for record in librarian.records:
 
 **[Images of each scene can be found here.](https://github.com/threedworld-mit/tdw/tree/master/Documentation/lessons/core_concepts/images/scenes)**
 
+### Outdoor scenes
+
+Outdoor scenes are essentially the same as any other scene but involves some extra camera settings. Because we haven't described [avatars and cameras](avatars.md) yet, outdoor scenes are described in their own document later in "Core Concepts", which you read [here](outdoor_scenes.md) if you want to skip ahead.
+
 ## Option C: Other options for creating a scene
 
 ### Perlin noise terrain

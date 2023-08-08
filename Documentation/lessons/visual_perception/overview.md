@@ -60,7 +60,6 @@ commands = [TDWUtils.create_empty_room(12, 12),
 commands.extend(TDWUtils.create_avatar(position={"x": 2, "y": 1.6, "z": -0.6},
                                        avatar_id="a",
                                        look_at={"x": 0, "y": 0, "z": 0}))
-c.add_ons.append(cam)
 output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("send_images_2")
 print(f"Images will be saved to: {output_directory}")
 

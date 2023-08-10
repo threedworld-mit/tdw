@@ -111,6 +111,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
 | [TriggerCollision](#TriggerCollision) | Data for a non-physics trigger collision event. | `trco` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
+| [ViveProEye](#ViveProEye) | HTC Vice Pro Eye output data. | `vipe` |
 | [Volumes](#Volumes) | Spatial volume data for objects in the scene. | `volu` |
 | [VRRig](#VRRig) | Data about the VR rig currently in the scene. | `vrri` |
 
@@ -1150,6 +1151,24 @@ The build version and Unity version.
 | `get_unity_version()` | The version of the unity. | `str` |
 | `get_tdw_version()` | The version of the tdw. | `str` |
 | `get_standalone()` | True if the build is a standalone binary. False if the build is Unity Editor. | `bool` |
+
+## ViveProEye
+
+`v = ViveProEye(byte_array)`
+
+**Identifier:** `vipe`
+
+HTC Vice Pro Eye output data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_focused()` | The IDs of the focused objects. | `np.ndarray` |
+| `get_valid(index)` | Booleans whether there is valid data: `[world, local]`. | `bool` |
+| `get_eye_ray(index)` | The ray of the eye. | `np.ndarray` |
+| `get_blinking()` | Blinking booleans: `[left, right]`. | `np.ndarray` |
+| `get_left_axis()` | The axis of the left. | `np.ndarray` |
+| `get_right_axis()` | The axis of the right. | `np.ndarray` |
+| `get_buttons()` | Booleans indicating whether the left trackpad and reset buttons are clicked. | `np.ndarray` |
 
 ## Volumes
 

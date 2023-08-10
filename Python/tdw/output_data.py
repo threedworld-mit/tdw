@@ -63,6 +63,7 @@ from tdw.FBOutput import LeapMotion as Leap
 from tdw.FBOutput import Framerate as Frame
 from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
+from tdw.FBOutput import ViveProEye as ViveEye
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
@@ -1714,8 +1715,8 @@ class OccupancyMap(OutputData):
 class EulerAngles(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 3)
+        self._ids: np.ndarray = self.data.IdsAsNumpy()
+        self._rotations: np.ndarray = self.data.RotationsAsNumpy().reshape(-1, 3)
 
     def get_data(self) -> Eulers.EulerAngles:
         return Eulers.EulerAngles.GetRootAsEulerAngles(self.bytes, 0)
@@ -1728,6 +1729,38 @@ class EulerAngles(OutputData):
 
     def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]
+
+
+class ViveProEye(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._valid: np.ndarray = self.data.ValidAsNumpy()
+        self._eye_rays: np.ndarray = self.data.EyeRaysAsNumpy().reshape(2, 2, 3)
+        self._axes: np.ndarray = self.data.AxesAsNumpy().reshape(2, 2)
+
+    def get_data(self) -> ViveEye.ViveProEye:
+        return ViveEye.ViveProEye.GetRootAsViveProEye(self.bytes, 0)
+
+    def get_focused(self) -> np.ndarray:
+        return self.data.FocusedAsNumpy()
+
+    def get_valid(self, index: int) -> bool:
+        return bool(self._valid[index])
+
+    def get_eye_ray(self, index: int) -> np.ndarray:
+        return self._eye_rays[index]
+
+    def get_blinking(self) -> np.ndarray:
+        return self.data.BlinkingAsNumpy()
+
+    def get_left_axis(self) -> np.ndarray:
+        return self._axes[0]
+
+    def get_right_axis(self) -> np.ndarray:
+        return self._axes[1]
+
+    def get_buttons(self) -> np.ndarray:
+        return self.data.ButtonsAsNumpy()
 
 
 class Drones(OutputData):

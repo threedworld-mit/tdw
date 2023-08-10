@@ -4,6 +4,58 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.8
+
+### New Features
+
+- **Added: `ViveProEye` VR-rig add-on.** This rig supports the Vive Pro Eye headset and includes eye tracking data.
+
+### Command API
+
+#### New Commands
+
+| Command                        | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| `send_vive_pro_eye`            | Send `ViveProEye` data.                                      |
+| `set_vive_pro_eye_gaze_radius` | Set the radius of the spherecast used to find objects that are in focus in a Vive Pro Eye simulation. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data  | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| `ViveProEye` | Vive Pro Eye button presses, axis movements, and eye tracking data. |
+
+### `tdw` module
+
+- Added `ViveProEye` add-on as well as two data classes: `ViveEyeData` and `ViveButton`.
+
+### Example controllers
+
+- Added: `vr/vive_pro_eye_minimal.py`
+- Added: `vr/vive_pro_eye_composite_object.py`
+- Added: `vr/vive_pro_eye_input_callbacks.py`
+- Added: `vr/vive_pro_eye_output_data.py`
+
+### Documentation
+
+#### New Documentation
+
+| Document                          | Description                                                  |
+| --------------------------------- | ------------------------------------------------------------ |
+| `lessons/vr/vive_pro_eye.md`      | `ViveProEye` documentation.                                  |
+| `python/add_ons/vive_pro_eye.md`  | `ViveProEye` API.                                            |
+| `python/add_ons/autohand.md`      | `Autohand` API (abstract base class for `OculusTouch` and `ViveProEye`) |
+| `python/vr_data/vive_eye_data.md` | `ViveEyeData` API.                                           |
+| `python/vr_data/vive_button.md`   | `ViveButton` API.                                            |
+
+#### Modified Documentation
+
+| Document                 | Modification                                           |
+| ------------------------ | ------------------------------------------------------ |
+| `lessons/vr/overview.md` | Added a table of comparison for the supported VR rigs. |
+
 ## v1.12.7
 
 ### Build
@@ -373,6 +425,8 @@ Throughout the `lessons/` documentation, references to PyImpact (text, links, ex
 
 To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1.11.md).
 
+## v1.11.16
+
 ## v1.11.23
 
 ### Build
@@ -569,7 +623,7 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 
 | Output Data | Description                       |
 | ----------- | --------------------------------- |
-| `Drones`    | Data for each drone in the scene. |
+| `Drones`    | Data for each drone in the scene. |Eye button presses, axis movements, and eye tracking data. |
 
 ### `tdw` module
 
@@ -625,7 +679,6 @@ To upgrade from TDW v1.10 to v1.11, read [this guide](upgrade_guides/v1.10_to_v1
 - Added: `ReplicantStatic.segmentation_color` The Replicant's segmentation color.
 
 ## v1.11.15
-
 
 ### Command API
 

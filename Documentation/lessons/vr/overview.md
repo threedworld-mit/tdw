@@ -14,6 +14,12 @@ The hardware/rig that you use can greatly alter what the VR simulation is capabl
 
 All VR rigs share some common commands and output data and they all have unique commands and output data as well. To simplify API, each VR rig has a separate TDW add-on class.
 
+|                  | [Oculus Touch](oculus_touch.md) | [Vive Pro Eye](vive_pro_eye) |
+| ---------------- | ------------------------------- | ---------------------------- |
+| **Headset**      | Rift, Rift S, Quest, or Quest 2 | Vive Pro Eye                 |
+| **Controller**   | Oculus Touch                    | Vive Pro Eye                 |
+| **Eye Tracking** | No                              | Yes                          |
+
 ## Requirements
 
 *All VR hardware have additional requirements. Read the relevant document to learn more.*

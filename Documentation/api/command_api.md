@@ -1001,7 +1001,9 @@ The type of VR rig to add to the scene.
 | --- | --- |
 | `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
 | `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
-| `"oculus_leap_motion"` | A VR rig based on an Oculus headset (Rift S, Quest 2) with Leap Motion hand tracking. &lt;/summary |
+| `"oculus_leap_motion"` |  |
+| `"vive_pro_eye_human_hands"` | A VR rig based on an HTC Vive Pro Eye headset, eyetracking, controllers and AutoHand grasping. Hands are visualized as human hands. |
+| `"vive_pro_eye_robot_hands"` | A VR rig based on an HTC Vive Pro Eye headset, eyetracking, controllers and AutoHand grasping. Hands are visualized as robot hands. |
 
 ***
 

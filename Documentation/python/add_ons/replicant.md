@@ -342,19 +342,6 @@ The animation will end either when the animation clip is finished or if the Repl
 
 Misc. non-action functions.
 
-#### reset
-
-**`self.reset()`**
-
-**`self.reset(position=None, rotation=None)`**
-
-Reset the Replicant. Call this when you reset the scene.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| position |  POSITION  | None | The position of the Replicant as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-| rotation |  ROTATION  | None | The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`. |
-
 #### get_initialization_commands
 
 **`self.get_initialization_commands()`**

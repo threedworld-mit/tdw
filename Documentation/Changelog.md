@@ -25,6 +25,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | Document | Modification |
 | --- | --- |
 | `lessons/replicants/reset.md` | Explains a better way to reset the Replicant. |
+| `api/output_data.md` | Fixed missing link in ScreenPosition. |
 
 ## v1.12.7
 

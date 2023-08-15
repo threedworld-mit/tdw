@@ -10,6 +10,22 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - **Fixed: depth passes don't work on OS X.** This *should* be *actually* fixed, now.
 
+### `tdw` module
+
+- Deprecated `replicant.reset()`. See Replicant documentation for how to reset the Replicant.
+
+### Example Controllers
+
+- Fixed: `replicant/reset.py` doesn't work with streamed scenes. It now shows a better way to reset the Replicant and other add-ons.
+
+### Documentation 
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/replicants/reset.md` | Explains a etter way to reset the Replicant. |
+
 ## v1.12.6
 
 ### Command API

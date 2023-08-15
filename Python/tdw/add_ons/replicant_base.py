@@ -320,6 +320,9 @@ class ReplicantBase(AddOn, ABC):
         :param rotation: The rotation of the Replicant in Euler angles (degrees) as an x, y, z dictionary or numpy array. If None, defaults to `{"x": 0, "y": 0, "z": 0}`.
         """
 
+        print("This action has been deprecated and will be removed in a future release. "
+              "For more information, read this: https://github.com/threedworld-mit/tdw/blob/master/Documentation/lessons/replicants/reset.md")
+
         self.initialized = False
         self.action = None
         self._previous_action = None

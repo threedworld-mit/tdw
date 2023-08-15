@@ -23,7 +23,17 @@ class Reset(Controller):
         self.capture = ImageCapture(avatar_ids=[self.camera.avatar_id], path=path)
         self.add_ons.extend([self.replicant, self.camera, self.capture])
 
-    def trial(self, distance: float):
+    def trial(self, distance: float, index: int):
+        # Reset all add-ons.
+        self.add_ons.clear()
+        self.replicant = Replicant()
+        self.camera = ThirdPersonCamera(position={"x": 2, "y": 3, "z": 2.53},
+                                        look_at=self.replicant.replicant_id,
+                                        avatar_id="a")
+        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath(f"replicant_reset_{index}")
+        print(f"Images will be saved to: {path}")
+        self.capture = ImageCapture(avatar_ids=[self.camera.avatar_id], path=path)
+        self.add_ons.extend([self.replicant, self.camera, self.capture])
         # Load a new scene.
         self.communicate([{"$type": "load_scene",
                            "scene_name": "ProcGenScene"},
@@ -32,15 +42,6 @@ class Reset(Controller):
         while self.replicant.action.status == ActionStatus.ongoing:
             self.communicate([])
         self.communicate([])
-        # End the trial by resetting the add-ons.
-        self.replicant.reset()
-        self.camera.initialized = False
-        # Remember the current frame count.
-        f = self.capture.frame
-        # Reset image capture.
-        self.capture.initialized = False
-        # Set the current frame count.
-        self.capture.frame = f
 
     def end(self) -> None:
         # Clear the add-ons so that nothing tries to initialize when we terminate.
@@ -50,6 +51,6 @@ class Reset(Controller):
 
 if __name__ == "__main__":
     c = Reset()
-    for d in [1, 2, 3]:
-        c.trial(distance=d)
+    for d, i in zip([1, 2, 3], [0, 1, 2]):
+        c.trial(distance=d, index=i)
     c.end()

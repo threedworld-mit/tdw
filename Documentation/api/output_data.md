@@ -934,7 +934,7 @@ A position on the screen converted from a worldspace position.
 | `get_avatar_id()` | The ID of the avatar that is rendered the screen. | `str` |
 | `get_sensor_name()` | The name of the sensor that rendered the screen. | `str` |
 | `get_id()` | An identifier for the screen position to help you map it back to the original world position. | `int` |
-| `get_screen()` | The position in screenspace coordinates. From the [Unity documentation:](https: | `Tuple[float, float, float]` |
+| `get_screen()` | The position in screenspace coordinates. See: https: | `Tuple[float, float, float]` |
 | `get_world()` | The position in worldspace coordinates. | `Tuple[float, float, float]` |
 
 ## SegmentationColors

@@ -4,11 +4,11 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
-## v1.12.7
+## v1.12.8
 
 ### Build
 
-- **Fixed: depth passes don't work on OS X.** This *should* be *actually* fixed, now.
+- Fixed: Unhandled NullReferenceException if the scene is unloaded during a Replicant look-at motion, reach-for motion, or animation.
 
 ### `tdw` module
 
@@ -25,6 +25,12 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | Document | Modification |
 | --- | --- |
 | `lessons/replicants/reset.md` | Explains a better way to reset the Replicant. |
+
+## v1.12.7
+
+### Build
+
+- **Fixed: depth passes don't work on OS X.** This *should* be *actually* fixed, now.
 
 ## v1.12.6
 

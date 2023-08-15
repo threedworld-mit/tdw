@@ -9,6 +9,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### Build
 
 - Fixed: Unhandled NullReferenceException if the scene is unloaded during a Replicant look-at motion, reach-for motion, or animation.
+- Fixed: `send_local_transforms` sends world-space positions and rotations.
 
 ### `tdw` module
 

@@ -4,6 +4,28 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.8
+
+### Build
+
+- Fixed: Unhandled NullReferenceException if the scene is unloaded during a Replicant look-at motion, reach-for motion, or animation.
+
+### `tdw` module
+
+- Deprecated `replicant.reset()`. See Replicant documentation for how to reset the Replicant.
+
+### Example Controllers
+
+- Fixed: `replicant/reset.py` doesn't work with streamed scenes. It now shows a better way to reset the Replicant and other add-ons.
+
+### Documentation 
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/replicants/reset.md` | Explains a better way to reset the Replicant. |
+
 ## v1.12.7
 
 ### Build

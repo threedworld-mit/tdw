@@ -39,11 +39,23 @@ Performance benchmark to compare `Images` data to alternative observation data.
 | False     | False    | True                     | False     | 269  |
 | False     | False    | False                    | True      | 167  |
 
+## 3. Image capture (all)
+
+This is a simple benchmark of all image passes.
+
+- Render quality is 5
+- Post processing is enabled
+- Screen size is 256x256
+- The `_img` pass is a .jpg
+- There are 15 objects in the scene
+
+**TODO**
+
 ## How to run TDW's image capture performance benchmarks
 
 1. [Follow instructions in the Benchmark document for cloning the repo, downloading the build, etc.](benchmark.md)
 2. `cd path/to/tdw/Python/benchmarking` (replace `path/to` with the actual path)
-3. `python3 image_capture.py` or `python3 observation_data.py`
+3. `python3 image_capture.py` or `python3 observation_data.py` or `python3 image_capture_all.py`
 4. Run the build
 5. Wait for the performance benchmark to complete (this might take up to five minutes).
 6. Compare your results to those listed above

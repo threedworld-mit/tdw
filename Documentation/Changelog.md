@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.9
+
+### Build
+
+- **Improved image capture speeds by approximately 20%.** This only affects situations involving multiple image passes. For example, if the pass masks are `["_img", "_id", "_depth"]`, they are approximately 20% faster, but if the pass masks are `["_img"]`,  there is no change in speed. This speed improvement is purely within the build, and might be mitigated by operations on the Python side e.g. writing images to disk.
+
+### Benchmarking
+
+- Added: `benchmarking/image_capture_all.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                        | Modification                               |
+| ------------------------------- | ------------------------------------------ |
+| `benchmarking/image_capture.md` | Added a section for `image_capture_all.py` |
+
 ## v1.12.8
 
 ### Build

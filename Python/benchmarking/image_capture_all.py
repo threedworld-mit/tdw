@@ -10,7 +10,7 @@ camera = ThirdPersonCamera(avatar_id="a",
 c.add_ons.extend([camera, benchmark])
 c.communicate(Controller.get_add_scene(scene_name="tdw_room"))
 commands = [{"$type": "set_pass_masks",
-             "pass_masks": ["_img"]},
+             "pass_masks": ["_img", "_id", "_mask", "_category", "_depth", "_normals", "_flow", "_depth_simple", "_albedo"]},
             {"$type": "send_images",
              "frequency": "always"}]
 n = 15

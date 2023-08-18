@@ -16,6 +16,7 @@ commands.extend(Controller.get_add_physics_object(model_name="small_table_green_
                                                   kinematic=True))
 commands.extend(Controller.get_add_physics_object(model_name="woven_box",
                                                   object_id=Controller.get_unique_id(),
+                                                  scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                                                   position={"x": 0, "y": 1, "z": z}))
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=Controller.get_unique_id(),

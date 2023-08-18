@@ -27,14 +27,15 @@ class OculusLeapMotionOutputData(Controller):
         commands.extend(self.get_add_physics_object(model_name="woven_box",
                                                     object_id=box_id,
                                                     position={"x": 0.2, "y": 1.0, "z": 0.5},
+                                                    scale_factor={"x": 0.5, "y": 0.5, "z": 0.5},
                                                     library="models_core.json"))
         # Add the ball object and make it graspable.
         sphere_id = self.get_unique_id()
         commands.extend(self.get_add_physics_object(model_name="prim_sphere",
                                                     object_id=sphere_id,
-                                                    position={"x": 0.2, "y": 3.0, "z": 0.5},
+                                                    position={"x": 0.2, "y": 2.0, "z": 0.5},
                                                     library="models_special.json",
-                                                    scale_factor={"x": 0.2, "y": 0.2, "z": 0.2}))
+                                                    scale_factor={"x": 0.1, "y": 0.1, "z": 0.1}))
         # Send the commands.
         self.communicate(commands)
         # Loop until the Escape key is pressed.

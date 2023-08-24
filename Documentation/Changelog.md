@@ -18,6 +18,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### Example Controllers
 
 - Fixed: `replicant/reset.py` doesn't work with streamed scenes. It now shows a better way to reset the Replicant and other add-ons.
+- Added: `clatter/scrape_no_controller.py` and its dependency: `clatter/Clatter.Core.dll`. This is an example of how to import Clatter directly into Python.
 
 ### Documentation 
 
@@ -26,6 +27,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | Document | Modification |
 | --- | --- |
 | `lessons/replicants/reset.md` | Explains a better way to reset the Replicant. |
+| `lessons/clatter/cli.md` | Added an explanation and example of how to use Clatter.Core.dll within a Python script. |
 | `api/output_data.md` | Fixed missing link in ScreenPosition. |
 
 ## v1.12.7

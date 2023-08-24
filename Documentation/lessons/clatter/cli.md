@@ -1,19 +1,24 @@
 ##### Clatter
 
-# Manually generate audio (Clatter CLI)
+# Manually generate audio
 
 So far, this documentation has covered how to *automatically* generate audio using Clatter. You may also want to *manually* generate audio. There are two basic use-cases for manually generating audio:
 
 1. You want to use Clatter without having to use a controller or run the build. Usually, the objective is to write .wav files for future usage.
 2. You want to use Clatter in TDW but without having to define objects to generate the audio.
 
-In both cases, you can use the Clatter command-line interface (CLI) executable. This executable is not included in TDW; you must download it separately. [Download links and documentation are here.](https://alters-mit.github.io/clatter/cli_overview.html)
+In either case, you have two options:
 
-## How to use the Clatter CLI executable *without* a controller
+1. You can use the Clatter command-line interface (CLI) executable. This executable is not included in TDW; you must download it separately. [Download links and documentation are here.](https://alters-mit.github.io/clatter/cli_overview.html) This option is suitable for single impact events and scrape audio if the speed never changes.
+2. You can import `Clatter.Core.dll` directly into your Python script. This requires more setup and insight into how Clatter works internally. [Download links and documentation are here.](https://alters-mit.github.io/clatter/) This is useful if you want to generate a series of impact events or scrape audio in which the speed changes.
+
+## Clatter CLI
+
+### How to use the Clatter CLI executable *without* a controller
 
 [Read the Clatter CLI documentation.](https://alters-mit.github.io/clatter/cli_overview.html) By default, you *don't* need TDW to run the Clatter CLI executable. 
 
-## How to use the Clatter CLI executable *with* a controller
+### How to use the Clatter CLI executable *with* a controller
 
 If you omit the `--path` argument, the executable will write to standard out. In the context of TDW, this can be useful because you can convert the wav data into a base64 string and send it to TDW.
 
@@ -102,6 +107,111 @@ for i in range(300):
 c.communicate({"$type": "terminate"})
 ```
 
+## Clatter.Core.dll
+
+To import Clatter directly into your Python script, you must first do the following:
+
+1. [Download `Clatter.Core.dll`](https://alters-mit.github.io/clatter/). On Windows, the file might be "blocked". Right click the dll, select properties, click "Unblock", and click "OK".
+2. Install pythonnet: `pip install pythonnet`
+3. Copy `Clatter.Core.dll` into the same folder as your script.
+
+You can then import C# code and use it as if it were Python code:
+
+```python
+from os.path import join
+from os import getcwd
+import clr
+
+clr.AddReference(join(getcwd(), "Clatter.Core.dll"))
+from Clatter.Core import ImpactMaterial
+
+primaryMaterial = ImpactMaterial.glass_1
+```
+
+The API is exactly the same as the backend Clatter API, but it uses Python syntax instead of C# syntax. The C# syntax is very similar though:
+
+```
+ImpactMaterial primaryMaterial = ImpactMaterial.glass_1;
+```
+
+...and so you should be able to easily translate Clatter's C# examples into Python. [Read this for more information.](https://alters-mit.github.io/clatter/clatter.core_overview.html)
+
+This example is not a TDW controller. It loads Clatter and generates audio, lerping between a sequence of two different speeds. For a similar example in C#, [read this](https://alters-mit.github.io/clatter/Scrape.html).
+
+```python
+from os.path import join
+from os import getcwd
+import clr
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+
+"""
+This script is not a controller. It is an example of how to use Clatter without TDW.
+
+To run this script, install pythonnet: pip install pythonnet.
+
+This folder contains the Clatter.Core.dll library. If you want to write a script based off of this one, you must copy Clatter.Core.dll as well.
+
+On Windows, you may need to unblock the dll: Right-click the file, select Properties, click "Unblock", and press OK.
+"""
+
+clr.AddReference(join(getcwd(), "Clatter.Core.dll"))
+from System import Random
+from Clatter.Core import ImpactMaterial, ScrapeMaterial, ImpactMaterialData, ScrapeMaterialData, ClatterObjectData, Scrape, WavWriter
+
+# Load the materials.
+primaryMaterial = ImpactMaterial.glass_1
+secondaryMaterial = ImpactMaterial.stone_4
+scrapeMaterial = ScrapeMaterial.ceramic
+ImpactMaterialData.Load(primaryMaterial)
+ImpactMaterialData.Load(secondaryMaterial)
+ScrapeMaterialData.Load(scrapeMaterial)
+
+# Set the objects.
+primary = ClatterObjectData(0, primaryMaterial, 0.2, 0.2, 1)
+secondary = ClatterObjectData(1, secondaryMaterial, 0.5, 0.1, 100, scrapeMaterial)
+
+# Initialize the scrape.
+scrape = Scrape(scrapeMaterial, primary, secondary, Random())
+
+# Define the output path.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("scrape_no_controller")
+if not path.exists():
+    path.mkdir(parents=True)
+path = path.joinpath("scrape.wav")
+print(f"Audio will be saved to: {path}")
+
+# Start writing audio.
+writer = WavWriter(str(path.resolve()), True)
+
+# Define the acceleration.
+a = 0.05
+# Get the number of chunks per scrape.
+num_events = Scrape.GetNumScrapeEvents(a)
+# Define speeds.
+speeds = [0, 2, 0.5, 3, 0.5]
+
+# Generate audio.
+for i in range(len(speeds) - 1):
+    if speeds[i + 1] > speeds[i]:
+        dv1 = speeds[i + 1] - speeds[i]
+        increase = True
+    else:
+        dv1 = speeds[i] - speeds[i + 1]
+        increase = False
+    dv = 0
+    while dv < dv1:
+        # Accelerate.
+        dv += 0.05
+        v = speeds[i] + (dv if increase else -dv)
+        # Generate audio.
+        scrape.GetAudio(v)
+        # Write to the save file.
+        writer.Write(scrape.samples.ToInt16Bytes())
+# Stop writing.
+writer.End()
+```
+
 ***
 
 **Next: [Troubleshooting Clatter](troubleshooting.md)**
@@ -113,6 +223,10 @@ c.communicate({"$type": "terminate"})
 Example Controllers:
 
 - [footsteps.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/clatter/footsteps.py) Generate footsteps audio using Clatter.
+
+Other Examples:
+
+- [scrape_no_controller.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/clatter/scrape_no_controller.py) Generate scrape audio with Clatter but not with TDW.
 
 Python API:
 

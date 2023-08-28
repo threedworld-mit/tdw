@@ -948,6 +948,18 @@
         "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_flat_6km",
         "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_flat_6km"
       }
+    },
+	"mm_kitchen_1b_4x5": {
+      "description": "A 4x5 grid (20 copies) of the mm_kitchen_1b scene.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "mm_kitchen_1b_4x5",
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/mm_kitchen_1b_4x5",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/mm_kitchen_1b_4x5",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/mm_kitchen_1b_4x5"
+      }
     }
   }
 }

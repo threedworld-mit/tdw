@@ -15,6 +15,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Deprecated `replicant.reset()`. See Replicant documentation for how to reset the Replicant.
 
+### Scene Library
+
+- Added: `mm_kitchen_1b_4x5` A 4x5 grid of `mm_kitchen_1b` rooms.
+
 ### Example Controllers
 
 - Fixed: `replicant/reset.py` doesn't work with streamed scenes. It now shows a better way to reset the Replicant and other add-ons.

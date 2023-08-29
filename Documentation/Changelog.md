@@ -55,9 +55,14 @@ We achieved this by doing the following:
 
 - Deprecated `replicant.reset()`. See Replicant documentation for how to reset the Replicant.
 
+### Scene Library
+
+- Added: `mm_kitchen_1b_4x5` A 4x5 grid of `mm_kitchen_1b` rooms.
+
 ### Example Controllers
 
 - Fixed: `replicant/reset.py` doesn't work with streamed scenes. It now shows a better way to reset the Replicant and other add-ons.
+- Added: `clatter/scrape_no_controller.py` and its dependency: `clatter/Clatter.Core.dll`. This is an example of how to import Clatter directly into Python.
 
 ### Documentation 
 
@@ -66,6 +71,7 @@ We achieved this by doing the following:
 | Document | Modification |
 | --- | --- |
 | `lessons/replicants/reset.md` | Explains a better way to reset the Replicant. |
+| `lessons/clatter/cli.md` | Added an explanation and example of how to use Clatter.Core.dll within a Python script. |
 | `api/output_data.md` | Fixed missing link in ScreenPosition. |
 
 ## v1.12.7

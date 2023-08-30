@@ -18,7 +18,7 @@
 - The render quality is set to the highest possible setting (but no images are sent).
 - There are 100 cube primitives in the scene.
 
-**FPS: 681**
+**FPS: 694**
 
 ### 1. Image capture (low quality)
 
@@ -28,7 +28,7 @@
 - The images are 256x256.
 - There are no objects in the scene.
 
-**FPS: 355**
+**FPS: 273**
 
 ### 2. Image capture (high quality)
 
@@ -40,6 +40,16 @@
 
 **FPS: 42**
 
+### 3. Image capture (all)
+
+- `Images` data is sent per frame (all passes).
+- The render quality is set to the highest possible setting.
+- The images are compressed .png
+- The images are 256x256
+- There are no 15 objects in the scene.
+
+**FPS: 42**
+
 ### 3. Kitchen benchmark
 
 - There is a pre-defined procedurally-generated kitchen (the commands are loaded from a .json file)
@@ -48,7 +58,7 @@
   - `DynamicCompositeObjects`
   - `Overlap` (for containment)
 
-**FPS: 125**
+**FPS: 162**
 
 ## How to run TDW's main performance benchmark
 

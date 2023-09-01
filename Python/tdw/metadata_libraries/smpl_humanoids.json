@@ -9,7 +9,8 @@
         "Darwin": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/osx/2020.2/humanoid_smpl_f",
         "Linux": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/linux/2020.2/humanoid_smpl_f",
         "Windows": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/windows/2020.2/humanoid_smpl_f"
-      }
+      },
+      "collision_avoidance_y": 0
     },
     "humanoid_smpl_m": {
       "collision_avoidance_distance": 0,
@@ -19,7 +20,8 @@
         "Darwin": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/osx/2020.2/humanoid_smpl_m",
         "Linux": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/linux/2020.2/humanoid_smpl_m",
         "Windows": "https://tdw-public.s3.amazonaws.com/smpl_humanoids/windows/2020.2/humanoid_smpl_m"
-      }
+      },
+      "collision_avoidance_y": 0
     }
   }
 }

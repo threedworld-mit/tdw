@@ -103,7 +103,6 @@ class StackObjects(Controller):
 
         # Reset the add-ons.
         self.add_ons.clear()
-        self.replicant.reset()
         self.camera.initialized = False
         self.capture.initialized = False
         self.object_manager.reset()

@@ -16,11 +16,11 @@
       }
     },
     "girl_casual": {
-      "collision_avoidance_distance": 0.2,
+      "collision_avoidance_distance": 0.4,
       "collision_avoidance_half_extents": {
-        "x": 0.31875,
-        "y": 0.8814,
-        "z": 0.0875
+        "x": 0.13875,
+        "y": 0.5814,
+        "z": 0.0475
       },
       "name": "girl_casual",
       "urls": {

@@ -35,6 +35,8 @@ The action can end for several reasons depending on the collision detection rule
 
 - `collision_avoidance_half_extents` If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
 
+- `collision_avoidance_y` The y coordinate of the collision detection overlap shape.
+
 - `record` The `HumanoidAnimationRecord` of the animation.
 
 - `collision_detection` The [`CollisionDetection`](../collision_detection.md) rules.
@@ -61,9 +63,9 @@ The action can end for several reasons depending on the collision detection rule
 
 #### \_\_init\_\_
 
-**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents)`**
+**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents, collision_avoidance_y)`**
 
-**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents, animation="walking_2", library="humanoid_animations.json")`**
+**`MoveBy(distance, dynamic, collision_detection, previous, reset_arms, reset_arms_duration, scale_reset_arms_duration, arrived_at, collision_avoidance_distance, collision_avoidance_half_extents, collision_avoidance_y, animation="walking_2", library="humanoid_animations.json")`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -77,6 +79,7 @@ The action can end for several reasons depending on the collision detection rule
 | arrived_at |  float |  | If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful. |
 | collision_avoidance_distance |  float |  | If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles. |
 | collision_avoidance_half_extents |  Dict[str, float] |  | If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles. |
+| collision_avoidance_y |  float |  | The y coordinate of the collision detection overlap shape. |
 | animation |  str  | "walking_2" | The name of the walk animation. |
 | library |  str  | "humanoid_animations.json" | The name of the walk animation's library. |
 

@@ -262,6 +262,7 @@ class HumanoidRecord(_Record):
         super().__init__(data)
         self.collision_avoidance_distance: float = data["collision_avoidance_distance"]
         self.collision_avoidance_half_extents: Dict[str, float] = data["collision_avoidance_half_extents"]
+        self.collision_avoidance_y: float = data["collision_avoidance_y"]
 
 
 class DroneRecord(_Record):

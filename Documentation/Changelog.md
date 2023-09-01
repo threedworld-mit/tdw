@@ -35,6 +35,11 @@ We achieved this by doing the following:
 
 [^3]: `_depth` and `_depth_simple` passes haven't changed because they return raw RGB data, not an encoded image.
 
+### `tdw` module
+
+- Fixed: `girl_casual` Replicant collision detection doesn't work. 
+  - (Backend): Added new parameter `collision_avoidance_y` to each Replicant record and the `MoveBy` and `MoveTo` actions. These parameters are automatically set at runtime.
+
 ### Benchmarking
 
 - Added: `benchmarking/image_capture_all.py`

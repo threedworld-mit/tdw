@@ -39,8 +39,8 @@ class MoveBy(Animate):
     def __init__(self, distance: float, dynamic: ReplicantDynamic, collision_detection: CollisionDetection,
                  previous: Optional[Action], reset_arms: bool, reset_arms_duration: float,
                  scale_reset_arms_duration: bool, arrived_at: float, collision_avoidance_distance: float,
-                 collision_avoidance_half_extents: Dict[str, float], animation: str = "walking_2",
-                 library: str = "humanoid_animations.json"):
+                 collision_avoidance_half_extents: Dict[str, float], collision_avoidance_y: float,
+                 animation: str = "walking_2", library: str = "humanoid_animations.json"):
         """
         :param distance: The target distance. If less than 0, the Replicant will walk backwards.
         :param dynamic: The [`ReplicantDynamic`](../replicant_dynamic.md) data that changes per `communicate()` call.
@@ -52,6 +52,7 @@ class MoveBy(Animate):
         :param arrived_at: If at any point during the action the difference between the target distance and distance traversed is less than this, then the action is successful.
         :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
         :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+        :param collision_avoidance_y: The y coordinate of the collision detection overlap shape.
         :param animation: The name of the walk animation.
         :param library: The name of the walk animation's library.
         """
@@ -84,6 +85,10 @@ class MoveBy(Animate):
         If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
         self.collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
+        """:field
+        The y coordinate of the collision detection overlap shape.
+        """
+        self.collision_avoidance_y: float = collision_avoidance_y
         super().__init__(animation=animation,
                          collision_detection=collision_detection,
                          library=library,
@@ -184,7 +189,7 @@ class MoveBy(Animate):
         if self.distance < 0:
             overlap_z *= -1
         overlap_position = dynamic.transform.position + (dynamic.transform.forward * overlap_z)
-        overlap_position[1] += 1
+        overlap_position[1] += self.collision_avoidance_y
         # Send the next overlap command.
         return [{"$type": "send_overlap_box",
                  "id": static.replicant_id,

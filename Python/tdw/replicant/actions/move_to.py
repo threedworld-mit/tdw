@@ -33,8 +33,8 @@ class MoveTo(Action):
     def __init__(self, target: TARGET, collision_detection: CollisionDetection, previous: Optional[Action],
                  reset_arms: bool, reset_arms_duration: float, scale_reset_arms_duration: bool, arrived_at: float,
                  bounds_position: str, collision_avoidance_distance: float,
-                 collision_avoidance_half_extents: Dict[str, float], animation: str = "walking_2",
-                 library: str = "humanoid_animations.json"):
+                 collision_avoidance_half_extents: Dict[str, float], collision_avoidance_y: float,
+                 animation: str = "walking_2", library: str = "humanoid_animations.json"):
         """
         :param target: The target. If int: An object ID. If dict: A position as an x, y, z dictionary. If numpy array: A position as an [x, y, z] numpy array.
         :param collision_detection: The [`CollisionDetection`](../collision_detection.md) rules.
@@ -46,6 +46,7 @@ class MoveTo(Action):
         :param bounds_position: If `target` is an integer object ID, move towards this bounds point of the object. Options: `"center"`, `"top`", `"bottom"`, `"left"`, `"right"`, `"front"`, `"back"`.
         :param collision_avoidance_distance: If `collision_detection.avoid == True`, an overlap will be cast at this distance from the Wheelchair Replicant to detect obstacles.
         :param collision_avoidance_half_extents: If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
+        :param collision_avoidance_y: The y coordinate of the collision detection overlap shape.
         :param animation: The name of the walk animation.
         :param library: The name of the walk animation's library.
         """
@@ -94,6 +95,10 @@ class MoveTo(Action):
         If `collision_detection.avoid == True`, an overlap will be cast with these half extents to detect obstacles.
         """
         self.collision_avoidance_half_extents: Dict[str, float] = collision_avoidance_half_extents
+        """:field
+        The y coordinate of the collision detection overlap shape.
+        """
+        self.collision_avoidance_y: float = collision_avoidance_y
         self._turning: bool = True
         self._image_frequency: ImageFrequency = ImageFrequency.once
         self._move_by: Optional[MoveBy] = None
@@ -149,6 +154,7 @@ class MoveTo(Action):
                                    arrived_at=self.arrived_at,
                                    collision_avoidance_distance=self.collision_avoidance_distance,
                                    collision_avoidance_half_extents=self.collision_avoidance_half_extents,
+                                   collision_avoidance_y=self.collision_avoidance_y,
                                    animation=self.animation,
                                    library=self.library)
             commands = self._move_by.get_initialization_commands(resp=resp,

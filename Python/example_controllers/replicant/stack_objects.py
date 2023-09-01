@@ -227,7 +227,7 @@ class StackObjects(Controller):
                 # In an actual use-case, this would need to be multiple move actions and include navigation planning.
                 # Set `arrived_at` to a relatively large value so that the Replicant doesn't knock over the stack.
                 # Don't reset the arms to maintain the neutral holding position of the hand.
-                self.replicant.move_to(target=self.stack_position, arrived_at=0.4, reset_arms=False)
+                self.replicant.move_to(target=self.stack_position, arrived_at=0.8, reset_arms=False)
         # Navigate to the stack.
         elif self.replicant_state == ReplicantState.moving_to_stack:
             if self.action_ended(error_message="move to stack"):
@@ -307,7 +307,7 @@ class StackObjects(Controller):
 
         # Move to the object.
         # `arrived_at` is set to make sure that the Replicant is at a distance at which it's easy to pick up the object.
-        self.replicant.move_to(target=self.objects[self.object_index], arrived_at=0.4)
+        self.replicant.move_to(target=self.objects[self.object_index], arrived_at=0.25)
 
     def raycast_stack(self) -> float:
         """

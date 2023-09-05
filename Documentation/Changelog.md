@@ -39,6 +39,8 @@ We achieved this by doing the following:
 
 - Fixed: `girl_casual` Replicant collision detection doesn't work. 
   - (Backend): Added new parameter `collision_avoidance_y` to each Replicant record and the `MoveBy` and `MoveTo` actions. These parameters are automatically set at runtime.
+- Removed `fridge_large_composite` as a valid refrigerator in the proc gen arrangement system because it was causing crashes.
+- Fixed: ProcGenKitchen can't create multiple rooms.
 
 ### Benchmarking
 

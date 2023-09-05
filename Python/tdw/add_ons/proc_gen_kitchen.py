@@ -305,7 +305,7 @@ class ProcGenKitchen(AddOn):
         commands.append({"$type": "step_physics",
                          "frames": 50})
         # Set the commands.
-        self.commands = commands
+        self.commands.extend(commands)
 
     def get_initialization_commands(self) -> List[dict]:
         return []

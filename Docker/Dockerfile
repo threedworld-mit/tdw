@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     curl \
     unzip
-cd 
 
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.tar.gz
 RUN tar -xzf TDW_Linux.tar.gz

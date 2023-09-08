@@ -1,4 +1,4 @@
-FROM nvidia/opengl:1.1-glvnd-devel-ubuntu18.04
+FROM nvidia/opengl:1.1-glvnd-devel-ubuntu22.04
 
 ARG TDW_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
@@ -15,13 +15,14 @@ RUN apt-get -qq update && apt-get -qq install -y  sudo libcairo2 libcap2 libcups
 
 RUN apt-get -qq update && apt-get -qq install -y  sudo libgdk-pixbuf2.0-0 libgl1-mesa-glx mesa-utils libglib2.0-0 libglu1-mesa libgtk2.0-0 libnspr4 libnss3 libpango1.0-0 libstdc++6 libx11-6 libxcomposite1 libxcursor1 libxdamage1 libxext6 
 
-RUN apt-get -qq update && apt-get -qq install -y sudo libxfixes3 libxi6 libxrandr2 libxrender1 libxtst6 zlib1g debconf npm xdg-utils lsb-release libpq5 xvfb x11-apps  && rm -rf /var/lib/apt/lists/*
+RUN apt-get -qq update && apt-get -qq install -y sudo libxfixes3 libxi6 libxrandr2 libxrender1 libxtst6 zlib1g debconf npm xdg-utils lsb-release libpq5 xvfb x11-apps python3-pip  && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
     curl \
     unzip
 
-
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.tar.gz
 RUN tar -xzf TDW_Linux.tar.gz
+
+RUN python3 -m pip install tdw

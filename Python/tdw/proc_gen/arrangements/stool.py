@@ -27,10 +27,10 @@ class Stool(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] * Stool.OFFSET_FACTOR
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]) * Stool.OFFSET_FACTOR
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * Stool.OFFSET_FACTOR
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]) * Stool.OFFSET_FACTOR
 
     def _get_category(self) -> str:
         return "stool"

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from pathlib import Path
 import re
 
-__version__ = "1.12.10.0"
+__version__ = "1.12.10.1"
 readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')
@@ -33,7 +33,10 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11'
     ],
     packages=find_packages(),
     include_package_data=True,

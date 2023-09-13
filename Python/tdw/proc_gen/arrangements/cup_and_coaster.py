@@ -35,7 +35,7 @@ class CupAndCoaster(Arrangement):
             commands.extend(Controller.get_add_physics_object(model_name=coaster_model_name,
                                                               position=self._position,
                                                               rotation={"x": 0,
-                                                                        "y": float(self._rng.randint(
+                                                                        "y": float(self._rng.uniform(
                                                                             -CupAndCoaster.ROTATION,
                                                                             CupAndCoaster.ROTATION)),
                                                                         "z": 0},

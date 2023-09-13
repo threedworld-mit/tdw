@@ -1,8 +1,7 @@
 from pathlib import Path
 from json import loads
-from typing import List, Tuple
+from typing import List
 from pkg_resources import resource_filename
-import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.benchmark import Benchmark

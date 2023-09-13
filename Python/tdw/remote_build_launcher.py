@@ -34,8 +34,8 @@ class RemoteBuildLauncher:
         socket.connect("tcp://" + build_address + ":%s" % listener_port)
         build_info = RemoteBuildLauncher._send_start_build(socket, controller_address)
         thread = Thread(target=RemoteBuildLauncher._keep_alive_thread,
-                        args=(socket, build_info))
-        thread.setDaemon(True)
+                        args=(socket, build_info),
+                        daemon=True)
         thread.start()
         return build_info
 

@@ -538,6 +538,7 @@ class ProcGenKitchen(AddOn):
         walls_with_windows = [w for w in longer_walls if self.room.main_region.walls_with_windows & w != 0]
         walls_without_windows = [w for w in longer_walls if self.room.main_region.walls_with_windows & w == 0]
         commands = []
+        lateral_arrangement_indices: List[int] = [0, 1]
         if len(walls_with_windows) >= 1:
             window_wall = walls_with_windows[self.rng.randint(0, len(walls_with_windows))]
             lateral_arrangements = [lateral_1, lateral_0]
@@ -548,15 +549,15 @@ class ProcGenKitchen(AddOn):
             walls = longer_walls
             self.rng.shuffle(walls)
             lateral_arrangements = [lateral_0, lateral_1]
-            self.rng.shuffle(lateral_arrangements)
-        for wall, categories in zip(walls, lateral_arrangements):
+            self.rng.shuffle(lateral_arrangement_indices)
+        for wall, li in zip(walls, lateral_arrangement_indices):
             if self.rng.random() < 0.5:
-                categories.reverse()
-            categories.extend(self._get_secondary_categories(wall=wall, region=self.room.main_region))
-            self._adjust_lateral_arrangement_categories(categories=categories, wall=wall, region=self.room.main_region)
+                lateral_arrangements[li].reverse()
+            lateral_arrangements[li].extend(self._get_secondary_categories(wall=wall, region=self.room.main_region))
+            self._adjust_lateral_arrangement_categories(categories=lateral_arrangements[li], wall=wall, region=self.room.main_region)
             corners = TDWUtils.get_corners_from_wall(wall=wall)
             corner = corners[self.rng.randint(0, len(corners))]
-            commands.extend(self._get_lateral_arrangement(categories=categories,
+            commands.extend(self._get_lateral_arrangement(categories=lateral_arrangements[li],
                                                           corner=corner,
                                                           wall=wall,
                                                           region=self.room.main_region))
@@ -709,7 +710,7 @@ class ProcGenKitchen(AddOn):
                 random_categories.append(category)
         # Add lateral arrangements to continuous unused walls.
         commands = []
-        for wall in [c for c in CardinalDirection if (region.non_continuous_walls & c == 0) and c not in used_walls]:
+        for wall in [c for c in list(CardinalDirection) if (region.non_continuous_walls & c == 0) and c not in used_walls]:
             categories = []
             for i in range(10):
                 categories.append(random_categories[self.rng.randint(0, len(random_categories))])

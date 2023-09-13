@@ -122,7 +122,7 @@ class Arrangement(ABC):
             for model_name in Arrangement.MODEL_CATEGORIES[category]:
                 record = Controller.MODEL_LIBRARIANS["models_core.json"].get_record(model_name)
                 model_size = TDWUtils.get_bounds_extents(bounds=record.bounds)
-                model_semi_major_axis = model_size[0] if model_size[0] > model_size[2] else model_size[2]
+                model_semi_major_axis = float(model_size[0] if model_size[0] > model_size[2] else model_size[2])
                 if model_semi_major_axis < semi_minor_axis:
                     model_sizes[model_name] = model_semi_major_axis
                     model_cell_sizes.append(int(model_semi_major_axis / cell_size) + 1)

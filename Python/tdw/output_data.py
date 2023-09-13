@@ -1,4 +1,3 @@
-from abc import ABC, abstractmethod
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Transforms as Trans
@@ -638,7 +637,7 @@ class OculusTouchButtons(OutputData):
 
     @staticmethod
     def _get_buttons(v: int) -> List[OculusTouchButton]:
-        return [OculusTouchButtons.BUTTONS[i] for (i, b) in enumerate(OculusTouchButtons.BUTTONS) if v & (1 << i) != 0]
+        return [OculusTouchButtons.BUTTONS[i] for (i, b) in enumerate(list(OculusTouchButtons.BUTTONS)) if v & (1 << i) != 0]
 
 
 class StaticOculusTouch(OutputData):
@@ -1462,31 +1461,31 @@ class Mouse(OutputData):
         return self.data.ScrollDeltaAsNumpy()
 
     def get_is_left_button_pressed(self) -> bool:
-        return self._buttons[0][0]
+        return bool(self._buttons[0][0])
 
     def get_is_left_button_held(self) -> bool:
-        return self._buttons[0][1]
+        return bool(self._buttons[0][1])
 
     def get_is_left_button_released(self) -> bool:
-        return self._buttons[0][2]
+        return bool(self._buttons[0][2])
 
     def get_is_middle_button_pressed(self) -> bool:
-        return self._buttons[1][0]
+        return bool(self._buttons[1][0])
 
     def get_is_middle_button_held(self) -> bool:
-        return self._buttons[1][1]
+        return bool(self._buttons[1][1])
 
     def get_is_middle_button_released(self) -> bool:
-        return self._buttons[1][2]
+        return bool(self._buttons[1][2])
 
     def get_is_right_button_pressed(self) -> bool:
-        return self._buttons[2][0]
+        return bool(self._buttons[2][0])
 
     def get_is_right_button_held(self) -> bool:
-        return self._buttons[2][1]
+        return bool(self._buttons[2][1])
 
     def get_is_right_button_released(self) -> bool:
-        return self._buttons[2][2]
+        return bool(self._buttons[2][2])
 
 
 class TransformMatrices(OutputData):
@@ -1603,7 +1602,7 @@ class Replicants(OutputData):
         return int(self._held[index][1][1])
 
     def get_is_collision(self, index: int, body_part_index: int, collision_index: int) -> bool:
-        return self._is_collisions[index][body_part_index][collision_index]
+        return bool(self._is_collisions[index][body_part_index][collision_index])
 
     def get_collision_id(self, index: int, body_part_index: int, collision_index: int) -> int:
         return int(self._collision_ids[index][body_part_index][collision_index])

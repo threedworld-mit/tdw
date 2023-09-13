@@ -67,8 +67,8 @@ class Dishwasher(ArrangementAlongWall):
                                                               object_id=counter_top_id,
                                                               kinematic=True))
             self.object_ids.append(counter_top_id)
-            on_top_commands, object_ids = self._add_rectangular_arrangement(size=((counter_top_bounds[0] / 2) * Dishwasher.WIDTH_SCALE,
-                                                                                  (counter_top_bounds[1] / 2) * Dishwasher.DEPTH_SCALE),
+            on_top_commands, object_ids = self._add_rectangular_arrangement(size=(float(counter_top_bounds[0] / 2) * Dishwasher.WIDTH_SCALE,
+                                                                                  float(counter_top_bounds[1] / 2) * Dishwasher.DEPTH_SCALE),
                                                                             categories=Dishwasher.ON_TOP_OF["kitchen_counter"],
                                                                             position={"x": self._position["x"],
                                                                                       "y": float(counter_top_bounds[1]),
@@ -95,7 +95,7 @@ class Dishwasher(ArrangementAlongWall):
         return pos
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Dishwasher.LENGTH_OFFSET * 2
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]) + Dishwasher.LENGTH_OFFSET * 2
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:
@@ -108,10 +108,10 @@ class Dishwasher(ArrangementAlongWall):
             return 90
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2])
 
     def _get_size(self) -> Tuple[float, float]:
-        extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
+        extents: List[float] = TDWUtils.get_bounds_extents(bounds=self._record.bounds).tolist()
         return extents[2], extents[0] + Dishwasher.LENGTH_OFFSET * 2
 
     def _get_category(self) -> str:

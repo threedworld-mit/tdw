@@ -50,7 +50,7 @@ class Basket(ArrangementAlongWall):
     def get_commands(self) -> List[dict]:
         commands = self._add_root_object(kinematic=False)
         extents = TDWUtils.get_bounds_extents(bounds=self._record.bounds)
-        d = extents[0] if extents[0] < extents[2] else extents[2]
+        d = float(extents[0] if extents[0] < extents[2] else extents[2])
         d *= 0.6
         r = d / 2
         y = extents[1]
@@ -72,11 +72,11 @@ class Basket(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Basket.LENGTH_OFFSET
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]) + Basket.LENGTH_OFFSET
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * self._rng.uniform(Basket.MIN_DEPTH_OFFSET,
-                                                                                              Basket.MAX_DEPTH_OFFSET)
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2] * self._rng.uniform(Basket.MIN_DEPTH_OFFSET,
+                                                                                                    Basket.MAX_DEPTH_OFFSET))
 
     def _get_rotation(self) -> float:
         return float(self._rng.uniform(-Basket.ROTATION, Basket.ROTATION))

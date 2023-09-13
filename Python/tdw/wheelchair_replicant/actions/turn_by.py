@@ -68,7 +68,7 @@ class TurnBy(WheelchairMotion):
     def get_initialization_commands(self, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic,
                                     image_frequency: ImageFrequency) -> List[dict]:
         self._initial_forward_vector = dynamic.transform.forward.copy()
-        self._initial_rotation = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
+        self._initial_rotation = float(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1])
         self._initial_rotation = TurnBy._clamp_angle(self._initial_rotation)
         self._rotation = self._initial_rotation
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
@@ -81,7 +81,7 @@ class TurnBy(WheelchairMotion):
         :return: The change in rotation from the initial rotation to the current rotation.
         """
 
-        rotation: float = QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]
+        rotation: float = float(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1])
         rotation = TurnBy._clamp_angle(rotation)
         return np.linalg.norm(self._initial_rotation - rotation) * np.sign(self.angle)
 
@@ -108,11 +108,11 @@ class TurnBy(WheelchairMotion):
         return right * overlap_d
 
     def _is_failure(self, dynamic: ReplicantDynamic) -> bool:
-        angle = TurnBy._clamp_angle(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1])
+        angle = TurnBy._clamp_angle(float(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]))
         return np.linalg.norm(angle - self._rotation) < 0.0001
 
     def _continue_action(self, dynamic: ReplicantDynamic):
-        self._rotation = TurnBy._clamp_angle(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1])
+        self._rotation = TurnBy._clamp_angle(float(QuaternionUtils.quaternion_to_euler_angles(dynamic.transform.rotation)[1]))
 
     @staticmethod
     def _clamp_angle(angle: float) -> float:

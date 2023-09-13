@@ -68,15 +68,15 @@ class MoveBy(WheelchairMotion):
         return super().get_initialization_commands(resp=resp, static=static, dynamic=dynamic,
                                                    image_frequency=image_frequency)
 
-    def _get_distance(self, dynamic: ReplicantDynamic) -> Tuple[np.ndarray, np.ndarray]:
+    def _get_distance(self, dynamic: ReplicantDynamic) -> Tuple[float, float]:
         """
         :param dynamic: The `ReplicantDynamic` data that changes per `communicate()` call.
 
         :return: Tuple: The distance to target, the distance traversed.
         """
 
-        distance_to_target = np.linalg.norm(dynamic.transform.position - self._destination)
-        distance_traversed = np.linalg.norm(dynamic.transform.position - self._initial_position)
+        distance_to_target = float(np.linalg.norm(dynamic.transform.position - self._destination))
+        distance_traversed = float(np.linalg.norm(dynamic.transform.position - self._initial_position))
         return distance_to_target, distance_traversed
 
     def _get_fail_status(self) -> ActionStatus:

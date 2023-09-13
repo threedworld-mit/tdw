@@ -88,10 +88,10 @@ class Stove(ArrangementAlongWall):
         return commands
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2])
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0] + Stove.DEPTH_OFFSET
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]) + Stove.DEPTH_OFFSET
 
     def _get_rotation(self) -> float:
         if self._wall == CardinalDirection.north:

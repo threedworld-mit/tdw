@@ -53,10 +53,10 @@ class Shelf(ArrangementAlongWall):
             return 0
 
     def get_length(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2]
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[2])
 
     def _get_depth(self) -> float:
-        return TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0]
+        return float(TDWUtils.get_bounds_extents(bounds=self._record.bounds)[0])
 
     def _get_category(self) -> str:
         return "shelf"

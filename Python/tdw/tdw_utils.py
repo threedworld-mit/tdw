@@ -139,7 +139,7 @@ class TDWUtils:
         :return The vector magnitude.
         """
 
-        return np.linalg.norm(TDWUtils.vector3_to_array(vector3))
+        return float(np.linalg.norm(TDWUtils.vector3_to_array(vector3)))
 
     @staticmethod
     def extend_line(p0: np.ndarray, p1: np.ndarray, d: float, clamp_y=True) -> np.ndarray:
@@ -235,7 +235,7 @@ class TDWUtils:
 
         # Read the image.
         img = Image.open(filepath)
-        pixels = img.load()
+        pixels: np.ndarray = np.asarray(img)
         col, row = img.size
 
         # Read each pixel as a grid point.
@@ -290,7 +290,7 @@ class TDWUtils:
                 # Every other pass can be saved directly to disk.
                 else:
                     with open(path, "wb") as f:
-                        f.write(images.get_image(i))
+                        f.write(images.get_image(i).tobytes())
 
     @staticmethod
     def get_shaped_depth_pass(images: Images, index: int) -> np.ndarray:
@@ -334,7 +334,7 @@ class TDWUtils:
         if pass_mask == "_depth" or pass_mask == "_depth_simple":
             return Image.fromarray(TDWUtils.get_shaped_depth_pass(images=images, index=index))
         else:
-            return Image.open(io.BytesIO(images.get_image(index)))
+            return Image.open(io.BytesIO(images.get_image(index).tobytes()))
 
     @staticmethod
     def get_segmentation_colors(id_pass: np.ndarray) -> np.ndarray:

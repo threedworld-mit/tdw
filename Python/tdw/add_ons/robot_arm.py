@@ -1,8 +1,8 @@
 from typing import List, Dict, Union
 import numpy as np
 from overrides import final
-from ikpy.chain import Chain
 from ikpy.link import OriginLink, URDFLink, Link
+from tdw.ikpy.chain import Chain
 from tdw.type_aliases import POSITION
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils

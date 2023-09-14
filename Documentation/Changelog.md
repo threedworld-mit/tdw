@@ -13,7 +13,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### `tdw` module
 
 - Fixed: Some parts of TDW don't work on Python 3.10 or newer. (TDW should now work on any version of Python newer than 3.6)
-- Fixed: The center of each room in mm_kitchen_1b_4x5 is the same.
+- Fixed: The center of each scene region in mm_kitchen_1b_4x5 is the same in the record data.
+- Fixed: Table settings in `KitchenTable` (in `ProcGenKitchen`) are often not on the table.
 
 ### Docker
 

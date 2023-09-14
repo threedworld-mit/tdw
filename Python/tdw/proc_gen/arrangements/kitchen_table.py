@@ -119,8 +119,17 @@ class KitchenTable(TableAndChairs):
         # Add table settings.
         for bound_point in self._bound_point_positions:
             # Get the vector towards the center.
-            v = np.array([bound_point[0], bound_point[2]]) * self._rng.uniform(KitchenTable.MIN_PLATE_OFFSET_FACTOR,
-                                                                               KitchenTable.MAX_PLATE_OFFSET_FACTOR)
+            c: CardinalDirection = bound_point[1]
+            if c == CardinalDirection.west:
+                vd = self._record.bounds["left"]
+            elif c == CardinalDirection.north:
+                vd = self._record.bounds["front"]
+            elif c == CardinalDirection.east:
+                vd = self._record.bounds["right"]
+            else:
+                vd = self._record.bounds["back"]
+            v = np.array([vd["x"], vd["z"]]) * self._rng.uniform(KitchenTable.MIN_PLATE_OFFSET_FACTOR,
+                                                                 KitchenTable.MAX_PLATE_OFFSET_FACTOR)
             # Get a slightly perturbed position for the plate.
             table_setting = TableSetting(position={"x": top["x"] + v[0] + self._rng.uniform(
                                              -KitchenTable.PLATE_POSITION_PERTURBATION,

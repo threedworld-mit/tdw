@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Tuple
 import numpy as np
 from overrides import final
 from tdw.cardinal_direction import CardinalDirection
@@ -44,7 +44,7 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
 
         self._used_walls: int = used_walls
         self._region: InteriorRegion = region
-        self._bound_point_positions: List[np.ndarray] = list()
+        self._bound_point_positions: List[Tuple[np.ndarray, CardinalDirection]] = list()
         super().__init__(model=model, position=position, rng=rng)
 
     def get_commands(self) -> List[dict]:
@@ -82,14 +82,14 @@ class TableAndChairs(ArrangementWithRootObject, ABC):
                 cd = np.linalg.norm(tc - cp)
                 # Add this side.
                 if cd > TableAndChairs.MIN_CHAIR_DISTANCE_FROM_USED_WALL:
-                    self._bound_point_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
+                    self._bound_point_positions.append((self._get_chair_bound_position(cardinal_direction=chair_direction), chair_direction))
             else:
-                self._bound_point_positions.append(self._get_chair_bound_position(cardinal_direction=chair_direction))
+                self._bound_point_positions.append((self._get_chair_bound_position(cardinal_direction=chair_direction), chair_direction))
         # Add the chairs.
         rotation_range = self._get_chair_rotation_range()
         for chair_bound_point in self._bound_point_positions:
             chair_position = self._get_chair_position(chair_record=chair_record,
-                                                      table_bound_point=chair_bound_point)
+                                                      table_bound_point=chair_bound_point[0])
             object_id = Controller.get_unique_id()
             # Add the chair.
             commands.extend(Controller.get_add_physics_object(model_name=chair_model_name,

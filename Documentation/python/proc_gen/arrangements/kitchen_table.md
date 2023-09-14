@@ -49,12 +49,12 @@ A kitchen table has chairs and table settings.
 | `INSIDE_OF` | Dict[str, List[str]] | A dictionary of categories that can be inside of other categories. Key = A category. Value = A list of categories of models that can inside of the key category. | `loads(Path(resource_filename(__name__, "data/inside_of.json")).read_text())` |
 | `MAX_CHAIR_OFFSET` | float | The minimum random offset of a chair from the edge of the table. | `-0.01` |
 | `MAX_PLATE_OFFSET_FACTOR` | float | The maximum offset of the plate from the edge of the table as a fraction of the table surface's extent. | `0.7` |
-| `MAX_TABLE_ALCOVE_OFFSET_FACTOR` | float | If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance factor (0 to 1, with 0 being the center of the main region). | `0.65` |
+| `MAX_TABLE_ALCOVE_OFFSET` | float | If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance factor. | `0.2` |
 | `MIN_AREA_FOR_CENTERPIECE` | float | The table surface area must be greater than this for there to potentially be a centerpiece. | `1.1` |
 | `MIN_CHAIR_DISTANCE_FROM_USED_WALL` | float | The minimum distace from a "used wall" at which a chair can be placed. | `2` |
 | `MIN_CHAIR_OFFSET` | float | The minimum random offset of a chair from the edge of the table. | `-0.02` |
 | `MIN_PLATE_OFFSET_FACTOR` | float | The minimum offset of the plate from the edge of the table as a fraction of the table surface's extent. | `0.65` |
-| `MIN_TABLE_ALCOVE_OFFSET_FACTOR` | float | If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance factor (0 to 1, with 0 being the center of the main region). | `0.35` |
+| `MIN_TABLE_ALCOVE_OFFSET` | float | If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance. | `-0.2` |
 | `MODEL_CATEGORIES` | Dict[str, List[str]] | A dictionary of all of the models that may be used for procedural generation. Key = The category. Value = A list of model names. Note that this category overlaps with, but is not the same as, `model_record.wcategory`; see: `Arrangement.get_categories_and_wcategories()`. | `loads(Path(resource_filename(__name__, "data/models.json")).read_text())` |
 | `ON_TOP_OF` | Dict[str, List[str]] | A dictionary of categories that can be on top of other categories. Key = A category. Value = A list of categories of models that can be on top of the key category. | `loads(Path(resource_filename(__name__, "data/on_top_of.json")).read_text())` |
 | `PLATE_POSITION_PERTURBATION` | float | Randomly perturb the (x, z) coordinates of each plate by up to +/- this distance. | `0.03` |

@@ -67,13 +67,13 @@ class KitchenTable(TableAndChairs):
     """
     TABLE_POSITION_PERTURBATION: float = 0.1
     """:class_var
-    If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance factor (0 to 1, with 0 being the center of the main region).
+    If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance.
     """
-    MIN_TABLE_ALCOVE_OFFSET_FACTOR: float = 0.35
+    MIN_TABLE_ALCOVE_OFFSET: float = -0.2
     """:class_var
-    If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance factor (0 to 1, with 0 being the center of the main region).
+    If there is an alcove in the room, the table will be between the center of the main region and the center of the alcove at a random distance factor.
     """
-    MAX_TABLE_ALCOVE_OFFSET_FACTOR: float = 0.65
+    MAX_TABLE_ALCOVE_OFFSET: float = 0.2
     """:class_var
     The table will be rotated randomly up to +/- this many degrees.
     """
@@ -119,8 +119,17 @@ class KitchenTable(TableAndChairs):
         # Add table settings.
         for bound_point in self._bound_point_positions:
             # Get the vector towards the center.
-            v = np.array([bound_point[0], bound_point[2]]) * self._rng.uniform(KitchenTable.MIN_PLATE_OFFSET_FACTOR,
-                                                                               KitchenTable.MAX_PLATE_OFFSET_FACTOR)
+            c: CardinalDirection = bound_point[1]
+            if c == CardinalDirection.west:
+                vd = self._record.bounds["left"]
+            elif c == CardinalDirection.north:
+                vd = self._record.bounds["front"]
+            elif c == CardinalDirection.east:
+                vd = self._record.bounds["right"]
+            else:
+                vd = self._record.bounds["back"]
+            v = np.array([vd["x"], vd["z"]]) * self._rng.uniform(KitchenTable.MIN_PLATE_OFFSET_FACTOR,
+                                                                 KitchenTable.MAX_PLATE_OFFSET_FACTOR)
             # Get a slightly perturbed position for the plate.
             table_setting = TableSetting(position={"x": top["x"] + v[0] + self._rng.uniform(
                                              -KitchenTable.PLATE_POSITION_PERTURBATION,
@@ -205,13 +214,10 @@ class KitchenTable(TableAndChairs):
                 pos["x"] += self._offset_distance
         # Position the table between the main region and an alcove.
         else:
-            p = (np.array(self._room.main_region.center) + np.array(alcove.center)) * self._rng.uniform(
-                KitchenTable.MIN_TABLE_ALCOVE_OFFSET_FACTOR, KitchenTable.MAX_TABLE_ALCOVE_OFFSET_FACTOR)
-            pos = {"x": p[0] + self._rng.uniform(-KitchenTable.TABLE_POSITION_PERTURBATION,
-                                                 KitchenTable.TABLE_POSITION_PERTURBATION),
-                   "y": 0,
-                   "z": p[2] + self._rng.uniform(-KitchenTable.TABLE_POSITION_PERTURBATION,
-                                                 KitchenTable.TABLE_POSITION_PERTURBATION)}
+            p = (np.array(self._room.main_region.center) + np.array(alcove.center)) / 2
+            p += self._rng.uniform(KitchenTable.MIN_TABLE_ALCOVE_OFFSET, KitchenTable.MAX_TABLE_ALCOVE_OFFSET, 3)
+            p[1] = 0
+            pos = TDWUtils.array_to_vector3(p)
         return pos
 
     def _get_category(self) -> str:

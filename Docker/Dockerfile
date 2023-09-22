@@ -16,7 +16,7 @@ RUN apt -qq install -y xorg xserver-xorg-input-evdev  xserver-xorg-input-all
 # Install NVIDIA drivers.
 # Source: https://github.com/mviereck/x11docker/wiki/NVIDIA-driver-support-for-docker-container#nvidia-driver-base-image
 RUN apt -qq install -y kmod xz-utils ca-certificates binutils 
-RUN wget https://http.download.nvidia.com/XFree86/Linux-x86_64/${NVIDIA_VERSION}/NVIDIA-Linux-x86_64-${NVIDIA_VERSION}.run 
+RUN wget https://http.download.nvidia.com/XFree86/Linux-x86_64/${NVIDIA_VERSION}/NVIDIA-Linux-x86_64-${NVIDIA_VERSION}.run -O NVIDIA-installer.run
 ENV NVIDIA_OPTIONS='--accept-license --no-runlevel-check --no-questions --no-backup --ui=none --no-kernel-module --no-nouveau-check'
 RUN sh NVIDIA-installer.run -A | grep -q -- '--install-libglvnd'        && Nvidiaoptions="${NVIDIA_OPTIONS} --install-libglvnd"
 RUN sh NVIDIA-installer.run -A | grep -q -- '--no-nvidia-modprobe'      && Nvidiaoptions="${NVIDIA_OPTIONS} --no-nvidia-modprobe"

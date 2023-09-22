@@ -14,7 +14,7 @@
 
 # Get the most recent version of TDW by checking the version.py script on Gitub.
 TDW_VERSION=$(curl -s https://raw.githubusercontent.com/threedworld-mit/tdw/master/Python/tdw/version.py)
-PATTERN='__version__ = \"__version__ \"(.*?)\"'
+PATTERN='__version__ = \"(.*?)\"'
 [[ "$TDW_VERSION" =~ $PATTERN ]] && TDW_VERSION="${BASH_REMATCH[1]}"
 
 # Run the container.

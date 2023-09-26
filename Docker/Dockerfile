@@ -1,7 +1,6 @@
 FROM nvidia/opengl:1.1-glvnd-devel-ubuntu22.04
 
 ARG TDW_VERSION
-ARG NVIDIA_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display
 ENV DISPLAY=:0
@@ -15,25 +14,10 @@ RUN apt clean -y
 # Install xorg.
 RUN apt -qq install -y xorg xserver-xorg-dev xutils-dev
 
-# Install NVIDIA drivers.
-# Source: https://github.com/mviereck/x11docker/wiki/NVIDIA-driver-support-for-docker-container#nvidia-driver-base-image
-RUN apt -qq install -y kmod xz-utils ca-certificates binutils 
-RUN wget https://http.download.nvidia.com/XFree86/Linux-x86_64/${NVIDIA_VERSION}/NVIDIA-Linux-x86_64-${NVIDIA_VERSION}.run -O NVIDIA-installer.run
-ENV NVIDIA_OPTIONS='--accept-license --no-runlevel-check --no-questions --no-backup --ui=none --no-kernel-module --no-nouveau-check'
-RUN sh NVIDIA-installer.run -A | grep -q -- '--install-libglvnd'        && Nvidiaoptions="${NVIDIA_OPTIONS} --install-libglvnd"
-RUN sh NVIDIA-installer.run -A | grep -q -- '--no-nvidia-modprobe'      && Nvidiaoptions="${NVIDIA_OPTIONS} --no-nvidia-modprobe"
-RUN sh NVIDIA-installer.run -A | grep -q -- '--no-kernel-module-source' && Nvidiaoptions="${NVIDIA_OPTIONS} --no-kernel-module-source"
-RUN sh NVIDIA-installer.run ${NVIDIA_OPTIONS}
-RUN rm NVIDIA-installer.run
-RUN apt -qq remove -y kmod xz-utils ca-certificates binutils
-
-# Configure xorg.conf
-RUN nvidia-xconfig --no-xinerama --probe-all-gpus --use-display-device=none
-
 # Download and untar TDW.
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.tar.gz --no-check-certificate
 RUN tar -xzf TDW_Linux.tar.gz
 RUN rm TDW_Linux.tar.gz
 
 # Start Xserver and launch TDW.
-ENTRYPOINT sudo nohup Xorg ${DISPLAY} -config /etc/X11/xorg.conf &; cd TDW; DISPLAY=${DISPLAY} ./TDW.x86_64 -port=${PORT} -address=${ADDRESS}
+ENTRYPOINT sudo nohup Xorg ${DISPLAY} &; cd TDW; DISPLAY=${DISPLAY} ./TDW.x86_64 -port=${PORT} -address=${ADDRESS}

@@ -153,6 +153,16 @@ c.communicate({"$type": "terminate"})
 DISPLAY=:0.0 ./TDW.x86_64 -port=1071
 ```
 
+### Segaults
+
+If your TDW build segfaults when a camera (avatar) is added to the scene, you should upgrade your server's packages. If that's not possible, try running the TDW build with an extra flag:
+
+```bash
+DISPLAY=:0.0 ./TDW.x86_64 -port=1071 -force-glcore42
+```
+
+This may result in slightly less photorealistic images.
+
 ## Install TDW in a Docker container
 
 1. Follow the above instructions for installing X on your server.

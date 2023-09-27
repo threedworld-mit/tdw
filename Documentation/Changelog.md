@@ -23,6 +23,14 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Updated Docker container to Ubuntu 22.04. Added instructions to `pip install tdw`.
 
+### Documentation
+
+#### Modified Documentation
+
+| Document                   | Modification                             |
+| -------------------------- | ---------------------------------------- |
+| `lessons/setup/install.md` | Added documentation for OpenGL segfaults |
+
 ## v1.12.9
 
 ### Build

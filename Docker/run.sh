@@ -29,4 +29,4 @@ docker run -it \
   -e PORT=${2:-'1071'} \
   -e ADDRESS=${3:-'localhost'} \
   --network host \
-  tdw/tdw:$TDW_VERSION
+  alters/tdw:$TDW_VERSION

@@ -25,8 +25,8 @@ docker run -it \
   --gpus all \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   --user="$(id --user):$(id --group)" \
-  -e DISPLAY=${0:-':0'} \
-  -e PORT=${1:-'1071'} \
-  -e ADDRESS=${2:-'localhost'} \
+  -e DISPLAY=${1:-':0'} \
+  -e PORT=${2:-'1071'} \
+  -e ADDRESS=${3:-'localhost'} \
   --network host \
   tdw/tdw:$TDW_VERSION

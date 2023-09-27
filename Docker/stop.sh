@@ -1,1 +1,3 @@
-docker stop 3dcf729333b8
+#!/bin/bash
+
+docker kill $(docker ps -q)

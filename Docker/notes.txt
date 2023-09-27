@@ -1,0 +1,7 @@
+Run install.sh to install. Requires pre-existing NVIDIA drivers and (for now) X. Does *not* (apparently!) require xorg.conf.
+
+Run build.sh to build an image.
+
+Run start_container.sh to start the container. 
+
+Run stop.sh to stop the container. TODO rename stop.sh

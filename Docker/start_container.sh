@@ -17,14 +17,14 @@ TDW_VERSION=$(curl -s https://raw.githubusercontent.com/threedworld-mit/tdw/mast
 PATTERN='__version__ = \"(.*?)\"'
 [[ "$TDW_VERSION" =~ $PATTERN ]] && TDW_VERSION="${BASH_REMATCH[1]}"
 
-xhost local:docker
 
 # Run the container.
 x11docker \
   --gpu \
   --desktop \
   --runtime=nvidia \
-  --env PORT=${2:-'1071'} \
-  --env ADDRESS=${3:-'localhost'} \
+  --env PORT=${1:-'1071'} \
+  --env ADDRESS=${2:-'localhost'} \
+  --network=host \
   --workdir / -- \
   alters/tdw:$TDW_VERSION

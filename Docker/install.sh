@@ -21,3 +21,9 @@ sudo nvidia-ctk runtime configure --runtime=containerd
 sudo systemctl restart containerd
 sudo nvidia-ctk runtime configure --runtime=crio
 sudo systemctl restart crio
+
+# Source: https://github.com/mviereck/x11docker
+curl -fsSL https://raw.githubusercontent.com/mviereck/x11docker/master/x11docker | sudo bash -s -- --update
+
+# Source: https://techviewleo.com/run-gui-applications-in-docker-using-x11docker/
+sudo apt install xpra xserver-xephyr xinit xauth xclip x11-xserver-utils x11-utils

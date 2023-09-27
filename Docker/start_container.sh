@@ -20,13 +20,10 @@ PATTERN='__version__ = \"(.*?)\"'
 xhost local:docker
 
 # Run the container.
-docker run -it \
-  --rm \
-  --gpus all \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  --user="$(id --user):$(id --group)" \
-  -e DISPLAY=${1:-':0'} \
-  -e PORT=${2:-'1071'} \
-  -e ADDRESS=${3:-'localhost'} \
-  --network host \
-  tdw/tdw:$TDW_VERSION
+x11docker --gpu --env PORT=${2:-'1071'} \
+  --env ADDRESS=${3:-'localhost'} \
+  --runtime=nvidia \
+  --backend=host \
+  --desktop \
+  --name=tdw
+  

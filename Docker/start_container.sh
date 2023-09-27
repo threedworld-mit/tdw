@@ -3,7 +3,7 @@
 # Usage:
 #
 # ./start_container.sh DISPLAY PORT ADDRESS
-# 
+#
 # Example 1:
 #
 # ./start_container.sh
@@ -17,11 +17,14 @@ TDW_VERSION=$(curl -s https://raw.githubusercontent.com/threedworld-mit/tdw/mast
 PATTERN='__version__ = \"(.*?)\"'
 [[ "$TDW_VERSION" =~ $PATTERN ]] && TDW_VERSION="${BASH_REMATCH[1]}"
 
+xhost local:docker
+
 # Run the container.
 docker run -it \
   --rm \
   --gpus all \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
+  --user="$(id --user):$(id --group)" \
   -e DISPLAY=${0:-':0'} \
   -e PORT=${1:-'1071'} \
   -e ADDRESS=${2:-'localhost'} \

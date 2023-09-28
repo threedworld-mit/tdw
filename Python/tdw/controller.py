@@ -3,6 +3,7 @@ import json
 import os
 from subprocess import Popen
 from typing import List, Union, Tuple, Dict
+from argparse import ArgumentParser
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, VisualEffectLibrarian, \
     DroneLibrarian, VehicleLibrarian
@@ -583,7 +584,16 @@ class Controller:
             success = True
         # Launch the build.
         if success:
-            Popen([str(Build.BUILD_PATH.resolve()), "-port "+str(port)])
+            parser = ArgumentParser()
+            parser.add_argument("--flip_y", action="store_true")
+            parser.add_argument("--force_glcore42", action="store_true")
+            args = parser.parse_args()
+            build_call = [str(Build.BUILD_PATH.resolve()), "-port "+str(port)]
+            if args.flip_y:
+                build_call.append("-flip_y")
+            if args.force_glcore_42:
+                build_call.append("-force_glcore42")
+            Popen(build_call)
 
     def _check_build_version(self, version: str = __version__, build_version: str = None) -> None:
         """

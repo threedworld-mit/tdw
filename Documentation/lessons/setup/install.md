@@ -9,6 +9,9 @@ TDW is two applications that communicate with each other over a TCP/IP socket. Y
 
 This document will explain how to install both the build executable and the Python code required to write TDW controller scripts.
 
+- [Install TDW on a PC (Linux, MacOS, Windows)](pc.md)
+- [Install TDW on MIT Openmind](openmind.md)
+
 ## System Requirements
 
 - Windows, OS X, or Linux (we've tested TDW on Ubuntu 16, 18, and 20)
@@ -25,23 +28,6 @@ This document will explain how to install both the build executable and the Pyth
   - Set Docker to run as a user in the Docker group. See this [link](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04).
   - Please test your nvidia-docker setup prior to starting TDW with Docker. The following command should execute succesfully: `docker run --gpus all nvidia/cuda:9.0-base nvidia-smi`
   - [nvidia-container-toolkit](https://github.com/NVIDIA/nvidia-docker)
-
-## Install TDW on a personal computer
-
-**We recommend installing TDW on a personal computer before attempting to install TDW on a remote server.** Installing on a personal computer is easier and it may help you understand the fundamentals of TDW.
-
-1. OS X and Linux: **`sudo pip3 install tdw`** Windows: **`pip3 install tdw --user`** 
-2. Create this Python script and run it:
-
-```python
-from tdw.controller import Controller
-
-c = Controller()
-print("Hello world!")
-c.communicate({"$type": "terminate"})
-```
-
-**Result:** The terminal window will print messages about downloading a build. Then, it will launch a windowed application, print `Hello world!`, kill the windowed application process, and exit.
 
 ## Install TDW on a remote Linux server
 

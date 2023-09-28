@@ -6,84 +6,21 @@ This document is a list of common usage errors in TDW. This is not a comprehensi
 
 If after reading this document you're still unsure how to fix your error, [please report the bug as a GitHub Issue](issues.md).
 
-## General usage errors
+## All Platforms
 
-**The build or controller crashed**
+### 1. The build or controller quit with an error or crashed
 
 - Make sure that your `tdw` Python module is at the latest release.
 - Make sure that the version of the TDW build matches the version of the `tdw` Python module.
-- See sections below for common controller and build problems.
+- **Check [the player log](https://docs.unity3d.com/Manual/LogFiles.html) for errors. See the next section below for a list of commonly logged problems.**
 - Add a [logger](../read_write/logger.md) to your controller.
 
-**The simulation hangs indefinitely**
+### 2. The simulation hangs indefinitely
 
 - **Cause:** This is usually because another process (such as another instance of a  TDW build) that is using the same port and received a message intended  for the TDW build.
 - **Solution:** Kill all controller processes and build processes.
 
-**The simulation behaves differently on different machines / Physics aren't deterministic**
-
-- **Cause:** This is how the Unity physics engine works.
-- **Solution:** Differences in behavior between machines should be *very* minor. Because the issue is intrinsic to PhysX, we can *reduce* determinism problems but we can't totally *fix* them.
-
-**The simulation is slow**
-
-- **Cause:** There are two common causes:
-  - You're running TDW without a GPU.
-  - Your code isn't optimized.
-- **Solution:**
-  - On Linux servers, make sure that TDW is using a GPU.
-  - [Read the documentation for performance optimizations](performance_optimizations.md).
-
-**There are no shadows in the scene / rendering quality is generally poor**
-
-- **Cause:** There are two common causes:
-  - You're running TDW without a GPU or your GPU isn't powerful. Certain rendering steps won't occur if the GPU is incapable of doing them; some of the more obvious examples are shadows and reflections.
-  - You're using a low render quality setting. Render quality settings can sometimes carry between build process instances; this appears to be a Unity Engine bug.
-- **Solution:**
-  - On Linux servers, make sure that TDW is using a GPU.
-  - Send [`{"$type": "set_render_quality", "render_quality": 5}`](../../api/command_api.md#set_render_quality) to set the build to the maximum render quality level.
-
-**[Linux:] Can't launch the simulation in a Docker container**
-
-- **Cause:** Either there is a problem with your Docker image or you have `launch_build=True` in the `Controller` constructor.
-- **Solution:** [TDW Docker image](../setup/install.md). Set `launch_build=False` in the `Controller` constructor.
-
-**[Linux:] Images are grainy / very dark / obviously glitchy**
-
-- **Cause:** [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) If there are thousands of repeating errors about OpenGL, this is a known issue when running TDW on certain Linux machines.
-
-- **Solution:** Run the build in OpenGL 4.2:
-
-  ```bash
-  ./TDW.x86_64 -force-glcore42
-  ```
-  
-
-**[Linux:] Nothing happens after launching a minimal controller + build**
-
-- **Cause:** [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) If you see `Desktop is 0 x 0 @ 0 Hz`, this means that your xorg isn't set up correctly.
-- **Solution:**  [Read the install guide](../setup/install.md) for how to launch the build on a headless server; note that there must be a valid virtual display.
-
-**[OS X]: I can't run TDW.app in the terminal**
-
-- **Cause:** There is a file within TDW.app that you need to launch in the terminal. 
-- **Solution:**
-  - You can launch TDW.app by double-clicking it.
-  - To launch TDW.app in the terminal: Right-click on the TDW.app file. Click `Show Package Contents`. Find the executable in the MacOS folder (e.g.  “TDW_v1.9.0”) and drag that to your bash shell window.
-
-**[OS X:] When I double-click TDW.app I get an error: `TDW.app is damaged and can't be opened`**
-
-- **Cause:** This is a [known Unity bug](https://issuetracker.unity3d.com/issues/macos-builds-now-contain-a-quarantine-attribute) and it will occur if you download the build from TDW's releases page. 
-- **Solution:** Run `setup.sh` (located in the same directory as TDW.app). This will repair TDW.app; you only need to run `setup.sh` once.
-
-**[OS X:] I can't run NVIDIA Flex**
-
-- **Cause:** [Flex](../flex/flex.md) doesn't run on OS X.
-
-
-## Errors in the Python (controller) console
-
-**`zmq.error.ZMQError: Address in use`**
+### 3. `zmq.error.ZMQError: Address in use`
 
 - **Cause:** There is another controller process using this socket.
 - **Solution:** Kill all controller processes and build processes. Launch each controller + build on a separate port.
@@ -93,48 +30,52 @@ If after reading this document you're still unsure how to fix your error, [pleas
 - **Cause:** You tried launching the build. Your build is out of date. The controller tried to get the latest version of TDW but failed due to an internet connection error.
 - **Solution:** Kill the controller process. Kill the build process. Either enable your Internet connection or set `launch_build=False` in the constructor. Note that if you don't have an Internet connection, you won't be able to add any objects to the scene.
 
-**`The build quit due to an error. Check the build log for more info.`**
+### 4. The simulation behaves differently on different machines / Physics aren't deterministic
 
-- **Cause:** The build quit due to an error.
-- **Solution:** [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) See below for possible causes.
+- **Cause:** This is how the Unity physics engine works.
+- **Solution:** Differences in behavior between machines should be *very* minor. Because the issue is intrinsic to PhysX, we can *reduce* determinism problems but we can't totally *fix* them.
 
-**`AttributeError: module 'enum' has no attribute 'IntFlag'`**
+### 5. The simulation is slow
 
-- **Cause:** Class name clash in Python when trying to install `tdw`
-- **Solution:** `pip3 uninstall enum34` and `pip3 install tdw`
+- **Cause:** There are two common causes:
+  - You're running TDW without a GPU.
+  - Your code isn't optimized.
+- **Solution:**
+  - On Linux servers, make sure that TDW is using a GPU.
+  - [Read the documentation for performance optimizations](performance_optimizations.md).
 
-## Errors in the Player (build) log
+### 6. There are no shadows in the scene / rendering quality is generally poor
 
-**`NullReferenceException`**
+- **Cause:** There are two common causes:
+  - You're running TDW without a GPU or your GPU isn't powerful. Certain rendering steps won't occur if the GPU is incapable of doing them; some of the more obvious examples are shadows and reflections.
+  - You're using a low render quality setting. Render quality settings can sometimes carry between build process instances; this appears to be a Unity Engine bug.
+- **Solution:**
+  - On Linux servers, make sure that TDW is using a GPU.
+  - Send [`{"$type": "set_render_quality", "render_quality": 5}`](../../api/command_api.md#set_render_quality) to set the build to the maximum render quality level.
 
-- **Cause:** This usually means that one or more fields in your commands is  incorrect (i.e. you're sending the ID of an object that doesn't exist in the scene).
-- **Solution:** Proofread your commands. If problems still persist, add a GitHub Issue.
+### 7. Images are upside-down
 
-**`WARNING: Shader Unsupported`**
+- **Cause:** This is caused by your computer/GPU's graphics API.
+- **Solution**:  Added `--flip_y` to any controller that you run, for example for example: `python3 my_controller.py --flip_y`
 
-This warning is harmless; you can ignore it.
+**[Linux:] Can't launch the simulation in a Docker container**
 
-**`The referenced script on this Behaviour (Game Object '<NAME>') is missing!`**
+- **Cause:** Either there is a problem with your Docker image or you have `launch_build=True` in the `Controller` constructor.
+- **Solution:** [TDW Docker image](../setup/install.md). Set `launch_build=False` in the `Controller` constructor.
 
-This warning is harmless; you can ignore it.
+## Linux
 
-**`Class not found: <type> [SerializationBinder]`**
+### 1. Images are grainy / very dark / obviously glitchy
 
-- **Cause:** You sent a command that doesn't exist.
-- **Solution:** Check the spelling of your commands.
+- **Cause:** [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) If there are thousands of repeating errors about OpenGL, this is a known issue when running TDW on certain Linux machines.
 
-**`Newtonsoft.Json.JsonSerializationException`**
+- **Solution:** 
+  - Update all packages. This usually solves the problem.
+  -  If you're automatically launching the build (`launch_build=false`), add `--force-glcore42` to any controller that you run, for example: `python3 my_controller.py --force-glcore42`. If you're not auto-launching the build (`launch_build=False)`, add the `-force-glcore42` flag to the build launch: `./TDW.x86_64 -force-glcore42`
 
-- **Cause:** At least one of your commands is invalid. Common mistakes:
-  - A command name is spelled wrong.
-  - You sent an array such as `[0, 0, 0]` instead of a dictionary such as `{"x": 0, "y": 0, "z": 0}`.
-  - You sent the wrong type of parameter, such as sending a dictionary when the API expects a float.
-- **Solution:** Read the message carefully; it includes the last message sent to the build and indicates where in the string the error is.
-
-**[Linux:] Segfault**
+### 2. The build segfaults as soon as it runs
 
 - **Cause:** Segfaults are rare and relatively hard to debug. Below is a solution to the most common segfault; if that doesn't work, please post a GitHub Issue.
-
 - **Solution:** Make sure that unzip didn't fail and that the executable (`TDW.x86_64`) is in the same directory as `TDW_Data`:
 
   ```
@@ -143,12 +84,70 @@ This warning is harmless; you can ignore it.
   ....TDW.x86_64
   ```
 
-**[OS X:] `SocketException: Could not resolve host 'localhost'`**
+### 3. The build segfaults when an avatar/camera is added to the scene
+
+- **Cause:** Unknown but it has something to do with an incorrect or obsolete graphics API. Check [the player log](https://docs.unity3d.com/Manual/LogFiles.html) for errors having to do with graphics. 
+- **Solution** Follow all steps in 1. described above.
+
+### 4. Nothing happens after launching a minimal controller + build
+
+- **Cause:** [Check the player log.](https://docs.unity3d.com/Manual/LogFiles.html) If you see `Desktop is 0 x 0 @ 0 Hz`, this means that your xorg isn't set up correctly.
+- **Solution:**  [Read the install guide](../setup/install.md) for how to launch the build on a headless server; note that there must be a valid virtual display.
+
+## MacOS
+
+### 1. I can't run TDW.app in the terminal
+
+- **Cause:** There is a file within TDW.app that you need to launch in the terminal. 
+- **Solution:**
+  - You can launch TDW.app by double-clicking it.
+  - To launch TDW.app in the terminal: Right-click on the TDW.app file. Click `Show Package Contents`. Find the executable in the MacOS folder (e.g.  “TDW_v1.12.11”) and drag that to your bash shell window.
+
+### 2. When I double-click TDW.app I get an error: `TDW.app is damaged and can't be opened`
+
+- **Cause:** The app is not damaged. This is a known bug caused by TDW not adhering to MacOS code signing protocols.
+- **Solution:** Move the app and `setup.sh` out of Downloads (for example, into your home directory). Run `setup.sh` (located in the same directory as TDW.app). This will repair TDW.app; you only need to run `setup.sh` once.
+
+### 3. I can't run NVIDIA Flex
+
+- **Cause:** [Flex](../flex/flex.md) doesn't run on OS X.
+
+## Errors in the Player (build) log
+
+To find the Player log, [read this](https://docs.unity3d.com/Manual/LogFiles.html).
+
+### 1. `NullReferenceException`
+
+- **Cause:** This usually means that one or more fields in your commands is  incorrect (i.e. you're sending the ID of an object that doesn't exist in the scene).
+- **Solution:** Proofread your commands. If problems still persist, add a GitHub Issue.
+
+### 2. `WARNING: Shader Unsupported`
+
+This warning is harmless; you can ignore it.
+
+### 3. `The referenced script on this Behaviour (Game Object '<NAME>') is missing!`
+
+This warning is harmless; you can ignore it.
+
+### 4. `Class not found: <type> [SerializationBinder]`
+
+- **Cause:** You sent a command that doesn't exist.
+- **Solution:** Check the spelling of your commands.
+
+### 5. `Newtonsoft.Json.JsonSerializationException`
+
+- **Cause:** At least one of your commands is invalid. Common mistakes:
+  - A command name is spelled wrong.
+  - You sent an array such as `[0, 0, 0]` instead of a dictionary such as `{"x": 0, "y": 0, "z": 0}`.
+  - You sent the wrong type of parameter, such as sending a dictionary when the API expects a float.
+- **Solution:** Read the message carefully; it includes the last message sent to the build and indicates where in the string the error is.
+
+### 6. `SocketException: Could not resolve host 'localhost'`
 
 - **Cause:** `localhost` isn't a listed host.
 - **Solution:** To add `localhost` to your computer's list of hosts, read [this](https://apple.stackexchange.com/a/307029).
 
-**[Windows:] `The code execution cannot proceed because UnityPlayer.dll was not found. Reinstalling the program may fix this problem.`**
+### 7. `The code execution cannot proceed because UnityPlayer.dll was not found. Reinstalling the program may fix this problem.`
 
 - **Cause:**  TDW.exe is in the wrong directory; it must be in the same directory as all of the other files from the .zip file.
 

@@ -55,6 +55,9 @@ export APPTAINER_CACHEDIR="/om2/user/$USER/.apptainer"
 # -t The time alloted. Example value for $1: 02:00:00
 # gpu:1 The number of GPUs
 srun -n 1 -t $1 --gres=gpu:1 --pty bash
+
+# Start an X session.
+srun --x11 -t 03:00:00 --pty bash
 ```
 
 Then wait for the GPU to be allocated. It can take several minutes.

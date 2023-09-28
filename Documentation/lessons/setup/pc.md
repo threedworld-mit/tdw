@@ -1,3 +1,5 @@
+###### Setup
+
 # Setup TDW on a PC (Linux, MacOS, Windows)
 
 *If you want to run a TDW Python controller on a local desktop and the build on a remote server, [read this instead](desktop_server.md).*
@@ -10,6 +12,10 @@ You can run TDW on a Linux, MacOS, or Windows person computer. If you have the r
 - Python 3.8+
 - A GPU, the faster the better, with up-to-date drivers. It is possible to run TDW without a GPU but you will lose some speed and photorealism. NVIDIA drivers tend to work better,
 - For [audio simulations](../audio/overview.md), you will need an audio driver; unless you're running a minimal Linux install, you probably already have this.
+
+## Why does TDW need a GPU?
+
+TDW runs on Unity3D, a video game engine. Unity's rendering looks more photorealistic if the computer has a GPU. Without a GPU, Unity *cannot* render as realistically and rendering will be slower. Unity also offloads many physics calculations to the GPU; without a GPU, Unity's physics will be slower.
 
 ## Install
 

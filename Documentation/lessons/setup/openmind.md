@@ -1,4 +1,6 @@
-# Openmind
+###### Setup
+
+# Setup TDW on MIT Openmind
 
 To run TDW on [MIT Openmind](https://openmind.mit.edu/) you must have valid Kerebos credentials.
 

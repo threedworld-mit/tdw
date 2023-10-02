@@ -589,7 +589,7 @@ class Controller:
             parser.add_argument("--force_glcore42", action="store_true")
             args = parser.parse_args()
             build_call = [str(Build.BUILD_PATH.resolve()), "-port "+str(port)]
-            if args.flip_y:
+            if args.flip_images:
                 build_call.append("-flip_images")
             if args.force_glcore_42:
                 build_call.append("-force-glcore42")

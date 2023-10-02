@@ -17,6 +17,22 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### Build
 
 - Fixed: Unhandled NullReferenceException if `destroy_ui_element` is sent followed by `destroy_canvas` or `destroy_all_ui_canvases`.
+- Slight image encoding speed improvement.
+- Fixed: On some computers, images are encoded upside-down. This was supposed to be fixed in the previous version but wasn't entirely. If your computer is still saving images upside-down, either add `--flip_images` to the controller path (e.g. `python3 my_controller.py --flip_images`); this will only work if `launch_build=True`. If you're on a server and need to set `launch_build=False`, add `-flip_images` to the build path (e.g. `./TDW.x86_64 -flip_images`).
+
+### `tdw` module
+
+- Added two optional flags to all controllers. They only work if `launch_build=True`:
+  - `--force_glcore42` Launch the build using OpenGL 4.2, which can fix some segfaults. If `launch_build=False`, you instead launch your build with a similar flag: `./TDW.x86_64 -force-glcore42`.
+  - `--flip_images` to flip images if they're being saved upside-down. If `launch_build=False`, you instead launch your build with a similar flag: `./TDW.x86_64 -flip_images`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document                                   | Modification                                                 |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `lessons/troubleshooting/common_errors.md` | Improved the formatting of the document. Added a section for what to do if images are upside-down. |
 
 ## v1.12.10
 

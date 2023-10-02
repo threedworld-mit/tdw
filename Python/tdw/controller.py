@@ -591,7 +591,7 @@ class Controller:
             build_call = [str(Build.BUILD_PATH.resolve()), "-port "+str(port)]
             if args.flip_images:
                 build_call.append("-flip_images")
-            if args.force_glcore_42:
+            if args.force_glcore42:
                 build_call.append("-force-glcore42")
             Popen(build_call)
 

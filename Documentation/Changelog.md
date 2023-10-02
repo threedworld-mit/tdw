@@ -4,6 +4,20 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.11
+
+### Command API
+
+#### New Commands
+
+| Command                   | Description                           |
+| ------------------------- | ------------------------------------- |
+| `destroy_all_ui_canvases` | Destroy all UI canvases in the scene. |
+
+### Build
+
+- Fixed: Unhandled NullReferenceException if `destroy_ui_element` is sent followed by `destroy_canvas` or `destroy_all_ui_canvases`.
+
 ## v1.12.10
 
 ### Build

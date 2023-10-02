@@ -26,13 +26,28 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
   - `--force_glcore42` Launch the build using OpenGL 4.2, which can fix some segfaults. If `launch_build=False`, you instead launch your build with a similar flag: `./TDW.x86_64 -force-glcore42`.
   - `--flip_images` to flip images if they're being saved upside-down. If `launch_build=False`, you instead launch your build with a similar flag: `./TDW.x86_64 -flip_images`.
 
+### Docker
+
+- Fixed: Can't build an image from the Dockerfile.
+- Removed various unused and obsolete scripts and Dockerfiles.
+- Added: `build.sh`, `install.sh`,  `run.sh`, and `stop.sh`
+
 ### Documentation
+
+#### New Documentation
+
+| Document                     | Description                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| `lessons/setup/pc.md`        | How to install TDW on a personal computer.            |
+| `lessons/setup/server.md`    | How to install TDW on a server.                       |
+| `lessons/setup/pc_server.md` | How to install TDW on a personal computer + a server. |
 
 #### Modified Documentation
 
 | Document                                   | Modification                                                 |
 | ------------------------------------------ | ------------------------------------------------------------ |
 | `lessons/troubleshooting/common_errors.md` | Improved the formatting of the document. Added a section for what to do if images are upside-down. |
+| `lessons/setup/install.md`                 | Moved install instructions to separate documents.            |
 
 ## v1.12.10
 

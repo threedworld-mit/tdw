@@ -17,7 +17,10 @@
 ### 1.1 Installation (Read this first!)
 
 1. [Install TDW](Documentation/lessons/setup/install.md)
-3. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
+   - [On a personal computer (Linux, MacOS, Windows)](Documentation/lessons/setup/pc.md)
+   - [On a server](Documentation/lessons/setup/server.md)
+   - [On a personal computer + a server](Documentation/lessons/setup/pc_server.md)
+2. [Upgrade TDW](Documentation/lessons/setup/upgrade.md)
 
 ### 1.2 How to run TDW on a Linux server
 

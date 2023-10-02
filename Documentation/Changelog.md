@@ -17,6 +17,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### Build
 
 - Fixed: Unhandled NullReferenceException if `destroy_ui_element` is sent followed by `destroy_canvas` or `destroy_all_ui_canvases`.
+- Slight image encoding speed improvement.
+- Fixed: On some computers, images are encoded upside-down. This was supposed to be fixed in the previous version but wasn't entirely. If your computer is still saving images upside-down, either add `--flip_y` to the controller path (e.g. `python3 my_controller.py --flip_y`); this will only work if `launch_build=True`. If you're on a server and need to set `launch_build=False`, add `-flip_y` to the build path (e.g. `./TDW.x86_64 -flip_y`).
 
 ## v1.12.10
 

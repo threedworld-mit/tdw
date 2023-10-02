@@ -819,6 +819,7 @@
 | [`add_ui_canvas`](#add_ui_canvas) | Add a UI canvas to the scene. By default, the canvas will be an "overlay" and won't appear in image output data. |
 | [`attach_ui_canvas_to_avatar`](#attach_ui_canvas_to_avatar) | Attach a UI canvas to an avatar. This allows the UI to appear in image output data. |
 | [`attach_ui_canvas_to_vr_rig`](#attach_ui_canvas_to_vr_rig) | Attach a UI canvas to the head camera of a VR rig.  |
+| [`destroy_all_ui_canvases`](#destroy_all_ui_canvases) | Destroy all UI canvases in the scene. In this command, the canvas_id parameter is ignored. |
 | [`destroy_ui_canvas`](#destroy_ui_canvas) | Destroy a UI canvas and all of its UI elements. |
 
 **Ui Element Command**
@@ -10774,6 +10775,25 @@ Attach a UI canvas to the head camera of a VR rig.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"plane_distance"` | float | The distance from the camera to the UI canvas. | 1 |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`destroy_all_ui_canvases`**
+
+Destroy all UI canvases in the scene. In this command, the canvas_id parameter is ignored.
+
+
+```python
+{"$type": "destroy_all_ui_canvases"}
+```
+
+```python
+{"$type": "destroy_all_ui_canvases", "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
 ***

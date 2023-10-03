@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
 
 
@@ -14,7 +14,7 @@ class CompositeObjectCreator(AssetBundleCreator):
 
     def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
                                      vhacd_resolution: int = 800000, wnid: str = None, wcategory: str = None,
-                                     cleanup: bool = True) -> None:
+                                     cleanup: bool = True, targets: List[str] = None) -> None:
         """
         Convert a source .urdf file into 3 asset bundle files (Windows, OS X, and Linux).
 
@@ -59,6 +59,7 @@ class CompositeObjectCreator(AssetBundleCreator):
         :param wnid: The WordNet ID of the model. Can be None.
         :param wcategory: The WordNet category of the model. Can be None.
         :param cleanup: If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = CompositeObjectCreator._get_source_destination_args(name=name, source=source_file, destination=output_directory)
@@ -68,6 +69,7 @@ class CompositeObjectCreator(AssetBundleCreator):
                 args.append(f'-{flag}="{value}"')
         if cleanup:
             args.append("-cleanup")
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))

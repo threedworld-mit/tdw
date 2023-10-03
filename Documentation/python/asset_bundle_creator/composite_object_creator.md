@@ -65,6 +65,8 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 
 **`self.prefab_to_asset_bundles(name, output_directory)`**
 
+**`self.prefab_to_asset_bundles(name, output_directory, targets=None)`**
+
 Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
 1. `self.source_file_to_prefab()`
@@ -102,6 +104,7 @@ output_directory/
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
 | output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
 
@@ -149,7 +152,7 @@ _Returns:_  The name of the Unity C# class, e.g. `ModelCreator`.
 
 **`self.source_file_to_asset_bundles(name, source_file, output_directory)`**
 
-**`self.source_file_to_asset_bundles(name, source_file, output_directory, vhacd_resolution=800000, wnid=None, wcategory=None, cleanup=True)`**
+**`self.source_file_to_asset_bundles(name, source_file, output_directory, vhacd_resolution=800000, wnid=None, wcategory=None, cleanup=True, targets=None)`**
 
 Convert a source .urdf file into 3 asset bundle files (Windows, OS X, and Linux).
 
@@ -196,6 +199,7 @@ output_directory/
 | wnid |  str  | None | The WordNet ID of the model. Can be None. |
 | wcategory |  str  | None | The WordNet category of the model. Can be None. |
 | cleanup |  bool  | True | If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### source_file_to_prefab
 

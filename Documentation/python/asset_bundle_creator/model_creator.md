@@ -75,6 +75,8 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 
 **`self.prefab_to_asset_bundles(name, output_directory)`**
 
+**`self.prefab_to_asset_bundles(name, output_directory, targets=None)`**
+
 Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
 1. `self.source_file_to_prefab()`
@@ -112,6 +114,7 @@ output_directory/
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
 | output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
 
@@ -159,7 +162,7 @@ _Returns:_  The name of the Unity C# class, e.g. `ModelCreator`.
 
 **`self.source_file_to_asset_bundles(name, source_file, output_directory)`**
 
-**`self.source_file_to_asset_bundles(name, source_file, output_directory, vhacd_resolution=800000, internal_materials=False, wnid=None, wcategory=None, scale_factor=1, library_path=None, library_description=None, cleanup=True, write_physics_quality=False, validate=False)`**
+**`self.source_file_to_asset_bundles(name, source_file, output_directory, vhacd_resolution=800000, internal_materials=False, wnid=None, wcategory=None, scale_factor=1, library_path=None, library_description=None, cleanup=True, write_physics_quality=False, validate=False, targets=None)`**
 
 Convert a source .obj or .fbx file into 3 asset bundle files (Windows, OS X, and Linux).
 
@@ -215,12 +218,13 @@ library.json
 | cleanup |  bool  | True | If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project. |
 | write_physics_quality |  bool  | False | If True, launch a controller and build to calculate the hull collider accuracy. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None. |
 | validate |  bool  | False | If True, launch a controller and build to validate the model, checking it for any errors. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### source_directory_to_asset_bundles
 
 **`self.source_directory_to_asset_bundles(source_directory, output_directory)`**
 
-**`self.source_directory_to_asset_bundles(source_directory, output_directory, library_description=None, vhacd_resolution=800000, internal_materials=False, overwrite=False, continue_on_error=True, search_pattern=None, cleanup=True)`**
+**`self.source_directory_to_asset_bundles(source_directory, output_directory, library_description=None, vhacd_resolution=800000, internal_materials=False, overwrite=False, continue_on_error=True, search_pattern=None, cleanup=True, targets=None)`**
 
 Convert a directory of source .fbx and/or .obj models to asset bundles.
 
@@ -281,12 +285,13 @@ Note: This method does *not* call `self.write_physics_quality()` or `self.valida
 | continue_on_error |  bool  | True | If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error. |
 | search_pattern |  str  | None | A search pattern for files, for example `"*.obj"`. All subdirectories will be recursively searched. |
 | cleanup |  bool  | True | If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### metadata_file_to_asset_bundles
 
 **`self.metadata_file_to_asset_bundles(metadata_path, output_directory)`**
 
-**`self.metadata_file_to_asset_bundles(metadata_path, output_directory, library_description=None, vhacd_resolution=800000, internal_materials=False, overwrite=False, continue_on_error=True, cleanup=True)`**
+**`self.metadata_file_to_asset_bundles(metadata_path, output_directory, library_description=None, vhacd_resolution=800000, internal_materials=False, overwrite=False, continue_on_error=True, cleanup=True, targets=None)`**
 
 Given a metadata .csv file within an output directory, generate asset bundles.
 
@@ -342,6 +347,7 @@ Note: This method does *not* call `self.write_physics_quality()` or `self.valida
 | overwrite |  bool  | False | If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents. |
 | continue_on_error |  bool  | True | If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error. |
 | cleanup |  bool  | True | If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### source_file_to_prefab
 

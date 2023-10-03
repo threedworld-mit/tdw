@@ -40,6 +40,8 @@ Create animation asset bundles from .anim or .fbx files.
 
 **`self.source_file_to_asset_bundles(name, source_file, output_directory)`**
 
+**`self.source_file_to_asset_bundles(name, source_file, output_directory, targets=None)`**
+
 Convert a source file into 3 asset bundle files (Windows, OS X, and Linux).
 
 | Parameter | Type | Default | Description |
@@ -47,12 +49,13 @@ Convert a source file into 3 asset bundle files (Windows, OS X, and Linux).
 | name |  str |  | The name of the animation. |
 | source_file |  Union[str, Path] |  | The path to the source file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### source_directory_to_asset_bundles
 
 **`self.source_directory_to_asset_bundles(source_directory, output_directory)`**
 
-**`self.source_directory_to_asset_bundles(source_directory, output_directory, library_description=None, overwrite=False, continue_on_error=True, search_pattern=None, cleanup=True)`**
+**`self.source_directory_to_asset_bundles(source_directory, output_directory, library_description=None, overwrite=False, continue_on_error=True, search_pattern=None, cleanup=True, targets=None)`**
 
 Convert a directory of source files to asset bundles.
 
@@ -67,6 +70,7 @@ Calling this is *significantly* faster than calling `self.source_file_to_asset_b
 | continue_on_error |  bool  | True | If True, continue generating asset bundles even if there is a problem with one file. If False, stop the process if there's an error. |
 | search_pattern |  str  | None | A search pattern for files, for example `"*.fbx"`. All subdirectories will be recursively searched. |
 | cleanup |  bool  | True | If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### get_base_unity_call
 
@@ -92,6 +96,8 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 #### prefab_to_asset_bundles
 
 **`self.prefab_to_asset_bundles(name, output_directory)`**
+
+**`self.prefab_to_asset_bundles(name, output_directory, targets=None)`**
 
 Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
@@ -130,6 +136,7 @@ output_directory/
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
 | output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
 

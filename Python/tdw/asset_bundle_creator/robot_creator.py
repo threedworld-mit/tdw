@@ -24,7 +24,7 @@ class RobotCreator(AssetBundleCreator):
                                     xacro_args: Dict[str, str] = None, immovable: bool = True,
                                     description_infix: str = None, branch: str = None,
                                     library_path: Union[str, Path] = None, library_description: str = None,
-                                    source_description: str = None) -> None:
+                                    source_description: str = None, targets: List[str] = None) -> None:
         """
         Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
@@ -74,6 +74,7 @@ class RobotCreator(AssetBundleCreator):
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
         :param library_description: A description of the library. Ignored if `library_path` is None.
         :param source_description: A description of the source of the .urdf file, for example the repo URL.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         if required_repo_urls is None:
@@ -100,11 +101,12 @@ class RobotCreator(AssetBundleCreator):
         self.source_file_to_asset_bundles(source_file=urdf_path, output_directory=output_directory,
                                           immovable=immovable, library_path=library_path,
                                           library_description=library_description,
-                                          source_description=source_description)
+                                          source_description=source_description, targets=targets)
 
     def source_file_to_asset_bundles(self, source_file: Union[str, Path], output_directory: Union[str, Path],
                                      immovable: bool = True, library_path: Union[str, Path] = None,
-                                     library_description: str = None, source_description: str = None) -> None:
+                                     library_description: str = None, source_description: str = None,
+                                     targets: List[str] = None) -> None:
         """
         Given a .urdf file plus its meshes, create asset bundles of the robot.
 
@@ -163,6 +165,7 @@ class RobotCreator(AssetBundleCreator):
         :param library_path: If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`.
         :param library_description: A description of the library. Ignored if `library_path` is None.
         :param source_description: A description of the source of the .urdf file, for example the repo URL.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = self._get_source_destination_args(name=RobotCreator.get_name(source_file),
@@ -175,6 +178,7 @@ class RobotCreator(AssetBundleCreator):
         args = AssetBundleCreator._add_library_args(args=args,
                                                     library_path=library_path,
                                                     library_description=library_description)
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))

@@ -61,6 +61,8 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 
 **`self.prefab_to_asset_bundles(name, output_directory)`**
 
+**`self.prefab_to_asset_bundles(name, output_directory, targets=None)`**
+
 Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
 1. `self.source_file_to_prefab()`
@@ -98,6 +100,7 @@ output_directory/
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
 | output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
 

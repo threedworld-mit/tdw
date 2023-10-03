@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Union
+from typing import Union, List
 from pathlib import Path
 from overrides import final
 from tdw.tdw_utils import TDWUtils
@@ -12,16 +12,19 @@ class HumanoidCreatorBase(AssetBundleCreator, ABC):
     """
 
     @final
-    def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path]) -> None:
+    def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
+                                     targets: List[str] = None) -> None:
         """
         Convert a source file into 3 asset bundle files (Windows, OS X, and Linux).
 
         :param name: The name of the animation.
         :param source_file: The path to the source file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = HumanoidCreatorBase._get_source_destination_args(name=name, source=source_file, destination=output_directory)
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         self.call_unity(method="SourceFileToAssetBundles",
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))
@@ -29,7 +32,7 @@ class HumanoidCreatorBase(AssetBundleCreator, ABC):
     @final
     def source_directory_to_asset_bundles(self, source_directory: Union[str, Path], output_directory: Union[str, Path],
                                           library_description: str = None, overwrite: bool = False, continue_on_error: bool = True,
-                                          search_pattern: str = None, cleanup: bool = True) -> None:
+                                          search_pattern: str = None, cleanup: bool = True, targets: List[str] = None) -> None:
         """
         Convert a directory of source files to asset bundles.
 
@@ -42,6 +45,7 @@ class HumanoidCreatorBase(AssetBundleCreator, ABC):
         :param continue_on_error: If True, continue generating asset bundles even if there is a problem with one file. If False, stop the process if there's an error.
         :param search_pattern: A search pattern for files, for example `"*.fbx"`. All subdirectories will be recursively searched.
         :param cleanup: If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = [f'-source_directory="{TDWUtils.get_string_path(source_directory)}"',
@@ -55,6 +59,7 @@ class HumanoidCreatorBase(AssetBundleCreator, ABC):
             args.append("-continue_on_error")
         if cleanup:
             args.append("-cleanup")
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         self.call_unity(method="SourceDirectoryToAssetBundles",
                         args=args,
                         log_path=TDWUtils.get_path(output_directory).joinpath("progress.txt"))

@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union
+from typing import Union, List
 import json
 from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
@@ -31,7 +31,8 @@ class ModelCreator(AssetBundleCreator):
                                      vhacd_resolution: int = 800000, internal_materials: bool = False,
                                      wnid: str = None, wcategory: str = None, scale_factor: float = 1,
                                      library_path: Union[str, Path] = None, library_description: str = None,
-                                     cleanup: bool = True, write_physics_quality: bool = False, validate: bool = False) -> None:
+                                     cleanup: bool = True, write_physics_quality: bool = False, validate: bool = False,
+                                     targets: List[str] = None) -> None:
         """
         Convert a source .obj or .fbx file into 3 asset bundle files (Windows, OS X, and Linux).
 
@@ -85,6 +86,7 @@ class ModelCreator(AssetBundleCreator):
         :param cleanup: If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project.
         :param write_physics_quality: If True, launch a controller and build to calculate the hull collider accuracy. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None.
         :param validate: If True, launch a controller and build to validate the model, checking it for any errors. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = AssetBundleCreator._get_source_destination_args(name=name, source=source_file, destination=output_directory)
@@ -96,6 +98,7 @@ class ModelCreator(AssetBundleCreator):
         args = AssetBundleCreator._add_library_args(args=args,
                                                     library_path=library_path,
                                                     library_description=library_description)
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         for value, flag in zip([internal_materials, cleanup], ["-internal_materials", "-cleanup"]):
             if value:
                 args.append(flag)
@@ -118,7 +121,7 @@ class ModelCreator(AssetBundleCreator):
                                           library_description: str = None,  vhacd_resolution: int = 800000,
                                           internal_materials: bool = False, overwrite: bool = False,
                                           continue_on_error: bool = True, search_pattern: str = None,
-                                          cleanup: bool = True) -> None:
+                                          cleanup: bool = True, targets: List[str] = None) -> None:
         """
         Convert a directory of source .fbx and/or .obj models to asset bundles.
 
@@ -177,12 +180,14 @@ class ModelCreator(AssetBundleCreator):
         :param continue_on_error: If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error.
         :param search_pattern: A search pattern for files, for example `"*.obj"`. All subdirectories will be recursively searched.
         :param cleanup: If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = [f'-source_directory="{TDWUtils.get_string_path(source_directory)}"',
                 f'-output_directory="{TDWUtils.get_string_path(output_directory)}"',
                 f'-vhacd_resolution={vhacd_resolution}']
         args = AssetBundleCreator._add_library_args(args=args, library_description=library_description)
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         if search_pattern is not None:
             args.append(f'-search_pattern="{search_pattern}"')
         if internal_materials:
@@ -200,7 +205,8 @@ class ModelCreator(AssetBundleCreator):
     def metadata_file_to_asset_bundles(self, metadata_path: Union[str, Path], output_directory: Union[str, Path],
                                        library_description: str = None, vhacd_resolution: int = 800000,
                                        internal_materials: bool = False, overwrite: bool = False,
-                                       continue_on_error: bool = True, cleanup: bool = True) -> None:
+                                       continue_on_error: bool = True, cleanup: bool = True,
+                                       targets: List[str] = None) -> None:
         """
         Given a metadata .csv file within an output directory, generate asset bundles.
 
@@ -254,12 +260,14 @@ class ModelCreator(AssetBundleCreator):
         :param overwrite: If True, overwrite existing asset bundles. If this is set to False (the default value), you can stop/resume the processing of a directory's contents.
         :param continue_on_error: If True, continue generating asset bundles even if there is a problem with one model. If False, stop the process if there's an error.
         :param cleanup: If True, delete intermediary files such as the prefabs in the `asset_bundle_creator` Unity Editor project.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
         args = [f'-metadata_path={TDWUtils.get_string_path(metadata_path)}',
                 f'-output_directory="{TDWUtils.get_string_path(output_directory)}"',
                 f'-vhacd_resolution={vhacd_resolution}']
         args = AssetBundleCreator._add_library_args(args=args, library_description=library_description)
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         if internal_materials:
             args.append("-internal_materials")
         if overwrite:

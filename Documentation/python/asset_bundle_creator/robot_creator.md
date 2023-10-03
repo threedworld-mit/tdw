@@ -64,6 +64,8 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 
 **`self.prefab_to_asset_bundles(name, output_directory)`**
 
+**`self.prefab_to_asset_bundles(name, output_directory, targets=None)`**
+
 Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
 1. `self.source_file_to_prefab()`
@@ -101,6 +103,7 @@ output_directory/
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
 | output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
 
@@ -148,7 +151,7 @@ _Returns:_  The name of the Unity C# class, e.g. `ModelCreator`.
 
 **`self.source_url_to_asset_bundles(url, output_directory)`**
 
-**`self.source_url_to_asset_bundles(url, output_directory, required_repo_urls=None, xacro_args=None, immovable=True, description_infix=None, branch=None, library_path=None, library_description=None, source_description=None)`**
+**`self.source_url_to_asset_bundles(url, output_directory, required_repo_urls=None, xacro_args=None, immovable=True, description_infix=None, branch=None, library_path=None, library_description=None, source_description=None, targets=None)`**
 
 Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
 
@@ -200,12 +203,13 @@ output_directory/
 | library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 | source_description |  str  | None | A description of the source of the .urdf file, for example the repo URL. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### source_file_to_asset_bundles
 
 **`self.source_file_to_asset_bundles(source_file, output_directory)`**
 
-**`self.source_file_to_asset_bundles(source_file, output_directory, immovable=True, library_path=None, library_description=None, source_description=None)`**
+**`self.source_file_to_asset_bundles(source_file, output_directory, immovable=True, library_path=None, library_description=None, source_description=None, targets=None)`**
 
 Given a .urdf file plus its meshes, create asset bundles of the robot.
 
@@ -266,6 +270,7 @@ output_directory/
 | library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 | source_description |  str  | None | A description of the source of the .urdf file, for example the repo URL. |
+| targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### clone_repo
 

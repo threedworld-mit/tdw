@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
-from typing import List, Union
+from typing import List, Union, Optional
 from subprocess import call, check_output, CalledProcessError, Popen
 import os
 import re
@@ -190,7 +190,7 @@ class AssetBundleCreator(ABC):
             self._run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=shell), log_path=log_path)
 
     @final
-    def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path]) -> None:
+    def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path], targets: List[str] = None) -> None:
         """
         Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
@@ -227,12 +227,15 @@ class AssetBundleCreator(ABC):
 
         :param name: The name of the model (the name of the .prefab file, minus the extension).
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created.
+        :param targets: A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`.
         """
 
+        args = [f'-name="{name}"',
+                "-source=temp",
+                f'-output_directory="{TDWUtils.get_string_path(output_directory)}"']
+        args = AssetBundleCreator._add_target_args(args=args, targets=targets)
         self.call_unity(method="PrefabToAssetBundles",
-                        args=[f'-name="{name}"',
-                              "-source=temp",
-                              f'-output_directory="{TDWUtils.get_string_path(output_directory)}"'],
+                        args=args,
                         log_path=TDWUtils.get_path(output_directory).joinpath("log.txt"))
 
     @final
@@ -354,6 +357,22 @@ class AssetBundleCreator(ABC):
             args.append(f'-library_path="{TDWUtils.get_string_path(library_path)}"')
         if library_description is not None:
             args.append(f'-library_description="{library_description}"')
+        return args
+
+    @staticmethod
+    def _add_target_args(args: List[str], targets: Optional[List[str]]) -> List[str]:
+        """
+        Add target args.
+
+        :param args: The list of arguments.
+        :param targets: The build targets.
+
+        :return: The modified list of arguments.
+        """
+
+        if targets is not None:
+            for target in targets:
+                args.append(f'-{target}')
         return args
 
     @staticmethod

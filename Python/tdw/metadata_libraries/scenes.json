@@ -1635,7 +1635,26 @@
             "hdri": true,
             "location": "interior",
             "name": "tdw_room",
-            "rooms": [],
+            "rooms": [
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            8.254906,
+                            3.388783,
+                            7.76793
+                        ],
+                        "center": [
+                            -0.2965288,
+                            0,
+                            0.08572698
+                        ],
+                        "non_continuous_walls": 5,
+                        "region_id": 0,
+                        "walls_with_windows": 10
+                    }
+                }
+            ],
             "urls": {
                 "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
                 "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",

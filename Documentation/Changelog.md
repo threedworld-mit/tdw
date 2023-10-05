@@ -27,6 +27,11 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
   - `--flip_images` to flip images if they're being saved upside-down. If `launch_build=False`, you instead launch your build with a similar flag: `./TDW.x86_64 -flip_images`.
   - Added optional argument `targets` to each asset bundle creator (e.g. `ModelCreator`) function that creates asset bundles (e.g. `source_file_to_asset_bundles()`). If set, asset bundles for only these targets will be created. Options: `"linux"`, `"osx"`, `"windows"`, `"webgl"`. If None, defaults to `["linux", "osx", "windows"]`.
 
+### Scene Library
+
+- Added room metadata to `tdw_room`
+- Added: `tdw_room_4x5` A 4x5 grid of tdw_room
+
 ### Docker
 
 - Fixed: Can't build an image from the Dockerfile.

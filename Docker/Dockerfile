@@ -11,20 +11,17 @@ RUN apt -qq update
 
 # Source: https://github.com/mviereck/dockerfile-x11docker-xserver/blob/main/Dockerfile
 # Install compile tools.
-RUN apt install build-essential devscripts
-# Build nxagent dependencies.
-RUN  apt-get build-dep -y nxagent
-RUN mkdir /nxbuild
-RUN cd /nxbuild
-RUN apt-get source nxagent
-RUN cd $(find . -maxdepth 1 -type d -name 'nx-libs-*' -print -quit)
-RUN sed -i 's/# define XtransFailSoft NO/# define XtransFailSoft YES/' nx-X11/config/cf/X11.rules
-RUN debuild -b -uc -us
-COPY --from=nxbuild /nxbuild/nxagent_3.*.deb /nxagent.deb
-# Install nxagent.
-RUN apt install --no-install-recommends /nxagent.deb
+RUN apt install -y build-essential devscripts
+
+# Add deb-src. Source: https://askubuntu.com/a/857433
+RUN cp /etc/apt/sources.list /etc/apt/sources.list~
+RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+RUN apt -qq update
+
+# Source: https://github.com/mviereck/dockerfile-x11docker-xserver/blob/main/Dockerfile
 # Cleanup.
-COPY clean.sh /clean.sh && chmod +x clean.sh
+COPY clean.sh clean.sh
+RUN chmod +x clean.sh
 RUN ./clean.sh
 # X servers.
 RUN apt install -y --no-install-recommends \
@@ -47,15 +44,9 @@ RUN sed -i s/NLIMC/NLMC/       /etc/xdg/openbox/rc.xml
 RUN ./clean.sh
 # Compile fake MIT-SHM library.
 COPY XlibNoSHM.c /XlibNoSHM.c
-RUN apt-get install -y --no-install-recommends \
-            gcc \
-            libc6-dev \
-            libx11-dev
+RUN apt-get install -y --no-install-recommends gcc libc6-dev libx11-dev
 RUN gcc -shared -o /XlibNoSHM.so /XlibNoSHM.c
-RUN  apt-get remove --purge -y
-        gcc \
-        libc6-dev \
-        libx11-dev && \
+RUN  apt remove --purge -y gcc libc6-dev libx11-dev
 RUN ./clean.sh
 # Tools.
 RUN apt-get install -y --no-install-recommends \
@@ -104,7 +95,7 @@ esac \n\
 RUN mkdir -p /home/container && chmod 777 /home/container
 ENV HOME=/home/container
 LABEL version='1.10'
-LABEL options='--kwin --nxagent --weston --weston-xwayland --xephyr --xpra --xpra-xwayland --xpra2 --xpra2-xwayland --xorg --xvfb --xwayland'
+LABEL options='--kwin --weston --weston-xwayland --xephyr --xpra --xpra-xwayland --xpra2 --xpra2-xwayland --xorg --xvfb --xwayland'
 LABEL tools='catatonit cvt glxinfo iceauth setxkbmap socat \
              vainfo vdpauinfo virgl wl-copy wl-paste wmctrl \
              xauth xbindkeys xclip xdotool xdpyinfo xdriinfo xev \

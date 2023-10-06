@@ -22,9 +22,8 @@ x11docker \
   --gpu \
   --xorg \
   --desktop \
-  --runtime=nvidia \
   --env PORT=${1:-'1071'} \
   --env ADDRESS=${2:-'localhost'} \
   --network=host \
   --workdir / -- \
-  alters/tdw:$TDW_VERSION
+  x11docker/xserver ~/tdw_build/TDW/TDW.x86_64

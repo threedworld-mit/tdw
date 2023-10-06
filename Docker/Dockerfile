@@ -9,19 +9,16 @@ ENV ADDRESS=localhost
 # Update all packages.
 RUN apt -qq update
 
-# Source: https://github.com/mviereck/dockerfile-x11docker-xserver/blob/main/Dockerfile
-# Install compile tools.
-RUN apt install -y build-essential devscripts
-
 # Add deb-src. Source: https://askubuntu.com/a/857433
 RUN cp /etc/apt/sources.list /etc/apt/sources.list~
 RUN sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
 RUN apt -qq update
 
 # Source: https://github.com/mviereck/dockerfile-x11docker-xserver/blob/main/Dockerfile
+# Install nxagent.
+RUN apt install -y nxagent
 # Cleanup.
 COPY clean.sh clean.sh
-RUN chmod +x clean.sh
 RUN ./clean.sh
 # X servers.
 RUN apt install -y --no-install-recommends \
@@ -117,4 +114,4 @@ RUN rm TDW_Linux.tar.gz
 COPY entrypoint.sh entrypoint.sh
 
 # Start Xserver and launch TDW.
-ENTRYPOINT ./entrypoint.sh $DISPLAY $PORT $ADDRESS
+ENTRYPOINT ./entrypoint.sh $PORT $ADDRESS

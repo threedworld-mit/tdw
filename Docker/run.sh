@@ -20,7 +20,7 @@ PATTERN='__version__ = \"(.*?)\"'
 # Run the container.
 x11docker \
   --gpu \
-  --nxagent \
+  --xorg \
   --desktop \
   --runtime=nvidia \
   --env PORT=${1:-'1071'} \

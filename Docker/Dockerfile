@@ -1,4 +1,4 @@
-FROM x11docker/xserver
+FROM ubuntu:22.04
 
 ARG TDW_VERSION
 ARG DEBIAN_FRONTEND=noninteractive
@@ -6,10 +6,117 @@ ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES},display
 ENV PORT=1071
 ENV ADDRESS=localhost
 
+# Update all packages.
 RUN apt -qq update
-RUN apt -qq install -y sudo curl gconf-service libasound2 libc6 libcairo2 libcap2 libcups2 libdbus-1-3 libexpat1 libfontconfig1 libfreetype6 libgcc1 libgconf-2-4 libgdk-pixbuf2.0-0 libgl1-mesa-glx mesa-utils libglib2.0-0 libglu1-mesa libgtk2.0-0 libnspr4 libnss3 libpango1.0-0 libstdc++6 libx11-6 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxtst6 zlib1g debconf npm xdg-utils lsb-release libpq5 x11-apps wget unzip  make pkg-config
-RUN apt autoremove -y
-RUN apt clean -y
+
+# Source: https://github.com/mviereck/dockerfile-x11docker-xserver/blob/main/Dockerfile
+# Install compile tools.
+RUN apt install build-essential devscripts
+# Build nxagent dependencies.
+RUN  apt-get build-dep -y nxagent
+RUN mkdir /nxbuild
+RUN cd /nxbuild
+RUN apt-get source nxagent
+RUN cd $(find . -maxdepth 1 -type d -name 'nx-libs-*' -print -quit)
+RUN sed -i 's/# define XtransFailSoft NO/# define XtransFailSoft YES/' nx-X11/config/cf/X11.rules
+RUN debuild -b -uc -us
+COPY --from=nxbuild /nxbuild/nxagent_3.*.deb /nxagent.deb
+# Install nxagent.
+RUN apt install --no-install-recommends /nxagent.deb
+# Cleanup.
+COPY clean.sh /clean.sh && chmod +x clean.sh
+RUN ./clean.sh
+# X servers.
+RUN apt install -y --no-install-recommends \
+        kwin-wayland \
+        kwin-wayland-backend-drm \
+        kwin-wayland-backend-wayland \
+        kwin-wayland-backend-x11 \
+        weston \
+        xserver-xephyr \
+        xserver-xorg \
+        xserver-xorg-legacy \
+        xvfb \
+        xwayland \
+        xpra \
+        openbox
+# Disable openbox's context menu.
+RUN sed -i /ShowMenu/d         /etc/xdg/openbox/rc.xml
+RUN sed -i s/NLIMC/NLMC/       /etc/xdg/openbox/rc.xml
+# Cleanup.
+RUN ./clean.sh
+# Compile fake MIT-SHM library.
+COPY XlibNoSHM.c /XlibNoSHM.c
+RUN apt-get install -y --no-install-recommends \
+            gcc \
+            libc6-dev \
+            libx11-dev
+RUN gcc -shared -o /XlibNoSHM.so /XlibNoSHM.c
+RUN  apt-get remove --purge -y
+        gcc \
+        libc6-dev \
+        libx11-dev && \
+RUN ./clean.sh
+# Tools.
+RUN apt-get install -y --no-install-recommends \
+        catatonit \
+        procps \
+        psmisc \
+        psutils \
+        socat \
+        vainfo \
+        vdpauinfo \
+        virgl-server \
+        wl-clipboard \
+        wmctrl \
+        x11-utils \
+        x11-xkb-utils \
+        x11-xserver-utils \
+        xauth \
+        xbindkeys \
+        xclip \
+        xdotool \
+        xfishtank \
+        xinit
+RUN ./clean.sh
+# Configure Xorg wrapper.
+RUN echo 'allowed_users=anybody' >/etc/X11/Xwrapper.config
+RUN echo 'needs_root_rights=yes' >>/etc/X11/Xwrapper.config
+# Wrapper to run weston either on console or within DISPLAY or WAYLAND_DISPLAY.
+# Note: includes setuid for agetty to allow it for unprivileged users.
+RUN echo '#! /bin/bash \n\
+case "$DISPLAY$WAYLAND_DISPLAY" in \n\
+  "") \n\
+    [ -e /dev/tty$XDG_VTNR ] && [ -n "$XDG_VTNR" ] || { \n\
+      echo "ERROR: No display and no tty found. XDG_VTNR is empty." >&2 \n\
+      exit 1 \n\
+    } \n\
+    exec agetty --login-options "-v -- $* --log=/x11docker/compositor.log " --autologin $(id -un) --login-program /usr/bin/weston-launch --noclear tty$XDG_VTNR \n\
+  ;; \n\
+  *) \n\
+    exec /usr/bin/weston "$@" \n\
+  ;; \n\
+esac \n\
+' >/usr/local/bin/weston && \
+    chmod +x /usr/local/bin/weston && \
+    ln /usr/local/bin/weston /usr/local/bin/weston-launch
+# HOME
+RUN mkdir -p /home/container && chmod 777 /home/container
+ENV HOME=/home/container
+LABEL version='1.10'
+LABEL options='--kwin --nxagent --weston --weston-xwayland --xephyr --xpra --xpra-xwayland --xpra2 --xpra2-xwayland --xorg --xvfb --xwayland'
+LABEL tools='catatonit cvt glxinfo iceauth setxkbmap socat \
+             vainfo vdpauinfo virgl wl-copy wl-paste wmctrl \
+             xauth xbindkeys xclip xdotool xdpyinfo xdriinfo xev \
+             xfishtank xhost xinit xkbcomp xkill xlsclients xmessage \
+             xmodmap xprop xrandr xrefresh xset xsetroot xvinfo xwininfo'
+LABEL options_console='--kwin --weston --weston-xwayland --xorg'
+LABEL gpu='MESA'
+LABEL windowmanager='openbox'
+
+# Install TDW requirements.
+RUN apt -qq install -y alsa-base wget
+RUN ./clean.sh
 
 # Download and untar TDW.
 RUN wget https://github.com/threedworld-mit/tdw/releases/download/v${TDW_VERSION}/TDW_Linux.tar.gz --no-check-certificate

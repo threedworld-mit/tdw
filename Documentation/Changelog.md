@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.12
+
+### Build
+
+- Fixed: The build hangs indefinitely if a controller does the following: Load streamed scene A (via `add_scene`), load streamed scene B, load streamed scene A.
+
 ## v1.12.11
 
 ### Command API

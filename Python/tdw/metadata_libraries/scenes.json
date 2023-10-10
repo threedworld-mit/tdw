@@ -18,7 +18,26 @@
             "hdri": true,
             "location": "interior",
             "name": "box_room_2018",
-            "rooms": [],
+            "rooms": [
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -0.01750469207763672,
+                            0,
+                            0.0
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 0,
+                        "walls_with_windows": 5
+                    }
+                }
+            ],
             "urls": {
                 "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/box_room_2018",
                 "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/box_room_2018",

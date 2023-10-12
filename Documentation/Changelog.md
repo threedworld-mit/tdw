@@ -6,6 +6,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ## v1.12.13
 
+### Build
+
+- Fixed: The skybox appears pink in tdw_room_4x5 and box_room_4x5
+- 
 ### Docker
 
 - **The TDW Docker container now uses xvfb.** This means that you can use the Docker container without needing to sudo access, Xorg, xorg.conf, etc. However, the Docker container can't use a GPU.
@@ -29,6 +33,11 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### Build
 
 - Fixed: The build hangs indefinitely if a controller does the following: Load streamed scene A (via `add_scene`), load streamed scene B, load streamed scene A.
+
+### Scene Library
+
+- Added room metadata to `box_room_2018`
+- Added: `box_room_4x5` A 4x5 grid of box_room_2018
 
 ## v1.12.11
 

@@ -18,11 +18,403 @@
             "hdri": true,
             "location": "interior",
             "name": "box_room_2018",
-            "rooms": [],
+            "rooms": [
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -0.01750469207763672,
+                            0,
+                            0.0
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 0,
+                        "walls_with_windows": 5
+                    }
+                }
+            ],
             "urls": {
                 "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/box_room_2018",
                 "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/box_room_2018",
                 "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/box_room_2018"
+            }
+        },
+        "box_room_4x5": {
+            "description": "A 4x5 grid of box_room_2018",
+            "hdri": true,
+            "location": "interior",
+            "name": "box_room_4x5",
+            "rooms": [
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            25.982494354248047,
+                            0,
+                            -4.535386085510254
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 19,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            25.982494354248047,
+                            0,
+                            4.464613914489746
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 18,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926301002502441
+                        ],
+                        "center": [
+                            -13.017504692077637,
+                            0,
+                            13.464614868164062
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 17,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -0.01750469207763672,
+                            0,
+                            -4.535386085510254
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 16,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926299095153809
+                        ],
+                        "center": [
+                            12.982495307922363,
+                            0,
+                            -13.535385131835938
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 15,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -26.017505645751953,
+                            0,
+                            -4.535386085510254
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 14,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926299095153809
+                        ],
+                        "center": [
+                            -0.01750469207763672,
+                            0,
+                            -13.535385131835938
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 13,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            12.982495307922363,
+                            0,
+                            4.464613914489746
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 12,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926299095153809
+                        ],
+                        "center": [
+                            25.982494354248047,
+                            0,
+                            -13.535385131835938
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 11,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -13.017504692077637,
+                            0,
+                            4.464613914489746
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 10,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -0.01750469207763672,
+                            0,
+                            4.464613914489746
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 9,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926299095153809
+                        ],
+                        "center": [
+                            -13.017504692077637,
+                            0,
+                            -13.535385131835938
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 8,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            12.982495307922363,
+                            0,
+                            -4.535386085510254
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 7,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926301002502441
+                        ],
+                        "center": [
+                            -0.01750469207763672,
+                            0,
+                            13.464614868164062
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 6,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926301002502441
+                        ],
+                        "center": [
+                            12.982495307922363,
+                            0,
+                            13.464614868164062
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 5,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926301002502441
+                        ],
+                        "center": [
+                            -26.017505645751953,
+                            0,
+                            13.464614868164062
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 4,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926301002502441
+                        ],
+                        "center": [
+                            25.982494354248047,
+                            0,
+                            13.464614868164062
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 3,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926299095153809
+                        ],
+                        "center": [
+                            -26.017505645751953,
+                            0,
+                            -13.535385131835938
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 2,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017499923706055,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -13.017504692077637,
+                            0,
+                            -4.535386085510254
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 1,
+                        "walls_with_windows": 5
+                    }
+                },
+                {
+                    "alcoves": [],
+                    "main_region": {
+                        "bounds": [
+                            12.017501831054688,
+                            3.9643332958221436,
+                            7.926300048828125
+                        ],
+                        "center": [
+                            -26.017505645751953,
+                            0,
+                            4.464613914489746
+                        ],
+                        "non_continuous_walls": 0,
+                        "region_id": 0,
+                        "walls_with_windows": 5
+                    }
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/box_room_4x5",
+                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/box_room_4x5",
+                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/box_room_4x5"
             }
         },
         "building_site": {

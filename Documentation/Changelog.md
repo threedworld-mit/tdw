@@ -4,6 +4,26 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.13
+
+### Docker
+
+- **The TDW Docker container now uses xvfb.** This means that you can use the Docker container without needing to sudo access, Xorg, xorg.conf, etc. However, the Docker container can't use a GPU.
+
+### Documentation
+
+#### New Documentation
+
+| Document                     | Description                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| `lessons/setup/docker.md`    | How and why to run TDW in a Docker container.                   |
+
+#### Modified Documentation
+
+| Document                     | Modification                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| `lessons/setup/server.md`    | Clarified why you should/shouldn't use Docker.                      |
+
 ## v1.12.12
 
 ### Build

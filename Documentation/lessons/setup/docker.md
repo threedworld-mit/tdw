@@ -4,7 +4,7 @@
 
 You can run the TDW build inside and outside a Docker container. There are advantages and disadvantages to either approach:
 
-If you run TDW inside a Docker container, it can't use a GPU. This means that rendering will be slow and not as photorealistic. The Docker container is mainly suitable only for projects that don't require rendering or don't have sudo access. Even then, TDW in a Docker container is relatively slow because the physics engine normally utilizes the GPU.
+If you run TDW inside a Docker container, it can't use a GPU because it renders using xvfb. This means that rendering will be slow and not as photorealistic. The Docker container is mainly suitable only for projects that don't require rendering or don't have sudo access. Even then, TDW in a Docker container is relatively slow because the physics engine normally utilizes the GPU.
 
 If you run TDW outside a Docker container, it can use a GPU and run much faster. However, you need sudo access to configure the server.
 

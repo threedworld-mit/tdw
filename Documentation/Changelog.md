@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.13
+
+### Build
+
+- Fixed: The skybox appears pink in tdw_room_4x5 and box_room_4x5
+
 ## v1.12.12
 
 ### Build

@@ -22,7 +22,7 @@ This document describes how to run TDW inside a Docker container. To learn how t
 
 1. `pip install tdw`
 2. Clone this repo or download everything in [this folder](https://github.com/threedworld-mit/tdw/tree/master/Docker).
-3. `cd tdw/Docker` or to the folder you downloadded the Docker files into.
+3. `cd tdw/Docker` or to the folder you downloaded the Docker files into.
 4. Pull the Docker image by running `./pull.sh` The image is `alters/tdw:VERSION` where `VERSION` is the latest version of TDW.
 
 If you want to build the image yourself, you can instead run `./build.sh`

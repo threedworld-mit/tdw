@@ -429,6 +429,10 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [ModelCreator](Documentation/python/asset_bundle_creator/model_creator.md)
 - [RobotCreator](Documentation/python/asset_bundle_creator/robot_creator.md)
 
+**tdw.backend**
+
+- [Update](Documentation/python/backend/update.md)
+
 **tdw.collision_data**
 
 - [CollisionBase](Documentation/python/collision_data/collision_base.md)

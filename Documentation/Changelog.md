@@ -4,12 +4,23 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.14
+
+### `tdw` module
+
+- Fixed: The controller is often incorrect when it checks for updates.
+- Fixed: The reported build version number is incorrect, resulting in the controller downloading a new build every time it runs.
+- (Backend) removed `__version__` in setup.py (it now uses the value in `tdw.version`)
+- (Backend) Removed `tdw.release.pypi` and `tdw.release.build`
+- (Backend) Added `tdw.release.update` which contains most of the code formerly in `PyPi` and `Build`, as well as code in `Controller` used to check for updates.
+- (Backend) moved `Build.BUILD_PATH` and `Build.BUILD_ROOT_DIR` to `tdw.paths`
+
 ## v1.12.13
 
 ### Build
 
 - Fixed: The skybox appears pink in tdw_room_4x5 and box_room_4x5
-- 
+
 ### Docker
 
 - **The TDW Docker container now uses xvfb.** This means that you can use the Docker container without needing to sudo access, Xorg, xorg.conf, etc. However, the Docker container can't use a GPU.

@@ -1,5 +1,6 @@
 from pathlib import Path
 from platform import system
+from tdw.backend.platforms import SYSTEM_TO_EXECUTABLE
 
 
 ASSET_BUNDLE_VERIFIER_OUTPUT_DIR = Path.home().joinpath("tdw_asset_bundle_verifier")
@@ -15,3 +16,7 @@ else:
     assert system() == "Linux", f"Platform not supported: {system()}"
     PLAYER_LOG_PATH = Path.home().joinpath(".config/unity3d/MIT/TDW/Player.log")
     EDITOR_LOG_PATH = Path.home().joinpath(".config/unity3d/Editor.log")
+BUILD_ROOT_DIR = Path.home().joinpath(f"tdw_build")
+BUILD_PATH = BUILD_ROOT_DIR.joinpath(f"TDW/TDW{SYSTEM_TO_EXECUTABLE[system()]}")
+if system() == "Darwin":
+    BUILD_PATH = BUILD_PATH.joinpath("Contents/MacOS/TDW")

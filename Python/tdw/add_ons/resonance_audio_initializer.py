@@ -1,9 +1,12 @@
 from pkg_resources import resource_filename
 from json import loads
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional
+import numpy as np
 from tdw.add_ons.audio_initializer_base import AudioInitializerBase
 from tdw.physics_audio.impact_material import ImpactMaterial
+from tdw.tdw_utils import TDWUtils
+from tdw.type_aliases import POSITION
 
 
 class ResonanceAudioInitializer(AudioInitializerBase):
@@ -83,5 +86,15 @@ class ResonanceAudioInitializer(AudioInitializerBase):
     def _get_sensor_command_name(self) -> str:
         return "add_environ_audio_sensor"
 
-    def _get_play_audio_command_name(self) -> str:
-        return "play_point_source_data"
+    def _get_spatialization(self, position: Optional[POSITION]) -> dict:
+        if position is None:
+            raise Exception("Position cannot be None for Resonance Audio.")
+        else:
+            if isinstance(position, np.ndarray):
+                pos = TDWUtils.array_to_vector3(position)
+            elif isinstance(position, dict):
+                pos = position
+            else:
+                raise Exception(f"Invalid position: {position}")
+            return {"$type": "resonance_audio",
+                    "position": pos}

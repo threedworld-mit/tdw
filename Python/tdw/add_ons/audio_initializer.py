@@ -1,4 +1,8 @@
+from typing import Optional
+import numpy as np
 from tdw.add_ons.audio_initializer_base import AudioInitializerBase
+from tdw.tdw_utils import TDWUtils
+from tdw.type_aliases import POSITION
 
 
 class AudioInitializer(AudioInitializerBase):
@@ -20,5 +24,15 @@ class AudioInitializer(AudioInitializerBase):
     def _get_sensor_command_name(self) -> str:
         return "add_audio_sensor"
 
-    def _get_play_audio_command_name(self) -> str:
-        return "play_audio_data"
+    def _get_spatialization(self, position: Optional[POSITION]) -> dict:
+        if position is None:
+            return {"$type": "non_spatialized"}
+        else:
+            if isinstance(position, np.ndarray):
+                pos = TDWUtils.array_to_vector3(position)
+            elif isinstance(position, dict):
+                pos = position
+            else:
+                raise Exception(f"Invalid position: {position}")
+            return {"$type": "spatialized",
+                    "position": pos}

@@ -1,15 +1,13 @@
 from abc import ABC, abstractmethod
 from base64 import b64encode
-from typing import List, Union
+from typing import List, Union, Optional
 from pathlib import Path
 import wave
-import numpy as np
 from overrides import final
 from tdw.type_aliases import POSITION
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
-from tdw.audio_constants import SAMPLE_RATE, CHANNELS
 
 
 class AudioInitializerBase(AddOn, ABC):
@@ -61,33 +59,45 @@ class AudioInitializerBase(AddOn, ABC):
         return
 
     @final
-    def play(self, path: Union[str, Path], position: POSITION, audio_id: int = None,
-             object_id: int = None) -> None:
+    def play(self, path: Union[str, Path], position: Optional[POSITION], audio_id: int = None,
+             object_id: int = None, loop: bool = False) -> None:
         """
         Load a .wav file and prepare to send a command to the build to play the audio.
         The command will be sent on the next `Controller.communicate()` call.
 
         :param path: The path to a .wav file.
-        :param position: The position of audio source. Can be a numpy array or x, y, z dictionary.
+        :param position: The position of audio source. Can be a numpy array or x, y, z dictionary. If None, this is non-spatialized environment audio.
         :param audio_id: The unique ID of the audio source. If None, a random ID is generated.
         :param object_id: If not None, parent the audio source to this object.
+        :param loop: If True, play the audio in a continuous loop.
         """
 
-        if isinstance(path, Path):
-            path = str(path.resolve())
-        if isinstance(position, np.ndarray):
-            position = TDWUtils.array_to_vector3(position)
+        path_str = TDWUtils.get_string_path(path)
         if audio_id is None:
             audio_id = Controller.get_unique_id()
-        w = wave.open(path, 'rb')
-        wav = w.readframes(w.getparams().nframes)
-        self.commands.append({"$type": self._get_play_audio_command_name(),
+        with wave.open(path_str, 'rb') as f:
+            wav = f.readframes(f.getparams().nframes)
+            channels = f.getnchannels()
+            framerate = f.getframerate()
+            sample_width: int = f.getsampwidth()
+            # Use the sample width to guess the data type.
+            if sample_width == 2:
+                sample_type = "i16"
+            elif sample_width == 4:
+                sample_type = "f32"
+            elif sample_width == 8:
+                sample_type = "f64"
+            else:
+                raise Exception(f"Unsupported sample width: {sample_width}")
+        self.commands.append({"$type": "play_audio",
                               "id": audio_id,
-                              "position": position,
-                              "num_frames": len(wav),
-                              "num_channels": CHANNELS,
-                              "frame_rate": SAMPLE_RATE,
-                              "wav_data": str(b64encode(wav), 'ascii', 'ignore')})
+                              "spatialization": self._get_spatialization(position),
+                              "audio": {"$type": "audio_base_64",
+                                        "channels": channels,
+                                        "framerate": framerate,
+                                        "sample_type": sample_type,
+                                        "audio": str(b64encode(wav), 'ascii', 'ignore')},
+                              "loop": loop})
         if object_id is not None:
             self.commands.append({"$type": "parent_audio_source_to_object",
                                   "object_id": object_id,
@@ -102,9 +112,9 @@ class AudioInitializerBase(AddOn, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_play_audio_command_name(self) -> str:
+    def _get_spatialization(self, position: Optional[POSITION]) -> dict:
         """
-        :return: The name of the command to play audio.
+        :return: A JSON dictionary describing the spatialization parameters for this audio clip.
         """
 
         raise Exception()

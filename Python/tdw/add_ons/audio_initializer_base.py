@@ -92,7 +92,7 @@ class AudioInitializerBase(AddOn, ABC):
         self.commands.append({"$type": "play_audio",
                               "id": audio_id,
                               "spatialization": self._get_spatialization(position),
-                              "audio": {"$type": "audio_base_64",
+                              "audio": {"$type": "audio_base64",
                                         "channels": channels,
                                         "framerate": framerate,
                                         "sample_type": sample_type,

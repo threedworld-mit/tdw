@@ -86,15 +86,16 @@ class ResonanceAudioInitializer(AudioInitializerBase):
     def _get_sensor_command_name(self) -> str:
         return "add_environ_audio_sensor"
 
-    def _get_spatialization(self, position: Optional[POSITION]) -> dict:
+    def _get_play_audio_command_name(self, position: Optional[POSITION]) -> str:
+        return "play_resonance_audio"
+
+    def _update_play_audio_command(self, command: dict, position: Optional[POSITION]) -> None:
         if position is None:
             raise Exception("Position cannot be None for Resonance Audio.")
+        elif isinstance(position, np.ndarray):
+            pos = TDWUtils.array_to_vector3(position)
+        elif isinstance(position, dict):
+            pos = position
         else:
-            if isinstance(position, np.ndarray):
-                pos = TDWUtils.array_to_vector3(position)
-            elif isinstance(position, dict):
-                pos = position
-            else:
-                raise Exception(f"Invalid position: {position}")
-            return {"$type": "resonance_audio",
-                    "position": pos}
+            raise Exception(f"Invalid position: {position}")
+        command["position"] = pos

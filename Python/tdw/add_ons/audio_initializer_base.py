@@ -2,7 +2,6 @@ from abc import ABC, abstractmethod
 from base64 import b64encode
 from typing import List, Union, Optional
 from pathlib import Path
-import wave
 from overrides import final
 from tdw.type_aliases import POSITION
 from tdw.controller import Controller
@@ -75,30 +74,21 @@ class AudioInitializerBase(AddOn, ABC):
         path_str = TDWUtils.get_string_path(path)
         if audio_id is None:
             audio_id = Controller.get_unique_id()
-        with wave.open(path_str, 'rb') as f:
-            wav = f.readframes(f.getparams().nframes)
-            channels = f.getnchannels()
-            framerate = f.getframerate()
-            sample_width: int = f.getsampwidth()
-            # Use the sample width to guess the data type.
-            if sample_width == 2:
-                sample_type = "i16"
-            elif sample_width == 4:
-                sample_type = "f32"
-            elif sample_width == 8:
-                sample_type = "f64"
-            else:
-                raise Exception(f"Unsupported sample width: {sample_width}")
-        self.commands.append({"$type": "play_audio",
+        # This is a URL.
+        if path_str.startswith("http"):
+            audio = path_str
+        # This is base64 data.
+        else:
+            with open(path_str, 'rb') as f:
+                audio = str(b64encode(f.read()), 'ascii', 'ignore')
+        # Start to create the command.
+        play_audio_command = {"$type": self._get_play_audio_command_name(position=position),
                               "id": audio_id,
-                              "spatialization": self._get_spatialization(position),
-                              "audio": {"$type": "audio_base64",
-                                        "channels": channels,
-                                        "framerate": framerate,
-                                        "sample_type": sample_type,
-                                        "audio": str(b64encode(wav), 'ascii', 'ignore')},
-                              "loop": loop})
-        if object_id is not None:
+                              "audio": audio,
+                              "loop": loop}
+        self._update_play_audio_command(command=play_audio_command, position=position)
+        self.commands.append(play_audio_command)
+        if object_id is not None and position is not None:
             self.commands.append({"$type": "parent_audio_source_to_object",
                                   "object_id": object_id,
                                   "audio_id": audio_id})
@@ -112,9 +102,20 @@ class AudioInitializerBase(AddOn, ABC):
         raise Exception()
 
     @abstractmethod
-    def _get_spatialization(self, position: Optional[POSITION]) -> dict:
+    def _get_play_audio_command_name(self, position: Optional[POSITION]) -> str:
         """
-        :return: A JSON dictionary describing the spatialization parameters for this audio clip.
+        :param position: The position of the audio.
+
+        :return: The name of the play audio command.
+        """
+
+        raise Exception()
+
+    def _update_play_audio_command(self, command: dict, position: Optional[POSITION]) -> None:
+        """
+        Update the play audio command with additional parameters.
+
+        :param position: The position of the audio.
         """
 
         raise Exception()

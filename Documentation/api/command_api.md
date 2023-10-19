@@ -573,12 +573,19 @@
 | [`hide_object`](#hide_object) | Hide the object. |
 | [`show_object`](#show_object) | Show the object. |
 
+**Play Audio Clip Command**
+
+| Command | Description |
+| --- | --- |
+| [`play_audio`](#play_audio) | Play an audio clip at a position. |
+| [`play_environment_audio`](#play_environment_audio) | Play non-spatialized environment audio. |
+
 **Play Audio Data Command**
 
 | Command | Description |
 | --- | --- |
-| [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller. |
-| [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
+| [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller.  |
+| [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data.  |
 
 **Post Process Command**
 
@@ -7434,6 +7441,53 @@ Show the object.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
+# PlayAudioClipCommand
+
+Abstract base class for playing audio clips.
+
+***
+
+## **`play_audio`**
+
+Play an audio clip at a position.
+
+
+```python
+{"$type": "play_audio", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "audio": "string"}
+```
+
+```python
+{"$type": "play_audio", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "audio": "string", "loop": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector3 | The position of the audio. | |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"audio"` | string | Raw bytes of a wav file encoded in a base64 string, a path to a wav file, or a URL to a wav file. | |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
+
+***
+
+## **`play_environment_audio`**
+
+Play non-spatialized environment audio.
+
+
+```python
+{"$type": "play_environment_audio", "id": 1, "audio": "string"}
+```
+
+```python
+{"$type": "play_environment_audio", "id": 1, "audio": "string", "loop": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"audio"` | string | Raw bytes of a wav file encoded in a base64 string, a path to a wav file, or a URL to a wav file. | |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
+
 # PlayAudioDataCommand
 
 Play audio at a position.
@@ -7442,8 +7496,9 @@ Play audio at a position.
 
 ## **`play_audio_data`**
 
-Play a sound at a position using audio sample data sent over from the controller.
+Play a sound at a position using audio sample data sent over from the controller. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
@@ -7466,8 +7521,9 @@ Play a sound at a position using audio sample data sent over from the controller
 
 ## **`play_point_source_data`**
 
-Make this object a ResonanceAudioSoundSource and play the audio data.
+Make this object a ResonanceAudioSoundSource and play the audio data. 
 
+- <font style="color:orange">**Deprecated**: This command has been deprecated. In the next major TDW update (1.x.0), this command will be removed.</font>
 
 ```python
 {"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}

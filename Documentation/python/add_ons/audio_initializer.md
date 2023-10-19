@@ -57,7 +57,7 @@ Any commands in the `self.commands` list will be sent on the next frame.
 
 **`self.play(path, position)`**
 
-**`self.play(path, position, audio_id=None, object_id=None)`**
+**`self.play(path, position, audio_id=None, object_id=None, loop=False)`**
 
 Load a .wav file and prepare to send a command to the build to play the audio.
 The command will be sent on the next `Controller.communicate()` call.
@@ -65,9 +65,10 @@ The command will be sent on the next `Controller.communicate()` call.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | path |  Union[str, Path] |  | The path to a .wav file. |
-| position |  POSITION |  | The position of audio source. Can be a numpy array or x, y, z dictionary. |
+| position |  Optional[POSITION] |  | The position of audio source. Can be a numpy array or x, y, z dictionary. If None, this is non-spatialized environment audio. |
 | audio_id |  int  | None | The unique ID of the audio source. If None, a random ID is generated. |
 | object_id |  int  | None | If not None, parent the audio source to this object. |
+| loop |  bool  | False | If True, play the audio in a continuous loop. |
 
 #### before_send
 

@@ -12,8 +12,6 @@ On a Linux server, you need to install:
 - `socat`
 - `alsa-utils`
 
-[This Docker file](https://github.com/threedworld-mit/tdw/blob/master/Docker/Dockerfile_audio) creates a container that can play audio.
-
 ## Initialize audio in a controller
 
 In order to initialize audio in TDW, you must:
@@ -108,9 +106,10 @@ c.communicate(commands)
 You can call `audio_intializer.play(path, position)` to play a .wav file. 
 
 - `path` is the path to the .wav file
-- `position` is the position of the audio source. 
+- `position` is the position of the audio source. If None, the audio will be non-spatialized (see the end of this document).
 - You can optionally set the parameter `audio_id` to an integer. Each audio source has a unique ID. If you don't set this parameter, a unique ID will be generated.
 - You can optionally set the parameter `object_id`. If you do, the audio source will be parented to the corresponding object such that whenever the object moves, the source will move with it. Internally, this is handled with via the command [`parent_audio_source_to_object`](../../api/command_api.md#parent_audio_source_to_object).
+- You can optionally set the parameter `loop` to continuously loop the audio.
 
 This `play()` function loads the .wav file and converts it into a useable byte array. It then tells the build to play the audio by sending [`play_audio_data`](../../api/command_api.md#play_audio_data).
 
@@ -153,12 +152,62 @@ sleep(10)
 c.communicate({"$type": "terminate"})
 ```
 
+## Load audio from StreamingAssets/
+
+You can alternatively load an audio file from `StreamingAssets/`, which is a directory adjacent to the TDW build, by calling `audio_initialize.play_from_streaming_assets()`. For more information on where to find it, [read this](https://docs.unity3d.com/Manual/StreamingAssets.html).
+
+Below is a minimal example:
+
+```python
+from time import sleep
+from tdw.controller import Controller
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.audio_initializer import AudioInitializer
+
+"""
+Load an .wav file from StreamingAssets/ and play it.
+Note: You need to move HWL_1b.wav into StreamingAssets/ before running this controller.
+"""
+
+c = Controller()
+# Add a camera.
+camera = ThirdPersonCamera(avatar_id="a",
+                           position={"x": -4, "y": 1.5, "z": 0},
+                           look_at={"x": 2.5, "y": 0, "z": 0})
+# Initialize audio.
+audio_initializer = AudioInitializer(avatar_id="a")
+c.add_ons.extend([camera, audio_initializer])
+# Create the scene.
+c.communicate([c.get_add_scene("tdw_room")])
+# Start playing audio.
+audio_initializer.play_from_streaming_assets(path="HWL_1b.wav", position=None)
+c.communicate({"$type": "set_field_of_view",
+               "avatar_id": "a",
+               "field_of_view": 75.0})
+sleep(10)
+c.communicate({"$type": "terminate"})
+```
+
+`audio_initialize.play_from_streaming_assets()` has the exact same parameters as `audio_initializer.play()`: `path`, `position`, etc. The only difference is that `path` is relative to `StreamingAssets/`, for example: `audio/sound.wav`.
+
+Advantages to loading from `StreamingAssets/`:
+
+-  Loading audio from `StreamingAssets/` is a very fast process because the controller doesn't need to send the build wav data.
+- Audio loaded from `StreamingAssets/` is also cached upon load, making it even faster to load the next time it is played.
+
+Disadvantages to loading from `StreamingAssets/`:
+
+- It can be harder to generate audio on the fly and harder to deploy (because the audio files won't be in the same directory or repo as your Python files).
+- Resonance Audio doesn't work yet.
+
 ## Audio systems and spatialization
 
 TDW includes two audio systems:
 
 1. Unity's built-in audio system (which has been covered in this tutorial). This system supports basic audio spatialization.
 2. [Resonance Audio](resonance_audio.md), which can produce physics-based reverb effects for interior environments. Resonance Audio has far more sophisticated audio spatialization than the built-in audio system.
+
+In either case, if the `position` is None in `audio_intializer.play()`, the audio will be non-spatialized, which can be useful for UI sounds, background environment noise, etc.
 
 ***
 

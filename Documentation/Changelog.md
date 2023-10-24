@@ -4,6 +4,37 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.15
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `play_audio_from_streaming_assets` | Load an audio clip from the StreamingAssets directory and play it. |
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `play_audio_data` | Added optional parameters `spatialize` and `loop`. |
+| `play_point_source_data` | Added optional parameter `loop`. |
+
+### `tdw` module
+
+- Added optional parameter `loop` to `AudioInitializer.play()` and `ResonanceAudioInitializer.play()`
+- The `position` parameter of `AudioInitializer.play()` and `ResonanceAudioInitializer.play()` can now be None, which will make the audio non-spatialized. This is useful for UI or environment sounds.
+- Added: `AudioInitializer.play_from_streaming_assets(path, position)`. Load a .wav file from the `StreamingAssets/` directory in the build and prepare to send a command to the build to play the audio.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/audio/initialize_audio.md` | Added a section for how to create non-spatialized audio. Added a section for how to load from StreamingAssets/ |
+
 ## v1.12.14
 
 ### `tdw` module

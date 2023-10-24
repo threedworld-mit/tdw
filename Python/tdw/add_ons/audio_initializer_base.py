@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from base64 import b64encode
-from typing import List, Union
+from typing import List, Union, Optional
 from pathlib import Path
 import wave
 import numpy as np
@@ -61,34 +61,52 @@ class AudioInitializerBase(AddOn, ABC):
         return
 
     @final
-    def play(self, path: Union[str, Path], position: POSITION, audio_id: int = None,
-             object_id: int = None) -> None:
+    def play(self, path: Union[str, Path], position: Optional[POSITION], audio_id: int = None,
+             object_id: int = None, loop: bool = False) -> None:
         """
         Load a .wav file and prepare to send a command to the build to play the audio.
         The command will be sent on the next `Controller.communicate()` call.
 
         :param path: The path to a .wav file.
-        :param position: The position of audio source. Can be a numpy array or x, y, z dictionary.
+        :param position: The position of audio source. Can be a numpy array or x, y, z dictionary. If None, the audio is not spatialized.
         :param audio_id: The unique ID of the audio source. If None, a random ID is generated.
-        :param object_id: If not None, parent the audio source to this object.
+        :param object_id: If not None, parent the audio source to this object. Ignored if `position` is None.
+        :param loop: If True, the audio will loop.
         """
 
         if isinstance(path, Path):
             path = str(path.resolve())
-        if isinstance(position, np.ndarray):
-            position = TDWUtils.array_to_vector3(position)
         if audio_id is None:
             audio_id = Controller.get_unique_id()
         w = wave.open(path, 'rb')
         wav = w.readframes(w.getparams().nframes)
-        self.commands.append({"$type": self._get_play_audio_command_name(),
+        # Don't spatialize the audio.
+        if position is None:
+            spatialize = False
+            pos = {"x": 0, "y": 0, "z": 0}
+            # This will override Resonance Audio.
+            command_name = "play_audio_data"
+        # Spatialize the audio.
+        else:
+            spatialize = True
+            if isinstance(position, np.ndarray):
+                pos = TDWUtils.array_to_vector3(position)
+            elif isinstance(position, dict):
+                pos = {k: v for (k, v) in position.items()}
+            else:
+                raise Exception(f"Invalid position: {position}")
+            command_name = self._get_play_audio_command_name()
+        # Add the command.
+        self.commands.append({"$type": command_name,
                               "id": audio_id,
-                              "position": position,
+                              "position": pos,
+                              "spatialize": spatialize,
                               "num_frames": len(wav),
                               "num_channels": CHANNELS,
                               "frame_rate": SAMPLE_RATE,
-                              "wav_data": str(b64encode(wav), 'ascii', 'ignore')})
-        if object_id is not None:
+                              "wav_data": str(b64encode(wav), 'ascii', 'ignore'),
+                              "loop": loop})
+        if object_id is not None and position is not None:
             self.commands.append({"$type": "parent_audio_source_to_object",
                                   "object_id": object_id,
                                   "audio_id": audio_id})

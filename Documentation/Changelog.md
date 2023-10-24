@@ -10,6 +10,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Fixed: The controller is often incorrect when it checks for updates.
 - Fixed: The reported build version number is incorrect, resulting in the controller downloading a new build every time it runs.
+- Fixed: Error when trying to parse any arguments in a controller script other than the defaults.
 - (Backend) removed `__version__` in setup.py (it now uses the value in `tdw.version`)
 - (Backend) Removed `tdw.release.pypi` and `tdw.release.build`
 - (Backend) Added `tdw.release.update` which contains most of the code formerly in `PyPi` and `Build`, as well as code in `Controller` used to check for updates.

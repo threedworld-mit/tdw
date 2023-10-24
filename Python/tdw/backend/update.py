@@ -76,6 +76,7 @@ class Update:
                 if build_version < local_py_release_version:
                     print(f"Python version is {local_py_release_version} but the build version is {build_version}.\n"
                           f"Downloading version {local_py_release_version} of the build now...")
+                    build_version = local_py_release_version
                     need_to_download = True
             else:
                 "Failed to find build version!"

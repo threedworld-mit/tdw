@@ -573,11 +573,14 @@
 | [`hide_object`](#hide_object) | Hide the object. |
 | [`show_object`](#show_object) | Show the object. |
 
+**Play Audio Command**
+
 **Play Audio Data Command**
 
 | Command | Description |
 | --- | --- |
 | [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller. |
+| [`play_audio_from_streaming_assets`](#play_audio_from_streaming_assets) | Load an audio clip from the StreamingAssets directory and play it. |
 | [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
 
 **Post Process Command**
@@ -7434,6 +7437,10 @@ Show the object.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
+# PlayAudioCommand
+
+These commands create audio clips and play them.
+
 # PlayAudioDataCommand
 
 Play audio at a position.
@@ -7446,21 +7453,50 @@ Play a sound at a position using audio sample data sent over from the controller
 
 
 ```python
-{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
+{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1}
 ```
 
 ```python
-{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
+{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1, "spatialize": True, "frame_rate": 44100, "num_channels": 1, "position": {"x": 0, "y": 0, "z": 0}, "loop": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | A unique ID for this audio source. | |
-| `"position"` | Vector3 | The position of the audio source. | |
+| `"spatialize"` | bool | If True, the audio is spatialized. If False, the audio is environment audio and the position is ignored. | True |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | {"x": 0, "y": 0, "z": 0} |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
+
+***
+
+## **`play_audio_from_streaming_assets`**
+
+Load an audio clip from the StreamingAssets directory and play it.
+
+
+```python
+{"$type": "play_audio_from_streaming_assets", "path": "string", "wav_data": "string", "num_frames": 1, "id": 1}
+```
+
+```python
+{"$type": "play_audio_from_streaming_assets", "path": "string", "wav_data": "string", "num_frames": 1, "id": 1, "spatialize": True, "frame_rate": 44100, "num_channels": 1, "position": {"x": 0, "y": 0, "z": 0}, "loop": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"path"` | string | The path to the file relative to streaming assets, for example "audio/sound.wav". The file must be a .wav file. | |
+| `"spatialize"` | bool | If True, the audio is spatialized. If False, the audio is environment audio and the position is ignored. | True |
+| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
+| `"num_frames"` | int | The number of audio frames in the audio data. | |
+| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
+| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | {"x": 0, "y": 0, "z": 0} |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
 
 ***
 
@@ -7470,21 +7506,22 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
+{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1}
 ```
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
+{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1, "frame_rate": 44100, "num_channels": 1, "position": {"x": 0, "y": 0, "z": 0}, "loop": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | A unique ID for this audio source. | |
-| `"position"` | Vector3 | The position of the audio source. | |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | {"x": 0, "y": 0, "z": 0} |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
 
 # PostProcessCommand
 

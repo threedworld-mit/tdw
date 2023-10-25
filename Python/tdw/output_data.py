@@ -1,8 +1,5 @@
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
-from tdw.FBOutput import Transforms as Trans
-from tdw.FBOutput import Rigidbodies as Rigis
-from tdw.FBOutput import Bounds as Bouns
 from tdw.FBOutput import Images as Imags
 from tdw.FBOutput import AvatarKinematic as AvKi
 from tdw.FBOutput import AvatarNonKinematic as AvNoKi
@@ -169,16 +166,18 @@ class SceneRegions(OutputData):
         return self.data.RegionsLength()
 
 
-class Transforms(OutputData):
-    def __init__(self, b):
-        super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
-        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
-        self._forwards = self.data.ForwardsAsNumpy().reshape(-1, 3)
-
-    def get_data(self) -> Trans.Transforms:
-        return Trans.Transforms.GetRootAsTransforms(self.bytes, 0)
+class Transforms:
+    def __init__(self, b: bytes):
+        num_objects: int = (len(b) - 8) // 44
+        vector3_offset = num_objects * 12
+        quaternion_offset = num_objects * 16
+        offset = 8 + num_objects * 4
+        self._ids: np.ndarray = np.frombuffer(b[8: offset], dtype=np.int32)
+        self._positions: np.ndarray = np.frombuffer(b[offset: offset + vector3_offset], dtype=np.float32).reshape((num_objects, 3))
+        offset += vector3_offset
+        self._rotations: np.ndarray = np.frombuffer(b[offset: offset + quaternion_offset], dtype=np.float32).reshape((num_objects, 4))
+        offset += quaternion_offset
+        self._forwards: np.ndarray = np.frombuffer(b[offset:], dtype=np.float32).reshape((num_objects, 3))
 
     def get_num(self) -> int:
         return len(self._ids)
@@ -196,16 +195,17 @@ class Transforms(OutputData):
         return self._rotations[index]
 
 
-class Rigidbodies(OutputData):
-    def __init__(self, b):
-        super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._velocities = self.data.VelocitiesAsNumpy().reshape(-1, 3)
-        self._angular_velocities = self.data.AngularVelocitiesAsNumpy().reshape(-1, 3)
-        self._sleeping = self.data.SleepingsAsNumpy()
-
-    def get_data(self) -> Rigis.Rigidbodies:
-        return Rigis.Rigidbodies.GetRootAsRigidbodies(self.bytes, 0)
+class Rigidbodies:
+    def __init__(self, b: bytes):
+        num_objects: int = (len(b) - 8) // 25
+        vector3_offset = num_objects * 12
+        offset = 8 + num_objects * 4
+        self._ids: np.ndarray = np.frombuffer(b[8: offset], dtype=np.int32)
+        self._velocities: np.ndarray = np.frombuffer(b[offset: offset + vector3_offset], dtype=np.float32).reshape((num_objects, 3))
+        offset += vector3_offset
+        self._angular_velocities: np.ndarray = np.frombuffer(b[offset: offset + vector3_offset], dtype=np.float32).reshape((num_objects, 3))
+        offset += vector3_offset
+        self._sleeping: np.ndarray = np.frombuffer(b[offset:], dtype=np.bool_)
 
     def get_num(self) -> int:
         return len(self._ids)
@@ -255,14 +255,12 @@ class StaticRigidbodies(OutputData):
         return float(self._physics_values[index][3])
 
 
-class Bounds(OutputData):
-    def __init__(self, b):
-        super().__init__(b)
-        self._ids = self.data.IdsAsNumpy()
-        self._bounds_positions = self.data.BoundPositionsAsNumpy().reshape(len(self._ids), 7, 3)
-
-    def get_data(self) -> Bouns.Bounds:
-        return Bouns.Bounds.GetRootAsBounds(self.bytes, 0)
+class Bounds:
+    def __init__(self, b: bytes):
+        num_objects: int = (len(b) - 8) // 88
+        offset = 8 + num_objects * 4
+        self._ids: np.ndarray = np.frombuffer(b[8: offset], dtype=np.int32)
+        self._bounds_positions: np.ndarray = np.frombuffer(b[offset:], dtype=np.float32).reshape((num_objects, 7, 3))
 
     def get_num(self) -> int:
         return len(self._ids)

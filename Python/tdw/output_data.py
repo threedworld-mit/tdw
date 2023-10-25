@@ -1,3 +1,4 @@
+from abc import ABC
 from tdw.FBOutput import Vector3, Quaternion, PassMask, Color, MessageType, SimpleTransform, PathState
 from tdw.FBOutput import SceneRegions as SceRegs
 from tdw.FBOutput import Images as Imags
@@ -10,7 +11,6 @@ from tdw.FBOutput import IsOnNavMesh as IsNM
 from tdw.FBOutput import IdPassGrayscale as IdGS
 from tdw.FBOutput import Collision as Col
 from tdw.FBOutput import ImageSensors as ImSe
-from tdw.FBOutput import CameraMatrices as CaMa
 from tdw.FBOutput import IdPassSegmentationColors as IdSC
 from tdw.FBOutput import FlexParticles as Flex
 from tdw.FBOutput import VRRig as VR
@@ -497,21 +497,39 @@ class ImageSensors(OutputData):
         return self.data.Sensors(index).FieldOfView()
 
 
-class CameraMatrices(OutputData):
-    def get_data(self) -> CaMa.CameraMatrices:
-        return CaMa.CameraMatrices.GetRootAsCameraMatrices(self.bytes, 0)
+class _FixedLengthAvatars(ABC):
+    def __init__(self, b: bytes):
+        self._num_avatars: int = int.from_bytes(b[8:12], "little")
+        self._ids: List[str] = list()
+        i = 12
+        for j in range(self._num_avatars):
+            # Get the length of the ID.
+            id_len: int = int.from_bytes(b[i: i + 4], "little")
+            i += 4
+            # Get the ID.
+            self._ids.append(b[i: i + id_len].decode("utf-8"))
+            i += id_len
+        self._data: bytes = b[i:]
 
-    def get_avatar_id(self) -> str:
-        return self.data.AvatarId().decode('utf-8')
+    def get_num(self) -> int:
+        return self._num_avatars
 
-    def get_sensor_name(self) -> str:
-        return self.data.SensorName().decode('utf-8')
+    def get_id(self, index: int) -> str:
+        return self._ids[index]
 
-    def get_projection_matrix(self) -> np.ndarray:
-        return self.data.ProjectionMatrixAsNumpy()
 
-    def get_camera_matrix(self) -> np.ndarray:
-        return self.data.CameraMatrixAsNumpy()
+class CameraMatrices(_FixedLengthAvatars):
+    def __init__(self, b: bytes):
+        super().__init__(b)
+        offset: int = self._num_avatars * 64
+        self._projection_matrices: np.ndarray = np.frombuffer(self._data[:offset], dtype=np.float32).reshape((self._num_avatars, 4, 4))
+        self._camera_matrices: np.ndarray = np.frombuffer(self._data[offset:], dtype=np.float32).reshape((self._num_avatars, 4, 4))
+
+    def get_projection_matrix(self, index: int) -> np.ndarray:
+        return self._projection_matrices[index]
+
+    def get_camera_matrix(self, index: int) -> np.ndarray:
+        return self._camera_matrices[index]
 
 
 class IdPassSegmentationColors(OutputData):

@@ -6,6 +6,8 @@ from tdw.add_ons.progress_bar import ProgressBar
 class TimerBar(ProgressBar):
     """
     A progress bar that decrements over time.
+
+    The timer won't start until you call `start()`.
     """
 
     def __init__(self, total_time: float, value: float = 0, left_to_right: bool = True, size: Dict[str, int] = None,

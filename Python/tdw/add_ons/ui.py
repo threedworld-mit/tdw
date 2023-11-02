@@ -20,21 +20,18 @@ class UI(AddOn):
     In some cases, this document will note that Vector2 values must be integers. This is usually because they are adjusting a value that references the actual screen pixels.
     """
 
-    def __init__(self, canvas_id: int = 0, can_use_existing: bool = True):
+    def __init__(self, canvas_id: int = 0):
         """
         :param canvas_id: The ID of the UI canvas.
-        :param can_use_existing: If the UI canvas with this ID already exists, this add-on will use the existing canvas and won't create a new one.
         """
 
         super().__init__()
         self._canvas_id: int = canvas_id
-        self._can_use_existing: bool = can_use_existing
         self._ui_ids: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "add_ui_canvas",
-                 "canvas_id": self._canvas_id,
-                 "can_use_existing": self._can_use_existing}]
+                 "canvas_id": self._canvas_id}]
 
     def on_send(self, resp: List[bytes]) -> None:
         pass
@@ -180,31 +177,6 @@ class UI(AddOn):
                                       "canvas_id": self._canvas_id})
         self._ui_ids.clear()
 
-    def add_loading_screen(self, text: str = "Loading...", text_size: int = 64) -> Tuple[int, int]:
-        """
-        A macro for adding a simple load screen. Combines `self.add_image()` (adds a black background) and `self.add_text()` (adds a loading message).
-
-        :param text: The loading message text.
-        :param text_size: The font size of the loading message text.
-
-        :return: Tuple: The ID of the background image, the ID of the text.
-        """
-
-        # Add an empty black image. Source: https://stackoverflow.com/a/38626806
-        with BytesIO() as output:
-            Image.new(mode="RGB", size=(16, 16)).save(output, "PNG")
-            image = output.getvalue()
-        background_id = self.add_image(image,
-                                       position={"x": 0, "y": 0},
-                                       size={"x": 16, "y": 16},
-                                       rgba=False,
-                                       scale_factor={"x": 2000, "y": 2000})
-        # Add text.
-        text_id = self.add_text(text=text,
-                                font_size=text_size,
-                                position={"x": 0, "y": 0})
-        return background_id, text_id
-
     def _get_add_element(self, command_type: str, position: Dict[str, int], anchor: Tuple[float, float] = None,
                          pivot: Dict[str, float] = None, color: Dict[str, float] = None,
                          raycast_target: bool = True) -> Tuple[dict, int]:
@@ -234,3 +206,16 @@ class UI(AddOn):
                 "position": position,
                 "color": color,
                 "raycast_target": raycast_target}, ui_id
+
+    @staticmethod
+    def _get_image(color: Tuple[int, int, int], size: Dict[str, int]) -> bytes:
+        """
+        :param color: The color of the image.
+        :param size: The pixel size of the image. The values must be integers. Example: `{"x": 64, "y": 128}`.
+
+        :return: A new image of size `self._size` with color `color`.
+        """
+
+        with BytesIO() as output:
+            Image.new(mode="RGB", size=(size["x"], size["y"]), color=color).save(output, "PNG")
+            return output.getvalue()

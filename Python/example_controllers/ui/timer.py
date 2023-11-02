@@ -11,7 +11,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 class Timer(Controller):
     """
-    Add a progress bar to the screen. Click all of the objects before time runs out.
+    Add a progress bar to the screen. Click all the objects before time runs out.
     """
 
     def run(self):

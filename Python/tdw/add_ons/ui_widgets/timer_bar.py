@@ -1,6 +1,6 @@
 from time import time
 from typing import Dict, List
-from tdw.add_ons.progress_bar import ProgressBar
+from tdw.add_ons.ui_widgets.progress_bar import ProgressBar
 
 
 class TimerBar(ProgressBar):
@@ -10,13 +10,12 @@ class TimerBar(ProgressBar):
     The timer won't start until you call `start()`.
     """
 
-    def __init__(self, total_time: float, value: float = 0, left_to_right: bool = True, size: Dict[str, int] = None,
+    def __init__(self, total_time: float, left_to_right: bool = True, size: Dict[str, int] = None,
                  underlay_color: Dict[str, float] = None, overlay_color: Dict[str, float] = None,
                  anchor: Dict[str, float] = None, pivot: Dict[str, float] = None, position: Dict[str, int] = None,
                  canvas_id: int = 0):
         """
         :param total_time: The total time that elapses until the timer is done.
-        :param value: The initial value as a fraction of the total time (0 to 1).
         :param left_to_right: If true, the progress bar increments leftwards.
         :param size: The size of the progress bar in pixels.
         :param underlay_color: The color of the progress bar underlay.
@@ -27,7 +26,7 @@ class TimerBar(ProgressBar):
         :param canvas_id: The ID of the canvas. The canvas must already exist or be added on this frame.
         """
 
-        super().__init__(value=value, increment=False, left_to_right=left_to_right, size=size,
+        super().__init__(value=1, increment=False, left_to_right=left_to_right, size=size,
                          overlay_color=overlay_color, underlay_color=underlay_color, anchor=anchor, pivot=pivot,
                          position=position, canvas_id=canvas_id)
         self._total_time: float = total_time

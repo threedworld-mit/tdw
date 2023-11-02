@@ -20,18 +20,21 @@ class UI(AddOn):
     In some cases, this document will note that Vector2 values must be integers. This is usually because they are adjusting a value that references the actual screen pixels.
     """
 
-    def __init__(self, canvas_id: int = 0):
+    def __init__(self, canvas_id: int = 0, can_use_existing: bool = True):
         """
         :param canvas_id: The ID of the UI canvas.
+        :param can_use_existing: If the UI canvas with this ID already exists, this add-on will use the existing canvas and won't create a new one.
         """
 
         super().__init__()
         self._canvas_id: int = canvas_id
+        self._can_use_existing: bool = can_use_existing
         self._ui_ids: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "add_ui_canvas",
-                 "canvas_id": self._canvas_id}]
+                 "canvas_id": self._canvas_id,
+                 "can_use_existing": self._can_use_existing}]
 
     def on_send(self, resp: List[bytes]) -> None:
         pass

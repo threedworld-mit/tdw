@@ -111,13 +111,13 @@ class Controller:
         for m in self.add_ons:
             # Initialize an add-on.
             if not m.initialized:
-                # Append initialization commands to the end of the list.
-                commands.extend(m.get_initialization_commands())
                 # Insert initialization commands at the start of the list (this is rarely used).
                 early_initialization_commands = m.get_early_initialization_commands()
                 early_initialization_commands.reverse()
                 for early_command in early_initialization_commands:
                     commands.insert(0, early_command)
+                # Append initialization commands to the end of the list.
+                commands.extend(m.get_initialization_commands())
                 # Mark the add-on as initialized.
                 m.initialized = True
             # Append the add-on's commands.

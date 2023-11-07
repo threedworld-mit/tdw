@@ -109,7 +109,7 @@ Likewise, textured quads won't appear in any output data except in the `_img` pa
 
 ***
 
-**Next: [User Interface (the `UI` add-on)](ui.md)**
+**Next: [Compass rose](compass_rose.md)**
 
 [Return to the README](../../../README.md)
 

@@ -2,11 +2,9 @@ from math import tan, radians
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.ui import UI
 from tdw.add_ons.mouse import Mouse
 from tdw.add_ons.ui_widgets.progress_bar import ProgressBar
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class Progress(Controller):
@@ -23,23 +21,20 @@ class Progress(Controller):
         camera = ThirdPersonCamera(avatar_id="a",
                                    position={"x": 0, "y": 1.8, "z": avatar_z},
                                    field_of_view=field_of_view)
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("progress")
-        print(f"Images will be saved to: {path}")
-        capture = ImageCapture(avatar_ids=["a"], path=path)
         # Add a UI add-on for the text.
         ui = UI()
         # Add UI text.
         ui.add_text(text="Click each cube",
-                    font_size=18,
+                    font_size=24,
                     color={"r": 0, "g": 0, "b": 0, "a": 1},
                     position={"x": 0, "y": 0},
                     anchor={"x": 0, "y": 1},
                     pivot={"x": 0, "y": 1})
         # Add the progress bar. This is a subclass of UI that will automatically add a progress bar to the scene.
-        progress_bar = ProgressBar()
+        progress_bar = ProgressBar(size={"x": 200, "y": 24})
         # Listen to the mouse.
         mouse = Mouse()
-        self.add_ons.extend([camera, capture, mouse, ui, progress_bar])
+        self.add_ons.extend([camera, mouse, ui, progress_bar])
         num_objects = 5
         # Create the scene and add objects.
         commands = [TDWUtils.create_empty_room(12, 12)]

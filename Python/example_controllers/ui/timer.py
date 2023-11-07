@@ -2,16 +2,14 @@ from math import tan, radians
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.image_capture import ImageCapture
 from tdw.add_ons.ui import UI
 from tdw.add_ons.mouse import Mouse
 from tdw.add_ons.ui_widgets.timer_bar import TimerBar
-from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class Timer(Controller):
     """
-    Add a progress bar to the screen. Click all the objects before time runs out.
+    Add a timer bar to the screen. Click all the objects before time runs out.
     """
 
     def run(self):
@@ -23,23 +21,20 @@ class Timer(Controller):
         camera = ThirdPersonCamera(avatar_id="a",
                                    position={"x": 0, "y": 1.8, "z": avatar_z},
                                    field_of_view=field_of_view)
-        path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("progress")
-        print(f"Images will be saved to: {path}")
-        capture = ImageCapture(avatar_ids=["a"], path=path)
         # Add a UI add-on for the text.
         ui = UI()
         # Add UI text.
         ui.add_text(text="Click each cube",
-                    font_size=18,
+                    font_size=24,
                     color={"r": 0, "g": 0, "b": 0, "a": 1},
                     position={"x": 0, "y": 0},
                     anchor={"x": 0, "y": 1},
                     pivot={"x": 0, "y": 1})
         # Add the timer bar. This is a subclass of UI that will automatically add a progress bar to the scene.
-        timer_bar = TimerBar(total_time=3, left_to_right=False)
+        timer_bar = TimerBar(total_time=3, size={"x": 200, "y": 24}, left_to_right=False)
         # Listen to the mouse.
         mouse = Mouse()
-        self.add_ons.extend([camera, capture, mouse, ui, timer_bar])
+        self.add_ons.extend([camera, mouse, ui, timer_bar])
         num_objects = 5
         # Create the scene and add objects.
         commands = [TDWUtils.create_empty_room(12, 12)]

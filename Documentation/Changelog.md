@@ -4,6 +4,40 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.16
+
+### Command API
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `add_ui_canvas` | If a canvas with `id` already exists, this command fails silently instead of logging an error. |
+
+### `tdw` module
+
+- Added: `AddOn.get_early_initialization_commands()`. These commands are inserted before all others. Most add-ons shouldn't override this function; it's only useful for cases where the add-on *must* execute first, e.g. a loading screen.
+- Added new "UI Widgets", subclasses of `UI`, to `tdw.add_ons.ui_widgets`: `LoadingScreen`, `ProgressBar`, and `TimerBar`.
+- Moved `UI.add_loading_screen()` to the new `LoadingScreen` UI widget add-on.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                      | Description                            |
+| --------------------------------------------- | -------------------------------------- |
+| `lessons/ui/overview.md`                      | Overview of TDW's UI.                  |
+| `lessons/ui/widgets.md`                       | UI widget documentation.               |
+| `python/add_ons/ui_widgets/loading_screen.md` | API documentation for `LoadingScreen`. |
+| `python/add_ons/ui_widgets/progress_bar.md`   | API documentation for `ProgressBar`.   |
+| `python/add_ons/ui_widgets/timer_bar.md`      | API documentation for `TimerBar`.      |
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/non_physics/ui.md` | Moved to `lessons/ui/ui.md` |
+
 ## v1.12.15
 
 ### Command API

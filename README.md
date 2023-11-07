@@ -312,28 +312,33 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 2. [NavMesh pathfinding](Documentation/lessons/navigation/nav_mesh.md)
 3. [Occupancy maps](Documentation/lessons/navigation/occupancy_maps.md)
 
-## 14. Non-physics objects
+## 14. User Interface (UI)
 
-### 14.1 Non-physics humanoids
+1. [Overview](Documentation/lessons/ui/overview.md)
+2. [The `UI` add-on](Documentation/lessons/ui/ui.md)
+3. [UI Widgets](Documentation/lessons/ui/widgets.md)
+
+## 15. Non-physics objects
+
+### 15.1 Non-physics humanoids
 
 1. [Overview](Documentation/lessons/non_physics_humanoids/overview.md)
 2. [SMPL humanoids](Documentation/lessons/non_physics_humanoids/smpl.md)
 3. [Create custom non-physics humanoids](Documentation/lessons/non_physics_humanoids/custom_humanoids.md)
 4. [Create custom humanoid animations](Documentation/lessons/non_physics_humanoids/custom_animations.md)
 
-### 14.2 Misc. non-physics objects
+### 15.2 Misc. non-physics objects
 
 1. [Overview](Documentation/lessons/non_physics/overview.md)
 2. [Position markers](Documentation/lessons/non_physics/position_markers.md)
 3. [Line renderers](Documentation/lessons/non_physics/line_renderers.md)
 4. [Textured quads](Documentation/lessons/non_physics/textured_quads.md)
-5. [User Interface (the `UI` add-on)](Documentation/lessons/non_physics/ui.md)
-6. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
-7. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
-8. [The `FloorplanFlood` add-on](Documentation/lessons/non_physics/floorplan_flood.md)
-9. [Empty objects](Documentation/lessons/non_physics/empty_objects.md)
+5. [Compass rose](Documentation/lessons/non_physics/compass_rose.md)
+6. [Visual Effects](Documentation/lessons/non_physics/visual_effects.md)
+7. [The `FloorplanFlood` add-on](Documentation/lessons/non_physics/floorplan_flood.md)
+8. [Empty objects](Documentation/lessons/non_physics/empty_objects.md)
 
-## 15. Misc. other topics
+## 16. Misc. other topics
 
 1. [C# source code](Documentation/lessons/misc/c_sharp_sources.md)
 2. [Freezing your code](Documentation/lessons/misc/freeze.md)
@@ -414,6 +419,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [VrayExporter](Documentation/python/add_ons/vray_exporter.md)
 - [WheelchairReplicant](Documentation/python/add_ons/wheelchair_replicant.md)
 - [Writer](Documentation/python/add_ons/writer.md)
+
+**tdw.add_ons.ui_widgets**
+
+- [LoadingScreen](Documentation/python/add_ons/ui_widgets/loading_screen.md)
+- [ProgressBar](Documentation/python/add_ons/ui_widgets/progress_bar.md)
+- [TimerBar](Documentation/python/add_ons/ui_widgets/timer_bar.md)
 
 **tdw.agent_data**
 

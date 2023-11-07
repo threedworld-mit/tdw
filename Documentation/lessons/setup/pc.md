@@ -2,7 +2,7 @@
 
 # Setup TDW on a PC (Linux, MacOS, Windows)
 
-*If you want to run a TDW Python controller on a local desktop and the build on a remote server, [read this instead](desktop_server.md).*
+*If you want to run a TDW Python controller on a local desktop and the build on a remote server, [read this instead](pc_server.md).*
 
 You can run TDW on a Linux, MacOS, or Windows person computer. If you have the required hardware, this is almost always easier to set up than a server; it is often useful to run TDW on a PC where it's easier to troubleshoot problems before moving it to a remote server. 
 

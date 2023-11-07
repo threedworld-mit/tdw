@@ -15,11 +15,8 @@ camera = ThirdPersonCamera(position={"x": 0, "y": 1.8, "z": 0})
 # Always add the loading screen last, so that it is destroyed at the right time.
 c.add_ons.extend([camera, loading_screen])
 
-# Create the loading screen before anything else.
-commands = loading_screen.get_add_loading_screen()
 # Create the scene.
-commands.append(Controller.get_add_scene(scene_name="mm_craftroom_1a"))
-c.communicate(commands)
+c.communicate(Controller.get_add_scene(scene_name="mm_craftroom_1a"))
 
 # Wait a few seconds to show that the scene has loaded and the screen has been destroyed.
 sleep(5)

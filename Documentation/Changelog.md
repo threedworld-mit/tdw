@@ -19,6 +19,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 - Added: `AddOn.get_early_initialization_commands()`. These commands are inserted before all others. Most add-ons shouldn't override this function; it's only useful for cases where the add-on *must* execute first, e.g. a loading screen.
 - Added new "UI Widgets", subclasses of `UI`, to `tdw.add_ons.ui_widgets`: `LoadingScreen`, `ProgressBar`, and `TimerBar`.
 - Moved `UI.add_loading_screen()` to the new `LoadingScreen` UI widget add-on.
+- Fixed: The argument parser in `Controller` allows ambiguous abbreviations.
 
 ### Documentation
 

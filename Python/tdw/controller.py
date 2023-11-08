@@ -568,10 +568,11 @@ class Controller:
         :param port: The socket port.
         """
 
-        parser = ArgumentParser()
+        parser = ArgumentParser(allow_abbrev=False)
         parser.add_argument("--flip_images", action="store_true")
         parser.add_argument("--force_glcore42", action="store_true")
         args, unknown = parser.parse_known_args()
+        print("ARGS", args, unknown)
         build_call = [str(BUILD_PATH.resolve()), "-port " + str(port)]
         if args.flip_images:
             build_call.append("-flip_images")

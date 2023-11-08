@@ -240,7 +240,7 @@ Result:
 
 ***
 
-**Next: [UI Widgets](widgets.md)**
+**This is the last document in the "UI" tutorial.**
 
 [Return to the README](../../../README.md)
 

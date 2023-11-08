@@ -568,7 +568,7 @@ class Controller:
         :param port: The socket port.
         """
 
-        parser = ArgumentParser()
+        parser = ArgumentParser(allow_abbrev=False)
         parser.add_argument("--flip_images", action="store_true")
         parser.add_argument("--force_glcore42", action="store_true")
         args, unknown = parser.parse_known_args()

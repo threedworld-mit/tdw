@@ -65,6 +65,18 @@ This is called within `Controller.communicate(commands)` before sending commands
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
+#### get_early_initialization_commands
+
+**`self.get_early_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+These commands are added to the list being sent on `communicate()` *before* any other commands, including those added by the user and by other add-ons.
+
+Usually, you shouldn't override this function. It is useful for a small number of add-ons, such as loading screens, which should initialize before anything else.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
 #### add_text
 
 **`self.add_text(text, font_size, position)`**
@@ -178,19 +190,3 @@ Destroy all UI elements.
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | destroy_canvas |  bool  | False | If True, destroy the UI canvas and all of its UI elements. If False, destroy the canvas' UI elements but not the canvas itself. |
-
-#### add_loading_screen
-
-**`self.add_loading_screen()`**
-
-**`self.add_loading_screen(text="Loading...", text_size=64)`**
-
-A macro for adding a simple load screen. Combines `self.add_image()` (adds a black background) and `self.add_text()` (adds a loading message).
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| text |  str  | "Loading..." | The loading message text. |
-| text_size |  int  | 64 | The font size of the loading message text. |
-
-_Returns:_  Tuple: The ID of the background image, the ID of the text.

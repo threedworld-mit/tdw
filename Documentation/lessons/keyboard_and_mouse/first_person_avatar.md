@@ -84,7 +84,7 @@ Call `first_person_avatar.reset(position, rotation, field_of_view)` to reset the
 
 `FirstPersonAvatar` sends [`send_avatars`](../../api/command_api.md#send_avatars), [`send_mouse`](../../api/command_api.md#send_mouse), and [`send_mouse_raycast`](../../api/command_api.md#send_mouse_raycast) to receive [`AvatarKinematic`](../../api/output_data.md#AvatarKinematic), [`Mouse`](../../api/output_data.md#Mouse), and [`Raycast`](../../api/output_data.md#Raycast) output data. `AvatarKinematic` sets `self.transform`. `Mouse` and `Raycast` set [mouse-related fields](mouse.md).
 
-The reticule at the center of the screen is generated at runtime using numpy and PIL. It is added as a [UI element](../non_physics/ui.md) via the commands [`add_ui_canvas`](../../api/command_api.md#add_ui_canvas), [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar), and [`add_ui_image`](../../api/command_api.md#add_ui_image).
+The reticule at the center of the screen is generated at runtime using numpy and PIL. It is added as a [UI element](../ui/ui.md) via the commands [`add_ui_canvas`](../../api/command_api.md#add_ui_canvas), [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar), and [`add_ui_image`](../../api/command_api.md#add_ui_image).
 
 ***
 

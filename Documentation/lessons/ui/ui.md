@@ -60,7 +60,7 @@ In practice, the only reason to add multiple UI canvases is if there are multipl
 
 By default, a canvas is in "overlay" mode. It is rendered separately from TDW's camera passes. In order for the canvas to actually appear in [image output data](../core_concepts/images.md) it must be "attached" to an avatar. To do this, create an avatar (i.e. `ThirdPersonCamera`) and then call `ui.attach_canvas_to_avatar(avatar_id)`. This function automatically sends [`attach_ui_canvas_to_avatar`](../../api/command_api.md#attach_ui_canvas_to_avatar).
 
-`ui.attach_canvas_to_avatar()` also has an additional optional parameter `focus_distance`. This should be set to the default (2.5) or higher, otherwise the UI will look blurry.
+`ui.attach_canvas_to_avatar()` also has an additional optional parameter `focus_distance`. This should be set to the default (2.5) or higher, otherwise the UI will look blurry. This is mostly important for VR, where it is possible that the ideal focus distance might differ between headsets.
 
 For [VR rigs](../vr/overview.md), call `ui.attach_canvas_to_vr_rig()` instead of `ui.attach_canvas_to_avatar()`.
 

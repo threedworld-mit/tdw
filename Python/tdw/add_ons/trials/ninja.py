@@ -75,13 +75,13 @@ class Ninja(Trial):
         super().__init__()
         self.delay_at_start: float = delay_at_start
         if scene_names is None:
-            self.scene_names: List[str] = Ninja.DEFAULT_SCENES_NAMES[:]
+            self._scene_names: List[str] = Ninja.DEFAULT_SCENES_NAMES[:]
         else:
-            self.scene_names = scene_names[:]
+            self._scene_names = scene_names[:]
         if model_names is None:
-            self.model_names = Ninja.DEFAULT_MODEL_NAMES[:]
+            self._model_names = Ninja.DEFAULT_MODEL_NAMES[:]
         else:
-            self.model_names = model_names[:]
+            self._model_names = model_names[:]
 
         # Set a random target object.
         if target_object_names is None:
@@ -111,7 +111,7 @@ class Ninja(Trial):
 
     def _get_trial_initialization_commands(self) -> List[dict]:
         # Add the scene. Set gravity.
-        commands = [Controller.get_add_scene(scene_name=self.scene_names[np.random.randint(0, len(self.scene_names))]),
+        commands = [Controller.get_add_scene(scene_name=self._scene_names[np.random.randint(0, len(self._scene_names))]),
                     {"$type": "set_gravity_vector",
                      "gravity": {"x": 0, "y": self._gravity, "z": 0}}]
         # Add the avatar.
@@ -127,7 +127,7 @@ class Ninja(Trial):
         num_objects: int = int(np.random.randint(self._num_objects_range[0], self._num_objects_range[1]))
         for i in range(num_objects):
             object_id = self._add_object(commands=commands,
-                                         name=self.model_names[np.random.randint(0, len(self.model_names))],
+                                         name=self._model_names[np.random.randint(0, len(self._model_names))],
                                          positions=positions,
                                          object_id=object_id)
         # Send avatar data for only this frame. Send transforms data per-frame.

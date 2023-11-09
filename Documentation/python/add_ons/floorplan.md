@@ -66,6 +66,18 @@ This is called within `Controller.communicate(commands)` before sending commands
 | --- | --- | --- | --- |
 | commands |  List[dict] |  | The commands that are about to be sent to the build. |
 
+#### get_early_initialization_commands
+
+**`self.get_early_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+These commands are added to the list being sent on `communicate()` *before* any other commands, including those added by the user and by other add-ons.
+
+Usually, you shouldn't override this function. It is useful for a small number of add-ons, such as loading screens, which should initialize before anything else.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
 #### init_scene
 
 **`self.init_scene(scene, layout)`**

@@ -164,7 +164,6 @@ class Ninja(Trial):
         The object's physics values, scale, and speed are random within a range.
         The object's rotation is random.
 
-
         :param commands: The list of commands.
         :param name: The name of the model.
         :param positions: The positions of the models that we've already added. This will be added to.

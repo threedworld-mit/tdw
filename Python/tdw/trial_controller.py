@@ -79,7 +79,7 @@ class TrialController(Controller):
             self.communicate([])
         if quit_on_end:
             self.communicate({"$type": "terminate"})
-        
+
     @staticmethod
     def get_default_trial_types() -> List[str]:
         imports = list()
@@ -94,7 +94,6 @@ class TrialController(Controller):
                 if klass.__base__.__name__ == "Trial":
                     imports.append(f.stem)
         return imports
-
 
     @staticmethod
     def __snake_case_to_camel_case(snake_case: str) -> str:

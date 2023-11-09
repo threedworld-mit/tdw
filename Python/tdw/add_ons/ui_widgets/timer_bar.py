@@ -31,19 +31,22 @@ class TimerBar(ProgressBar):
                          position=position, canvas_id=canvas_id)
         self._total_time: float = total_time
         self._start_time: float = 0
-        self._started: bool = False
+        """:field
+        If True, the timer has started.
+        """
+        self.started: bool = False
 
     def start(self) -> None:
         """
         Start the timer.
         """
 
-        self._started = True
+        self.started = True
         self._start_time = time()
 
     def on_send(self, resp: List[bytes]) -> None:
         # Don't do anything until the timer has been started by calling `self.start()`.
-        if not self._started:
+        if not self.started:
             return
         # Get the elapsed time since start.
         dt = time() - self._start_time

@@ -34,6 +34,27 @@ class Update:
         return versions[-1]
 
     @staticmethod
+    def check_for_pypi_update() -> bool:
+        """
+        Check for updates on PyPi.
+
+        :return: True if an update is available.
+        """
+
+        pypi_version: Version = parse(Update.get_pypi_version())
+
+        # Get the local version.
+        local_version: Version = parse(__version__)
+
+        if local_version < pypi_version:
+            print(f"You are using TDW {local_version} but version {pypi_version} is available.\n"
+                  f"Consider upgrading:\npip3 install tdw -U")
+            return True
+        else:
+            print("Your installed tdw Python module is up to date with PyPi.")
+            return False
+
+    @staticmethod
     def check_for_update(download_build: bool) -> bool:
         """
         Get the latest version of TDW on PyPi and compare it to the locally installed version.
@@ -47,23 +68,14 @@ class Update:
         :return: True if it is possible to launch the build.
         """
 
-        pypi_version: Version = parse(Update.get_pypi_version())
-
-        # Get the local version.
-        local_version: Version = parse(__version__)
-
-        if local_version < pypi_version:
-            print(f"You are using TDW {local_version} but version {pypi_version} is available.\n"
-                  f"Consider upgrading:\npip3 install tdw -U")
-        else:
-            print("Your installed tdw Python module is up to date with PyPi.")
+        Update.check_for_pypi_update()
 
         if not download_build:
             return False
 
         # Check if the build needs to be updated.
         need_to_download = False
-        local_py_release_version: Version = parse(".".join([str(q) for q in local_version.release[:-1]]))
+        local_py_release_version: Version = parse(".".join([str(q) for q in parse(__version__).release[:-1]]))
         if not BUILD_PATH.exists():
             print(f"Couldn't find build at {BUILD_PATH}\nDownloading now...")
             need_to_download = True

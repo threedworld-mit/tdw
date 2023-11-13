@@ -106,30 +106,7 @@ class Controller:
 
         if isinstance(commands, dict):
             commands = [commands]
-
-        # Append commands from each add-on.
-        for m in self.add_ons:
-            # Initialize an add-on.
-            if not m.initialized:
-                # Insert initialization commands at the start of the list (this is rarely used).
-                early_initialization_commands = m.get_early_initialization_commands()
-                early_initialization_commands.reverse()
-                for early_command in early_initialization_commands:
-                    commands.insert(0, early_command)
-                # Append initialization commands to the end of the list.
-                commands.extend(m.get_initialization_commands())
-                # Mark the add-on as initialized.
-                m.initialized = True
-            # Append the add-on's commands.
-            else:
-                commands.extend(m.commands)
-                m.commands.clear()
-        # Possibly do something with the commands about to be sent.
-        for m in self.add_ons:
-            m.before_send(commands)
-
-        # Serialize the message.
-        msg = [json.dumps(commands).encode('utf-8')]
+        msg = [Controller.commands_to_bytes(commands=commands, add_ons=self.add_ons)]
         # Send the commands.
         self.socket.send_multipart(msg)
         # Receive output data.
@@ -172,6 +149,32 @@ class Controller:
 
         # Return the output data from the build.
         return resp
+
+    @staticmethod
+    def commands_to_bytes(commands: List[dict], add_ons: List[AddOn]) -> bytes:
+        # Append commands from each add-on.
+        for m in add_ons:
+            # Initialize an add-on.
+            if not m.initialized:
+                # Insert initialization commands at the start of the list (this is rarely used).
+                early_initialization_commands = m.get_early_initialization_commands()
+                early_initialization_commands.reverse()
+                for early_command in early_initialization_commands:
+                    commands.insert(0, early_command)
+                # Append initialization commands to the end of the list.
+                commands.extend(m.get_initialization_commands())
+                # Mark the add-on as initialized.
+                m.initialized = True
+            # Append the add-on's commands.
+            else:
+                commands.extend(m.commands)
+                m.commands.clear()
+        # Possibly do something with the commands about to be sent.
+        for m in add_ons:
+            m.before_send(commands)
+
+        # Serialize the message.
+        return json.dumps(commands).encode('utf-8')
 
     @staticmethod
     def get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:

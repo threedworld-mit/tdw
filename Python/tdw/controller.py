@@ -106,7 +106,7 @@ class Controller:
 
         if isinstance(commands, dict):
             commands = [commands]
-        msg = [Controller.commands_to_bytes(commands=commands, add_ons=self.add_ons)]
+        msg = [Controller.commands_to_string(commands=commands, add_ons=self.add_ons).encode('utf-8')]
         # Send the commands.
         self.socket.send_multipart(msg)
         # Receive output data.
@@ -151,7 +151,7 @@ class Controller:
         return resp
 
     @staticmethod
-    def commands_to_bytes(commands: List[dict], add_ons: List[AddOn]) -> bytes:
+    def commands_to_string(commands: List[dict], add_ons: List[AddOn]) -> str:
         # Append commands from each add-on.
         for m in add_ons:
             # Initialize an add-on.
@@ -174,7 +174,7 @@ class Controller:
             m.before_send(commands)
 
         # Serialize the message.
-        return json.dumps(commands).encode('utf-8')
+        return json.dumps(commands)
 
     @staticmethod
     def get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:

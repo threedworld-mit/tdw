@@ -33,8 +33,8 @@ class WebGLController(ABC):
         :param websocket: The WebSocket.
         """
 
-        # Inject commands from add-ons. Convert the commands to a byte array. Send the byte array.
-        await websocket.send(Controller.commands_to_bytes(commands=self._commands, add_ons=self.add_ons))
+        # Inject commands from add-ons. Convert the commands to a JSON string. Send the string.
+        await websocket.send(Controller.commands_to_string(commands=self._commands, add_ons=self.add_ons))
         self._commands.clear()
 
         # Receive output data.
@@ -73,7 +73,8 @@ class WebGLController(ABC):
         Run the server.
         """
 
-        async with serve(self.communicate, "", self._port):
+        async with serve(self.communicate, "", self._port,
+                         extra_headers={"Access-Control-Allow-Origin": "true"}):
             await asyncio.Future()
 
     @abstractmethod

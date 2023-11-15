@@ -10,7 +10,20 @@ from tdw.backend.update import Update
 
 
 class WebGLController(ABC):
+    """
+    A WebGL-compatible controller. Always use this class or a subclass of it with WebGL builds instead of `Controller`.
+
+    This is an abstract class. To use `WebGLController`, create a subclass and override `self.on_communicate(resp)`.
+    """
+
     def __init__(self, port: int = 1071, check_version: bool = True):
+        """
+        Create the network socket and bind the socket to the port.
+
+        :param port: The port number.
+        :param check_version: If True, check if an update is available on PyPi and print the result.
+        """
+
         if check_version:
             if Update.check_for_pypi_update():
                 print("Be sure to also update any hosted WebGL builds to the latest version.")
@@ -28,7 +41,7 @@ class WebGLController(ABC):
     @final
     async def communicate(self, websocket: WebSocketServerProtocol) -> None:
         """
-        Send commands to the WebGL build. Receive output data (`resp`). Invoke `self.on_communicate(resp)`.
+        Send commands to the WebGL build. Receive output data. Invoke `self.on_communicate(resp)`.
 
         :param websocket: The WebSocket.
         """
@@ -70,7 +83,7 @@ class WebGLController(ABC):
     @final
     async def main(self) -> None:
         """
-        Run the server.
+        Run the WebGLController until the process is killed.
         """
 
         async with serve(self.communicate, "", self._port,

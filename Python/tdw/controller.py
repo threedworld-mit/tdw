@@ -561,7 +561,7 @@ class Controller:
         :return The frame as an integer.
         """
 
-        return int.from_bytes(frame, byteorder='little')
+        return int.from_bytes(frame, byteorder='big')
 
     @staticmethod
     def launch_build(port: int = 1071) -> None:

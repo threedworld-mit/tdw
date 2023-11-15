@@ -18,8 +18,6 @@ class WebGLController(ABC):
 
     def __init__(self, port: int = 1071, check_version: bool = True):
         """
-        Create the network socket and bind the socket to the port.
-
         :param port: The port number.
         :param check_version: If True, check if an update is available on PyPi and print the result.
         """

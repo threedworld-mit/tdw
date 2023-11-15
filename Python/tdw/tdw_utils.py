@@ -15,6 +15,7 @@ from tdw.librarian import ModelRecord, ModelLibrarian, SceneLibrarian, MaterialL
     RobotLibrarian, HumanoidLibrarian, HumanoidAnimationLibrarian
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
+from tdw.type_aliases import PATH
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
@@ -1011,7 +1012,7 @@ class TDWUtils:
                 "y": monitor.y + monitor.height // 2 - window_height // 2 + title_bar_height}
 
     @staticmethod
-    def get_path(path: Union[str, Path]) -> Path:
+    def get_path(path: PATH) -> Path:
         """
         :param path: A path as either a string or a `Path`.
 
@@ -1026,7 +1027,7 @@ class TDWUtils:
             raise Exception(path)
 
     @staticmethod
-    def get_string_path(path: Union[str, Path]) -> str:
+    def get_string_path(path: PATH) -> str:
         """
         :param path: A path as either a string or a `Path`.
 

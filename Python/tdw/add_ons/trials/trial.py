@@ -15,7 +15,7 @@ class Trial(AddOn, ABC):
         """:field
         The current state of this trial.
         """
-        self.status: TrialStatus = TrialStatus.running
+        self.status: TrialStatus = TrialStatus.uninitialized
 
     @final
     def get_initialization_commands(self) -> List[dict]:

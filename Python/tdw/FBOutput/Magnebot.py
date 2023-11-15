@@ -80,11 +80,35 @@ class Magnebot(object):
             return obj
         return None
 
-def MagnebotStart(builder): builder.StartObject(4)
+    # Magnebot
+    def WheelAccelerations(self, j):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Magnebot
+    def WheelAccelerationsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Float32Flags, o)
+        return 0
+
+    # Magnebot
+    def WheelAccelerationsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+def MagnebotStart(builder): builder.StartObject(5)
 def MagnebotAddId(builder, id): builder.PrependInt32Slot(0, id, 0)
 def MagnebotAddHeldLeft(builder, heldLeft): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldLeft), 0)
 def MagnebotStartHeldLeftVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def MagnebotAddHeldRight(builder, heldRight): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(heldRight), 0)
 def MagnebotStartHeldRightVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def MagnebotAddTop(builder, top): builder.PrependStructSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(top), 0)
+def MagnebotAddWheelAccelerations(builder, wheelAccelerations): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(wheelAccelerations), 0)
+def MagnebotStartWheelAccelerationsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def MagnebotEnd(builder): return builder.EndObject()

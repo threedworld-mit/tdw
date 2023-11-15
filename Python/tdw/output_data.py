@@ -1067,6 +1067,10 @@ class ScreenPosition(OutputData):
 
 
 class Magnebot(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._wheel_accelerations: np.ndarray = self.data.WheelAccelerationsAsNumpy()
+
     def get_data(self) -> Mag.Magnebot:
         return Mag.Magnebot.GetRootAsMagnebot(self.bytes, 0)
 
@@ -1081,6 +1085,9 @@ class Magnebot(OutputData):
 
     def get_top(self) -> Tuple[float, float, float]:
         return OutputData._get_xyz(self.data.Top())
+
+    def get_wheel_acceleration(self, index: int) -> float:
+        return float(self._wheel_accelerations[index])
 
 
 class TriggerCollision(OutputData):

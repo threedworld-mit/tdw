@@ -10,6 +10,8 @@ The timer won't start until you call `start()`.
 
 ## Fields
 
+- `started` If True, the timer has started.
+
 - `done` If True, the progress bar is at its final value (1 if incrementing, 0 if decrementing).
 
 ***

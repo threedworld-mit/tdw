@@ -14,10 +14,12 @@ But if the add-on is last in `c.add_ons` it will be removed after all other init
 
 **`LoadingScreen()`**
 
-**`LoadingScreen(canvas_id=0, text="Loading...", text_size=64)`**
+**`LoadingScreen(canvas_id=0, loading_text="Loading...", loading_text_size=64, instructions_text=None, instructions_text_size=36)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | canvas_id |  int  | 0 | The ID of the UI canvas. |
-| text |  str  | "Loading..." | The loading message text. |
-| text_size |  int  | 64 | The font size of the loading message text. |
+| loading_text |  str  | "Loading..." | The loading message text. |
+| loading_text_size |  int  | 64 | The font size of the loading message text. |
+| instructions_text |  str  | None | The instructions text subtitle. Can be None. |
+| instructions_text_size |  int  | 36 | The size of the instructions text (if there is any). |

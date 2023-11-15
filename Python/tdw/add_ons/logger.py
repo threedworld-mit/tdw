@@ -1,12 +1,8 @@
-from io import BytesIO
-from zipfile import ZipFile
 from pathlib import Path
 from typing import List, Union
 from json import dumps
 from tdw.output_data import OutputData, LogMessage
 from tdw.add_ons.add_on import AddOn
-from tdw.controller import Controller
-from tdw.tdw_utils import TDWUtils
 
 
 class Logger(AddOn):
@@ -28,13 +24,11 @@ class Logger(AddOn):
     The log file can be automatically re-loaded into another controller using the [`LogPlayback`](log_playback.md) add-on.
     """
 
-    def __init__(self, path: Union[str, Path], overwrite: bool = True, log_commands_in_build: bool = False,
-                 output_data: bool = False):
+    def __init__(self, path: Union[str, Path], overwrite: bool = True, log_commands_in_build: bool = False):
         """
         :param path: The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param overwrite: If True and a log file already exists at `path`, overwrite the file.
         :param log_commands_in_build: If True, the build will log every message received and every command executed in the [Player log](https://docs.unity3d.com/Manual/LogFiles.html).
-        :param output_data: If True, write output data to disk.
         """
 
         super().__init__()
@@ -50,22 +44,8 @@ class Logger(AddOn):
         # Remove an existing log file.
         if overwrite and self._path.exists():
             self._path.unlink()
-        self._output_data: bool = output_data
-        # Create the output data directory.
-        self._output_data_directory: Path = self._path.parent.joinpath(self._path.stem + "_output_data")
-        if self._output_data and not self._output_data_directory.exists():
-            self._output_data_directory.mkdir(parents=True)
 
     def on_send(self, resp: List[bytes]) -> None:
-        # Zip the data and write to disk.
-        if self._output_data:
-            zip_buffer: BytesIO = BytesIO()
-            with ZipFile(zip_buffer, "w") as z:
-                # Write each output data array as a separate file.
-                for i in range(len(resp) - 1):
-                    z.writestr(OutputData.get_data_type_id(resp[i]), resp[i])
-            # Write to disk.
-            self._output_data_directory.joinpath(f"{TDWUtils.zero_padding(Controller.get_frame(resp[-1]), 8)}.zip").write_bytes(zip_buffer.getvalue())
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             # Print a log message.

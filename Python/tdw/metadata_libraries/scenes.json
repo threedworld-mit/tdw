@@ -1,2430 +1,2478 @@
 {
-    "description": "Streamed scenes.",
-    "records": {
-        "archviz_house": {
-            "description": "A very fancy room.",
-            "hdri": true,
-            "location": "interior",
-            "name": "archviz_house",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/archviz_house",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/archviz_house",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/archviz_house"
-            }
-        },
-        "box_room_2018": {
-            "description": "A very simple room with skylights.",
-            "hdri": true,
-            "location": "interior",
-            "name": "box_room_2018",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -0.01750469207763672,
-                            0,
-                            0.0
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 0,
-                        "walls_with_windows": 5
-                    }
-                }
+  "description": "Streamed scenes.",
+  "records": {
+    "archviz_house": {
+      "description": "A very fancy room.",
+      "hdri": true,
+      "location": "interior",
+      "name": "archviz_house",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/archviz_house",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/archviz_house",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/archviz_house"
+      }
+    },
+    "box_room_2018": {
+      "description": "A very simple room with skylights.",
+      "hdri": true,
+      "location": "interior",
+      "name": "box_room_2018",
+      "post_exposure": 0.5,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
             ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/box_room_2018",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/box_room_2018",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/box_room_2018"
-            }
-        },
-        "box_room_4x5": {
-            "description": "A 4x5 grid of box_room_2018",
-            "hdri": true,
-            "location": "interior",
-            "name": "box_room_4x5",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            25.982494354248047,
-                            0,
-                            -4.535386085510254
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 19,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            25.982494354248047,
-                            0,
-                            4.464613914489746
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 18,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926301002502441
-                        ],
-                        "center": [
-                            -13.017504692077637,
-                            0,
-                            13.464614868164062
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 17,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -0.01750469207763672,
-                            0,
-                            -4.535386085510254
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 16,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926299095153809
-                        ],
-                        "center": [
-                            12.982495307922363,
-                            0,
-                            -13.535385131835938
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 15,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -26.017505645751953,
-                            0,
-                            -4.535386085510254
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 14,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926299095153809
-                        ],
-                        "center": [
-                            -0.01750469207763672,
-                            0,
-                            -13.535385131835938
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 13,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            12.982495307922363,
-                            0,
-                            4.464613914489746
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 12,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926299095153809
-                        ],
-                        "center": [
-                            25.982494354248047,
-                            0,
-                            -13.535385131835938
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 11,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -13.017504692077637,
-                            0,
-                            4.464613914489746
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 10,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -0.01750469207763672,
-                            0,
-                            4.464613914489746
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 9,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926299095153809
-                        ],
-                        "center": [
-                            -13.017504692077637,
-                            0,
-                            -13.535385131835938
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 8,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            12.982495307922363,
-                            0,
-                            -4.535386085510254
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 7,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926301002502441
-                        ],
-                        "center": [
-                            -0.01750469207763672,
-                            0,
-                            13.464614868164062
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 6,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926301002502441
-                        ],
-                        "center": [
-                            12.982495307922363,
-                            0,
-                            13.464614868164062
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 5,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926301002502441
-                        ],
-                        "center": [
-                            -26.017505645751953,
-                            0,
-                            13.464614868164062
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 4,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926301002502441
-                        ],
-                        "center": [
-                            25.982494354248047,
-                            0,
-                            13.464614868164062
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 3,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926299095153809
-                        ],
-                        "center": [
-                            -26.017505645751953,
-                            0,
-                            -13.535385131835938
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 2,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017499923706055,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -13.017504692077637,
-                            0,
-                            -4.535386085510254
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 1,
-                        "walls_with_windows": 5
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            12.017501831054688,
-                            3.9643332958221436,
-                            7.926300048828125
-                        ],
-                        "center": [
-                            -26.017505645751953,
-                            0,
-                            4.464613914489746
-                        ],
-                        "non_continuous_walls": 0,
-                        "region_id": 0,
-                        "walls_with_windows": 5
-                    }
-                }
+            "center": [
+              -0.01750469207763672,
+              0,
+              0.0
             ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/box_room_4x5",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/box_room_4x5",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/box_room_4x5"
-            }
-        },
-        "building_site": {
-            "description": "\"An derelict building site \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "building_site",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/building_site",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/building_site",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/building_site"
-            }
-        },
-        "dead_grotto": {
-            "description": "An barren exterior space; rocky with tree stumps, logs, water puddles and some ruins.",
-            "hdri": true,
-            "location": "exterior",
-            "name": "dead_grotto",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/dead_grotto",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/dead_grotto",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/dead_grotto"
-            }
-        },
-        "downtown_alleys": {
-            "description": "An urban downtown environment with alleys.",
-            "hdri": false,
-            "location": "exterior",
-            "name": "downtown_alleys",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/downtown_alleys",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/downtown_alleys",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/downtown_alleys"
-            }
-        },
-        "empty_scene": {
-            "description": "\"ModelScreenShotter scene \"\"mini-scene\"\".\"",
-            "hdri": false,
-            "location": "interior",
-            "name": "empty_scene",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/empty_scene",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/empty_scene",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/empty_scene"
-            }
-        },
-        "floorplan_1a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_1a",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1a"
-            }
-        },
-        "floorplan_1b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_1b",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1b"
-            }
-        },
-        "floorplan_1c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_1c",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1c"
-            }
-        },
-        "floorplan_2a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_2a",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2a"
-            }
-        },
-        "floorplan_2b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_2b",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2b"
-            }
-        },
-        "floorplan_2c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_2c",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2c"
-            }
-        },
-        "floorplan_4a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_4a",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4a"
-            }
-        },
-        "floorplan_4b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_4b",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4b"
-            }
-        },
-        "floorplan_4c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_4c",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4c"
-            }
-        },
-        "floorplan_5a": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_5a",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5a"
-            }
-        },
-        "floorplan_5b": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_5b",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5b"
-            }
-        },
-        "floorplan_5c": {
-            "description": "An multi-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "floorplan_5c",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5c",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5c",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5c"
-            }
-        },
-        "iceland_beach": {
-            "description": "\"A rocky beach surrounded by rocks\"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "iceland_beach",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/iceland_beach",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/iceland_beach",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/iceland_beach"
-            }
-        },
-        "lava_field": {
-            "description": "\"A barren volcanic landscape \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "lava_field",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/lava_field",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/lava_field",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
-            }
-        },
-        "mm_craftroom_1a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_1a",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4903459548950195,
-                                2.892470359802246,
-                                3.3942010402679443
-                            ],
-                            "center": [
-                                2.938474178314209,
-                                0,
-                                -0.029111266136169434
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 0,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.191462516784668,
-                            2.892470359802246,
-                            6.891343355178833
-                        ],
-                        "center": [
-                            -0.4206228256225586,
-                            0,
-                            -0.002591252326965332
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 1,
-                        "walls_with_windows": 4
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1a"
-            }
-        },
-        "mm_craftroom_1b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_1b",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4903459548950195,
-                                2.892470359802246,
-                                3.3942010402679443
-                            ],
-                            "center": [
-                                2.938474178314209,
-                                0,
-                                -0.029111266136169434
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 0,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.191462516784668,
-                            2.892470359802246,
-                            6.891343355178833
-                        ],
-                        "center": [
-                            -0.4206228256225586,
-                            0,
-                            -0.002591252326965332
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 1,
-                        "walls_with_windows": 4
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1b"
-            }
-        },
-        "mm_craftroom_2a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_2a",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            4.7169129848480225,
-                            2.892470359802246,
-                            5.927810192108154
-                        ],
-                        "center": [
-                            -1.1920928955078125e-07,
-                            0,
-                            -0.008186578750610352
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2a"
-            }
-        },
-        "mm_craftroom_2b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_2b",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            4.7169129848480225,
-                            2.892470359802246,
-                            5.927810192108154
-                        ],
-                        "center": [
-                            -1.1920928955078125e-07,
-                            0,
-                            -0.008186578750610352
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2b"
-            }
-        },
-        "mm_craftroom_3a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_3a",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            3.307473659515381,
-                            2.892470359802246,
-                            6.903393745422363
-                        ],
-                        "center": [
-                            -0.0024938583374023438,
-                            0,
-                            -0.005679130554199219
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3a"
-            }
-        },
-        "mm_craftroom_3b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_3b",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            3.307473659515381,
-                            2.892470359802246,
-                            6.903393745422363
-                        ],
-                        "center": [
-                            -0.0024938583374023438,
-                            0,
-                            -0.005679130554199219
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3b"
-            }
-        },
-        "mm_craftroom_4a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_4a",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                6.699999570846558,
-                                2.892470359802246,
-                                2.153679847717285
-                            ],
-                            "center": [
-                                1.1920928955078125e-07,
-                                0,
-                                2.3008899688720703
-                            ],
-                            "non_continuous_walls": 5,
-                            "region_id": 0,
-                            "walls_with_windows": 0
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            3.6999998092651367,
-                            2.892470359802246,
-                            4.576668739318848
-                        ],
-                        "center": [
-                            1.1920928955078125e-07,
-                            0,
-                            -1.0616655349731445
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 1,
-                        "walls_with_windows": 14
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4a"
-            }
-        },
-        "mm_craftroom_4b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_craftroom_4b",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                6.699999570846558,
-                                2.892470359802246,
-                                2.153679847717285
-                            ],
-                            "center": [
-                                1.1920928955078125e-07,
-                                0,
-                                2.3008899688720703
-                            ],
-                            "non_continuous_walls": 5,
-                            "region_id": 0,
-                            "walls_with_windows": 0
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            3.6999998092651367,
-                            2.892470359802246,
-                            4.576668739318848
-                        ],
-                        "center": [
-                            1.1920928955078125e-07,
-                            0,
-                            -1.0616655349731445
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 1,
-                        "walls_with_windows": 14
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4b"
-            }
-        },
-        "mm_kitchen_1a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_1a",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4903459548950195,
-                                2.892470359802246,
-                                3.3942010402679443
-                            ],
-                            "center": [
-                                2.938474178314209,
-                                0,
-                                -0.029111266136169434
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 0,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.191462516784668,
-                            2.892470359802246,
-                            6.891343355178833
-                        ],
-                        "center": [
-                            -0.4206228256225586,
-                            0,
-                            -0.002591252326965332
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 1,
-                        "walls_with_windows": 4
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1a"
-            }
-        },
-        "mm_kitchen_1b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_1b",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4903459548950195,
-                                2.892470359802246,
-                                3.3942010402679443
-                            ],
-                            "center": [
-                                2.938474178314209,
-                                0,
-                                -0.029111266136169434
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 0,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.191462516784668,
-                            2.892470359802246,
-                            6.891343355178833
-                        ],
-                        "center": [
-                            -0.4206228256225586,
-                            0,
-                            -0.002591252326965332
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 1,
-                        "walls_with_windows": 4
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
-            }
-        },
-        "mm_kitchen_1b_4x5": {
-            "description": "A 4x5 grid (20 copies) of the mm_kitchen_1b scene.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_1b_4x5",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703888893127441,
-                                2.892470359802246,
-                                3.3838541507720947
-                            ],
-                            "center": [
-                                2.9284956455230713,
-                                0,
-                                -4.029148101806641
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 36,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176653861999512,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            -0.41321849822998047,
-                            0,
-                            -4.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 39,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                -5.071504592895508,
-                                0,
-                                11.97085189819336
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 7,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            -8.41321849822998,
-                            0,
-                            11.980005264282227
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 35,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703903198242188,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                18.928495407104492,
-                                0,
-                                11.97085189819336
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 21,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176652908325195,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            15.58678150177002,
-                            0,
-                            11.980005264282227
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 30,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                10.928495407104492,
-                                0,
-                                -12.02914810180664
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 32,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            7.5867815017700195,
-                            0,
-                            -12.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 29,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838541507720947
-                            ],
-                            "center": [
-                                -5.071504592895508,
-                                0,
-                                -4.029148101806641
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 38,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            -8.41321849822998,
-                            0,
-                            -4.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 28,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                10.928495407104492,
-                                0,
-                                11.97085189819336
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 20,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            7.5867815017700195,
-                            0,
-                            11.980005264282227
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 26,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703903198242188,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                18.928495407104492,
-                                0,
-                                -12.02914810180664
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 12,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176652908325195,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            15.58678150177002,
-                            0,
-                            -12.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 22,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703888893127441,
-                                2.892470359802246,
-                                3.383854389190674
-                            ],
-                            "center": [
-                                2.9284956455230713,
-                                0,
-                                3.9708516597747803
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 37,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176653861999512,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            -0.41321849822998047,
-                            0,
-                            3.9800052642822266
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 19,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                -13.071504592895508,
-                                0,
-                                11.97085189819336
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 31,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176654815673828,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            -16.413219451904297,
-                            0,
-                            11.980005264282227
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 16,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.383854389190674
-                            ],
-                            "center": [
-                                -5.071504592895508,
-                                0,
-                                3.9708516597747803
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 18,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            -8.41321849822998,
-                            0,
-                            3.9800052642822266
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 15,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838541507720947
-                            ],
-                            "center": [
-                                10.928495407104492,
-                                0,
-                                -4.029148101806641
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 3,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            7.5867815017700195,
-                            0,
-                            -4.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 14,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                -13.071504592895508,
-                                0,
-                                -12.02914810180664
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 27,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176654815673828,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            -16.413219451904297,
-                            0,
-                            -12.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 13,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838541507720947
-                            ],
-                            "center": [
-                                -13.071504592895508,
-                                0,
-                                -4.029148101806641
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 2,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176654815673828,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            -16.413219451904297,
-                            0,
-                            -4.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 11,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.383854389190674
-                            ],
-                            "center": [
-                                10.928495407104492,
-                                0,
-                                3.9708516597747803
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 34,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            7.5867815017700195,
-                            0,
-                            3.9800052642822266
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 10,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.383854389190674
-                            ],
-                            "center": [
-                                -13.071504592895508,
-                                0,
-                                3.9708516597747803
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 6,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176654815673828,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            -16.413219451904297,
-                            0,
-                            3.9800052642822266
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 9,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.470388412475586,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                -5.071504592895508,
-                                0,
-                                -12.02914810180664
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 23,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.1766533851623535,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            -8.41321849822998,
-                            0,
-                            -12.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 8,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703903198242188,
-                                2.892470359802246,
-                                3.383854389190674
-                            ],
-                            "center": [
-                                18.928495407104492,
-                                0,
-                                3.9708516597747803
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 17,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176652908325195,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            15.58678150177002,
-                            0,
-                            3.9800052642822266
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 5,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703903198242188,
-                                2.892470359802246,
-                                3.3838541507720947
-                            ],
-                            "center": [
-                                18.928495407104492,
-                                0,
-                                -4.029148101806641
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 33,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176652908325195,
-                            2.892470359802246,
-                            6.926150321960449
-                        ],
-                        "center": [
-                            15.58678150177002,
-                            0,
-                            -4.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 4,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703888893127441,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                2.9284956455230713,
-                                0,
-                                11.97085189819336
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 25,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176653861999512,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            -0.41321849822998047,
-                            0,
-                            11.980005264282227
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 1,
-                        "walls_with_windows": 4
-                    }
-                },
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                1.4703888893127441,
-                                2.892470359802246,
-                                3.3838539123535156
-                            ],
-                            "center": [
-                                2.9284956455230713,
-                                0,
-                                -12.02914810180664
-                            ],
-                            "non_continuous_walls": 8,
-                            "region_id": 24,
-                            "walls_with_windows": 2
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            5.176653861999512,
-                            2.892470359802246,
-                            6.926151275634766
-                        ],
-                        "center": [
-                            -0.41321849822998047,
-                            0,
-                            -12.019994735717773
-                        ],
-                        "non_continuous_walls": 3,
-                        "region_id": 0,
-                        "walls_with_windows": 4
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/mm_kitchen_1b_4x5",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/mm_kitchen_1b_4x5",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/mm_kitchen_1b_4x5"
-            }
-        },
-        "mm_kitchen_2a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_2a",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            4.7169129848480225,
-                            2.892470359802246,
-                            5.927810192108154
-                        ],
-                        "center": [
-                            -1.1920928955078125e-07,
-                            0,
-                            -0.008186578750610352
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
-            }
-        },
-        "mm_kitchen_2b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_2b",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            4.7169129848480225,
-                            2.892470359802246,
-                            5.927810192108154
-                        ],
-                        "center": [
-                            -1.1920928955078125e-07,
-                            0,
-                            -0.008186578750610352
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
-            }
-        },
-        "mm_kitchen_3a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_3a",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            3.307473659515381,
-                            2.892470359802246,
-                            6.903393745422363
-                        ],
-                        "center": [
-                            -0.0024938583374023438,
-                            0,
-                            -0.005679130554199219
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
-            }
-        },
-        "mm_kitchen_3b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_3b",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            3.307473659515381,
-                            2.892470359802246,
-                            6.903393745422363
-                        ],
-                        "center": [
-                            -0.0024938583374023438,
-                            0,
-                            -0.005679130554199219
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 0,
-                        "walls_with_windows": 6
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
-            }
-        },
-        "mm_kitchen_4a": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_4a",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                6.699999570846558,
-                                2.892470359802246,
-                                2.153679847717285
-                            ],
-                            "center": [
-                                1.1920928955078125e-07,
-                                0,
-                                2.3008899688720703
-                            ],
-                            "non_continuous_walls": 5,
-                            "region_id": 0,
-                            "walls_with_windows": 0
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            3.6999998092651367,
-                            2.892470359802246,
-                            4.576668739318848
-                        ],
-                        "center": [
-                            1.1920928955078125e-07,
-                            0,
-                            -1.0616655349731445
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 1,
-                        "walls_with_windows": 14
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
-            }
-        },
-        "mm_kitchen_4b": {
-            "description": "An single-room interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "mm_kitchen_4b",
-            "rooms": [
-                {
-                    "alcoves": [
-                        {
-                            "bounds": [
-                                6.699999570846558,
-                                2.892470359802246,
-                                2.153679847717285
-                            ],
-                            "center": [
-                                1.1920928955078125e-07,
-                                0,
-                                2.3008899688720703
-                            ],
-                            "non_continuous_walls": 5,
-                            "region_id": 0,
-                            "walls_with_windows": 0
-                        }
-                    ],
-                    "main_region": {
-                        "bounds": [
-                            3.6999998092651367,
-                            2.892470359802246,
-                            4.576668739318848
-                        ],
-                        "center": [
-                            1.1920928955078125e-07,
-                            0,
-                            -1.0616655349731445
-                        ],
-                        "non_continuous_walls": 1,
-                        "region_id": 1,
-                        "walls_with_windows": 14
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
-            }
-        },
-        "monkey_physics_room": {
-            "description": "A custom lab-style room for the Monkey Physics project.",
-            "hdri": false,
-            "location": "interior",
-            "name": "monkey_physics_room",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/monkey_physics_room",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/monkey_physics_room",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/monkey_physics_room"
-            }
-        },
-        "ruin": {
-            "description": "\"A castle ruin \"\"mini-scene\"\".\"",
-            "hdri": true,
-            "location": "exterior",
-            "name": "ruin",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/ruin",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/ruin",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/ruin"
-            }
-        },
-        "savanna_6km": {
-            "description": "A large outdoor terrain, 6 km square.",
-            "hdri": true,
-            "location": "exterior",
-            "name": "savanna_6km",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_6km",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_6km",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_6km"
-            }
-        },
-        "savanna_flat_6km": {
-            "description": "A large outdoor terrain, 6 km square, completely flat.",
-            "hdri": true,
-            "location": "exterior",
-            "name": "savanna_flat_6km",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_flat_6km",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_flat_6km",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_flat_6km"
-            }
-        },
-        "suburb_scene_2018": {
-            "description": "A suburban scene using real-time lighting.",
-            "hdri": false,
-            "location": "exterior",
-            "name": "suburb_scene_2018",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/suburb_scene_2018",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/suburb_scene_2018",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
-            }
-        },
-        "suburb_scene_2023": {
-            "description": "A suburban scene using real-time lighting. There are no static objects on streets.",
-            "hdri": false,
-            "location": "exterior",
-            "name": "suburb_scene_2023",
-            "rooms": [],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/suburb_scene_2023",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/suburb_scene_2023",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/suburb_scene_2023"
-            }
-        },
-        "tdw_room": {
-            "description": "An interior space lit by sunlight from outside.",
-            "hdri": true,
-            "location": "interior",
-            "name": "tdw_room",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            8.254906,
-                            3.388783,
-                            7.76793
-                        ],
-                        "center": [
-                            -0.2965288,
-                            0,
-                            0.08572698
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 0,
-                        "walls_with_windows": 10
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
-            }
-        },
-        "tdw_room_4x5": {
-            "description": "A 4x5 grid of tdw_room",
-            "hdri": true,
-            "location": "interior",
-            "name": "tdw_room_4x5",
-            "rooms": [
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946878433227539
-                        ],
-                        "center": [
-                            -0.29652881622314453,
-                            0,
-                            40.38432693481445
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 19,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946875715255737
-                        ],
-                        "center": [
-                            -0.29652881622314453,
-                            0,
-                            0.38432836532592773
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 18,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            43.70347213745117,
-                            0,
-                            -19.615671157836914
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 17,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            -0.29652881622314453,
-                            0,
-                            20.384328842163086
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 16,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            43.70347213745117,
-                            0,
-                            20.384328842163086
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 15,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946878433227539
-                        ],
-                        "center": [
-                            43.70347213745117,
-                            0,
-                            40.38432693481445
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 14,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946875715255737
-                        ],
-                        "center": [
-                            43.70347213745117,
-                            0,
-                            0.38432836532592773
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 13,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946878433227539
-                        ],
-                        "center": [
-                            21.703472137451172,
-                            0,
-                            40.38432693481445
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 12,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946875715255737
-                        ],
-                        "center": [
-                            -44.29652786254883,
-                            0,
-                            0.38432836532592773
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 11,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            -0.29652881622314453,
-                            0,
-                            -19.615671157836914
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 10,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            21.703472137451172,
-                            0,
-                            -19.615671157836914
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 9,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946875715255737
-                        ],
-                        "center": [
-                            -22.296527862548828,
-                            0,
-                            0.38432836532592773
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 8,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946875715255737
-                        ],
-                        "center": [
-                            21.703472137451172,
-                            0,
-                            0.38432836532592773
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 7,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            -22.296527862548828,
-                            0,
-                            20.384328842163086
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 6,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            21.703472137451172,
-                            0,
-                            20.384328842163086
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 5,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            -44.29652786254883,
-                            0,
-                            20.384328842163086
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 4,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946878433227539
-                        ],
-                        "center": [
-                            -22.296527862548828,
-                            0,
-                            40.38432693481445
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 3,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            -44.29652786254883,
-                            0,
-                            -19.615671157836914
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 2,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946878433227539
-                        ],
-                        "center": [
-                            -44.29652786254883,
-                            0,
-                            40.38432693481445
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 1,
-                        "walls_with_windows": 10
-                    }
-                },
-                {
-                    "alcoves": [],
-                    "main_region": {
-                        "bounds": [
-                            7.842160415649413,
-                            3.388782501220703,
-                            7.946874809265136
-                        ],
-                        "center": [
-                            -22.296527862548828,
-                            0,
-                            -19.615671157836914
-                        ],
-                        "non_continuous_walls": 5,
-                        "region_id": 0,
-                        "walls_with_windows": 10
-                    }
-                }
-            ],
-            "urls": {
-                "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/tdw_room_4x5",
-                "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/tdw_room_4x5",
-                "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/tdw_room_4x5"
-            }
+            "non_continuous_walls": 0,
+            "region_id": 0,
+            "walls_with_windows": 5
+          }
         }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/box_room_2018",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/box_room_2018",
+        "WebGL": "https://tdw-public.s3.amazonaws.com/scenes/webgl/2020.3/box_room_2018",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/box_room_2018"
+      }
+    },
+    "box_room_4x5": {
+      "description": "A 4x5 grid of box_room_2018",
+      "hdri": true,
+      "location": "interior",
+      "name": "box_room_4x5",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              25.982494354248047,
+              0,
+              -4.535386085510254
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 19,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              25.982494354248047,
+              0,
+              4.464613914489746
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 18,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926301002502441
+            ],
+            "center": [
+              -13.017504692077637,
+              0,
+              13.464614868164062
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 17,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              -0.01750469207763672,
+              0,
+              -4.535386085510254
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 16,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926299095153809
+            ],
+            "center": [
+              12.982495307922363,
+              0,
+              -13.535385131835938
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 15,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              -26.017505645751953,
+              0,
+              -4.535386085510254
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 14,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926299095153809
+            ],
+            "center": [
+              -0.01750469207763672,
+              0,
+              -13.535385131835938
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 13,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              12.982495307922363,
+              0,
+              4.464613914489746
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 12,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926299095153809
+            ],
+            "center": [
+              25.982494354248047,
+              0,
+              -13.535385131835938
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 11,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              -13.017504692077637,
+              0,
+              4.464613914489746
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 10,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              -0.01750469207763672,
+              0,
+              4.464613914489746
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 9,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926299095153809
+            ],
+            "center": [
+              -13.017504692077637,
+              0,
+              -13.535385131835938
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 8,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              12.982495307922363,
+              0,
+              -4.535386085510254
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 7,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926301002502441
+            ],
+            "center": [
+              -0.01750469207763672,
+              0,
+              13.464614868164062
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 6,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926301002502441
+            ],
+            "center": [
+              12.982495307922363,
+              0,
+              13.464614868164062
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 5,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926301002502441
+            ],
+            "center": [
+              -26.017505645751953,
+              0,
+              13.464614868164062
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 4,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926301002502441
+            ],
+            "center": [
+              25.982494354248047,
+              0,
+              13.464614868164062
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 3,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926299095153809
+            ],
+            "center": [
+              -26.017505645751953,
+              0,
+              -13.535385131835938
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 2,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017499923706055,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              -13.017504692077637,
+              0,
+              -4.535386085510254
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 1,
+            "walls_with_windows": 5
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              12.017501831054688,
+              3.9643332958221436,
+              7.926300048828125
+            ],
+            "center": [
+              -26.017505645751953,
+              0,
+              4.464613914489746
+            ],
+            "non_continuous_walls": 0,
+            "region_id": 0,
+            "walls_with_windows": 5
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/box_room_4x5",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/box_room_4x5",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/box_room_4x5"
+      }
+    },
+    "building_site": {
+      "description": "\"An derelict building site \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "building_site",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/building_site",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/building_site",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/building_site"
+      }
+    },
+    "dead_grotto": {
+      "description": "An barren exterior space; rocky with tree stumps, logs, water puddles and some ruins.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "dead_grotto",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/dead_grotto",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/dead_grotto",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/dead_grotto"
+      }
+    },
+    "downtown_alleys": {
+      "description": "An urban downtown environment with alleys.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "downtown_alleys",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/downtown_alleys",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/downtown_alleys",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/downtown_alleys"
+      }
+    },
+    "empty_scene": {
+      "description": "\"ModelScreenShotter scene \"\"mini-scene\"\".\"",
+      "hdri": false,
+      "location": "interior",
+      "name": "empty_scene",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.2/empty_scene",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.2/empty_scene",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.2/empty_scene"
+      }
+    },
+    "floorplan_1a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_1a",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1a"
+      }
+    },
+    "floorplan_1b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_1b",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1b"
+      }
+    },
+    "floorplan_1c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_1c",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_1c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_1c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_1c"
+      }
+    },
+    "floorplan_2a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_2a",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2a"
+      }
+    },
+    "floorplan_2b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_2b",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2b"
+      }
+    },
+    "floorplan_2c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_2c",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_2c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_2c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_2c"
+      }
+    },
+    "floorplan_4a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_4a",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4a"
+      }
+    },
+    "floorplan_4b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_4b",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4b"
+      }
+    },
+    "floorplan_4c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_4c",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_4c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_4c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_4c"
+      }
+    },
+    "floorplan_5a": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_5a",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5a"
+      }
+    },
+    "floorplan_5b": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_5b",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5b"
+      }
+    },
+    "floorplan_5c": {
+      "description": "An multi-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "floorplan_5c",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/floorplan_5c",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/floorplan_5c",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/floorplan_5c"
+      }
+    },
+    "iceland_beach": {
+      "description": "\"A rocky beach surrounded by rocks\"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "iceland_beach",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/iceland_beach",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/iceland_beach",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/iceland_beach"
+      }
+    },
+    "lava_field": {
+      "description": "\"A barren volcanic landscape \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "lava_field",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/lava_field",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/lava_field",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/lava_field"
+      }
+    },
+    "mm_craftroom_1a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_1a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1a"
+      }
+    },
+    "mm_craftroom_1b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_1b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_1b"
+      }
+    },
+    "mm_craftroom_2a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_2a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2a"
+      }
+    },
+    "mm_craftroom_2b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_2b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_2b"
+      }
+    },
+    "mm_craftroom_3a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_3a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3a"
+      }
+    },
+    "mm_craftroom_3b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_3b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_3b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_3b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_3b"
+      }
+    },
+    "mm_craftroom_4a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_4a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4a"
+      }
+    },
+    "mm_craftroom_4b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_craftroom_4b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_craftroom_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_craftroom_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_craftroom_4b"
+      }
+    },
+    "mm_kitchen_1a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_1a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1a"
+      }
+    },
+    "mm_kitchen_1b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_1b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4903459548950195,
+                2.892470359802246,
+                3.3942010402679443
+              ],
+              "center": [
+                2.938474178314209,
+                0,
+                -0.029111266136169434
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 0,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.191462516784668,
+              2.892470359802246,
+              6.891343355178833
+            ],
+            "center": [
+              -0.4206228256225586,
+              0,
+              -0.002591252326965332
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_1b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_1b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_1b"
+      }
+    },
+    "mm_kitchen_1b_4x5": {
+      "description": "A 4x5 grid (20 copies) of the mm_kitchen_1b scene.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_1b_4x5",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703888893127441,
+                2.892470359802246,
+                3.3838541507720947
+              ],
+              "center": [
+                2.9284956455230713,
+                0,
+                -4.029148101806641
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 36,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176653861999512,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              -0.41321849822998047,
+              0,
+              -4.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 39,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                -5.071504592895508,
+                0,
+                11.97085189819336
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 7,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              -8.41321849822998,
+              0,
+              11.980005264282227
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 35,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703903198242188,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                18.928495407104492,
+                0,
+                11.97085189819336
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 21,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176652908325195,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              15.58678150177002,
+              0,
+              11.980005264282227
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 30,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                10.928495407104492,
+                0,
+                -12.02914810180664
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 32,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              7.5867815017700195,
+              0,
+              -12.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 29,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838541507720947
+              ],
+              "center": [
+                -5.071504592895508,
+                0,
+                -4.029148101806641
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 38,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              -8.41321849822998,
+              0,
+              -4.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 28,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                10.928495407104492,
+                0,
+                11.97085189819336
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 20,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              7.5867815017700195,
+              0,
+              11.980005264282227
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 26,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703903198242188,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                18.928495407104492,
+                0,
+                -12.02914810180664
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 12,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176652908325195,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              15.58678150177002,
+              0,
+              -12.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 22,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703888893127441,
+                2.892470359802246,
+                3.383854389190674
+              ],
+              "center": [
+                2.9284956455230713,
+                0,
+                3.9708516597747803
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 37,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176653861999512,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              -0.41321849822998047,
+              0,
+              3.9800052642822266
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 19,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                -13.071504592895508,
+                0,
+                11.97085189819336
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 31,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176654815673828,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              -16.413219451904297,
+              0,
+              11.980005264282227
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 16,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.383854389190674
+              ],
+              "center": [
+                -5.071504592895508,
+                0,
+                3.9708516597747803
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 18,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              -8.41321849822998,
+              0,
+              3.9800052642822266
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 15,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838541507720947
+              ],
+              "center": [
+                10.928495407104492,
+                0,
+                -4.029148101806641
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 3,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              7.5867815017700195,
+              0,
+              -4.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 14,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                -13.071504592895508,
+                0,
+                -12.02914810180664
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 27,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176654815673828,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              -16.413219451904297,
+              0,
+              -12.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 13,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838541507720947
+              ],
+              "center": [
+                -13.071504592895508,
+                0,
+                -4.029148101806641
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 2,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176654815673828,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              -16.413219451904297,
+              0,
+              -4.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 11,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.383854389190674
+              ],
+              "center": [
+                10.928495407104492,
+                0,
+                3.9708516597747803
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 34,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              7.5867815017700195,
+              0,
+              3.9800052642822266
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 10,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.383854389190674
+              ],
+              "center": [
+                -13.071504592895508,
+                0,
+                3.9708516597747803
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 6,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176654815673828,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              -16.413219451904297,
+              0,
+              3.9800052642822266
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 9,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.470388412475586,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                -5.071504592895508,
+                0,
+                -12.02914810180664
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 23,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.1766533851623535,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              -8.41321849822998,
+              0,
+              -12.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 8,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703903198242188,
+                2.892470359802246,
+                3.383854389190674
+              ],
+              "center": [
+                18.928495407104492,
+                0,
+                3.9708516597747803
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 17,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176652908325195,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              15.58678150177002,
+              0,
+              3.9800052642822266
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 5,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703903198242188,
+                2.892470359802246,
+                3.3838541507720947
+              ],
+              "center": [
+                18.928495407104492,
+                0,
+                -4.029148101806641
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 33,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176652908325195,
+              2.892470359802246,
+              6.926150321960449
+            ],
+            "center": [
+              15.58678150177002,
+              0,
+              -4.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 4,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703888893127441,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                2.9284956455230713,
+                0,
+                11.97085189819336
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 25,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176653861999512,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              -0.41321849822998047,
+              0,
+              11.980005264282227
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 1,
+            "walls_with_windows": 4
+          }
+        },
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                1.4703888893127441,
+                2.892470359802246,
+                3.3838539123535156
+              ],
+              "center": [
+                2.9284956455230713,
+                0,
+                -12.02914810180664
+              ],
+              "non_continuous_walls": 8,
+              "region_id": 24,
+              "walls_with_windows": 2
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              5.176653861999512,
+              2.892470359802246,
+              6.926151275634766
+            ],
+            "center": [
+              -0.41321849822998047,
+              0,
+              -12.019994735717773
+            ],
+            "non_continuous_walls": 3,
+            "region_id": 0,
+            "walls_with_windows": 4
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/mm_kitchen_1b_4x5",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/mm_kitchen_1b_4x5",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/mm_kitchen_1b_4x5"
+      }
+    },
+    "mm_kitchen_2a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_2a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2a"
+      }
+    },
+    "mm_kitchen_2b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_2b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              4.7169129848480225,
+              2.892470359802246,
+              5.927810192108154
+            ],
+            "center": [
+              -1.1920928955078125e-07,
+              0,
+              -0.008186578750610352
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_2b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_2b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_2b"
+      }
+    },
+    "mm_kitchen_3a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_3a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3a"
+      }
+    },
+    "mm_kitchen_3b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_3b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              3.307473659515381,
+              2.892470359802246,
+              6.903393745422363
+            ],
+            "center": [
+              -0.0024938583374023438,
+              0,
+              -0.005679130554199219
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 0,
+            "walls_with_windows": 6
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_3b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_3b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_3b"
+      }
+    },
+    "mm_kitchen_4a": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_4a",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4a",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4a",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4a"
+      }
+    },
+    "mm_kitchen_4b": {
+      "description": "An single-room interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "mm_kitchen_4b",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [
+            {
+              "bounds": [
+                6.699999570846558,
+                2.892470359802246,
+                2.153679847717285
+              ],
+              "center": [
+                1.1920928955078125e-07,
+                0,
+                2.3008899688720703
+              ],
+              "non_continuous_walls": 5,
+              "region_id": 0,
+              "walls_with_windows": 0
+            }
+          ],
+          "main_region": {
+            "bounds": [
+              3.6999998092651367,
+              2.892470359802246,
+              4.576668739318848
+            ],
+            "center": [
+              1.1920928955078125e-07,
+              0,
+              -1.0616655349731445
+            ],
+            "non_continuous_walls": 1,
+            "region_id": 1,
+            "walls_with_windows": 14
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/mm_kitchen_4b",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/mm_kitchen_4b",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/mm_kitchen_4b"
+      }
+    },
+    "monkey_physics_room": {
+      "description": "A custom lab-style room for the Monkey Physics project.",
+      "hdri": false,
+      "location": "interior",
+      "name": "monkey_physics_room",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/monkey_physics_room",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/monkey_physics_room",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/monkey_physics_room"
+      }
+    },
+    "ruin": {
+      "description": "\"A castle ruin \"\"mini-scene\"\".\"",
+      "hdri": true,
+      "location": "exterior",
+      "name": "ruin",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/ruin",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/ruin",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/ruin"
+      }
+    },
+    "savanna_6km": {
+      "description": "A large outdoor terrain, 6 km square.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "savanna_6km",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_6km",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_6km",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_6km"
+      }
+    },
+    "savanna_flat_6km": {
+      "description": "A large outdoor terrain, 6 km square, completely flat.",
+      "hdri": true,
+      "location": "exterior",
+      "name": "savanna_flat_6km",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/savanna_flat_6km",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/savanna_flat_6km",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/savanna_flat_6km"
+      }
+    },
+    "suburb_scene_2018": {
+      "description": "A suburban scene using real-time lighting.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "suburb_scene_2018",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2019.1/suburb_scene_2018",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2019.1/suburb_scene_2018",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2019.1/suburb_scene_2018"
+      }
+    },
+    "suburb_scene_2023": {
+      "description": "A suburban scene using real-time lighting. There are no static objects on streets.",
+      "hdri": false,
+      "location": "exterior",
+      "name": "suburb_scene_2023",
+      "post_exposure": 1,
+      "rooms": [],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/suburb_scene_2023",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/suburb_scene_2023",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/suburb_scene_2023"
+      }
+    },
+    "tdw_room": {
+      "description": "An interior space lit by sunlight from outside.",
+      "hdri": true,
+      "location": "interior",
+      "name": "tdw_room",
+      "post_exposure": 1.5,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              8.254906,
+              3.388783,
+              7.76793
+            ],
+            "center": [
+              -0.2965288,
+              0,
+              0.08572698
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 0,
+            "walls_with_windows": 10
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.2/tdw_room",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.2/tdw_room",
+        "WebGL": "https://tdw-public.s3.amazonaws.com/scenes/webgl/2020.2/tdw_room",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.2/tdw_room"
+      }
+    },
+    "tdw_room_4x5": {
+      "description": "A 4x5 grid of tdw_room",
+      "hdri": true,
+      "location": "interior",
+      "name": "tdw_room_4x5",
+      "post_exposure": 1,
+      "rooms": [
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946878433227539
+            ],
+            "center": [
+              -0.29652881622314453,
+              0,
+              40.38432693481445
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 19,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946875715255737
+            ],
+            "center": [
+              -0.29652881622314453,
+              0,
+              0.38432836532592773
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 18,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              43.70347213745117,
+              0,
+              -19.615671157836914
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 17,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              -0.29652881622314453,
+              0,
+              20.384328842163086
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 16,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              43.70347213745117,
+              0,
+              20.384328842163086
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 15,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946878433227539
+            ],
+            "center": [
+              43.70347213745117,
+              0,
+              40.38432693481445
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 14,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946875715255737
+            ],
+            "center": [
+              43.70347213745117,
+              0,
+              0.38432836532592773
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 13,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946878433227539
+            ],
+            "center": [
+              21.703472137451172,
+              0,
+              40.38432693481445
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 12,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946875715255737
+            ],
+            "center": [
+              -44.29652786254883,
+              0,
+              0.38432836532592773
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 11,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              -0.29652881622314453,
+              0,
+              -19.615671157836914
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 10,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              21.703472137451172,
+              0,
+              -19.615671157836914
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 9,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946875715255737
+            ],
+            "center": [
+              -22.296527862548828,
+              0,
+              0.38432836532592773
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 8,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946875715255737
+            ],
+            "center": [
+              21.703472137451172,
+              0,
+              0.38432836532592773
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 7,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              -22.296527862548828,
+              0,
+              20.384328842163086
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 6,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              21.703472137451172,
+              0,
+              20.384328842163086
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 5,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              -44.29652786254883,
+              0,
+              20.384328842163086
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 4,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946878433227539
+            ],
+            "center": [
+              -22.296527862548828,
+              0,
+              40.38432693481445
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 3,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              -44.29652786254883,
+              0,
+              -19.615671157836914
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 2,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946878433227539
+            ],
+            "center": [
+              -44.29652786254883,
+              0,
+              40.38432693481445
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 1,
+            "walls_with_windows": 10
+          }
+        },
+        {
+          "alcoves": [],
+          "main_region": {
+            "bounds": [
+              7.842160415649413,
+              3.388782501220703,
+              7.946874809265136
+            ],
+            "center": [
+              -22.296527862548828,
+              0,
+              -19.615671157836914
+            ],
+            "non_continuous_walls": 5,
+            "region_id": 0,
+            "walls_with_windows": 10
+          }
+        }
+      ],
+      "urls": {
+        "Darwin": "https://tdw-public.s3.amazonaws.com/scenes/osx/2020.3/tdw_room_4x5",
+        "Linux": "https://tdw-public.s3.amazonaws.com/scenes/linux/2020.3/tdw_room_4x5",
+        "Windows": "https://tdw-public.s3.amazonaws.com/scenes/windows/2020.3/tdw_room_4x5"
+      }
     }
+  }
 }

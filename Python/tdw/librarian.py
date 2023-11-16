@@ -180,10 +180,12 @@ class SceneRecord(_Record):
             self.description: str = ""
             self.hdri: bool = False
             self.location: str = ""
+            self.post_exposure: float = 0
         else:
             self.description: str = data["description"]
             self.hdri: bool = data["hdri"]
             self.location: str = data["location"]
+            self.post_exposure: float = data["post_exposure"]
             for room_data in data["rooms"]:
                 main_region = InteriorRegion(region_id=room_data["main_region"]["region_id"],
                                              center=tuple(room_data["main_region"]["center"]),

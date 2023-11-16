@@ -11,7 +11,7 @@ class Trial(AddOn, ABC):
         # Get the add-ons.
         self._add_ons: List[AddOn] = self._get_add_ons()
         # Insert a loading screen.
-        self._add_ons.insert(0, LoadingScreen())
+        self._add_ons.insert(0, LoadingScreen(instructions_text=self._get_instructions()))
         """:field
         The current state of this trial.
         """

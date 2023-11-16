@@ -1,9 +1,9 @@
+from argparse import ArgumentParser
 from json import loads
 from importlib import import_module
-from pkg_resources import resource_filename
-from pathlib import Path
-from typing import List, final
-from tdw.webgl.webgl_controller import WebGLController
+import pkgutil
+from typing import List, Tuple, final
+from tdw.webgl.webgl_controller import WebGLController, run
 from tdw.add_ons.trials.trial import Trial
 from tdw.add_ons.trials.trial_status import TrialStatus
 from tdw.type_aliases import PATH
@@ -49,7 +49,7 @@ class TrialController(WebGLController):
             self._trials.append(getattr(module, _snake_to_camel(trial_data["$type"]))(**constructor_parameters))
 
     @final
-    def on_communicate(self, resp: List[bytes]) -> List[dict]:
+    def on_communicate(self, resp: List[bytes]) -> Tuple[bool, List[dict]]:
         # TODO logging.
         if len(self._trials) > 0:
             status: TrialStatus = self._trials[0].status
@@ -58,31 +58,52 @@ class TrialController(WebGLController):
                 self._trials[0].status = TrialStatus.running
                 commands = self._trials[0].get_early_initialization_commands()
                 commands.extend(self._trials[0].get_initialization_commands())
-                return commands
+                return False, commands
             # Update the trial.
             elif status == TrialStatus.running:
                 self._trials[0].commands.clear()
                 self._trials[0].on_send(resp=resp)
-                return self._trials[0].commands
+                return False, self._trials[0].commands
             else:
+                print(self._trials[0].status)
                 # TODO do something on success/failure.
                 self._trials.pop(0)
-                return []
+                return False, []
+        else:
+            return True, []
 
 
 def get_default_trial_types() -> List[str]:
     imports = list()
-    for f in Path(resource_filename(__name__, "add_ons/trials")).iterdir():
-        module = import_module(f"tdw.add_ons.trials.{f.stem}")
-        # Convert the underscore_snake_case filename to an UpperCamelCase class name.
-        att = _snake_to_camel(f.stem)
-        # This is probably a TDW file, as opposed to something auto-generated.
-        if hasattr(module, att):
-            klass = getattr(module, att)
-            # This is a trial.
-            if klass.__base__.__name__ == "Trial":
-                imports.append(f.stem)
+    # Source: https://stackoverflow.com/a/43059528
+    module = import_module("tdw.add_ons.trials")
+    # Source: https://stackoverflow.com/a/48962311
+    for importer, name, ispkg in pkgutil.iter_modules(module.__path__):
+        if not ispkg:
+            module = import_module(f"tdw.add_ons.trials.{name}")
+            # Convert the underscore_snake_case filename to an UpperCamelCase class name.
+            att = _snake_to_camel(name)
+            # This is probably a TDW file, as opposed to something auto-generated.
+            if hasattr(module, att):
+                klass = getattr(module, att)
+                # This is a trial.
+                if klass.__base__.__name__ == "Trial":
+                    imports.append(name)
     return imports
+
+
+def launch() -> None:
+    """
+    Launch a TrialController and serve indefinitely.
+    """
+
+    parser = ArgumentParser()
+    parser.add_argument("port", type=int, help="The WebSocket port.")
+    parser.add_argument("trials_path", type=str, help="The path to trials.json")
+    args, unknown = parser.parse_known_args()
+    tc = TrialController(port=args.port)
+    tc.load_trials(path=args.trials_path)
+    run(tc)
 
 
 def _snake_to_camel(snake_case: str) -> str:

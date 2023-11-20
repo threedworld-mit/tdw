@@ -64,6 +64,7 @@ from tdw.FBOutput import OccupancyMap as Occ
 from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
+from tdw.FBOutput import AlbedoColors as AlbCol
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1754,3 +1755,22 @@ class Drones(OutputData):
 
     def get_motor_on(self, index: int) -> bool:
         return bool(self._motor_ons[index])
+
+
+class AlbedoColors(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._colors = self.data.ColorsAsNumpy().reshape(-1, 4)
+
+    def get_data(self) -> AlbCol.AlbedoColors:
+        return AlbCol.AlbedoColors.GetRootAsAlbedoColors(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_color(self, index: int) -> np.ndarray:
+        return self._colors[index]

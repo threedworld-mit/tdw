@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.17
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `send_albedo_colors` | Send the main albedo color of each object in the scene. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description |
+| --- | --- |
+| `AlbedoColors` | The albedo colors of each object in the scene. |
+
 ## v1.12.16
 
 ### Command API

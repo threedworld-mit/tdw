@@ -2,23 +2,23 @@ import numpy as np
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
-from tdw.add_ons.output_data_writer import OutputDataWriter
+from tdw.add_ons.output_data_zip_writer import OutputDataZipWriter
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 """
 Write raw output data per frame from the build into a .zip file.
 """
 
-c = Controller(launch_build=False)
+c = Controller()
 # Add a camera.
 camera = ThirdPersonCamera(position={"x": 0.5, "y": 1.9, "z": -4},
                            avatar_id="a",
                            look_at=TDWUtils.VECTOR3_ZERO)
 c.add_ons.append(camera)
 # Write output data to a zip file.
-output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("output_data_writer")
-print(f"Output will be saved to: {output_directory}")
-writer = OutputDataWriter(output_directory=output_directory, zip_filename="output.zip")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("output_data_zip_writer/output.zip").resolve()
+print(f"Output will be saved to: {path}")
+writer = OutputDataZipWriter(output_path=path)
 c.add_ons.append(writer)
 
 # The vases will be these colors.

@@ -65,6 +65,18 @@ class TDWUtils:
         return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2])}
 
     @staticmethod
+    def tuple_to_vector3(tup: Tuple[float, float, float]) -> Dict[str, float]:
+        """
+        Convert a 3-element tuple to a Vector3.
+
+        :param tup: The tuple.
+
+        :return A Vector4, e.g. `{"x": 0, "y": 0, "z": 0}`
+        """
+
+        return {"x": tup[0], "y": tup[1], "z": tup[2]}
+
+    @staticmethod
     def vector4_to_array(vector4: Dict[str, float]) -> np.ndarray:
         """
         Convert a Vector4 to a numpy array.
@@ -87,6 +99,18 @@ class TDWUtils:
         """
 
         return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2]), "w": float(arr[3])}
+
+    @staticmethod
+    def tuple_to_vector4(tup: Tuple[float, float, float, float]) -> Dict[str, float]:
+        """
+        Convert a 4-element tuple to a Vector4.
+
+        :param tup: The tuple.
+
+        :return A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
+        """
+
+        return {"x": tup[0], "y": tup[1], "z": tup[2], "w": tup[3]}
 
     @staticmethod
     def color_to_array(color: Dict[str, float]) -> np.ndarray:

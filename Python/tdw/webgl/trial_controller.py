@@ -6,16 +6,22 @@ from json import dumps
 from typing import List, Optional, final
 import asyncio
 from websockets.server import serve
-from websockets import WebSocketServerProtocol, ConnectionClosedError, ConnectionClosed
+from websockets import WebSocketServerProtocol, ConnectionClosed
 import zmq
-from tdw.controller import Controller
 from tdw.webgl.trial_playback import TrialPlayback
+from tdw.webgl.trial_adders.end_simulation import EndSimulation
+from tdw.webgl.trial_message import TrialMessage
+from tdw.webgl.trial_message_encoder import TrialMessageEncoder
 
 
 class TrialController(ABC):
     def __init__(self):
-        # Get the initial trials.
-        self._trials: List[dict] = self.get_initial_trials()
+        """
+        (no arguments)
+        """
+
+        # Get the initial trial message.
+        self._trial_message: TrialMessage = self.get_initial_message()
         self._port: int = -1
         self._log_socket: Optional[zmq.Socket] = None
         self._log_socket_connected: bool = False
@@ -45,7 +51,21 @@ class TrialController(ABC):
         self._log_socket_connected = True
 
     @abstractmethod
-    def get_initial_trials(self) -> List[dict]:
+    def get_initial_message(self) -> TrialMessage:
+        """
+        :return: An initial `TrialMessage` that will be sent to the build.
+        """
+
+        raise Exception()
+
+    @abstractmethod
+    def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
+        """
+        :param playback: The playback of the most recent trial.
+
+        :return: The next `TrialMessage` to be sent to the build.
+        """
+
         raise Exception()
 
     @final
@@ -66,52 +86,43 @@ class TrialController(ABC):
 
         done = False
         while not done:
-            # Stop if there are no more trials.
-            if len(self._trials) == 0:
-                break
             # Send the next trials.
             try:
-                await websocket.send(dumps(self._trials))
-                self._trials.clear()
+                await websocket.send(dumps(self._trial_message, cls=TrialMessageEncoder))
             except ConnectionClosed as e:
                 print(e)
-                break
+                done = True
+                continue
+            # We're done now.
+            if isinstance(self._trial_message.adder, EndSimulation):
+                done = True
+                continue
             # Receive end-of-trial data.
             try:
                 bs: bytes = await websocket.recv()
             except ConnectionClosed as e:
                 print(e)
-                break
+                done = True
+                continue
             # Parse the playback.
             playback = TrialPlayback()
             with ZipFile(BytesIO(bs), "r") as z:
                 playback.read_zip(z=z)
-            # Get new trials to send.
-            self._trials = self.get_next_trials(playback=playback)
             # Send the logged end-state data.
             if self._log_socket_connected:
                 try:
                     self._log_socket.send(bs)
                     self._log_socket.recv()
+                    # Get the next trial message, which will be sent at the top of the loop.
+                    self._trial_message = self.get_next_message(playback=playback)
                 except zmq.ZMQError as e:
                     print(e)
-                    break
-
-            done = len(self._trials) == 0
+                    # Send a kill signal.
+                    self._trial_message = TrialMessage(trials=[], adder=EndSimulation())
         # Close the log socket.
         if self._log_socket_connected:
             self._log_socket_connected = False
             self._log_socket.close()
-
-    @abstractmethod
-    def get_next_trials(self, playback: TrialPlayback) -> List[dict]:
-        """
-        :param playback: The playback of the most recent trial.
-
-        :return: A list of trials to be immediately sent to the WebGL build.
-        """
-
-        raise Exception()
 
 
 def run(controller: TrialController) -> None:
@@ -123,9 +134,13 @@ def run(controller: TrialController) -> None:
 
     # Get the port from command-line arguments.
     parser = ArgumentParser()
-    parser.add_argument("port", type=int, help="The WebSocket port.")
+    parser.add_argument("port", type=int, help="The WebSocket port")
+    parser.add_argument("database_address", type=str, default="", help="The database address:port")
     args, unknown = parser.parse_known_args()
     # Set the port.
     controller.set_port(port=args.port)
+    # Connect to the database.
+    if args.database_address != "":
+        controller.connect_log_socket(address=args.database_address)
     # Run the controller.
     asyncio.run(controller.main())

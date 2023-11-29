@@ -14,6 +14,10 @@ class TrialPlayback(AddOn):
     """
 
     def __init__(self):
+        """
+        (no arguments)
+        """
+
         super().__init__()
         """:field
         If True, a trial has been loaded.

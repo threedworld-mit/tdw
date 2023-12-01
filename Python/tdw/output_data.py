@@ -65,6 +65,10 @@ from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.FBOutput import AlbedoColors as AlbCol
+from tdw.FBOutput import Models as Mods
+from tdw.FBOutput import ObjectScales as ObjSca
+from tdw.FBOutput import PostProcess as PostProc
+from tdw.FBOutput import Scene as Sce
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1774,3 +1778,86 @@ class AlbedoColors(OutputData):
 
     def get_color(self, index: int) -> np.ndarray:
         return self._colors[index]
+
+
+class Models(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+
+    def get_data(self) -> Mods.Models:
+        return Mods.Models.GetRootAsModels(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_name(self, index: int) -> str:
+        return self.data.Names(index).decode('utf-8')
+
+    def get_url(self, index: int) -> str:
+        return self.data.Urls(index).decode('utf-8')
+
+
+class ObjectScales(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._scales = self.data.ScalesAsNumpy().reshape(-1, 3)
+
+    def get_data(self) -> ObjSca.ObjectScales:
+        return ObjSca.ObjectScales.GetRootAsObjectScales(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_scale(self, index: int) -> np.ndarray:
+        return self._scales[index]
+
+
+class PostProcess(OutputData):
+    def get_data(self) -> PostProc.PostProcess:
+        return PostProc.PostProcess.GetRootAsPostProcess(self.bytes, 0)
+
+    def get_enabled(self) -> bool:
+        return self.data.Enabled()
+
+    def get_ambient_occlusion_intensity(self):
+        return self.data.AmbientOcclusionIntensity()
+
+    def get_ambient_occlusion_thickness_modifier(self):
+        return self.data.AmbientOcclusionThicknessModifier()
+
+    def get_aperture(self):
+        return self.data.Aperture()
+
+    def get_focus_distance(self):
+        return self.data.FocusDistance()
+
+    def get_contrast(self):
+        return self.data.Contrast()
+
+    def get_post_exposure(self):
+        return self.data.PostExposure()
+
+    def get_saturation(self):
+        return self.data.Saturation()
+
+    def get_screen_space_reflections(self):
+        return self.data.ScreenSpaceReflections()
+
+    def get_vignette(self):
+        return self.data.Vignette()
+
+
+class Scene(OutputData):
+    def get_data(self) -> Sce.Scene:
+        return Sce.Scene.GetRootAsScene(self.bytes, 0)
+
+    def get_name(self) -> str:
+        return self.data.Name().decode('utf-8')
+
+    def get_url(self) -> str:
+        return self.data.Url().decode('utf-8')

@@ -69,6 +69,7 @@ from tdw.FBOutput import Models as Mods
 from tdw.FBOutput import ObjectScales as ObjSca
 from tdw.FBOutput import PostProcess as PostProc
 from tdw.FBOutput import Scene as Sce
+from tdw.FBOutput import ScreenSize as ScreSi
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1864,3 +1865,14 @@ class Scene(OutputData):
 
     def get_url(self) -> str:
         return self.data.Url().decode('utf-8')
+
+
+class ScreenSize(OutputData):
+    def get_data(self) -> ScreSi.ScreenSize:
+        return ScreSi.ScreenSize.GetRootAsScreenSize(self.bytes, 0)
+
+    def get_width(self) -> int:
+        return self.data.Width()
+
+    def get_height(self) -> int:
+        return self.data.Height()

@@ -5,8 +5,8 @@ from typing import List, Union
 from zipfile import ZipFile
 from pathlib import Path
 from tdw.tdw_utils import TDWUtils
-from tdw.output_data import (OutputData, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
-                             ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView)
+from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
+                             ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView, ScreenSize)
 from tdw.add_ons.add_on import AddOn
 from tdw.backend.platforms import SYSTEM_TO_S3
 
@@ -83,6 +83,7 @@ class TrialPlayback(AddOn):
             self.success = True if metadata[0] == 1 else 0
             # Decode the trial name.
             self.name = metadata[1:].decode("utf-8")
+            print(self.name, self.success)
         # Get each frame.
         for fi in z.filelist:
             # Ignore this file because the trial name doesn't matter for playback.
@@ -137,8 +138,19 @@ class TrialPlayback(AddOn):
         # Convert all other output data into commands.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            # Print the version.
+            if r_id == "vers":
+                version = Version(resp[i])
+                print(version.get_tdw_version())
+                print(version.get_unity_version())
+            # Set the screen size.
+            elif r_id == "scsi":
+                screen_size = ScreenSize(resp[i])
+                self.commands.append({"$type": "set_screen_size",
+                                      "width": screen_size.get_width(),
+                                      "height": screen_size.get_height()})
             # Teleport and rotate objects.
-            if r_id == "tran":
+            elif r_id == "tran":
                 transforms = Transforms(resp[i])
                 for j in range(transforms.get_num()):
                     object_id = transforms.get_id(j)

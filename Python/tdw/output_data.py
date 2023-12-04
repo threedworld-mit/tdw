@@ -1791,6 +1791,9 @@ class Models(OutputData):
     def get_num(self) -> int:
         return len(self._ids)
 
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
     def get_name(self, index: int) -> str:
         return self.data.Names(index).decode('utf-8')
 

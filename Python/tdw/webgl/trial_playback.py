@@ -1,3 +1,4 @@
+from io import BytesIO
 import re
 from platform import system
 from typing import List, Union
@@ -53,9 +54,19 @@ class TrialPlayback(AddOn):
         with ZipFile(TDWUtils.get_string_path(path=path), "r") as z:
             self.read_zip(z=z)
 
+    def read_bytes(self, bs: bytes) -> None:
+        """
+        Read .zip byte data.
+
+        :param bs: A byte array of a trial playback .zip file.
+        """
+
+        with ZipFile(BytesIO(bs), "r") as z:
+            self.read_zip(z=z)
+
     def read_zip(self, z: ZipFile) -> None:
         """
-        Parse an opened .zip file. This will set `success`, `loaded`, `frame` and `frames`.
+        Parse an opened .zip file. This will set `success`, `loaded`, `frame`, and `frames`.
 
         :param z: The zip file.
         """

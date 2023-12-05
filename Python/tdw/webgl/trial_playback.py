@@ -4,9 +4,13 @@ from platform import system
 from typing import List, Union
 from zipfile import ZipFile
 from pathlib import Path
+import numpy as np
+from tdw.robot_data.robot_static import RobotStatic
+from tdw.robot_data.joint_type import JointType
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
-                             ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView, ScreenSize)
+                             ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView,
+                             ScreenSize, StaticRobot, DynamicRobots)
 from tdw.add_ons.add_on import AddOn
 from tdw.backend.platforms import SYSTEM_TO_S3
 
@@ -43,6 +47,7 @@ class TrialPlayback(AddOn):
         """
         self.frames: List[List[bytes]] = list()
         self._avatar_ids: List[str] = list()
+        self._static_robots: List[RobotStatic] = list()
 
     def load_file(self, path: Union[str, Path]) -> None:
         """
@@ -76,6 +81,7 @@ class TrialPlayback(AddOn):
         self.loaded = True
         self.frames.clear()
         self._avatar_ids.clear()
+        self._static_robots.clear()
         with z.open("metadata", "r") as f:
             # Get the metadata.
             metadata: bytes = f.read()
@@ -115,7 +121,7 @@ class TrialPlayback(AddOn):
         if not self.loaded:
             return
         resp: List[bytes] = self.frames[self.frame]
-        # Load the scene. This is in its own for loop because it needs to be loaded first.
+        # Convert output data into commands.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "scen":
@@ -123,21 +129,13 @@ class TrialPlayback(AddOn):
                 self.commands.append({"$type": "add_scene",
                                       "name": scene.get_name(),
                                       "url": TrialPlayback._get_asset_bundle_url(scene.get_url(), "scenes")})
-                break
-        # Add objects. This is in its own for loop because it needs to be loaded first.
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "mode":
+            elif r_id == "mode":
                 models = Models(resp[i])
                 for j in range(models.get_num()):
                     self.commands.append({"$type": "add_object",
                                           "name": models.get_name(j),
                                           "url": TrialPlayback._get_asset_bundle_url(models.get_url(j), "models"),
                                           "id": models.get_id(j)})
-                break
-        # Convert all other output data into commands.
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
             # Print the version.
             if r_id == "vers":
                 version = Version(resp[i])
@@ -227,6 +225,33 @@ class TrialPlayback(AddOn):
                 self.commands.append({"$type": "set_field_of_view",
                                       "avatar_id": field_of_view.get_avatar_id(),
                                       "field_of_view": field_of_view.get_fov()})
+            # Cache static robot data.
+            elif r_id == "srob":
+                static_robot = StaticRobot(resp[i])
+                self._static_robots.append(RobotStatic(robot_id=static_robot.get_id(), resp=resp))
+            # Set the positions of each robot joint.
+            elif r_id == "drob":
+                dynamic_robots = DynamicRobots(resp[i])
+                for static in self._static_robots:
+                    for joint_id in static.joints:
+                        joint = static.joints[joint_id]
+                        joint_index = joint.dynamic_index
+                        angles = dynamic_robots.get_joint_angles(index=joint_index)[:joint.num_dof]
+                        if joint.joint_type == JointType.revolute:
+                            self.commands.append({"$type": "set_revolute_angle",
+                                                  "angle": float(angles[0]),
+                                                  "joint_id": joint_id,
+                                                  "id": static.robot_id})
+                        elif joint.joint_id == JointType.spherical:
+                            self.commands.append({"$type": "set_spherical_angles",
+                                                  "angles": TDWUtils.array_to_vector3(angles),
+                                                  "joint_id": joint_id,
+                                                  "id": static.robot_id})
+                        elif joint.joint_id == JointType.prismatic:
+                            self.commands.append({"$type": "set_prismatic_position",
+                                                  "position": float(np.radians(angles[0])),
+                                                  "joint_id": joint_id,
+                                                  "id": static.robot_id})
         # Increment the frame count.
         self.frame += 1
         # Stop here.

@@ -3,7 +3,7 @@ from zipfile import ZipFile
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 from json import dumps
-from typing import List, Optional, final
+from typing import Optional, final
 import asyncio
 from websockets.server import serve
 from websockets import WebSocketServerProtocol, ConnectionClosed
@@ -12,6 +12,9 @@ from tdw.webgl.trial_playback import TrialPlayback
 from tdw.webgl.trial_adders.end_simulation import EndSimulation
 from tdw.webgl.trial_message import TrialMessage
 from tdw.webgl.trial_message_encoder import TrialMessageEncoder
+
+
+END_MESSAGE: TrialMessage = TrialMessage(trials=[], adder=EndSimulation())
 
 
 class TrialController(ABC):

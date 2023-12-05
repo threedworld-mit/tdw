@@ -1,5 +1,6 @@
 from io import BytesIO
 import re
+import datetime
 from platform import system
 from typing import List, Union
 from zipfile import ZipFile
@@ -19,6 +20,8 @@ class TrialPlayback(AddOn):
     """
     An add-on that can be used to either read logged trial end-state information, or play it back in a non-physics controller.
     """
+
+    _EPOCH: datetime.datetime = datetime.datetime(year=1, month=1, day=1, hour=0)
 
     def __init__(self):
         """
@@ -112,6 +115,16 @@ class TrialPlayback(AddOn):
                 # Append the frame.
                 self.frames.append(resp)
 
+    def get_timestamp(self, index: int) -> datetime.datetime:
+        """
+        :param index: The index of a frame in `self.frames`.
+
+        :return: The timestamp as a Python `datetime`.
+        """
+
+        ticks = int.from_bytes(self.frames[index][-2], byteorder="little")
+        return TrialPlayback._EPOCH + datetime.timedelta(microseconds=ticks / 10)
+
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "simulate_physics",
                  "value": False}]
@@ -122,7 +135,7 @@ class TrialPlayback(AddOn):
             return
         resp: List[bytes] = self.frames[self.frame]
         # Convert output data into commands.
-        for i in range(len(resp) - 1):
+        for i in range(len(resp) - 2):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "scen":
                 scene = Scene(resp[i])

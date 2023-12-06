@@ -8,26 +8,27 @@ To run TDW on [MIT Openmind](https://openmind.mit.edu/) you must have valid Kere
 
 To login: `ssh <kerebos_name>@openmind.mit.edu` The password is your Kerebos password.
 
-1. Load conda and install `tdw`
+As a one-time setup step, install the `tdw` Python module:
 
 ```bash
-module load openmind8/anaconda/3-2022.10
 pip install --user tdw
 ```
 
-2. Allocate a GPU:
+Every time you run TDW on Openmind:
+
+1. Allocate a GPU:
 
 ```bash
 srun -p normal -n 1 -t 02:00:00 --gres=gpu:1 --pty bash
 ```
 
-3. Start Xfast remote desktop:
+2. Start Xfast remote desktop:
    - [Login into FastX 3](https://openmind7.mit.edu:3300/) with your Kerebos credentials.
    - Click the small "+" icon on the left-top corner.
-   - Click XFCE
+   - Click xterm
    - Click Launch
 
-4. Start X11:
+4. In the xterm terminal launched by XFast, run this:
 
 ```bash
 srun -p normal --x11 -t 02:00:00 --pty bash

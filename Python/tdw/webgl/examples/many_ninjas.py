@@ -9,10 +9,10 @@ from tdw.output_data import OutputData, Models, Raycast
 class ManyNinjas(TrialController):
     TARGET_OBJECT_NAMES: List[str] = ["bowl", "cone", "cube", "pyramid", "torus"]
 
-    def __init__(self):
-        super().__init__()
-        self.gravity: float = -2
+    def __init__(self, gravity: float):
+        self.gravity: float = gravity
         self.target_object_names = ManyNinjas.TARGET_OBJECT_NAMES[:]
+        super().__init__()
 
     def get_initial_message(self) -> TrialMessage:
         return TrialMessage(trials=[Ninja(model_names=ManyNinjas.TARGET_OBJECT_NAMES,

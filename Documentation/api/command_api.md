@@ -353,6 +353,7 @@
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
+| [`set_object_visibility`](#set_object_visibility) | Toggle whether an object is visible. An invisible object will still have physics colliders and respond to physics events. |
 | [`set_physic_material`](#set_physic_material) | Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to. |
 | [`set_rigidbody_constraints`](#set_rigidbody_constraints) | Set the constraints of an object's Rigidbody. |
 | [`set_vr_graspable`](#set_vr_graspable) | Make an object graspable for a VR rig, with Oculus touch controllers. Uses the AutoHand plugin for grasping and physics interaction behavior.  |
@@ -573,11 +574,14 @@
 | [`hide_object`](#hide_object) | Hide the object. |
 | [`show_object`](#show_object) | Show the object. |
 
+**Play Audio Command**
+
 **Play Audio Data Command**
 
 | Command | Description |
 | --- | --- |
 | [`play_audio_data`](#play_audio_data) | Play a sound at a position using audio sample data sent over from the controller. |
+| [`play_audio_from_streaming_assets`](#play_audio_from_streaming_assets) | Load an audio clip from the StreamingAssets directory and play it. |
 | [`play_point_source_data`](#play_point_source_data) | Make this object a ResonanceAudioSoundSource and play the audio data. |
 
 **Post Process Command**
@@ -787,6 +791,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_albedo_colors`](#send_albedo_colors) | Send the main albedo color of each object in the scene.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_euler_angles`](#send_euler_angles) | Send the rotations of each object expressed as Euler angles.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
@@ -4943,6 +4948,26 @@ Obi collision maerial combine modes.
 
 ***
 
+## **`set_object_visibility`**
+
+Toggle whether an object is visible. An invisible object will still have physics colliders and respond to physics events.
+
+
+```python
+{"$type": "set_object_visibility", "id": 1}
+```
+
+```python
+{"$type": "set_object_visibility", "id": 1, "visible": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"visible"` | bool | Toggles whether or not the object is visible. | True |
+| `"id"` | int | The unique object ID. | |
+
+***
+
 ## **`set_physic_material`**
 
 Set the physic material of an object and apply friction and bounciness values to the object. These settings can be overriden by sending the command again, or by assigning a semantic material via set_semantic_material_to.
@@ -7434,6 +7459,10 @@ Show the object.
 | --- | --- | --- | --- |
 | `"id"` | int | The unique object ID. | |
 
+# PlayAudioCommand
+
+These commands create audio clips and play them.
+
 # PlayAudioDataCommand
 
 Play audio at a position.
@@ -7446,21 +7475,50 @@ Play a sound at a position using audio sample data sent over from the controller
 
 
 ```python
-{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
+{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1}
 ```
 
 ```python
-{"$type": "play_audio_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
+{"$type": "play_audio_data", "wav_data": "string", "num_frames": 1, "id": 1, "spatialize": True, "frame_rate": 44100, "num_channels": 1, "position": {"x": 0, "y": 0, "z": 0}, "loop": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | A unique ID for this audio source. | |
-| `"position"` | Vector3 | The position of the audio source. | |
+| `"spatialize"` | bool | If True, the audio is spatialized. If False, the audio is environment audio and the position is ignored. | True |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | {"x": 0, "y": 0, "z": 0} |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
+
+***
+
+## **`play_audio_from_streaming_assets`**
+
+Load an audio clip from the StreamingAssets directory and play it.
+
+
+```python
+{"$type": "play_audio_from_streaming_assets", "path": "string", "wav_data": "string", "num_frames": 1, "id": 1}
+```
+
+```python
+{"$type": "play_audio_from_streaming_assets", "path": "string", "wav_data": "string", "num_frames": 1, "id": 1, "spatialize": True, "frame_rate": 44100, "num_channels": 1, "position": {"x": 0, "y": 0, "z": 0}, "loop": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"path"` | string | The path to the file relative to streaming assets, for example "audio/sound.wav". The file must be a .wav file. | |
+| `"spatialize"` | bool | If True, the audio is spatialized. If False, the audio is environment audio and the position is ignored. | True |
+| `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
+| `"num_frames"` | int | The number of audio frames in the audio data. | |
+| `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
+| `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | {"x": 0, "y": 0, "z": 0} |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
 
 ***
 
@@ -7470,21 +7528,22 @@ Make this object a ResonanceAudioSoundSource and play the audio data.
 
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1}
+{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1}
 ```
 
 ```python
-{"$type": "play_point_source_data", "id": 1, "position": {"x": 1.1, "y": 0.0, "z": 0}, "wav_data": "string", "num_frames": 1, "frame_rate": 44100, "num_channels": 1}
+{"$type": "play_point_source_data", "wav_data": "string", "num_frames": 1, "id": 1, "frame_rate": 44100, "num_channels": 1, "position": {"x": 0, "y": 0, "z": 0}, "loop": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"id"` | int | A unique ID for this audio source. | |
-| `"position"` | Vector3 | The position of the audio source. | |
 | `"wav_data"` | string | Base64 string representation of an audio data byte array. | |
 | `"num_frames"` | int | The number of audio frames in the audio data. | |
 | `"frame_rate"` | int | The sample rate of the audio data (default = 44100). | 44100 |
 | `"num_channels"` | int | The number of audio channels (1 or 2; default = 1). | 1 |
+| `"id"` | int | A unique ID for this audio source. | |
+| `"position"` | Vector3 | The position of the audio source. | {"x": 0, "y": 0, "z": 0} |
+| `"loop"` | bool | If True, play the audio in a continuous loop. | False |
 
 # PostProcessCommand
 
@@ -10234,6 +10293,39 @@ Options for when to send data.
 # SendObjectsDataCommand
 
 These commands send data about cached objects (models, avatars, etc.)
+
+***
+
+## **`send_albedo_colors`**
+
+Send the main albedo color of each object in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`SendAlbedoColors`](output_data.md#SendAlbedoColors)</font>
+
+```python
+{"$type": "send_albedo_colors", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_albedo_colors", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
 
 ***
 

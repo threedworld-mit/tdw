@@ -2,17 +2,25 @@
 
 # Setup TDW on a Linux server
 
+You can run the TDW build inside and outside a Docker container. There are advantages and disadvantages to either approach:
+
+If you run TDW inside a Docker container, it can't use a GPU. This means that rendering will be slow and not as photorealistic. The Docker container is mainly suitable only for projects that don't require rendering or don't have sudo access. Even then, TDW in a Docker container is relatively slow because the physics engine normally utilizes the GPU.
+
+If you run TDW outside a Docker container, it can use a GPU and run much faster. However, you need sudo access to configure the server.
+
+This document describes how to run TDW outside a Docker container. To learn how to run TDW inside a Docker container, [read this](docker.md).
+
 ## Requirements
 
+- Python 3.8+ (optionally, conda)
 - A Linux server. Typically, this is Ubuntu 20 or newer
-- Python 3.8+
 - An NVIDIA GPU
-- **Server: Up-to-date NVIDIA drivers on the** Check online for which package to install.
-- **Server: Xorg and an active X server** `sudo apt install -y gcc make pkg-config xorg`
+- **Up-to-date NVIDIA drivers** Check online for which package to install.
+- **Xorg and an active X server** `sudo apt install -y gcc make pkg-config xorg`
 - The server must have 8 or less GPUs. If there are more, you can temporarily disable them by editing xorg.conf. This is a Unity bug that they have told us they won't fix.
-- Optional: Docker
+- Ability to use sudo
 
-## You need to use sudo to install TDW 
+## Why you need to use sudo to install TDW 
 
 Installing TDW on a server requires some admin privileges.
 
@@ -22,11 +30,11 @@ Unity's rendering looks more photorealistic if the computer has a GPU. Without a
 
 The xorg.conf file will tell X displays to use a GPU. Without a valid xorg.conf file, TDW can't run with a GPU. **Generating an xorg.conf file requires sudo.**
 
-**If you want to run TDW in a Docker container, you still need sudo** because the Docker container requires an active X server and NVIDIA drivers.
+You can get around this by running TDW in a Docker container, but there are caveats to doing so. See the beginning of this document, or [read this](docker.md).
 
-## Create an xorg.conf file
+## Install Xorg
 
-The xorg.conf file tells Xorg that the computer has displays and that they can be run on GPUs.
+First, you need to create an xorg.conf file to tell Xorg that the computer has displays and that they can be run on GPUs.
 
 1. Run `nvidia-xconfig --query-gpu-info`. This will list all the GPUs and their bus ids
 2. Run `nvidia-xconfig --no-xinerama --probe-all-gpus --use-display-device=none`. This will generate xorg.conf (/etc/X11/xorg.conf) file

@@ -210,14 +210,6 @@ Open the video in VLC.
 
 If the video file size is very low (e.g. 48 bytes or 0 bytes), there was an error in video capture; see above for how to troubleshoot.
 
-## Video capture on a Linux server
-
-1. See [install guide](../setup/install.md) for Docker requirements.
-2. [Build this container.](https://github.com/threedworld-mit/tdw/blob/master/Docker/Dockerfile_audio)
-3. On the server, Make sure that xpra isn't running.
-4. In the `tdw` repo, `cd Docker` and `./start_container.sh`
-5. Run your controller
-
 ***
 
 **This is the last document in the "Video Recording" tutorial.**

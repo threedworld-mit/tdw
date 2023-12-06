@@ -4,6 +4,136 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.18
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_object_visibility` | Toggle whether an object is visible. An invisible object will still have physics colliders and respond to physics events. |
+
+## v1.12.17
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `send_albedo_colors` | Send the main albedo color of each object in the scene. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Description |
+| --- | --- |
+| `AlbedoColors` | The albedo colors of each object in the scene. |
+
+## v1.12.16
+
+### Command API
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `add_ui_canvas` | If a canvas with `id` already exists, this command fails silently instead of logging an error. |
+
+### `tdw` module
+
+- Added: `AddOn.get_early_initialization_commands()`. These commands are inserted before all others. Most add-ons shouldn't override this function; it's only useful for cases where the add-on *must* execute first, e.g. a loading screen.
+- Added new "UI Widgets", subclasses of `UI`, to `tdw.add_ons.ui_widgets`: `LoadingScreen`, `ProgressBar`, and `TimerBar`.
+- Moved `UI.add_loading_screen()` to the new `LoadingScreen` UI widget add-on.
+- Fixed: The argument parser in `Controller` allows ambiguous abbreviations.
+
+### Documentation
+
+#### New Documentation
+
+| Document                                      | Description                            |
+| --------------------------------------------- | -------------------------------------- |
+| `lessons/ui/overview.md`                      | Overview of TDW's UI.                  |
+| `lessons/ui/widgets.md`                       | UI widget documentation.               |
+| `python/add_ons/ui_widgets/loading_screen.md` | API documentation for `LoadingScreen`. |
+| `python/add_ons/ui_widgets/progress_bar.md`   | API documentation for `ProgressBar`.   |
+| `python/add_ons/ui_widgets/timer_bar.md`      | API documentation for `TimerBar`.      |
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/non_physics/ui.md` | Moved to `lessons/ui/ui.md` |
+
+## v1.12.15
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `play_audio_from_streaming_assets` | Load an audio clip from the StreamingAssets directory and play it. |
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `play_audio_data` | Added optional parameters `spatialize` and `loop`. |
+| `play_point_source_data` | Added optional parameter `loop`. |
+
+### `tdw` module
+
+- Added optional parameter `loop` to `AudioInitializer.play()` and `ResonanceAudioInitializer.play()`
+- The `position` parameter of `AudioInitializer.play()` and `ResonanceAudioInitializer.play()` can now be None, which will make the audio non-spatialized. This is useful for UI or environment sounds.
+- Added: `AudioInitializer.play_from_streaming_assets(path, position)`. Load a .wav file from the `StreamingAssets/` directory in the build and prepare to send a command to the build to play the audio.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/audio/initialize_audio.md` | Added a section for how to create non-spatialized audio. Added a section for how to load from StreamingAssets/ |
+
+## v1.12.14
+
+### `tdw` module
+
+- Fixed: The controller is often incorrect when it checks for updates.
+- Fixed: The reported build version number is incorrect, resulting in the controller downloading a new build every time it runs.
+- Fixed: Error when trying to parse any arguments in a controller script other than the defaults.
+- (Backend) removed `__version__` in setup.py (it now uses the value in `tdw.version`)
+- (Backend) Removed `tdw.release.pypi` and `tdw.release.build`
+- (Backend) Added `tdw.release.update` which contains most of the code formerly in `PyPi` and `Build`, as well as code in `Controller` used to check for updates.
+- (Backend) moved `Build.BUILD_PATH` and `Build.BUILD_ROOT_DIR` to `tdw.paths`
+
+## v1.12.13
+
+### Build
+
+- Fixed: The skybox appears pink in tdw_room_4x5 and box_room_4x5
+
+### Docker
+
+- **The TDW Docker container now uses xvfb.** This means that you can use the Docker container without needing to sudo access, Xorg, xorg.conf, etc. However, the Docker container can't use a GPU.
+
+### Documentation
+
+#### New Documentation
+
+| Document                     | Description                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| `lessons/setup/docker.md`    | How and why to run TDW in a Docker container.                   |
+
+#### Modified Documentation
+
+| Document                     | Modification                                           |
+| ---------------------------- | ----------------------------------------------------- |
+| `lessons/setup/server.md`    | Clarified why you should/shouldn't use Docker.                      |
+
 ## v1.12.12
 
 ### Build

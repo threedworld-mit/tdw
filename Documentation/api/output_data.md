@@ -49,6 +49,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 # Table of Contents
 | Data Type | Description | Identifier |
 | --- | --- | --- |
+| [AlbedoColors](#AlbedoColors) | The albedo colors of each object in the scene. | `acol` |
 | [AudioSourceDone](#AudioSourceDone) | Output data that announces that an audio source is done playing. | `ausd` |
 | [AudioSources](#AudioSources) | Audio data for each object in a scene. Note that this will only tell you if any audio is playing; it won't return the audio itself (use an external program to record audio). | `audi` |
 | [AvatarKinematic](#AvatarKinematic) | Data of a kinematic (non-physics) avatar. | `avki` |
@@ -115,6 +116,20 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [VRRig](#VRRig) | Data about the VR rig currently in the scene. | `vrri` |
 
 # API
+## AlbedoColors
+
+`a = AlbedoColors(byte_array)`
+
+**Identifier:** `acol`
+
+The albedo colors of each object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_color(index)` | The color. | `np.ndarray` |
+
 ## AudioSourceDone
 
 `a = AudioSourceDone(byte_array)`

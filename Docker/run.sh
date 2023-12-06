@@ -2,31 +2,23 @@
 
 # Usage:
 #
-# ./start_container.sh DISPLAY PORT ADDRESS
+# ./run.sh PORT ADDRESS WIDTH HEIGHT
 #
 # Example 1:
 #
-# ./start_container.sh
+# ./run.sh
 #
 # Example 2:
 #
-# ./start_container.sh :0 1071 localhost
+# ./run.sh 1071 localhost 256 256
 
-# Get the most recent version of TDW by checking the version.py script on Gitub.
-TDW_VERSION=$(curl -s https://raw.githubusercontent.com/threedworld-mit/tdw/master/Python/tdw/version.py)
-PATTERN='__version__ = \"(.*?)\"'
-[[ "$TDW_VERSION" =~ $PATTERN ]] && TDW_VERSION="${BASH_REMATCH[1]}"
-
-xhost local:docker
 
 # Run the container.
 docker run -it \
   --rm \
-  --gpus all \
-  -v /tmp/.X11-unix:/tmp/.X11-unix \
-  --user="$(id --user):$(id --group)" \
-  -e DISPLAY=${1:-':0'} \
-  -e PORT=${2:-'1071'} \
-  -e ADDRESS=${3:-'localhost'} \
+  -e PORT=${1:-'1071'} \
+  -e ADDRESS=${2:-'localhost'} \
+  -e WIDTH=${3:-'256'} \
+  -e HEIGHT=${4:-'256'} \
   --network host \
-  alters/tdw:$TDW_VERSION
+  alters/tdw:$(./tag.sh)

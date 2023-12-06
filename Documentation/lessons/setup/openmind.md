@@ -1,6 +1,6 @@
 ###### Setup
 
-# Setup TDW on MIT Openmind
+# Run TDW on MIT Openmind
 
 To run TDW on [MIT Openmind](https://openmind.mit.edu/) you must have valid Kerebos credentials.
 
@@ -8,63 +8,27 @@ To run TDW on [MIT Openmind](https://openmind.mit.edu/) you must have valid Kere
 
 To login: `ssh <kerebos_name>@openmind.mit.edu` The password is your Kerebos password.
 
-## First time setup
+1. Load conda and install `tdw`
 
 ```bash
-#!/bin/bash
-
-# Add conda and a new environment.
 module load openmind8/anaconda/3-2022.10
-conda create -n tdw
-
-# Initialize conda and "restart" bash.
-conda init bash
-exec bash
-
-# Install tdw.
-conda activate tdw
-python3 -m pip install tdw
-
-# Add apptainer (this will be used for Docker and Singularity).
-module load openmind8/apptainer/1.1.7
-export APPTAINER_CACHEDIR="/om2/user/$USER/.apptainer"
-
-# Get the current version of TDW.
-TDW_VERSION=$(python3 -c "import tdw.version; print(tdw.version.__version__)")
-
-# Build TDW's Docker container.
-singularity build --sandbox tdw docker://alters/tdw:$TDW_VERSION
+pip install --user tdw
 ```
 
-## Every time you login
-
-Activate conda:
+2. Allocate a GPU:
 
 ```bash
-#!/bin/bash
-
-module load openmind8/anaconda/3-2022.10
-conda init bash
+srun -p normal -n 1 -t 02:00:00 --gres=gpu:1 --pty bash
 ```
 
-Then:
+3. Start Xfast remote desktop:
+   - [Login into FastX 3](https://openmind7.mit.edu:3300/) with your Kerebos credentials.
+   - Click the small "+" icon on the left-top corner.
+   - Click XFCE
+   - Click Launch
+
+4. Start X11:
 
 ```bash
-conda activate tdw
+srun -p normal --x11 -t 02:00:00 --pty bash
 ```
-
-Allocate a GPU:
-
-```bash
-srun -p dicarlo -n 1 -t 02:00:00 --gres=gpu:1 --pty bash
-```
-
-Change `dicarlo` to your lab and the `-t` value to the desired time.
-
-Allocate an X session:
-
-```bash
-srun -p dicarlo --x11 -t 02:00:00 --pty bash
-```
-
-Change `dicarlo` to your lab and the `-t` value to the desired time.

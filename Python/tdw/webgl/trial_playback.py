@@ -48,6 +48,9 @@ class TrialPlayback(AddOn):
         Per-frame output data.
         """
         self.frames: List[List[bytes]] = list()
+        """:field
+        The timestamp of each frame.
+        """
         self.timestamps: List[np.datetime64] = list()
         self._avatar_ids: List[str] = list()
         self._static_robots: List[RobotStatic] = list()
@@ -127,7 +130,7 @@ class TrialPlayback(AddOn):
             return
         resp: List[bytes] = self.frames[self.frame]
         # Convert output data into commands.
-        for i in range(len(resp) - 2):
+        for i in range(len(resp)):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "scen":
                 scene = Scene(resp[i])

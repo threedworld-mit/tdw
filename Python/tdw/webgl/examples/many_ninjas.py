@@ -27,7 +27,7 @@ class ManyNinjas(TrialController):
             # Get the names of each model in the scene.
             model_names: Dict[int, str] = dict()
             for resp in playback.frames:
-                for i in range(len(resp) - 2):
+                for i in range(len(resp)):
                     r_id = OutputData.get_data_type_id(resp[i])
                     if r_id == "mode":
                         models = Models(resp[i])
@@ -37,7 +37,7 @@ class ManyNinjas(TrialController):
             # Get the ID of the object that was clicked.
             clicked_object_id: Optional[int] = None
             for resp in playback.frames:
-                for i in range(len(resp) - 2):
+                for i in range(len(resp)):
                     r_id = OutputData.get_data_type_id(resp[i])
                     if r_id == "rayc":
                         raycast = Raycast(resp[i])

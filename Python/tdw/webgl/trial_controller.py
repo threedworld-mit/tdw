@@ -28,6 +28,8 @@ class TrialController(ABC):
         self._port: int = -1
         self._log_socket: Optional[zmq.Socket] = None
         self._log_socket_connected: bool = False
+        # This is used to stop the server.
+        self._stop = asyncio.Future()
 
     @final
     def set_port(self, port: int) -> None:
@@ -77,7 +79,12 @@ class TrialController(ABC):
         Run the TrialController until it stops sending trials or the connection is lost.
         """
 
-        await serve(self._run, "", self._port, extra_headers={"Access-Control-Allow-Origin": "true"})
+        # Set the stop condition when receiving SIGTERM.
+        loop = asyncio.get_running_loop()
+        self._stop = loop.create_future()
+
+        async with serve(self._run, "", self._port, extra_headers={"Access-Control-Allow-Origin": "true"}) as server:
+            await self._stop
 
     @final
     async def _run(self, websocket: WebSocketServerProtocol) -> None:
@@ -96,15 +103,12 @@ class TrialController(ABC):
                 print(e)
                 done = True
                 continue
-            # We're done now.
-            if isinstance(self._trial_message.adder, EndSimulation):
-                done = True
-                continue
             # Receive end-of-trial data.
             try:
                 bs: bytes = await websocket.recv()
             except ConnectionClosed as e:
-                print(e)
+                if not isinstance(self._trial_message.adder, EndSimulation):
+                    print(e)
                 done = True
                 continue
             # Parse the playback.
@@ -122,10 +126,15 @@ class TrialController(ABC):
                     print(e)
                     # Send a kill signal.
                     self._trial_message = TrialMessage(trials=[], adder=EndSimulation())
+            else:
+                # Get the next trial message, which will be sent at the top of the loop.
+                self._trial_message = self.get_next_message(playback=playback)
         # Close the log socket.
         if self._log_socket_connected:
             self._log_socket_connected = False
             self._log_socket.close()
+        # Stop the server.
+        self._stop.set_result(0)
 
 
 def run(controller: TrialController) -> None:
@@ -136,9 +145,9 @@ def run(controller: TrialController) -> None:
     """
 
     # Get the port from command-line arguments.
-    parser = ArgumentParser()
-    parser.add_argument("port", type=int, help="The WebSocket port")
-    parser.add_argument("database_address", type=str, default="", help="The database address:port")
+    parser = ArgumentParser(allow_abbrev=False)
+    parser.add_argument("port", type=int, nargs='?', default=1337, help="The WebSocket port")
+    parser.add_argument("database_address", type=str,  nargs='?', default="", help="The database address:port")
     args, unknown = parser.parse_known_args()
     # Set the port.
     controller.set_port(port=args.port)

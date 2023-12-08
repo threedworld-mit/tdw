@@ -21,7 +21,7 @@ class TrialPlayback(AddOn):
     An add-on that can be used to either read logged trial end-state information, or play it back in a non-physics controller.
     """
 
-    _EPOCH: datetime.datetime = datetime.datetime(year=1, month=1, day=1, hour=0)
+    _EPOCH: np.datetime64 = np.datetime64("00001-01-01T00:00")
 
     def __init__(self):
         """
@@ -49,6 +49,7 @@ class TrialPlayback(AddOn):
         Per-frame output data.
         """
         self.frames: List[List[bytes]] = list()
+        self.timestamps: List[np.datetime64] = list()
         self._avatar_ids: List[str] = list()
         self._static_robots: List[RobotStatic] = list()
 
@@ -83,6 +84,7 @@ class TrialPlayback(AddOn):
         self.frame = 0
         self.loaded = True
         self.frames.clear()
+        self.timestamps.clear()
         self._avatar_ids.clear()
         self._static_robots.clear()
         with z.open("metadata", "r") as f:
@@ -92,7 +94,6 @@ class TrialPlayback(AddOn):
             self.success = True if metadata[0] == 1 else 0
             # Decode the trial name.
             self.name = metadata[1:].decode("utf-8")
-            print(self.name, self.success)
         # Get each frame.
         for fi in z.filelist:
             # Ignore this file because the trial name doesn't matter for playback.
@@ -107,23 +108,16 @@ class TrialPlayback(AddOn):
                 offset: int = 4 + num_elements * 4
                 # Get the output data elements.
                 resp: List[bytes] = list()
-                for i in range(num_elements - 1):
+                for i in range(num_elements):
                     # Get the length of the element.
                     element_length = int.from_bytes(frame[8 + i: 12 + i], byteorder="little")
                     resp.append(frame[offset: offset + element_length])
                     offset += element_length
                 # Append the frame.
                 self.frames.append(resp)
-
-    def get_timestamp(self, index: int) -> datetime.datetime:
-        """
-        :param index: The index of a frame in `self.frames`.
-
-        :return: The timestamp as a Python `datetime`.
-        """
-
-        ticks = int.from_bytes(self.frames[index][-2], byteorder="little")
-        return TrialPlayback._EPOCH + datetime.timedelta(microseconds=ticks / 10)
+                # Append the timestamp.
+                ticks = int.from_bytes(frame[-8:], byteorder="big")
+                self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "simulate_physics",

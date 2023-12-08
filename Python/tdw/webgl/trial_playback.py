@@ -1,6 +1,5 @@
 from io import BytesIO
 import re
-import datetime
 from platform import system
 from typing import List, Union
 from zipfile import ZipFile

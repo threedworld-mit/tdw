@@ -26,8 +26,8 @@ class TrialController(ABC):
         # Get the initial trial message.
         self._trial_message: TrialMessage = self.get_initial_message()
         self._port: int = -1
-        self._log_socket: Optional[zmq.Socket] = None
-        self._log_socket_connected: bool = False
+        self._database_socket: Optional[zmq.Socket] = None
+        self._database_socket_connected: bool = False
         # This is used to stop the server.
         self._stop = asyncio.Future()
 
@@ -43,7 +43,7 @@ class TrialController(ABC):
         self._port = port
 
     @final
-    def connect_log_socket(self, address: str) -> None:
+    def connect_database_socket(self, address: str) -> None:
         """
         Connect the socket used to send end-trial log data.
 
@@ -51,9 +51,9 @@ class TrialController(ABC):
         """
 
         context = zmq.Context()
-        self._log_socket = context.socket(zmq.REQ)
-        self._log_socket.connect(f'tcp://{address}')
-        self._log_socket_connected = True
+        self._database_socket = context.socket(zmq.REQ)
+        self._database_socket.connect(f'tcp://{address}')
+        self._database_socket_connected = True
 
     @abstractmethod
     def get_initial_message(self) -> TrialMessage:
@@ -62,6 +62,23 @@ class TrialController(ABC):
         """
 
         raise Exception()
+    
+    def on_receive(self, bs: bytes) -> None:
+        """
+        This is called when the TrialController's WebSocket receives a message.
+        By default, this function doesn't do anything.
+        You don't need to override this function, and you rarely should.
+
+        After this function is called, and if this TrialController is connected to a Database, `bs` is sent to the Database.
+        Then, `bs` will be converted into a `TrialPlayback` object, which you can then evaluate.
+
+        You should only override this function if you want to perform an intermediary operation on the raw bytes.
+        For example, you can use this function to save the raw bytes to disk (see `examples/test_scene.py`).
+        
+        :param bs: The received message.
+        """
+
+        pass
 
     @abstractmethod
     def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
@@ -106,6 +123,7 @@ class TrialController(ABC):
             # Receive end-of-trial data.
             try:
                 bs: bytes = await websocket.recv()
+                self.on_receive(bs=bs)
             except ConnectionClosed as e:
                 if not isinstance(self._trial_message.adder, EndSimulation):
                     print(e)
@@ -116,10 +134,10 @@ class TrialController(ABC):
             with ZipFile(BytesIO(bs), "r") as z:
                 playback.read_zip(z=z)
             # Send the logged end-state data.
-            if self._log_socket_connected:
+            if self._database_socket_connected:
                 try:
-                    self._log_socket.send(bs)
-                    self._log_socket.recv()
+                    self._database_socket.send(bs)
+                    self._database_socket.recv()
                     # Get the next trial message, which will be sent at the top of the loop.
                     self._trial_message = self.get_next_message(playback=playback)
                 except zmq.ZMQError as e:
@@ -130,9 +148,9 @@ class TrialController(ABC):
                 # Get the next trial message, which will be sent at the top of the loop.
                 self._trial_message = self.get_next_message(playback=playback)
         # Close the log socket.
-        if self._log_socket_connected:
-            self._log_socket_connected = False
-            self._log_socket.close()
+        if self._database_socket_connected:
+            self._database_socket_connected = False
+            self._database_socket.close()
         # Stop the server.
         self._stop.set_result(0)
 
@@ -153,6 +171,6 @@ def run(controller: TrialController) -> None:
     controller.set_port(port=args.port)
     # Connect to the database.
     if args.database_address != "":
-        controller.connect_log_socket(address=args.database_address)
+        controller.connect_database_socket(address=args.database_address)
     # Run the controller.
     asyncio.run(controller.main())

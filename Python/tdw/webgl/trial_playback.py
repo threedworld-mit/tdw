@@ -91,34 +91,31 @@ class TrialPlayback(AddOn):
         self._static_robots.clear()
         # Get each frame.
         for fi in z.filelist:
-            # Parse the metadata file.
-            if fi.filename == "metadata":
-                # Get the metadata.
-                metadata: bytes = f.read()
-                # Set the status.
-                self.success = True if metadata[0] == 1 else 0
-                # Decode the trial name.
-                self.name = metadata[1:].decode("utf-8")
-                continue
-            # Iterate through each frame's output data.
             with z.open(fi.filename, "r") as f:
-                # Read the frame data.
-                frame: bytes = f.read()
-                # Get the number of frame elements.
-                num_elements: int = int.from_bytes(frame[0: 4], byteorder="little")
-                offset: int = 4 + num_elements * 4
-                # Get the output data elements.
-                resp: List[bytes] = list()
-                for i in range(num_elements):
-                    # Get the length of the element.
-                    element_length = int.from_bytes(frame[8 + i: 12 + i], byteorder="little")
-                    resp.append(frame[offset: offset + element_length])
-                    offset += element_length
-                # Append the frame.
-                self.frames.append(resp)
-                # Append the timestamp.
-                ticks = int.from_bytes(frame[-8:], byteorder="big")
-                self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
+                data: bytes = f.read()
+                # Parse the metadata file.
+                if fi.filename == "metadata":
+                    # Set the status.
+                    self.success = True if data[0] == 1 else 0
+                    # Decode the trial name.
+                    self.name = data[1:].decode("utf-8")
+                # Iterate through each frame's output data.
+                else:
+                    # Get the number of frame elements.
+                    num_elements: int = int.from_bytes(data[0: 4], byteorder="little")
+                    offset: int = 4 + num_elements * 4
+                    # Get the output data elements.
+                    resp: List[bytes] = list()
+                    for i in range(num_elements):
+                        # Get the length of the element.
+                        element_length = int.from_bytes(data[8 + i: 12 + i], byteorder="little")
+                        resp.append(data[offset: offset + element_length])
+                        offset += element_length
+                    # Append the frame.
+                    self.frames.append(resp)
+                    # Append the timestamp.
+                    ticks = int.from_bytes(data[-8:], byteorder="big")
+                    self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "simulate_physics",
@@ -130,7 +127,7 @@ class TrialPlayback(AddOn):
             return
         resp: List[bytes] = self.frames[self.frame]
         # Convert output data into commands.
-        for i in range(len(resp)):
+        for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "scen":
                 scene = Scene(resp[i])

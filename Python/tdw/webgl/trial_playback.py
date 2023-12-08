@@ -87,17 +87,16 @@ class TrialPlayback(AddOn):
         self.timestamps.clear()
         self._avatar_ids.clear()
         self._static_robots.clear()
-        with z.open("metadata", "r") as f:
-            # Get the metadata.
-            metadata: bytes = f.read()
-            # Set the status.
-            self.success = True if metadata[0] == 1 else 0
-            # Decode the trial name.
-            self.name = metadata[1:].decode("utf-8")
         # Get each frame.
         for fi in z.filelist:
-            # Ignore this file because the trial name doesn't matter for playback.
+            # Parse the metadata file.
             if fi.filename == "metadata":
+                # Get the metadata.
+                metadata: bytes = f.read()
+                # Set the status.
+                self.success = True if metadata[0] == 1 else 0
+                # Decode the trial name.
+                self.name = metadata[1:].decode("utf-8")
                 continue
             # Iterate through each frame's output data.
             with z.open(fi.filename, "r") as f:

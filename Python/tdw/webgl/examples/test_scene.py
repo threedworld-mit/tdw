@@ -3,7 +3,7 @@ from tdw.webgl.trials.test_scene import TestScene as TestSceneTrial
 from tdw.webgl.trial_adders.at_end import AtEnd
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_test_scene/playback.zip").resolve()
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_test_scene/playback.gz").resolve()
 print(f"Data will be saved to: {path}")
 
 

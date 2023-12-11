@@ -1,5 +1,3 @@
-from io import BytesIO
-from zipfile import ZipFile
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 from json import dumps
@@ -136,8 +134,7 @@ class TrialController(ABC):
                 continue
             # Parse the playback.
             playback = TrialPlayback()
-            with ZipFile(BytesIO(bs), "r") as z:
-                playback.read_zip(z=z)
+            playback.read(bs)
             # Send the logged end-state data.
             if self._database_socket_connected:
                 try:

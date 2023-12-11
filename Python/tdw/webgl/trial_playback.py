@@ -2,7 +2,7 @@ from io import BytesIO
 import re
 from platform import system
 from typing import List, Union
-from zipfile import ZipFile
+from gzip import GzipFile
 from pathlib import Path
 import numpy as np
 from tdw.robot_data.robot_static import RobotStatic
@@ -55,67 +55,54 @@ class TrialPlayback(AddOn):
         self._avatar_ids: List[str] = list()
         self._static_robots: List[RobotStatic] = list()
 
-    def load_file(self, path: Union[str, Path]) -> None:
+    def load(self, path: Union[str, Path]) -> None:
         """
         Load a .zip file of trial playback data.
 
         :param path: The path to the .zip file.
         """
 
-        with ZipFile(TDWUtils.get_string_path(path=path), "r") as z:
-            self.read_zip(z=z)
+        self.read(TDWUtils.get_path(path).read_bytes())
 
-    def read_bytes(self, bs: bytes) -> None:
+    def read(self, bs: bytes) -> None:
         """
         Read .zip byte data.
 
         :param bs: A byte array of a trial playback .zip file.
         """
 
-        with ZipFile(BytesIO(bs), "r") as z:
-            self.read_zip(z=z)
-
-    def read_zip(self, z: ZipFile) -> None:
-        """
-        Parse an opened .zip file. This will set `success`, `loaded`, `frame`, and `frames`.
-
-        :param z: The zip file.
-        """
-
-        self.success = False
+        buffer = BytesIO(bs)
+        with GzipFile(fileobj=buffer, mode="rb") as gz:
+            gz.read()
+        # Get the length of the metadata.
+        metadata_length = int.from_bytes(buffer.read(4), byteorder="little")
+        self.success = buffer.read(1) == 1
+        self.name = str(buffer.read(metadata_length))
         self.frame = 0
         self.loaded = True
         self.frames.clear()
         self.timestamps.clear()
         self._avatar_ids.clear()
         self._static_robots.clear()
-        # Get each frame.
-        for fi in z.filelist:
-            with z.open(fi.filename, "r") as f:
-                data: bytes = f.read()
-                # Parse the metadata file.
-                if fi.filename == "metadata":
-                    # Set the status.
-                    self.success = True if data[0] == 1 else 0
-                    # Decode the trial name.
-                    self.name = data[1:].decode("utf-8")
-                # Iterate through each frame's output data.
-                else:
-                    # Get the number of frame elements.
-                    num_elements: int = int.from_bytes(data[0: 4], byteorder="little")
-                    offset: int = 4 + num_elements * 4
-                    # Get the output data elements.
-                    resp: List[bytes] = list()
-                    for i in range(num_elements):
-                        # Get the length of the element.
-                        element_length = int.from_bytes(data[8 + i: 12 + i], byteorder="little")
-                        resp.append(data[offset: offset + element_length])
-                        offset += element_length
-                    # Append the frame.
-                    self.frames.append(resp)
-                    # Append the timestamp.
-                    ticks = int.from_bytes(data[-8:], byteorder="big")
-                    self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
+        done = False
+        while not done:
+            # Get the length of the frame.
+            num_elements_bytes = buffer.read(4)
+            # End-of-file.
+            if len(num_elements_bytes) == 0:
+                done = True
+                continue
+            # Get the number of elements.
+            resp: List[bytes] = list()
+            for i in range(int.from_bytes(num_elements_bytes, byteorder="little")):
+                # Get the element size.
+                element_size = int.from_bytes(buffer.read(4), byteorder="little")
+                # Get the element.
+                resp.append(buffer.read(element_size))
+            self.frames.append(resp)
+            # Get the timestamp.
+            ticks = int.from_bytes(buffer.read(8), byteorder="big")
+            self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "simulate_physics",

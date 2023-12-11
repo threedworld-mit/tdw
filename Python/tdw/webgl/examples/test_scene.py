@@ -3,6 +3,9 @@ from tdw.webgl.trials.test_scene import TestScene as TestSceneTrial
 from tdw.webgl.trial_adders.at_end import AtEnd
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_test_scene/playback.zip").resolve()
+print(f"Data will be saved to: {path}")
+
 
 class TestScene(TrialController):
     """
@@ -17,7 +20,9 @@ class TestScene(TrialController):
 
     def on_receive(self, bs: bytes) -> None:
         # Write to disk.
-        EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_test_scene/playback.zip").resolve().write_bytes(bs)
+        if not path.parent.exists():
+            path.parent.mkdir(parents=True)
+        path.write_bytes(bs)
 
 
 if __name__ == "__main__":

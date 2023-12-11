@@ -100,7 +100,7 @@ class TrialController(ABC):
         loop = asyncio.get_running_loop()
         self._stop = loop.create_future()
 
-        async with serve(self._run, "", self._port, extra_headers={"Access-Control-Allow-Origin": "true"}) as server:
+        async with serve(self._run, "", self._port, extra_headers={"Access-Control-Allow-Origin": "true"}):
             await self._stop
 
     @final

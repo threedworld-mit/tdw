@@ -112,6 +112,7 @@ class TrialController(ABC):
         """
 
         done = False
+        ending_simulation: bool = False
         while not done:
             # Send the next trials.
             try:
@@ -123,10 +124,14 @@ class TrialController(ABC):
             # Receive end-of-trial data.
             try:
                 bs: bytes = await websocket.recv()
-                self.on_receive(bs=bs)
+                if not ending_simulation:
+                    self.on_receive(bs=bs)
             except ConnectionClosed as e:
-                if not isinstance(self._trial_message.adder, EndSimulation):
-                    print(e)
+                print(e)
+                done = True
+                continue
+            # Close the connection.
+            if ending_simulation:
                 done = True
                 continue
             # Parse the playback.
@@ -147,6 +152,7 @@ class TrialController(ABC):
             else:
                 # Get the next trial message, which will be sent at the top of the loop.
                 self._trial_message = self.get_next_message(playback=playback)
+            ending_simulation = isinstance(self._trial_message.adder, EndSimulation)
         # Close the log socket.
         if self._database_socket_connected:
             self._database_socket_connected = False

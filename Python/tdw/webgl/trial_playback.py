@@ -10,7 +10,7 @@ from tdw.robot_data.joint_type import JointType
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
                              ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView,
-                             ScreenSize, StaticRobot, DynamicRobots)
+                             ScreenSize, StaticRobot, DynamicRobots, ObjectIds, FastTransforms)
 from tdw.add_ons.add_on import AddOn
 from tdw.backend.platforms import SYSTEM_TO_S3
 
@@ -52,6 +52,7 @@ class TrialPlayback(AddOn):
         The timestamp of each frame.
         """
         self.timestamps: List[np.datetime64] = list()
+        self._object_ids: List[int] = list()
         self._avatar_ids: List[str] = list()
         self._static_robots: List[RobotStatic] = list()
 
@@ -82,6 +83,7 @@ class TrialPlayback(AddOn):
         self.loaded = True
         self.frames.clear()
         self.timestamps.clear()
+        self._object_ids.clear()
         self._avatar_ids.clear()
         self._static_robots.clear()
         done = False
@@ -128,6 +130,10 @@ class TrialPlayback(AddOn):
                                           "name": models.get_name(j),
                                           "url": TrialPlayback._get_asset_bundle_url(models.get_url(j), "models"),
                                           "id": models.get_id(j)})
+            # Get the object IDs.
+            elif r_id == "obid":
+                object_ids = ObjectIds(resp[i])
+                self._object_ids = object_ids._ids[:]
             # Print the version.
             if r_id == "vers":
                 version = Version(resp[i])
@@ -150,6 +156,16 @@ class TrialPlayback(AddOn):
                                           {"$type": "rotate_object_to",
                                            "id": object_id,
                                            "rotation": TDWUtils.array_to_vector4(transforms.get_rotation(j))}])
+            # Get fast transform data. Assume that this was sent after ObjectIds.
+            elif r_id == "ftra":
+                fast_transforms = FastTransforms(resp[i])
+                for j, object_id in zip(range(fast_transforms.get_num()), self._object_ids):
+                    self.commands.extend([{"$type": "teleport_object",
+                                           "id": object_id,
+                                           "position": TDWUtils.array_to_vector3(fast_transforms.get_position(j))},
+                                          {"$type": "rotate_object_to",
+                                           "id": object_id,
+                                           "rotation": TDWUtils.array_to_vector4(fast_transforms.get_rotation(j))}])
             # Teleport and rotate an avatar.
             elif r_id == "avki":
                 self._append_avatar_commands(avatar=AvatarKinematic(resp[i]))

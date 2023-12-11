@@ -1774,3 +1774,32 @@ class AlbedoColors(OutputData):
 
     def get_color(self, index: int) -> np.ndarray:
         return self._colors[index]
+
+
+class ObjectIds:
+    def __init__(self, b: bytes):
+        self._ids: List[int] = np.frombuffer(b, dtype=np.int32).tolist()
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return self._ids[index]
+
+
+class FastTransforms:
+    def __init__(self, b: bytes):
+        # The number of objects is the data minus the identifying prefix divided by sizeof(Vector3) + sizeof(Quaternion).
+        self._num_objects: int = (len(b) - 8) // 28
+        position_offset = 8 + self._num_objects * 12
+        self._positions: np.ndarray = np.frombuffer(b[8: position_offset], dtype=np.float32).reshape((self._num_objects, 3))
+        self._rotations: np.ndarray = np.frombuffer(b[position_offset:], dtype=np.float32).reshape((self._num_objects, 4))
+
+    def get_num(self) -> int:
+        return self._num_objects
+
+    def get_position(self, index: int) -> np.ndarray:
+        return self._positions[index]
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index]

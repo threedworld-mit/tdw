@@ -10,7 +10,8 @@ from tdw.robot_data.joint_type import JointType
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
                              ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView,
-                             ScreenSize, StaticRobot, DynamicRobots, ObjectIds, FastTransforms)
+                             ScreenSize, StaticRobot, DynamicRobots, ObjectIds, FastTransforms,
+                             AvatarIds, FastAvatars, FastImageSensors)
 from tdw.add_ons.add_on import AddOn
 from tdw.backend.platforms import SYSTEM_TO_S3
 
@@ -132,8 +133,16 @@ class TrialPlayback(AddOn):
                                           "id": models.get_id(j)})
             # Get the object IDs.
             elif r_id == "obid":
-                object_ids = ObjectIds(resp[i])
-                self._object_ids = object_ids._ids[:]
+                self._object_ids = ObjectIds(resp[i])._ids[:]
+            # Get the avatar IDs and create each avatar.
+            elif r_id == "avid":
+                avatar_ids = AvatarIds(resp[i])
+                for j in range(avatar_ids.get_num()):
+                    avatar_id = avatar_ids.get_id(j)
+                    self.commands.append({"$type": "create_avatar",
+                                          "id": avatar_id,
+                                          "type": avatar_ids.get_type(j)})
+                    self._avatar_ids.append(avatar_id)
             # Print the version.
             if r_id == "vers":
                 version = Version(resp[i])
@@ -186,6 +195,23 @@ class TrialPlayback(AddOn):
                                           "avatar_id": avatar_id,
                                           "sensor_name": image_sensors.get_sensor_name(j),
                                           "rotation": TDWUtils.tuple_to_vector4(image_sensors.get_sensor_rotation(j))})
+            # Rotate a camera.
+            elif r_id == "fims":
+                fast_image_sensors = FastImageSensors(resp[i])
+                for avatar_id, j in zip(self._avatar_ids, range(fast_image_sensors.get_num())):
+                    self.commands.append({"$type": "rotate_sensor_container_to",
+                                          "avatar_id": avatar_id,
+                                          "rotation": TDWUtils.array_to_vector4(fast_image_sensors.get_rotation(j))})
+            elif r_id == "fava":
+                fast_avatars = FastAvatars(resp[i])
+                for avatar_id, j in zip(self._avatar_ids, range(fast_avatars.get_num())):
+                    # Teleport and rotate the avatar.
+                    self.commands.extend([{"$type": "teleport_avatar_to",
+                                           "avatar_id": avatar_id,
+                                           "position": TDWUtils.array_to_vector4(fast_avatars.get_position(j))},
+                                          {"$type": "rotate_avatar_to",
+                                           "avatar_id": avatar_id,
+                                           "position": TDWUtils.array_to_vector4(fast_avatars.get_rotation(j))}])
             # Set the color of each object.
             elif r_id == "acol":
                 colors = AlbedoColors(resp[i])

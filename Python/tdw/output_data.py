@@ -1889,7 +1889,7 @@ class ObjectIds:
         return self._ids[index]
 
 
-class FastTransforms:
+class _FastTransforms:
     def __init__(self, b: bytes):
         # The number of objects is the data minus the identifying prefix divided by sizeof(Vector3) + sizeof(Quaternion).
         self._num_objects: int = (len(b) - 8) // 28
@@ -1902,6 +1902,53 @@ class FastTransforms:
 
     def get_position(self, index: int) -> np.ndarray:
         return self._positions[index]
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index]
+
+
+class FastTransforms(_FastTransforms):
+    pass
+
+
+class AvatarIds:
+    def __init__(self, b: bytes):
+        self._num: int = int.from_bytes(b[8:12], byteorder='little')
+        offset = 12 + self._num * 4
+        lengths: np.ndarray = np.frombuffer(b[12:offset], dtype=np.int32)
+        self._ids: List[str] = list()
+        for length in lengths:
+            self._ids.append(b[offset: offset + length].decode('utf-8'))
+            offset += length
+        self._types: np.ndarray = np.frombuffer(b[offset:], dtype=np.uint8)
+
+    def get_num(self) -> int:
+        return self._num
+
+    def get_id(self, index: int) -> str:
+        return self._ids[index]
+
+    def get_type(self, index: int) -> str:
+        if self._types[index] == 0:
+            return "A_Img_Caps_Kinematic"
+        elif self._types[index] == 1:
+            return "A_Simple_Body"
+        elif self._types[index] == 2:
+            return "A_First_Person"
+        else:
+            raise Exception(f"Invalid avatar type: {self._types[index]}")
+
+
+class FastAvatars(_FastTransforms):
+    pass
+
+
+class FastImageSensors:
+    def __init__(self, b: bytes):
+        self._rotations: np.ndarray = np.frombuffer(b[8:], dtype=np.float32).reshape((-1, 4))
+
+    def get_num(self) -> int:
+        return len(self._rotations)
 
     def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]

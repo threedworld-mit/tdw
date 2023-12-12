@@ -4,6 +4,7 @@ from platform import system
 from typing import List, Union
 from gzip import GzipFile
 from pathlib import Path
+from struct import unpack
 import numpy as np
 from tdw.robot_data.robot_static import RobotStatic
 from tdw.robot_data.joint_type import JointType
@@ -73,13 +74,21 @@ class TrialPlayback(AddOn):
         :param bs: A byte array of a trial playback .zip file.
         """
 
-        buffer = BytesIO(bs)
-        with GzipFile(fileobj=buffer, mode="rb") as gz:
-            gz.read()
+        f = BytesIO(bs)
+        with GzipFile(fileobj=f, mode="rb") as gz:
+            buffer: bytes = gz.read()
+        # Get the byte order.
+        index = 0
+        order = "<" if buffer[index] == 1 else ">"
+        index += 1
         # Get the length of the metadata.
-        metadata_length = int.from_bytes(buffer.read(4), byteorder="little")
-        self.success = buffer.read(1) == 1
-        self.name = str(buffer.read(metadata_length))
+        metadata_length: int = unpack(f"{order}i", buffer[index: index + 4])[0]
+        index += 4
+        self.success = buffer[index] == 1
+        index += 1
+        # Read the name.
+        self.name = buffer[index: index + (metadata_length - 1)].decode('utf-8')
+        index += metadata_length - 1
         self.frame = 0
         self.loaded = True
         self.frames.clear()
@@ -89,23 +98,44 @@ class TrialPlayback(AddOn):
         self._static_robots.clear()
         done = False
         while not done:
-            # Get the length of the frame.
-            num_elements_bytes = buffer.read(4)
             # End-of-file.
-            if len(num_elements_bytes) == 0:
+            if index >= len(buffer) or len(buffer[index:]) == 8:
                 done = True
                 continue
-            # Get the number of elements.
+            # Get the length of the frame.
+            num_elements = unpack(f"{order}i", buffer[index: index + 4])[0]
+            index += 4
+            # Get the size of each element.
+            element_sizes: List[int] = list()
+            for i in range(num_elements):
+                element_sizes.append(unpack(f"{order}i", buffer[index: index + 4])[0])
+                index += 4
             resp: List[bytes] = list()
-            for i in range(int.from_bytes(num_elements_bytes, byteorder="little")):
-                # Get the element size.
-                element_size = int.from_bytes(buffer.read(4), byteorder="little")
-                # Get the element.
-                resp.append(buffer.read(element_size))
+            # Append each element.
+            for element_size in element_sizes:
+                resp.append(buffer[index: index + element_size])
+                index += element_size
             self.frames.append(resp)
             # Get the timestamp.
-            ticks = int.from_bytes(buffer.read(8), byteorder="big")
+            ticks = unpack(f"{order}q", buffer[index: index + 8])[0]
             self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
+            index += 8
+
+    def get_fps(self) -> float:
+        """
+        :return: The average frames per second.
+        """
+
+        # Ignore the first frame.
+        if len(self.timestamps) <= 2:
+            return 0
+        deltas = list()
+        # 1 second.
+        s = np.timedelta64(1, 's')
+        # Get each delta in seconds. Start after the first frame.
+        for i in range(2, len(self.timestamps)):
+            deltas.append((self.timestamps[i] - self.timestamps[i - 1]) / s)
+        return 1 / (sum(deltas) / len(deltas))
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "simulate_physics",
@@ -133,7 +163,7 @@ class TrialPlayback(AddOn):
                                           "id": models.get_id(j)})
             # Get the object IDs.
             elif r_id == "obid":
-                self._object_ids = ObjectIds(resp[i])._ids[:]
+                self._object_ids = ObjectIds(resp[i]).get_ids()
             # Get the avatar IDs and create each avatar.
             elif r_id == "avid":
                 avatar_ids = AvatarIds(resp[i])

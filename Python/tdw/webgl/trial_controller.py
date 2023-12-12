@@ -60,8 +60,8 @@ class TrialController(ABC):
         """
 
         raise Exception()
-    
-    def on_receive(self, bs: bytes) -> None:
+
+    def _on_receive(self, bs: bytes) -> None:
         """
         This is called when the TrialController's WebSocket receives a message.
         By default, this function doesn't do anything.
@@ -123,7 +123,7 @@ class TrialController(ABC):
             try:
                 bs: bytes = await websocket.recv()
                 if not ending_simulation:
-                    self.on_receive(bs=bs)
+                    self._on_receive(bs=bs)
             except ConnectionClosed as e:
                 print(e)
                 done = True

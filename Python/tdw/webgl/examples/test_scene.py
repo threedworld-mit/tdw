@@ -18,7 +18,7 @@ class TestScene(TrialController):
     def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
         return END_MESSAGE
 
-    def on_receive(self, bs: bytes) -> None:
+    def _on_receive(self, bs: bytes) -> None:
         # Write to disk.
         if not path.parent.exists():
             path.parent.mkdir(parents=True)

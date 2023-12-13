@@ -111,7 +111,7 @@ class TrialController(ABC):
 
         done = False
         ending_simulation: bool = False
-        websocket.max_size *= 16
+        websocket.max_size = self._get_max_size()
         while not done:
             # Send the next trials.
             try:
@@ -157,6 +157,17 @@ class TrialController(ABC):
             self._database_socket.close()
         # Stop the server.
         self._stop.set_result(0)
+
+    def _get_max_size(self) -> int:
+        """
+        Override this function to set the maximum size of a WebSocket message.
+        
+        The default maximum size is 16777216 (16 MB).
+
+        :return: The maximum size of a WebSocket message in bytes.
+        """
+
+        return 16777216
 
 
 def run(controller: TrialController) -> None:

@@ -26,14 +26,14 @@ class PostProcess(object):
         return False
 
     # PostProcess
-    def AmbientOcculusionIntensity(self):
+    def AmbientOcclusionIntensity(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
     # PostProcess
-    def AmbientOcculusionThicknessModifier(self):
+    def AmbientOcclusionThicknessModifier(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
@@ -90,8 +90,8 @@ class PostProcess(object):
 
 def PostProcessStart(builder): builder.StartObject(10)
 def PostProcessAddEnabled(builder, enabled): builder.PrependBoolSlot(0, enabled, 0)
-def PostProcessAddAmbientOcculusionIntensity(builder, ambientOcculusionIntensity): builder.PrependFloat32Slot(1, ambientOcculusionIntensity, 0.0)
-def PostProcessAddAmbientOcculusionThicknessModifier(builder, ambientOcculusionThicknessModifier): builder.PrependFloat32Slot(2, ambientOcculusionThicknessModifier, 0.0)
+def PostProcessAddAmbientOcclusionIntensity(builder, ambientOcclusionIntensity): builder.PrependFloat32Slot(1, ambientOcclusionIntensity, 0.0)
+def PostProcessAddAmbientOcclusionThicknessModifier(builder, ambientOcclusionThicknessModifier): builder.PrependFloat32Slot(2, ambientOcclusionThicknessModifier, 0.0)
 def PostProcessAddAperture(builder, aperture): builder.PrependFloat32Slot(3, aperture, 0.0)
 def PostProcessAddFocusDistance(builder, focusDistance): builder.PrependFloat32Slot(4, focusDistance, 0.0)
 def PostProcessAddContrast(builder, contrast): builder.PrependFloat32Slot(5, contrast, 0.0)

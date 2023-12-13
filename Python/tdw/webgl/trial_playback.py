@@ -1,3 +1,4 @@
+from sys import byteorder
 from io import BytesIO
 import re
 from platform import system
@@ -5,6 +6,7 @@ from typing import List, Union
 from gzip import GzipFile
 from pathlib import Path
 from struct import unpack
+from array import array
 import numpy as np
 from tdw.robot_data.robot_static import RobotStatic
 from tdw.robot_data.joint_type import JointType
@@ -12,7 +14,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
                              ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView,
                              ScreenSize, StaticRobot, DynamicRobots, ObjectIds, FastTransforms,
-                             AvatarIds, FastAvatars, FastImageSensors)
+                             AvatarIds, FastAvatars, FastImageSensors, Framerate)
 from tdw.add_ons.add_on import AddOn
 from tdw.backend.platforms import SYSTEM_TO_S3
 
@@ -60,26 +62,31 @@ class TrialPlayback(AddOn):
 
     def load(self, path: Union[str, Path]) -> None:
         """
-        Load a .zip file of trial playback data.
+        Load a .gz file of trial playback data.
 
-        :param path: The path to the .zip file.
+        :param path: The path to the .gz file.
         """
 
         self.read(TDWUtils.get_path(path).read_bytes())
 
-    def read(self, bs: bytes) -> None:
+    def read(self, bs: bytes, gzip: bool = True) -> None:
         """
-        Read .zip byte data.
+        Read trial log byte data.
 
-        :param bs: A byte array of a trial playback .zip file.
+        :param bs: A byte array of a trial playback log.
+        :param gzip: If True, `bs` is compressed gzip data. If False, `bs` is uncompressed data.
         """
 
-        f = BytesIO(bs)
-        with GzipFile(fileobj=f, mode="rb") as gz:
-            buffer: bytes = gz.read()
+        if gzip:
+            f = BytesIO(bs)
+            with GzipFile(fileobj=f, mode="rb") as gz:
+                buffer: bytes = gz.read()
+        else:
+            buffer = bs
         # Get the byte order.
         index = 0
         order = "<" if buffer[index] == 1 else ">"
+        sys_order_is_little = byteorder == "little"
         index += 1
         # Get the length of the metadata.
         metadata_length: int = unpack(f"{order}i", buffer[index: index + 4])[0]
@@ -106,10 +113,18 @@ class TrialPlayback(AddOn):
             num_elements = unpack(f"{order}i", buffer[index: index + 4])[0]
             index += 4
             # Get the size of each element.
-            element_sizes: List[int] = list()
-            for i in range(num_elements):
-                element_sizes.append(unpack(f"{order}i", buffer[index: index + 4])[0])
-                index += 4
+            if sys_order_is_little:
+                num_elements_offset = num_elements * 4
+                a = array("i")
+                a.frombytes(buffer[index: index + num_elements_offset])
+                element_sizes: List[int] = a.tolist()
+                index += num_elements_offset
+            else:
+                element_sizes = list()
+                for i in range(num_elements):
+                    element_sizes.append(unpack(f"{order}i", buffer[index: index + 4])[0])
+                    index += 4
+            index += 4
             resp: List[bytes] = list()
             # Append each element.
             for element_size in element_sizes:
@@ -149,11 +164,16 @@ class TrialPlayback(AddOn):
         # Convert output data into commands.
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "fram":
+                self.commands.append({"$type": "set_target_framerate",
+                                      "framerate": Framerate(resp[i]).get_target_framerate()})
+            # Add a scene.
             if r_id == "scen":
                 scene = Scene(resp[i])
                 self.commands.append({"$type": "add_scene",
                                       "name": scene.get_name(),
                                       "url": TrialPlayback._get_asset_bundle_url(scene.get_url(), "scenes")})
+            # Add models.
             elif r_id == "mode":
                 models = Models(resp[i])
                 for j in range(models.get_num()):
@@ -238,7 +258,7 @@ class TrialPlayback(AddOn):
                     # Teleport and rotate the avatar.
                     self.commands.extend([{"$type": "teleport_avatar_to",
                                            "avatar_id": avatar_id,
-                                           "position": TDWUtils.array_to_vector4(fast_avatars.get_position(j))},
+                                           "position": TDWUtils.array_to_vector3(fast_avatars.get_position(j))},
                                           {"$type": "rotate_avatar_to",
                                            "avatar_id": avatar_id,
                                            "position": TDWUtils.array_to_vector4(fast_avatars.get_rotation(j))}])

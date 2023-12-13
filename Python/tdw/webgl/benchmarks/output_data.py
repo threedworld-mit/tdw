@@ -7,15 +7,14 @@ from tdw.tdw_utils import TDWUtils
 
 
 class OutputData(TrialController):
+    """
+    Output data benchmark.
+    """
+
     def get_initial_message(self) -> TrialMessage:
         return TrialMessage(trials=[OutputDataBenchmark()], adder=AtEnd())
 
     def _on_receive(self, bs: bytes) -> None:
-        from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-        d = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_output_data_benchmark")
-        if not d.exists():
-            d.mkdir(parents=True)
-        d.joinpath("playback.gz").write_bytes(bs)
         print("WebGL Benchmark:")
         print("Data size (MB):", TDWUtils.bytes_to_megabytes(len(bs)))
         f = BytesIO(bs)

@@ -1880,7 +1880,7 @@ class ScreenSize(OutputData):
 
 class ObjectIds:
     def __init__(self, b: bytes):
-        self._ids: List[int] = np.frombuffer(b, dtype=np.int32).tolist()
+        self._ids: List[int] = np.frombuffer(b[8:], dtype=np.int32).tolist()
 
     def get_ids(self) -> List[int]:
         return self._ids

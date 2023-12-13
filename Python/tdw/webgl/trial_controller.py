@@ -111,6 +111,7 @@ class TrialController(ABC):
 
         done = False
         ending_simulation: bool = False
+        websocket.max_size *= 16
         while not done:
             # Send the next trials.
             try:

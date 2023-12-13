@@ -5,7 +5,7 @@ from platform import system
 from typing import List, Union
 from gzip import GzipFile
 from pathlib import Path
-from struct import unpack
+from struct import unpack, pack
 from array import array
 import numpy as np
 from tdw.robot_data.robot_static import RobotStatic
@@ -103,6 +103,7 @@ class TrialPlayback(AddOn):
         self._object_ids.clear()
         self._avatar_ids.clear()
         self._static_robots.clear()
+        frame_count = 0
         done = False
         while not done:
             # End-of-file.
@@ -130,11 +131,15 @@ class TrialPlayback(AddOn):
             for element_size in element_sizes:
                 resp.append(buffer[index: index + element_size])
                 index += element_size
+            # Add the frame count.
+            resp.append(pack("<i", frame_count))
+            # Append the frame count.
             self.frames.append(resp)
             # Get the timestamp.
             ticks = unpack(f"{order}q", buffer[index: index + 8])[0]
             self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
             index += 8
+            frame_count += 1
 
     def get_fps(self) -> float:
         """

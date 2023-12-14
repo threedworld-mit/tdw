@@ -14,6 +14,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | --- | --- |
 | `set_object_visibility` | Toggle whether an object is visible. An invisible object will still have physics colliders and respond to physics events. |
 
+### `tdw` module
+
+- Fixed: `occupancy_map.occupancy_map` is incorrect due to an incorrect array shape.
+
 ## v1.12.17
 
 ### Command API

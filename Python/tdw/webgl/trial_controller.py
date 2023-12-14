@@ -24,6 +24,7 @@ class TrialController(ABC):
         # Get the initial trial message.
         self._trial_message: TrialMessage = self.get_initial_message()
         self._port: int = -1
+        self._session_id: int = -1
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
         # This is used to stop the server.
@@ -39,6 +40,16 @@ class TrialController(ABC):
         """
 
         self._port = port
+
+    @final
+    def set_session_id(self, session_id: int) -> None:
+        """
+        Set the session ID. This is used when sending data to the Database.
+
+        :param session_id: The Session ID.
+        """
+
+        self._session_id = session_id
 
     @final
     def connect_database_socket(self, address: str) -> None:
@@ -180,10 +191,14 @@ def run(controller: TrialController) -> None:
     # Get the port from command-line arguments.
     parser = ArgumentParser(allow_abbrev=False)
     parser.add_argument("port", type=int, nargs='?', default=1337, help="The WebSocket port")
+    parser.add_argument("session_id", type=int,  nargs='?', default=-1, help="The session ID")
     parser.add_argument("database_address", type=str,  nargs='?', default="", help="The database address:port")
+    parser.add_argument("")
     args, unknown = parser.parse_known_args()
     # Set the port.
     controller.set_port(port=args.port)
+    # Set the session ID.
+    controller.set_session_id(session_id=args.session_id)
     # Connect to the database.
     if args.database_address != "":
         controller.connect_database_socket(address=args.database_address)

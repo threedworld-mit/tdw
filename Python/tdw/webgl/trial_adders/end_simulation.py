@@ -13,4 +13,4 @@ class EndSimulation(NoTrials):
         (no arguments)
         """
 
-        pass
+        super().__init__()

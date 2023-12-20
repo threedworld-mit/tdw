@@ -13,4 +13,4 @@ class AtEnd(TrialAdder):
         (no arguments)
         """
 
-        pass
+        super().__init__()

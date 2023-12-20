@@ -13,4 +13,4 @@ class NoTrials(TrialAdder):
         (no arguments)
         """
 
-        pass
+        super().__init__()

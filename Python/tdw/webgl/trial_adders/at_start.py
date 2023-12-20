@@ -13,4 +13,4 @@ class AtStart(TrialAdder):
         (no arguments)
         """
 
-        pass
+        super().__init__()

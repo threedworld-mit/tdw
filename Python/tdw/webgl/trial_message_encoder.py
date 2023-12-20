@@ -17,7 +17,6 @@ class TrialMessageEncoder(JSONEncoder):
             return o.name
         elif isinstance(o, Trial):
             d = TrialMessageEncoder._get_dict_with_type(o)
-            d["status"] = d["status"].name
             return d
         elif isinstance(o, TrialAdder):
             return TrialMessageEncoder._get_dict_with_type(o)

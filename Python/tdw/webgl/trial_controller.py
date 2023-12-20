@@ -193,7 +193,6 @@ def run(controller: TrialController) -> None:
     parser.add_argument("port", type=int, nargs='?', default=1337, help="The WebSocket port")
     parser.add_argument("session_id", type=int,  nargs='?', default=-1, help="The session ID")
     parser.add_argument("database_address", type=str,  nargs='?', default="", help="The database address:port")
-    parser.add_argument("")
     args, unknown = parser.parse_known_args()
     # Set the port.
     controller.set_port(port=args.port)

@@ -99,7 +99,7 @@ class TrialPlayback(AddOn):
         self.success = buffer[index] == 1
         index += 1
         # Read the name of the trial.
-        self.name = buffer[index: index + (metadata_length - 1)].decode('utf-8')
+        self.name = buffer[index: index + (metadata_length - 1)].decode('ascii')
         index += metadata_length - 1
         self.frame = 0
         self.loaded = True
@@ -131,7 +131,6 @@ class TrialPlayback(AddOn):
                 for i in range(num_elements):
                     element_sizes.append(unpack(f"{order}i", buffer[index: index + 4])[0])
                     index += 4
-            index += 4
             resp: List[bytes] = list()
             # Append each element.
             for element_size in element_sizes:
@@ -201,9 +200,12 @@ class TrialPlayback(AddOn):
                 avatar_ids = AvatarIds(resp[i])
                 for j in range(avatar_ids.get_num()):
                     avatar_id = avatar_ids.get_id(j)
-                    self.commands.append({"$type": "create_avatar",
-                                          "id": avatar_id,
-                                          "type": avatar_ids.get_type(j)})
+                    self.commands.extend([{"$type": "create_avatar",
+                                           "id": avatar_id,
+                                           "type": avatar_ids.get_type(j)},
+                                          {"$type": "set_pass_masks",
+                                           "avatar_id": avatar_id,
+                                           "pass_masks": ["_img"]}])
                     self._avatar_ids.append(avatar_id)
             # Print the version.
             if r_id == "vers":
@@ -371,9 +373,12 @@ class TrialPlayback(AddOn):
                 avatar_type = "A_First_Person"
             else:
                 avatar_type = "A_Img_Caps_Kinematic"
-            self.commands.append({"$type": "create_avatar",
-                                  "id": avatar_id,
-                                  "type": avatar_type})
+            self.commands.extend([{"$type": "create_avatar",
+                                   "id": avatar_id,
+                                   "type": avatar_type},
+                                  {"$type": "set_pass_masks",
+                                   "avatar_id": avatar_id,
+                                   "pass_masks": ["_img"]}])
             self._avatar_ids.append(avatar_id)
         # Teleport and rotate the avatar.
         self.commands.extend([{"$type": "teleport_avatar_to",

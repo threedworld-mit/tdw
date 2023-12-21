@@ -17,6 +17,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### `tdw` module
 
 - Fixed: `occupancy_map.occupancy_map` is incorrect due to an incorrect array shape.
+- Fixed: Replicants can grasp kinematic objects that are "contained" by non-kinematic objects e.g. a kitchen counter that is underneath a plate.
 
 ## v1.12.17
 

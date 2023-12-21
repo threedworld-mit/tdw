@@ -7,6 +7,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
 from tdw.type_aliases import TARGET, POSITION, ROTATION
 from tdw.librarian import HumanoidRecord, HumanoidLibrarian
+from tdw.output_data import OutputData, StaticRigidbodies
 from tdw.replicant.image_frequency import ImageFrequency
 from tdw.replicant.collision_detection import CollisionDetection
 from tdw.replicant.arm import Arm
@@ -86,6 +87,7 @@ class ReplicantBase(AddOn, ABC):
         The [`ReplicantDynamic`](../replicant/replicant_dynamic.md) data.
         """
         self.dynamic: Optional[ReplicantDynamic] = None
+        self._kinematic_objects: List[int] = list()
 
     def get_initialization_commands(self) -> List[dict]:
         """
@@ -113,7 +115,8 @@ class ReplicantBase(AddOn, ABC):
                      "frequency": "always"},
                     {"$type": "send_framerate",
                      "frequency": "always"},
-                    {"$type": "send_replicant_segmentation_colors"}]
+                    {"$type": "send_replicant_segmentation_colors"},
+                    {"$type": "send_static_rigidbodies"}]
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -235,7 +238,8 @@ class ReplicantBase(AddOn, ABC):
                             angle=angle,
                             axis=axis,
                             relative_to_hand=relative_to_hand,
-                            offset=offset)
+                            offset=offset,
+                            kinematic_objects=self._kinematic_objects)
 
     def reset_arm(self, arm: Union[Arm, List[Arm]], duration: float = 0.25, scale_duration: bool = True) -> None:
         """
@@ -372,6 +376,16 @@ class ReplicantBase(AddOn, ABC):
         :param resp: The response from the build.
         """
 
+        # Cache kinematic states.
+        self._kinematic_objects.clear()
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "srig":
+                static_rigidbodies = StaticRigidbodies(resp[i])
+                for j in range(static_rigidbodies.get_num()):
+                    if static_rigidbodies.get_kinematic(j):
+                        self._kinematic_objects.append(static_rigidbodies.get_id(j))
+                break
         self.static = ReplicantStatic(replicant_id=self.replicant_id, resp=resp, can_walk=self._can_walk())
         # Set an initial action.
         self.action = DoNothing()

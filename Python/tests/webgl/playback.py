@@ -14,7 +14,8 @@ from tdw.webgl import TrialPlayback
 
 class Playback(Controller):
     """
-    This test measures the accuracy of a `TrialPlack` add-on in a standalone Unity context.
+    This test measures the accuracy of a `TrialPlayback` add-on in a standalone Unity context:
+    To what extent does a non-physics playback of a trial replicate the original trial?
 
     This is a standalone Python controller.
 
@@ -34,7 +35,7 @@ class Playback(Controller):
     - The Unity version
     - The average per-frame discrepancy. A number less than 1 should be considered to be negligible.
     """
-    
+
     def __init__(self, num_frames: int = 3600, port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
         self.communicate({"$type": "set_screen_size",

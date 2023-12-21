@@ -24,6 +24,7 @@ class TrialPlayback(AddOn):
     An add-on that can be used to either read logged trial end-state information, or play it back in a non-physics controller.
     """
 
+    # This is the epoch time used by C# timestamps.
     _EPOCH: np.datetime64 = np.datetime64("00001-01-01T00:00")
 
     def __init__(self):
@@ -77,15 +78,19 @@ class TrialPlayback(AddOn):
         :param gzip: If True, `bs` is compressed gzip data. If False, `bs` is uncompressed data.
         """
 
+        # Decompress the gzip data.
         if gzip:
             f = BytesIO(bs)
             with GzipFile(fileobj=f, mode="rb") as gz:
                 buffer: bytes = gz.read()
+        # Assume that the data is already decompressed.
         else:
             buffer = bs
         # Get the byte order.
         index = 0
         order = "<" if buffer[index] == 1 else ">"
+        build_order_is_little = buffer[index] == 1
+        # Get this machine's byte order.
         sys_order_is_little = byteorder == "little"
         index += 1
         # Get the length of the metadata.
@@ -93,7 +98,7 @@ class TrialPlayback(AddOn):
         index += 4
         self.success = buffer[index] == 1
         index += 1
-        # Read the name.
+        # Read the name of the trial.
         self.name = buffer[index: index + (metadata_length - 1)].decode('utf-8')
         index += metadata_length - 1
         self.frame = 0
@@ -114,12 +119,13 @@ class TrialPlayback(AddOn):
             num_elements = unpack(f"{order}i", buffer[index: index + 4])[0]
             index += 4
             # Get the size of each element.
-            if sys_order_is_little:
+            if (sys_order_is_little and build_order_is_little) or (not sys_order_is_little and not build_order_is_little):
                 num_elements_offset = num_elements * 4
                 a = array("i")
                 a.frombytes(buffer[index: index + num_elements_offset])
                 element_sizes: List[int] = a.tolist()
                 index += num_elements_offset
+            # Get the size of each element but set the byte order. This is slower.
             else:
                 element_sizes = list()
                 for i in range(num_elements):
@@ -158,6 +164,7 @@ class TrialPlayback(AddOn):
         return 1 / (sum(deltas) / len(deltas))
 
     def get_initialization_commands(self) -> List[dict]:
+        # Disable physics.
         return [{"$type": "simulate_physics",
                  "value": False}]
 
@@ -257,6 +264,7 @@ class TrialPlayback(AddOn):
                     self.commands.append({"$type": "rotate_sensor_container_to",
                                           "avatar_id": avatar_id,
                                           "rotation": TDWUtils.array_to_vector4(fast_image_sensors.get_rotation(j))})
+            # Teleport and rotate avatars.
             elif r_id == "fava":
                 fast_avatars = FastAvatars(resp[i])
                 for avatar_id, j in zip(self._avatar_ids, range(fast_avatars.get_num())):

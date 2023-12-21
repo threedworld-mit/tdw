@@ -18,7 +18,7 @@ class Grasp(Action):
     """
 
     def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, angle: Optional[float], axis: Optional[str],
-                 relative_to_hand: bool, offset: float):
+                 relative_to_hand: bool, offset: float, kinematic_objects: List[int]):
         """
         :param target: The target object ID.
         :param arm: The [`Arm`](../arm.md) value for the hand that will grasp the target object.
@@ -27,6 +27,7 @@ class Grasp(Action):
         :param axis: Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation.
         :param relative_to_hand: If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None.
         :param offset: Offset the object's position from the Replicant's hand by this distance.
+        :param kinematic_objects: The IDs of each kinematic object.
         """
 
         super().__init__()
@@ -54,6 +55,10 @@ class Grasp(Action):
         Offset the object's position from the Replicant's hand by this distance.
         """
         self.offset: float = offset
+        """:field
+        The IDs of each kinematic object.
+        """
+        self.kinematic_objects: List[int] = kinematic_objects[:]
         # We're already holding an object.
         if self.arm in dynamic.held_objects:
             self.status = ActionStatus.already_holding
@@ -84,6 +89,9 @@ class Grasp(Action):
                     overlap_ids = [o_id for o_id in overlap_ids if o_id not in replicant_ids]
                     for overlap_id in overlap_ids:
                         child_id = int(overlap_id)
+                        # Ignore kinematic objects.
+                        if child_id in self.kinematic_objects:
+                            continue
                         commands.extend([{"$type": "parent_object_to_object",
                                           "parent_id": self.target,
                                           "id": child_id},

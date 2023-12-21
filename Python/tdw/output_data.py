@@ -1700,8 +1700,8 @@ class OccupancyMap(OutputData):
     def __init__(self, b):
         super().__init__(b)
         self._shape: np.ndarray = self.data.ShapeAsNumpy()
-        self._map: np.ndarray = self.data.MapAsNumpy().reshape(self._shape)
-        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(self._shape[0], self._shape[1], 2)
+        self._map: np.ndarray = self.data.MapAsNumpy().reshape((self._shape[1], self._shape[0]))
+        self._positions: np.ndarray = self.data.PositionsAsNumpy().reshape(self._shape[1], self._shape[0], 2)
 
     def get_data(self) -> Occ.OccupancyMap:
         return Occ.OccupancyMap.GetRootAsOccupancyMap(self.bytes, 0)

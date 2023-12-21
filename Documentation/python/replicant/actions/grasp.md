@@ -24,6 +24,8 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 
 - `offset` Offset the object's position from the Replicant's hand by this distance.
 
+- `kinematic_objects` The IDs of each kinematic object.
+
 - `status` [The current status of the action.](../action_status.md) By default, this is `ongoing` (the action isn't done).
 
 - `initialized` If True, the action has initialized. If False, the action will try to send `get_initialization_commands(resp)` on this frame.
@@ -36,7 +38,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 
 #### \_\_init\_\_
 
-**`Grasp(target, arm, dynamic, angle, axis, relative_to_hand, offset)`**
+**`Grasp(target, arm, dynamic, angle, axis, relative_to_hand, offset, kinematic_objects)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -47,6 +49,7 @@ When an object is grasped, it is made kinematic. Any objects contained by the ob
 | axis |  Optional[str] |  | Continuously (per `communicate()` call, including after this action ends) rotate the grasped object around this axis relative to the hand. Options: `"pitch"`, `"yaw"`, `"roll"`. If None, the grasped object will maintain its initial rotation. |
 | relative_to_hand |  bool |  | If True, the object rotates relative to the hand holding it. If False, the object rotates relative to the Replicant. Ignored if `angle` or `axis` is None. |
 | offset |  float |  | Offset the object's position from the Replicant's hand by this distance. |
+| kinematic_objects |  List[int] |  | The IDs of each kinematic object. |
 
 #### get_initialization_commands
 

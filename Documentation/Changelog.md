@@ -13,6 +13,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 ### `tdw` module
 
 - Added: `type_aliases.PATH`, a type alias for `Union[str, Path]`. Replaced `Union[str, Path]` with `PATH` through TDW's codebase.
+- Added to `TDWUtils`: `tuple_to_vector3(tup)`, `tuple_to_vector4(tup)` and `tuple_to_color(tup)`
 
 ## v1.12.18
 

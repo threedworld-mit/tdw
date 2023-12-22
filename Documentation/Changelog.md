@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.9
+
+### Build
+
+- Fixed: `send_albedo_colors` doesn't work.
+
 ## v1.12.18
 
 ### Command API

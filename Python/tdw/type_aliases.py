@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Union, Dict
 from pathlib import Path
 import numpy as np
@@ -11,5 +12,5 @@ POSITION = Union[np.ndarray, Dict[str, float]]
 # A rotation: A numpy array or a dictionary.
 ROTATION = Union[np.ndarray, Dict[str, float]]
 
-# A string path or `Path`.
+# A string of a path or a Path-like object.
 PATH = Union[str, Path]

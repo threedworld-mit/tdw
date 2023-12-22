@@ -3,6 +3,7 @@ from typing import List, Union, TypeVar, Generic
 from pathlib import Path
 from overrides import final
 from tdw.add_ons.add_on import AddOn
+from tdw.type_aliases import PATH
 
 
 T = TypeVar("T")
@@ -13,7 +14,7 @@ class Writer(AddOn, Generic[T], ABC):
     Abstract base class for per-frame data writers.
     """
     
-    def __init__(self, output_directory: Union[str, Path], zero_padding: int = 8):
+    def __init__(self, output_directory: PATH, zero_padding: int = 8):
         """
         :param output_directory: The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created.
         :param zero_padding: How many zeros to append to the file name. By default, the name of the file of the first frame will be `00000000.txt`.

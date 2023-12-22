@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from base64 import b64encode
-from typing import List, Union, Optional
+from typing import List, Optional
 from pathlib import Path
 import wave
 import numpy as np
 from overrides import final
-from tdw.type_aliases import POSITION
+from tdw.type_aliases import POSITION, PATH
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.add_on import AddOn
@@ -61,7 +61,7 @@ class AudioInitializerBase(AddOn, ABC):
         return
 
     @final
-    def play(self, path: Union[str, Path], position: Optional[POSITION], audio_id: int = None,
+    def play(self, path: PATH, position: Optional[POSITION], audio_id: int = None,
              object_id: int = None, loop: bool = False) -> None:
         """
         Load a .wav file and prepare to send a command to the build to play the audio.

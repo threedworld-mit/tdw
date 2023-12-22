@@ -71,8 +71,8 @@ _Returns:_  A list of commands that will initialize this add-on.
 
 **`self.load(path)`**
 
-Load a log file. This will deserialize all of the commands in the log file and add each list of commands to `self.record`. Per `communicate()` call (i.e. when `on_send(resp)` is invoked), this add-on will pop the first list of commands and add it to `self.commands`; in other words, it will send each list of commands exactly as they were sent when they were logged.
+Load a log file. This will deserialize all the commands in the log file and add each list of commands to `self.record`. Per `communicate()` call (i.e. when `on_send(resp)` is invoked), this add-on will pop the first list of commands and add it to `self.commands`; in other words, it will send each list of commands exactly as they were sent when they were logged.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| path |  PATH |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |

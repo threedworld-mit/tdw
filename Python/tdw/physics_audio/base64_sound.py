@@ -1,9 +1,9 @@
 import base64
 from pathlib import Path
-from typing import Union
 import wave
 import numpy as np
 from tdw.audio_constants import SAMPLE_RATE, CHANNELS, SAMPLE_WIDTH
+from tdw.type_aliases import PATH
 
 
 class Base64Sound:
@@ -31,7 +31,7 @@ class Base64Sound:
         """
         self.length: int = len(self.bytes)
 
-    def write(self, path: Union[str, Path]) -> None:
+    def write(self, path: PATH) -> None:
         """
         Write audio to disk.
 

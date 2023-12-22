@@ -44,6 +44,21 @@ Convert a numpy array to a Vector3.
 
 _Returns:_  A Vector3, e.g. `{"x": 0, "y": 0, "z": 0}`
 
+#### tuple_to_vector3
+
+**`TDWUtils.tuple_to_vector3(tup)`**
+
+_(Static)_
+
+Convert a 3-element tuple to a Vector3.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tup |  Tuple[float, float, float] |  | The tuple. |
+
+_Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0}`
+
 #### vector4_to_array
 
 **`TDWUtils.vector4_to_array(vector4)`**
@@ -74,6 +89,21 @@ Convert a numpy array to a Vector4.
 
 _Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
 
+#### tuple_to_vector4
+
+**`TDWUtils.tuple_to_vector4(tup)`**
+
+_(Static)_
+
+Convert a 4-element tuple to a Vector4.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tup |  Tuple[float, float, float, float] |  | The tuple. |
+
+_Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
+
 #### color_to_array
 
 **`TDWUtils.color_to_array(color)`**
@@ -101,6 +131,21 @@ Convert a numpy array to a RGBA Color. If no A value is supplied it will default
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | arr |  np.ndarray |  | The array. |
+
+_Returns:_  A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
+
+#### tuple_to_color
+
+**`TDWUtils.tuple_to_color(tup)`**
+
+_(Static)_
+
+Convert a 4-element tuple to a Color.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tup |  Tuple[float, float, float, float] |  | The tuple. |
 
 _Returns:_  A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
 
@@ -644,7 +689,7 @@ Asset bundles will only be downloaded for your operating system. For example, if
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The root directory of all of the asset bundles and librarian files. |
+| path |  PATH |  | The root directory of all of the asset bundles and librarian files. |
 | models |  Dict[str, List[str] |  | A dictionary of models. Key = The model library, for example `"models_core.json"`. Value = A list of model names. |
 | scenes |  Dict[str, List[str] |  | A dictionary of scenes. Key = The model library, for example `"scenes.json"`. Value = A list of scene names. |
 | materials |  Dict[str, List[str] |  | A dictionary of materials. Key = The material library, for example `"materials_med.json"`. Value = A list of material names. |
@@ -667,13 +712,13 @@ If any of the parameters of this function are left as `None`, the default remote
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| model_library |  Union[str, Path] | None | The absolute path to a local model library file. |
-| scene_library |  Union[str, Path] | None | The absolute path to a local scene library file. |
-| material_library |  Union[str, Path] | None | The absolute path to a local material library file. |
-| hdri_skybox_library |  Union[str, Path] | None | The absolute path to a local HDRI skybox library file. |
-| robot_library |  Union[str, Path] | None | The absolute path to a local robot library file. |
-| humanoid_library |  Union[str, Path] | None | The absolute path to a local humanoid library file. |
-| humanoid_animation_library |  Union[str, Path] | None | The absolute path to a local humanoid animation library file. |
+| model_library |  PATH  | None | The absolute path to a local model library file. |
+| scene_library |  PATH  | None | The absolute path to a local scene library file. |
+| material_library |  PATH  | None | The absolute path to a local material library file. |
+| hdri_skybox_library |  PATH  | None | The absolute path to a local HDRI skybox library file. |
+| robot_library |  PATH  | None | The absolute path to a local robot library file. |
+| humanoid_library |  PATH  | None | The absolute path to a local humanoid library file. |
+| humanoid_animation_library |  PATH  | None | The absolute path to a local humanoid animation library file. |
 
 #### get_corners_from_wall
 
@@ -747,7 +792,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | A path as either a string or a `Path`. |
+| path |  PATH |  | A path as either a string or a `Path`. |
 
 _Returns:_  The path as a `Path`.
 
@@ -760,7 +805,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | A path as either a string or a `Path`. |
+| path |  PATH |  | A path as either a string or a `Path`. |
 
 _Returns:_  The path as a string.
 

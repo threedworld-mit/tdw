@@ -97,7 +97,7 @@ Launch Vantage in headless mode and render scene file, updating for animation if
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| output_directory |  Union[str, Path] |  | The root output directory. If `render_host == "localhost"`, this directory will be created if it doesn't already exist. On a remote server, the directory must already exist. |
+| output_directory |  PATH |  | The root output directory. If `render_host == "localhost"`, this directory will be created if it doesn't already exist. On a remote server, the directory must already exist. |
 | render_host |  str  | "localhost" | The render host IP address. |
 | port |  int  | 1204 | The socket port for the render host. This is only used for remote SSHing. |
 | renderer_path |  str  | "C/Program Files/Chaos Group/Vantage/vantage_console.exe" | The file path to the Vantage console executable. |

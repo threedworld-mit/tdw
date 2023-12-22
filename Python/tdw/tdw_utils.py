@@ -137,6 +137,18 @@ class TDWUtils:
         return {"r": arr[0], "g": arr[1], "b": arr[2], "a": 1 if len(arr) == 3 else arr[3]}
 
     @staticmethod
+    def tuple_to_color(tup: Tuple[float, float, float, float]) -> Dict[str, float]:
+        """
+        Convert a 4-element tuple to a Color.
+
+        :param tup: The tuple.
+
+        :return A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
+        """
+
+        return {"r": tup[0], "g": tup[1], "b": tup[2], "a": tup[3]}
+
+    @staticmethod
     def get_random_point_in_circle(center: np.ndarray, radius: float) -> np.ndarray:
         """
         Get a random point in a circle, defined by a center and radius.
@@ -800,7 +812,7 @@ class TDWUtils:
         return ox * ox + oy * oy <= radius * radius
 
     @staticmethod
-    def download_asset_bundles(path: Union[str, Path], models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
+    def download_asset_bundles(path: PATH, models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
                                materials: Dict[str, List[str]] = None, hdri_skyboxes: Dict[str, List[str]] = None,
                                robots: Dict[str, List[str]] = None, humanoids: Dict[str, List[str]] = None,
                                humanoid_animations: Dict[str, List[str]] = None) -> None:
@@ -898,10 +910,10 @@ class TDWUtils:
             pbar.close()
 
     @staticmethod
-    def set_default_libraries(model_library: Union[str, Path] = None, scene_library: Union[str, Path] = None,
-                              material_library: Union[str, Path] = None, hdri_skybox_library: Union[str, Path] = None,
-                              robot_library: Union[str, Path] = None, humanoid_library: Union[str, Path] = None,
-                              humanoid_animation_library: Union[str, Path] = None) -> None:
+    def set_default_libraries(model_library: PATH = None, scene_library: PATH = None,
+                              material_library: PATH = None, hdri_skybox_library: PATH = None,
+                              robot_library: PATH = None, humanoid_library: PATH = None,
+                              humanoid_animation_library: PATH = None) -> None:
         """
         Set the path to the default libraries.
 

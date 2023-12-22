@@ -110,9 +110,10 @@ class TrialPlayback(AddOn):
         self._static_robots.clear()
         frame_count = 0
         done = False
+        buffer_len = len(buffer)
         while not done:
             # End-of-file.
-            if index >= len(buffer) or len(buffer[index:]) == 8:
+            if index >= len(buffer) or buffer_len - index == 8:
                 done = True
                 continue
             # Get the length of the frame.

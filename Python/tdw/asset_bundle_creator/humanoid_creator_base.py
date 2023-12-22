@@ -1,9 +1,9 @@
 from abc import ABC
-from typing import Union, List
-from pathlib import Path
+from typing import List
 from overrides import final
 from tdw.tdw_utils import TDWUtils
 from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
+from tdw.type_aliases import PATH
 
 
 class HumanoidCreatorBase(AssetBundleCreator, ABC):
@@ -12,7 +12,7 @@ class HumanoidCreatorBase(AssetBundleCreator, ABC):
     """
 
     @final
-    def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
+    def source_file_to_asset_bundles(self, name: str, source_file: PATH, output_directory: PATH,
                                      targets: List[str] = None) -> None:
         """
         Convert a source file into 3 asset bundle files (Windows, OS X, and Linux).
@@ -30,7 +30,7 @@ class HumanoidCreatorBase(AssetBundleCreator, ABC):
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
     @final
-    def source_directory_to_asset_bundles(self, source_directory: Union[str, Path], output_directory: Union[str, Path],
+    def source_directory_to_asset_bundles(self, source_directory: PATH, output_directory: PATH,
                                           library_description: str = None, overwrite: bool = False, continue_on_error: bool = True,
                                           search_pattern: str = None, cleanup: bool = True, targets: List[str] = None) -> None:
         """

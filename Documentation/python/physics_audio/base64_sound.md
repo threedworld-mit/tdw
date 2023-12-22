@@ -36,5 +36,5 @@ Write audio to disk.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to the .wav file. |
+| path |  PATH |  | The path to the .wav file. |
 

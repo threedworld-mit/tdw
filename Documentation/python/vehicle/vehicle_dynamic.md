@@ -44,7 +44,7 @@ The `img` pass is either a .jpg. The `id` and `depth` passes are .png files.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| output_directory |  Union[str, Path] |  | The directory that the images will be saved to. |
+| output_directory |  PATH |  | The directory that the images will be saved to. |
 
 #### get_pil_image
 

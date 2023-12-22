@@ -10,6 +10,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Fixed: `send_albedo_colors` doesn't work.
 
+### `tdw` module
+
+- Added to `TDWUtils`: `tuple_to_vector3(tup)`, `tuple_to_vector4(tup)` and `tuple_to_color(tup)`
+
 ## v1.12.18
 
 ### Command API

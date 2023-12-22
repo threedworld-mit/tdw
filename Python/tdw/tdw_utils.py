@@ -15,6 +15,7 @@ from tdw.librarian import ModelRecord, ModelLibrarian, SceneLibrarian, MaterialL
     RobotLibrarian, HumanoidLibrarian, HumanoidAnimationLibrarian
 from tdw.cardinal_direction import CardinalDirection
 from tdw.ordinal_direction import OrdinalDirection
+from tdw.type_aliases import PATH
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
@@ -64,6 +65,18 @@ class TDWUtils:
         return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2])}
 
     @staticmethod
+    def tuple_to_vector3(tup: Tuple[float, float, float]) -> Dict[str, float]:
+        """
+        Convert a 3-element tuple to a Vector3.
+
+        :param tup: The tuple.
+
+        :return A Vector4, e.g. `{"x": 0, "y": 0, "z": 0}`
+        """
+
+        return {"x": tup[0], "y": tup[1], "z": tup[2]}
+
+    @staticmethod
     def vector4_to_array(vector4: Dict[str, float]) -> np.ndarray:
         """
         Convert a Vector4 to a numpy array.
@@ -88,6 +101,18 @@ class TDWUtils:
         return {"x": float(arr[0]), "y": float(arr[1]), "z": float(arr[2]), "w": float(arr[3])}
 
     @staticmethod
+    def tuple_to_vector4(tup: Tuple[float, float, float, float]) -> Dict[str, float]:
+        """
+        Convert a 4-element tuple to a Vector4.
+
+        :param tup: The tuple.
+
+        :return A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
+        """
+
+        return {"x": tup[0], "y": tup[1], "z": tup[2], "w": tup[3]}
+
+    @staticmethod
     def color_to_array(color: Dict[str, float]) -> np.ndarray:
         """
         Convert a RGB Color to a numpy array.
@@ -110,6 +135,18 @@ class TDWUtils:
         """
 
         return {"r": arr[0], "g": arr[1], "b": arr[2], "a": 1 if len(arr) == 3 else arr[3]}
+
+    @staticmethod
+    def tuple_to_color(tup: Tuple[float, float, float, float]) -> Dict[str, float]:
+        """
+        Convert a 4-element tuple to a Color.
+
+        :param tup: The tuple.
+
+        :return A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
+        """
+
+        return {"r": tup[0], "g": tup[1], "b": tup[2], "a": tup[3]}
 
     @staticmethod
     def get_random_point_in_circle(center: np.ndarray, radius: float) -> np.ndarray:
@@ -1011,7 +1048,7 @@ class TDWUtils:
                 "y": monitor.y + monitor.height // 2 - window_height // 2 + title_bar_height}
 
     @staticmethod
-    def get_path(path: Union[str, Path]) -> Path:
+    def get_path(path: PATH) -> Path:
         """
         :param path: A path as either a string or a `Path`.
 
@@ -1026,7 +1063,7 @@ class TDWUtils:
             raise Exception(path)
 
     @staticmethod
-    def get_string_path(path: Union[str, Path]) -> str:
+    def get_string_path(path: PATH) -> str:
         """
         :param path: A path as either a string or a `Path`.
 

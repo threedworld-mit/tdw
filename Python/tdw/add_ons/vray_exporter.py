@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Dict, Union
+from typing import List, Dict
 import re
 import zipfile
 import subprocess
@@ -13,6 +13,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.version import __version__
 from tdw.output_data import OutputData, TransformMatrices, SegmentationColors, AvatarTransformMatrices, FieldOfView
 from tdw.vray_data.vray_matrix import VRayMatrix, get_converted_node_matrix, get_converted_camera_matrix
+from tdw.type_aliases import PATH
 
 
 class VRayExporter(AddOn):
@@ -63,7 +64,7 @@ class VRayExporter(AddOn):
         self._frame_count: int = 0
         self._downloaded_data: bool = False
 
-    def launch_renderer(self, output_directory: Union[str, Path], render_host: str = "localhost", port: int = 1204, 
+    def launch_renderer(self, output_directory: PATH, render_host: str = "localhost", port: int = 1204,
                         renderer_path: str = "C:/Program Files/Chaos Group/Vantage/vantage_console.exe") -> None:
         """
         Launch Vantage in headless mode and render scene file, updating for animation if necessary.

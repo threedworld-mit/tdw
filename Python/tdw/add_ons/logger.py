@@ -1,8 +1,9 @@
 from pathlib import Path
-from typing import List, Union
+from typing import List
 from json import dumps
 from tdw.output_data import OutputData, LogMessage
 from tdw.add_ons.add_on import AddOn
+from tdw.type_aliases import PATH
 
 
 class Logger(AddOn):
@@ -24,7 +25,7 @@ class Logger(AddOn):
     The log file can be automatically re-loaded into another controller using the [`LogPlayback`](log_playback.md) add-on.
     """
 
-    def __init__(self, path: Union[str, Path], overwrite: bool = True, log_commands_in_build: bool = False):
+    def __init__(self, path: PATH, overwrite: bool = True, log_commands_in_build: bool = False):
         """
         :param path: The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         :param overwrite: If True and a log file already exists at `path`, overwrite the file.
@@ -65,7 +66,7 @@ class Logger(AddOn):
         with self._path.open("at", encoding="utf-8") as f:
             f.write(dumps(commands) + "\n")
 
-    def reset(self, path: Union[str, Path], overwrite: bool = True) -> None:
+    def reset(self, path: PATH, overwrite: bool = True) -> None:
         """
         Reset the logger.
 

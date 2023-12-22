@@ -1,6 +1,6 @@
-from pathlib import Path
-from typing import Union, List
+from typing import List
 from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
+from tdw.type_aliases import PATH
 
 
 class CompositeObjectCreator(AssetBundleCreator):
@@ -12,7 +12,7 @@ class CompositeObjectCreator(AssetBundleCreator):
     This class should only be used for *non*-robot .urdf files such as PartNet Mobility files.
     """
 
-    def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
+    def source_file_to_asset_bundles(self, name: str, source_file: PATH, output_directory: PATH,
                                      vhacd_resolution: int = 800000, wnid: str = None, wcategory: str = None,
                                      cleanup: bool = True, targets: List[str] = None) -> None:
         """
@@ -74,7 +74,7 @@ class CompositeObjectCreator(AssetBundleCreator):
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
-    def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
+    def source_file_to_prefab(self, name: str, source_file: PATH, output_directory: PATH,
                               vhacd_resolution: int = None) -> None:
         """
         Convert a source .urdf file into a .prefab file. Call this method when you intend to modify the .prefab file by hand before building asset bundles, e.g.:

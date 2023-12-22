@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 import platform
-from typing import List, Union, Optional
+from typing import List, Optional
 from subprocess import call, check_output, CalledProcessError, Popen
 import os
 import re
@@ -11,6 +11,7 @@ from overrides import final
 from requests import get
 from tdw.tdw_utils import TDWUtils
 from tdw.backend.platforms import SYSTEM_TO_S3
+from tdw.type_aliases import PATH
 
 
 class AssetBundleCreator(ABC):
@@ -29,7 +30,7 @@ class AssetBundleCreator(ABC):
     _BUNDLE_VERSION_REGEX: str = "bundleVersion: (.*)"
     _VERSION_CHECKED: bool = False
 
-    def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None,
+    def __init__(self, quiet: bool = False, display: str = ":0", unity_editor_path: PATH = None,
                  check_version: bool = True):
         """
         :param quiet: If True, don't print any messages to console.
@@ -149,7 +150,7 @@ class AssetBundleCreator(ABC):
                 "-batchmode"]
 
     @final
-    def call_unity(self, method: str, args: List[str], log_path: Union[str, Path], class_name: str = None) -> None:
+    def call_unity(self, method: str, args: List[str], log_path: PATH, class_name: str = None) -> None:
         """
         Execute a call to Unity Editor. If `self.quiet == False` this will continuously print the log file.
 
@@ -190,7 +191,7 @@ class AssetBundleCreator(ABC):
             self._run_process_and_print_log(process=Popen(unity_call, env=self._env, shell=shell), log_path=log_path)
 
     @final
-    def prefab_to_asset_bundles(self, name: str, output_directory: Union[str, Path], targets: List[str] = None) -> None:
+    def prefab_to_asset_bundles(self, name: str, output_directory: PATH, targets: List[str] = None) -> None:
         """
         Build asset bundles from a .prefab file. This is useful when you want to edit the .prefab file by hand, e.g.:
 
@@ -252,7 +253,7 @@ class AssetBundleCreator(ABC):
                         log_path="")
 
     @staticmethod
-    def asset_bundles_exist(name: str, directory: Union[str, Path]) -> bool:
+    def asset_bundles_exist(name: str, directory: PATH) -> bool:
         """
         Check whether asset bundles exist for all platforms in the source directory.
 
@@ -292,7 +293,7 @@ class AssetBundleCreator(ABC):
         raise Exception()
 
     @staticmethod
-    def _run_process_and_print_log(process: Popen, log_path: Union[str, Path], sleep_time: float = 1) -> None:
+    def _run_process_and_print_log(process: Popen, log_path: PATH, sleep_time: float = 1) -> None:
         """
         Poll a process to check if it is completed. If not, try to read a log file. Print the new text of the log file.
 
@@ -342,7 +343,7 @@ class AssetBundleCreator(ABC):
             return previous_log_text
 
     @staticmethod
-    def _add_library_args(args: List[str], library_path: Union[str, Path] = None, library_description: str = None) -> List[str]:
+    def _add_library_args(args: List[str], library_path: PATH = None, library_description: str = None) -> List[str]:
         """
         Add a `-library_path=path` argument to a list of arguments.
 
@@ -376,7 +377,7 @@ class AssetBundleCreator(ABC):
         return args
 
     @staticmethod
-    def _get_source_destination_args(name: str, source: Union[str, Path], destination: Union[str, Path]) -> List[str]:
+    def _get_source_destination_args(name: str, source: PATH, destination: PATH) -> List[str]:
         """
         Parse a source path and a destination path into Unity command line arguments.
 
@@ -392,7 +393,7 @@ class AssetBundleCreator(ABC):
                 f'-output_directory="{TDWUtils.get_string_path(destination)}"']
 
     @staticmethod
-    def _get_log_path(output_directory: Union[str, Path]) -> Path:
+    def _get_log_path(output_directory: PATH) -> Path:
         """
         :param output_directory: The output directory.
 

@@ -61,7 +61,7 @@ c.communicate({"$type": "terminate"})
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to the output directory. |
+| path |  PATH |  | The path to the output directory. |
 | avatar_ids |  List[str] | None | The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images. Note that these avatars must already exist in the scene (if you've added the avatars via a [`ThirdPersonCamera` add-on](third_person_camera.md), you must add the `ThirdPersonCamera` first, *then* `ImageCapture`). |
 | png |  bool  | False | If True, images will be lossless png files. If False, images will be jpgs. Usually, jpg is sufficient. |
 | pass_masks |  List[str] | None | A list of image passes that will be captured by the avatars. If None, defaults to `["_img"]`. For a description of each of pass mask, [read this](https://github.com/threedworld-mit/tdw/blob/master/Documentation/api/command_api.md#set_pass_masks). |

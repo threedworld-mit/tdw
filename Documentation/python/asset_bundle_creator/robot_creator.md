@@ -36,7 +36,7 @@ Download a .urdf or .xacro file and convert it into an asset bundle that is usab
 | --- | --- | --- | --- |
 | quiet |  bool  | False | If True, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
-| unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
+| unity_editor_path |  PATH  | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 | check_version |  bool  | True | If True, check if there is an update to the Unity Editor project. |
 
 #### get_base_unity_call
@@ -57,7 +57,7 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 | --- | --- | --- | --- |
 | method |  str |  | The name of the method. |
 | args |  List[str] |  | Arguments to send to Unity Editor in addition to those send via `self.get_base_unity_call()` and `-executeMethod`. |
-| log_path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| log_path |  PATH |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | class_name |  str  | None | The name of the Unity C# class. If None, a default class name will be used. See: `self.get_creator_class_name()`. |
 
 #### prefab_to_asset_bundles
@@ -102,7 +102,7 @@ output_directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
@@ -137,7 +137,7 @@ directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the asset bundle. |
-| directory |  Union[str, Path] |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| directory |  PATH |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 
 _Returns:_  True if asset bundles exist for all platforms in the source directory.
 
@@ -194,13 +194,13 @@ output_directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | url |  str |  | The URL of a .urdf or a .xacro file. |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | required_repo_urls |  Dict[str, str] | None | A dictionary of description folder names and repo URLs outside of the robot's repo that are required to create the robot. This is only required for .xacro files that reference outside repos. For example, the Sawyer robot requires this to add the gripper: `{"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"}` |
 | xacro_args |  Dict[str, str] | None | Names and values for the `arg` tags in the .xacro file (ignored if this is a .urdf file). For example, the Sawyer robot requires this to add the gripper: `{"electric_gripper": "true"}` |
 | immovable |  bool  | True | If True, the base of the robot is immovable. |
 | description_infix |  str  | None | The name of the description infix within the .urdf URL, such as `fetch_description`. Only set this if the urdf URL is non-standard; otherwise `RobotCreator` should be able to find this automatically. |
 | branch |  str  | None | The name of the branch of the repo. If None, defaults to `"master"`. |
-| library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
+| library_path |  PATH  | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 | source_description |  str  | None | A description of the source of the .urdf file, for example the repo URL. |
 | targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
@@ -264,10 +264,10 @@ output_directory/
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| source_file |  Union[str, Path] |  | The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| source_file |  PATH |  | The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | immovable |  bool  | True | If True, the base of the robot is immovable. |
-| library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
+| library_path |  PATH  | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 | source_description |  str  | None | A description of the source of the .urdf file, for example the repo URL. |
 | targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
@@ -332,8 +332,8 @@ The .urdf file must already exist on this machine and its meshes must be at the 
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| urdf_path |  Union[str, Path] |  | The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| urdf_path |  PATH |  | The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | immovable |  bool  | True | If True, the base of the robot will be immovable by default (see the `set_immovable` command). |
 
 #### create_record
@@ -376,8 +376,8 @@ library.json
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the robot. |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
-| library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| library_path |  PATH  | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `RobotLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 | source_description |  str  | None | A description of the source of the .urdf file, for example the repo URL. |
 | immovable |  bool  | True | If True, the base of the robot is immovable. |
@@ -391,7 +391,7 @@ _(Static)_
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| urdf_path |  Union[str, Path] |  | The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| urdf_path |  PATH |  | The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 
 _Returns:_  The expected name of the robot.
 
@@ -413,7 +413,7 @@ This function won't alter the original .urdf file and will create a new .urdf fi
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| urdf_path |  Union[str, Path] |  | The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| urdf_path |  PATH |  | The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | remove_gazebo |  bool  | True | If True, remove all `<gazebo>` elements. This should usually be True. |
 | simplify_namespaces |  bool  | True | If True, simplify the XML namespaces. This should usually be True. |
 | link_name_excludes_regex |  List[str] | None | A list of regular expressions to search for in links, for example `["_gazebo_"]`. Link names that match this will be removed. |

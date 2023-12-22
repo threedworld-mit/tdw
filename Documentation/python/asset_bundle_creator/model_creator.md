@@ -47,7 +47,7 @@ a.source_file_to_asset_bundles(name="cube",
 | --- | --- | --- | --- |
 | quiet |  bool  | False | If True, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
-| unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
+| unity_editor_path |  PATH  | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 | check_version |  bool  | True | If True, check if there is an update to the Unity Editor project. |
 
 #### get_base_unity_call
@@ -68,7 +68,7 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 | --- | --- | --- | --- |
 | method |  str |  | The name of the method. |
 | args |  List[str] |  | Arguments to send to Unity Editor in addition to those send via `self.get_base_unity_call()` and `-executeMethod`. |
-| log_path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| log_path |  PATH |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | class_name |  str  | None | The name of the Unity C# class. If None, a default class name will be used. See: `self.get_creator_class_name()`. |
 
 #### prefab_to_asset_bundles
@@ -113,7 +113,7 @@ output_directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
@@ -148,7 +148,7 @@ directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the asset bundle. |
-| directory |  Union[str, Path] |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| directory |  PATH |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 
 _Returns:_  True if asset bundles exist for all platforms in the source directory.
 
@@ -206,14 +206,14 @@ library.json
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model. This can be the same as the source file name minus the extension. |
-| source_file |  Union[str, Path] |  | The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| source_file |  PATH |  | The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | vhacd_resolution |  int  | 800000 | The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes. |
 | internal_materials |  bool  | False | If True, the visual materials of the model are located within the source file. If False, the materials are located in `Materials/` directory next to the source file. |
 | wnid |  str  | None | The WordNet ID of the model. Can be None. |
 | wcategory |  str  | None | The WordNet category of the model. Can be None. |
 | scale_factor |  float  | 1 | The model will be scaled by this factor. |
-| library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
+| library_path |  PATH  | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 | cleanup |  bool  | True | If True, delete intermediary files such as the prefab in the `asset_bundle_creator` Unity Editor project. |
 | write_physics_quality |  bool  | False | If True, launch a controller and build to calculate the hull collider accuracy. Write the result to `output_directory/record.json` and to `library_path` if `library_path` is not None. |
@@ -276,8 +276,8 @@ Note: This method does *not* call `self.write_physics_quality()` or `self.valida
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| source_directory |  Union[str, Path] |  | The root directory of the source files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| source_directory |  PATH |  | The root directory of the source files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  PATH |  | The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | library_description |  str  | None | An optional description of the `ModelLibrarian` that will be included in the `library.json` file. |
 | vhacd_resolution |  int  | 800000 | The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes. |
 | internal_materials |  bool  | False | If True, the visual materials of the models are located within the source file. If False, the materials are located in `Materials/` directory next to each source file. |
@@ -339,8 +339,8 @@ Note: This method does *not* call `self.write_physics_quality()` or `self.valida
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| metadata_path |  Union[str, Path] |  | The path to the metadata file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| metadata_path |  PATH |  | The path to the metadata file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  PATH |  | The root directory of the output files as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | library_description |  str  | None | An optional description of the `ModelLibrarian` that will be included in the `library.json` file. |
 | vhacd_resolution |  int  | 800000 | The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes. |
 | internal_materials |  bool  | False | If True, the visual materials of the models are located within the source file. If False, the materials are located in `Materials/` directory next to each source file. |
@@ -384,8 +384,8 @@ Example output:
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model. This can be the same as the source file name minus the extension. This will be the name of the .prefab file. |
-| source_file |  Union[str, Path] |  | The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| source_file |  PATH |  | The path to the source .fbx or .obj file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | vhacd_resolution |  int  | None | The default resolution of VHACD. A lower value will make VHACD run faster but will create simpler collider mesh shapes. |
 | internal_materials |  bool  | False | If True, the visual materials of the model are located within the source file. If False, the materials are located in `Materials/` directory next to the source file. |
 
@@ -429,11 +429,11 @@ library.json
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (matches the asset bundle file names). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | wnid |  str  | None | The WordNet ID of the model. Can be None. |
 | wcategory |  str  | None | The WordNet category of the model. Can be None. |
 | scale_factor |  float  | 1 | The model will be scaled by this factor. |
-| library_path |  Union[str, Path] | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
+| library_path |  PATH  | None | If not None, this is a path as a string or [`Path`](https://docs.python.org/3/library/pathlib.html) to a new or existing `ModelLibrarian` .json file. The record will be added to this file in addition to being saved to `record.json`. |
 | library_description |  str  | None | A description of the library. Ignored if `library_path` is None. |
 
 #### write_physics_quality
@@ -448,8 +448,8 @@ This is an optional record field that records the percentage of the model encaps
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The model name. |
-| record_path |  Union[str, Path] | None | If not None, this is the path to the `ModelRecord` .json file, which will be updated. |
-| library_path |  Union[str, Path] | None | If not None, this is the path to an existing `ModelLibrarian` .json file, which will be updated. |
+| record_path |  PATH  | None | If not None, this is the path to the `ModelRecord` .json file, which will be updated. |
+| library_path |  PATH  | None | If not None, this is the path to an existing `ModelLibrarian` .json file, which will be updated. |
 
 #### validate
 

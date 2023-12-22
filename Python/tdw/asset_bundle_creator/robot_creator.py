@@ -1,4 +1,4 @@
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional
 from os import getcwd, chdir, walk, devnull
 import re
 from platform import system
@@ -7,6 +7,7 @@ from subprocess import call
 from shutil import rmtree, copyfile, move
 from tdw.tdw_utils import TDWUtils
 from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
+from tdw.type_aliases import PATH
 
 
 class RobotCreator(AssetBundleCreator):
@@ -19,11 +20,11 @@ class RobotCreator(AssetBundleCreator):
     """
     TEMP_ROOT: Path = AssetBundleCreator.PROJECT_PATH.joinpath("temp_robots")
 
-    def source_url_to_asset_bundles(self, url: str, output_directory: Union[str, Path],
+    def source_url_to_asset_bundles(self, url: str, output_directory: PATH,
                                     required_repo_urls: Dict[str, str] = None,
                                     xacro_args: Dict[str, str] = None, immovable: bool = True,
                                     description_infix: str = None, branch: str = None,
-                                    library_path: Union[str, Path] = None, library_description: str = None,
+                                    library_path: PATH = None, library_description: str = None,
                                     source_description: str = None, targets: List[str] = None) -> None:
         """
         Given the URL of a .urdf file or a .xacro file, create asset bundles of the robot.
@@ -103,8 +104,8 @@ class RobotCreator(AssetBundleCreator):
                                           library_description=library_description,
                                           source_description=source_description, targets=targets)
 
-    def source_file_to_asset_bundles(self, source_file: Union[str, Path], output_directory: Union[str, Path],
-                                     immovable: bool = True, library_path: Union[str, Path] = None,
+    def source_file_to_asset_bundles(self, source_file: PATH, output_directory: PATH,
+                                     immovable: bool = True, library_path: PATH = None,
                                      library_description: str = None, source_description: str = None,
                                      targets: List[str] = None) -> None:
         """
@@ -322,7 +323,7 @@ class RobotCreator(AssetBundleCreator):
         assert urdf_path.exists(), f"Not found: {urdf_path.resolve()}"
         return urdf_path.resolve()
 
-    def urdf_to_prefab(self, urdf_path: Union[str, Path], output_directory: Union[str, Path], immovable: bool = True) -> None:
+    def urdf_to_prefab(self, urdf_path: PATH, output_directory: PATH, immovable: bool = True) -> None:
         """
         Convert a .urdf file to Unity prefab.
 
@@ -342,8 +343,8 @@ class RobotCreator(AssetBundleCreator):
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
-    def create_record(self, name: str, output_directory: Union[str, Path],
-                      library_path: Union[str, Path] = None, library_description: str = None,
+    def create_record(self, name: str, output_directory: PATH,
+                      library_path: PATH = None, library_description: str = None,
                       source_description: str = None, immovable: bool = True) -> None:
         """
         Create a model record and save it to disk. This requires asset bundles of the robot to already exist:
@@ -400,7 +401,7 @@ class RobotCreator(AssetBundleCreator):
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
     @staticmethod
-    def get_name(urdf_path: Union[str, Path]) -> str:
+    def get_name(urdf_path: PATH) -> str:
         """
         :param urdf_path: The path to the .urdf file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
 
@@ -415,7 +416,7 @@ class RobotCreator(AssetBundleCreator):
         return "RobotCreator"
 
     @staticmethod
-    def fix_urdf(urdf_path: Union[str, Path], remove_gazebo: bool = True, simplify_namespaces: bool = True,
+    def fix_urdf(urdf_path: PATH, remove_gazebo: bool = True, simplify_namespaces: bool = True,
                  link_name_excludes_regex: List[str] = None, link_exclude_types: List[str] = None) -> Path:
         """
         "Fix" a .urdf file by removing extraneous information. This function will:

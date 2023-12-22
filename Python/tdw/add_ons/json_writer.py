@@ -3,6 +3,7 @@ from typing import List, Union, Dict
 from pathlib import Path
 from tdw.add_ons.writer import Writer
 from tdw.backend.encoder import Encoder
+from tdw.type_aliases import PATH
 
 
 class JsonWriter(Writer[Union[dict, Dict[str, dict]]]):
@@ -24,7 +25,7 @@ class JsonWriter(Writer[Union[dict, Dict[str, dict]]]):
     - Dictionaries that have non-string keys have all of their keys converted into strings i.e. `str(key)`.
     """
 
-    def __init__(self, objects: Dict[str, object], output_directory: Union[str, Path], indent: int = 2,
+    def __init__(self, objects: Dict[str, object], output_directory: PATH, indent: int = 2,
                  include_hidden_fields: bool = False, zero_padding: int = 8):
         """
         :param objects: A dictionary of objects to serialize. Key = A name or identifier for the object, for example `"robot"`. Value = A data object, for example a [`Robot`](robot.md).

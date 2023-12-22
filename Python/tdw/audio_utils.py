@@ -1,9 +1,10 @@
-from typing import Optional, Union, Tuple
+from typing import Optional, Tuple
 from pathlib import Path
 import os
 from platform import system
 from subprocess import check_output, Popen
 import re
+from tdw.type_aliases import PATH
 
 
 class AudioUtils:
@@ -59,7 +60,7 @@ class AudioUtils:
         return int(dev_search.group(1))
 
     @staticmethod
-    def start(output_path: Union[str, Path], until: Optional[Tuple[int, int]] = None, device_name: str = None) -> None:
+    def start(output_path: PATH, until: Optional[Tuple[int, int]] = None, device_name: str = None) -> None:
         """
         Start recording audio.
 

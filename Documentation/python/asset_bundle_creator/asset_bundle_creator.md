@@ -33,7 +33,7 @@ Base class for creating asset bundles.
 | --- | --- | --- | --- |
 | quiet |  bool  | False | If True, don't print any messages to console. |
 | display |  str  | "0" | The display to launch Unity Editor on. Ignored if this isn't Linux. |
-| unity_editor_path |  Union[Path, str] | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
+| unity_editor_path |  PATH  | None | The path to the Unity Editor executable, for example `C:/Program Files/Unity/Hub/Editor/2020.3.24f1/Editor/Unity.exe`. If None, this script will try to find Unity Editor automatically. |
 | check_version |  bool  | True | If True, check if there is an update to the Unity Editor project. |
 
 #### get_base_unity_call
@@ -54,7 +54,7 @@ Execute a call to Unity Editor. If `self.quiet == False` this will continuously 
 | --- | --- | --- | --- |
 | method |  str |  | The name of the method. |
 | args |  List[str] |  | Arguments to send to Unity Editor in addition to those send via `self.get_base_unity_call()` and `-executeMethod`. |
-| log_path |  Union[str, Path] |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| log_path |  PATH |  | The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 | class_name |  str  | None | The name of the Unity C# class. If None, a default class name will be used. See: `self.get_creator_class_name()`. |
 
 #### prefab_to_asset_bundles
@@ -99,7 +99,7 @@ output_directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the model (the name of the .prefab file, minus the extension). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this directory doesn't exist, it will be created. |
 | targets |  List[str] | None | A list of build targets. Options: "linux", "osx", "windows", "webgl". If None, defaults to `["linux", "osx", "windows"]`. |
 
 #### cleanup
@@ -134,7 +134,7 @@ directory/
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | name |  str |  | The name of the asset bundle. |
-| directory |  Union[str, Path] |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
+| directory |  PATH |  | The source directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). |
 
 _Returns:_  True if asset bundles exist for all platforms in the source directory.
 

@@ -64,7 +64,7 @@ The command will be sent on the next `Controller.communicate()` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] |  | The path to a .wav file. |
+| path |  PATH |  | The path to a .wav file. |
 | position |  Optional[POSITION] |  | The position of audio source. Can be a numpy array or x, y, z dictionary. If None, the audio is not spatialized. |
 | audio_id |  int  | None | The unique ID of the audio source. If None, a random ID is generated. |
 | object_id |  int  | None | If not None, parent the audio source to this object. Ignored if `position` is None. |

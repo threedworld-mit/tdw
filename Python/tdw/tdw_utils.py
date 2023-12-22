@@ -812,7 +812,7 @@ class TDWUtils:
         return ox * ox + oy * oy <= radius * radius
 
     @staticmethod
-    def download_asset_bundles(path: Union[str, Path], models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
+    def download_asset_bundles(path: PATH, models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
                                materials: Dict[str, List[str]] = None, hdri_skyboxes: Dict[str, List[str]] = None,
                                robots: Dict[str, List[str]] = None, humanoids: Dict[str, List[str]] = None,
                                humanoid_animations: Dict[str, List[str]] = None) -> None:
@@ -910,10 +910,10 @@ class TDWUtils:
             pbar.close()
 
     @staticmethod
-    def set_default_libraries(model_library: Union[str, Path] = None, scene_library: Union[str, Path] = None,
-                              material_library: Union[str, Path] = None, hdri_skybox_library: Union[str, Path] = None,
-                              robot_library: Union[str, Path] = None, humanoid_library: Union[str, Path] = None,
-                              humanoid_animation_library: Union[str, Path] = None) -> None:
+    def set_default_libraries(model_library: PATH = None, scene_library: PATH = None,
+                              material_library: PATH = None, hdri_skybox_library: PATH = None,
+                              robot_library: PATH = None, humanoid_library: PATH = None,
+                              humanoid_animation_library: PATH = None) -> None:
         """
         Set the path to the default libraries.
 

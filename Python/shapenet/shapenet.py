@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Union
 from json import loads
 from argparse import ArgumentParser
 from csv import DictReader
 from tdw.tdw_utils import TDWUtils
 from tdw.asset_bundle_creator.model_creator import ModelCreator
+from tdw.type_aliases import PATH
 
 
 class _ShapeNet(ABC):
@@ -13,7 +13,7 @@ class _ShapeNet(ABC):
     Abstract base class for generating ShapeNet asset bundles.
     """
 
-    def __init__(self, source_directory: Union[str, Path], output_directory: Union[str, Path]):
+    def __init__(self, source_directory: PATH, output_directory: PATH):
         """
         :param source_directory: The source path or directory.
         :param output_directory: The root destination directory for the library file and asset bundles.

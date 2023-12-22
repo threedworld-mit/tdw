@@ -1,9 +1,10 @@
-from typing import List, Union
+from typing import List
 from pathlib import Path
 import numpy as np
 from tdw.output_data import OutputData, AudioSources, Rigidbodies, Transforms
 from tdw.audio_utils import AudioUtils
 from tdw.add_ons.add_on import AddOn
+from tdw.type_aliases import PATH
 
 
 class PhysicsAudioRecorder(AddOn):
@@ -79,7 +80,7 @@ class PhysicsAudioRecorder(AddOn):
         if sleeping and not playing_audio:
             self.stop()
 
-    def start(self, path: Union[str, Path] = None, device_name: str = None) -> None:
+    def start(self, path: PATH = None, device_name: str = None) -> None:
         """
         Start recording.
 

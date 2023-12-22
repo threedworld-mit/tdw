@@ -2,8 +2,9 @@ import io
 from csv import DictReader
 from pathlib import Path
 from pkg_resources import resource_filename
-from typing import Union, Dict
+from typing import Dict
 from tdw.physics_audio.audio_material import AudioMaterial
+from tdw.type_aliases import PATH
 
 
 class ObjectAudioStatic:
@@ -58,7 +59,7 @@ class ObjectAudioStatic:
         self.object_id = object_id
 
 
-def get_static_audio_data(csv_file: Union[str, Path] = "") -> Dict[str, ObjectAudioStatic]:
+def get_static_audio_data(csv_file: PATH = "") -> Dict[str, ObjectAudioStatic]:
     """
     Returns ObjectInfo values.
     As of right now, only a few objects in the TDW model libraries are included. More will be added in time.

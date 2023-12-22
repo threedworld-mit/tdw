@@ -26,7 +26,7 @@ Abstract base class for per-frame data writers.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created. |
 | zero_padding |  int  | 8 | How many zeros to append to the file name. By default, the name of the file of the first frame will be `00000000.txt`. |
 
 #### get_initialization_commands

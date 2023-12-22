@@ -86,7 +86,7 @@ Start recording.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| path |  Union[str, Path] | None | The path to the output .wav file. If None, defaults to the current working directory. |
+| path |  PATH  | None | The path to the output .wav file. If None, defaults to the current working directory. |
 | device_name |  str  | None | The name of the audio capture device. If None, defaults to `"Stereo Mix"` (Windows and Linux) or `"iShowU Audio Capture"` (OS X). |
 
 #### stop

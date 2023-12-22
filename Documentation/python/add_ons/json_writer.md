@@ -43,7 +43,7 @@ Data is converted to JSON-serializable format as follows:
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | objects |  Dict[str, object] |  | A dictionary of objects to serialize. Key = A name or identifier for the object, for example `"robot"`. Value = A data object, for example a [`Robot`](robot.md). |
-| output_directory |  Union[str, Path] |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created. |
+| output_directory |  PATH |  | The root output directory as a string or [`Path`](https://docs.python.org/3/library/pathlib.html). If this doesn't exist, it will be created. |
 | indent |  int  | 2 | The indentation level of the output JSON strings. |
 | include_hidden_fields |  bool  | False | If True, include hidden fields in the JSON data i.e. any fields which have names that begin with `_`. This will give you *all* of the data, but often you won't want this. Many TDW classes hold megabytes of data in hidden fields, which is trivial to do in memory but serializing this data can be very slow. |
 | zero_padding |  int  | 8 | How many zeros to append to the file name. By default, the name of the file of the first frame will be `00000000.txt`. |

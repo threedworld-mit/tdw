@@ -44,6 +44,21 @@ Convert a numpy array to a Vector3.
 
 _Returns:_  A Vector3, e.g. `{"x": 0, "y": 0, "z": 0}`
 
+#### tuple_to_vector3
+
+**`TDWUtils.tuple_to_vector3(tup)`**
+
+_(Static)_
+
+Convert a 3-element tuple to a Vector3.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tup |  Tuple[float, float, float] |  | The tuple. |
+
+_Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0}`
+
 #### vector4_to_array
 
 **`TDWUtils.vector4_to_array(vector4)`**
@@ -74,6 +89,21 @@ Convert a numpy array to a Vector4.
 
 _Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
 
+#### tuple_to_vector4
+
+**`TDWUtils.tuple_to_vector4(tup)`**
+
+_(Static)_
+
+Convert a 4-element tuple to a Vector4.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tup |  Tuple[float, float, float, float] |  | The tuple. |
+
+_Returns:_  A Vector4, e.g. `{"x": 0, "y": 0, "z": 0, "w": 0}`
+
 #### color_to_array
 
 **`TDWUtils.color_to_array(color)`**
@@ -101,6 +131,21 @@ Convert a numpy array to a RGBA Color. If no A value is supplied it will default
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
 | arr |  np.ndarray |  | The array. |
+
+_Returns:_  A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
+
+#### tuple_to_color
+
+**`TDWUtils.tuple_to_color(tup)`**
+
+_(Static)_
+
+Convert a 4-element tuple to a Color.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| tup |  Tuple[float, float, float, float] |  | The tuple. |
 
 _Returns:_  A Color, e.g. `{"r": 0, "g": 0, "b": 0, "a": 1}`
 

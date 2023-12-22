@@ -54,7 +54,7 @@ As of right now, only a few objects in the TDW model libraries are included. Mor
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| csv_file |  Union[str, Path] | "" | The path to the .csv file containing the object info. By default, it will load `tdw/physics_audio/objects.csv`. If you want to make your own spreadsheet, use this file as a reference. |
+| csv_file |  PATH  | "" | The path to the .csv file containing the object info. By default, it will load `tdw/physics_audio/objects.csv`. If you want to make your own spreadsheet, use this file as a reference. |
 
 _Returns:_  A list of default ObjectInfo. Key = the name of the model. Value = object info.
 

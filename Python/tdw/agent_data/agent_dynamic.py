@@ -1,13 +1,14 @@
 from abc import ABC
 from io import BytesIO
-from typing import List, Dict, Optional, Union
+from typing import List, Dict, Optional
 from overrides import final
 import numpy as np
 from pathlib import Path
-from tdw.tdw_utils import TDWUtils
 from PIL import Image
+from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Images, CameraMatrices, Transforms
 from tdw.object_data.transform import Transform
+from tdw.type_aliases import PATH
 
 
 class AgentDynamic(ABC):
@@ -85,7 +86,7 @@ class AgentDynamic(ABC):
                     self.camera_matrix = camera_matrices.get_camera_matrix()
 
     @final
-    def save_images(self, output_directory: Union[str, Path]) -> None:
+    def save_images(self, output_directory: PATH) -> None:
         """
         Save the ID pass (segmentation colors) and the depth pass to disk.
         Images will be named: `[frame_number]_[pass_name].[extension]`

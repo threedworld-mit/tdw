@@ -1,9 +1,10 @@
-from typing import List, Union, Dict
+from typing import List, Dict
 from pathlib import Path
 from PIL.Image import Image
 from tdw.add_ons.add_on import AddOn
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, Images
+from tdw.type_aliases import PATH
 
 
 class ImageCapture(AddOn):
@@ -43,7 +44,7 @@ class ImageCapture(AddOn):
     # A list of valid pass masks.
     _PASS_MASKS: List[str] = list(Images.PASS_MASKS.values())
 
-    def __init__(self, path: Union[str, Path], avatar_ids: List[str] = None, png: bool = False, pass_masks: List[str] = None):
+    def __init__(self, path: PATH, avatar_ids: List[str] = None, png: bool = False, pass_masks: List[str] = None):
         """
         :param path: The path to the output directory.
         :param avatar_ids: The IDs of the avatars that will capture and save images. If empty, all avatars will capture and save images. Note that these avatars must already exist in the scene (if you've added the avatars via a [`ThirdPersonCamera` add-on](third_person_camera.md), you must add the `ThirdPersonCamera` first, *then* `ImageCapture`).

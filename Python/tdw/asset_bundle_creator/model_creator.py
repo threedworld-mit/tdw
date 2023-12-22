@@ -1,11 +1,12 @@
 from pathlib import Path
-from typing import Union, List
+from typing import List
 import json
 from tdw.librarian import ModelRecord, ModelLibrarian
 from tdw.asset_bundle_creator.asset_bundle_creator import AssetBundleCreator
 from tdw.add_ons.model_verifier.model_verifier import ModelVerifier
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
+from tdw.type_aliases import PATH
 
 
 class ModelCreator(AssetBundleCreator):
@@ -27,10 +28,10 @@ class ModelCreator(AssetBundleCreator):
     [For more information, read this.](../../lessons/custom_models/custom_models.md)
     """
 
-    def source_file_to_asset_bundles(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
+    def source_file_to_asset_bundles(self, name: str, source_file: PATH, output_directory: PATH,
                                      vhacd_resolution: int = 800000, internal_materials: bool = False,
                                      wnid: str = None, wcategory: str = None, scale_factor: float = 1,
-                                     library_path: Union[str, Path] = None, library_description: str = None,
+                                     library_path: PATH = None, library_description: str = None,
                                      cleanup: bool = True, write_physics_quality: bool = False, validate: bool = False,
                                      targets: List[str] = None) -> None:
         """
@@ -117,7 +118,7 @@ class ModelCreator(AssetBundleCreator):
         if validate:
             self.validate(name=name, record_path=record_path, library_path=library_path)
 
-    def source_directory_to_asset_bundles(self, source_directory: Union[str, Path],  output_directory: Union[str, Path],
+    def source_directory_to_asset_bundles(self, source_directory: PATH,  output_directory: PATH,
                                           library_description: str = None,  vhacd_resolution: int = 800000,
                                           internal_materials: bool = False, overwrite: bool = False,
                                           continue_on_error: bool = True, search_pattern: str = None,
@@ -202,7 +203,7 @@ class ModelCreator(AssetBundleCreator):
                         args=args,
                         log_path=TDWUtils.get_path(output_directory).joinpath("progress.txt"))
 
-    def metadata_file_to_asset_bundles(self, metadata_path: Union[str, Path], output_directory: Union[str, Path],
+    def metadata_file_to_asset_bundles(self, metadata_path: PATH, output_directory: PATH,
                                        library_description: str = None, vhacd_resolution: int = 800000,
                                        internal_materials: bool = False, overwrite: bool = False,
                                        continue_on_error: bool = True, cleanup: bool = True,
@@ -280,7 +281,7 @@ class ModelCreator(AssetBundleCreator):
                         args=args,
                         log_path=TDWUtils.get_path(output_directory).joinpath("progress.txt"))
 
-    def source_file_to_prefab(self, name: str, source_file: Union[str, Path], output_directory: Union[str, Path],
+    def source_file_to_prefab(self, name: str, source_file: PATH, output_directory: PATH,
                               vhacd_resolution: int = None, internal_materials: bool = False) -> None:
         """
         Convert a source .obj or .fbx file into a .prefab file. Call this method when you intend to modify the .prefab file by hand before building asset bundles, e.g.:
@@ -326,9 +327,9 @@ class ModelCreator(AssetBundleCreator):
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
-    def create_record(self, name: str, output_directory: Union[str, Path],
+    def create_record(self, name: str, output_directory: PATH,
                       wnid: str = None, wcategory: str = None, scale_factor: float = 1,
-                      library_path: Union[str, Path] = None, library_description: str = None) -> None:
+                      library_path: PATH = None, library_description: str = None) -> None:
         """
         Create a model record and save it to disk. This requires asset bundles of the model to already exist:
 
@@ -384,8 +385,8 @@ class ModelCreator(AssetBundleCreator):
                         args=args,
                         log_path=AssetBundleCreator._get_log_path(output_directory))
 
-    def write_physics_quality(self, name: str, record_path: Union[str, Path] = None,
-                              library_path: Union[str, Path] = None) -> None:
+    def write_physics_quality(self, name: str, record_path: PATH = None,
+                              library_path: PATH = None) -> None:
         """
         Append the physics quality data to the temporary record file.
         This is an optional record field that records the percentage of the model encapsulated by colliders.
@@ -453,8 +454,8 @@ class ModelCreator(AssetBundleCreator):
         return "ModelCreator"
 
     @staticmethod
-    def _get_record(name: str, record_path: Union[str, Path] = None,
-                    library_path: Union[str, Path] = None) -> ModelRecord:
+    def _get_record(name: str, record_path: PATH = None,
+                    library_path: PATH = None) -> ModelRecord:
         """
         :param name: The model name.
         :param record_path: The path to a `ModelRecord` .json file.
@@ -476,8 +477,8 @@ class ModelCreator(AssetBundleCreator):
             raise Exception("Failed to write physics quality because record_path and library_path are None. "
                             "At least one of these needs to have a value.")
 
-    def _set_record(self, record: ModelRecord, record_path: Union[str, Path] = None,
-                    library_path: Union[str, Path] = None) -> None:
+    def _set_record(self, record: ModelRecord, record_path: PATH = None,
+                    library_path: PATH = None) -> None:
         """
         :param record: The `ModelRecord`.
         :param record_path: The path to a `ModelRecord` .json file.

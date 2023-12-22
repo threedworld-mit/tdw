@@ -1,7 +1,8 @@
 from pathlib import Path
-from typing import List, Union
+from typing import List
 from json import loads
 from tdw.add_ons.add_on import AddOn
+from tdw.type_aliases import PATH
 
 
 class LogPlayback(AddOn):
@@ -22,9 +23,9 @@ class LogPlayback(AddOn):
         """
         self.playback: List[List[dict]] = list()
 
-    def load(self, path: Union[str, Path]) -> None:
+    def load(self, path: PATH) -> None:
         """
-        Load a log file. This will deserialize all of the commands in the log file and add each list of commands to `self.record`. Per `communicate()` call (i.e. when `on_send(resp)` is invoked), this add-on will pop the first list of commands and add it to `self.commands`; in other words, it will send each list of commands exactly as they were sent when they were logged.
+        Load a log file. This will deserialize all the commands in the log file and add each list of commands to `self.record`. Per `communicate()` call (i.e. when `on_send(resp)` is invoked), this add-on will pop the first list of commands and add it to `self.commands`; in other words, it will send each list of commands exactly as they were sent when they were logged.
 
         :param path: The path to the log file as a string or [`Path`](https://docs.python.org/3/library/pathlib.html).
         """

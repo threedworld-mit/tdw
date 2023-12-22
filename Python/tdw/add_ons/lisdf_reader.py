@@ -1,4 +1,4 @@
-from typing import List, Union, Dict
+from typing import List, Dict
 from json import loads, dumps
 from pathlib import Path
 import xml.etree.ElementTree as ElementTree
@@ -6,6 +6,7 @@ from tdw.add_ons.add_on import AddOn
 from tdw.asset_bundle_creator.model_creator import ModelCreator
 from tdw.asset_bundle_creator.robot_creator import RobotCreator
 from tdw.lisdf_data.lisdf_robot_metadata import LisdfRobotMetadata
+from tdw.type_aliases import PATH
 
 
 class LisdfReader(AddOn):
@@ -25,9 +26,9 @@ class LisdfReader(AddOn):
         super().__init__()
         self.initialized = True
 
-    def read(self, lisdf_path: Union[str, Path], output_directory: Union[str, Path], overwrite: bool = False,
+    def read(self, lisdf_path: PATH, output_directory: PATH, overwrite: bool = False,
              cleanup: bool = True, robot_metadata: List[LisdfRobotMetadata] = None, send_commands: bool = True,
-             quiet: bool = False, display: str = ":0", unity_editor_path: Union[Path, str] = None,
+             quiet: bool = False, display: str = ":0", unity_editor_path: PATH = None,
              check_version: bool = True) -> None:
         """
         Read an .lisdf file and send commands to the build to add the objects to the scene. This will launch a process in the Asset Bundle Creator Unity project. If it needs to generate new asset bundles, it can take a while to finish reading and generating.

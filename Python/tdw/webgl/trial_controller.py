@@ -16,6 +16,12 @@ END_MESSAGE: TrialMessage = TrialMessage(trials=[], adder=EndSimulation())
 
 
 class TrialController(ABC):
+    """
+    Abstract base class for sending TrialMessages to a WebGL build.
+
+    For a minimal example, see: `tdw/Python/tdw/webgl/examples/hello_world.py`
+    """
+
     def __init__(self):
         """
         (no arguments)
@@ -23,8 +29,11 @@ class TrialController(ABC):
 
         # Get the initial trial message.
         self._trial_message: TrialMessage = self.get_initial_message()
+        # The WebSocket port. This is set in `self.set_port(port)`.
         self._port: int = -1
+        # The TDW session ID. This is set in `self.set_session_id(session_id)`.
         self._session_id: int = -1
+        # This is used to connect to a remote Database.
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
         # This is used to stop the server.
@@ -82,7 +91,7 @@ class TrialController(ABC):
         Then, `bs` will be converted into a `TrialPlayback` object, which you can then evaluate.
 
         You should only override this function if you want to perform an intermediary operation on the raw bytes.
-        For example, you can use this function to save the raw bytes to disk (see `examples/test_scene.py`).
+        For example, you can use this function to save the raw bytes to disk.
         
         :param bs: The received message.
         """
@@ -109,15 +118,15 @@ class TrialController(ABC):
         loop = asyncio.get_running_loop()
         self._stop = loop.create_future()
 
-        async with serve(self._run, "", self._port, extra_headers={"Access-Control-Allow-Origin": "true"}):
+        async with serve(self.__run, "", self._port, extra_headers={"Access-Control-Allow-Origin": "true"}):
             await self._stop
 
     @final
-    async def _run(self, websocket: WebSocketServerProtocol) -> None:
+    async def __run(self, websocket: WebSocketServerProtocol) -> None:
         """
         Run the TrialController until there are no more trials to be sent.
 
-        :param websocket: The websocket.
+        :param websocket: The WebSocket.
         """
 
         done = False
@@ -169,7 +178,8 @@ class TrialController(ABC):
         # Stop the server.
         self._stop.set_result(0)
 
-    def _get_max_size(self) -> int:
+    @staticmethod
+    def _get_max_size() -> int:
         """
         Override this function to set the maximum size of a WebSocket message.
         
@@ -188,7 +198,6 @@ def run(controller: TrialController) -> None:
     :param controller: A TrialController.
     """
 
-    # Get the port from command-line arguments.
     parser = ArgumentParser(allow_abbrev=False)
     parser.add_argument("port", type=int, nargs='?', default=1337, help="The WebSocket port")
     parser.add_argument("session_id", type=int,  nargs='?', default=-1, help="The session ID")

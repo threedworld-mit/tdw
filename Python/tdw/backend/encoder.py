@@ -3,6 +3,8 @@ from enum import Enum
 from base64 import b64encode
 from pathlib import Path
 import numpy as np
+from inflection import underscore
+from tdw.commands.command import Command
 
 
 class Encoder(JSONEncoder):
@@ -47,6 +49,8 @@ class Encoder(JSONEncoder):
                 # Ignore hidden fields.
                 else:
                     d = {k: v for k, v in obj.__dict__.items() if not k.startswith("_")}
+                if isinstance(obj, Command):
+                    d.update({"$type": underscore(obj.__class__.__name__)})
             # Flatbuffer objects don't have dictionaries.
             except AttributeError:
                 return None

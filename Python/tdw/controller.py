@@ -4,10 +4,12 @@ import os
 from subprocess import Popen
 from typing import List, Union, Tuple, Dict
 from argparse import ArgumentParser
+from tdw.commands.command import Command
 from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDRISkyboxLibrarian, \
     HumanoidAnimationLibrarian, HumanoidLibrarian, HumanoidAnimationRecord, RobotLibrarian, VisualEffectLibrarian, \
     DroneLibrarian, VehicleLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH, BUILD_PATH
+from tdw.backend.encoder import Encoder
 from tdw.output_data import Version, QuitSignal
 from tdw.version import __version__
 from tdw.backend.update import Update
@@ -95,16 +97,16 @@ class Controller:
         if check_version and launch_build:
             self._check_build_version()
 
-    def communicate(self, commands: Union[dict, List[dict]]) -> list:
+    def communicate(self, commands: Union[dict, List[dict], Command, List[Command]]) -> list:
         """
         Send commands and receive output data in response.
 
-        :param commands: A list of JSON commands.
+        :param commands: A list of commands.
 
         :return The output data from the build.
         """
 
-        if isinstance(commands, dict):
+        if isinstance(commands, dict) or isinstance(commands, Command):
             commands = [commands]
         msg = [Controller.commands_to_string(commands=commands, add_ons=self.add_ons).encode('utf-8')]
         # Send the commands.
@@ -174,7 +176,7 @@ class Controller:
             m.before_send(commands)
 
         # Serialize the message.
-        return json.dumps(commands)
+        return json.dumps(commands, cls=Encoder)
 
     @staticmethod
     def get_add_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "") -> dict:

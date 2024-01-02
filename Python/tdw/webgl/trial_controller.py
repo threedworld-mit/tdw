@@ -6,10 +6,10 @@ import asyncio
 from websockets.server import serve
 from websockets import WebSocketServerProtocol, ConnectionClosed
 import zmq
+from tdw.backend.encoder import Encoder
 from tdw.webgl.trial_playback import TrialPlayback
 from tdw.webgl.trial_adders.end_simulation import EndSimulation
 from tdw.webgl.trial_message import TrialMessage
-from tdw.webgl.trial_message_encoder import TrialMessageEncoder
 
 
 END_MESSAGE: TrialMessage = TrialMessage(trials=[], adder=EndSimulation())
@@ -135,7 +135,7 @@ class TrialController(ABC):
         while not done:
             # Send the next trials.
             try:
-                await websocket.send(dumps(self._trial_message, cls=TrialMessageEncoder))
+                await websocket.send(dumps(self._trial_message, cls=Encoder))
             except ConnectionClosed as e:
                 print(e)
                 done = True

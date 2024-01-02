@@ -3,8 +3,7 @@ from typing import List
 from tdw.webgl import END_MESSAGE, TrialController, TrialMessage, TrialPlayback
 from tdw.webgl.trials.trial import Trial
 from tdw.webgl.trials.ninja import Ninja
-from tdw.webgl.trial_adders.at_end import AtEnd
-from tdw.webgl.trial_adders.no_trials import NoTrials
+from tdw.webgl.trial_adders import AtEnd, NoTrials
 from tdw.output_data import OutputData, Models
 
 

@@ -1,6 +1,7 @@
 from time import time
 from typing import List, Callable, Optional
 from gzip import compress
+from hashlib import md5
 import numpy as np
 from PIL import Image, ImageChops
 from struct import pack
@@ -9,7 +10,9 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import SceneLibrarian
 from tdw.output_data import OutputData, Images
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.webgl import TrialPlayback
+from tdw.webgl import TrialController, TrialMessage, TrialPlayback, END_MESSAGE
+from tdw.webgl.trial_adders import AtEnd
+from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
 
 
 class Playback(Controller):
@@ -112,7 +115,7 @@ class Playback(Controller):
         # Initialize the scene.
         return self.communicate(commands)
 
-    def run_image_capture(self) -> None:
+    def run_image_capture(self) -> str:
         output_data_commands = [{"$type": "send_version"},
                                 {"$type": "send_framerate"},
                                 {"$type": "send_screen_size"},
@@ -135,6 +138,7 @@ class Playback(Controller):
                  output_data_commands=output_data_commands,
                  on_communicate=self._on_capture_image,
                  on_end=self._on_image_capture_end)
+        return md5(bytes(self.raw_playback)).hexdigest()
 
     def run_playback(self) -> None:
         output_data_commands = [{"$type": "send_fast_avatars",
@@ -223,7 +227,32 @@ class Playback(Controller):
         self.communicate({"$type": "terminate"})
 
 
+class PlaybackWebGL(TrialController):
+    def __init__(self, standalone_checksum: str):
+        self.path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_trial_playback_test/playback.gz").resolve()
+        self._standalone_checksum: str = standalone_checksum
+        if not self.path.parent.exists():
+            self.path.parent.mkdir(parents=True)
+        super().__init__()
+
+    def get_initial_message(self) -> TrialMessage:
+        return TrialMessage(trials=[OutputDataBenchmark()], adder=AtEnd())
+
+    def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
+        return END_MESSAGE
+
+    def _on_receive(self, bs: bytes) -> None:
+        # Write to disk.
+        print(self._standalone_checksum)
+        webgl_checksum = md5(bs).hexdigest()
+        print(webgl_checksum)
+        print(self._standalone_checksum == webgl_checksum)
+        self.path.write_bytes(bs)
+
+
 if __name__ == "__main__":
+    from tdw.webgl import run
     c = Playback()
-    c.run_image_capture()
+    checksum = c.run_image_capture()
     c.run_playback()
+    run(PlaybackWebGL(checksum))

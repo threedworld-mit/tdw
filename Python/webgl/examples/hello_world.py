@@ -1,6 +1,6 @@
 from tdw.webgl import END_MESSAGE, TrialController, TrialMessage, TrialPlayback
 from tdw.webgl.trials.hello_world import HelloWorld as HelloWorldTrial
-from tdw.webgl.trial_adders.at_end import AtEnd
+from tdw.webgl.trial_adders import AtEnd
 
 
 class HelloWorld(TrialController):

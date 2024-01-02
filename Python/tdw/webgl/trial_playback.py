@@ -200,14 +200,7 @@ class TrialPlayback(AddOn):
             elif r_id == "avid":
                 avatar_ids = AvatarIds(resp[i])
                 for j in range(avatar_ids.get_num()):
-                    avatar_id = avatar_ids.get_id(j)
-                    self.commands.extend([{"$type": "create_avatar",
-                                           "id": avatar_id,
-                                           "type": avatar_ids.get_type(j)},
-                                          {"$type": "set_pass_masks",
-                                           "avatar_id": avatar_id,
-                                           "pass_masks": ["_img"]}])
-                    self._avatar_ids.append(avatar_id)
+                    self._create_avatar(avatar_id=avatar_ids.get_id(j), avatar_type=avatar_ids.get_type(j))
             # Print the version.
             if r_id == "vers":
                 version = Version(resp[i])
@@ -374,12 +367,7 @@ class TrialPlayback(AddOn):
                 avatar_type = "A_First_Person"
             else:
                 avatar_type = "A_Img_Caps_Kinematic"
-            self.commands.extend([{"$type": "create_avatar",
-                                   "id": avatar_id,
-                                   "type": avatar_type},
-                                  {"$type": "set_pass_masks",
-                                   "avatar_id": avatar_id,
-                                   "pass_masks": ["_img"]}])
+            self._create_avatar(avatar_id=avatar_id, avatar_type=avatar_type)
             self._avatar_ids.append(avatar_id)
         # Teleport and rotate the avatar.
         self.commands.extend([{"$type": "teleport_avatar_to",
@@ -388,6 +376,22 @@ class TrialPlayback(AddOn):
                               {"$type": "rotate_avatar_to",
                                "avatar_id": avatar_id,
                                "position": TDWUtils.tuple_to_vector4(avatar.get_rotation())}])
+
+    def _create_avatar(self, avatar_id: str, avatar_type: str) -> None:
+        """
+        Append commands to create an avatar.
+
+        :param avatar_id: The ID of the avatar.
+        :param avatar_type: The avatar type.
+        """
+
+        self.commands.extend([{"$type": "create_avatar",
+                               "id": avatar_id,
+                               "type": avatar_type},
+                              {"$type": "set_pass_masks",
+                               "avatar_id": avatar_id,
+                               "pass_masks": ["_img"]}])
+        self._avatar_ids.append(avatar_id)
 
     @staticmethod
     def _get_asset_bundle_url(url: str, infix: str) -> str:

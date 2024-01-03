@@ -1,7 +1,7 @@
 from io import BytesIO
 from gzip import GzipFile
 from tdw.webgl import END_MESSAGE, TrialController, TrialMessage, TrialPlayback, run
-from tdw.webgl.trials.output_data_benchmark import OutputDataBenchmark
+from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
 from tdw.webgl.trial_adders.at_end import AtEnd
 from tdw.tdw_utils import TDWUtils
 

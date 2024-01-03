@@ -5,6 +5,8 @@ from pathlib import Path
 import numpy as np
 from inflection import underscore
 from tdw.commands.command import Command
+from tdw.webgl.trials.trial import Trial
+from tdw.webgl.trial_adders.trial_adder import TrialAdder
 
 
 class Encoder(JSONEncoder):
@@ -42,15 +44,18 @@ class Encoder(JSONEncoder):
         elif isinstance(obj, Path):
             return str(obj.resolve()).replace("\\", "/")
         else:
-            # Include hidden fields.
             try:
+                # Include the type identifier.
+                if isinstance(obj, Command) or isinstance(obj, Trial) or isinstance(obj, TrialAdder):
+                    d = {"$type": underscore(obj.__class__.__name__)}
+                else:
+                    d = dict()
+                # Include hidden fields.
                 if Encoder.INCLUDE_HIDDEN_FIELDS:
-                    d = {k: v for k, v in obj.__dict__.items()}
+                    d.update({k: v for k, v in obj.__dict__.items()})
                 # Ignore hidden fields.
                 else:
-                    d = {k: v for k, v in obj.__dict__.items() if not k.startswith("_")}
-                if isinstance(obj, Command):
-                    d.update({"$type": underscore(obj.__class__.__name__)})
+                    d.update({k: v for k, v in obj.__dict__.items() if not k.startswith("_")})
             # Flatbuffer objects don't have dictionaries.
             except AttributeError:
                 return None

@@ -52,7 +52,6 @@ from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.FBOutput import ObiParticles as ObiP
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
-from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import TransformMatrices as TranMat
 from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
@@ -1452,46 +1451,44 @@ class ObiParticles(OutputData):
         return self.data.Actors(index).SolverIndicesAsNumpy()
 
 
-class Mouse(OutputData):
-    def __init__(self, b):
-        super().__init__(b)
-        self._buttons: np.ndarray = self.data.ButtonsAsNumpy().reshape(3, 3)
-
-    def get_data(self) -> Mous.Mouse:
-        return Mous.Mouse.GetRootAsMouse(self.bytes, 0)
+class Mouse:
+    def __init__(self, b: bytes):
+        self._buttons: bytes = b[:3]
+        self._position: np.ndarray = np.frombuffer(b[3:11])
+        self._scroll_delta: np.ndarray = np.frombuffer(b[11:])
 
     def get_position(self) -> np.ndarray:
-        return self.data.PositionAsNumpy()
+        return self._position
 
     def get_scroll_delta(self) -> np.ndarray:
-        return self.data.ScrollDeltaAsNumpy()
+        return self._scroll_delta
 
     def get_is_left_button_pressed(self) -> bool:
-        return bool(self._buttons[0][0])
+        return self._buttons[0] == 1
 
     def get_is_left_button_held(self) -> bool:
-        return bool(self._buttons[0][1])
+        return self._buttons[0] == 2
 
     def get_is_left_button_released(self) -> bool:
-        return bool(self._buttons[0][2])
-
+        return self._buttons[0] == 4
+    
     def get_is_middle_button_pressed(self) -> bool:
-        return bool(self._buttons[1][0])
+        return self._buttons[1] == 1
 
     def get_is_middle_button_held(self) -> bool:
-        return bool(self._buttons[1][1])
+        return self._buttons[1] == 2
 
     def get_is_middle_button_released(self) -> bool:
-        return bool(self._buttons[1][2])
-
+        return self._buttons[1] == 4
+    
     def get_is_right_button_pressed(self) -> bool:
-        return bool(self._buttons[2][0])
+        return self._buttons[2] == 1
 
     def get_is_right_button_held(self) -> bool:
-        return bool(self._buttons[2][1])
+        return self._buttons[2] == 2
 
     def get_is_right_button_released(self) -> bool:
-        return bool(self._buttons[2][2])
+        return self._buttons[2] == 4
 
 
 class TransformMatrices(OutputData):
@@ -1533,7 +1530,8 @@ class AvatarTransformMatrices(OutputData):
 
     def get_sensor_matrix(self, index: int) -> np.array:
         return self._sensor_container_matrices[index]
-        
+
+
 class FieldOfView(OutputData):
     def get_data(self) -> Fov.FieldOfView:
         return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)

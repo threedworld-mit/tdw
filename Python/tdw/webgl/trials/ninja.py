@@ -9,7 +9,7 @@ class Ninja(Trial):
     Random objects appear in front of the camera at random trajectories.
     """
 
-    def __init__(self, random_seed: int = None, time: float = 5, scene_name: str = "tdw_room", model_names: List[str] = None, target_object_names: List[str] = None, scale_range: List[float] = None, speed_range: List[float] = None, distance_range: List[float] = None, mass_range: List[float] = None, dynamic_friction_range: List[float] = None, static_friction_range: List[float] = None, bounciness_range: List[float] = None, num_objects_range: List[int] = None, randomize_colors: bool = True, avatar_height: float = 1.8, gravity: float = -2, framerate: int = 60, render_quality: int = 5):
+    def __init__(self, random_seed: int = None, time: float = 5, scene_name: str = "tdw_room", model_names: List[str] = None, target_object_names: List[str] = None, scale_range: List[float] = None, speed_range: List[float] = None, distance_range: List[float] = None, mass_range: List[float] = None, dynamic_friction_range: List[float] = None, static_friction_range: List[float] = None, bounciness_range: List[float] = None, num_objects_range: List[int] = None, randomize_colors: bool = True, avatar_height: float = 1.8, gravity: float = -2):
         """
         :param random_seed: The random seed. Can be null. If null, the seed is random.
         :param time: The total time in seconds that the user has to click the target object.
@@ -27,11 +27,9 @@ class Ninja(Trial):
         :param randomize_colors: If true, the color of each model (not each object instance) will be random.
         :param avatar_height: The height of the avatar (camera).
         :param gravity: The speed of gravity.
-        :param framerate: The target framerate.
-        :param render_quality: The render quality (0 to 5, where 5 is best).
         """
 
-        super().__init__(framerate=framerate, render_quality=render_quality)
+        super().__init__()
         """:field
         The random seed. Can be null. If null, the seed is random.
         """

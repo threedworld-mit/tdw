@@ -4,9 +4,9 @@ from base64 import b64encode
 from pathlib import Path
 import numpy as np
 from inflection import underscore
-from tdw.commands.command import Command
-from tdw.webgl.trials.trial import Trial
-from tdw.webgl.trial_adders.trial_adder import TrialAdder
+import tdw.commands.command
+import tdw.webgl.trials.trial
+import tdw.webgl.trial_adders.trial_adder
 
 
 class Encoder(JSONEncoder):
@@ -46,7 +46,9 @@ class Encoder(JSONEncoder):
         else:
             try:
                 # Include the type identifier.
-                if isinstance(obj, Command) or isinstance(obj, Trial) or isinstance(obj, TrialAdder):
+                if (isinstance(obj, tdw.commands.command.Command) or
+                        isinstance(obj, tdw.webgl.trials.trial.Trial) or
+                        isinstance(obj, tdw.webgl.trial_adders.trial_adder.TrialAdder)):
                     d = {"$type": underscore(obj.__class__.__name__)}
                 else:
                     d = dict()

@@ -9,7 +9,7 @@ class SetTexturedQuad(AdjustTexturedQuadCommand):
     Apply a texture to a pre-existing quad.
     """
 
-    def __init__(self, id: int, image: str, dimensions: Dict[str, float]):
+    def __init__(self, id: int, image: str, dimensions: Dict[str, int]):
         """
         :param id: The ID of the non-physics object.
         :param image: base64 string representation of the image byte array.
@@ -20,7 +20,7 @@ class SetTexturedQuad(AdjustTexturedQuadCommand):
         """:field
         The expected dimensions of the image in pixels.
         """
-        self.dimensions: Dict[str, float] = dimensions
+        self.dimensions: Dict[str, int] = dimensions
         """:field
         base64 string representation of the image byte array.
         """

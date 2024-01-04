@@ -10,7 +10,7 @@ class Tabletop(Trial):
     Add objects on the table including a target object. Add a first person avatar.
     """
 
-    def __init__(self, random_seed: int = None, time: float = 30, scene_name: str = "box_room_2018", table_names: List[str] = None, model_names: List[str] = None, target_object_names: List[str] = None, target_object_ui_texts: List[str] = None, table_position_perturbation: float = 0, rotate_table: float = 0, avatar_directions: List[CardinalDirection] = None, avatar_distance: List[float] = None, avatar_perturbation: float = 0, avatar_rotation: float = 0, font_size: int = 24, font_color: Dict[str, float] = None, progress_bar_size: Dict[str, int] = None, progress_bar_underlay_color: Dict[str, float] = None, progress_bar_overlay_color: Dict[str, float] = None, table_extents_factor: float = 0.85, model_position_step: float = 0.05, model_position_perturbation: float = 0.0125, framerate: int = 60, render_quality: int = 5):
+    def __init__(self, random_seed: int = None, time: float = 30, scene_name: str = "box_room_2018", table_names: List[str] = None, model_names: List[str] = None, target_object_names: List[str] = None, target_object_ui_texts: List[str] = None, table_position_perturbation: float = 0, rotate_table: float = 0, avatar_directions: List[CardinalDirection] = None, avatar_distance: List[float] = None, avatar_perturbation: float = 0, avatar_rotation: float = 0, font_size: int = 24, font_color: Dict[str, float] = None, progress_bar_size: Dict[str, int] = None, progress_bar_underlay_color: Dict[str, float] = None, progress_bar_overlay_color: Dict[str, float] = None, table_extents_factor: float = 0.85, model_position_step: float = 0.05, model_position_perturbation: float = 0.0125):
         """
         :param random_seed: The random seed. Can be null. If null, the seed is random.
         :param time: The total time in seconds that the user has to click the object.
@@ -33,11 +33,9 @@ class Tabletop(Trial):
         :param table_extents_factor: When adding objects, shrink the table extents by this factor to prevent objects from falling off.
         :param model_position_step: Step each table position by this distance.
         :param model_position_perturbation: Perturb each table position by this factor.
-        :param framerate: The target framerate.
-        :param render_quality: The render quality (0 to 5, where 5 is best).
         """
 
-        super().__init__(framerate=framerate, render_quality=render_quality)
+        super().__init__()
         """:field
         The random seed. Can be null. If null, the seed is random.
         """

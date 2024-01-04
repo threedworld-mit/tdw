@@ -8,17 +8,9 @@ class Trial(ABC):
     Abstract base class for a trial.
     """
 
-    def __init__(self, framerate: int = 60, render_quality: int = 5):
+    def __init__(self):
         """
-        :param framerate: The target framerate.
-        :param render_quality: The render quality (0 to 5, where 5 is best).
+        (no arguments)
         """
 
-        """:field
-        The target framerate.
-        """
-        self.framerate: int = framerate
-        """:field
-        The render quality (0 to 5, where 5 is best).
-        """
-        self.render_quality: int = render_quality
+        pass

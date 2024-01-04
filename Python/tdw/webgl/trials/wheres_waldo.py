@@ -9,7 +9,7 @@ class WheresWaldo(Trial):
     There is a grid of objects in a room. The user must click the target object. If the user clicks the wrong object, a force is applied.
     """
 
-    def __init__(self, random_seed: int = None, scene_name: str = "box_room_2018", model_scale: float = 0.2, num_columns: int = 10, num_rows: int = 10, min_speed: float = 0.1, max_speed: float = 10, mass_per_cubic_meter: float = 1, target_model_name: str = "sphere", target_object_color: Dict[str, float] = None, avatar_body_size: Dict[str, float] = None, avatar_body_offset: Dict[str, float] = None, avatar_body_color: Dict[str, float] = None, click_force: float = 10, framerate: int = 60, render_quality: int = 5):
+    def __init__(self, random_seed: int = None, scene_name: str = "box_room_2018", model_scale: float = 0.2, num_columns: int = 10, num_rows: int = 10, min_speed: float = 0.1, max_speed: float = 10, mass_per_cubic_meter: float = 1, target_model_name: str = "sphere", target_object_color: Dict[str, float] = None, avatar_body_size: Dict[str, float] = None, avatar_body_offset: Dict[str, float] = None, avatar_body_color: Dict[str, float] = None, click_force: float = 10):
         """
         :param random_seed: The random seed. Can be null. If null, the seed is random.
         :param scene_name: The name of the scene. This should be a one-room interior scene.
@@ -25,11 +25,9 @@ class WheresWaldo(Trial):
         :param avatar_body_offset: Offset the avatar's visual body from the camera by this distance.
         :param avatar_body_color: The color of the avatar's visual body.
         :param click_force: When a non-target object is clicked, this much force is applied.
-        :param framerate: The target framerate.
-        :param render_quality: The render quality (0 to 5, where 5 is best).
         """
 
-        super().__init__(framerate=framerate, render_quality=render_quality)
+        super().__init__()
         """:field
         The random seed. Can be null. If null, the seed is random.
         """

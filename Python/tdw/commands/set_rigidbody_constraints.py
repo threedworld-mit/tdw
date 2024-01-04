@@ -9,7 +9,7 @@ class SetRigidbodyConstraints(ObjectCommand):
     Set the constraints of an object's Rigidbody.
     """
 
-    def __init__(self, id: int, freeze_position_axes: Dict[str, float] = None, freeze_rotation_axes: Dict[str, float] = None):
+    def __init__(self, id: int, freeze_position_axes: Dict[str, int] = None, freeze_rotation_axes: Dict[str, int] = None):
         """
         :param id: The unique object ID.
         :param freeze_position_axes: Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes motion along the Y-axis.
@@ -21,13 +21,13 @@ class SetRigidbodyConstraints(ObjectCommand):
             """:field
             Freeze motion along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes motion along the Y-axis.
             """
-            self.freeze_position_axes: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+            self.freeze_position_axes: Dict[str, int] = {"x": 0, "y": 0, "z": 0}
         else:
             self.freeze_position_axes = freeze_position_axes
         if freeze_rotation_axes is None:
             """:field
             Freeze rotation along these axes. For example, {"x": 0, "y": 1, "z": 0} freezes rotation around the Y-axis. Rotation axes are in worldspace coordinates, not relative to an object's forward directional vector..
             """
-            self.freeze_rotation_axes: Dict[str, float] = {"x": 0, "y": 0, "z": 0}
+            self.freeze_rotation_axes: Dict[str, int] = {"x": 0, "y": 0, "z": 0}
         else:
             self.freeze_rotation_axes = freeze_rotation_axes

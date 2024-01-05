@@ -1826,31 +1826,31 @@ class PostProcess(OutputData):
     def get_enabled(self) -> bool:
         return self.data.Enabled()
 
-    def get_ambient_occlusion_intensity(self):
+    def get_ambient_occlusion_intensity(self) -> float:
         return self.data.AmbientOcclusionIntensity()
 
-    def get_ambient_occlusion_thickness_modifier(self):
+    def get_ambient_occlusion_thickness_modifier(self) -> float:
         return self.data.AmbientOcclusionThicknessModifier()
 
-    def get_aperture(self):
+    def get_aperture(self) -> float:
         return self.data.Aperture()
 
-    def get_focus_distance(self):
+    def get_focus_distance(self) -> float:
         return self.data.FocusDistance()
 
-    def get_contrast(self):
+    def get_contrast(self) -> float:
         return self.data.Contrast()
 
-    def get_post_exposure(self):
+    def get_post_exposure(self) -> float:
         return self.data.PostExposure()
 
-    def get_saturation(self):
+    def get_saturation(self) -> float:
         return self.data.Saturation()
 
-    def get_screen_space_reflections(self):
+    def get_screen_space_reflections(self) -> float:
         return self.data.ScreenSpaceReflections()
 
-    def get_vignette(self):
+    def get_vignette(self) -> float:
         return self.data.Vignette()
 
 

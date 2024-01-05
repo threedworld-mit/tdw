@@ -33,6 +33,8 @@ class TrialController(ABC):
         self._port: int = -1
         # The TDW session ID. This is set in `self.set_session_id(session_id)`.
         self._session_id: int = -1
+        # This gets sent to the Database.
+        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True)
         # This is used to connect to a remote Database.
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
@@ -159,12 +161,13 @@ class TrialController(ABC):
             # Send the logged end-state data.
             if self._database_socket_connected:
                 try:
-                    self._database_socket.send(bs)
+                    # Send the session ID and trial data.
+                    self._database_socket.send_multipart([self._session_id_bytes, bs])
                     self._database_socket.recv()
                     # Get the next trial message, which will be sent at the top of the loop.
                     self._trial_message = self.get_next_message(playback=playback)
                 except zmq.ZMQError as e:
-                    print(e)
+                    print("Database error:", e)
                     # Send a kill signal.
                     self._trial_message = TrialMessage(trials=[], adder=EndSimulation())
             else:

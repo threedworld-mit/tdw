@@ -4,9 +4,6 @@ from base64 import b64encode
 from pathlib import Path
 import numpy as np
 from inflection import underscore
-import tdw.commands.command
-import tdw.webgl.trials.trial
-import tdw.webgl.trial_adders.trial_adder
 
 
 class Encoder(JSONEncoder):
@@ -46,10 +43,8 @@ class Encoder(JSONEncoder):
         else:
             try:
                 # Include the type identifier.
-                if (isinstance(obj, tdw.commands.command.Command) or
-                        isinstance(obj, tdw.webgl.trials.trial.Trial) or
-                        isinstance(obj, tdw.webgl.trial_adders.trial_adder.TrialAdder)):
-                    d = {"$type": underscore(obj.__class__.__name__)}
+                if 'tdw' in obj.__class__.__module__ and obj.__class__.__name__ != "TrialMessage":
+                    d: dict = {"$type": underscore(obj.__class__.__name__)}
                 else:
                     d = dict()
                 # Include hidden fields.
@@ -59,7 +54,8 @@ class Encoder(JSONEncoder):
                 else:
                     d.update({k: v for k, v in obj.__dict__.items() if not k.startswith("_")})
             # Flatbuffer objects don't have dictionaries.
-            except AttributeError:
+            except AttributeError as e:
+                print("JSON encoding error:", e)
                 return None
             # Convert non-serializable keys to string.
             for k in d:

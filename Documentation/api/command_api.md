@@ -645,6 +645,7 @@
 | [`parent_avatar_to_robot`](#parent_avatar_to_robot) | Parent an avatar to a robot. The avatar's position and rotation will always be relative to the robot. Usually you'll want to do this to add a camera to the robot. |
 | [`remove_robot_nav_mesh_obstacle`](#remove_robot_nav_mesh_obstacle) | Remove a NavMesh obstacle from a robot (see make_robot_nav_mesh_obstacle).  |
 | [`set_immovable`](#set_immovable) | Set whether or not the root object of the robot is immovable. Its joints will still be moveable. |
+| [`set_robot_color`](#set_robot_color) | Set the visual color of a robot in the scene. |
 | [`set_robot_joint_id`](#set_robot_joint_id) | Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.  |
 | [`set_robot_obi_collision_material`](#set_robot_obi_collision_material) | Set the Obi collision material of a robot.  |
 | [`teleport_robot`](#teleport_robot) | Teleport the robot to a new position and rotation. This is a sudden movement that might disrupt the physics simulation. You should only use this command if you really need to (for example, if the robot falls over). |
@@ -8126,6 +8127,26 @@ Set whether or not the root object of the robot is immovable. Its joints will st
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"immovable"` | bool | If true, the root object of the robot is immovable. | True |
+| `"id"` | int | The ID of the robot in the scene. | 0 |
+
+***
+
+## **`set_robot_color`**
+
+Set the visual color of a robot in the scene.
+
+
+```python
+{"$type": "set_robot_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}}
+```
+
+```python
+{"$type": "set_robot_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The new color of the robot. | |
 | `"id"` | int | The ID of the robot in the scene. | 0 |
 
 ***

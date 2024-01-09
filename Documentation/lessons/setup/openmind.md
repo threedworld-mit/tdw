@@ -84,7 +84,7 @@ vglconnect nodeXXX
 
   Replace `XXX` with the node ID outputted by step 2, for example `041`.
 
-  If the terminal asks you if you want to continue connecting, type `yes` press enter, enter your password, and press enter again.
+  If the terminal asks you if you want to continue connecting, type `yes` and press enter.
 
 
 ***

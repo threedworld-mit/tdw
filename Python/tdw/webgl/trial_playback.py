@@ -147,21 +147,28 @@ class TrialPlayback(AddOn):
             index += 8
             frame_count += 1
 
-    def get_fps(self) -> float:
-        """
-        :return: The average frames per second.
-        """
-
+    def get_time_deltas(self) -> List[float]:
         # Ignore the first frame.
         if len(self.timestamps) <= 2:
-            return 0
+            return []
         deltas = list()
         # 1 second.
         s = np.timedelta64(1, 's')
         # Get each delta in seconds. Start after the first frame.
         for i in range(2, len(self.timestamps)):
-            deltas.append((self.timestamps[i] - self.timestamps[i - 1]) / s)
-        return 1 / (sum(deltas) / len(deltas))
+            deltas.append(float((self.timestamps[i] - self.timestamps[i - 1]) / s))
+        return deltas
+
+    def get_fps(self) -> float:
+        """
+        :return: The average frames per second.
+        """
+
+        deltas = self.get_time_deltas()
+        if len(deltas) == 0:
+            return 0
+        else:
+            return 1 / (sum(deltas) / len(deltas))
 
     def get_initialization_commands(self) -> List[dict]:
         # Disable physics.

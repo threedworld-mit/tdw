@@ -26,61 +26,37 @@ class SystemInfo(object):
         return None
 
     # SystemInfo
-    def OsFamily(self):
+    def Cpu(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
     # SystemInfo
-    def Cpu(self):
+    def Browser(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
     # SystemInfo
-    def GraphicsApi(self):
+    def Gpu(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
     # SystemInfo
-    def Browser(self):
+    def GraphicsApi(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(12))
         if o != 0:
             return self._tab.String(o + self._tab.Pos)
         return None
 
-    # SystemInfo
-    def GpuId(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # SystemInfo
-    def GpuVendorId(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-    # SystemInfo
-    def Memory(self):
-        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
-        if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
-        return 0
-
-def SystemInfoStart(builder): builder.StartObject(8)
+def SystemInfoStart(builder): builder.StartObject(5)
 def SystemInfoAddOs(builder, os): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(os), 0)
-def SystemInfoAddOsFamily(builder, osFamily): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(osFamily), 0)
-def SystemInfoAddCpu(builder, cpu): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(cpu), 0)
-def SystemInfoAddGraphicsApi(builder, graphicsApi): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(graphicsApi), 0)
-def SystemInfoAddBrowser(builder, browser): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(browser), 0)
-def SystemInfoAddGpuId(builder, gpuId): builder.PrependInt32Slot(5, gpuId, 0)
-def SystemInfoAddGpuVendorId(builder, gpuVendorId): builder.PrependInt32Slot(6, gpuVendorId, 0)
-def SystemInfoAddMemory(builder, memory): builder.PrependInt32Slot(7, memory, 0)
+def SystemInfoAddCpu(builder, cpu): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(cpu), 0)
+def SystemInfoAddBrowser(builder, browser): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(browser), 0)
+def SystemInfoAddGpu(builder, gpu): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(gpu), 0)
+def SystemInfoAddGraphicsApi(builder, graphicsApi): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(graphicsApi), 0)
 def SystemInfoEnd(builder): return builder.EndObject()

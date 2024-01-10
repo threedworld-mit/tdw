@@ -1957,23 +1957,14 @@ class SystemInfo(OutputData):
     def get_os(self) -> str:
         return self.data.Os().decode('utf-8')
 
-    def get_os_family(self) -> str:
-        return self.data.OsFamily().decode('utf-8')
-
     def get_cpu(self) -> str:
         return self.data.Cpu().decode('utf-8')
-
-    def get_graphics_api(self) -> str:
-        return self.data.GraphicsApi().decode('utf-8')
 
     def get_browser(self) -> str:
         return self.data.Browser().decode('utf-8')
 
-    def get_gpu_id(self) -> int:
-        return self.data.GpuId()
+    def get_gpu(self) -> str:
+        return self.data.Gpu().decode('utf-8')
 
-    def get_gpu_vendor_id(self) -> int:
-        return self.data.GpuVendorId()
-
-    def get_memory(self) -> int:
-        return self.data.Memory()
+    def get_graphics_api(self) -> str:
+        return self.data.GraphicsApi().decode('utf-8')

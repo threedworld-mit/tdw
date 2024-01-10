@@ -59,8 +59,7 @@ class OutputData(TrialController):
                 if r_id == "syst":
                     system_info = SystemInfo(resp[i])
                     row += (f"{self.filename},{system_info.get_os()},{system_info.get_browser()},{system_info.get_cpu()},"
-                            f"{system_info.get_memory()},{system_info.get_graphics_api()},{system_info.get_gpu_id()},"
-                            f"{system_info.get_gpu_vendor_id()},{fps},{dt_stdev}")
+                            f"{system_info.get_gpu()},{system_info.get_graphics_api()},{fps},{dt_stdev}")
             # Append the row.
             with io.open(self.benchmark_table_path, "at") as f:
                 f.write("\n" + row)

@@ -69,6 +69,7 @@ from tdw.FBOutput import ObjectScales as ObjSca
 from tdw.FBOutput import PostProcess as PostProc
 from tdw.FBOutput import Scene as Sce
 from tdw.FBOutput import ScreenSize as ScreSi
+from tdw.FBOutput import SystemInfo as SysInfo
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1947,3 +1948,32 @@ class FastImageSensors:
 
     def get_rotation(self, index: int) -> np.ndarray:
         return self._rotations[index]
+
+
+class SystemInfo(OutputData):
+    def get_data(self) -> SysInfo.SystemInfo:
+        return SysInfo.SystemInfo.GetRootAsSystemInfo(self.bytes, 0)
+
+    def get_os(self) -> str:
+        return self.data.Os().decode('utf-8')
+
+    def get_os_family(self) -> str:
+        return self.data.OsFamily().decode('utf-8')
+
+    def get_cpu(self) -> str:
+        return self.data.Cpu().decode('utf-8')
+
+    def get_graphics_api(self) -> str:
+        return self.data.GraphicsApi().decode('utf-8')
+
+    def get_browser(self) -> str:
+        return self.data.Browser().decode('utf-8')
+
+    def get_gpu_id(self) -> int:
+        return self.data.GpuId()
+
+    def get_gpu_vendor_id(self) -> int:
+        return self.data.GpuVendorId()
+
+    def get_memory(self) -> int:
+        return self.data.Memory()

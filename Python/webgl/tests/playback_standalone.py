@@ -10,12 +10,10 @@ from tdw.tdw_utils import TDWUtils
 from tdw.librarian import SceneLibrarian
 from tdw.output_data import OutputData, Images
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.webgl import TrialController, TrialMessage, TrialPlayback, END_MESSAGE
-from tdw.webgl.trial_adders import AtEnd
-from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
+from tdw.webgl import TrialPlayback
 
 
-class Playback(Controller):
+class PlaybackStandalone(Controller):
     """
     This test measures the accuracy of a `TrialPlayback` add-on in a standalone Unity context:
     To what extent does a non-physics playback of a trial replicate the original trial?
@@ -227,32 +225,9 @@ class Playback(Controller):
         self.communicate({"$type": "terminate"})
 
 
-class PlaybackWebGL(TrialController):
-    def __init__(self, standalone_checksum: str):
-        self.path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("webgl_trial_playback_test/playback.gz").resolve()
-        self._standalone_checksum: str = standalone_checksum
-        if not self.path.parent.exists():
-            self.path.parent.mkdir(parents=True)
-        super().__init__()
-
-    def get_initial_message(self) -> TrialMessage:
-        return TrialMessage(trials=[OutputDataBenchmark()], adder=AtEnd())
-
-    def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
-        return END_MESSAGE
-
-    def _on_receive(self, bs: bytes) -> None:
-        # Write to disk.
-        print(self._standalone_checksum)
-        webgl_checksum = md5(bs).hexdigest()
-        print(webgl_checksum)
-        print(self._standalone_checksum == webgl_checksum)
-        self.path.write_bytes(bs)
-
 
 if __name__ == "__main__":
-    from tdw.webgl import run
-    c = Playback()
+    c = PlaybackStandalone()
     checksum = c.run_image_capture()
     c.run_playback()
-    run(PlaybackWebGL(checksum))
+

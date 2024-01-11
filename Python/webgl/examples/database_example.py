@@ -1,7 +1,7 @@
 from threading import Thread
 from tdw.tdw_utils import TDWUtils
 from tdw.webgl import TrialController, TrialMessage, END_MESSAGE, Database, TrialPlayback, run
-from tdw.webgl.trials.hello_world import HelloWorld
+from tdw.webgl.trials import HelloWorld
 from tdw.webgl.trial_adders import AtEnd
 
 """

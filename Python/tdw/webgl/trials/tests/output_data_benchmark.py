@@ -9,7 +9,7 @@ class OutputDataBenchmark(Trial):
     This trial benchmarks the speed of writing and sending output data. There is no human user input.
     """
 
-    def __init__(self, scene_name: str = "box_room_2018", model_name: str = "octahedron", scale: Dict[str, float] = None, avatar_position: Dict[str, float] = None, grid_size: Dict[str, int] = None, move_by: Dict[str, float] = None, force: Dict[str, float] = None, rotate_by: float = 0.001, num_frames: int = 3600):
+    def __init__(self, scene_name: str = "box_room_2018", model_name: str = "octahedron", scale: Dict[str, float] = None, avatar_position: Dict[str, float] = None, grid_size: Dict[str, int] = None, move_by: Dict[str, float] = None, force: Dict[str, float] = None, rotate_by: float = 0.001, num_frames: int = 3600, image_capture: bool = False):
         """
         :param scene_name: The name of the scene.
         :param model_name: The name of the test model.
@@ -20,6 +20,7 @@ class OutputDataBenchmark(Trial):
         :param force: Apply this force to each object.
         :param rotate_by: The avatar's camera will rotate around the yaw axis by this delta per frame. This will make it harder for output data to compress.
         :param num_frames: Run the simulation for this many frames.
+        :param image_capture: If true, capture image data per-frame. This is VERY expensive but it's required for the trial playback test.
         """
 
         super().__init__()
@@ -74,3 +75,7 @@ class OutputDataBenchmark(Trial):
         Run the simulation for this many frames.
         """
         self.num_frames: int = num_frames
+        """:field
+        If true, capture image data per-frame. This is VERY expensive but it's required for the trial playback test.
+        """
+        self.image_capture: bool = image_capture

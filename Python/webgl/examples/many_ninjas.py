@@ -1,8 +1,7 @@
 from random import randint
 from typing import List
 from tdw.webgl import END_MESSAGE, TrialController, TrialMessage, TrialPlayback
-from tdw.webgl.trials.trial import Trial
-from tdw.webgl.trials.ninja import Ninja
+from tdw.webgl.trials import Trial, Ninja
 from tdw.webgl.trial_adders import AtEnd, NoTrials
 from tdw.output_data import OutputData, Models
 

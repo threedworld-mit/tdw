@@ -8,11 +8,11 @@ from tdw.type_aliases import PATH
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import SystemInfo
 from tdw.webgl import END_MESSAGE, TrialController, TrialMessage, TrialPlayback, run
-from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
+from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark as OutputDataBenchmarkTrial
 from tdw.webgl.trial_adders.at_end import AtEnd
 
 
-class OutputData(TrialController):
+class OutputDataBenchmark(TrialController):
     """
     Output data benchmark.
     """
@@ -28,7 +28,7 @@ class OutputData(TrialController):
         super().__init__()
 
     def get_initial_message(self) -> TrialMessage:
-        return TrialMessage(trials=[OutputDataBenchmark()], adder=AtEnd())
+        return TrialMessage(trials=[OutputDataBenchmarkTrial()], adder=AtEnd())
 
     def _on_receive(self, bs: bytes) -> None:
         self.compressed_size = TDWUtils.bytes_to_megabytes(len(bs))
@@ -69,9 +69,9 @@ class OutputData(TrialController):
 if __name__ == "__main__":
     from argparse import ArgumentParser
 
-    default_output_path = Path("D:/tdw_docs/docs/webgl/benchmarks/output_data").resolve()
+    default_output_path = Path("D:/tdw_docs/docs/webgl/tests/output_data").resolve()
     parser = ArgumentParser(allow_abbrev=False)
     parser.add_argument("--output_directory", type=str, default=str(default_output_path))
     parser.add_argument("--benchmark_table_path", type=str, default=str(default_output_path.joinpath("output_data.csv")))
     args, unknown = parser.parse_known_args()
-    run(OutputData(output_directory=args.output_directory, benchmark_table_path=args.benchmark_table_path))
+    run(OutputDataBenchmark(output_directory=args.output_directory, benchmark_table_path=args.benchmark_table_path))

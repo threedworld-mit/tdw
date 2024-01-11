@@ -181,8 +181,8 @@ class TrialController(ABC):
         # Stop the server.
         self._stop.set_result(0)
 
-    @staticmethod
-    def _get_max_size() -> int:
+    @classmethod
+    def _get_max_size(cls) -> int:
         """
         Override this function to set the maximum size of a WebSocket message.
         

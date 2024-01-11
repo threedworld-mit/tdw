@@ -116,6 +116,7 @@ class PlaybackStandalone(Controller):
     def run_image_capture(self) -> str:
         output_data_commands = [{"$type": "send_version"},
                                 {"$type": "send_framerate"},
+                                {"$type": "send_system_info"},
                                 {"$type": "send_screen_size"},
                                 {"$type": "send_scene"},
                                 {"$type": "send_post_process"},

@@ -9,17 +9,19 @@ class OutputDataBenchmark(Trial):
     This trial benchmarks the speed of writing and sending output data. There is no human user input.
     """
 
-    def __init__(self, scene_name: str = "box_room_2018", model_name: str = "octahedron", scale: Dict[str, float] = None, avatar_position: Dict[str, float] = None, grid_size: Dict[str, int] = None, move_by: Dict[str, float] = None, force: Dict[str, float] = None, rotate_by: float = 0.001, num_frames: int = 3600, image_capture: bool = False):
+    def __init__(self, scene_name: str = "box_room_2018", model_name: str = "octahedron", scale: Dict[str, float] = None, avatar_position: Dict[str, float] = None, avatar_look_at: Dict[str, float] = None, grid_size: Dict[str, int] = None, move_by: Dict[str, float] = None, force: Dict[str, float] = None, rotate_by: float = 0.001, num_frames: int = 3600, frames_per_forces: int = 300, image_capture: bool = False):
         """
         :param scene_name: The name of the scene.
         :param model_name: The name of the test model.
         :param scale: The scale of the test model.
         :param avatar_position: The position of the avatar.
+        :param avatar_look_at: The avatar will look at this position.
         :param grid_size: The size of the grid of objects. This determines how many objects there are and where they are. This vector will be multiplied by a factor to span the room.
         :param move_by: The avatar will move by this delta per frame. This will make it harder for output data to compress.
         :param force: Apply this force to each object.
         :param rotate_by: The avatar's camera will rotate around the yaw axis by this delta per frame. This will make it harder for output data to compress.
         :param num_frames: Run the simulation for this many frames.
+        :param frames_per_forces: Re-apply forces after this many frames have elapsed.
         :param image_capture: If true, capture image data per-frame. This is VERY expensive but it's required for the trial playback test.
         """
 
@@ -43,9 +45,16 @@ class OutputDataBenchmark(Trial):
             """:field
             The position of the avatar.
             """
-            self.avatar_position: Dict[str, float] = {"x": 0, "y": 1.1, "z": -2}
+            self.avatar_position: Dict[str, float] = {"x": 0, "y": 2.6, "z": -4}
         else:
             self.avatar_position = avatar_position
+        if avatar_look_at is None:
+            """:field
+            The avatar will look at this position.
+            """
+            self.avatar_look_at: Dict[str, float] = {"x": 0, "y": 1.5, "z": 0}
+        else:
+            self.avatar_look_at = avatar_look_at
         if grid_size is None:
             """:field
             The size of the grid of objects. This determines how many objects there are and where they are. This vector will be multiplied by a factor to span the room.
@@ -75,6 +84,10 @@ class OutputDataBenchmark(Trial):
         Run the simulation for this many frames.
         """
         self.num_frames: int = num_frames
+        """:field
+        Re-apply forces after this many frames have elapsed.
+        """
+        self.frames_per_forces: int = frames_per_forces
         """:field
         If true, capture image data per-frame. This is VERY expensive but it's required for the trial playback test.
         """

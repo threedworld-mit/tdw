@@ -14,33 +14,42 @@ from tdw.webgl.trial_adders import AtEnd
 
 class PlaybackWebGL(TrialController):
     def __init__(self):
-        self.images: List[np.ndarray] = list()
         self.playback: Optional[TrialPlayback] = None
         super().__init__()
 
     def get_initial_message(self) -> TrialMessage:
-        return TrialMessage(trials=[OutputDataBenchmark(image_capture=True)], adder=AtEnd())
+        return TrialMessage(trials=[OutputDataBenchmark(image_capture=True,
+                                                        num_frames=300)],
+                            adder=AtEnd())
+
+    def _on_receive(self, bs: bytes) -> None:
+        self.playback_bytes = bs
 
     def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
         self.playback = playback
+        return END_MESSAGE
+
+    @classmethod
+    def _get_max_size(cls) -> int:
+        return 1677721600
+
+
+class PlaybackReader(Controller):
+    def __init__(self, playback: TrialPlayback, playback_table_path: Optional[PATH] = None,
+                 port: int = 1071, check_version: bool = True, launch_build: bool = True):
+        print(playback)
+        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.playback_table_path: Optional[PATH] = playback_table_path
+        self.playback: TrialPlayback = playback
+        self.add_ons.append(self.playback)
+        self.webgl_images: List[np.ndarray] = list()
         # Store image data.
         for i in range(len(playback.frames)):
             for j in range(len(playback.frames[i])):
                 r_id = OutputData.get_data_type_id(playback.frames[i][j])
                 if r_id == "imag":
                     images = Images(playback.frames[i][j])
-                    self.images.append(images.get_image(0))
-        return END_MESSAGE
-
-
-class PlaybackReader(Controller):
-    def __init__(self, playback: TrialPlayback, images: List[np.ndarray], playback_table_path: Optional[PATH] = None,
-                 port: int = 1071, check_version: bool = True, launch_build: bool = True):
-        super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.playback_table_path: Optional[PATH] = playback_table_path
-        self.playback: TrialPlayback = playback
-        self.add_ons.append(self.playback)
-        self.webgl_images: List[np.ndarray] = images
+                    self.webgl_images.append(images.get_image(0))
         self.diffs: List[float] = list()
 
     def run(self) -> None:
@@ -115,5 +124,5 @@ if __name__ == "__main__":
     parser = ArgumentParser(allow_abbrev=False)
     parser.add_argument("--playback_table_path", type=str, default=str(default_output_path.joinpath("playback.csv")))
     args, unknown = parser.parse_known_args()
-    c = PlaybackReader(playback=tc.playback, images=tc.images, playback_table_path=args.playback_table_path)
+    c = PlaybackReader(playback=tc.playback, playback_table_path=args.playback_table_path)
     c.run()

@@ -2,7 +2,6 @@ from typing import Optional
 from pathlib import Path
 import io
 from datetime import datetime
-from gzip import GzipFile
 from statistics import stdev
 from tdw.type_aliases import PATH
 from tdw.tdw_utils import TDWUtils
@@ -31,15 +30,6 @@ class OutputDataBenchmark(TrialController):
         return TrialMessage(trials=[OutputDataBenchmarkTrial()], adder=AtEnd())
 
     def _on_receive(self, bs: bytes) -> None:
-        self.compressed_size = TDWUtils.bytes_to_megabytes(len(bs))
-        f = io.BytesIO(bs)
-        with GzipFile(fileobj=f, mode="rb") as gz:
-            buffer: bytes = gz.read()
-        self.uncompressed_size = TDWUtils.bytes_to_megabytes(len(buffer))
-        print("WebGL Benchmark:")
-        print("Data size (MB):", self.compressed_size)
-        print("Uncompressed size (MB):", self.uncompressed_size)
-        # Write to disk.
         if self.output_directory is not None:
             path = self.output_directory.joinpath(self.filename)
             path.write_bytes(bs)

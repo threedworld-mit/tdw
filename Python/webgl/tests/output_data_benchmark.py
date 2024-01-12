@@ -17,8 +17,6 @@ class OutputDataBenchmark(TrialController):
     """
 
     def __init__(self, output_directory: PATH = None, benchmark_table_path: PATH = None):
-        self.compressed_size: float = -1
-        self.uncompressed_size: float = -1
         self.output_directory: Optional[Path] = TDWUtils.get_path(output_directory) if output_directory is not None else None
         if self.output_directory is not None and not self.output_directory.exists():
             self.output_directory.mkdir(parents=True)

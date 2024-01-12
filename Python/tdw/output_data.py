@@ -716,18 +716,21 @@ class Substructure(OutputData):
         return self.data.SubObjects(index).Materials(material_index).decode('utf-8')
 
 
-class Version(OutputData):
-    def get_data(self) -> Ver.Version:
-        return Ver.Version.GetRootAsVersion(self.bytes, 0)
+class Version:
+    def __init__(self, b):
+        self._standalone: bool = b[8] == b'\x01'
+        version_length = int(b[9])
+        self._tdw_version: str = b[10: 10 + version_length].decode('utf-8')
+        self._unity_version = b[10 + version_length:].decode('utf-8')
 
     def get_unity_version(self) -> str:
-        return self.data.Unity().decode('utf-8')
+        return self._unity_version
 
     def get_tdw_version(self) -> str:
-        return self.data.Tdw().decode('utf-8')
+        return self._tdw_version
 
     def get_standalone(self) -> bool:
-        return self.data.Standalone()
+        return self._standalone
 
 
 class EnvironmentCollision(OutputData):

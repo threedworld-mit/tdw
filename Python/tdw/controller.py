@@ -10,7 +10,7 @@ from tdw.librarian import ModelLibrarian, SceneLibrarian, MaterialLibrarian, HDR
     DroneLibrarian, VehicleLibrarian
 from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH, BUILD_PATH
 from tdw.backend.encoder import Encoder
-from tdw.output_data import Version, QuitSignal
+from tdw.output_data import OutputData, Version, QuitSignal
 from tdw.version import __version__
 from tdw.backend.update import Update
 from tdw.add_ons.add_on import AddOn
@@ -87,7 +87,7 @@ class Controller:
         self._tdw_version: str = ""
         self._unity_version: str = ""
         for r in resp[:-1]:
-            if Version.get_data_type_id(r) == "vers":
+            if OutputData.get_data_type_id(r) == "vers":
                 v = Version(r)
                 self._tdw_version = v.get_tdw_version()
                 self._unity_version = v.get_unity_version()

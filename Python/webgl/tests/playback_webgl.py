@@ -6,7 +6,6 @@ from PIL import Image, ImageChops
 from tdw.controller import Controller
 from tdw.output_data import OutputData, Images, SystemInfo
 from tdw.tdw_utils import TDWUtils
-from tdw.type_aliases import PATH
 from tdw.webgl import TrialController, TrialMessage, TrialPlayback, END_MESSAGE, run
 from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
 from tdw.webgl.trial_adders import AtEnd
@@ -22,24 +21,20 @@ class PlaybackWebGL(TrialController):
                                                         num_frames=300)],
                             adder=AtEnd())
 
-    def _on_receive(self, bs: bytes) -> None:
-        self.playback_bytes = bs
-
     def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
         self.playback = playback
         return END_MESSAGE
 
     @classmethod
     def _get_max_size(cls) -> int:
-        return 1677721600
+        return 167772160
 
 
 class PlaybackReader(Controller):
-    def __init__(self, playback: TrialPlayback, playback_table_path: Optional[PATH] = None,
+    def __init__(self, playback: TrialPlayback, playback_table_path: Path,
                  port: int = 1071, check_version: bool = True, launch_build: bool = True):
-        print(playback)
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.playback_table_path: Optional[PATH] = playback_table_path
+        self.playback_table_path: Path = playback_table_path
         self.playback: TrialPlayback = playback
         self.add_ons.append(self.playback)
         self.webgl_images: List[np.ndarray] = list()
@@ -115,14 +110,15 @@ class PlaybackReader(Controller):
 if __name__ == "__main__":
     from argparse import ArgumentParser
 
-    # Run the TrialController.
-    tc = PlaybackWebGL()
-    run(tc)
-
     # Run the Standalone controller.
     default_output_path = Path("D:/tdw_docs/docs/webgl/tests/playback").resolve()
     parser = ArgumentParser(allow_abbrev=False)
     parser.add_argument("--playback_table_path", type=str, default=str(default_output_path.joinpath("playback.csv")))
     args, unknown = parser.parse_known_args()
-    c = PlaybackReader(playback=tc.playback, playback_table_path=args.playback_table_path)
+
+    # Run the TrialController.
+    tc = PlaybackWebGL()
+    run(tc)
+
+    c = PlaybackReader(playback=tc.playback, playback_table_path=Path(args.playback_table_path).resolve())
     c.run()

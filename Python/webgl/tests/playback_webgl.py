@@ -18,7 +18,7 @@ class PlaybackWebGL(TrialController):
 
     def get_initial_message(self) -> TrialMessage:
         return TrialMessage(trials=[OutputDataBenchmark(image_capture=True,
-                                                        num_frames=300)],
+                                                        num_frames=100)],
                             adder=AtEnd())
 
     def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
@@ -37,14 +37,13 @@ class PlaybackReader(Controller):
         self.playback_table_path: Path = playback_table_path
         self.playback: TrialPlayback = playback
         self.add_ons.append(self.playback)
-        self.webgl_images: List[np.ndarray] = list()
+        self.webgl_images: List[Image.Image] = list()
         # Store image data.
         for i in range(len(playback.frames)):
             for j in range(len(playback.frames[i])):
                 r_id = OutputData.get_data_type_id(playback.frames[i][j])
                 if r_id == "imag":
-                    images = Images(playback.frames[i][j])
-                    self.webgl_images.append(images.get_image(0))
+                    self.webgl_images.append(TDWUtils.get_pil_image(Images(playback.frames[i][j]), 0))
         self.diffs: List[float] = list()
 
     def run(self) -> None:
@@ -55,8 +54,10 @@ class PlaybackReader(Controller):
             else:
                 if i == 3:
                     # Start image capture.
-                    resp = self.communicate({"$type": "send_images",
-                                             "frequency": "always"})
+                    resp = self.communicate([{"$type": "set_pass_masks",
+                                              "pass_masks": ["_mask"]},
+                                             {"$type": "send_images",
+                                              "frequency": "always"}])
                 else:
                     resp = self.communicate([])
                 self.compare_images(webgl_frame=i, resp=resp)
@@ -64,25 +65,24 @@ class PlaybackReader(Controller):
         self.communicate({"$type": "terminate"})
         difference = sum(self.diffs) / len(self.diffs)
         print("Average per-pixel discrepancy:", difference)
-        if self.playback_table_path is not None:
-            path = TDWUtils.get_path(self.playback_table_path)
-            if not path.parent.exists():
-                path.parent.mkdir(parents=True)
-                # Create the output row.
-                row = ""
-                # Get system info.
-                resp = self.playback.frames[0]
-                for i in range(len(resp) - 1):
-                    r_id = SystemInfo.get_data_type_id(resp[i])
-                    if r_id == "syst":
-                        system_info = SystemInfo(resp[i])
-                        row += (f"{system_info.get_os()},{system_info.get_browser()},"
-                                f"{system_info.get_gpu()},{system_info.get_graphics_api()},{difference}")
-                        break
-                # Write the results to disk.
-                path_str = TDWUtils.get_string_path(self.playback_table_path)
-                with io.open(path_str, "at") as f:
-                    f.write("\n" + row)
+        path = TDWUtils.get_path(self.playback_table_path)
+        if not path.parent.exists():
+            path.parent.mkdir(parents=True)
+        # Create the output row.
+        row = ""
+        # Get system info.
+        resp = self.playback.frames[0]
+        for i in range(len(resp) - 1):
+            r_id = SystemInfo.get_data_type_id(resp[i])
+            if r_id == "syst":
+                system_info = SystemInfo(resp[i])
+                row += (f"{system_info.get_os()},{system_info.get_browser()},"
+                        f"{system_info.get_gpu()},{system_info.get_graphics_api()},{difference}")
+                break
+        # Write the results to disk.
+        path_str = TDWUtils.get_string_path(self.playback_table_path)
+        with io.open(path_str, "at") as f:
+            f.write("\n" + row)
 
     def compare_images(self, webgl_frame: int, resp: List[bytes]) -> None:
         """
@@ -99,7 +99,7 @@ class PlaybackReader(Controller):
                 # Get the standalone image.
                 standalone_image = TDWUtils.get_pil_image(Images(resp[i]), 0)
                 # Get the WebGL image.
-                webgl_image = Image.fromarray(self.webgl_images[webgl_frame])
+                webgl_image = self.webgl_images[webgl_frame]
                 # Diff the images.
                 diff = ImageChops.difference(standalone_image, webgl_image)
                 # Return the average diff.
@@ -110,7 +110,6 @@ class PlaybackReader(Controller):
 if __name__ == "__main__":
     from argparse import ArgumentParser
 
-    # Run the Standalone controller.
     default_output_path = Path("D:/tdw_docs/docs/webgl/tests/playback").resolve()
     parser = ArgumentParser(allow_abbrev=False)
     parser.add_argument("--playback_table_path", type=str, default=str(default_output_path.joinpath("playback.csv")))
@@ -120,5 +119,6 @@ if __name__ == "__main__":
     tc = PlaybackWebGL()
     run(tc)
 
+    # Run the Standalone controller.
     c = PlaybackReader(playback=tc.playback, playback_table_path=Path(args.playback_table_path).resolve())
     c.run()

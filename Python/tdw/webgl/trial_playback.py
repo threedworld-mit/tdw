@@ -1,7 +1,5 @@
 from sys import byteorder
 from io import BytesIO
-import re
-from platform import system
 from typing import List, Union
 from gzip import GzipFile
 from pathlib import Path
@@ -16,7 +14,8 @@ from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, A
                              ScreenSize, StaticRobot, DynamicRobots, ObjectIds, FastTransforms,
                              AvatarIds, FastAvatars, FastImageSensors, Framerate)
 from tdw.add_ons.add_on import AddOn
-from tdw.backend.platforms import SYSTEM_TO_S3
+from tdw.controller import Controller
+from tdw.librarian import ModelLibrarian, SceneLibrarian
 
 
 class TrialPlayback(AddOn):
@@ -60,6 +59,11 @@ class TrialPlayback(AddOn):
         self._object_ids: List[int] = list()
         self._avatar_ids: List[str] = list()
         self._static_robots: List[RobotStatic] = list()
+        if "scenes.json" not in Controller.SCENE_LIBRARIANS:
+            Controller.SCENE_LIBRARIANS["scenes.json"] = SceneLibrarian()
+        for path in ModelLibrarian.get_library_filenames():
+            if path not in Controller.MODEL_LIBRARIANS:
+                Controller.MODEL_LIBRARIANS[path] = ModelLibrarian(path)
 
     def load(self, path: Union[str, Path]) -> None:
         """
@@ -143,7 +147,7 @@ class TrialPlayback(AddOn):
             self.frames.append(resp)
             # Get the timestamp.
             ticks = unpack(f"{order}q", buffer[index: index + 8])[0]
-            self.timestamps.append(TrialPlayback._EPOCH + np.timedelta64(ticks // 10, "us"))
+            self.timestamps.append(TrialPlayback._EPOCH + TDWUtils.ticks_to_time_delta(ticks))
             index += 8
             frame_count += 1
 
@@ -191,14 +195,14 @@ class TrialPlayback(AddOn):
                 scene = Scene(resp[i])
                 self.commands.append({"$type": "add_scene",
                                       "name": scene.get_name(),
-                                      "url": TrialPlayback._get_asset_bundle_url(scene.get_url(), "scenes")})
+                                      "url": TrialPlayback._get_asset_bundle_url(scene.get_url())})
             # Add models.
             elif r_id == "mode":
                 models = Models(resp[i])
                 for j in range(models.get_num()):
                     self.commands.append({"$type": "add_object",
                                           "name": models.get_name(j),
-                                          "url": TrialPlayback._get_asset_bundle_url(models.get_url(j), "models"),
+                                          "url": TrialPlayback._get_asset_bundle_url(models.get_url(j)),
                                           "id": models.get_id(j)})
             # Get the object IDs.
             elif r_id == "obid":
@@ -401,17 +405,26 @@ class TrialPlayback(AddOn):
         self._avatar_ids.append(avatar_id)
 
     @staticmethod
-    def _get_asset_bundle_url(url: str, infix: str) -> str:
+    def _get_asset_bundle_url(url: str) -> str:
         """
         :param url: The asset bundle URL.
-        :param infix: The URL infix, e.g. models.
 
         :return: The asset bundle URL for this operating system.
         """
 
         # Convert the WebGL asset bundle to this platform's asset bundle.
-        if url.startswith(f"https://tdw-public.s3.amazonaws.com/{infix}/webgl/"):
-            return re.sub(r"(https://tdw-public.s3.amazonaws.com/)(.*?)(/webgl)(/.*)",
-                          r"\1" + infix + "/" + SYSTEM_TO_S3[system()] + r"\4", url)
+        name = url.split("/")[-1]
+        if url.startswith(f"https://tdw-public.s3.amazonaws.com"):
+            # This is a model.
+            if "/models/" in url:
+                # This is a Flex primitive.
+                if "flex_primitives/" in url:
+                    return Controller.MODEL_LIBRARIANS["models_flex.json"].get_record(name).get_url()
+                else:
+                    return Controller.MODEL_LIBRARIANS["models_core.json"].get_record(name).get_url()
+            elif "/scenes/" in url:
+                return Controller.SCENE_LIBRARIANS["scenes.json"].get_record(name).get_url()
+            else:
+                raise Exception(f"Can't fix URL: {url}")
         else:
-            return url
+            raise Exception(f"Can't fix URL because it's not in the tdw-public bucket: {url}")

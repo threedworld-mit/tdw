@@ -20,7 +20,6 @@ from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
 from tdw.FBOutput import Meshes as Me
 from tdw.FBOutput import Substructure as Sub
-from tdw.FBOutput import Version as Ver
 from tdw.FBOutput import EnvironmentCollision as EnvCol
 from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
@@ -70,6 +69,7 @@ from tdw.FBOutput import PostProcess as PostProc
 from tdw.FBOutput import Scene as Sce
 from tdw.FBOutput import ScreenSize as ScreSi
 from tdw.FBOutput import SystemInfo as SysInfo
+from tdw.FBOutput import TimeSinceStartup as TimeStart
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1971,3 +1971,11 @@ class SystemInfo(OutputData):
 
     def get_graphics_api(self) -> str:
         return self.data.GraphicsApi().decode('utf-8')
+
+
+class TimeSinceStartup(OutputData):
+    def get_data(self) -> TimeStart.TimeSinceStartup:
+        return TimeStart.TimeSinceStartup.GetRootAsTimeSinceStartup(self.bytes, 0)
+
+    def get_ticks(self) -> int:
+        return self.data.Ticks()

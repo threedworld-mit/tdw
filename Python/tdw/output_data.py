@@ -1457,9 +1457,9 @@ class ObiParticles(OutputData):
 
 class Mouse:
     def __init__(self, b: bytes):
-        self._buttons: bytes = b[:3]
-        self._position: np.ndarray = np.frombuffer(b[3:11])
-        self._scroll_delta: np.ndarray = np.frombuffer(b[11:])
+        self._buttons: bytes = b[8:11]
+        self._position: np.ndarray = np.frombuffer(b[11:19])
+        self._scroll_delta: np.ndarray = np.frombuffer(b[19:])
 
     def get_position(self) -> np.ndarray:
         return self._position

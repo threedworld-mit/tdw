@@ -10,11 +10,11 @@ class TrialMessage:
     A network message with a new list of trials and a TrialAdder defining where to add them.
     """
 
-    def __init__(self, adder: TrialAdder, trials: List[Trial], send_data_per_trial: bool = True):
+    def __init__(self, adder: TrialAdder, trials: List[Trial], send_data_per_frame: bool = False):
         """
         :param adder: Instructions for where to add the new trials in the list of current trials, or to end the simulation.
         :param trials: The new trials. This can be empty.
-        :param send_data_per_trial: If true, send output data at the end of a trial. If false, send output data per-frame and receive commands per-frame.
+        :param send_data_per_frame: If true, send output data per-frame and receive commands per-frame. Regardless, you will still receive an end-of-trial message.
         """
 
         """:field
@@ -26,6 +26,6 @@ class TrialMessage:
         """
         self.adder: TrialAdder = adder
         """:field
-        If true, send output data at the end of a trial. If false, send output data per-frame and receive commands per-frame.
+        If true, send output data per-frame and receive commands per-frame. Regardless, you will still receive an end-of-trial message.
         """
-        self.send_data_per_trial: bool = send_data_per_trial
+        self.send_data_per_frame: bool = send_data_per_frame

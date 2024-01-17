@@ -1,12 +1,15 @@
 from abc import ABC, abstractmethod
 from argparse import ArgumentParser
 from json import dumps
-from typing import Optional, final
+from typing import List, Union, Optional, final
+from struct import unpack
+from array import array
 import asyncio
 from websockets.server import serve
 from websockets import WebSocketServerProtocol, ConnectionClosed
 import zmq
 from tdw.backend.encoder import Encoder
+from tdw.commands.command import Command
 from tdw.webgl.trial_playback import TrialPlayback
 from tdw.webgl.trial_adders.end_simulation import EndSimulation
 from tdw.webgl.trial_message import TrialMessage
@@ -38,6 +41,8 @@ class TrialController(ABC):
         # This is used to connect to a remote Database.
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
+        self._send_trial_message: bool = True
+        self._commands: List[Union[Command, dict]] = list()
         # This is used to stop the server.
         self._stop = asyncio.Future()
 
@@ -83,9 +88,9 @@ class TrialController(ABC):
 
         raise Exception()
 
-    def _on_receive(self, bs: bytes) -> None:
+    def _on_receive_trial_end(self, bs: bytes) -> None:
         """
-        This is called when the TrialController's WebSocket receives a message.
+        This is called when the TrialController's WebSocket receives a message at the end of a trial.
         By default, this function doesn't do anything.
         You don't need to override this function, and you rarely should.
 
@@ -99,6 +104,21 @@ class TrialController(ABC):
         """
 
         pass
+
+    def on_receive_frame(self, resp: List[bytes]) -> List[Union[Command, dict]]:
+        """
+        This is called when the TrialController receives per-frame data.
+        If your TrialController doesn't send per-frame commands, then you don't need to override this function.
+
+        Each element in `resp` is an output data byte array except for the last element, which is the timestamp in ticks.
+        To parse the timestamp, see `TDWUtils.bytes_to_time_delta(ticks)`.
+
+        :param resp: The response from the Build.
+
+        :return: A list of commands.
+        """
+
+        return []
 
     @abstractmethod
     def get_next_message(self, playback: TrialPlayback) -> TrialMessage:
@@ -135,9 +155,14 @@ class TrialController(ABC):
         ending_simulation: bool = False
         websocket.max_size = self._get_max_size()
         while not done:
-            # Send the next trials.
             try:
-                await websocket.send(dumps(self._trial_message, cls=Encoder))
+                # Send the next trials.
+                if self._send_trial_message:
+                    await websocket.send(dumps(self._trial_message, cls=Encoder))
+                # Send the next commands.
+                else:
+                    await websocket.send(dumps(self._commands, cls=Encoder))
+                    self._commands.clear()
             except ConnectionClosed as e:
                 print(e)
                 done = True
@@ -146,7 +171,14 @@ class TrialController(ABC):
             try:
                 bs: bytes = await websocket.recv()
                 if not ending_simulation:
-                    self._on_receive(bs=bs)
+                    # This is frame data. Parse it to get commands to send on the next frame.
+                    if bs[:4] == b'FRAM':
+                        self._send_trial_message = False
+                        self._commands = self.on_receive_frame(TrialController.__get_resp(bs))
+                    # This is end-of-trial data. Parse it to get a new TrialMessage.
+                    else:
+                        self._send_trial_message = True
+                        self._on_receive_trial_end(bs=bs)
             except ConnectionClosed as e:
                 print(e)
                 done = True
@@ -155,31 +187,58 @@ class TrialController(ABC):
             if ending_simulation:
                 done = True
                 continue
-            # Parse the playback.
-            playback = TrialPlayback()
-            playback.read(bs)
-            # Send the logged end-state data.
-            if self._database_socket_connected:
-                try:
-                    # Send the session ID and trial data.
-                    self._database_socket.send_multipart([self._session_id_bytes, bs])
-                    self._database_socket.recv()
+            if self._send_trial_message:
+                # Parse the playback.
+                playback = TrialPlayback()
+                playback.read(bs)
+                # Send the logged end-state data.
+                if self._database_socket_connected:
+                    try:
+                        # Send the session ID and trial data.
+                        self._database_socket.send_multipart([self._session_id_bytes, bs])
+                        self._database_socket.recv()
+                        # Get the next trial message, which will be sent at the top of the loop.
+                        self._trial_message = self.get_next_message(playback=playback)
+                    except zmq.ZMQError as e:
+                        print("Database error:", e)
+                        # Send a kill signal.
+                        self._trial_message = TrialMessage(trials=[], adder=EndSimulation())
+                else:
                     # Get the next trial message, which will be sent at the top of the loop.
                     self._trial_message = self.get_next_message(playback=playback)
-                except zmq.ZMQError as e:
-                    print("Database error:", e)
-                    # Send a kill signal.
-                    self._trial_message = TrialMessage(trials=[], adder=EndSimulation())
-            else:
-                # Get the next trial message, which will be sent at the top of the loop.
-                self._trial_message = self.get_next_message(playback=playback)
-            ending_simulation = isinstance(self._trial_message.adder, EndSimulation)
+                ending_simulation = isinstance(self._trial_message.adder, EndSimulation)
         # Close the log socket.
         if self._database_socket_connected:
             self._database_socket_connected = False
             self._database_socket.close()
         # Stop the server.
         self._stop.set_result(0)
+
+    @staticmethod
+    def __get_resp(bs: bytes) -> List[bytes]:
+        """
+        :param bs: Raw bytes from the Build.
+
+        :return: A list of output data byte arrays.
+        """
+
+        index = 4
+        # Get the number of elements.
+        num_elements: int = unpack(f"<i", bs[index: index + 4])[0]
+        index += 4
+        num_elements_offset = num_elements * 4
+        # Get the size of each element.
+        element_sizes = array("i")
+        element_sizes.frombytes(bs[index: index + num_elements_offset])
+        index += num_elements_offset
+        resp: List[bytes] = list()
+        # Append each element.
+        for element_size in element_sizes:
+            resp.append(bs[index: index + element_size])
+            index += element_size
+        # Append the timestamp.
+        resp.append(bs[-8:])
+        return resp
 
     @classmethod
     def _get_max_size(cls) -> int:

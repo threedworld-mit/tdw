@@ -27,7 +27,7 @@ class OutputDataBenchmark(TrialController):
     def get_initial_message(self) -> TrialMessage:
         return TrialMessage(trials=[OutputDataBenchmarkTrial()], adder=AtEnd())
 
-    def _on_receive(self, bs: bytes) -> None:
+    def _on_receive_trial_end(self, bs: bytes) -> None:
         if self.output_directory is not None:
             path = self.output_directory.joinpath(self.filename)
             path.write_bytes(bs)

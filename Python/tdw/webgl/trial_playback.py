@@ -146,8 +146,7 @@ class TrialPlayback(AddOn):
             # Append the frame count.
             self.frames.append(resp)
             # Get the timestamp.
-            ticks = unpack(f"{order}q", buffer[index: index + 8])[0]
-            self.timestamps.append(TrialPlayback._EPOCH + TDWUtils.ticks_to_time_delta(ticks))
+            self.timestamps.append(TrialPlayback._EPOCH + TDWUtils.bytes_to_time_delta(buffer[index: index + 8]))
             index += 8
             frame_count += 1
 

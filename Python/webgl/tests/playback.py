@@ -11,7 +11,11 @@ from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
 from tdw.webgl.trial_adders import AtEnd
 
 
-class PlaybackWebGL(TrialController):
+class PlaybackWriter(TrialController):
+    """
+    Compare physics-driven simulation data to saved non-physics data.
+    """
+
     def __init__(self):
         self.playback: Optional[TrialPlayback] = None
         super().__init__()
@@ -31,10 +35,10 @@ class PlaybackWebGL(TrialController):
 
 
 class PlaybackReader(Controller):
-    def __init__(self, playback: TrialPlayback, playback_table_path: Path,
+    def __init__(self, playback: TrialPlayback, path: str,
                  port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
-        self.playback_table_path: Path = playback_table_path
+        self.path: Path = Path(path).resolve()
         self.playback: TrialPlayback = playback
         self.add_ons.append(self.playback)
         self.webgl_images: List[Image.Image] = list()
@@ -65,9 +69,6 @@ class PlaybackReader(Controller):
         self.communicate({"$type": "terminate"})
         difference = sum(self.diffs) / len(self.diffs)
         print("Average per-pixel discrepancy:", difference)
-        path = TDWUtils.get_path(self.playback_table_path)
-        if not path.parent.exists():
-            path.parent.mkdir(parents=True)
         # Create the output row.
         row = ""
         # Get system info.
@@ -80,8 +81,7 @@ class PlaybackReader(Controller):
                         f"{system_info.get_gpu()},{system_info.get_graphics_api()},{difference}")
                 break
         # Write the results to disk.
-        path_str = TDWUtils.get_string_path(self.playback_table_path)
-        with io.open(path_str, "at") as f:
+        with io.open(str(self.path), "at") as f:
             f.write("\n" + row)
 
     def compare_images(self, webgl_frame: int, resp: List[bytes]) -> None:
@@ -110,15 +110,14 @@ class PlaybackReader(Controller):
 if __name__ == "__main__":
     from argparse import ArgumentParser
 
-    default_output_path = Path("D:/tdw_docs/docs/webgl/tests/playback").resolve()
     parser = ArgumentParser(allow_abbrev=False)
-    parser.add_argument("--playback_table_path", type=str, default=str(default_output_path.joinpath("playback.csv")))
+    parser.add_argument("--path", type=str, default="D:/tdw_docs/docs/webgl/tests/playback.csv")
     args, unknown = parser.parse_known_args()
 
     # Run the TrialController.
-    tc = PlaybackWebGL()
+    tc = PlaybackWriter()
     run(tc)
 
     # Run the Standalone controller.
-    c = PlaybackReader(playback=tc.playback, playback_table_path=Path(args.playback_table_path).resolve())
+    c = PlaybackReader(playback=tc.playback, path=args.playback_table_path)
     c.run()

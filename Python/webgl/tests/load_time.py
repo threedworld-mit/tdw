@@ -7,10 +7,8 @@ from tdw.webgl.trial_adders import AtEnd
 
 
 class LoadTime(TrialController):
-    def __init__(self, path: Path):
-        self.path: Path = path
-        if not self.path.parent.exists():
-            self.path.parent.mkdir(parents=True)
+    def __init__(self, path: str):
+        self.path: Path = Path(path).resolve()
         super().__init__()
 
     def get_initial_message(self) -> TrialMessage:
@@ -45,7 +43,7 @@ if __name__ == "__main__":
     from argparse import ArgumentParser
 
     parser = ArgumentParser(allow_abbrev=False)
-    parser.add_argument("--path", type=str, default="D:/tdw_docs/docs/webgl/tests/load_time/load_time.csv")
+    parser.add_argument("--path", type=str, default="D:/tdw_docs/docs/webgl/tests/load_time.csv")
     args, unknown = parser.parse_known_args()
 
-    run(LoadTime(path=Path(args.path)))
+    run(LoadTime(path=args.path))

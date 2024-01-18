@@ -221,6 +221,7 @@ from .set_prismatic_position import SetPrismaticPosition
 from .set_revolute_angle import SetRevoluteAngle
 from .set_spherical_angles import SetSphericalAngles
 from .set_immovable import SetImmovable
+from .set_robot_color import SetRobotColor
 from .set_robot_joint_id import SetRobotJointId
 from .set_robot_obi_collision_material import SetRobotObiCollisionMaterial
 from .teleport_robot import TeleportRobot
@@ -371,6 +372,8 @@ from .send_static_empty_objects import SendStaticEmptyObjects
 from .send_static_rigidbodies import SendStaticRigidbodies
 from .send_static_robots import SendStaticRobots
 from .send_substructure import SendSubstructure
+from .send_system_info import SendSystemInfo
+from .send_time_since_startup import SendTimeSinceStartup
 from .send_transforms import SendTransforms
 from .send_transform_matrices import SendTransformMatrices
 from .send_version import SendVersion

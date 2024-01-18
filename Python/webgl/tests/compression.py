@@ -18,7 +18,7 @@ class Compression(TrialController):
     def get_initial_message(self) -> TrialMessage:
         return TrialMessage(trials=[OutputDataBenchmarkTrial()], adder=AtEnd())
 
-    def _on_receive_trial_end(self, bs: bytes) -> None:
+    def on_receive_trial_end(self, bs: bytes) -> None:
         cs = len(bs)
         f = io.BytesIO(bs)
         with GzipFile(fileobj=f, mode="rb") as gz:

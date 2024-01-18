@@ -9,7 +9,7 @@ class WheresWaldo(Trial):
     There is a grid of objects in a room. The user must click the target object. If the user clicks the wrong object, a force is applied.
     """
 
-    def __init__(self, random_seed: int = None, scene_name: str = "box_room_2018", model_scale: float = 0.2, num_columns: int = 10, num_rows: int = 10, min_speed: float = 0.1, max_speed: float = 10, mass_per_cubic_meter: float = 1, target_model_name: str = "sphere", target_object_color: Dict[str, float] = None, avatar_body_size: Dict[str, float] = None, avatar_body_offset: Dict[str, float] = None, avatar_body_color: Dict[str, float] = None, click_force: float = 10):
+    def __init__(self, random_seed: int = None, scene_name: str = "reference_task_room", model_scale: float = 0.2, num_columns: int = 10, num_rows: int = 10, min_speed: float = 0.1, max_speed: float = 10, mass_per_cubic_meter: float = 1, target_model_name: str = "sphere", target_object_color: Dict[str, float] = None, avatar_height: float = 1.8, avatar_body_scale: Dict[str, float] = None, avatar_body_offset: Dict[str, float] = None, avatar_body_color: Dict[str, float] = None, click_force: float = 0.1, max_model_size: int = 3145728):
         """
         :param random_seed: The random seed. Can be null. If null, the seed is random.
         :param scene_name: The name of the scene. This should be a one-room interior scene.
@@ -21,10 +21,12 @@ class WheresWaldo(Trial):
         :param mass_per_cubic_meter: The mass of the objects in kilograms per cubic meter.
         :param target_model_name: The model name of the target object.
         :param target_object_color: The color of the target object.
-        :param avatar_body_size: The size of the avatar's visual body.
+        :param avatar_height: The height of the first person avatar.
+        :param avatar_body_scale: The size of the avatar's visual body.
         :param avatar_body_offset: Offset the avatar's visual body from the camera by this distance.
         :param avatar_body_color: The color of the avatar's visual body.
         :param click_force: When a non-target object is clicked, this much force is applied.
+        :param max_model_size: The maximum size in bytes of the model asset bundles.
         """
 
         super().__init__()
@@ -71,18 +73,22 @@ class WheresWaldo(Trial):
             self.target_object_color: Dict[str, float] = {"r": 1, "g": 0, "b": 0, "a": 1}
         else:
             self.target_object_color = target_object_color
-        if avatar_body_size is None:
+        """:field
+        The height of the first person avatar.
+        """
+        self.avatar_height: float = avatar_height
+        if avatar_body_scale is None:
             """:field
             The size of the avatar's visual body.
             """
-            self.avatar_body_size: Dict[str, float] = {"x": 0.5, "y": 1.8, "z": 0.5}
+            self.avatar_body_scale: Dict[str, float] = {"x": 0.5, "y": 1.8, "z": 0.5}
         else:
-            self.avatar_body_size = avatar_body_size
+            self.avatar_body_scale = avatar_body_scale
         if avatar_body_offset is None:
             """:field
             Offset the avatar's visual body from the camera by this distance.
             """
-            self.avatar_body_offset: Dict[str, float] = {"x": 0.2, "y": 0, "z": 0.25}
+            self.avatar_body_offset: Dict[str, float] = {"x": -0.45, "y": -1.8, "z": 1.75}
         else:
             self.avatar_body_offset = avatar_body_offset
         if avatar_body_color is None:
@@ -96,3 +102,7 @@ class WheresWaldo(Trial):
         When a non-target object is clicked, this much force is applied.
         """
         self.click_force: float = click_force
+        """:field
+        The maximum size in bytes of the model asset bundles.
+        """
+        self.max_model_size: int = max_model_size

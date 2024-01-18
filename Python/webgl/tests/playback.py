@@ -30,7 +30,7 @@ class PlaybackWriter(TrialController):
         return END_MESSAGE
 
     @classmethod
-    def _get_max_size(cls) -> int:
+    def get_max_size(cls) -> int:
         return 167772160
 
 

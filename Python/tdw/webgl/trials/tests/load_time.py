@@ -8,10 +8,11 @@ class LoadTime(Trial):
     Benchmark the load time when there are many different models in a scene.
     """
 
-    def __init__(self, scene_name: str = "tdw_room", num_objects: int = 80):
+    def __init__(self, scene_name: str = "tdw_room", num_objects: int = 80, max_model_size: int = 3145728):
         """
         :param scene_name: The name of the scene.
         :param num_objects: The total number of objects in the scene. Each object is a different model. This number will be clamped between 0 and the total number of models in the WebGL Build's model library.
+        :param max_model_size: The maximum size in bytes of the model asset bundles.
         """
 
         super().__init__()
@@ -23,3 +24,7 @@ class LoadTime(Trial):
         The total number of objects in the scene. Each object is a different model. This number will be clamped between 0 and the total number of models in the WebGL Build's model library.
         """
         self.num_objects: int = num_objects
+        """:field
+        The maximum size in bytes of the model asset bundles.
+        """
+        self.max_model_size: int = max_model_size

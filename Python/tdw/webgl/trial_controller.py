@@ -88,7 +88,7 @@ class TrialController(ABC):
 
         raise Exception()
 
-    def _on_receive_trial_end(self, bs: bytes) -> None:
+    def on_receive_trial_end(self, bs: bytes) -> None:
         """
         This is called when the TrialController's WebSocket receives a message at the end of a trial.
         By default, this function doesn't do anything.
@@ -153,7 +153,7 @@ class TrialController(ABC):
 
         done = False
         ending_simulation: bool = False
-        websocket.max_size = self._get_max_size()
+        websocket.max_size = self.get_max_size()
         while not done:
             try:
                 # Send the next trials.
@@ -164,7 +164,7 @@ class TrialController(ABC):
                     await websocket.send(dumps(self._commands, cls=Encoder))
                     self._commands.clear()
             except ConnectionClosed as e:
-                print(e)
+                print("WebSocket exception:", e)
                 done = True
                 continue
             # Receive end-of-trial data.
@@ -178,9 +178,9 @@ class TrialController(ABC):
                     # This is end-of-trial data. Parse it to get a new TrialMessage.
                     else:
                         self._send_trial_message = True
-                        self._on_receive_trial_end(bs=bs)
+                        self.on_receive_trial_end(bs=bs)
             except ConnectionClosed as e:
-                print(e)
+                print("WebSocket exception:", e)
                 done = True
                 continue
             # Close the connection.
@@ -200,7 +200,7 @@ class TrialController(ABC):
                         # Get the next trial message, which will be sent at the top of the loop.
                         self._trial_message = self.get_next_message(playback=playback)
                     except zmq.ZMQError as e:
-                        print("Database error:", e)
+                        print("Database exception:", e)
                         # Send a kill signal.
                         self._trial_message = TrialMessage(trials=[], adder=EndSimulation())
                 else:
@@ -241,7 +241,7 @@ class TrialController(ABC):
         return resp
 
     @classmethod
-    def _get_max_size(cls) -> int:
+    def get_max_size(cls) -> int:
         """
         Override this function to set the maximum size of a WebSocket message.
         

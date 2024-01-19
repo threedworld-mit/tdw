@@ -444,6 +444,28 @@ class TDWUtils:
         return commands
 
     @staticmethod
+    def set_wireframe_material(substructure: List[dict], object_id: int, color: Dict[str, float], thickness: float = 0.02) -> List[dict]:
+        """
+        :param substructure: The metadata substructure of the object.
+        :param object_id: The ID of the object in the scene.
+        :param color: The color to make the wireframe.
+        :param thickness: The thickness of the wireframe lines.
+ 
+        :return A list of commands to set ALL visual materials on an object to a single wireframe material.
+        """
+
+        commands = []
+        for sub_object in substructure:
+            for i in range(len(sub_object["materials"])):
+                commands.extend([{"$type": "set_wireframe_material",
+                                  "id": object_id,
+                                  "color": color,
+                                  "thickness": thickness,
+                                  "object_name": sub_object["name"],
+                                  "material_index": i}])
+        return commands
+
+    @staticmethod
     def get_depth_values(image: np.ndarray, depth_pass: str = "_depth", width: int = 256, height: int = 256, near_plane: float = 0.1, far_plane: float = 100) -> np.ndarray:
         """
         Get the depth values of each pixel in a _depth image pass.

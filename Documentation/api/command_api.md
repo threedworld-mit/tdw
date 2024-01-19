@@ -548,6 +548,7 @@
 | [`set_texture_scale`](#set_texture_scale) | Set the scale of the tiling of the material's main texture. |
 | [`set_visual_material`](#set_visual_material) | Set a visual material of an object or one of its sub-objects.  |
 | [`set_visual_material_smoothness`](#set_visual_material_smoothness) | Set the smoothness (glossiness) of an object's visual material. |
+| [`set_wireframe_material`](#set_wireframe_material) | Set the visual material of an object or one of its sub-objects to wireframe.  |
 
 **Wheelchair Replicant Command**
 
@@ -7224,6 +7225,30 @@ Set the smoothness (glossiness) of an object's visual material.
 | --- | --- | --- | --- |
 | `"smoothness"` | float | The material smoothness. Must be between 0 and 1. | 0 |
 | `"material_index"` | int | The index of the material in the sub-object's list of materials. | 0 |
+| `"object_name"` | string | The name of the sub-object. | |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`set_wireframe_material`**
+
+Set the visual material of an object or one of its sub-objects to wireframe. 
+
+- <font style="color:darkslategray">**Requires a material asset bundle**: To use this command, you must first download an load a material. Send the [add_material](#add_material) command first.</font>
+
+```python
+{"$type": "set_wireframe_material", "material_index": 1, "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "object_name": "string", "id": 1}
+```
+
+```python
+{"$type": "set_wireframe_material", "material_index": 1, "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "object_name": "string", "id": 1, "thickness": 0.02}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"material_index"` | int | The index of the material in the sub-object's list of materials. | |
+| `"thickness"` | float | The thickness of the wireframe lines. | 0.02 |
+| `"color"` | Color | The new RGBA color of the wireframe. | |
 | `"object_name"` | string | The name of the sub-object. | |
 | `"id"` | int | The unique object ID. | |
 

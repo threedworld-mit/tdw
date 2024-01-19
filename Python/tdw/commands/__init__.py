@@ -423,6 +423,7 @@ from .set_visual_material_smoothness import SetVisualMaterialSmoothness
 from .set_wheelchair_brake_torque import SetWheelchairBrakeTorque
 from .set_wheelchair_motor_torque import SetWheelchairMotorTorque
 from .set_wheelchair_steer_angle import SetWheelchairSteerAngle
+from .set_wireframe_material import SetWireframeMaterial
 from .show_collider_hulls import ShowColliderHulls
 from .simulate_physics import SimulatePhysics
 from .teleport_obi_actor import TeleportObiActor

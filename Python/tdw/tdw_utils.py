@@ -356,7 +356,7 @@ class TDWUtils:
         return str(integer).zfill(width)
 
     @staticmethod
-    def get_pil_image(images: Images, index: int) -> Image:
+    def get_pil_image(images: Images, index: int) -> Image.Image:
         """
         Converts Images output data to a PIL Image object.
         Use this function to read and analyze an image in memory.

@@ -9,6 +9,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.webgl import TrialController, TrialMessage, TrialPlayback, END_MESSAGE, run
 from tdw.webgl.trials.tests.output_data_benchmark import OutputDataBenchmark
 from tdw.webgl.trial_adders import AtEnd
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 class PlaybackWriter(TrialController):
@@ -38,6 +39,11 @@ class PlaybackReader(Controller):
     def __init__(self, playback: TrialPlayback, path: str,
                  port: int = 1071, check_version: bool = True, launch_build: bool = True):
         super().__init__(port=port, check_version=check_version, launch_build=launch_build)
+        self.output_directory = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("playback_test")
+        if not self.output_directory.exists():
+            self.output_directory.mkdir(parents=True)
+        print(f"Images with differences will be saved to: {self.output_directory}. "
+              f"Image with no differences aren't saved.")
         self.path: Path = Path(path).resolve()
         self.playback: TrialPlayback = playback
         self.add_ons.append(self.playback)
@@ -64,7 +70,7 @@ class PlaybackReader(Controller):
                                               "frequency": "always"}])
                 else:
                     resp = self.communicate([])
-                self.compare_images(webgl_frame=i, resp=resp)
+                self.compare_images(webgl_frame=i - 1, resp=resp)
         # End the simulation.
         self.communicate({"$type": "terminate"})
         difference = sum(self.diffs) / len(self.diffs)
@@ -102,8 +108,14 @@ class PlaybackReader(Controller):
                 webgl_image = self.webgl_images[webgl_frame]
                 # Diff the images.
                 diff = ImageChops.difference(standalone_image, webgl_image)
+                arr = np.array(diff)
+                mask = np.zeros(shape=(arr.shape[0], arr.shape[1]), dtype=np.uint8)
+                mask[arr[:, :, 0] == 255] = 1
+                d = mask.flatten().sum()
+                if d > 0:
+                    diff.save(str(self.output_directory.joinpath(f"{TDWUtils.zero_padding(webgl_frame, 2)}.png")))
                 # Return the average diff.
-                self.diffs.append(float(np.sum(np.array(diff)) / (255 * diff.size[0] * diff.size[1])))
+                self.diffs.append(d)
                 break
 
 
@@ -119,5 +131,5 @@ if __name__ == "__main__":
     run(tc)
 
     # Run the Standalone controller.
-    c = PlaybackReader(playback=tc.playback, path=args.playback_table_path)
+    c = PlaybackReader(playback=tc.playback, path=args.path)
     c.run()

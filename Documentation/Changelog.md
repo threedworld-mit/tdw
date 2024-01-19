@@ -4,6 +4,12 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.22
+
+### Build
+
+- Fixed: `set_wireframe_material` can't change the material's color.
+
 ## v1.12.21
 
 ### Command API

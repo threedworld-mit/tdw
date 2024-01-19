@@ -405,6 +405,24 @@ _(Static)_
 
 _Returns:_  A list of commands to set ALL visual materials on an object to a single material.
 
+#### set_wireframe_material
+
+**`TDWUtils.set_wireframe_material(substructure, object_id, color)`**
+
+**`TDWUtils.set_wireframe_material(substructure, object_id, color, thickness=0.02)`**
+
+_(Static)_
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| substructure |  List[dict] |  | The metadata substructure of the object. |
+| object_id |  int |  | The ID of the object in the scene. |
+| color |  Dict[str, float] |  | The color to make the wireframe. |
+| thickness |  float  | 0.02 | The thickness of the wireframe lines. |
+
+_Returns:_  A list of commands to set ALL visual materials on an object to a single wireframe material.
+
 #### get_depth_values
 
 **`TDWUtils.get_depth_values(image)`**

@@ -4,6 +4,30 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.22
+
+### Build
+
+- Fixed: `set_wireframe_material` can't change the material's color.
+
+## v1.12.21
+
+### Command API
+
+#### New Commands
+
+| Command           | Description                                   |
+| ----------------- | --------------------------------------------- |
+| `set_wireframe_material` | Set the visual material of an object or one of its sub-objects to wireframe. |
+
+### `tdw` module
+
+- Added: `TDWUtils.set_wireframe_material(substructure, object_id, color, thickness)`.
+
+### Example Controllers
+
+- Added: `scene_setup_low_level/set_wireframe_material.py`
+
 ## v1.12.20
 
 ### Command API

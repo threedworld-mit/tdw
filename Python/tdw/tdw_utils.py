@@ -444,7 +444,7 @@ class TDWUtils:
         return commands
 
     @staticmethod
-    def set_wireframe_material(substructure: List[dict], object_id: int, color: Dict[str, float], thickness: float) -> List[dict]:
+    def set_wireframe_material(substructure: List[dict], object_id: int, color: Dict[str, float], thickness: float = 0.02) -> List[dict]:
         """
         :param substructure: The metadata substructure of the object.
         :param object_id: The ID of the object in the scene.

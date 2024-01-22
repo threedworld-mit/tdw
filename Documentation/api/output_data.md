@@ -1127,15 +1127,15 @@ The substructure of a model. This should be used mainly for backend debugging.
 
 **Identifier:** `tran`
 
-Data about the Transform component of objects (position and rotation).
+Data about the Transform component of objects (position and rotation). `index` is the index in the list of object_ids used to request transform information in the `send_transforms` command.
 
 | Function | Description | Return type |
 | --- | --- | --- |
-| `get_num()` | The number of objects. | `int` |
-| `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.ndarray` |
+| `get_num()` | The number of objects had their transform information sent. | `int` |
+| `get_id(index)` | The object id. | `int` |
+| `get_position(index)` | The world frame position of the object in the order (x, y, z) | `np.ndarray` |
 | `get_forward(index)` | The forward. | `np.ndarray` |
-| `get_rotation(index)` | The rotation. | `np.ndarray` |
+| `get_rotation(index)` | The world frame rotation of the object in the order (x, y, z, w) | `np.ndarray` |
 
 ## TriggerCollision
 

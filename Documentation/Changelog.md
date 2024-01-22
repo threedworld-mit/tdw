@@ -10,6 +10,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Fixed: `set_wireframe_material` can't change the material's color.
 
+### Model Library
+
+- Marked as do_not_use: heart, shark
+
 ## v1.12.21
 
 ### Command API

@@ -770,8 +770,8 @@ To what extent parts of the scene environment (such as walls) are occluding obje
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
-| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
-| `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
+| `get_occluded()` | A number between 0 and 255 describing what fraction of the image's pixels are occupied by objects, as opposed to background meshes. A value of 1 would mean that the image is totally, or near-totally, occupied by objects. | `int` |
+| `get_unoccluded()` | A number between 0 and 255 describing what fraction of the image's pixels are occupied by objects if background meshes aren't rendered. A value of 1 would mean that the image is totally, or near-totally, occupied by objects. | `int` |
 
 ## OccupancyMap
 

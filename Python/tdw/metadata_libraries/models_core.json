@@ -43409,6 +43409,7 @@
             "wnid": "n04461879"
         },
         "heart": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 1494634,
                 "Linux": 1591959,
@@ -43458,8 +43459,8 @@
             },
             "composite_object": false,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Pivot is in the wrong location",
             "flex": true,
             "name": "heart",
             "physics_quality": 0.513678794919929,
@@ -56689,6 +56690,7 @@
             "wnid": "n02801938"
         },
         "shark": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 1654965,
                 "Linux": 1752631,
@@ -56738,8 +56740,8 @@
             },
             "composite_object": false,
             "container_shapes": [],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Pivot is in the wrong location",
             "flex": true,
             "name": "shark",
             "physics_quality": 0.9945275534145828,

@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.23
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification |
+| --- | --- |
+| `Occlusion` | Removed: `get_sensor_name()`<br />`get_occluded()` returns an integer between 0 and 255 instead of 0 and 1. The number now describes the fraction of the image's pixels are occupied by objects, as opposed to background meshes. <br />Added: `get_unoccluded()`. An integer between 0 and 255 describing what fraction of the image's pixels are occupied by objects if background meshes aren't rendered.<br />To get the value that `get_occluded()` would have returned in prior versions of TDW:<br />`1 - (occ.get_unoccluded() - occ.get_occluded()) / 255` |
+
 ## v1.12.22
 
 ### Build

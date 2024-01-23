@@ -38,6 +38,8 @@ class TrialController(ABC):
         self._session_id: int = -1
         # This gets sent to the Database.
         self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True)
+        # A boolean flag used to send the initial session ID.
+        self._sent_session_id: bool = False
         # This is used to connect to a remote Database.
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
@@ -156,8 +158,11 @@ class TrialController(ABC):
         websocket.max_size = self.get_max_size()
         while not done:
             try:
+                # Send the session ID.
+                if not self._sent_session_id:
+                    await websocket.send(self._session_id_bytes)
                 # Send the next trials.
-                if self._send_trial_message:
+                elif self._send_trial_message:
                     await websocket.send(dumps(self._trial_message, cls=Encoder))
                 # Send the next commands.
                 else:
@@ -170,7 +175,9 @@ class TrialController(ABC):
             # Receive end-of-trial data.
             try:
                 bs: bytes = await websocket.recv()
-                if not ending_simulation:
+                if not self._sent_session_id:
+                    self._sent_session_id = True
+                elif not ending_simulation:
                     # This is frame data. Parse it to get commands to send on the next frame.
                     if bs[:4] == b'FRAM':
                         self._send_trial_message = False

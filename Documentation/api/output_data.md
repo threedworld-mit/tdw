@@ -628,7 +628,7 @@ Data about the Transform component of objects (position and rotation) relative t
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
 | `get_position(index)` | The position. | `np.ndarray` |
-| `get_forward(index)` | The forward. | `np.ndarray` |
+| `get_forward(index)` | The forward directional vector, in worldspace rotational coordinates. | `np.ndarray` |
 | `get_rotation(index)` | The rotation. | `np.ndarray` |
 | `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.ndarray` |
 

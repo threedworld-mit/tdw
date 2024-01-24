@@ -16,7 +16,8 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ### Build
 
-- Fixed: `Occlusion` data is only accurate in the ProcGen Room.
+- Fixed: `Occlusion` is highly inaccurate, especially in scenes other than the ProcGen Room.
+- Fixed: The command `apply_force` doesn't work as expected in most scenes.
 
 ### Documentation
 

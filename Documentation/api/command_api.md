@@ -843,6 +843,7 @@
 | Command | Description |
 | --- | --- |
 | [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
+| [`set_ui_color`](#set_ui_color) | Set the color of a UI image or text. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
@@ -11038,6 +11039,27 @@ Destroy a UI element in the scene.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_color`**
+
+Set the color of a UI image or text.
+
+
+```python
+{"$type": "set_ui_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1}
+```
+
+```python
+{"$type": "set_ui_color", "color": {"r": 0.219607845, "g": 0.0156862754, "b": 0.6901961, "a": 1.0}, "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"color"` | Color | The new color. | |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

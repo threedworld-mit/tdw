@@ -4,11 +4,47 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.23
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_ui_color` | Set the color of a UI image or text. |
+
+### Output Data
+
+#### Modified Output Data
+
+| Output Data | Modification |
+| --- | --- |
+| `Occlusion` | Removed: `get_sensor_name()`<br />`get_occluded()` returns an integer between 0 and 255 instead of 0 and 1. The number now describes the fraction of the image's pixels are occupied by objects, as opposed to background meshes. <br />Added: `get_unoccluded()`. An integer between 0 and 255 describing what fraction of the image's pixels are occupied by objects if background meshes aren't rendered.<br />To get the value that `get_occluded()` would have returned in prior versions of TDW:<br />`1 - (occ.get_unoccluded() - occ.get_occluded()) / 255` |
+
+### Build
+
+- Fixed: `Occlusion` is highly inaccurate, especially in scenes other than the ProcGen Room.
+- Fixed: The command `apply_force` doesn't work as expected in most scenes.
+
+### Documentation
+
+##### Modified Documentation
+
+| Document | Description |
+| --- | --- |
+| `lessons/visual_perception/occlusion.md` | Updated document to describe the new `Occlusion` data. |
+| `api/output_data.md` | Improved the documentation for all positions and rotations.<br>Improved the documentation of `LocalTransforms.get_forward()` |
+
 ## v1.12.22
 
 ### Build
 
 - Fixed: `set_wireframe_material` can't change the material's color.
+
+### Model Library
+
+- Marked as do_not_use: heart, shark
 
 ## v1.12.21
 

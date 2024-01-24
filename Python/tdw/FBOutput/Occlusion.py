@@ -26,21 +26,21 @@ class Occlusion(object):
         return None
 
     # Occlusion
-    def SensorName(self):
+    def Occluded(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(6))
         if o != 0:
-            return self._tab.String(o + self._tab.Pos)
-        return None
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
+        return 0
 
     # Occlusion
-    def Occluded(self):
+    def Unoccluded(self):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
-        return 0.0
+            return self._tab.Get(tdw.flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
+        return 0
 
 def OcclusionStart(builder): builder.StartObject(3)
 def OcclusionAddAvatarId(builder, avatarId): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(avatarId), 0)
-def OcclusionAddSensorName(builder, sensorName): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(sensorName), 0)
-def OcclusionAddOccluded(builder, occluded): builder.PrependFloat32Slot(2, occluded, 0.0)
+def OcclusionAddOccluded(builder, occluded): builder.PrependUint8Slot(1, occluded, 0)
+def OcclusionAddUnoccluded(builder, unoccluded): builder.PrependUint8Slot(2, unoccluded, 0)
 def OcclusionEnd(builder): return builder.EndObject()

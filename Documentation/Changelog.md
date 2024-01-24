@@ -6,6 +6,14 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 ## v1.12.23
 
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_ui_color` | Set the color of a UI image or text. |
+
 ### Output Data
 
 #### Modified Output Data

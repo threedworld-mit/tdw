@@ -21,6 +21,6 @@ class SendOcclusion(SendAvatarsCommand):
             """:field
             If None or empty, all objects in the camera viewport will be tested for occlusion. Otherwise, if an object isn't in this list, it will be treated as an occluder (if this was a _mask pass, it would appear black instead of red). This parameter can be used to test occlusion for specific objects, but it is somewhat slower than testing for all.
             """
-            self.object_ids: List[int] = []
+            self.object_ids: List[int] = [0]
         else:
             self.object_ids = object_ids

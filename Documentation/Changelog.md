@@ -18,6 +18,14 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Fixed: `Occlusion` data is only accurate in the ProcGen Room.
 
+### Documentation
+
+##### Modified Documentation
+
+| Document | Description |
+| --- | --- |
+| `lessons/visual_perception/occlusion.md` | Updated document to describe the new `Occlusion` data. |
+
 ## v1.12.22
 
 ### Build

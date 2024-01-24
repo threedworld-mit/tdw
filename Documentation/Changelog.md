@@ -34,6 +34,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | Document | Description |
 | --- | --- |
 | `lessons/visual_perception/occlusion.md` | Updated document to describe the new `Occlusion` data. |
+| `api/output_data.md` | Improved the documentation for all positions and rotations. |
 
 ## v1.12.22
 

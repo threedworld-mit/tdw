@@ -61,7 +61,7 @@ class Occlusion(Controller):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "occl":
                 occl = Occl(resp[i])
-                print(occl.get_occluded())
+                print(occl.get_occluded(), occl.get_unoccluded())
 
 
 if __name__ == "__main__":

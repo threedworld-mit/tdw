@@ -256,6 +256,7 @@ from .terminate import Terminate
 from .destroy_all_ui_canvases import DestroyAllUiCanvases
 from .destroy_ui_canvas import DestroyUiCanvas
 from .destroy_ui_element import DestroyUiElement
+from .set_ui_color import SetUiColor
 from .set_ui_element_size import SetUiElementSize
 from .set_ui_text import SetUiText
 from .unload_asset_bundles import UnloadAssetBundles

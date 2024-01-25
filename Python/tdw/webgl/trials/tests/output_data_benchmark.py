@@ -9,7 +9,7 @@ class OutputDataBenchmark(Trial):
     This trial benchmarks the speed of writing and sending output data. There is no human user input.
     """
 
-    def __init__(self, scene_name: str = "box_room_2018", model_name: str = "octahedron", scale: Dict[str, float] = None, avatar_position: Dict[str, float] = None, avatar_look_at: Dict[str, float] = None, grid_size: Dict[str, int] = None, move_by: Dict[str, float] = None, force: Dict[str, float] = None, rotate_by: float = 0.001, num_frames: int = 3600, frames_per_forces: int = 300, image_capture: bool = False):
+    def __init__(self, scene_name: str = "box_room_2018", model_name: str = "octahedron", scale: Dict[str, float] = None, avatar_position: Dict[str, float] = None, avatar_look_at: Dict[str, float] = None, grid_size: Dict[str, int] = None, move_by: Dict[str, float] = None, force: Dict[str, float] = None, rotate_by: float = 0.001, num_frames: int = 3600, frames_per_forces: int = 300, image_capture: bool = False, photodiode: bool = False):
         """
         :param scene_name: The name of the scene.
         :param model_name: The name of the test model.
@@ -23,6 +23,7 @@ class OutputDataBenchmark(Trial):
         :param num_frames: Run the simulation for this many frames.
         :param frames_per_forces: Re-apply forces after this many frames have elapsed.
         :param image_capture: If true, capture image data per-frame. This is VERY expensive but it's required for the trial playback test.
+        :param photodiode: If true, add a Photodiode add-on (add a UI square that changes from white to black per frame).
         """
 
         super().__init__()
@@ -92,3 +93,7 @@ class OutputDataBenchmark(Trial):
         If true, capture image data per-frame. This is VERY expensive but it's required for the trial playback test.
         """
         self.image_capture: bool = image_capture
+        """:field
+        If true, add a Photodiode add-on (add a UI square that changes from white to black per frame).
+        """
+        self.photodiode: bool = photodiode

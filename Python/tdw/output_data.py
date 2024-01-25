@@ -1172,11 +1172,11 @@ class Occlusion(OutputData):
     def get_avatar_id(self) -> str:
         return self.data.AvatarId().decode('utf-8')
 
-    def get_sensor_name(self) -> str:
-        return self.data.SensorName().decode('utf-8')
-
-    def get_occluded(self) -> float:
+    def get_occluded(self) -> int:
         return self.data.Occluded()
+
+    def get_unoccluded(self) -> int:
+        return self.data.Unoccluded()
 
 
 class Lights(OutputData):

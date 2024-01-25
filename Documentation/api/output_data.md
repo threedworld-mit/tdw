@@ -384,10 +384,10 @@ Dynamic robot output data.
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_immovable(index)` | An array indicating whether the root object of each robot is immovable. | `bool` |
-| `get_robot_position(index)` | The position of the robot. | `np.ndarray` |
-| `get_robot_rotation(index)` | The rotation of the robot. | `np.ndarray` |
+| `get_robot_position(index)` | The position of the robot in the order of (x, y, z). | `np.ndarray` |
+| `get_robot_rotation(index)` | The rotation of the robot in the order (x, y, z, w). | `np.ndarray` |
 | `get_robot_forward(index)` | The forward of the robot. | `np.ndarray` |
-| `get_joint_position(index)` | The position of the joint. | `np.ndarray` |
+| `get_joint_position(index)` | The position of the joint in the order of (x, y, z). | `np.ndarray` |
 | `get_joint_angles(index)` | The angles of the joint. | `np.ndarray` |
 | `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
 
@@ -541,7 +541,7 @@ The names of each ImageSensor component attached to an avatar, and whether they 
 | `get_num_sensors()` | The number of sensors. | `int` |
 | `get_sensor_name(index)` | The name of the sensor. | `str` |
 | `get_sensor_on(index)` | The on of the sensor. | `bool` |
-| `get_sensor_rotation(index)` | The rotation of the sensor. | `Tuple[float, float, float, float]` |
+| `get_sensor_rotation(index)` | The rotation of the sensor in the order (x, y, z, w). | `Tuple[float, float, float, float]` |
 | `get_sensor_forward(index)` | The forward of the sensor. | `Tuple[float, float, float]` |
 | `get_sensor_field_of_view(index)` | The view of the sensor field of. | `float` |
 
@@ -608,11 +608,11 @@ Data for all lights in the scene.
 | `get_num_directional_lights()` | The number of directional lights. | `int` |
 | `get_directional_light_intensity(index)` | The intensity of the directional light. | `float` |
 | `get_directional_light_color(index)` | The color of the directional light. | `Tuple[float, float, float]` |
-| `get_directional_light_rotation(index)` | The rotation of the directional light. | `Tuple[float, float, float, float]` |
+| `get_directional_light_rotation(index)` | The rotation of the directional light in the order (x, y, z, w). | `Tuple[float, float, float, float]` |
 | `get_num_point_lights()` | The number of point lights. | `int` |
 | `get_point_light_intensity(index)` | The intensity of the point light. | `float` |
 | `get_point_light_color(index)` | The color of the point light. | `Tuple[float, float, float]` |
-| `get_point_light_position(index)` | The position of the point light. | `Tuple[float, float, float]` |
+| `get_point_light_position(index)` | The position of the point light in the order of (x, y, z). | `Tuple[float, float, float]` |
 | `get_point_light_range(index)` | The range of the point light. | `float` |
 
 ## LocalTransforms
@@ -628,7 +628,7 @@ Data about the Transform component of objects (position and rotation) relative t
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
 | `get_position(index)` | The position. | `np.ndarray` |
-| `get_forward(index)` | The forward. | `np.ndarray` |
+| `get_forward(index)` | The forward directional vector, in worldspace rotational coordinates. | `np.ndarray` |
 | `get_rotation(index)` | The rotation. | `np.ndarray` |
 | `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.ndarray` |
 
@@ -770,8 +770,8 @@ To what extent parts of the scene environment (such as walls) are occluding obje
 | Function | Description | Return type |
 | --- | --- | --- |
 | `get_avatar_id()` | The ID of the avatar that captured the image. | `str` |
-| `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
-| `get_occluded()` | How much of the objects in the frame are occluded by the environment, between 0 (no occlusion) and 1 (fully occluded). | `float` |
+| `get_occluded()` | An integer between 0 and 255 describing what fraction of the image's pixels are occupied by objects, as opposed to background meshes. A value of 255 would mean that the image is totally, or near-totally, occupied by objects. | `int` |
+| `get_unoccluded()` | An integer between 0 and 255 describing what fraction of the image's pixels are occupied by objects if background meshes aren't rendered. A value of 255 would mean that the image is totally, or near-totally, occupied by objects. | `int` |
 
 ## OccupancyMap
 
@@ -862,8 +862,8 @@ Data about each Replicant in the scene.
 | `get_forward(index)` | The forward. | `np.ndarray` |
 | `get_rotation(index)` | The rotation. | `np.ndarray` |
 | `get_body_part_id(index, body_part_index)` | The ID of the body part. | `int` |
-| `get_body_part_position(index, body_part_index)` | The position of the body part. | `np.ndarray` |
-| `get_body_part_rotation(index, body_part_index)` | The rotation of the body part. | `np.ndarray` |
+| `get_body_part_position(index, body_part_index)` | The position of the body part in the order of (x, y, z). | `np.ndarray` |
+| `get_body_part_rotation(index, body_part_index)` | The rotation of the body part in the order (x, y, z, w). | `np.ndarray` |
 | `get_body_part_forward(index, body_part_index)` | The forward of the body part. | `np.ndarray` |
 | `get_is_holding_left(index)` | The left of the is holding. | `bool` |
 | `get_held_left(index)` | The left of the held. | `int` |
@@ -1133,7 +1133,7 @@ Data about the Transform component of objects (position and rotation).
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.ndarray` |
+| `get_position(index)` | The position of the object's pivot point, in the order (x, y, z). | `np.ndarray` |
 | `get_forward(index)` | The forward. | `np.ndarray` |
 | `get_rotation(index)` | The rotation. | `np.ndarray` |
 
@@ -1193,14 +1193,14 @@ Data about the VR rig currently in the scene.
 | `get_position()` | The rig's position. | `Tuple[float, float, float]` |
 | `get_rotation()` | The rig's rotation. | `Tuple[float, float, float, float]` |
 | `get_forward()` | The rig's forward directional vector. | `Tuple[float, float, float]` |
-| `get_left_hand_position()` | The position of the left hand. | `Tuple[float, float, float]` |
-| `get_left_hand_rotation()` | The rotation of the left hand. | `Tuple[float, float, float, float]` |
+| `get_left_hand_position()` | The position of the left hand in the order of (x, y, z). | `Tuple[float, float, float]` |
+| `get_left_hand_rotation()` | The rotation of the left hand in the order (x, y, z, w). | `Tuple[float, float, float, float]` |
 | `get_left_hand_forward()` | The forward of the left hand. | `Tuple[float, float, float]` |
-| `get_right_hand_position()` | The position of the right hand. | `Tuple[float, float, float]` |
-| `get_right_hand_rotation()` | The rotation of the right hand. | `Tuple[float, float, float, float]` |
+| `get_right_hand_position()` | The position of the right hand in the order of (x, y, z). | `Tuple[float, float, float]` |
+| `get_right_hand_rotation()` | The rotation of the right hand in the order (x, y, z, w). | `Tuple[float, float, float, float]` |
 | `get_right_hand_forward()` | The forward of the right hand. | `Tuple[float, float, float]` |
-| `get_head_position()` | The position of the head. | `Tuple[float, float, float]` |
-| `get_head_rotation()` | The rotation of the head. | `Tuple[float, float, float, float]` |
+| `get_head_position()` | The position of the head in the order of (x, y, z). | `Tuple[float, float, float]` |
+| `get_head_rotation()` | The rotation of the head in the order (x, y, z, w). | `Tuple[float, float, float, float]` |
 | `get_head_forward()` | The forward of the head. | `Tuple[float, float, float]` |
 | `get_held_left()` | The IDs of the objects held by the left hand. | `np.ndarray` |
 | `get_held_right()` | The IDs of the objects held by the right hand. | `np.ndarray` |

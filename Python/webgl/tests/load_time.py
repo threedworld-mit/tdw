@@ -24,8 +24,8 @@ class LoadTime(TrialController):
                 # Get system info.
                 if r_id == "syst":
                     system_info = SystemInfo(playback.frames[i][j])
-                    row += (f"{system_info.get_os()},{system_info.get_browser()},"
-                            f"{system_info.get_gpu()},{system_info.get_graphics_api()},")
+                    row += (f'"{system_info.get_os()}","{system_info.get_browser()}",'
+                            f'"{system_info.get_gpu()}","{system_info.get_graphics_api()}",')
                 # Get the time since startup.
                 elif r_id == "tsst":
                     row += str(TimeSinceStartup(playback.frames[i][j]).get_ticks() / 10000000)

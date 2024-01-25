@@ -59,6 +59,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [AvatarTransformMatrices](#AvatarTransformMatrices) | 4x4 transform matrices for avatars and sensor containers. | `atrm` |
 | [Bounds](#Bounds) | Rotated bounds data. | `boun` |
 | [CameraMatrices](#CameraMatrices) | An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11, etc. | `cama` |
+| [CameraTransforms](#CameraTransforms) | Data about the Transform component of objects (position and rotation) relative to the avatar's camera's position and rotation. | `ctra` |
 | [Categories](#Categories) | Color segmentation data for object categories. | `cate` |
 | [Collision](#Collision) | Data for a collision between objects occurring on this frame. | `coll` |
 | [Containment](#Containment) | The IDs of every object that a shape overlaps plus parent IDs and the semantic containment tag. | `cont` |
@@ -273,6 +274,21 @@ An avatar's camera matrix data. Each matrix is arranged as m00, m01... m10, m11,
 | `get_sensor_name()` | The name of the sensor that captured the image. | `str` |
 | `get_projection_matrix()` | The projection matrix. | `np.ndarray` |
 | `get_camera_matrix()` | The camera matrix. | `np.ndarray` |
+
+## CameraTransforms
+
+`c = CameraTransforms(byte_array)`
+
+**Identifier:** `ctra`
+
+Data about the Transform component of objects (position and rotation) relative to the avatar's camera's position and rotation.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_position(index)` | The position of the object's pivot point, in the order (x, y, z). | `np.ndarray` |
+| `get_rotation(index)` | The rotation. | `np.ndarray` |
 
 ## Categories
 
@@ -627,7 +643,7 @@ Data about the Transform component of objects (position and rotation) relative t
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.ndarray` |
+| `get_position(index)` | The position of the object's pivot point, in the order (x, y, z). | `np.ndarray` |
 | `get_forward(index)` | The forward directional vector, in worldspace rotational coordinates. | `np.ndarray` |
 | `get_rotation(index)` | The rotation. | `np.ndarray` |
 | `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.ndarray` |

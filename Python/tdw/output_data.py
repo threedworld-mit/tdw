@@ -65,6 +65,7 @@ from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.FBOutput import AlbedoColors as AlbCol
+from tdw.FBOutput import CameraTransforms as CamTran
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1774,3 +1775,26 @@ class AlbedoColors(OutputData):
 
     def get_color(self, index: int) -> np.ndarray:
         return self._colors[index]
+
+
+class CameraTransforms(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._positions = self.data.PositionsAsNumpy().reshape(-1, 3)
+        self._rotations = self.data.RotationsAsNumpy().reshape(-1, 4)
+
+    def get_data(self) -> CamTran.CameraTransforms:
+        return CamTran.CameraTransforms.GetRootAsCameraTransforms(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_position(self, index: int) -> np.ndarray:
+        return self._positions[index]
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index]

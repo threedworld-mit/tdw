@@ -795,6 +795,7 @@
 | --- | --- |
 | [`send_albedo_colors`](#send_albedo_colors) | Send the main albedo color of each object in the scene.  |
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
+| [`send_camera_transforms`](#send_camera_transforms) | Send the position and rotation of objects in the scene relative to an avatar's image sensor's position and rotation.  |
 | [`send_euler_angles`](#send_euler_angles) | Send the rotations of each object expressed as Euler angles.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
@@ -10394,6 +10395,40 @@ Send rotated bounds data of objects in the scene.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_camera_transforms`**
+
+Send the position and rotation of objects in the scene relative to an avatar's image sensor's position and rotation. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`CameraTransforms`](output_data.md#CameraTransforms)</font>
+
+```python
+{"$type": "send_camera_transforms", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_camera_transforms", "ids": [0, 1, 2], "avatar_id": "a", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"avatar_id"` | string | The ID of the avatar. | "a" |
 | `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 

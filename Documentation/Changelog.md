@@ -4,6 +4,24 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.24
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `send_camera_transforms` |  Send the position and rotation of objects in the scene relative to an avatar's image sensor's position and rotation. |
+
+### Output Data
+
+#### New Output Data
+
+| Output Data | Modification |
+| --- | --- |
+| `CameraTransforms` | Data about the Transform component of objects (position and rotation) relative to the avatar's camera's position and rotation. |
+
 ## v1.12.23
 
 ### Command API

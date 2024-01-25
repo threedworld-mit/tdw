@@ -83,8 +83,8 @@ class PlaybackReader(Controller):
             r_id = SystemInfo.get_data_type_id(resp[i])
             if r_id == "syst":
                 system_info = SystemInfo(resp[i])
-                row += (f'{system_info.get_os()},{system_info.get_browser()},'
-                        f'"{system_info.get_gpu()}",{system_info.get_graphics_api()},{difference}')
+                row += (f'"{system_info.get_os()}","{system_info.get_browser()}",'
+                        f'"{system_info.get_gpu()}","{system_info.get_graphics_api()}",{difference}')
                 break
         # Write the results to disk.
         with io.open(str(self.path), "at") as f:

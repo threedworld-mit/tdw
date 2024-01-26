@@ -128,6 +128,21 @@ class QuaternionUtils:
         return QuaternionUtils.multiply_by_vector(q=QuaternionUtils.get_inverse(q=rotation), v=position - origin)
 
     @staticmethod
+    def world_to_local_rotation(world_rotation: np.ndarray, local_coord_rotation: np.ndarray) -> np.ndarray:
+        """
+        Convert a rotation in absolute world coordinates to relative local coordinates.
+
+        Source: https://discussions.unity.com/t/what-is-the-rotation-equivalent-of-inversetransformpoint/45386
+
+        :param world_rotation: The rotation vector in world coordinates that you want to convert to local coordinates.
+        :param local_coord_rotation: The rotation vector of the local coordinates in world coordinates.
+
+        :return: `rotation` vector of world_rotation in local coordinates.
+        """
+
+        return QuaternionUtils.multiply(QuaternionUtils.get_inverse(local_coord_rotation), world_rotation)
+
+    @staticmethod
     def get_up_direction(q: np.ndarray) -> np.ndarray:
         """
         :param q: The rotation as a quaternion.

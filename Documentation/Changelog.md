@@ -4,6 +4,16 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.24
+
+### Command API
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `teleport_object`<br>`teleport_object_by` | Added optional parameter `use_centroid`. |
+
 ## v1.12.23
 
 ### Command API

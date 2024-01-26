@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def get_sessions():
     """
-    :return: A JSON string of each session separated by new lines.
+    :return: JSON strings of every session separated by new lines.
     """
 
     return '\n'.join([s.to_json() for s in dashboard.sessions.values()])
@@ -70,8 +70,11 @@ def set_request(session_id: int, request_type: str):
     elif request_type not in REQUEST_NAMES:
         return f'Invalid request {request_type} for session {session_id}'
     else:
-        dashboard.sessions[session_id].request = Request[request_type]
-        return 'ok'
+        if dashboard.sessions[session_id].request == Request.none:
+            dashboard.sessions[session_id].request = Request[request_type]
+            return 'ok'
+        else:
+            return f'Cannot set request for {session_id} because there is an ongoing request'
 
 
 class Dashboard:
@@ -106,5 +109,12 @@ class Dashboard:
 
 
 if __name__ == "__main__":
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser(allow_abbrev=False)
+    parser.add_argument("--port", type=int, default=1453, help="The Dashboard server port.")
+    parser.add_argument("--external", action="store_true",
+                        help="If included, the Dashboard will serve non-local clients.")
+    args, unknown = parser.parse_known_args()
     dashboard = Dashboard()
-    app.run(debug=True)
+    app.run(debug=True, host="127.0.0.1" if not args.external else "0.0.0.0", port=args.port)

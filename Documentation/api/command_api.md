@@ -5041,14 +5041,15 @@ Teleport an object to a new position.
 ```
 
 ```python
-{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False, "absolute": True}
+{"$type": "teleport_object", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "physics": False, "absolute": True, "use_centroid": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | New position of the object. | |
 | `"physics"` | bool | This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches. | False |
-| `"absolute"` | bool | If True, set the position in world coordindate space. If False, set the position in local coordinate space. | True |
+| `"absolute"` | bool | If True, set the position in world coordinate space. If False, set the position in local coordinate space. | True |
+| `"use_centroid"` | bool | If True, teleport from the centroid of the object instead of the pivot. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -5063,13 +5064,14 @@ Translate an object by an amount, optionally in local or world space.
 ```
 
 ```python
-{"$type": "teleport_object_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "absolute": True}
+{"$type": "teleport_object_by", "position": {"x": 1.1, "y": 0.0, "z": 0}, "id": 1, "absolute": True, "use_centroid": False}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The positional offset. | |
-| `"absolute"` | bool | If True, set the position in world coordindate space. If False, set the position in local coordinate space. | True |
+| `"absolute"` | bool | If True, set the position in world coordinate space. If False, set the position in local coordinate space. | True |
+| `"use_centroid"` | bool | If True, teleport from the centroid of the object instead of the pivot. | False |
 | `"id"` | int | The unique object ID. | |
 
 ***

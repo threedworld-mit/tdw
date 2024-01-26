@@ -9,12 +9,13 @@ class TeleportObject(ObjectCommand):
     Teleport an object to a new position.
     """
 
-    def __init__(self, id: int, position: Dict[str, float], physics: bool = False, absolute: bool = True):
+    def __init__(self, id: int, position: Dict[str, float], physics: bool = False, absolute: bool = True, use_centroid: bool = False):
         """
         :param id: The unique object ID.
         :param position: New position of the object.
         :param physics: This should almost always be False (the default). If True, apply a "physics-based" teleportation to the object. This only works if the object has a rigidbody (i.e. is a model from a model library) and is slightly slower than a non-physics teleport. Set this to True only if you are having persistent and rare physics glitches.
-        :param absolute: If True, set the position in world coordindate space. If False, set the position in local coordinate space.
+        :param absolute: If True, set the position in world coordinate space. If False, set the position in local coordinate space.
+        :param use_centroid: If True, teleport from the centroid of the object instead of the pivot.
         """
 
         super().__init__(id=id)
@@ -27,6 +28,10 @@ class TeleportObject(ObjectCommand):
         """
         self.physics: bool = physics
         """:field
-        If True, set the position in world coordindate space. If False, set the position in local coordinate space.
+        If True, set the position in world coordinate space. If False, set the position in local coordinate space.
         """
         self.absolute: bool = absolute
+        """:field
+        If True, teleport from the centroid of the object instead of the pivot.
+        """
+        self.use_centroid: bool = use_centroid

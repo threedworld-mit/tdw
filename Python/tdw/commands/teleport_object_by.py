@@ -9,11 +9,12 @@ class TeleportObjectBy(ObjectCommand):
     Translate an object by an amount, optionally in local or world space.
     """
 
-    def __init__(self, id: int, position: Dict[str, float], absolute: bool = True):
+    def __init__(self, id: int, position: Dict[str, float], absolute: bool = True, use_centroid: bool = False):
         """
         :param id: The unique object ID.
         :param position: The positional offset.
-        :param absolute: If True, set the position in world coordindate space. If False, set the position in local coordinate space.
+        :param absolute: If True, set the position in world coordinate space. If False, set the position in local coordinate space.
+        :param use_centroid: If True, teleport from the centroid of the object instead of the pivot.
         """
 
         super().__init__(id=id)
@@ -22,6 +23,10 @@ class TeleportObjectBy(ObjectCommand):
         """
         self.position: Dict[str, float] = position
         """:field
-        If True, set the position in world coordindate space. If False, set the position in local coordinate space.
+        If True, set the position in world coordinate space. If False, set the position in local coordinate space.
         """
         self.absolute: bool = absolute
+        """:field
+        If True, teleport from the centroid of the object instead of the pivot.
+        """
+        self.use_centroid: bool = use_centroid

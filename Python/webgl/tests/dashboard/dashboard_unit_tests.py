@@ -45,6 +45,8 @@ assert resp.status_code == 200, resp.status_code
 session = from_json(get(url).text)
 assert session.request == Request.get_start_time, session.request
 # Set the request.
+session = Session(session_id=0, request=Request.none)
+post(url, data=session.to_json())
 resp = post(f'{url}/{Request.get_trial_name.name}')
 assert resp.status_code == 200, resp.status_code
 session = from_json(get(url).text)
@@ -60,5 +62,3 @@ assert resp.status_code != 200, resp.status_code
 resp = post(f'{url}/fake_request')
 assert resp.status_code == 200, resp.status_code
 assert resp.text != 'ok', resp.text
-post(f'{base_url}/create')
-print(get(base_url).text)

@@ -11,5 +11,5 @@ class DashboardTrialController(TrialController):
         return END_MESSAGE
 
 
-def run_trial_controller():
+if __name__ == "__main__":
     run(DashboardTrialController())

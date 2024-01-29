@@ -37,7 +37,7 @@ class TrialController(ABC):
         # The TDW session ID. This is set in `self.set_session_id(session_id)`.
         self._session_id: int = -1
         # This gets sent to the Database.
-        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True)
+        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True, length=4)
         # A boolean flag used to send the initial session ID.
         self._sent_session_id: bool = False
         # This is used to connect to a remote Database.
@@ -172,12 +172,12 @@ class TrialController(ABC):
                 print("WebSocket exception:", e)
                 done = True
                 continue
-            # Receive end-of-trial data.
+            # Receive  data.
             try:
+                # This is either end-of-trial data, a frame, or an empty array indicating that the Build received the session ID.
                 bs: bytes = await websocket.recv()
-                if not self._sent_session_id:
-                    self._sent_session_id = True
-                elif not ending_simulation:
+                # Evaluate the type of data.
+                if not ending_simulation and self._sent_session_id:
                     # This is frame data. Parse it to get commands to send on the next frame.
                     if bs[:4] == b'FRAM':
                         self._send_trial_message = False
@@ -194,7 +194,11 @@ class TrialController(ABC):
             if ending_simulation:
                 done = True
                 continue
-            if self._send_trial_message:
+            # We received the session ID on this frame. Don't do anything else.
+            if not self._sent_session_id:
+                self._sent_session_id = True
+            # Parse the end-of-trial data.
+            elif self._send_trial_message:
                 # Parse the playback.
                 playback = TrialPlayback()
                 playback.read(bs)

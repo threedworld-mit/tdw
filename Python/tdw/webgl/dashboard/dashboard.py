@@ -1,10 +1,13 @@
 from typing import Dict
+from flask import Flask, request
+from requests import get, ConnectTimeout
 from tdw.webgl.dashboard.request import Request, REQUEST_NAMES
 from tdw.webgl.dashboard.session import Session, from_json
-from flask import Flask, request
+
 
 
 app = Flask(__name__)
+
 
 
 @app.route('/', methods=['GET'])
@@ -62,7 +65,7 @@ def set_request(session_id: int, request_type: str):
     :param session_id: The ID of the session. If this session doesn't exist, nothing happens.
     :param request_type: The type of request. See: `tdw.webgl.dashboard.request.Request`
 
-    :return: "ok" if the post succeeded.
+    :return: 'ok' if the post succeeded.
     """
 
     if session_id not in dashboard.sessions:
@@ -93,6 +96,9 @@ class Dashboard:
         The ongoing sessions.
         """
         self.sessions: Dict[int, Session] = dict()
+        self.timeout: int = 1
+        self.num_timeouts: int = 60
+        self.base_url = 'https://127.0.0.1'
         self._next_id: int = 0
 
     def create(self) -> int:
@@ -108,13 +114,29 @@ class Dashboard:
         return session_id
 
 
-if __name__ == "__main__":
+dashboard = Dashboard()
+
+
+def run_dashboard():
     from argparse import ArgumentParser
 
     parser = ArgumentParser(allow_abbrev=False)
-    parser.add_argument("--port", type=int, default=1453, help="The Dashboard server port.")
-    parser.add_argument("--external", action="store_true",
-                        help="If included, the Dashboard will serve non-local clients.")
+    parser.add_argument('--port', type=int, default=1453, help='The Dashboard server port.')
+    parser.add_argument('--external', action='store_true',
+                        help='If included, the Dashboard will serve non-local clients.')
+    parser.add_argument('--timeout', type=int, default=1,
+                        help='After a POST, timeout the followup GET after this many seconds.')
+    parser.add_argument('--num_timeouts', type=int, default=60,
+                        help='After a POST, timeout the followup GET up to this many times.')
     args, unknown = parser.parse_known_args()
-    dashboard = Dashboard()
-    app.run(debug=True, host="127.0.0.1" if not args.external else "0.0.0.0", port=args.port)
+    # Remember the timeout parameters and host URL for blocking responses.
+    dashboard.timeout = args.timeout
+    dashboard.num_timeouts = args.num_timeouts
+    host = '127.0.0.1' if not args.external else '0.0.0.0'
+    dashboard.base_url = f'https://{host}'
+    # Run the app.
+    app.run(debug=True, host=host, port=args.port)
+
+
+if __name__ == '__main__':
+    run_dashboard()

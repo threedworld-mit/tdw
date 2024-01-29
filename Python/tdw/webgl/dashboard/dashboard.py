@@ -75,7 +75,11 @@ def set_request(session_id: int, request_type: str):
         return f'Invalid request {request_type} for session {session_id}'
     else:
         if dashboard.sessions[session_id].request == Request.none:
+            # Set the request.
             dashboard.sessions[session_id].request = Request[request_type]
+            # Clear the response.
+            dashboard.sessions[session_id].response = Request.none
+            dashboard.sessions[session_id].message = ""
             return 'ok'
         else:
             return f'Cannot set request for {session_id} because there is an ongoing request'

@@ -1,13 +1,10 @@
 from typing import Dict
 from flask import Flask, request
-from requests import get, ConnectTimeout
 from tdw.webgl.dashboard.request import Request, REQUEST_NAMES
 from tdw.webgl.dashboard.session import Session, from_json
 
 
-
 app = Flask(__name__)
-
 
 
 @app.route('/', methods=['GET'])
@@ -96,9 +93,6 @@ class Dashboard:
         The ongoing sessions.
         """
         self.sessions: Dict[int, Session] = dict()
-        self.timeout: int = 1
-        self.num_timeouts: int = 60
-        self.base_url = 'https://127.0.0.1'
         self._next_id: int = 0
 
     def create(self) -> int:
@@ -124,18 +118,9 @@ def run_dashboard():
     parser.add_argument('--port', type=int, default=1453, help='The Dashboard server port.')
     parser.add_argument('--external', action='store_true',
                         help='If included, the Dashboard will serve non-local clients.')
-    parser.add_argument('--timeout', type=int, default=1,
-                        help='After a POST, timeout the followup GET after this many seconds.')
-    parser.add_argument('--num_timeouts', type=int, default=60,
-                        help='After a POST, timeout the followup GET up to this many times.')
     args, unknown = parser.parse_known_args()
-    # Remember the timeout parameters and host URL for blocking responses.
-    dashboard.timeout = args.timeout
-    dashboard.num_timeouts = args.num_timeouts
-    host = '127.0.0.1' if not args.external else '0.0.0.0'
-    dashboard.base_url = f'https://{host}'
     # Run the app.
-    app.run(debug=True, host=host, port=args.port)
+    app.run(debug=True, host='0.0.0.0' if args.external else '127.0.0.1', port=args.port)
 
 
 if __name__ == '__main__':

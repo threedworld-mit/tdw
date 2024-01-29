@@ -41,7 +41,11 @@ def session(session_id: int):
         return f'Invalid session ID: {session_id}'
     # Set the session from a JSON string.
     elif request.method == 'POST':
-        dashboard.sessions[session_id] = from_json(request.data)
+        if request.data != b'':
+            data = request.data
+        else:
+            data = request.form["data"]
+        dashboard.sessions[session_id] = from_json(data)
         return 'ok'
     # Return the session as a JSON string.
     else:

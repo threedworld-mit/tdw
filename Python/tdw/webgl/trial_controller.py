@@ -68,6 +68,7 @@ class TrialController(ABC):
         """
 
         self._session_id = session_id
+        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True, length=4)
 
     @final
     def connect_database_socket(self, address: str) -> None:
@@ -264,11 +265,12 @@ class TrialController(ABC):
         return 16777216
 
 
-def run(controller: TrialController) -> None:
+def run(controller: TrialController, session_id: int = None) -> None:
     """
     Run a controller. The controller will continue to try to serve data until its process is killed.
 
     :param controller: A TrialController.
+    :param session_id: If not None, use this session ID instead of the command-line argument.
     """
 
     parser = ArgumentParser(allow_abbrev=False)
@@ -279,7 +281,7 @@ def run(controller: TrialController) -> None:
     # Set the port.
     controller.set_port(port=args.port)
     # Set the session ID.
-    controller.set_session_id(session_id=args.session_id)
+    controller.set_session_id(session_id=args.session_id if session_id is None else session_id)
     # Connect to the database.
     if args.database_address != "":
         controller.connect_database_socket(address=args.database_address)

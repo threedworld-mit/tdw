@@ -1,5 +1,6 @@
 from typing import Dict
 from flask import Flask, request
+from flask_cors import cross_origin
 from tdw.webgl.dashboard.request import Request, REQUEST_NAMES
 from tdw.webgl.dashboard.session import Session, from_json
 
@@ -16,7 +17,7 @@ def get_sessions():
     return '\n'.join([s.to_json() for s in dashboard.sessions.values()])
 
 
-@app.route('/create', methods=['POST'])
+@app.route('/api/create', methods=['POST'])
 def create():
     """
     Create a new session.
@@ -27,7 +28,8 @@ def create():
     return str(dashboard.create())
 
 
-@app.route('/<int:session_id>', methods=['GET', 'POST'])
+@app.route('/api/<int:session_id>', methods=['GET', 'POST'])
+@cross_origin()
 def session(session_id: int):
     """
     Get or set a session.
@@ -58,7 +60,7 @@ def session(session_id: int):
             return dashboard.sessions[session_id].to_json()
 
 
-@app.route('/<int:session_id>/<request_type>', methods=['POST'])
+@app.route('/api/<int:session_id>/<request_type>', methods=['POST'])
 def set_request(session_id: int, request_type: str):
     """
     Set a session's request type.

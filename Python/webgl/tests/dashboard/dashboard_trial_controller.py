@@ -10,7 +10,7 @@ from tdw.webgl.trials.tests.dashboard_test import DashboardTest
 from tdw.webgl.dashboard import Request, Session, from_json
 
 
-base_url = 'http://127.0.0.1:1453'
+base_url = 'http://127.0.0.1:1453/api'
 
 
 def do_post(request: Request) -> None:

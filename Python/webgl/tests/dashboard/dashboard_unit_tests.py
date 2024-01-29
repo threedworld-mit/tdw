@@ -22,7 +22,7 @@ If the test succeeds, it doesn't print any messages or errors.
 Close the first shell when the test is done.
 """
 
-base_url = 'http://127.0.0.1:1453'
+base_url = 'http://127.0.0.1:1453/api'
 # Create a session.
 resp = post(f'{base_url}/create')
 assert resp.status_code == 200, resp.status_code

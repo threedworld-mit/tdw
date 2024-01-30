@@ -8,7 +8,7 @@ from tdw.webgl.dashboard.session import Session, from_json
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/api/get_sessions', methods=['GET'])
 def get_sessions():
     """
     :return: JSON strings of every session separated by new lines.

@@ -73,7 +73,7 @@ def assert_datetime(session: Session, _: str) -> bool:
     """
 
     try:
-        datetime.strptime(session.message, '%m/%d/%Y %H:%M:%S')
+        session.get_datetime()
         return True
     except TypeError:
         return False

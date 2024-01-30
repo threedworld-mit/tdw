@@ -3,8 +3,8 @@ from base64 import b64decode
 from json import dumps, loads
 from struct import unpack
 from array import array
+from datetime import datetime
 from tdw.webgl.dashboard.request import Request
-from tdw.webgl import TrialPlayback
 
 
 class Session:
@@ -47,28 +47,31 @@ class Session:
                       "response": self.response.name,
                       "message": self.message})
 
-    def get_output_data(self) -> List[bytes]:
+    def get_datetime(self) -> datetime:
         """
-        :return: Output data as a list of output data byte arrays. If `response != Request.get_output_data`, this returns an empty list.
+        :return: `self.message` as a datetime. This will throw an exception if `self.message` is not a datetime string.
         """
 
-        if self.response == Request.get_output_data:
-            buffer = b64decode(self.message)
-            index = 4
-            num_elements = unpack(f"<i", buffer[: index])[0]
-            num_elements_offset = num_elements * 4
-            a = array("i")
-            a.frombytes(buffer[index: index + num_elements_offset])
-            element_sizes: List[int] = a.tolist()
-            resp: List[bytes] = list()
-            # Append each element.
-            index += num_elements_offset
-            for element_size in element_sizes:
-                resp.append(buffer[index: index + element_size])
-                index += element_size
-            return resp
-        else:
-            return []
+        return datetime.strptime(self.message, '%m/%d/%Y %H:%M:%S')
+
+    def get_output_data(self) -> List[bytes]:
+        """
+        :return: Output data as a list of output data byte arrays. This will throw an exception if `self.message` is not output data.
+        """
+
+        buffer = b64decode(self.message)
+        index = 4
+        num_elements = unpack(f"<i", buffer[: index])[0]
+        num_elements_offset = num_elements * 4
+        a = array("i")
+        a.frombytes(buffer[index: index + num_elements_offset])
+        element_sizes: List[int] = a.tolist()
+        resp: List[bytes] = list()
+        index += num_elements_offset
+        for element_size in element_sizes:
+            resp.append(buffer[index: index + element_size])
+            index += element_size
+        return resp
 
 
 def from_json(json: Union[str, bytes]) -> Session:

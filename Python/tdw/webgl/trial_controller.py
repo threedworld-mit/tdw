@@ -35,11 +35,7 @@ class TrialController(ABC):
         # The WebSocket port. This is set in `self.set_port(port)`.
         self._port: int = -1
         # The TDW session ID. This is set in `self.set_session_id(session_id)`.
-        self._session_id: int = -1
-        # This gets sent to the Database.
-        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True, length=4)
-        # A boolean flag used to send the initial session ID.
-        self._sent_session_id: bool = False
+        self._session_id: str = ""
         # This is used to connect to a remote Database.
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
@@ -60,7 +56,7 @@ class TrialController(ABC):
         self._port = port
 
     @final
-    def set_session_id(self, session_id: int) -> None:
+    def set_session_id(self, session_id: str) -> None:
         """
         Set the session ID. This is used when sending data to the Database.
 
@@ -68,7 +64,6 @@ class TrialController(ABC):
         """
 
         self._session_id = session_id
-        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True, length=4)
 
     @final
     def connect_database_socket(self, address: str) -> None:
@@ -159,11 +154,8 @@ class TrialController(ABC):
         websocket.max_size = self.get_max_size()
         while not done:
             try:
-                # Send the session ID.
-                if not self._sent_session_id:
-                    await websocket.send(self._session_id_bytes)
                 # Send the next trials.
-                elif self._send_trial_message:
+                if self._send_trial_message:
                     await websocket.send(dumps(self._trial_message, cls=Encoder))
                 # Send the next commands.
                 else:
@@ -178,7 +170,7 @@ class TrialController(ABC):
                 # This is either end-of-trial data, a frame, or an empty array indicating that the Build received the session ID.
                 bs: bytes = await websocket.recv()
                 # Evaluate the type of data.
-                if not ending_simulation and self._sent_session_id:
+                if not ending_simulation:
                     # This is frame data. Parse it to get commands to send on the next frame.
                     if bs[:4] == b'FRAM':
                         self._send_trial_message = False
@@ -195,11 +187,8 @@ class TrialController(ABC):
             if ending_simulation:
                 done = True
                 continue
-            # We received the session ID on this frame. Don't do anything else.
-            if not self._sent_session_id:
-                self._sent_session_id = True
             # Parse the end-of-trial data.
-            elif self._send_trial_message:
+            if self._send_trial_message:
                 # Parse the playback.
                 playback = TrialPlayback()
                 playback.read(bs)
@@ -207,7 +196,7 @@ class TrialController(ABC):
                 if self._database_socket_connected:
                     try:
                         # Send the session ID and trial data.
-                        self._database_socket.send_multipart([self._session_id_bytes, bs])
+                        self._database_socket.send_multipart([self._session_id, bs])
                         self._database_socket.recv()
                         # Get the next trial message, which will be sent at the top of the loop.
                         self._trial_message = self.get_next_message(playback=playback)
@@ -274,9 +263,9 @@ def run(controller: TrialController, session_id: int = None) -> None:
     """
 
     parser = ArgumentParser(allow_abbrev=False)
-    parser.add_argument("port", type=int, nargs='?', default=1337, help="The WebSocket port")
-    parser.add_argument("session_id", type=int,  nargs='?', default=-1, help="The session ID")
-    parser.add_argument("database_address", type=str,  nargs='?', default="", help="The database address:port")
+    parser.add_argument("--port", type=int, nargs='?', default=1337, help="The WebSocket port")
+    parser.add_argument("--session_id", type=str,  nargs='?', default="", help="The session ID")
+    parser.add_argument("--database_address", type=str,  nargs='?', default="", help="The database address:port")
     args, unknown = parser.parse_known_args()
     # Set the port.
     controller.set_port(port=args.port)

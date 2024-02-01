@@ -9,7 +9,7 @@ class WheresWaldo(Trial):
     There is a grid of objects in a room. The user must click the target object. If the user clicks the wrong object, a force is applied.
     """
 
-    def __init__(self, random_seed: int = None, scene_name: str = "reference_task_room", model_scale: float = 0.2, num_columns: int = 10, num_rows: int = 10, min_speed: float = 0.1, max_speed: float = 10, mass_per_cubic_meter: float = 1, target_model_name: str = "sphere", target_object_color: Dict[str, float] = None, avatar_height: float = 1.8, avatar_body_scale: Dict[str, float] = None, avatar_body_offset: Dict[str, float] = None, avatar_body_color: Dict[str, float] = None, click_force: float = 0.1, max_model_size: int = 3145728, photodiode: bool = False):
+    def __init__(self, random_seed: int = None, scene_name: str = "reference_task_room", model_scale: float = 0.2, num_columns: int = 10, num_rows: int = 10, min_speed: float = 0.1, max_speed: float = 10, mass_per_cubic_meter: float = 1, target_model_name: str = "sphere", target_object_color: Dict[str, float] = None, avatar_height: float = 1.8, avatar_body_scale: Dict[str, float] = None, avatar_body_offset: Dict[str, float] = None, avatar_body_color: Dict[str, float] = None, click_force: float = 0.1, max_model_size: int = 3145728):
         """
         :param random_seed: The random seed. Can be null. If null, the seed is random.
         :param scene_name: The name of the scene. This should be a one-room interior scene.
@@ -27,7 +27,6 @@ class WheresWaldo(Trial):
         :param avatar_body_color: The color of the avatar's visual body.
         :param click_force: When a non-target object is clicked, this much force is applied.
         :param max_model_size: The maximum size in bytes of the model asset bundles.
-        :param photodiode: If true, add a Photodiode add-on (add a UI square that changes from white to black per frame).
         """
 
         super().__init__()
@@ -107,7 +106,3 @@ class WheresWaldo(Trial):
         The maximum size in bytes of the model asset bundles.
         """
         self.max_model_size: int = max_model_size
-        """:field
-        If true, add a Photodiode add-on (add a UI square that changes from white to black per frame).
-        """
-        self.photodiode: bool = photodiode

@@ -3,9 +3,9 @@
 from tdw.webgl.trials.tests.automated_test import AutomatedTest
 
 
-class DashboardTest(AutomatedTest):
+class TrialServerTest(AutomatedTest):
     """
-    This trial runs indefinitely and is used to test the Dashboard.
+    This trial runs indefinitely and is used to test the Trial Server.
     """
 
     def __init__(self):

@@ -1,10 +1,9 @@
-from datetime import datetime
 from time import sleep
 from webbrowser import open_new_tab
 from requests import get
 import numpy as np
 from tdw.output_data import FastTransforms
-from tdw.webgl.trial_server_utils import get_output_data
+from tdw.webgl.utils import get_output_data, string_to_datetime
 
 
 """
@@ -30,7 +29,7 @@ def get_test(url: str):
 
 
 def datetime_query(query: str):
-    datetime.strptime(get_test(f'{query_url}{query}'), '%m/%d/%Y %H:%M:%S')
+    string_to_datetime(get_test(f'{query_url}{query}'))
 
 
 base_url: str = 'http://127.0.0.1:1204/api/'

@@ -20,7 +20,6 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
 import base64
-from struct import unpack
 
 
 class TDWUtils:

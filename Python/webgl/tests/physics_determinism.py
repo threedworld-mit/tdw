@@ -36,9 +36,8 @@ class PhysicsDeterminism(TrialController):
                         fast_transforms = FastTransforms(resp[i])
                         positions.append(fast_transforms._positions)
                         rotations.append(fast_transforms._rotations)
-            self.canonical_positions = np.ndarray(positions)
-            self.canonical_rotations = np.ndarray(rotations)
-            print(self.canonical_positions.shape)
+            self.canonical_positions = np.array(positions)
+            self.canonical_rotations = np.array(rotations)
         self.frame: int = 0
         super().__init__()
 
@@ -78,7 +77,7 @@ class PhysicsDeterminism(TrialController):
                             f'"{system_info.get_gpu()}","{system_info.get_graphics_api()}",'
                             f'{position_difference},{rotation_difference}')
             # Append the row.
-            with io.open(str(self.path.joinpath("physics_determinism.md")), "at") as f:
+            with io.open(str(self.path.joinpath("physics_determinism.csv")), "at") as f:
                 f.write("\n" + row)
         return END_MESSAGE
 

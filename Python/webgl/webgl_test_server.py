@@ -38,6 +38,6 @@ if __name__ == "__main__":
     parsed_args = parser.parse_args()
     if parsed_args.browser:
         # Launch the Build.
-        open_new_tab(f'https://localhost:{parsed_args.port}')
+        open_new_tab(f'http://localhost:{parsed_args.port}')
     httpd = HTTPServer(('localhost', parsed_args.port), WebGLTestServer)
     httpd.serve_forever()

@@ -109,6 +109,24 @@ Source: https://answers.unity.com/questions/601062/what-inversetransformpoint-do
 
 _Returns:_  `position` in local coordinates.
 
+#### world_to_local_rotation
+
+**`QuaternionUtils.world_to_local_rotation(world_rotation, local_coord_rotation)`**
+
+_(Static)_
+
+Convert a rotation in absolute world coordinates to relative local coordinates.
+
+Source: https://discussions.unity.com/t/what-is-the-rotation-equivalent-of-inversetransformpoint/45386
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| world_rotation |  np.ndarray |  | The rotation vector in world coordinates that you want to convert to local coordinates. |
+| local_coord_rotation |  np.ndarray |  | The rotation vector of the local coordinates in world coordinates. |
+
+_Returns:_  `rotation` vector of world_rotation in local coordinates.
+
 #### get_up_direction
 
 **`QuaternionUtils.get_up_direction(q)`**

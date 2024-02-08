@@ -14,6 +14,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | --- | --- |
 | `teleport_object`<br>`teleport_object_by` | Added optional parameter `use_centroid`. |
 
+### `tdw` module
+
+- Added: `QuaternionUtils.world_to_local_rotation(world_rotation, local_coord_rotation)`
+
 ## v1.12.23
 
 ### Command API

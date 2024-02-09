@@ -50,12 +50,13 @@ class PhysicsDeterminism(TrialController):
             # Set the positions and rotations arrays.
             positions = np.zeros(shape=self.canonical_positions.shape)
             rotations = np.zeros(shape=self.canonical_rotations.shape)
-            for resp in playback.frames:
-                for i in range(len(resp) - 1):
-                    r_id = OutputData.get_data_type_id(resp[i])
+            for i in range(len(playback.frames) - 1):
+                resp = playback.frames[i]
+                for j in range(len(resp) - 1):
+                    r_id = OutputData.get_data_type_id(resp[j])
                     # Get FastTransforms data.
                     if r_id == "ftra":
-                        fast_transforms = FastTransforms(resp[i])
+                        fast_transforms = FastTransforms(resp[j])
                         # Store the positions and rotations of this frame.
                         positions[self.frame] = fast_transforms._positions
                         rotations[self.frame] = fast_transforms._rotations

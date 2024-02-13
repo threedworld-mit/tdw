@@ -35,9 +35,7 @@ class TrialController(ABC):
         # The WebSocket port. This is set in `self.set_port(port)`.
         self._port: int = -1
         # The TDW session ID. This is set in `self.set_session_id(session_id)`.
-        self._session_id: int = -1
-        # This gets sent to the Database.
-        self._session_id_bytes: bytes = self._session_id.to_bytes(byteorder="little", signed=True)
+        self._session_id: str = ""
         # This is used to connect to a remote Database.
         self._database_socket: Optional[zmq.Socket] = None
         self._database_socket_connected: bool = False
@@ -58,7 +56,7 @@ class TrialController(ABC):
         self._port = port
 
     @final
-    def set_session_id(self, session_id: int) -> None:
+    def set_session_id(self, session_id: str) -> None:
         """
         Set the session ID. This is used when sending data to the Database.
 
@@ -167,9 +165,11 @@ class TrialController(ABC):
                 print("WebSocket exception:", e)
                 done = True
                 continue
-            # Receive end-of-trial data.
+            # Receive  data.
             try:
+                # This is either end-of-trial data, a frame, or an empty array indicating that the Build received the session ID.
                 bs: bytes = await websocket.recv()
+                # Evaluate the type of data.
                 if not ending_simulation:
                     # This is frame data. Parse it to get commands to send on the next frame.
                     if bs[:4] == b'FRAM':
@@ -187,6 +187,7 @@ class TrialController(ABC):
             if ending_simulation:
                 done = True
                 continue
+            # Parse the end-of-trial data.
             if self._send_trial_message:
                 # Parse the playback.
                 playback = TrialPlayback()
@@ -195,7 +196,7 @@ class TrialController(ABC):
                 if self._database_socket_connected:
                     try:
                         # Send the session ID and trial data.
-                        self._database_socket.send_multipart([self._session_id_bytes, bs])
+                        self._database_socket.send_multipart([self._session_id, bs])
                         self._database_socket.recv()
                         # Get the next trial message, which will be sent at the top of the loop.
                         self._trial_message = self.get_next_message(playback=playback)
@@ -253,22 +254,23 @@ class TrialController(ABC):
         return 16777216
 
 
-def run(controller: TrialController) -> None:
+def run(controller: TrialController, session_id: int = None) -> None:
     """
     Run a controller. The controller will continue to try to serve data until its process is killed.
 
     :param controller: A TrialController.
+    :param session_id: If not None, use this session ID instead of the command-line argument.
     """
 
     parser = ArgumentParser(allow_abbrev=False)
-    parser.add_argument("port", type=int, nargs='?', default=1337, help="The WebSocket port")
-    parser.add_argument("session_id", type=int,  nargs='?', default=-1, help="The session ID")
-    parser.add_argument("database_address", type=str,  nargs='?', default="", help="The database address:port")
+    parser.add_argument("--port", type=int, nargs='?', default=1337, help="The WebSocket port")
+    parser.add_argument("--session_id", type=str,  nargs='?', default="", help="The session ID")
+    parser.add_argument("--database_address", type=str,  nargs='?', default="", help="The database address:port")
     args, unknown = parser.parse_known_args()
     # Set the port.
     controller.set_port(port=args.port)
     # Set the session ID.
-    controller.set_session_id(session_id=args.session_id)
+    controller.set_session_id(session_id=args.session_id if session_id is None else session_id)
     # Connect to the database.
     if args.database_address != "":
         controller.connect_database_socket(address=args.database_address)

@@ -20,7 +20,6 @@ from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
 import base64
-from struct import unpack
 
 
 class TDWUtils:
@@ -1136,24 +1135,3 @@ class TDWUtils:
         """
 
         return (1 - t) * a + t * b
-
-    @staticmethod
-    def bytes_to_time_delta(ticks: bytes, byte_order: str = "<") -> np.timedelta64:
-        """
-        :param ticks: 8 bytes that can be unpacked into a 64-bit signed integer.
-        :param byte_order: The byte order of `ticks`.
-
-        :return: A numpy.timedelta64 of the ticks. See: https://numpy.org/doc/stable/reference/arrays.datetime.html
-        """
-
-        return TDWUtils.ticks_to_time_delta(unpack(f"{byte_order}q", ticks)[0])
-
-    @staticmethod
-    def ticks_to_time_delta(ticks: int) -> np.timedelta64:
-        """
-        :param ticks: A 64-bit signed integer of the number of ticks. 1 tick = 10 microseconds.
-
-        :return: A numpy.timedelta64 of the ticks. See: https://numpy.org/doc/stable/reference/arrays.datetime.html
-        """
-
-        return np.timedelta64(ticks // 10, "us")

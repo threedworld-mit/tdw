@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from webbrowser import open_new_tab
 
 
 class WebGLTestServer(SimpleHTTPRequestHandler):
@@ -33,6 +34,10 @@ if __name__ == "__main__":
                         type=int,
                         default=8000,
                         help="The network port")
+    parser.add_argument("--browser", action="store_true", help="If True, open a browser tab.")
     parsed_args = parser.parse_args()
+    if parsed_args.browser:
+        # Launch the Build.
+        open_new_tab(f'http://localhost:{parsed_args.port}')
     httpd = HTTPServer(('localhost', parsed_args.port), WebGLTestServer)
     httpd.serve_forever()

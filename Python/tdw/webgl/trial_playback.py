@@ -16,15 +16,13 @@ from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, A
 from tdw.add_ons.add_on import AddOn
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, SceneLibrarian
+from tdw.webgl.utils import bytes_to_time_delta
 
 
 class TrialPlayback(AddOn):
     """
     An add-on that can be used to either read logged trial end-state information, or play it back in a non-physics controller.
     """
-
-    # This is the epoch time used by C# timestamps.
-    _EPOCH: np.datetime64 = np.datetime64("00001-01-01T00:00")
 
     def __init__(self):
         """
@@ -146,7 +144,7 @@ class TrialPlayback(AddOn):
             # Append the frame count.
             self.frames.append(resp)
             # Get the timestamp.
-            self.timestamps.append(TrialPlayback._EPOCH + TDWUtils.bytes_to_time_delta(buffer[index: index + 8]))
+            self.timestamps.append(bytes_to_time_delta(buffer[index: index + 8]))
             index += 8
             frame_count += 1
 

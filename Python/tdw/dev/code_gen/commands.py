@@ -19,7 +19,7 @@ def generate_commands(assembly: Assembly) -> None:
     python_commands_directory = config.tdw_path.joinpath("Python/tdw/commands").resolve()
     recreate_directory(python_commands_directory)
     documentation_directory = config.tdw_docs_path.joinpath("docs/command_api")
-    recreate_directory(python_commands_directory)
+    recreate_directory(documentation_directory)
     # Get all enums in the assembly.
     enums = assembly.get_enum_types()
     klass_docs: Dict[str, List[str]] = dict()

@@ -8,15 +8,11 @@ class AddScene(AssetBundleCommand):
     Add a scene to TDW. Unloads the current scene if any (including any created by the load_scene command).
     """
 
-    def __init__(self, url: str, name: str, convexify: bool = False):
+    def __init__(self, url: str, name: str):
         """
         :param url: The location of the asset bundle. If the asset bundle is remote, this must be a valid URL. If the asset is a local file, this must begin with the prefix "file:///"
         :param name: The name of the asset bundle.
-        :param convexify: If true, make all the scene's colliders convex. Only set this to True if you are using NVIDIA Flex.
         """
 
         super().__init__(name=name, url=url)
-        """:field
-        If true, make all the scene's colliders convex. Only set this to True if you are using NVIDIA Flex.
-        """
-        self.convexify: bool = convexify
+

@@ -10,7 +10,6 @@ from .add_fixed_joint import AddFixedJoint
 from .add_floorplan_flood_buoyancy import AddFloorplanFloodBuoyancy
 from .add_force_to_prismatic import AddForceToPrismatic
 from .add_hdri_skybox import AddHdriSkybox
-from .add_humanoid import AddHumanoid
 from .add_humanoid_animation import AddHumanoidAnimation
 from .add_line_renderer import AddLineRenderer
 from .add_magnebot import AddMagnebot
@@ -25,7 +24,6 @@ from .add_replicant import AddReplicant
 from .add_replicant_rigidbody import AddReplicantRigidbody
 from .add_robot import AddRobot
 from .add_scene import AddScene
-from .add_smpl_humanoid import AddSmplHumanoid
 from .add_torque_to_revolute import AddTorqueToRevolute
 from .add_torque_to_spherical import AddTorqueToSpherical
 from .add_trigger_collider import AddTriggerCollider
@@ -58,11 +56,9 @@ from .apply_drone_drive import ApplyDroneDrive
 from .apply_drone_lift import ApplyDroneLift
 from .apply_drone_turn import ApplyDroneTurn
 from .apply_force import ApplyForce
-from .apply_forces_to_flex_object_base64 import ApplyForcesToFlexObjectBase64
 from .apply_force_at_position import ApplyForceAtPosition
 from .apply_force_magnitude_to_object import ApplyForceMagnitudeToObject
 from .apply_force_to_avatar import ApplyForceToAvatar
-from .apply_force_to_flex_object import ApplyForceToFlexObject
 from .apply_force_to_obi_cloth import ApplyForceToObiCloth
 from .apply_force_to_object import ApplyForceToObject
 from .apply_torque_to_obi_cloth import ApplyTorqueToObiCloth
@@ -70,7 +66,6 @@ from .apply_torque_to_object import ApplyTorqueToObject
 from .apply_vehicle_brake import ApplyVehicleBrake
 from .apply_vehicle_drive import ApplyVehicleDrive
 from .apply_vehicle_turn import ApplyVehicleTurn
-from .assign_flex_container import AssignFlexContainer
 from .attach_avatar_to_vr_rig import AttachAvatarToVrRig
 from .attach_empty_object import AttachEmptyObject
 from .attach_ui_canvas_to_avatar import AttachUiCanvasToAvatar
@@ -131,8 +126,6 @@ from .rotate_directional_light_by import RotateDirectionalLightBy
 from .set_directional_light_color import SetDirectionalLightColor
 from .do_nothing import DoNothing
 from .enable_reflection_probes import EnableReflectionProbes
-from .create_flex_container import CreateFlexContainer
-from .destroy_flex_container import DestroyFlexContainer
 from .create_floor_obi_colliders import CreateFloorObiColliders
 from .set_floor_color import SetFloorColor
 from .set_floor_material import SetFloorMaterial
@@ -150,10 +143,6 @@ from .create_obi_colliders import CreateObiColliders
 from .destroy_object import DestroyObject
 from .teleport_empty_object import TeleportEmptyObject
 from .enable_nav_mesh_obstacle import EnableNavMeshObstacle
-from .destroy_flex_object import DestroyFlexObject
-from .set_flex_object_mass import SetFlexObjectMass
-from .set_flex_particle_fixed import SetFlexParticleFixed
-from .set_flex_particles_mass import SetFlexParticlesMass
 from .ignore_collisions import IgnoreCollisions
 from .ignore_leap_motion_physics_helpers import IgnoreLeapMotionPhysicsHelpers
 from .make_nav_mesh_obstacle import MakeNavMeshObstacle
@@ -181,11 +170,9 @@ from .teleport_object_by import TeleportObjectBy
 from .unparent_object import UnparentObject
 from .parent_audio_source_to_object import ParentAudioSourceToObject
 from .pause_editor import PauseEditor
-from .perlin_noise_terrain import PerlinNoiseTerrain
 from .play_audio_data import PlayAudioData
 from .play_audio_from_streaming_assets import PlayAudioFromStreamingAssets
 from .play_point_source_data import PlayPointSourceData
-from .convexify_proc_gen_room import ConvexifyProcGenRoom
 from .create_proc_gen_ceiling import CreateProcGenCeiling
 from .destroy_proc_gen_ceiling import DestroyProcGenCeiling
 from .create_proc_gen_ceiling_tiles import CreateProcGenCeilingTiles
@@ -285,8 +272,6 @@ from .set_drone_motor import SetDroneMotor
 from .set_drone_speed import SetDroneSpeed
 from .play_humanoid_animation import PlayHumanoidAnimation
 from .stop_humanoid_animation import StopHumanoidAnimation
-from .load_flex_fluid_from_resources import LoadFlexFluidFromResources
-from .load_flex_fluid_source_from_resources import LoadFlexFluidSourceFromResources
 from .load_primitive_from_resources import LoadPrimitiveFromResources
 from .set_obi_fluid_smoothing import SetObiFluidSmoothing
 from .set_obi_fluid_vorticity import SetObiFluidVorticity
@@ -341,7 +326,6 @@ from .send_fast_image_sensors import SendFastImageSensors
 from .send_fast_transforms import SendFastTransforms
 from .send_field_of_view import SendFieldOfView
 from .send_framerate import SendFramerate
-from .send_humanoids import SendHumanoids
 from .send_id_pass_grayscale import SendIdPassGrayscale
 from .send_id_pass_segmentation_colors import SendIdPassSegmentationColors
 from .send_images import SendImages
@@ -388,11 +372,6 @@ from .set_color_in_substructure import SetColorInSubstructure
 from .set_composite_object_kinematic_state import SetCompositeObjectKinematicState
 from .set_contrast import SetContrast
 from .set_first_person_avatar import SetFirstPersonAvatar
-from .set_flex_cloth_actor import SetFlexClothActor
-from .set_flex_fluid_actor import SetFlexFluidActor
-from .set_flex_fluid_source_actor import SetFlexFluidSourceActor
-from .set_flex_soft_actor import SetFlexSoftActor
-from .set_flex_solid_actor import SetFlexSolidActor
 from .set_focus_distance import SetFocusDistance
 from .set_hinge_limits import SetHingeLimits
 from .set_img_pass_encoding import SetImgPassEncoding

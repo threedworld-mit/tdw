@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--directory",
                         type=str,
-                        default="../../../TDWBase/bin/webgl",
+                        default="../../../TDWUnity/bin/WebGL",
                         help="The directory of the TDW WebGL Build")
     parser.add_argument("--port",
                         type=int,

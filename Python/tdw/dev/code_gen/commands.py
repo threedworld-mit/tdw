@@ -2,8 +2,8 @@ from typing import List, Dict
 import re
 from inflection import underscore
 from tdw.dev.config import Config
-from tdw.dev.cs_xml.assembly import Assembly
-from tdw.dev.cs_xml.util import COMMAND_TAGS, recreate_directory
+from tdw.dev.code_gen.cs_xml.assembly import Assembly
+from tdw.dev.code_gen.cs_xml.util import COMMAND_TAGS, recreate_directory
 from tdw.dev.code_gen.py import struct_py
 
 

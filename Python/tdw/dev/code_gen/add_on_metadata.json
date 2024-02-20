@@ -1,0 +1,62 @@
+{
+  "Replicant": {
+    "Constructor": {
+      "description": "",
+      "functions": ["__init__"]
+    },
+    "Movement": {
+      "description": "These actions move or turn the Replicant.",
+      "functions": ["turn_by", "turn_to", "move_by", "move_to"]
+    },
+    "Arm Articulation": {
+      "description": "These actions move and bend the joints of the Replicant's arms.",
+      "functions": ["reach_for", "reset_arm"]
+    },
+    "Object Interaction": {
+      "description": "These actions involve interaction with other objects, e.g. grasping or dropping.",
+      "functions": ["grasp", "drop"]
+    },
+    "Head": {
+      "description": "These actions rotate the Replicant's head.",
+      "functions": ["look_at", "rotate_head", "reset_head"]
+    },
+    "Animation": {
+      "description": "These actions play arbitrary humanoid animations.",
+      "functions": ["animate"]
+    },
+    "Misc.": {
+      "description": "Misc. non-action functions.",
+      "functions": ["get_initialization_commands", "on_send"]
+    },
+    "Ignore": {
+      "description": "",
+      "functions": ["reset"]
+    }
+  },
+  "WheelchairReplicant": {
+    "Constructor": {
+      "description": "",
+      "functions": ["__init__"]
+    },
+    "Movement": {
+      "description": "These actions move or turn the Replicant.",
+      "functions": ["turn_by", "turn_to", "move_by", "move_to"]
+    },
+    "Arm Articulation": {
+      "description": "These actions move and bend the joints of the Replicant's arms.",
+      "functions": ["reach_for", "reset_arm"]
+    },
+    "Object Interaction": {
+      "description": "These actions involve interaction with other objects, e.g. grasping or dropping.",
+      "functions": ["grasp", "drop"]
+    },
+    "Head": {
+      "description": "These actions rotate the Replicant's head.",
+      "functions": ["look_at", "rotate_head", "reset_head"]
+    },
+    "Misc.": {
+      "description": "Misc. non-action functions.",
+      "functions": ["reset", "get_initialization_commands", "on_send"]
+    }
+  }
+}

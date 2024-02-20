@@ -2,10 +2,10 @@ from typing import List, Dict
 from pathlib import Path
 import inflection
 from tdw.dev.config import Config
-from tdw.dev.cs_xml.assembly import Assembly
-from tdw.dev.cs_xml.namespace import Namespace
-from tdw.dev.cs_xml.enum_type import EnumType
-from tdw.dev.cs_xml.util import recreate_directory
+from tdw.dev.code_gen.cs_xml.assembly import Assembly
+from tdw.dev.code_gen.cs_xml.namespace import Namespace
+from tdw.dev.code_gen.cs_xml.enum_type import EnumType
+from tdw.dev.code_gen.cs_xml.util import recreate_directory
 from tdw.dev.code_gen.py import struct_py, enum_py
 
 """

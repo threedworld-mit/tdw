@@ -4,8 +4,7 @@ import math
 from platform import system
 from requests import get
 from tqdm import tqdm
-from scipy.spatial import distance
-from tdw.output_data import IsOnNavMesh, Images, Bounds
+from tdw.output_data import Images, Bounds
 from PIL import Image
 import io
 import os
@@ -196,7 +195,7 @@ class TDWUtils:
             p1[1] = 0
 
         # Get the distance between the two points.
-        d0 = distance.euclidean(p0, p1)
+        d0 = float(np.linalg.norm(p0 - p1))
         # Get the total distance.
         d_total = d0 + d
 
@@ -213,7 +212,7 @@ class TDWUtils:
         :return The distance.
         """
 
-        return distance.euclidean(TDWUtils.vector3_to_array(vector3_0), TDWUtils.vector3_to_array(vector3_1))
+        return float(np.linalg.norm((TDWUtils.vector3_to_array(vector3_0), TDWUtils.vector3_to_array(vector3_1))))
 
     @staticmethod
     def get_box(width: int, length: int) -> List[Dict[str, int]]:
@@ -383,42 +382,6 @@ class TDWUtils:
 
         # Source: https://stackoverflow.com/a/48904991
         return np.unique(id_pass.reshape(-1, id_pass.shape[2]), axis=0)
-
-    @staticmethod
-    def get_random_position_on_nav_mesh(c: Controller, width: float, length: float, x_e=0, z_e=0, bake=True, rng=random.uniform) -> Tuple[float, float, float]:
-        """
-        Returns a random position on a NavMesh.
-
-        :param c: The controller.
-        :param width: The width of the environment.
-        :param length: The length of the environment.
-        :param bake: If true, send bake_nav_mesh.
-        :param rng: Random number generator.
-        :param x_e: The x position of the environment.
-        :param z_e: The z position of the environment.
-
-        :return The coordinates as a tuple `(x, y, z)`
-        """
-
-        if bake:
-            c.communicate({'$type': 'bake_nav_mesh'})
-
-        # Try to find a valid position on the NavMesh.
-        is_on = False
-        x, y, z = (0, 0, 0)
-        while not is_on:
-            # Get a random position.
-            x = rng(-width / 2, width / 2) + x_e
-            z = rng(-length / 2, length / 2) + z_e
-            resp = c.communicate(
-                {'$type': 'send_is_on_nav_mesh',
-                 'position': {'x': x, 'y': 0, 'z': z},
-                 'max_distance': 4.0
-                 })
-            answer = IsOnNavMesh(resp[0])
-            is_on = answer.get_is_on()
-            x, y, z = answer.get_position()
-        return x, y, z
 
     @staticmethod
     def set_visual_material(c: Controller, substructure: List[dict], object_id: int, material: str, quality="med") -> List[dict]:

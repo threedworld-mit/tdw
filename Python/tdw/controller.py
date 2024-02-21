@@ -14,13 +14,11 @@ from tdw.output_data import OutputData, Version, QuitSignal
 from tdw.version import __version__
 from tdw.backend.update import Update
 from tdw.add_ons.add_on import AddOn
-from tdw.physics_audio.object_audio_static import DEFAULT_OBJECT_AUDIO_STATIC_DATA
-from tdw.physics_audio.audio_material import AudioMaterial
-from tdw.physics_audio.audio_material_constants import STATIC_FRICTION, DYNAMIC_FRICTION, DENSITIES
 from tdw.container_data.container_tag import ContainerTag
 from tdw.container_data.box_container import BoxContainer
 from tdw.container_data.sphere_container import SphereContainer
 from tdw.container_data.cylinder_container import CylinderContainer
+from tdw.object_data.physics_values import PhysicsValues
 
 
 class Controller:
@@ -209,7 +207,7 @@ class Controller:
                 "affordance_points": record.affordance_points}
 
     @staticmethod
-    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, physics_values: PhysicsValues = None, scale_mass: bool = True) -> List[dict]:
         """
         Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -221,11 +219,7 @@ class Controller:
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
-        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`.
-        :param mass: The mass of the object. Ignored if `default_physics_values == True`.
-        :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
-        :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
-        :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param physics_values: If not None, use these physics values instead of the default values.
         :param scale_mass: If True, the mass of the object will be scaled proportionally to the spatial scale.
 
         :return: A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
@@ -268,55 +262,26 @@ class Controller:
             commands.append({"$type": "set_object_collision_detection_mode",
                              "id": object_id,
                              "mode": "continuous_speculative"})
-        if default_physics_values:
-            # Use default physics values.
-            if model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA:
-                mass = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].mass
-                bounciness = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].bounciness
-                material = DEFAULT_OBJECT_AUDIO_STATIC_DATA[model_name].material
-            # Fallback: Try to derive physics values from existing data.
-            else:
-                if "models_full.json" not in Controller.MODEL_LIBRARIANS:
-                    Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
-                # Get all models in the same category that have default physics values.
-                records = Controller.MODEL_LIBRARIANS["models_full.json"].get_all_models_in_wnid(record.wnid)
-                records = [r for r in records if not r.do_not_use and r.name != record.name and r.name in
-                           DEFAULT_OBJECT_AUDIO_STATIC_DATA]
-                # Fallback: Find objects with similar volume.
-                if len(records) == 0:
-                    records = [r for r in Controller.MODEL_LIBRARIANS["models_full.json"].records if r.name in
-                               DEFAULT_OBJECT_AUDIO_STATIC_DATA and not r.do_not_use and r.name != record.name and
-                               0.8 <= abs(r.volume / record.volume) <= 1.2]
-                # Fallback: Select a default material and bounciness.
-                if len(records) == 0:
-                    material: AudioMaterial = AudioMaterial.plastic_hard
-                    # Select a default bounciness.
-                    bounciness: float = 0
-                # Select the most common material and bounciness.
-                else:
-                    materials: List[AudioMaterial] = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].material for r in records]
-                    material: AudioMaterial = max(set(materials), key=materials.count)
-                    bouncinesses = [DEFAULT_OBJECT_AUDIO_STATIC_DATA[r.name].bounciness for r in records]
-                    bounciness = round(sum(bouncinesses) / len(bouncinesses), 3)
-                # Derive the mass.
-                mass = DENSITIES[material] * record.volume
+        # Set physics values.
+        if physics_values is not None:
             commands.extend([{"$type": "set_mass",
-                              "mass": mass,
+                              "mass": physics_values.mass,
                               "id": object_id},
                              {"$type": "set_physic_material",
-                              "dynamic_friction": DYNAMIC_FRICTION[material],
-                              "static_friction": STATIC_FRICTION[material],
-                              "bounciness": bounciness,
+                              "dynamic_friction": physics_values.dynamic_friction,
+                              "static_friction": physics_values.static_friction,
+                              "bounciness": physics_values.bounciness,
                               "id": object_id}])
         else:
             commands.extend([{"$type": "set_mass",
-                              "mass": mass,
+                              "mass": record.physics_values.mass,
                               "id": object_id},
                              {"$type": "set_physic_material",
-                              "dynamic_friction": dynamic_friction,
-                              "static_friction": static_friction,
-                              "bounciness": bounciness,
+                              "dynamic_friction": record.physics_values.dynamic_friction,
+                              "static_friction": record.physics_values.static_friction,
+                              "bounciness": record.physics_values.bounciness,
                               "id": object_id}])
+        # Scale the object.
         if scale_factor is not None:
             if scale_mass:
                 commands.append({"$type": "scale_object_and_mass",
@@ -536,12 +501,12 @@ class Controller:
 
         resp = self.communicate({"$type": "send_version"})
         for r in resp[:-1]:
-            if Version.get_data_type_id(r) == "vers":
+            if OutputData.get_data_type_id(r) == "vers":
                 v = Version(r)
                 return v.get_tdw_version(), v.get_unity_version()
         if len(resp) == 1:
             raise Exception("Tried receiving version output data but didn't receive anything!")
-        raise Exception(f"Expected output data with ID version but got: " + Version.get_data_type_id(resp[0]))
+        raise Exception(f"Expected output data with ID version but got: " + OutputData.get_data_type_id(resp[0]))
 
     @staticmethod
     def get_unique_id() -> int:

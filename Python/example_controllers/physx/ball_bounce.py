@@ -2,6 +2,7 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.object_manager import ObjectManager
+from tdw.object_data.physics_values import PhysicsValues
 
 """
 Bounce a ball on a table.
@@ -27,17 +28,13 @@ commands = c.get_add_physics_object(model_name="prim_sphere",
                                     library="models_special.json",
                                     position={"x": 0.5, "y": 4, "z": -1.3},
                                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
-                                    default_physics_values=False,
+                                    physics_values=PhysicsValues(mass=10),
                                     scale_mass=False,
-                                    mass=10,
-                                    dynamic_friction=0.3,
-                                    static_friction=0.3,
-                                    bounciness=0.7,
                                     object_id=ball_id)
 # Orient the ball to look at the top of the table. Apply a force.
 commands.extend([{"$type": "object_look_at_position",
-                 "position": TDWUtils.array_to_vector3(table_top),
-                 "id": ball_id},
+                  "position": TDWUtils.array_to_vector3(table_top),
+                  "id": ball_id},
                  {"$type": "apply_force_magnitude_to_object",
                   "magnitude": 60,
                   "id": ball_id}])

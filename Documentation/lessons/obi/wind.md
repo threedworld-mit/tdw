@@ -67,9 +67,9 @@ from tdw.obi_data.wind_source import WindSource
 from tdw.obi_data.cloth.sheet_type import SheetType
 from tdw.obi_data.cloth.tether_particle_group import TetherParticleGroup
 from tdw.obi_data.cloth.tether_type import TetherType
+from tdw.object_data.physics_values import PhysicsValues
 from tdw.tdw_utils import TDWUtils
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-
 
 c = Controller()
 commands = [TDWUtils.create_empty_room(12, 12)]
@@ -84,10 +84,9 @@ while y < 1:
                                                           object_id=Controller.get_unique_id(),
                                                           position={"x": x, "y": y, "z": z},
                                                           library="models_flex.json",
-                                                          default_physics_values=False,
+                                                          physics_values=PhysicsValues(mass=0.5),
                                                           scale_factor=cube_scale,
-                                                          scale_mass=False,
-                                                          mass=0.5))
+                                                          scale_mass=False))
         z += cube_scale["z"]
     y += cube_scale["y"]
 commands.extend(Controller.get_add_physics_object(model_name="chair_billiani_doll",
@@ -108,10 +107,10 @@ c.add_ons.extend([camera, capture, obi])
 wind_source = WindSource(wind_id=wind_id,
                          position={"x": -0.1, "y": 0, "z": 0.25},
                          rotation={"x": 0, "y": -90, "z": 0},
-                         capacity=5000,
-                         lifespan=2,
-                         speed=30,
                          emitter_radius=1,
+                         capacity=5000,
+                         speed=30,
+                         lifespan=2,
                          smoothing=0.75)
 obi.wind_sources[wind_id] = wind_source
 # Create a tethered cloth.

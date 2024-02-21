@@ -35,8 +35,6 @@ class OculusLeapMotionResetScene(Controller):
                                                           position={"x": 0, "y": 1, "z": z - 0.25},
                                                           scale_mass=False,
                                                           scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
-                                                          default_physics_values=False,
-                                                          mass=1,
                                                           library="models_flex.json"))
         self.communicate(commands)
 

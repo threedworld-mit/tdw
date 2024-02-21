@@ -166,7 +166,7 @@ class ModelRecord(_Record):
             if "physics_values" in data:
                 self.physics_values: PhysicsValues = data["physics_values"]
             if "clatter_values" in data:
-                self.clatter_values: PhysicsValues = data["clatter_values"]
+                self.clatter_values: ClatterValues = data["clatter_values"]
 
 
 class MaterialRecord(_Record):

@@ -71,6 +71,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -78,6 +84,12 @@
             "flex": true,
             "name": "bowl",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.17152899503707886,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -167,6 +179,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -174,6 +192,12 @@
             "flex": true,
             "name": "cone",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.9898183345794678,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -263,6 +287,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -270,6 +300,12 @@
             "flex": true,
             "name": "cube",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 1.0,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -359,6 +395,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -366,6 +408,12 @@
             "flex": true,
             "name": "cylinder",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 1.0000014305114746,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -440,6 +488,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -447,6 +501,12 @@
             "flex": true,
             "name": "dumbbell",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.8873069286346436,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -576,6 +636,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -583,6 +649,12 @@
             "flex": true,
             "name": "octahedron",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 1.5,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -677,6 +749,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -684,6 +762,12 @@
             "flex": true,
             "name": "pentagon",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.8602399826049805,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -773,6 +857,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -780,6 +870,12 @@
             "flex": true,
             "name": "pipe",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.5146116614341736,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -879,6 +975,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -886,6 +988,12 @@
             "flex": true,
             "name": "platonic",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.7608382701873779,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -975,6 +1083,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -982,6 +1096,12 @@
             "flex": true,
             "name": "pyramid",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 1.1249996423721313,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -1081,6 +1201,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -1088,6 +1214,12 @@
             "flex": true,
             "name": "sphere",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 1,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -1177,6 +1309,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -1184,6 +1322,12 @@
             "flex": true,
             "name": "torus",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.2617514431476593,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {
@@ -1263,6 +1407,12 @@
                 "y": 0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.2,
+                "impact_material": "wood_medium",
+                "resonance": 0.05,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -1270,6 +1420,12 @@
             "flex": true,
             "name": "triangular_prism",
             "physics_quality": 1,
+            "physics_values": {
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 0.9330129623413086,
+                "static_friction": 0.3
+            },
             "scale_factor": 1,
             "substructure": [
                 {

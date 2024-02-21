@@ -12,6 +12,9 @@ from tdw.container_data.container_shape import ContainerShape
 from tdw.container_data.box_container import BoxContainer
 from tdw.container_data.sphere_container import SphereContainer
 from tdw.container_data.cylinder_container import CylinderContainer
+from tdw.object_data.physics_values import PhysicsValues
+from tdw.object_data.clatter_values import ClatterValues
+from tdw.physics_audio.impact_material import ImpactMaterial
 
 
 class _Encoder(json.JSONEncoder):
@@ -38,6 +41,12 @@ class _Encoder(json.JSONEncoder):
             return c
         elif isinstance(obj, Room):
             return obj.__dict__
+        elif isinstance(obj, PhysicsValues):
+            return obj.__dict__
+        elif isinstance(obj, ClatterValues):
+            d = {k: v for (k, v) in obj.__dict__.items()}
+            d["impact_material"] = d["impact_material"].name
+            return d
         elif isinstance(obj, InteriorRegion):
             return {"region_id": obj.region_id, "center": list(obj.center), "bounds": list(obj.bounds),
                     "non_continuous_walls": obj.non_continuous_walls, "walls_with_windows": obj.walls_with_windows}
@@ -86,7 +95,10 @@ class ModelRecord(_Record):
 
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
-
+        self.clatter_values: ClatterValues = ClatterValues(impact_material=ImpactMaterial.wood_medium, amp=0.3,
+                                                           resonance=0.05, size=3)
+        self.physics_values: PhysicsValues = PhysicsValues(mass=1, dynamic_friction=0.3, static_friction=0.3,
+                                                           bounciness=0.7)
         if data is None:
             self.wnid: str = ""
             self.wcategory: str = ""
@@ -151,6 +163,10 @@ class ModelRecord(_Record):
             self.affordance_points: List[Dict[str, float]] = list()
             if "affordance_points" in data:
                 self.affordance_points = data["affordance_points"]
+            if "physics_values" in data:
+                self.physics_values: PhysicsValues = data["physics_values"]
+            if "clatter_values" in data:
+                self.clatter_values: PhysicsValues = data["clatter_values"]
 
 
 class MaterialRecord(_Record):

@@ -1151,6 +1151,7 @@
             "wnid": "n09999990"
         },
         "prim_sphere": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 56955,
                 "Linux": 95341,
@@ -1198,6 +1199,12 @@
                 "y": 0.0,
                 "z": 0
             },
+            "clatter_values": {
+                "amp": 0.3,
+                "impact_material": "metal",
+                "resonance": 0.35,
+                "size": 3
+            },
             "composite_object": false,
             "container_shapes": [],
             "do_not_use": false,
@@ -1205,6 +1212,12 @@
             "flex": true,
             "name": "prim_sphere",
             "physics_quality": -1,
+            "physics_values": {
+                "bounciness": 0.2,
+                "dynamic_friction": 0.43,
+                "mass": 4.0,
+                "static_friction": 0.47
+            },
             "scale_factor": 1.0,
             "substructure": [
                 {

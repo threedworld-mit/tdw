@@ -11,4 +11,6 @@ Python/example_controllers/point_cloud.txt
 Python/tdw/binaries/Windows/vhacd/log.txt
 Python/tdw/binaries/Darwin/vhacd/log.txt
 Python/tdw/binaries/Linux/vhacd/log.txt
-Python/tdw/asset_bundles/robots/manifest.json
+Python/backend_utils/asset_bundles/robots/manifest.json
+Python/backend_utils/asset_bundles/models/full_to_core/full_to_core.txt
+Python/backend_utils/containers/manifest.json

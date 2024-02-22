@@ -85,27 +85,9 @@ c.communicate([TDWUtils.create_empty_room(12, 12),
                 "id": object_id}])
 ```
 
-**Note all objects in TDW have default physics values.** We are continuously assigning default physics values for additional models.
-
-Default physics values and audio values are stored in `DEFAULT_OBJECT_AUDIO_STATIC_DATA`. The keys of the dictionary are model names:
-
-```python
-from tdw.physics_audio.object_audio_static import DEFAULT_OBJECT_AUDIO_STATIC_DATA
-
-model_name = "iron_box"
-print(model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA) # True
-```
-
-If the model name is not included in `DEFAULT_OBJECT_AUDIO_STATIC_DATA`, the `get_add_physics_object()` function will derive the values by averaging out values from similar objects.
-
 ## Non-default physics values and `get_add_physics_object()`
 
-You might want to set non-default physics values for an object for many reasons, including:
-
-- You want to vary the object's behavior per trial
-- The object doesn't have explicitly defined default physics values
-
-`Controller.get_add_physics_object()` has optional parameters that can be set. If `default_physics_values=False`, then the function will read the non-default values:
+You might want to set non-default physics values. `Controller.get_add_physics_object()` has optional parameters that can be set. If `default_physics_values=False`, then the function will read the non-default values:
 
 ```python
 from tdw.controller import Controller

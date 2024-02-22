@@ -105,6 +105,8 @@ record = ModelRecord(data=data) # Creates a record from JSON data.
 | `volume`             | float                       | The volume of the object in cubic meters.                    |
 | `container_shapes`   | List[ContainerShape]        | A list of [`ContainerShape`](../container_data/container_shape.md) data. This data is used by the [`ContainerManager`](../add_ons/container_manager.md) add-on. |
 | `affordance_points`  | List[Dict[str, float]]      | A list of "affordance points" where an object can be picked up. This data is used by the Replicant add-on. |
+| `physics_values`     | PhysicsValue                | The model's default [`PhysicsValues`](../object_data/physics_values.md) |
+| `clatter_values`     | ClatterValeus               | The model's default [`ClatterValues`](../object_data/clatter_values.md) |
 
 ### Functions
 
@@ -117,6 +119,18 @@ lib = ModelLibrarian()
 record = lib.records[0]
 
 print(record.get_url())
+```
+
+##### `def derive_physics_and_clatter_values(self) -> str:`
+
+Derive PhysicsValues and ClatterValues from records that are already in the model library.
+
+```python
+lib = ModelLibrarian()
+record = lib.records[0]
+
+if record.physics_values is None or record.clatter_values is None:
+    record.derive_physics_and_clatter_values()
 ```
 
 ***

@@ -105,7 +105,8 @@ class PyDocGen:
 
         # Add documentation for object data.
         md = PyMdDoc(input_directory=c.tdw_path.joinpath("Python/tdw/object_data"),
-                     files=["transform.py", "rigidbody.py", "bound.py", "object_static.py"])
+                     files=["transform.py", "rigidbody.py", "bound.py", "object_static.py",
+                            "clatter_values.py", "physics_values.py"])
         md.get_docs(output_directory=output_directory.joinpath("object_data"),
                     import_prefix="from tdw.object_data")
 
@@ -141,10 +142,8 @@ class PyDocGen:
 
         # Add documentation for physics audio classes.
         md = PyMdDoc(input_directory=c.tdw_path.joinpath("Python/tdw/physics_audio"),
-                     files=["audio_material.py", "base64_sound.py",
-                            "collision_audio_event.py", "collision_audio_info.py", "collision_audio_type.py",
-                            "modes.py", "object_audio_static.py", "scrape_material.py", "scrape_model.py",
-                            "scrape_sub_object.py", "impact_material.py", "clatter_object.py"])
+                     files=["scrape_material.py", "scrape_model.py", "scrape_sub_object.py", "impact_material.py",
+                            "clatter_object.py"])
         md.get_docs(output_directory=output_directory.joinpath("physics_audio"),
                     import_prefix="from tdw.physics_audio")
 
@@ -312,6 +311,8 @@ class PyDocGen:
         vd = VarDoc()
         vd.get(src=c.tdw_path.joinpath("Python/tdw/type_aliases.py").resolve(),
                dst=output_directory.joinpath("type_aliases.md"))
+
+
 
         # Get the table of contents.
         toc = PyMdDoc.get_dir_toc(directory=output_directory,

@@ -36,7 +36,7 @@ class MinimalAudioDataset(Controller):
                                                            back_wall=wall,
                                                            left_wall=wall,
                                                            right_wall=wall)
-        # Add PyImpact.
+        # Add Clatter.
         self.simulation_amp = 0.9
         self.environment: ImpactMaterial = ResonanceAudioInitializer.IMPACT_MATERIALS[floor]
         self.clatter: Clatter = Clatter(simulation_amp=self.simulation_amp,

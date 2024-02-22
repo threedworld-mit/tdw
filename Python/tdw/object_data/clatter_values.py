@@ -6,7 +6,8 @@ class ClatterValues:
     An object's Clatter audio values.
     """
 
-    def __init__(self, impact_material: ImpactMaterial, size: int, amp: float, resonance: float):
+    def __init__(self, impact_material: ImpactMaterial = ImpactMaterial.wood_medium, size: int = 3, amp: float = 0.2,
+                 resonance: float = 0.05):
         """
         :param impact_material: The model's `ImpactMaterial`.
         :param size: The size bucket value (0-5).

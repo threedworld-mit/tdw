@@ -15,6 +15,7 @@ from tdw.container_data.cylinder_container import CylinderContainer
 from tdw.object_data.physics_values import PhysicsValues
 from tdw.object_data.clatter_values import ClatterValues
 from tdw.physics_audio.impact_material import ImpactMaterial
+from tdw.physics_audio.impact_material_constants import DENSITIES, DYNAMIC_FRICTION, STATIC_FRICTION
 
 
 class _Encoder(json.JSONEncoder):
@@ -95,10 +96,8 @@ class ModelRecord(_Record):
 
     def __init__(self, data: Optional[dict] = None):
         super().__init__(data)
-        self.clatter_values: ClatterValues = ClatterValues(impact_material=ImpactMaterial.wood_medium, amp=0.3,
-                                                           resonance=0.05, size=3)
-        self.physics_values: PhysicsValues = PhysicsValues(mass=1, dynamic_friction=0.3, static_friction=0.3,
-                                                           bounciness=0.7)
+        self.clatter_values: Optional[ClatterValues] = None
+        self.physics_values: Optional[PhysicsValues] = None
         if data is None:
             self.wnid: str = ""
             self.wcategory: str = ""
@@ -163,10 +162,84 @@ class ModelRecord(_Record):
             self.affordance_points: List[Dict[str, float]] = list()
             if "affordance_points" in data:
                 self.affordance_points = data["affordance_points"]
-            if "physics_values" in data:
-                self.physics_values: PhysicsValues = data["physics_values"]
-            if "clatter_values" in data:
-                self.clatter_values: PhysicsValues = data["clatter_values"]
+            if "physics_values" in data and data["physics_values"] is not None:
+                self.physics_values: PhysicsValues = PhysicsValues(**data["physics_values"])
+            if "clatter_values" in data and data["clatter_values"] is not None:
+                clatter_values = data["clatter_values"]
+                self.clatter_values: ClatterValues = ClatterValues(impact_material=ImpactMaterial[clatter_values["impact_material"]],
+                                                                   size=clatter_values["size"],
+                                                                   amp=clatter_values["amp"],
+                                                                   resonance=clatter_values["resonance"])
+        if self.physics_values is None or self.clatter_values is None:
+            self.derive_physics_and_clatter_values()
+
+    def derive_physics_and_clatter_values(self) -> None:
+        """
+        Derive PhysicsValues and ClatterValues from records that are already in the model library.
+        """
+
+        from tdw.controller import Controller
+        if "models_full.json" not in Controller.MODEL_LIBRARIANS:
+            Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
+        all_records = [r for r in Controller.MODEL_LIBRARIANS["models_full.json"].records if not r.do_not_use and
+                       r.name != self.name and r.physics_values is not None and r.clatter_values is not None]
+        # Get all models in the same category.
+        same_category = [r for r in all_records if r.wcategory == self.wcategory]
+        similar_volume = [r for r in all_records if
+                          0.8 <= abs(r.volume / self.volume) <= 1.2] if self.volume > 0 else []
+        similar_volume_and_category = [r for r in similar_volume if r.wcategory == self.wcategory]
+        # Return default values if we can't find anything comparable.
+        if self.volume <= 0 or (
+                len(similar_volume_and_category) == 0 and len(similar_volume) == 0 and len(same_category) == 0):
+            self.clatter_values = ClatterValues()
+            self.physics_values = PhysicsValues()
+            return
+        # Best-case scenario: There are multiple records in this category that have volumes similar to this model.
+        if len(similar_volume_and_category) > 0:
+            sizes = [r.clatter_values.size for r in similar_volume_and_category]
+            impact_materials = [r.clatter_values.impact_material for r in similar_volume_and_category]
+        else:
+            # Impact material.
+            if len(same_category) > 0:
+                impact_materials = [r.clatter_values.impact_material for r in same_category]
+            else:
+                impact_materials = [r.clatter_values.impact_material for r in similar_volume]
+
+            # Size bucket.
+            if len(similar_volume) > 0:
+                sizes = [r.clatter_values.size for r in similar_volume]
+            else:
+                sizes = [r.clatter_values.size for r in same_category]
+
+        # Derive the size bucket.
+        size = int(sum(sizes) / len(sizes))
+        # Derive the impact material.
+        impact_material = ImpactMaterial(int(sum([im.value for im in impact_materials]) / len(impact_materials)))
+        # Derive physics values.
+        mass = DENSITIES[impact_material] * self.volume
+        dynamic_friction = DYNAMIC_FRICTION[impact_material]
+        static_friction = STATIC_FRICTION[impact_material]
+        # Derive bounciness, amp, and resonance. Get records of similar size and impact material.
+        similar_records = [r for r in all_records if
+                           r.clatter_values.size == size and r.clatter_values.impact_material == impact_material]
+        # Fallback: Use default values.
+        if len(similar_records) == 0:
+            bounciness = 0.7
+            amp = 0.2
+            resonance = 0.05
+        # Use average values.
+        else:
+            bouncinesses = [r.physics_values.bounciness for r in similar_records]
+            amps = [r.clatter_values.amp for r in similar_records]
+            resonances = [r.clatter_values.resonance for r in similar_records]
+            bounciness = sum(bouncinesses) / len(bouncinesses)
+            amp = sum(amps) / len(amps)
+            resonance = sum(resonances) / len(resonances)
+
+        # Set the physics and Clatter values.
+        self.physics_values = PhysicsValues(mass=mass, dynamic_friction=dynamic_friction,
+                                            static_friction=static_friction, bounciness=bounciness)
+        self.clatter_values = ClatterValues(impact_material=impact_material, size=size, amp=amp, resonance=resonance)
 
 
 class MaterialRecord(_Record):

@@ -51,10 +51,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.010588235294117648,
+                "amp": 0.2642142857142857,
                 "impact_material": "wood_medium",
-                "resonance": 0.461764705882353,
-                "size": 0
+                "resonance": 0.6375000000000002,
+                "size": 3
             },
             "composite_object": false,
             "container_shapes": [
@@ -84,10 +84,10 @@
             "name": "b04_db_apps_tech_08_03_counter_top",
             "physics_quality": 0.5648129399552467,
             "physics_values": {
-                "bounciness": 0.566,
-                "dynamic_friction": 0.37,
+                "bounciness": 0.41482142857142856,
+                "dynamic_friction": 0.35,
                 "mass": 10.488926,
-                "static_friction": 0.3
+                "static_friction": 0.37
             },
             "scale_factor": 1,
             "substructure": [
@@ -157,10 +157,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.010588235294117648,
+                "amp": 0.2642142857142857,
                 "impact_material": "wood_medium",
-                "resonance": 0.461764705882353,
-                "size": 0
+                "resonance": 0.6375000000000002,
+                "size": 3
             },
             "composite_object": false,
             "container_shapes": [
@@ -190,10 +190,10 @@
             "name": "b05_db_apps_tech_08_09_counter_top",
             "physics_quality": 0.5635531896376197,
             "physics_values": {
-                "bounciness": 0.566,
-                "dynamic_friction": 0.37,
+                "bounciness": 0.41482142857142856,
+                "dynamic_friction": 0.35,
                 "mass": 11.392212999999998,
-                "static_friction": 0.3
+                "static_friction": 0.37
             },
             "scale_factor": 1,
             "substructure": [
@@ -407,10 +407,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.010588235294117648,
+                "amp": 0.2642142857142857,
                 "impact_material": "wood_medium",
-                "resonance": 0.461764705882353,
-                "size": 0
+                "resonance": 0.6375000000000002,
+                "size": 3
             },
             "composite_object": false,
             "container_shapes": [
@@ -440,10 +440,10 @@
             "name": "dishwasher_4_counter_top",
             "physics_quality": 0.5680550766426401,
             "physics_values": {
-                "bounciness": 0.566,
-                "dynamic_friction": 0.37,
+                "bounciness": 0.41482142857142856,
+                "dynamic_friction": 0.35,
                 "mass": 11.504304,
-                "static_friction": 0.3
+                "static_friction": 0.37
             },
             "scale_factor": 1,
             "substructure": [
@@ -513,10 +513,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.010588235294117648,
+                "amp": 0.2642142857142857,
                 "impact_material": "wood_medium",
-                "resonance": 0.461764705882353,
-                "size": 0
+                "resonance": 0.6375000000000002,
+                "size": 3
             },
             "composite_object": false,
             "container_shapes": [
@@ -546,10 +546,10 @@
             "name": "floating_counter_top_counter_top",
             "physics_quality": 0.5616745922419789,
             "physics_values": {
-                "bounciness": 0.566,
-                "dynamic_friction": 0.37,
+                "bounciness": 0.41482142857142856,
+                "dynamic_friction": 0.35,
                 "mass": 10.08812,
-                "static_friction": 0.3
+                "static_friction": 0.37
             },
             "scale_factor": 1,
             "substructure": [
@@ -691,10 +691,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.3,
-                "impact_material": "wood_medium",
-                "resonance": 0.05,
-                "size": 0
+                "amp": 0.01,
+                "impact_material": "paper",
+                "resonance": 0.1,
+                "size": 3
             },
             "composite_object": false,
             "container_shapes": [],
@@ -704,10 +704,10 @@
             "name": "fluid_receptacle1x1",
             "physics_quality": 0.0,
             "physics_values": {
-                "bounciness": 0.509,
-                "dynamic_friction": 0.37,
-                "mass": 35.19999384880066,
-                "static_friction": 0.3
+                "bounciness": 0.2,
+                "dynamic_friction": 0.47,
+                "mass": 105.59998154640198,
+                "static_friction": 0.5
             },
             "scale_factor": 1.0,
             "substructure": [
@@ -777,10 +777,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.3,
-                "impact_material": "wood_medium",
-                "resonance": 0.05,
-                "size": 0
+                "amp": 0.20500000000000004,
+                "impact_material": "wood_soft",
+                "resonance": 0.5714285714285715,
+                "size": 4
             },
             "composite_object": false,
             "container_shapes": [],
@@ -790,10 +790,10 @@
             "name": "fluid_receptacle1x2",
             "physics_quality": 0.0,
             "physics_values": {
-                "bounciness": 0.503,
-                "dynamic_friction": 0.37,
-                "mass": 110.59997379779816,
-                "static_friction": 0.3
+                "bounciness": 0.5585714285714285,
+                "dynamic_friction": 0.35,
+                "mass": 63.19998502731323,
+                "static_friction": 0.37
             },
             "scale_factor": 1.0,
             "substructure": [
@@ -1292,9 +1292,9 @@
             "physics_quality": -1,
             "physics_values": {
                 "bounciness": 0.2,
-                "dynamic_friction": 0.47,
+                "dynamic_friction": 0.43,
                 "mass": 4.0,
-                "static_friction": 0.3
+                "static_friction": 0.47
             },
             "scale_factor": 1.0,
             "substructure": [
@@ -1751,10 +1751,10 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.3,
-                "impact_material": "wood_medium",
-                "resonance": 0.05,
-                "size": 0
+                "amp": 0.34314814814814826,
+                "impact_material": "metal",
+                "resonance": 0.6342592592592587,
+                "size": 3
             },
             "composite_object": false,
             "container_shapes": [],
@@ -1764,10 +1764,10 @@
             "name": "stairs_one",
             "physics_quality": 0.9363156063435834,
             "physics_values": {
-                "bounciness": 0.2,
-                "dynamic_friction": 0.37,
-                "mass": 7782.859,
-                "static_friction": 0.3
+                "bounciness": 0.4847222222222222,
+                "dynamic_friction": 0.43,
+                "mass": 93950.2265,
+                "static_friction": 0.47
             },
             "scale_factor": 1,
             "substructure": [
@@ -1837,7 +1837,7 @@
                 "z": 0
             },
             "clatter_values": {
-                "amp": 0.3,
+                "amp": 0.2,
                 "impact_material": "wood_medium",
                 "resonance": 0.05,
                 "size": 3
@@ -1850,9 +1850,9 @@
             "name": "stairs_two",
             "physics_quality": 0.8871752788630848,
             "physics_values": {
-                "bounciness": 0.2,
-                "dynamic_friction": 0.37,
-                "mass": 8995.476,
+                "bounciness": 0.7,
+                "dynamic_friction": 0.3,
+                "mass": 1,
                 "static_friction": 0.3
             },
             "scale_factor": 1,

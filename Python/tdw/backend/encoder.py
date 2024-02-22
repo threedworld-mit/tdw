@@ -12,7 +12,7 @@ class Encoder(JSONEncoder):
     """
 
     """:class_var
-    If True, include hidden fields i.e. fields that begin with the `_` prefix. For some classes, such as `PyImpact`, this will include a lot of extraneous information.
+    If True, include hidden fields i.e. fields that begin with the `_` prefix. For some classes, this will include a lot of extraneous information.
     """
     INCLUDE_HIDDEN_FIELDS: bool = False
 

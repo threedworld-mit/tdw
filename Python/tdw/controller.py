@@ -218,7 +218,7 @@ class Controller:
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
-        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`.
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values.
         :param mass: The mass of the object. Ignored if `default_physics_values == True`.
         :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.

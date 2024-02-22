@@ -6,8 +6,9 @@ from tdw.tdw_utils import TDWUtils
 from tdw.output_data import OutputData, SegmentationColors, Bounds, StaticRigidbodies, StaticRobot, StaticOculusTouch
 from tdw.physics_audio.impact_material import ImpactMaterial
 from tdw.physics_audio.scrape_model import ScrapeModel, DEFAULT_SCRAPE_MODELS
-from tdw.physics_audio.clatter_object import ClatterObject, DEFAULT_OBJECTS
-from tdw.librarian import MaterialLibrarian, ModelRecord
+from tdw.physics_audio.clatter_object import ClatterObject
+from tdw.object_data.clatter_values import ClatterValues
+from tdw.librarian import MaterialLibrarian, ModelLibrarian, ModelRecord
 
 
 class Clatter(AddOn):
@@ -109,6 +110,7 @@ class Clatter(AddOn):
         self._dsp_buffer_size: int = dsp_buffer_size
         self._roll_substitute: str = roll_substitute
         self._initialized_clatter: bool = False
+        self._clatter_values: Dict[str, Dict[str, ClatterValues]] = dict()
 
     def get_initialization_commands(self) -> List[dict]:
         return [{"$type": "send_segmentation_colors"},
@@ -196,11 +198,15 @@ class Clatter(AddOn):
                 if object_id in self._objects:
                     continue
                 # Use default audio data.
-                elif name in DEFAULT_OBJECTS:
-                    self._objects[object_id] = copy(DEFAULT_OBJECTS[name])
-                    self._objects[object_id].scrape_model = scrape_models[object_id]
-                else:
+                clatter_values = self._get_clatter_values(name)
+                if clatter_values is None:
                     need_to_derive.append(object_id)
+                else:
+                    self._objects[object_id] = ClatterObject(impact_material=clatter_values.impact_material,
+                                                             size=clatter_values.size,
+                                                             amp=clatter_values.amp,
+                                                             resonance=clatter_values.resonance,
+                                                             scrape_model=scrape_models[object_id])
             current_values = self._objects.values()
             derived_data: Dict[int, ClatterObject] = dict()
             for object_id in need_to_derive:
@@ -335,10 +341,10 @@ class Clatter(AddOn):
         :return: The `size` integer of the object.
         """
 
+        if isinstance(model, ModelRecord):
+            return model.clatter_values.size
         if isinstance(model, np.ndarray):
             s = sum(model)
-        elif isinstance(model, ModelRecord):
-            s = sum(TDWUtils.get_bounds_extents(bounds=model.bounds))
         else:
             raise Exception(f"Invalid extents: {model}")
         if s <= 0.1:
@@ -359,11 +365,12 @@ class Clatter(AddOn):
         """
         :return: The default ClatterObject.
         """
-        
-        return ClatterObject(impact_material=ImpactMaterial.plastic_hard,
-                             size=1,
-                             amp=0.2,
-                             resonance=0.45)
+
+        clatter_values = ClatterValues()
+        return ClatterObject(impact_material=clatter_values.impact_material,
+                             size=clatter_values.size,
+                             amp=clatter_values.amp,
+                             resonance=clatter_values.resonance)
 
     @staticmethod
     def _get_default_environment_clatter_object() -> ClatterObject:
@@ -376,3 +383,25 @@ class Clatter(AddOn):
                              amp=0.5,
                              resonance=0.1,
                              fake_mass=100)
+
+    def _get_clatter_values(self, name: str) -> Optional[ClatterValues]:
+        """
+        :param name: The name of a model.
+
+        :return: The model's ClatterValues. Can be None.
+        """
+
+        for library in self._clatter_values:
+            if name in self._clatter_values[library]:
+                return self._clatter_values[library][name]
+        for library in ModelLibrarian.get_library_filenames():
+            if library not in self._clatter_values:
+                self._clatter_values[library] = dict()
+                lib = ModelLibrarian(library)
+                for record in lib.records:
+                    if record.do_not_use:
+                        continue
+                    self._clatter_values[library][record.name] = copy(record.clatter_values)
+            if name in  self._clatter_values[library]:
+                return self._clatter_values[library][name]
+        return None

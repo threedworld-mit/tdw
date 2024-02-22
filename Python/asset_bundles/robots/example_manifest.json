@@ -1,0 +1,34 @@
+{
+   "sawyer":
+  {
+    "url": "https://github.com/RethinkRobotics/sawyer_robot/blob/master/sawyer_description/urdf/sawyer.urdf.xacro",
+    "xacro_args": {"electric_gripper": "true"},
+    "required_repo_urls": {"intera_tools_description": "https://github.com/RethinkRobotics/intera_common"},
+    "up": "y",
+    "immovable": true
+  },
+  "ur10":
+  {
+    "url": "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur10_robot.urdf"
+  },
+  "ur5":
+  {
+    "url": "https://github.com/ros-industrial/robot_movement_interface/blob/master/dependencies/ur_description/urdf/ur5_robot.urdf"
+  },
+  "fetch":
+  {
+    "url": "https://github.com/fetchrobotics/fetch_ros/blob/melodic-devel/fetch_description/robots/fetch.urdf",
+    "immovable": false,
+    "description_infix": "fetch_description",
+    "branch": "melodic-devel"
+  },
+  "baxter":
+  {
+    "url": "https://github.com/RethinkRobotics/baxter_common/blob/master/baxter_description/urdf/baxter.urdf.xacro",
+    "required_repo_urls": {"rethink_ee_description": "https://github.com/RethinkRobotics/baxter_common"}
+  },
+  "niryo_one":
+  {
+    "url": "https://github.com/NiryoRobotics/niryo_one_ros/blob/master/niryo_one_description/urdf/v2/niryo_one.urdf.xacro"
+  }
+}

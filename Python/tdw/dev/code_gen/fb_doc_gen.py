@@ -197,9 +197,13 @@ class OutputDataParser:
         return fields
 
 
-class FBDocGen:
+class FbDocGen:
+    """
+    Generate output data documentation.
+    """
+
     @staticmethod
-    def get_inheritance(fb_class: DocObj, all_other):
+    def get_inheritance(fb_class: DocObj, all_other) -> DocObj:
         """
         Append def documentation inherited from parent classes to each output data class.
 
@@ -219,11 +223,17 @@ class FBDocGen:
                 # Set a new parent.
                 fb_class.parent = a.parent
                 # Recurse through inheritance.
-                return FBDocGen.get_inheritance(fb_class, all_other)
+                return FbDocGen.get_inheritance(fb_class, all_other)
         return fb_class
 
     @staticmethod
     def get_commands(config: Config) -> Dict[str, List[str]]:
+        """
+        :param config: `Config` data.
+
+        :return: A list of file paths to Command C# scripts that send data.
+        """
+
         assets_directory = config.tdwunity_path.joinpath("TDWUnity/Assets")
         commands: Dict[str, List[str]] = dict()
         for folder in ["", "TDWThirdParty"]:
@@ -249,8 +259,12 @@ class FBDocGen:
 
     @staticmethod
     def generate() -> None:
+        """
+        Generate the documentation.
+        """
+
         ini = Config()
-        commands = FBDocGen.get_commands(ini)
+        commands = FbDocGen.get_commands(ini)
         root_directory = ini.tdw_path.joinpath("Python/tdw/FBOutput")
 
         usage_path = ini.tdw_docs_path.joinpath("docs/output_data/usage.txt")
@@ -368,7 +382,7 @@ class FBDocGen:
 
         # Get inheritance.
         for d in datas:
-            datas[d] = FBDocGen.get_inheritance(datas[d], datas.values())
+            datas[d] = FbDocGen.get_inheritance(datas[d], datas.values())
 
         # Generate the table of contents.
         for command in commands:
@@ -389,4 +403,4 @@ class FBDocGen:
 
 if __name__ == "__main__":
     # Test documentation URLs.
-    FBDocGen.generate()
+    FbDocGen.generate()

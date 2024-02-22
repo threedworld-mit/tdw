@@ -1,4 +1,3 @@
-import re
 from pkg_resources import resource_filename
 from py_md_doc import PyMdDoc, ClassInheritance
 from py_md_doc.var_doc import VarDoc
@@ -13,6 +12,10 @@ class PyDocGen:
 
     @staticmethod
     def generate() -> None:
+        """
+        Generate the documentation.
+        """
+
         c = Config()
         output_directory = c.tdw_docs_path.joinpath("docs/python_api")
         recreate_directory(output_directory)
@@ -74,6 +77,9 @@ class PyDocGen:
         wheelchair_motion_path = wheelchair_replicant_actions_output_directory.joinpath("wheelchair_motion.md")
         wheelchair_motion_text = wheelchair_motion_path.read_text(encoding="utf-8")
         replicant_actions_directory = output_directory.joinpath("replicant/actions").resolve()
+        md = PyMdDoc(input_directory=c.tdw_path.joinpath("Python/tdw/replicant/actions").resolve(),
+                     files=["action.py"])
+        md.get_docs(replicant_actions_directory)
         replicant_action_text = replicant_actions_directory.joinpath("action.md").read_text(encoding="utf-8")
         ci = ClassInheritance()
         wheelchair_motion_text = ci.get_from_text(child_text=wheelchair_motion_text,
@@ -82,9 +88,7 @@ class PyDocGen:
         wheelchair_move_to_path = wheelchair_replicant_actions_output_directory.joinpath("move_to.md")
         wheelchair_move_to_path.write_text(ci.get_from_text(child_text=wheelchair_move_to_path.read_text(encoding="utf-8"),
                                                             parent_texts=[replicant_action_text]))
-        wheelchair_reach_for_path = wheelchair_replicant_actions_output_directory.joinpath("reach_for.md")
-        wheelchair_reach_for_path.write_text(ci.get_from_text(child_text=wheelchair_reach_for_path.read_text(encoding="utf-8"),
-                                                              parent_texts=[replicant_actions_directory.joinpath("arm_motion.md").read_text(encoding="utf-8")]))
+
         # Fix Wheelchair Replicant action doc links.
         for f in wheelchair_replicant_actions_output_directory.iterdir():
             action_text = f.read_text(encoding="utf-8")
@@ -200,6 +204,9 @@ class PyDocGen:
                                               output_directory=output_directory.joinpath("replicant/actions"),
                                               import_prefix="from tdw.replicant.actions",
                                               import_path="tdw.replicant.actions")
+        wheelchair_reach_for_path = wheelchair_replicant_actions_output_directory.joinpath("reach_for.md")
+        wheelchair_reach_for_path.write_text(ci.get_from_text(child_text=wheelchair_reach_for_path.read_text(encoding="utf-8"),
+                                                              parent_texts=[replicant_actions_directory.joinpath("arm_motion.md").read_text(encoding="utf-8")]))
         # IK plans.
         ClassInheritance().get_from_directory(input_directory=c.tdw_path.joinpath("Python/tdw/replicant/ik_plans"),
                                               output_directory=output_directory.joinpath("replicant/ik_plans"),
@@ -312,7 +319,48 @@ class PyDocGen:
         vd.get(src=c.tdw_path.joinpath("Python/tdw/type_aliases.py").resolve(),
                dst=output_directory.joinpath("type_aliases.md"))
 
-
+        # Add dev documentation.
+        dev_path_py = c.tdw_path.joinpath("Python/tdw/dev").resolve()
+        dev_path_md = output_directory.joinpath("dev")
+        md = PyMdDoc(input_directory=dev_path_py,
+                     files=["affordance_points_creator.py",
+                            "asset_bundles.py",
+                            "config.py",
+                            "dockerizer.py",
+                            "pypi_uploader.py"])
+        md.get_docs(output_directory=dev_path_md)
+        vd = VarDoc()
+        vd.get(src=dev_path_py.joinpath("versions.py"),
+               dst=dev_path_md.joinpath("versions.md.md"))
+        dev_path_py = dev_path_py.joinpath("code_gen")
+        dev_path_md = dev_path_md.joinpath("code_gen")
+        md = PyMdDoc(input_directory=dev_path_py,
+                     files=["commands_code_gen.py",
+                            "fb_doc_gen.py",
+                            "py_doc_gen.py"])
+        md.get_docs(output_directory=dev_path_md)
+        dev_path_py = dev_path_py.joinpath("cs_xml")
+        dev_path_md = dev_path_md.joinpath("cs_xml")
+        md = PyMdDoc(input_directory=dev_path_py,
+                     files=["assembly.py",
+                            "enum_member.py",
+                            "field.py",
+                            "method.py",
+                            "namespace.py",
+                            "parameter.py"])
+        md.get_docs(output_directory=dev_path_md)
+        ci = ClassInheritance()
+        ci.get_from_directory(input_directory=dev_path_py,
+                              output_directory=dev_path_md,
+                              import_path="tdw.dev.code_gen.cs_xml",
+                              import_prefix="from tdw.code_gen.dev.cs_xml",
+                              includes=["struct.py", "klass.py"])
+        dev_path_py = dev_path_py.joinpath("field_doc_gen")
+        dev_path_md = dev_path_md.joinpath("field_doc_gen")
+        ci.get_from_directory(input_directory=dev_path_py,
+                              output_directory=dev_path_md,
+                              import_path="tdw.dev.code_gen.cs_xml.field_doc_gen",
+                              import_prefix="from tdw.dev.code_gen.cs_xml.field_doc_gen")
 
         # Get the table of contents.
         toc = PyMdDoc.get_dir_toc(directory=output_directory,
@@ -321,16 +369,11 @@ class PyDocGen:
                                                         "Vr": "VR",
                                                         "Ui": "UI"},
                                   import_prefix="tdw",
-                                  link_prefix="docs/python_api")
+                                  link_prefix=".")
         # Adjust the README table of contents.
-        readme_path = output_directory.joinpath("api.md")
-        readme_text = readme_path.read_text(encoding="utf-8")
-        current_toc = re.search(r"## `tdw` module API\n\n((.|\n)*?)\n\n# Performance benchmarks", readme_text).group(1)
-        readme_text = readme_text.replace(current_toc, toc)
-        # Update the table of contents.
-        readme_path.write_text(readme_text)
+        readme_path = output_directory.joinpath("python_api.md")
+        readme_path.write_text("# `tdw` module API\n\n" + toc)
 
 
 if __name__ == "__main__":
-    # Test documentation URLs.
     PyDocGen.generate()

@@ -1,4 +1,3 @@
-from copy import copy
 from typing import List, Dict
 from pathlib import Path
 import json
@@ -11,7 +10,7 @@ from tdw.add_ons.audio_initializer import AudioInitializer
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
 from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.physics_audio.clatter_object import ClatterObject, DEFAULT_OBJECTS
+from tdw.physics_audio.clatter_object import ClatterObject
 from tdw.physics_audio.impact_material import ImpactMaterial
 
 
@@ -43,6 +42,9 @@ class RubeGoldbergDemo(Controller):
         object_setup_data = json.loads(Path("rube_goldberg_objects.json").read_text())
         for o in object_setup_data:
             object_id = int(o)
+            if object_setup_data[o]["library"] not in Controller.MODEL_LIBRARIANS:
+                Controller.MODEL_LIBRARIANS[object_setup_data[o]["library"]] = ModelLibrarian(object_setup_data[o]["library"])
+            clatter_values = Controller.MODEL_LIBRARIANS[object_setup_data[o]["library"]].get_record(object_setup_data[o]["model_name"]).clatter_values
             # Cache the command to destroy the object.
             self.destroy_object_commands.append({"$type": "destroy_object",
                                                  "id": object_id})
@@ -71,8 +73,11 @@ class RubeGoldbergDemo(Controller):
                                                                   fake_mass=a["fake_mass"])
                 # Use default audio values but adjust the mass.
                 else:
-                    clatter_object: ClatterObject = copy(DEFAULT_OBJECTS[object_setup_data[o]["model_name"]])
-                    clatter_object.fake_mass = object_setup_data[o]["physics"]["mass"]
+                    clatter_object: ClatterObject = ClatterObject(impact_material=clatter_values.impact_material,
+                                                                  amp=clatter_values.amp,
+                                                                  resonance=clatter_values.resonance,
+                                                                  size=clatter_values.size,
+                                                                  fake_mass=object_setup_data[o]["physics"]["mass"])
                 self.clatter_objects[object_id] = clatter_object
             # Use default physics values.
             else:
@@ -84,8 +89,10 @@ class RubeGoldbergDemo(Controller):
                                                                              scale_mass=False,
                                                                              library=object_setup_data[o]["library"]))
                 # Use default audio values but lower the resonance.
-                clatter_object: ClatterObject = copy(DEFAULT_OBJECTS[object_setup_data[o]["model_name"]])
-                clatter_object.resonance = 0.05
+                clatter_object: ClatterObject = ClatterObject(impact_material=clatter_values.impact_material,
+                                                              amp=clatter_values.amp,
+                                                              resonance=0.05,
+                                                              size=clatter_values.size)
                 self.clatter_objects[object_id] = clatter_object
             # Set the collision detection mode.
             self.init_object_commands.append({"$type": "set_object_collision_detection_mode",

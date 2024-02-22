@@ -18,7 +18,6 @@ from tdw.container_data.container_tag import ContainerTag
 from tdw.container_data.box_container import BoxContainer
 from tdw.container_data.sphere_container import SphereContainer
 from tdw.container_data.cylinder_container import CylinderContainer
-from tdw.object_data.physics_values import PhysicsValues
 
 
 class Controller:
@@ -207,7 +206,7 @@ class Controller:
                 "affordance_points": record.affordance_points}
 
     @staticmethod
-    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, physics_values: PhysicsValues = None, scale_mass: bool = True) -> List[dict]:
+    def get_add_physics_object(model_name: str, object_id: int, position: Dict[str, float] = None, rotation: Dict[str, float] = None, library: str = "", scale_factor: Dict[str, float] = None, kinematic: bool = False, gravity: bool = True, default_physics_values: bool = True, mass: float = 1, dynamic_friction: float = 0.3, static_friction: float = 0.3, bounciness: float = 0.7, scale_mass: bool = True) -> List[dict]:
         """
         Add an object to the scene with physics values (mass, friction coefficients, etc.).
 
@@ -219,7 +218,11 @@ class Controller:
         :param scale_factor: The [scale factor](../api/command_api.md#scale_object).
         :param kinematic: If True, the object will be [kinematic](../api/command_api.md#set_kinematic_state).
         :param gravity: If True, the object won't respond to [gravity](../api/command_api.md#set_kinematic_state).
-        :param physics_values: If not None, use these physics values instead of the default values.
+        :param default_physics_values: If True, use default physics values. Not all objects have default physics values. To determine if object does: `has_default_physics_values = model_name in DEFAULT_OBJECT_AUDIO_STATIC_DATA`.
+        :param mass: The mass of the object. Ignored if `default_physics_values == True`.
+        :param dynamic_friction: The [dynamic friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param static_friction: The [static friction](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
+        :param bounciness: The [bounciness](../api/command_api.md#set_physic_material) of the object. Ignored if `default_physics_values == True`.
         :param scale_mass: If True, the mass of the object will be scaled proportionally to the spatial scale.
 
         :return: A **list** of commands to add the object and apply physics values that the controller can then send via [`self.communicate(commands)`](#communicate).
@@ -262,26 +265,25 @@ class Controller:
             commands.append({"$type": "set_object_collision_detection_mode",
                              "id": object_id,
                              "mode": "continuous_speculative"})
-        # Set physics values.
-        if physics_values is not None:
+        if default_physics_values:
             commands.extend([{"$type": "set_mass",
-                              "mass": physics_values.mass,
-                              "id": object_id},
-                             {"$type": "set_physic_material",
-                              "dynamic_friction": physics_values.dynamic_friction,
-                              "static_friction": physics_values.static_friction,
-                              "bounciness": physics_values.bounciness,
-                              "id": object_id}])
-        else:
-            commands.extend([{"$type": "set_mass",
-                              "mass": record.physics_values.mass,
+                              "mass": mass,
                               "id": object_id},
                              {"$type": "set_physic_material",
                               "dynamic_friction": record.physics_values.dynamic_friction,
                               "static_friction": record.physics_values.static_friction,
                               "bounciness": record.physics_values.bounciness,
                               "id": object_id}])
-        # Scale the object.
+        # Use user-defined physics values.
+        else:
+            commands.extend([{"$type": "set_mass",
+                              "mass": mass,
+                              "id": object_id},
+                             {"$type": "set_physic_material",
+                              "dynamic_friction": dynamic_friction,
+                              "static_friction": static_friction,
+                              "bounciness": bounciness,
+                              "id": object_id}])
         if scale_factor is not None:
             if scale_mass:
                 commands.append({"$type": "scale_object_and_mass",

@@ -23,7 +23,6 @@ from tdw.add_ons.clatter import Clatter
 from tdw.physics_audio.clatter_object import ClatterObject
 from tdw.physics_audio.impact_material import ImpactMaterial
 from tdw.physics_audio.impact_material_constants import DYNAMIC_FRICTION, STATIC_FRICTION
-from tdw.object_data.physics_values import PhysicsValues
 
 
 class ResetClatter(Controller):
@@ -69,10 +68,11 @@ class ResetClatter(Controller):
         self.communicate(self.get_add_physics_object(model_name=object_name,
                                                      position={"x": 0, "y": float(self.rng.uniform(3, 4)), "z": 0},
                                                      object_id=object_id,
-                                                     physics_values=PhysicsValues(mass=object_mass,
-                                                                                  dynamic_friction=DYNAMIC_FRICTION[object_material],
-                                                                                  static_friction=STATIC_FRICTION[object_material],
-                                                                                  bounciness=object_bounciness)))
+                                                     default_physics_values=False,
+                                                     mass=object_mass,
+                                                     dynamic_friction=DYNAMIC_FRICTION[object_material],
+                                                     static_friction=STATIC_FRICTION[object_material],
+                                                     bounciness=object_bounciness))
         # Let the object fall.
         for i in range(200):
             self.communicate([])

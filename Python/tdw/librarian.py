@@ -170,10 +170,10 @@ class ModelRecord(_Record):
                                                                    size=clatter_values["size"],
                                                                    amp=clatter_values["amp"],
                                                                    resonance=clatter_values["resonance"])
-        # if self.physics_values is None or self.clatter_values is None:
-          #  self._derive_physics_and_clatter_values()
+        if self.physics_values is None or self.clatter_values is None:
+            self.derive_physics_and_clatter_values()
 
-    def _derive_physics_and_clatter_values(self) -> None:
+    def derive_physics_and_clatter_values(self) -> None:
         """
         Derive PhysicsValues and ClatterValues from records that are already in the model library.
         """

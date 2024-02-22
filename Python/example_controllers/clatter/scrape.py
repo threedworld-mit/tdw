@@ -8,7 +8,6 @@ from tdw.add_ons.physics_audio_recorder import PhysicsAudioRecorder
 from tdw.physics_audio.clatter_object import ClatterObject
 from tdw.physics_audio.impact_material import ImpactMaterial
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.object_data.physics_values import PhysicsValues
 
 """:field
 Record scrape sounds.
@@ -50,11 +49,12 @@ for scrape_surface_model_name in ["glass_table", "quatre_dining_table", "small_t
                                                                "y": surface_record.bounds["top"]["y"],
                                                                "z": surface_record.bounds["back"]["z"] + 0.1},
                                                      scale_factor={"x": 0.1, "y": 0.1, "z": 0.1},
-                                                     physics_values=PhysicsValues(mass=cube_mass,
-                                                                                  dynamic_friction=0.2,
-                                                                                  static_friction=0.2,
-                                                                                  bounciness=cube_bounciness),
-                                                     scale_mass=False))
+                                                     default_physics_values=False,
+                                                     scale_mass=False,
+                                                     mass=cube_mass,
+                                                     dynamic_friction=0.2,
+                                                     static_friction=0.2,
+                                                     bounciness=cube_bounciness))
             commands.extend([c.get_add_material(cube_visual_material, library="materials_low.json"),
                              {"$type": "set_visual_material",
                               "id": cube_id,

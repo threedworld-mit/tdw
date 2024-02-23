@@ -1,8 +1,7 @@
 import re
 from typing import Optional, Dict, List
 from xml.etree import ElementTree as Et
-from tdw.dev.code_gen.cs_xml.util import (parse_para, CS_TO_PY_TYPES, CS_TO_PY_DEFAULT_VALUES, PY_TYPES, STRS,
-                                 NOT_PY_TYPES, parse_ref)
+from tdw.dev.code_gen.cs_xml.util import (parse_para, CS_TO_PY_TYPES, CS_TO_PY_DEFAULT_VALUES, PY_TYPES, STRS, parse_ref)
 
 
 class Field:
@@ -53,9 +52,10 @@ class Field:
     """
     CS_MUTABLE_TYPES: List[str] = ["Vector3", "Vector3Int", "Vector2", "Vector2Int", "Color", "Quaternion"]
 
-    def __init__(self, element: Et.Element):
+    def __init__(self, element: Et.Element, py: bool):
         """
         :param element: An XML element.
+        :param py: If True, try to get the Python field type and default value.
         """
 
         """:field
@@ -80,7 +80,7 @@ class Field:
         self.public: bool = "prot" in element.attrib and element.attrib["prot"] == "public"
         # Convert the field type from C# to Python.
         field_type = element.find("type").text
-        if field_type is None:
+        if field_type is None or field_type == "readonly ":
             field_type = element.find("type").find("ref").text
             raw = str(Et.tostring(element, "utf-8"))
             if "[]" in raw:
@@ -121,8 +121,8 @@ class Field:
         # An enum expressed as a string.
         elif self.cs_field_type in STRS:
             self.py_field_type = "str"
-        elif self.cs_field_type in NOT_PY_TYPES:
-            self.py_field_type = "ERROR"
+        elif not py:
+            self.py_field_type = ""
         else:
             try:
                 self.py_field_type = CS_TO_PY_TYPES[field_type]
@@ -244,6 +244,8 @@ class Field:
                 self.py_default_value = "dict()"
             elif Field.RE_NEW_ARRAY.match(self.cs_default_value) is not None:
                 self.py_default_value = "list()"
+            elif not py:
+                self.py_default_value = None
             else:
                 raise Exception(self.name, self.py_field_type, self.cs_default_value)
             if self.name == "max_retries" and self.cs_default_value == "":
@@ -254,4 +256,5 @@ class Field:
                 self.py_default_value = '1000'
             if "_" in self.cs_default_value and '"' not in self.cs_default_value:
                 for r in Field.CONST_REPLACEMENTS:
-                    self.py_default_value = self.py_default_value.replace(r, Field.CONST_REPLACEMENTS[r])
+                    if self.py_default_value is not None:
+                        self.py_default_value = self.py_default_value.replace(r, Field.CONST_REPLACEMENTS[r])

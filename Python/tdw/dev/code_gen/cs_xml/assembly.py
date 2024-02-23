@@ -22,14 +22,20 @@ class Assembly:
     """:class_var
     Generate data only for members of these namespaces.
     """
-    NAMESPACES: List[str] = ["TDW::WebGL", "TDW::WebGL::Trials", "TDW::WebGL::Trials::Tests",
-                             "TDW::WebGL::TrialAdders", "TDW::WebGL::Trials::AddOns", "TDWInput"]
+    NAMESPACES: List[str] = ["TDW", "TDW::Robotics", "TDW::Obi", "TDW::WebGL", "TDW::WebGL::Trials",
+                             "TDW::WebGL::Trials::Tests", "TDW::WebGL::TrialAdders", "TDW::WebGL::Trials::AddOns",
+                             "TDWInput"]
     """:class_var
     Ignore this struct type.
     """
-    IGNORE: List[str] = ["Config"]
+    IGNORE: List[str] = ["Config", "AvatarBase", "FirstPersonAvatar", "SimpleBodyAvatar", "SingleBodyAvatar"]
 
-    def __init__(self, delete_xml: bool = True):
+    def __init__(self, delete_xml: bool = True, py: bool = True):
+        """
+        :param delete_xml: If True, delete the generated XML directory after initializing.
+        :param py: If True, try to get Python equivalents of C# types and default values.
+        """
+
         # Run doxygen.
         xml_directory = Path(XML_DIRECTORY)
         if not xml_directory.exists():
@@ -82,10 +88,12 @@ class Assembly:
                     if namespace_name not in Assembly.NAMESPACES:
                         continue
                     # Add the file path to the list of classes or structs.
-                    if kind_def == "class" and namespace_name != "TDW":
-                        klasses.append(Klass(element=get_root(f.name).find("compounddef")))
-                    elif kind_def == "struct" and namespace_name != "TDW":
-                        structs.append(Struct(element=get_root(f.name).find("compounddef")))
+                    if kind_def == "class" and (not py or namespace_name != "TDW"):
+                        klass = Klass(element=get_root(f.name).find("compounddef"), py=py)
+                        if klass.name not in Assembly.IGNORE:
+                            klasses.append(klass)
+                    elif kind_def == "struct" and (not py or namespace_name != "TDW"):
+                        structs.append(Struct(element=get_root(f.name).find("compounddef"), py=py))
         # Inherit fields.
         inheritance: List[Klass] = list()
         for i in range(len(klasses)):

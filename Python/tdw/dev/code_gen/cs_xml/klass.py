@@ -14,12 +14,13 @@ class Klass(Struct):
     Definition of a class. This is a subclass of `Struct` that includes class inheritance.
     """
 
-    def __init__(self, element: Et.Element):
+    def __init__(self, element: Et.Element, py: bool):
         """
         :param element: The root XML element.
+        :param py: If True, generate Python code.
         """
 
-        super().__init__(element=element)
+        super().__init__(element=element, py=py)
         # Double-check the file itself.
         if not self.abstract:
             text = Path(self.location).read_text(encoding="utf-8")

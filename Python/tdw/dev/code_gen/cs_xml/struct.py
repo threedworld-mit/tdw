@@ -6,7 +6,7 @@ from inflection import underscore, camelize
 from tdw.dev.code_gen.cs_xml.field import Field
 from tdw.dev.code_gen.cs_xml.enum_type import EnumType, enum_from_py
 from tdw.dev.code_gen.cs_xml.method import Method
-from tdw.dev.code_gen.cs_xml.util import parse_para, CS_TO_PY_TYPES, BUILTIN_TYPES, PY_IMPORT_TYPES, STRS, PY_ENUM_TYPES
+from tdw.dev.code_gen.cs_xml.util import parse_para, CS_TO_PY_TYPES, BUILTIN_TYPES, PY_IMPORT_TYPES, STRS, PY_ENUM_TYPES, CS_NAMESPACES
 from tdw.dev.code_gen.cs_xml.field_doc_gen.py_field_doc import PyFieldDoc
 from tdw.dev.code_gen.cs_xml.field_doc_gen.cs_field_doc import CsFieldDoc
 
@@ -16,9 +16,10 @@ class Struct:
     Definition of a C# struct. This is also the base class of a C# class definition.
     """
 
-    def __init__(self, element: Et.Element):
+    def __init__(self, element: Et.Element, py: bool):
         """
         :param element: The root XML element.
+        :param py: If True, generate Python code.
         """
 
         """:field
@@ -72,7 +73,7 @@ class Struct:
             if section_kind == "public-attrib":
                 for member in section.findall("memberdef"):
                     if member.attrib["kind"] == "variable":
-                        self.fields.append(Field(element=member))
+                        self.fields.append(Field(element=member, py=py))
             elif section_kind == "public-static-func" or section_kind == "public-func":
                 for member in section.findall("memberdef"):
                     if member.attrib["kind"] == "function":
@@ -234,6 +235,8 @@ class Struct:
         # Get the fields.
         fields = self._get_fields_for_doc()
         for f in fields:
+            if f.cs_field_type == '':
+                print(self.name, f.name)
             if f.cs_field_type in enums:
                 enum_namespace = enums[f.cs_field_type].namespace.replace('::', '.').strip()
                 if enum_namespace != "":
@@ -241,10 +244,10 @@ class Struct:
             elif f.cs_field_type[0].isupper():
                 if f.cs_field_type.startswith("List<") or f.cs_field_type.startswith("Dictionary<"):
                     usings.append("using System.Collections.Generic;")
-                if f.cs_field_type not in NO_NAMESPACES:
+                if f.cs_field_type not in NO_NAMESPACES and f.cs_field_type != "T":
                     got_namespace = False
-                    for namespace in NAMESPACES:
-                        for member_name in NAMESPACES[namespace]:
+                    for namespace in CS_NAMESPACES:
+                        for member_name in CS_NAMESPACES[namespace]:
                             if member_name == f.cs_field_type:
                                 usings.append(f"using {namespace};")
                                 got_namespace = True
@@ -326,6 +329,7 @@ class Struct:
             enum_tables.append(enum_text)
         if len(enum_tables) > 0:
             doc += "\n\n" + "\n\n".join(enum_tables)
+        doc = doc.replace("<", "\\<").replace(">", "\\>")
         return doc
 
     def _get_fields_for_doc(self) -> List[Field]:
@@ -343,12 +347,4 @@ class Struct:
 
 
 DEFAULT_VALUES = {'AvatarType': '"A_Img_Caps_Kinematic"'}
-NAMESPACES = {'UnityEngine': ['Vector3', 'Vector3[]', 'Vector3Int', 'Vector2', 'Vector2Int', 'Quaternion', 'Color',
-                              'Vector4[]', 'Vector2Int[]'],
-              'ProcGen': ['CardinalDirection[]'],
-              'FBOutput': ['List<PassMask>'],
-              'Clatter.Core': ['ImpactMaterialUnsized', 'ScrapeMaterial', 'AudioEventType'],
-              'TDW.Obi': ['Dictionary<TetherParticleGroup, TetherType>', 'ClothMaterial', 'FluidBase',
-                          'EmitterShapeBase'],
-              'TDW.Replicant': ['ReplicantBodyPart[]']}
 NO_NAMESPACES = ['List<int>', "List<string>", 'CollisionType[]']

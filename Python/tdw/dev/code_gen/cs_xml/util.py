@@ -126,8 +126,6 @@ CS_TO_PY_DEFAULT_VALUES: Dict[str, str] = {"Color.red": '{"r": 1, "g": 0, "b": 0
 PY_TYPES: List[str] = ["str", "int", "float", "bool", "TrialAdder", "TrialStatus", "ContainerTag", "ScrapeMaterial",
                        "ForceMode", "ClothMaterial", "FluidBase", "ObiBackend", "Arm", "MaterialCombineMode",
                        "TetherParticleGroup", "TetherType", "Request"]
-NOT_PY_TYPES: List[str] = ["Dictionary<string, T>", "ObjectBounds", "PhysicsValues", "AssetBundleURLs", "Room[]",
-                           "InteriorRegion", "InteriorRegion[]"]
 XML_DIRECTORY = str(Config().tdwunity_path.joinpath("Documentation/xml").resolve())
 INDENT_4 = "    "
 INDENT_8 = INDENT_4 + INDENT_4
@@ -239,3 +237,22 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
                                                                                "In some cases, namely when you're calling several of these commands "
                                                                                "in sequence, you might want only the last command to set the status. "
                                                                                "See the `set_status` parameter, below."}}
+CS_NAMESPACES = {'UnityEngine': ['Vector3', 'Vector3[]', 'Vector3Int', 'Vector2', 'Vector2Int', 'Quaternion', 'Color',
+                                 'Vector4[]', 'Vector2Int[]', 'GameObject', 'Collider[]', 'MeshFilter[]', 'Renderer[]',
+                                 'Transform[]', 'Dictionary<int, Transform>', 'Color32', 'ArticulationBody',
+                                 'Quaternion[]', 'Rigidbody', 'ConfigurableJoint', 'HingeJoint', 'Light'],
+                 'ProcGen': ['CardinalDirection[]'],
+                 'FBOutput': ['List<PassMask>'],
+                 'Clatter.Core': ['ImpactMaterialUnsized', 'ScrapeMaterial', 'AudioEventType'],
+                 'TDW': ['List<ContainerShape>', 'CachedReplicantBodyPart[]', 'List<CachedSubObject>'],
+                 'TDW.Obi': ['Dictionary<TetherParticleGroup, TetherType>', 'ClothMaterial', 'FluidBase',
+                             'EmitterShapeBase'],
+                 'TDW.Replicant': ['ReplicantBodyPart[]', 'HeldObject[]', 'ReplicantAnimation', 'WheelchairReplicant',
+                                   'ReplicantCollisionListener'],
+                 'TDW.Robotics': ['Magnebot'],
+                 'RootMotion.FinalIK': ['LookAtIK', 'FullBodyBipedIK'],
+                 'RootMotion': ['SolverManager[]'],
+                 'System': ['Action'],
+                 'PA_DronePack': ['PA_DroneController'],
+                 'EVP': ['VehicleController'],
+                 'System.Collections.Generic': ['Dictionary<int, ', 'Dictionary<GameObject, ']}

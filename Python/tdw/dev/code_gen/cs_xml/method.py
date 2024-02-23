@@ -55,7 +55,10 @@ class Method:
                     if parameter_list.attrib["kind"] == "param":
                         for param in parameter_list.findall("parameteritem"):
                             name = param.find("parameternamelist").find("parametername").text
-                            description = param.find("parameterdescription").find("para").text
+                            description_element = param.find("parameterdescription").find("para")
+                            if description_element is None:
+                                print(self.name, name)
+                            description = description_element.text
                             parameter_descriptions[name] = description
                     elif parameter_list.attrib["kind"] == "templateparam":
                         for param in parameter_list.findall("parameteritem"):

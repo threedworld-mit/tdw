@@ -336,6 +336,7 @@ class PyDocGen:
         dev_path_md = dev_path_md.joinpath("code_gen")
         md = PyMdDoc(input_directory=dev_path_py,
                      files=["commands_code_gen.py",
+                            "cached_objects.py",
                             "fb_doc_gen.py",
                             "py_doc_gen.py"])
         md.get_docs(output_directory=dev_path_md)

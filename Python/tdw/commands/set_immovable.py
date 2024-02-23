@@ -5,7 +5,7 @@ from tdw.commands.robot_command import RobotCommand
 
 class SetImmovable(RobotCommand):
     """
-    Set whether or not the root object of the robot is immovable. Its joints will still be moveable.
+    Set whether or not the root object of the robot is immovable. Its joints will still be movable.
     """
 
     def __init__(self, immovable: bool = True, id: int = 0):

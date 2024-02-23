@@ -67,6 +67,10 @@ class CommandsCodeGen:
                     command_tags.append(tag)
             else:
                 description = k.description
+            if k.tdw_third_party:
+                for tag in ["tdw_third_party", "standalone"]:
+                    t = COMMAND_TAGS[tag]
+                    command_tags.append(f"- **{t['title']}:** {t['description']}")
             doc = f"# {k.name}\n\n{description}\n\n" + "\n".join(command_tags)
             if len(command_tags) > 0:
                 doc += "\n\n"

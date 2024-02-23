@@ -1,6 +1,5 @@
 from .add_audio_sensor import AddAudioSensor
 from .add_box_container import AddBoxContainer
-from .add_compass_rose import AddCompassRose
 from .add_constant_force import AddConstantForce
 from .add_cylinder_container import AddCylinderContainer
 from .add_sphere_container import AddSphereContainer
@@ -114,7 +113,6 @@ from .bake_nav_mesh import BakeNavMesh
 from .change_avatar_body import ChangeAvatarBody
 from .clatterize_object import ClatterizeObject
 from .clatterize_robot_joint import ClatterizeRobotJoint
-from .destroy_compass_rose import DestroyCompassRose
 from .create_avatar import CreateAvatar
 from .create_empty_environment import CreateEmptyEnvironment
 from .set_reverb_space_expert import SetReverbSpaceExpert
@@ -376,7 +374,6 @@ from .set_focus_distance import SetFocusDistance
 from .set_hinge_limits import SetHingeLimits
 from .set_img_pass_encoding import SetImgPassEncoding
 from .set_kinematic_state import SetKinematicState
-from .set_legacy_shaders import SetLegacyShaders
 from .set_mass import SetMass
 from .set_motor_force import SetMotorForce
 from .set_motor_target_velocity import SetMotorTargetVelocity
@@ -389,7 +386,6 @@ from .set_post_process import SetPostProcess
 from .set_primitive_visual_material import SetPrimitiveVisualMaterial
 from .set_saturation import SetSaturation
 from .set_screen_space_reflections import SetScreenSpaceReflections
-from .set_semantic_material_to import SetSemanticMaterialTo
 from .set_spring_damper import SetSpringDamper
 from .set_spring_force import SetSpringForce
 from .set_spring_target_position import SetSpringTargetPosition

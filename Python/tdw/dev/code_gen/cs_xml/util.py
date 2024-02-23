@@ -168,8 +168,6 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
                                            "send_data": {"title": "Sends data",
                                                          "description": "This command instructs the build to send output data.\n\n"
                                                                         "    - **Type:** ?"},
-                                           "flex": {"title": "NVIDIA Flex",
-                                                    "description": "This command initializes Flex, or requires Flex to be initialized."},
                                            "obi": {"title": "Obi",
                                                    "description": "This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process."},
                                            "debug": {"title": "Debug-only",
@@ -238,4 +236,11 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
                                                                                "in the `Replicant` output data. This is usually desirable. "
                                                                                "In some cases, namely when you're calling several of these commands "
                                                                                "in sequence, you might want only the last command to set the status. "
-                                                                               "See the `set_status` parameter, below."}}
+                                                                               "See the `set_status` parameter, below."},
+                                           "tdw_third_party": {"title": "TDWThirdParty",
+                                                               "description": "If you're running TDW Standalone with build compiled by the TDW development team, "
+                                                                              "you can always use this command. "
+                                                                              "However, if you want to compile your own Build or write custom C# code in TDWUnity,"
+                                                                              " be aware that this command is only available in the private TDWThirdParty repo."},
+                                           "standalone": {"title": "Standalone",
+                                                          "description": "This command works in Standalone but not in WebGL."}}

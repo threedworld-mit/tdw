@@ -170,18 +170,14 @@ class ModelRecord(_Record):
                                                                    size=clatter_values["size"],
                                                                    amp=clatter_values["amp"],
                                                                    resonance=clatter_values["resonance"])
-        if self.physics_values is None or self.clatter_values is None:
-            self.derive_physics_and_clatter_values()
 
     def derive_physics_and_clatter_values(self) -> None:
         """
         Derive PhysicsValues and ClatterValues from records that are already in the model library.
         """
 
-        from tdw.controller import Controller
-        if "models_full.json" not in Controller.MODEL_LIBRARIANS:
-            Controller.MODEL_LIBRARIANS["models_full.json"] = ModelLibrarian("models_full.json")
-        all_records = [r for r in Controller.MODEL_LIBRARIANS["models_full.json"].records if not r.do_not_use and
+        lib = ModelLibrarian("models_full.json")
+        all_records = [r for r in lib.records if not r.do_not_use and
                        r.name != self.name and r.physics_values is not None and r.clatter_values is not None]
         # Get all models in the same category.
         same_category = [r for r in all_records if r.wcategory == self.wcategory]

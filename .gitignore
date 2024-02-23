@@ -14,3 +14,4 @@ Python/tdw/binaries/Linux/vhacd/log.txt
 Python/backend_utils/asset_bundles/robots/manifest.json
 Python/backend_utils/asset_bundles/models/full_to_core/full_to_core.txt
 Python/backend_utils/containers/manifest.json
+Python/tests/cube*

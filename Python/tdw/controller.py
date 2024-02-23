@@ -266,6 +266,8 @@ class Controller:
                              "id": object_id,
                              "mode": "continuous_speculative"})
         if default_physics_values:
+            if record.physics_values is None or record.clatter_values is None:
+                record.derive_physics_and_clatter_values()
             commands.extend([{"$type": "set_mass",
                               "mass": mass,
                               "id": object_id},

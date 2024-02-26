@@ -5,7 +5,7 @@ from tdw.commands.add_material_command import AddMaterialCommand
 
 class AddMaterial(AddMaterialCommand):
     """
-    Load a material asset bundle into memory. If you want to set the visual material of something in TDW (e.g. <ulink url="#set_visual_material">set_visual_material</ulink>, you must first send this command.
+    Load a material asset bundle into memory. If you want to set the visual material of something in TDW e.g. set_visual_material, you must first send this command.
     """
 
     def __init__(self, url: str, name: str):

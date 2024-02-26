@@ -346,6 +346,7 @@ class PyDocGen:
                      files=["assembly.py",
                             "enum_member.py",
                             "field.py",
+                            "py_field.py",
                             "method.py",
                             "namespace.py",
                             "parameter.py"])
@@ -355,7 +356,7 @@ class PyDocGen:
                               output_directory=dev_path_md,
                               import_path="tdw.dev.code_gen.cs_xml",
                               import_prefix="from tdw.code_gen.dev.cs_xml",
-                              includes=["struct.py", "klass.py"])
+                              includes=["member.py", "enum_type.py", "struct.py", "klass.py"])
         dev_path_py = dev_path_py.joinpath("field_doc_gen")
         dev_path_md = dev_path_md.joinpath("field_doc_gen")
         ci.get_from_directory(input_directory=dev_path_py,

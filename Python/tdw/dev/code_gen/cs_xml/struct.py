@@ -1,26 +1,35 @@
 import re
 from importlib import import_module
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, final
 from xml.etree import ElementTree as Et
 from inflection import underscore, camelize
 from tdw.dev.code_gen.cs_xml.field import Field
 from tdw.dev.code_gen.cs_xml.enum_type import EnumType, enum_from_py
 from tdw.dev.code_gen.cs_xml.method import Method
-from tdw.dev.code_gen.cs_xml.util import parse_para, CS_TO_PY_TYPES, BUILTIN_TYPES, PY_IMPORT_TYPES, STRS, PY_ENUM_TYPES, CS_NAMESPACES
+from tdw.dev.code_gen.cs_xml.util import (parse_para, CS_TO_PY_TYPES, BUILTIN_TYPES, PY_IMPORT_TYPES, STRS,
+                                          PY_ENUM_TYPES, CS_NAMESPACES, html_to_markdown)
 from tdw.dev.code_gen.cs_xml.field_doc_gen.py_field_doc import PyFieldDoc
 from tdw.dev.code_gen.cs_xml.field_doc_gen.cs_field_doc import CsFieldDoc
+from tdw.dev.code_gen.cs_xml.member import Member
+from tdw.dev.code_gen.cs_xml.py_field import PyField
 
 
-class Struct:
+class Struct(Member):
     """
     Definition of a C# struct. This is also the base class of a C# class definition.
     """
 
-    def __init__(self, element: Et.Element, py: bool):
+    def __init__(self, element: Et.Element):
         """
         :param element: The root XML element.
-        :param py: If True, generate Python code.
         """
+
+        compound_name: str = element.find("compoundname").text
+        compound_name_split: List[str] = compound_name.split("::")
+        name = re.sub(r"< (.*?) >", "", compound_name_split[-1])
+        description: str = html_to_markdown(parse_para(element.find("briefdescription")))
+        namespace: str = "::".join(compound_name_split[:-1])
+        super().__init__(name=name, description=description, namespace=namespace)
 
         """:field
         If True, the struct is public.
@@ -38,24 +47,6 @@ class Struct:
         The doxygen ID of this struct. This is used for class inheritance.
         """
         self.id: str = element.attrib["id"]
-        compound_name: str = element.find("compoundname").text
-        compound_name_split: List[str] = compound_name.split("::")
-        """:field
-        The struct name.
-        """
-        self.name: str = compound_name_split[-1]
-        self.name = re.sub(r"< (.*?) >", "", self.name)
-        self.namespace: str = "::".join(compound_name_split[:-1])
-        """:field
-        The Python import path, if this were to be code-genned.
-        """
-        self.import_path: str = ".".join([underscore(n) for n in compound_name_split[:-1]]).replace("web_gl", "webgl")
-        if "tdw_input" in self.import_path:
-            self.import_path = "tdw.commands"
-        """:field
-        A description of the struct.
-        """
-        self.description: str = parse_para(element.find("briefdescription"))
         """:field
         The ID of this class's parent, if any. If this is a struct and not a class, this field's value is always None.
         """
@@ -73,7 +64,7 @@ class Struct:
             if section_kind == "public-attrib":
                 for member in section.findall("memberdef"):
                     if member.attrib["kind"] == "variable":
-                        self.fields.append(Field(element=member, py=py))
+                        self.fields.append(Field(element=member))
             elif section_kind == "public-static-func" or section_kind == "public-func":
                 for member in section.findall("memberdef"):
                     if member.attrib["kind"] == "function":
@@ -96,12 +87,11 @@ class Struct:
         :return: A list of all Python import statements that this class requires.
         """
 
-        # Get import paths.
         typing_imports: List[str] = list()
         imports: List[str] = list()
-        fields = self.fields[:]
-        fields.extend([f for f in self.inherited_fields if f.py_field_type != "TrialStatus"])
-        for field in fields:
+        cs_fields = self._get_fields_for_doc()
+        py_fields = [PyField(field=f) for f in cs_fields if f.cs_field_type != "TrialStatus"]
+        for field in py_fields:
             if "List[" in field.py_field_type:
                 typing_imports.append("List")
             if "Dict[" in field.py_field_type:
@@ -119,7 +109,7 @@ class Struct:
                 imports.append(
                     f"from {PY_IMPORT_TYPES[field.py_field_type]}.{underscore(field.py_field_type)} import {field.py_field_type}")
             else:
-                raise Exception("Invalid field type: " + field.name + " " + field.py_field_type)
+                raise Exception("Invalid field type: " + field.field.name + " " + field.py_field_type)
             if is_collection:
                 collection_types = re.search(r"(?!.*\[)(.*?)]", field.py_field_type).group(1).split(",")
                 collection_types = [collection_type.strip() for collection_type in collection_types]
@@ -130,7 +120,7 @@ class Struct:
                         imports.append(
                             f"from {PY_IMPORT_TYPES[collection_type]}.{underscore(collection_type)} import {collection_type}")
                     else:
-                        raise Exception("Invalid field type: " + field.name + " " + field.py_field_type)
+                        raise Exception("Invalid field type: " + field.field.name + " " + field.py_field_type)
         if len(typing_imports) > 0:
             imports.insert(0, "from typing import " + ", ".join(sorted(list(set(typing_imports)))))
         return list(sorted(set(imports)))
@@ -142,23 +132,24 @@ class Struct:
         :return: Documentation for a code-genned Python class.
         """
 
-        fields = self._get_fields_for_doc()
+        cs_fields = self._get_fields_for_doc()
+        py_fields = [PyField(field=f) for f in cs_fields]
         imports = [self._get_import_path()]
-        for f in fields:
-            if f.py_field_type in PY_IMPORT_TYPES:
-                import_path = f"{PY_IMPORT_TYPES[f.py_field_type]}.{underscore(f.py_field_type)}"
-                imports.append(f"from {import_path} import {f.py_field_type}")
+        for field in py_fields:
+            if field.py_field_type in PY_IMPORT_TYPES:
+                import_path = f"{PY_IMPORT_TYPES[field.py_field_type]}.{underscore(field.py_field_type)}"
+                imports.append(f"from {import_path} import {field.py_field_type}")
         code_prefix = "```python\n" + "\n".join(list(sorted(set(imports)))) + f"\n\n{underscore(self.name)} = {self.name}("
         doc = f"# {self.name}\n\n{self.description.split('doc_gen_tags')[0].strip()}\n\n{code_prefix}"
         # Get the fields.
         field_rows = []
         constructor_fields = []
         # Close the code example without adding fields.
-        if len(fields) == 0:
+        if len(py_fields) == 0:
             doc += ")\n```\n\n"
         else:
             # Add fields that don't have a default value.
-            non_default_fields = [f for f in fields if f.py_default_value is None]
+            non_default_fields = [f for f in py_fields if f.py_default_value is None]
             for f in non_default_fields:
                 # Add an import statement.
                 if f.py_field_type in PY_IMPORT_TYPES:
@@ -168,24 +159,24 @@ class Struct:
                         m = import_module(import_path)
                         value = f"{f.py_field_type}.{list(getattr(m, f.py_field_type))[0].name}"
                     else:
-                        value = f.name
-                elif f.cs_field_type in DEFAULT_VALUES:
-                    value = DEFAULT_VALUES[f.cs_field_type]
+                        value = f.field.name
+                elif f.field.cs_field_type in DEFAULT_VALUES:
+                    value = DEFAULT_VALUES[f.field.cs_field_type]
                 # String enum.
-                elif f.cs_field_type in enums:
-                    value = f'"{enums[f.cs_field_type].members[0].name}"'
+                elif f.field.cs_field_type in enums:
+                    value = f'"{enums[f.field.cs_field_type].members[0].name}"'
                 else:
-                    value = PyFieldDoc(f, enums).value
+                    value = PyFieldDoc(f.field, enums).value
                 constructor_fields.append(value)
-                field_rows.append(f"| `{f.name}` | {f.py_field_type} | {f.description} | |")
+                field_rows.append(f"| `{f.field.name}` | {f.py_field_type} | {f.field.description} | |")
             # Append the fields that don't have a default value to the constructor.
             doc += ", ".join(constructor_fields) + ")\n```\n\n"
             # Add fields that have a default value.
-            default_fields = [f for f in fields if f.py_default_value is not None]
+            default_fields = [f for f in py_fields if f.py_default_value is not None]
             if len(default_fields) > 0:
                 for f in default_fields:
-                    constructor_fields.append(f'{f.name}={f.py_default_value}')
-                    field_rows.append(f"| `{f.name}` | {f.py_field_type} | {f.description} | {f.py_default_value} |")
+                    constructor_fields.append(f'{f.field.name}={f.py_default_value}')
+                    field_rows.append(f"| `{f.field.name}` | {f.py_field_type} | {f.field.description} | {f.py_default_value} |")
                 # Add the constructor fields.
                 doc += code_prefix + ", ".join(constructor_fields) + ")\n```\n\n"
             # Add the table.
@@ -194,11 +185,11 @@ class Struct:
             # Add enum tables.
             cs_enum_names = []
             py_enum_names = []
-            for field in fields:
-                if field.cs_field_type in enums:
-                    cs_enum_names.append(field.cs_field_type)
-                elif field.py_field_type in PY_ENUM_TYPES:
-                    py_enum_names.append(field.py_field_type)
+            for f in py_fields:
+                if f.field.cs_field_type in enums:
+                    cs_enum_names.append(f.field.cs_field_type)
+                elif f.py_field_type in PY_ENUM_TYPES:
+                    py_enum_names.append(f.py_field_type)
             enum_tables = []
             for enum_name in sorted(set(cs_enum_names)):
                 enum = enums[enum_name]
@@ -227,7 +218,8 @@ class Struct:
         :return: Documentation for the original C# struct.
         """
 
-        doc = f"# {self.name}\n\n{self.description}\n\n"
+        description = self.description
+        doc = f"# {self.name}\n\n{description}\n\n"
         struct_namespace = self.namespace.replace('::', '.').strip()
         usings = []
         if struct_namespace != "":
@@ -297,7 +289,8 @@ class Struct:
                 for f in default_fields:
                     default_value = f.cs_default_value.replace("\n", "")
                     field_assignments.append(f"{self.name}.{f.name} = {default_value};")
-                    field_rows.append(f"| `{f.name}` | {f.cs_field_type} | {f.description} | {default_value} |")
+                    field_row = f"| `{f.name}` | {f.cs_field_type} | {f.description} | {default_value} |"
+                    field_rows.append(field_row.replace('<', '\\<').replace('>', '\\>'))
                 # Add field assignment statements.
                 if not self.abstract and not static:
                     doc += f"{code_prefix}\n" + "\n".join(field_assignments) + f"\n{code_suffix}\n```\n\n"
@@ -329,7 +322,6 @@ class Struct:
             enum_tables.append(enum_text)
         if len(enum_tables) > 0:
             doc += "\n\n" + "\n\n".join(enum_tables)
-        doc = doc.replace("<", "\\<").replace(">", "\\>")
         return doc
 
     def _get_fields_for_doc(self) -> List[Field]:
@@ -344,6 +336,10 @@ class Struct:
         :return: This struct's Python import path.
         """
         return f"from tdw.{self.import_path}.{underscore(self.name)} import {self.name}"
+
+    @final
+    def _get_tdwinput_import_path(self) -> str:
+        return "tdw.commands"
 
 
 DEFAULT_VALUES = {'AvatarType': '"A_Img_Caps_Kinematic"'}

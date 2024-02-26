@@ -70,6 +70,19 @@ def recreate_directory(directory: Path) -> None:
         rmtree(str(directory.resolve()))
     directory.mkdir(parents=True)
 
+def html_to_markdown(html: str) -> str:
+    """
+    :param html: HTML text.
+
+    :return: Markdown text.
+    """
+
+    # Code fencing.
+    md = html.replace("<computeroutput>", "`").replace("</computeroutput>", "`")
+    # Links.
+    md = re.sub(r'<ulink url="(.*?)">(.*?)</ulink>', r'[\1](\2)', md)
+    return md
+
 
 CS_TO_PY_TYPES: Dict[str, str] = {"int?": "int",
                                   "string": "str",
@@ -104,8 +117,8 @@ CS_TO_PY_TYPES: Dict[str, str] = {"int?": "int",
                                   "CollisionType[]": "List[str]",
                                   "uint": "int",
                                   "List<PassMask>": "List[str]"}
-STRS: List[str] = ["CarveType", "CarveShape", "SimpleBodyAvatar.SimpleBodyType", "AvatarType", "SurfaceMaterial",
-                   "AudioEventType", "PrimitiveType", "LocalScene", "CarveShape", "Axis", "Frequency", "AntiAliasingMode",
+STRS: List[str] = ["CarveType", "CarveShape", "SimpleBodyType", "AvatarType", "SurfaceMaterial", "AudioEventType",
+                   "PrimitiveType", "LocalScene", "CarveShape", "Axis", "Frequency", "AntiAliasingMode",
                    "DetectionMode", "DriveAxis", "SemanticMaterialType", "AssetBundleType", "Shape", "TriggerShape"]
 CS_TO_PY_DEFAULT_VALUES: Dict[str, str] = {"Color.red": '{"r": 1, "g": 0, "b": 0, "a": 1}',
                                            "Color.blue": '{"r": 0, "g": 0, "b": 1, "a": 1}',
@@ -127,8 +140,6 @@ CS_TO_PY_DEFAULT_VALUES: Dict[str, str] = {"Color.red": '{"r": 1, "g": 0, "b": 0
 PY_TYPES: List[str] = ["str", "int", "float", "bool", "TrialAdder", "TrialStatus", "ContainerTag", "ScrapeMaterial",
                        "ForceMode", "ClothMaterial", "FluidBase", "ObiBackend", "Arm", "MaterialCombineMode",
                        "TetherParticleGroup", "TetherType", "Request", "EmitterSamplingMethod"]
-NOT_PY_TYPES: List[str] = ["Dictionary<string, T>", "ObjectBounds", "PhysicsValues", "AssetBundleURLs", "Room[]",
-                           "InteriorRegion", "InteriorRegion[]", "byte[]", "RaycastHit"]
 XML_DIRECTORY = str(Config().tdwunity_path.joinpath("Documentation/xml").resolve())
 INDENT_4 = "    "
 INDENT_8 = INDENT_4 + INDENT_4
@@ -252,7 +263,8 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
 CS_NAMESPACES = {'UnityEngine': ['Vector3', 'Vector3[]', 'Vector3Int', 'Vector2', 'Vector2Int', 'Quaternion', 'Color',
                                  'Vector4[]', 'Vector2Int[]', 'GameObject', 'Collider[]', 'MeshFilter[]', 'Renderer[]',
                                  'Transform[]', 'Dictionary<int, Transform>', 'Color32', 'ArticulationBody',
-                                 'Quaternion[]', 'Rigidbody', 'ConfigurableJoint', 'HingeJoint', 'Light'],
+                                 'Quaternion[]', 'Rigidbody', 'ConfigurableJoint', 'HingeJoint', 'Light',
+                                 'RaycastHit'],
                  'ProcGen': ['CardinalDirection[]'],
                  'FBOutput': ['List<PassMask>'],
                  'Clatter.Core': ['ImpactMaterialUnsized', 'ScrapeMaterial', 'AudioEventType'],

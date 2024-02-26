@@ -5,7 +5,7 @@ from tdw.commands.object_type_command import ObjectTypeCommand
 
 class SetObjectPhysicsSolverIterations(ObjectTypeCommand):
     """
-    Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: <ulink url="#set_physics_solver_iterations">set_physics_solver_iterations</ulink> which sets the global default number of solver iterations.
+    Set the physics solver iterations for an object, which affects its overall accuracy of the physics engine. See also: set_physics_solver_iterations which sets the global default number of solver iterations.
     """
 
     def __init__(self, id: int, iterations: int = 12):

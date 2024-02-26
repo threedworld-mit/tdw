@@ -5,7 +5,7 @@ from tdw.commands.robot_command import RobotCommand
 
 class SetRobotJointId(RobotCommand):
     """
-    Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent robot, not the joint. The joint is located via <computeroutput>joint_name</computeroutput>. Accordingly, this command only works when all of the names of a robot's joints are unique.
+    Set the ID of a robot joint. This can be useful when loading saved data that contains robot joint IDs. Note that the `id` parameter is for the parent robot, not the joint. The joint is located via `joint_name`. Accordingly, this command only works when all of the names of a robot's joints are unique.
     """
 
     def __init__(self, joint_id: int, joint_name: str, id: int = 0):

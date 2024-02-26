@@ -21,9 +21,9 @@ class StartVideoCaptureOsx(StartVideoCaptureCommand):
         :param framerate: The framerate of the output video.
         :param position: The top-left corner of the screen region that will be captured. On Windows, this is ignored if window_capture == True.
         :param audio: If True, audio will be captured.
-        :param audio_codec: The audio codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink>
-        :param video_codec: The video codec. You should usually keep this set to the default value. See: <ulink url="https://ffmpeg.org/ffmpeg-codecs.html">https://ffmpeg.org/ffmpeg-codecs.html</ulink>
-        :param preset: H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: <ulink url="https://trac.ffmpeg.org/wiki/Encode/H.264">https://trac.ffmpeg.org/wiki/Encode/H.264</ulink>
+        :param audio_codec: The audio codec. You should usually keep this set to the default value. See: [https://ffmpeg.org/ffmpeg-codecs.html](https://ffmpeg.org/ffmpeg-codecs.html)
+        :param video_codec: The video codec. You should usually keep this set to the default value. See: [https://ffmpeg.org/ffmpeg-codecs.html](https://ffmpeg.org/ffmpeg-codecs.html)
+        :param preset: H.264 video encoding only. A preset of parameters that affect encoding speed and compression. See: [https://trac.ffmpeg.org/wiki/Encode/H.264](https://trac.ffmpeg.org/wiki/Encode/H.264)
         :param qp: H.264 video encoding only. This controls the video quality. 0 is lossless.
         :param pixel_format: The pixel format. You should almost never need to set this to anything other than the default value.
         :param log_args: If True, log the command-line arguments to the player log (this can additionally be received by the controller via the send_log_messages command).

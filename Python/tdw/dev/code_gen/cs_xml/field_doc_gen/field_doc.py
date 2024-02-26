@@ -62,12 +62,12 @@ class FieldDoc(ABC):
             self.has_default = False
             # Set the default ID value.
             if field.name == 'id':
-                if field.py_field_type == 'str':
+                if field.cs_field_type == 'string':
                     self.value = '"a"'
-                elif field.py_field_type == 'int':
+                elif field.cs_field_type == 'int':
                     self.value = '0'
                 else:
-                    raise Exception(f'Invalid id field type: {field.name} {field.py_field_type}')
+                    raise Exception(f'Invalid id field type: {field.name} {field.cs_field_type}')
             # Set the default list of IDs value.
             elif field.name == 'ids':
                 if field.cs_field_type == 'str[]':
@@ -79,7 +79,7 @@ class FieldDoc(ABC):
                 elif field.cs_field_type == "List<int>":
                     self.value = self._get_list('0')
                 else:
-                    raise Exception(f'Invalid id field type: {field.name} {field.py_field_type}')
+                    raise Exception(f'Invalid id field type: {field.name} {field.cs_field_type}')
             # Assume that this is a name and a string.
             elif FieldDoc.RE_NAME.match(field.name) is not None:
                 self.value = '"name"'

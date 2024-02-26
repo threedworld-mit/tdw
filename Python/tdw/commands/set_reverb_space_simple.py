@@ -11,7 +11,7 @@ class SetReverbSpaceSimple(CreateReverbSpaceCommand):
     def __init__(self, min_room_volume: float = 27.0, max_room_volume: float = 1000.0, region_id: int = -1, reverb_floor_material: str = "parquet", reverb_ceiling_material: str = "acousticTile", reverb_front_wall_material: str = "smoothPlaster", reverb_back_wall_material: str = "smoothPlaster", reverb_left_wall_material: str = "smoothPlaster", reverb_right_wall_material: str = "smoothPlaster"):
         """
         :param min_room_volume: Minimum possible volume of a room (i.e. 1 x 1 x 1 room).
-        :param max_room_volume: Maximum room volume <ndash /> purely for range-setting for reflectivity calculation.
+        :param max_room_volume: Maximum room volume. This is purely for range-setting for reflectivity calculation.
         :param region_id: The ID of the scene region (room) to enable reverberation in. If -1, the reverb space will encapsulate the entire scene instead of a single room.
         :param reverb_floor_material: The surface material of the reverb space floor.
         :param reverb_ceiling_material: The surface material of the reverb space ceiling.
@@ -27,6 +27,6 @@ class SetReverbSpaceSimple(CreateReverbSpaceCommand):
         """
         self.min_room_volume: float = min_room_volume
         """:field
-        Maximum room volume <ndash /> purely for range-setting for reflectivity calculation.
+        Maximum room volume. This is purely for range-setting for reflectivity calculation.
         """
         self.max_room_volume: float = max_room_volume

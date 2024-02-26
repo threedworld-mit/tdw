@@ -5,7 +5,7 @@ from tdw.commands.command import Command
 
 class SetTargetFramerate(Command):
     """
-    Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink>
+    Set the target render framerate of the build. For more information: [https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html](https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html)
     """
 
     def __init__(self, framerate: int = 1000):

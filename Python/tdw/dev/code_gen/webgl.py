@@ -48,9 +48,8 @@ def assembly_py(assembly: Assembly) -> None:
     :param assembly: The assembly.
     """
 
-    enums = assembly.get_enum_types()
     for namespace in ["TDW::WebGL", "TDW::WebGL::Trials", "TDW::WebGL::Trials::Tests", "TDW::WebGL::TrialAdders"]:
-        namespace_py(assembly.namespaces[namespace], enums)
+        namespace_py(assembly.namespaces[namespace], assembly.enums)
 
 
 def write_py_docs(assembly: Assembly) -> None:
@@ -66,7 +65,7 @@ def write_py_docs(assembly: Assembly) -> None:
     # Write the TrialMessage.
     webgl = assembly.namespaces["TDW::WebGL"]
     trial_message = [c for c in webgl.klasses if c.name == "TrialMessage"][0]
-    root_directory.joinpath("trial_message.md").write_text(trial_message.get_py_doc(assembly.get_enum_types()))
+    root_directory.joinpath("trial_message.md").write_text(trial_message.get_py_doc(assembly.enums))
     # Write the TrialStatus.
     trial_status = [e for e in webgl.enums if e.name == "TrialStatus"][0]
     root_directory.joinpath("trial_status.md").write_text(trial_status.get_py_doc())
@@ -100,9 +99,8 @@ def write_cs_docs(assembly: Assembly) -> None:
     # Write CommandHelpers.
     webgl = assembly.namespaces["TDW::WebGL"]
     trial_status = [c for c in webgl.klasses if c.name == "CommandHelpers"][0]
-    enums = assembly.get_enum_types()
     root_directory.joinpath("command_helpers.md").write_text(trial_status.get_cs_doc(methods=True,
-                                                                                     enums=enums,
+                                                                                     enums=assembly.enums,
                                                                                      static=True))
     # Write the TrialStatus.
     trial_status = [e for e in webgl.enums if e.name == "TrialStatus"][0]
@@ -130,7 +128,6 @@ def write_py_doc_directory(assembly: Assembly, namespace: str, root_directory: P
     """
 
     namespace = assembly.namespaces[namespace]
-    enums = assembly.get_enum_types()
     directory = root_directory.joinpath(folder)
     toc = f"# {inflection.camelize(folder)}\n\n"
     toc_rows = []
@@ -141,7 +138,7 @@ def write_py_doc_directory(assembly: Assembly, namespace: str, root_directory: P
         if k.abstract:
             continue
         filename = f"{inflection.underscore(k.name)}.md"
-        directory.joinpath(filename).write_text(k.get_py_doc(enums=enums))
+        directory.joinpath(filename).write_text(k.get_py_doc(enums=assembly.enums))
         toc_rows.append(f"- [{k.name}]({folder}/{filename})")
     toc += "\n".join(toc_rows)
     root_directory.joinpath(f"{folder}.md").write_text(toc)
@@ -161,13 +158,12 @@ def write_cs_doc_directory(assembly: Assembly, namespace: str, root_directory: P
     directory = root_directory.joinpath(folder)
     toc = f"# {inflection.camelize(folder)}\n\n"
     toc_rows = []
-    enums = assembly.get_enum_types()
     recreate_directory(root_directory)
     if not directory.exists():
         directory.mkdir(parents=True)
     for k in namespace.klasses:
         filename = f"{inflection.underscore(k.name)}.md"
-        directory.joinpath(filename).write_text(k.get_cs_doc(methods=False, enums=enums))
+        directory.joinpath(filename).write_text(k.get_cs_doc(methods=False, enums=assembly.enums))
         toc_rows.append(f"- [{k.name}]({folder}/{filename})")
     toc += "\n".join(toc_rows)
     root_directory.joinpath(f"{folder}.md").write_text(toc)

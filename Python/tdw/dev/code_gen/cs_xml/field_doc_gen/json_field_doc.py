@@ -25,7 +25,7 @@ class JsonFieldDoc(PyJsonFieldDoc):
         if field.cs_field_type in STRS:
             return 'str'
         else:
-            return field.py_field_type
+            return self.py_field.py_field_type
 
     def _get_cloth_material(self) -> str:
         return 'json.dumps(CLOTH_MATERIALS["silk"].__dict__)'
@@ -37,9 +37,9 @@ class JsonFieldDoc(PyJsonFieldDoc):
         return 'json.dumps(DiskEmitter())'
 
     def _get_missing_type(self, field: Field) -> str:
-        if field.py_field_type in PY_ENUM_TYPES:
-            m = import_module(f'{PY_IMPORT_TYPES[field.py_field_type]}.{underscore(field.py_field_type)}')
-            return f'{list(getattr(m, field.py_field_type))[0]}.name'
+        if self.py_field.py_field_type in PY_ENUM_TYPES:
+            m = import_module(f'{PY_IMPORT_TYPES[self.py_field.py_field_type]}.{underscore(self.py_field.py_field_type)}')
+            return f'{list(getattr(m, self.py_field.py_field_type))[0]}.name'
         elif field.cs_field_type == "Axis":
             return '"yaw"'
         else:

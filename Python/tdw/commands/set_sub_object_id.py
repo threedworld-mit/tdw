@@ -5,7 +5,7 @@ from tdw.commands.object_type_command import ObjectTypeCommand
 
 class SetSubObjectId(ObjectTypeCommand):
     """
-    Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the <computeroutput>id</computeroutput> parameter is for the parent object, not the sub-object. The sub-object is located via <computeroutput>sub_object_name</computeroutput>. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
+    Set the ID of a composite sub-object. This can be useful when loading saved data that contains sub-object IDs. Note that the `id` parameter is for the parent object, not the sub-object. The sub-object is located via `sub_object_name`. Accordingly, this command only works when all of the names of a composite object's sub-objects are unique.
     """
 
     def __init__(self, id: int, sub_object_id: int, sub_object_name: str):

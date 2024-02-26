@@ -11,22 +11,22 @@ class SendColliderIntersections(SendDataCommand):
 
     def __init__(self, obj_intersection_ids: List[List[int]] = None, env_intersection_ids: List[int] = None, frequency: str = "once"):
         """
-        :param obj_intersection_ids: Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other.
-        :param env_intersection_ids: A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment.
+        :param obj_intersection_ids: Pairs of object IDs, for example `[[0, 1], [0, 2]]`. Object IDs pairs in this array will be tested for collider intersections with each other.
+        :param env_intersection_ids: A one-dimensional list of object IDs, for example `[0, 1, 2]`. Object IDs in this list will be tested for collider intersections with the environment.
         :param frequency: The frequency at which data is sent.
         """
 
         super().__init__(frequency=frequency)
         if obj_intersection_ids is None:
             """:field
-            Pairs of object IDs, for example <computeroutput>[[0, 1], [0, 2]]</computeroutput>. Object IDs pairs in this array will be tested for collider intersections with each other.
+            Pairs of object IDs, for example `[[0, 1], [0, 2]]`. Object IDs pairs in this array will be tested for collider intersections with each other.
             """
             self.obj_intersection_ids: List[List[int]] = list()
         else:
             self.obj_intersection_ids = obj_intersection_ids
         if env_intersection_ids is None:
             """:field
-            A one-dimensional list of object IDs, for example <computeroutput>[0, 1, 2]</computeroutput>. Object IDs in this list will be tested for collider intersections with the environment.
+            A one-dimensional list of object IDs, for example `[0, 1, 2]`. Object IDs in this list will be tested for collider intersections with the environment.
             """
             self.env_intersection_ids: List[int] = [0]
         else:

@@ -6,7 +6,7 @@ from typing import Dict
 
 class AddMagnebot(Command):
     """
-    Add a Magnebot to the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink>
+    Add a Magnebot to the scene. For a high-level API, see: [https://github.com/alters-mit/magnebot](https://github.com/alters-mit/magnebot)
     """
 
     def __init__(self, id: int = 0, position: Dict[str, float] = None, rotation: Dict[str, float] = None):

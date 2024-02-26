@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import final, Optional, Tuple
+from typing import final, Optional, Tuple, Dict
 from tdw.physics_audio.impact_material import ImpactMaterial
 from tdw.dev.code_gen.cs_xml.field import Field
+from tdw.dev.code_gen.cs_xml.py_field import PyField
 from tdw.dev.code_gen.cs_xml.field_doc_gen.field_doc import FieldDoc
 from tdw.dev.code_gen.cs_xml.enum_member import EnumMember
 from tdw.dev.code_gen.cs_xml.enum_type import EnumType
@@ -13,9 +14,21 @@ class PyJsonFieldDoc(FieldDoc, ABC):
     Abstract base class for Python or JSON example field value generators.
     """
 
+    def __init__(self, field: Field, enums: Dict[str, EnumType]):
+        """
+        :param field: A Field.
+        :param enums: All EnumTypes in the assembly.
+        """
+
+        """:field
+        Python field values.
+        """
+        self.py_field: PyField = PyField(field=field)
+        super().__init__(field=field, enums=enums)
+
     @final
     def _get_default_value(self, field: Field) -> Optional[str]:
-        return field.py_default_value
+        return self.py_field.py_default_value
 
     @final
     def _get_float_suffix(self) -> str:

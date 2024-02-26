@@ -27,7 +27,6 @@ class CommandsCodeGen:
         documentation_directory = config.tdw_docs_path.joinpath("docs/command_api")
         recreate_directory(documentation_directory)
         # Get all enums in the assembly.
-        enums = assembly.get_enum_types()
         klass_docs: Dict[str, List[str]] = dict()
         abs_docs: Dict[str, str] = dict()
         abs_parents: Dict[str, str] = dict()
@@ -81,14 +80,14 @@ class CommandsCodeGen:
                 doc += "\n\n"
             # Add Python and JSON documentation.
             if is_py_command:
-                json = k.get_json_doc(enums)
-                py = re.match(r"# \w+\n\n((.|\n)*)", k.get_py_doc(enums), flags=re.MULTILINE).group(1).replace(description, "").strip()
+                json = k.get_json_doc(assembly.enums)
+                py = re.match(r"# \w+\n\n((.|\n)*)", k.get_py_doc(assembly.enums), flags=re.MULTILINE).group(1).replace(description, "").strip()
                 doc += (f"## Python\n\n{py}\n\nIn Python, you can declare commands as either Python objects or as JSON dictionaries. "
                         "Whenever possible, you should opt for declared objects to prevent potential bugs. "
                         "Until TDW 2.0, commands could only be declared as JSON dictionaries. "
                         f"We have kept this feature in TDW to support legacy projects.\n\n{json}\n\n***\n\n")
             # Add C# documentation.
-            cs = re.match(r"# \w+\n\n((.|\n)*)", k.get_cs_doc(methods=False, enums=enums),
+            cs = re.match(r"# \w+\n\n((.|\n)*)", k.get_cs_doc(methods=False, enums=assembly.enums),
                           flags=re.MULTILINE).group(1).replace(k.description, "").strip()
             doc += f"## C#\n\nThis C# code can only be used in the context of a C# `Trial` subclass.\n\n{cs}"
             klass_docs[k.parent].append(k.name)

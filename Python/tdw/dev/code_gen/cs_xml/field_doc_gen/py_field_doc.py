@@ -26,16 +26,16 @@ class PyFieldDoc(PyJsonFieldDoc):
         return 'DiskEmitter()'
 
     def _get_type(self, field: Field, enums: Dict[str, EnumType]) -> str:
-        return field.py_field_type
+        return self.py_field.py_field_type
 
     def _get_enum_value_suffix(self) -> str:
         return ''
 
     def _get_missing_type(self, field: Field) -> str:
-        if field.py_field_type in PY_ENUM_TYPES:
-            enum = enum_from_py(name=field.py_field_type, import_path=PY_IMPORT_TYPES[field.py_field_type])
+        if self.py_field.py_field_type in PY_ENUM_TYPES:
+            enum = enum_from_py(name=self.py_field.py_field_type, import_path=PY_IMPORT_TYPES[self.py_field.py_field_type])
             return f'{enum.name}.{enum.members[0].name}'
-        elif field.py_field_type.startswith("List["):
+        elif self.py_field.py_field_type.startswith("List["):
             return '[]'
         elif field.cs_field_type == 'Axis':
             return '"yaw"'

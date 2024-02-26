@@ -1,5 +1,5 @@
 import re
-from typing import List
+from typing import List, Optional
 from importlib import import_module
 from xml.etree import ElementTree as Et
 from inflection import underscore
@@ -23,6 +23,10 @@ class EnumType(Member):
         """
 
         super().__init__(name=name, description=description, namespace=namespace)
+        """:field
+        The name of the parent type. Can be None.
+        """
+        self.parent: Optional[str] = None
         """:field
         A list of enum members.
         """
@@ -107,7 +111,7 @@ def enums_from_struct_xml(element: Et.Element) -> List[EnumType]:
             for member in section.findall("memberdef"):
                 if member.attrib["kind"] == "enum":
                     enum = enum_from_xml(member, namespace=namespace)
-                    enum.name = f'{name}.{enum.name}'
+                    enum.parent = name
                     enums.append(enum)
     return enums
 

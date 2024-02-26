@@ -6,7 +6,7 @@ from tdw.commands.non_physics_object_command import NonPhysicsObjectCommand
 
 class TexturedQuadCommand(NonPhysicsObjectCommand, ABC):
     """
-    These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send <ulink url="#set_textured_quad">set_textured_quad</ulink>.
+    These commands allow you to create and edit static quad meshes (a rectangle with four vertices) with textures. To create a textured quad, send the command create_textured_quad. To edit a textured quad, send [#set_textured_quad](set_textured_quad).
     """
 
     def __init__(self, id: int):

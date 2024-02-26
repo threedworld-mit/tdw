@@ -5,7 +5,7 @@ from tdw.commands.send_data_command import SendDataCommand
 
 class SendContainment(SendDataCommand):
     """
-    Send containment data using container shapes. See: <computeroutput>add_box_container</computeroutput>, <computeroutput>add_cylinder_container</computeroutput>, and <computeroutput>add_sphere_container</computeroutput>. Container shapes will check for overlaps with other objects.
+    Send containment data using container shapes. See: `add_box_container`, `add_cylinder_container`, and `add_sphere_container`. Container shapes will check for overlaps with other objects.
     """
 
     def __init__(self, frequency: str = "once"):

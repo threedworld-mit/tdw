@@ -14,7 +14,7 @@ class InitializeClatter(Command):
         :param generate_random_seed: If True, the random seed will be explicitly set.
         :param random_seed: The random seed. Ignored if generate_random_seed == False.
         :param simulation_amp: The overall amplitude of the simulation. The amplitude of generated audio is scaled by this factor. Must be between 0 and 0.99
-        :param min_collision_speed: The minimum collision speed in meters per second. If a <computeroutput>CollisionEvent</computeroutput> has a speed less than this, it is ignored.
+        :param min_collision_speed: The minimum collision speed in meters per second. If a `CollisionEvent` has a speed less than this, it is ignored.
         :param area_new_collision: On a collision stay event, if the previous area is None and the current area is greater than this, the audio event is either an impact or a scrape; see scrape_angle.
         :param scrape_angle: On a collision stay event, there is a large new contact area (see area_new_collision), if the angle in degrees between Vector3.up and the normalized relative velocity of the collision is greater than this value, then the audio event is a scrape. Otherwise, it's an impact.
         :param impact_area_ratio: On a collision stay event, if the area of the collision increases by at least this factor, the audio event is an impact.
@@ -55,7 +55,7 @@ class InitializeClatter(Command):
         """
         self.simulation_amp: float = simulation_amp
         """:field
-        The minimum collision speed in meters per second. If a <computeroutput>CollisionEvent</computeroutput> has a speed less than this, it is ignored.
+        The minimum collision speed in meters per second. If a `CollisionEvent` has a speed less than this, it is ignored.
         """
         self.min_collision_speed: float = min_collision_speed
         """:field

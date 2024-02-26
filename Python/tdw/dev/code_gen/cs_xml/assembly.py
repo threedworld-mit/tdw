@@ -34,10 +34,9 @@ class Assembly:
     """
     IGNORE: List[str] = ["Config", "AvatarBase", "FirstPersonAvatar", "SimpleBodyAvatar", "SingleBodyAvatar"]
 
-    def __init__(self, delete_xml: bool = True, py: bool = True):
+    def __init__(self, delete_xml: bool = True):
         """
         :param delete_xml: If True, delete the generated XML directory after initializing.
-        :param py: If True, try to get Python equivalents of C# types and default values.
         """
 
         # Run doxygen.
@@ -52,7 +51,14 @@ class Assembly:
             chdir(cwd)
         structs: List[Struct] = list()
         klasses: List[Klass] = list()
-        tdw_enums: List[EnumType] = list()
+        """:field
+        Every enum in the assembly. Key = Type name.
+        """
+        self.enums: Dict[str, EnumType] = dict()
+        """:field
+        A dictionary of each namespace in the assembly.
+        """
+        self.namespaces: Dict[str, Namespace] = dict()
         namespace_paths: List[Path] = list()
         for f in xml_directory.iterdir():
             # Ignore these files.
@@ -85,20 +91,20 @@ class Assembly:
                         namespace_name = compound_name.text
                     else:
                         namespace_name = "::".join(namespace_split[:-1])
-                    namespace_py = py and namespace_name not in Assembly.NOT_PY_NAMESPACES
-                    if namespace_name == "TDW" and (kind_def == "class" or kind_def == "struct"):
-                        tdw_enums.extend(enums_from_struct_xml(element=get_root(f.name).find("compounddef")))
+                    if kind_def == "class" or kind_def == "struct":
+                        for e in enums_from_struct_xml(element=get_root(f.name).find("compounddef")):
+                            self.enums[e.name] = e
                     if kind_def == "namespace":
                         namespace_paths.append(f)
                     if namespace_name not in Assembly.NAMESPACES:
                         continue
                     # Add the file path to the list of classes or structs.
                     if kind_def == "class":
-                        klass = Klass(element=get_root(f.name).find("compounddef"), py=namespace_py)
+                        klass = Klass(element=get_root(f.name).find("compounddef"))
                         if klass.name not in Assembly.IGNORE:
                             klasses.append(klass)
                     elif kind_def == "struct":
-                        structs.append(Struct(element=get_root(f.name).find("compounddef"), py=namespace_py))
+                        structs.append(Struct(element=get_root(f.name).find("compounddef")))
         # Inherit fields.
         inheritance: List[Klass] = list()
         for i in range(len(klasses)):
@@ -106,41 +112,23 @@ class Assembly:
         for i in range(len(inheritance)):
             Assembly.set_class_inheritance_parents(inheritance[i], klasses)
         klasses = inheritance
-        """:field
-        A dictionary of each namespace in the assembly.
-        """
-        self.namespaces: Dict[str, Namespace] = dict()
+        # Get the namespace's enums.
         for f in namespace_paths:
             namespace = Namespace(f.name, structs, klasses)
-            # Add enums.
-            if namespace.name == "TDW":
-                namespace.enums.extend(tdw_enums)
+            for e in namespace.enums:
+                self.enums[e.name] = e
             # Add the namespace.
             self.namespaces[namespace.name] = namespace
         # Remove the XML.
         if delete_xml:
             rmtree(str(xml_directory))
-            
-    def get_enum_types(self) -> Dict[str, EnumType]:
-        """
-        :return: A dictionary of all enum types in the assembly.
-        """
-
-        enums: Dict[str, EnumType] = dict()
-        for namespace in self.namespaces.values():
-            for enum in namespace.enums:
-                enums[enum.name] = enum
-            for klass in namespace.klasses:
-                for enum in klass.enums:
-                    enums[enum.name] = enum
-        return enums
 
     def get_enum_tables(self) -> Dict[str, str]:
         """
         :return: A dictionary. Keys: The name of each enum in the assembly. Values: String tables of enum values.
         """
 
-        return {k: v[k].get_table() for (k, v) in self.get_enum_types().items()}
+        return {k: v[k].get_table() for (k, v) in self.enums.items()}
 
     @staticmethod
     def set_class_inheritance_children(klass: Klass, klasses: List[Klass], inheritance: List[Klass]) -> None:

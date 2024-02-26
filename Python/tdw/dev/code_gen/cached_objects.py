@@ -25,7 +25,6 @@ class CachedObjects:
         recreate_directory(documentation_directory)
         klasses: Dict[str, Klass] = {k.id: k for k in assembly.namespaces["TDW"].klasses}
         cached_object_types: List[str] = list()
-        enums = assembly.get_enum_types()
         for k in assembly.namespaces["TDW"].klasses:
             if k.name == "CachedObjectBase":
                 CachedObjects.get_cached_object_types(kid=k.id, cached_object_types=cached_object_types, klasses=klasses)
@@ -38,7 +37,7 @@ class CachedObjects:
             k = klasses[co]
             filename = underscore(k.name) + ".md"
             links.append(f"- [{k.name}]({filename})\n")
-            documentation_directory.joinpath(filename).write_text(k.get_cs_doc(methods=True, enums=enums, static=True))
+            documentation_directory.joinpath(filename).write_text(k.get_cs_doc(methods=True, enums=assembly.enums, static=True))
         toc += "\n".join(links)
         documentation_directory.joinpath("cached_object_api.md").write_text(toc)
 
@@ -51,5 +50,5 @@ class CachedObjects:
 
 
 if __name__ == "__main__":
-    a = Assembly(py=False)
+    a = Assembly()
     CachedObjects.generate(a)

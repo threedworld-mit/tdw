@@ -5,6 +5,7 @@ from xml.etree import ElementTree as Et
 from inflection import underscore
 from tdw.dev.code_gen.cs_xml.struct import Struct
 from tdw.dev.code_gen.cs_xml.field import Field
+from tdw.dev.code_gen.cs_xml.py_field import PyField
 from tdw.dev.code_gen.cs_xml.enum_type import EnumType, enum_from_xml
 from tdw.dev.code_gen.cs_xml.field_doc_gen.json_field_doc import JsonFieldDoc
 
@@ -14,13 +15,12 @@ class Klass(Struct):
     Definition of a class. This is a subclass of `Struct` that includes class inheritance.
     """
 
-    def __init__(self, element: Et.Element, py: bool):
+    def __init__(self, element: Et.Element):
         """
         :param element: The root XML element.
-        :param py: If True, generate Python code.
         """
 
-        super().__init__(element=element, py=py)
+        super().__init__(element=element)
         # Double-check the file itself.
         if not self.abstract:
             text = Path(self.location).read_text(encoding="utf-8")
@@ -84,19 +84,20 @@ class Klass(Struct):
         :return: JSON documentation and code examples.
         """
 
-        fields = self._get_fields_for_doc()
+        cs_fields = self._get_fields_for_doc()
+        py_fields = [PyField(f) for f in cs_fields]
         command = '{"$type": "' + underscore(self.name) + '"'
-        non_default_fields = [f for f in fields if f.py_default_value is None]
+        non_default_fields = [f for f in py_fields if f.py_default_value is None]
         if len(non_default_fields) > 0:
             command += ', '
-            command += ', '.join(['"' + f.name + '": ' + JsonFieldDoc(f, enums).value for f in non_default_fields])
+            command += ', '.join(['"' + f.field.name + '": ' + JsonFieldDoc(f.field, enums).value for f in non_default_fields])
         doc = f'```python\n{command}' + '}\n```'
-        default_fields = [f for f in fields if f.py_default_value is not None]
+        default_fields = [f for f in py_fields if f.py_default_value is not None]
         # There are no default values. Only include the minimal example.
         if len(default_fields) > 0:
             if command.endswith('"') or len(non_default_fields) > 0:
                 command += ', '
-            command += ', '.join(['"' + f.name + '": ' + f.py_default_value for f in default_fields])
+            command += ', '.join(['"' + f.field.name + '": ' + f.py_default_value for f in default_fields])
             command += '}'
             doc += f'\n\n```python\n{command}\n```'
         return doc

@@ -6,7 +6,7 @@ from tdw.commands.robot_command import RobotCommand
 
 class MagnebotCommand(RobotCommand, ABC):
     """
-    These commands are for a Magnebot currently in the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: <ulink url="https://github.com/alters-mit/magnebot">https://github.com/alters-mit/magnebot</ulink>
+    These commands are for a Magnebot currently in the scene. For further documentation, see: Documentation/misc_frontend/robots.md For a high-level API, see: [https://github.com/alters-mit/magnebot](https://github.com/alters-mit/magnebot)
     """
 
     def __init__(self, id: int = 0):

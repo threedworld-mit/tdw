@@ -5,44 +5,28 @@ from xml.etree import ElementTree as Et
 from inflection import underscore
 from tdw.dev.code_gen.cs_xml.enum_member import EnumMember, enum_member_from_xml
 from tdw.dev.code_gen.cs_xml.util import parse_para
+from tdw.dev.code_gen.cs_xml.member import Member
 from tdw.dev.config import Config
 
 
-class EnumType:
+class EnumType(Member):
     """
     Definition of a C# enum type.
     """
 
-    def __init__(self, namespace: str, name: str, description: str, members: List[EnumMember]):
+    def __init__(self, name: str, description: str, namespace: str, members: List[EnumMember]):
         """
-        :param namespace: The namespace that the enum belongs to.
         :param name: The name of the enum.
         :param description: A description of the enum.
+        :param namespace: The namespace that the enum belongs to.
         :param members: A list of enum members.
         """
 
-        """:field
-        The namespace that the enum belongs to.
-        """
-        self.namespace: str = namespace
-        """:field
-        The name of the enum.
-        """
-        self.name: str = name
-        """:field
-        A description of the enum.
-        """
-        self.description: str = description
+        super().__init__(name=name, description=description, namespace=namespace)
         """:field
         A list of enum members.
         """
         self.members: List[EnumMember] = members
-        """:field
-        This enum type's import path, if it were a Python class.
-        """
-        self.import_path: str = ".".join([underscore(n) for n in namespace.split("::")]).replace("web_gl", "webgl")
-        if self.import_path == "tdw_input":
-            self.import_path = "tdw.commands.enums"
 
     def get_py_doc(self) -> str:
         """
@@ -86,6 +70,9 @@ class EnumType:
                 rows.append(f'| {member.name} | {member.description} |')
         table += "\n".join(rows)
         return table
+
+    def _get_tdwinput_import_path(self) -> str:
+        return "tdw.commands.enums"
 
 
 def enum_from_xml(element: Et.Element, namespace: str) -> EnumType:

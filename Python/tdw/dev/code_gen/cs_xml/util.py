@@ -127,7 +127,7 @@ PY_TYPES: List[str] = ["str", "int", "float", "bool", "TrialAdder", "TrialStatus
                        "ForceMode", "ClothMaterial", "FluidBase", "ObiBackend", "Arm", "MaterialCombineMode",
                        "TetherParticleGroup", "TetherType", "Request"]
 NOT_PY_TYPES: List[str] = ["Dictionary<string, T>", "ObjectBounds", "PhysicsValues", "AssetBundleURLs", "Room[]",
-                           "InteriorRegion", "InteriorRegion[]"]
+                           "InteriorRegion", "InteriorRegion[]", "byte[]", "RaycastHit"]
 XML_DIRECTORY = str(Config().tdwunity_path.joinpath("Documentation/xml").resolve())
 INDENT_4 = "    "
 INDENT_8 = INDENT_4 + INDENT_4
@@ -162,11 +162,11 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
                                                           "description": "This command has been deprecated. In the next major TDW update (2.x.0), "
                                                                          "this command will be removed."},
                                            "send_data_once": {"title": "Sends data",
-                                                              "description": "This command instructs the build to send output data.\n\n"
-                                                                             "    - **Exactly once**\n\n"
+                                                              "description": "This command instructs the build to send output data.\n"
+                                                                             "    - **Exactly once**\n"
                                                                              "    - **Type:** ?"},
                                            "send_data": {"title": "Sends data",
-                                                         "description": "This command instructs the build to send output data.\n\n"
+                                                         "description": "This command instructs the build to send output data.\n"
                                                                         "    - **Type:** ?"},
                                            "obi": {"title": "Obi",
                                                    "description": "This command initializes utilizes the Obi physics engine, which requires a specialized scene initialization process."},
@@ -243,4 +243,7 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
                                                                               "However, if you want to compile your own Build or write custom C# code in TDWUnity,"
                                                                               " be aware that this command is only available in the private TDWThirdParty repo."},
                                            "standalone": {"title": "Standalone",
-                                                          "description": "This command works in Standalone but not in WebGL."}}
+                                                          "description": "This command works in Standalone but not in WebGL."},
+                                           "trial": {"title": "Trial Command",
+                                                     "description": "This command cannot be used in a Python Controller or TrialController. "
+                                                                    "It can only be used in a C# Trial."}}

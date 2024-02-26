@@ -73,3 +73,9 @@ class CsFieldDoc(FieldDoc):
 
     def _get_float_suffix(self) -> str:
         return 'f'
+    
+    def _get_missing_type(self, field: Field) -> str:
+        if field.cs_field_type == 'RaycastHit':
+            return 'new RaycastHit()'
+        else:
+            return super()._get_missing_type(field)

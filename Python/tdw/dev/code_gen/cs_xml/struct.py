@@ -344,7 +344,7 @@ class Struct:
 
 DEFAULT_VALUES = {'AvatarType': '"A_Img_Caps_Kinematic"'}
 NAMESPACES = {'UnityEngine': ['Vector3', 'Vector3[]', 'Vector3Int', 'Vector2', 'Vector2Int', 'Quaternion', 'Color',
-                              'Vector4[]', 'Vector2Int[]'],
+                              'Vector4[]', 'Vector2Int[]', 'RaycastHit'],
               'ProcGen': ['CardinalDirection[]'],
               'FBOutput': ['List<PassMask>'],
               'Clatter.Core': ['ImpactMaterialUnsized', 'ScrapeMaterial', 'AudioEventType'],

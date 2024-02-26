@@ -37,7 +37,8 @@ class CachedObjects:
             k = klasses[co]
             filename = underscore(k.name) + ".md"
             links.append(f"- [{k.name}]({filename})\n")
-            documentation_directory.joinpath(filename).write_text(k.get_cs_doc(methods=True, enums=assembly.enums, static=True))
+            doc = f"# {k.name}\n\n{k.description}\n\n{k.get_cs_fields_table()}"
+            documentation_directory.joinpath(filename).write_text(doc)
         toc += "\n".join(links)
         documentation_directory.joinpath("cached_object_api.md").write_text(toc)
 

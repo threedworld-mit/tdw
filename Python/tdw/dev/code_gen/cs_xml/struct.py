@@ -258,7 +258,6 @@ class Struct(Member):
             code_prefix += f"\n\n// More code here.\n\n{self.name} {variable_name} = new {self.name}();"
         if self.abstract:
             doc += "*Abstract class*\n\n"
-        field_rows = []
         field_assignments = []
         # Close the code example without adding fields.
         if len(fields) == 0:
@@ -276,7 +275,6 @@ class Struct(Member):
                 else:
                     value = CsFieldDoc(f, enums).value
                 field_assignments.append(f"{self.name}.{f.name} = {value};")
-                field_rows.append(f"| `{f.name}` | {f.cs_field_type} | {f.description} | |")
             # Add field assignment statements.
             if not self.abstract and not static:
                 if len(field_assignments) > 0:
@@ -289,15 +287,11 @@ class Struct(Member):
                 for f in default_fields:
                     default_value = f.cs_default_value.replace("\n", "")
                     field_assignments.append(f"{self.name}.{f.name} = {default_value};")
-                    field_row = f"| `{f.name}` | {f.cs_field_type} | {f.description} | {default_value} |"
-                    field_rows.append(field_row.replace('<', '\\<').replace('>', '\\>'))
                 # Add field assignment statements.
                 if not self.abstract and not static:
                     doc += f"{code_prefix}\n" + "\n".join(field_assignments) + f"\n{code_suffix}\n```\n\n"
             # Add the table.
-            doc += "## Fields\n\n"
-            doc += "| Parameter | Type | Description | Default |\n| --- | --- | --- | --- |\n"
-            doc += "\n".join(field_rows)
+            doc += self.get_cs_fields_table()
         ms = [m for m in self.methods if m.public]
         if methods and len(ms) > 0:
             if len(fields) > 0:
@@ -323,6 +317,25 @@ class Struct(Member):
         if len(enum_tables) > 0:
             doc += "\n\n" + "\n\n".join(enum_tables)
         return doc
+
+    def get_cs_fields_table(self) -> str:
+        """
+        :return: A table of C# fields.
+        """
+
+        field_rows = []
+        for f in self._get_fields_for_doc():
+            if f.cs_default_value is None:
+                field_row = f"| `{f.name}` | {f.cs_field_type} | {f.description} | |"
+            else:
+                default_value = f.cs_default_value.replace("\n", "")
+                field_row = f"| `{f.name}` | {f.cs_field_type} | {f.description} | {default_value} |"
+            field_rows.append(field_row.replace('<', '\\<').replace('>', '\\>'))
+        # Add the table.
+        table = "## Fields\n\n"
+        table += "| Parameter | Type | Description | Default |\n| --- | --- | --- | --- |\n"
+        table += "\n".join(field_rows)
+        return table
 
     def _get_fields_for_doc(self) -> List[Field]:
         """

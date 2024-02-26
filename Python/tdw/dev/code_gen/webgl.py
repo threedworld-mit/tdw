@@ -131,7 +131,6 @@ def write_py_doc_directory(assembly: Assembly, namespace: str, root_directory: P
     directory = root_directory.joinpath(folder)
     toc = f"# {inflection.camelize(folder)}\n\n"
     toc_rows = []
-    recreate_directory(root_directory)
     if not directory.exists():
         directory.mkdir(parents=True)
     for k in namespace.klasses:
@@ -158,7 +157,6 @@ def write_cs_doc_directory(assembly: Assembly, namespace: str, root_directory: P
     directory = root_directory.joinpath(folder)
     toc = f"# {inflection.camelize(folder)}\n\n"
     toc_rows = []
-    recreate_directory(root_directory)
     if not directory.exists():
         directory.mkdir(parents=True)
     for k in namespace.klasses:

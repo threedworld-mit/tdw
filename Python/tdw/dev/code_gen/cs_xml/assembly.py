@@ -26,6 +26,10 @@ class Assembly:
                              "TDW::WebGL::Trials::Tests", "TDW::WebGL::TrialAdders", "TDW::WebGL::Trials::AddOns",
                              "TDWInput"]
     """:class_var
+    Don't try to generate Python data in these namespaces.
+    """
+    NOT_PY_NAMESPACES: List[str] = ["TDW", "TDW::Robotics"]
+    """:class_var
     Ignore this struct type.
     """
     IGNORE: List[str] = ["Config", "AvatarBase", "FirstPersonAvatar", "SimpleBodyAvatar", "SingleBodyAvatar"]
@@ -81,6 +85,7 @@ class Assembly:
                         namespace_name = compound_name.text
                     else:
                         namespace_name = "::".join(namespace_split[:-1])
+                    namespace_py = py and namespace_name not in Assembly.NOT_PY_NAMESPACES
                     if namespace_name == "TDW" and (kind_def == "class" or kind_def == "struct"):
                         tdw_enums.extend(enums_from_struct_xml(element=get_root(f.name).find("compounddef")))
                     if kind_def == "namespace":
@@ -88,12 +93,12 @@ class Assembly:
                     if namespace_name not in Assembly.NAMESPACES:
                         continue
                     # Add the file path to the list of classes or structs.
-                    if kind_def == "class" and (not py or namespace_name != "TDW"):
-                        klass = Klass(element=get_root(f.name).find("compounddef"), py=py)
+                    if kind_def == "class":
+                        klass = Klass(element=get_root(f.name).find("compounddef"), py=namespace_py)
                         if klass.name not in Assembly.IGNORE:
                             klasses.append(klass)
-                    elif kind_def == "struct" and (not py or namespace_name != "TDW"):
-                        structs.append(Struct(element=get_root(f.name).find("compounddef"), py=py))
+                    elif kind_def == "struct":
+                        structs.append(Struct(element=get_root(f.name).find("compounddef"), py=namespace_py))
         # Inherit fields.
         inheritance: List[Klass] = list()
         for i in range(len(klasses)):

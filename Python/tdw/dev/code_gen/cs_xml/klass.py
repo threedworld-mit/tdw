@@ -27,6 +27,10 @@ class Klass(Struct):
             if f"public abstract class {self.name}" in text:
                 self.abstract = True
         """:field
+        If True, this script is in TDWThirdParty.
+        """
+        self.tdw_third_party: bool = "TDWThirdParty" in self.location
+        """:field
         The IDs of all child classes. This is used to determine class inheritance.
         """
         self.child_ids: List[str] = list()

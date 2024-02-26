@@ -18,7 +18,7 @@ class FieldDoc(ABC):
     """:field
     Use these example values for the documentation code examples. Key = The name of the field. Value = The code examples' example values. 
     """
-    EXAMPLE_VALUES_BY_PARAMETER_NAME: Dict[str, str] = {'image': 'base64imagedatahere',
+    EXAMPLE_VALUES_BY_PARAMETER_NAME: Dict[str, str] = {'image': '"base64imagedata"',
                                                         'pass_masks': '["_img"]',
                                                         'text': '"string"',
                                                         'url': '"https://path/to/asset"',
@@ -74,6 +74,8 @@ class FieldDoc(ABC):
                     self.value = self._get_array('"a"')
                 elif field.cs_field_type == 'int[]':
                     self.value = self._get_array('0')
+                elif field.cs_field_type == 'byte[]':
+                    self.value = self._get_array('0')
                 elif field.cs_field_type == "List<int>":
                     self.value = self._get_list('0')
                 else:
@@ -81,6 +83,8 @@ class FieldDoc(ABC):
             # Assume that this is a name and a string.
             elif FieldDoc.RE_NAME.match(field.name) is not None:
                 self.value = '"name"'
+            elif field.cs_field_type == 'byte[]':
+                self.value = self._get_array('0')
             # Use an example value derived from the field name.
             elif field.name in FieldDoc.EXAMPLE_VALUES_BY_PARAMETER_NAME:
                 self.value = FieldDoc.EXAMPLE_VALUES_BY_PARAMETER_NAME[field.name]

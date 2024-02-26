@@ -4,7 +4,6 @@ from tdw.dev.code_gen.cs_xml.field import Field
 from tdw.dev.code_gen.cs_xml.field_doc_gen.field_doc import FieldDoc
 from tdw.dev.code_gen.cs_xml.enum_member import EnumMember
 from tdw.dev.code_gen.cs_xml.enum_type import EnumType
-from tdw.dev.code_gen.cs_xml.util import CS_NAMESPACES
 
 
 class CsFieldDoc(FieldDoc):
@@ -74,17 +73,13 @@ class CsFieldDoc(FieldDoc):
 
     def _get_float_suffix(self) -> str:
         return 'f'
-
+    
     def _get_missing_type(self, field: Field) -> str:
-        """
-        :param field: The field.
-
-        :return: An example value if the type is missing.
-        """
-
-        if '[]' in field.cs_field_type:
+        if field.cs_field_type == 'RaycastHit':
+            return 'new RaycastHit()'
+        elif '[]' in field.cs_field_type:
             return f'new {field.cs_field_type.split("[")[0]}[0]'
         elif field.cs_field_type == 'Color32':
             return 'new Color32(255, 0, 0)'
         else:
-            return 'default'
+            return super()._get_missing_type(field)

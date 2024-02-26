@@ -44,16 +44,15 @@ class CommandsCodeGen:
         for k in assembly.namespaces["TDWInput"].klasses:
             if not k.is_command:
                 continue
-            # Generate the Python class.
-            struct_py(k)
-            if k.abstract:
-                continue
-            inits.append(f'from .{underscore(k.name)} import {k.name}')
             command_tags = []
+            is_py_command = True
             if "doc_gen_tags" in k.description:
                 split = k.description.split("doc_gen_tags")
                 description = split[0].strip()
                 tags = split[1].split("=")[1].split(",")
+                # Ignore commands that can't be used in Python.
+                if "trial" in tags:
+                    is_py_command = False
                 for tag_key in tags:
                     split = tag_key.split(":")
                     v = COMMAND_TAGS[split[0]]
@@ -67,15 +66,28 @@ class CommandsCodeGen:
                     command_tags.append(tag)
             else:
                 description = k.description
+            # Generate the Python class.
+            if is_py_command:
+                struct_py(k)
+                inits.append(f'from .{underscore(k.name)} import {k.name}')
+            if k.abstract:
+                continue
+            if k.tdw_third_party:
+                for tag in ["tdw_third_party", "standalone"]:
+                    t = COMMAND_TAGS[tag]
+                    command_tags.append(f"- **{t['title']}:** {t['description']}")
             doc = f"# {k.name}\n\n{description}\n\n" + "\n".join(command_tags)
             if len(command_tags) > 0:
                 doc += "\n\n"
-            json = k.get_json_doc(enums)
-            py = re.match(r"# \w+\n\n((.|\n)*)", k.get_py_doc(enums), flags=re.MULTILINE).group(1).replace(description, "").strip()
-            doc += (f"## Python\n\n{py}\n\nIn Python, you can declare commands as either Python objects or as JSON dictionaries. "
-                    "Whenever possible, you should opt for declared objects to prevent potential bugs. "
-                    "Until TDW 2.0, commands could only be declared as JSON dictionaries. "
-                    f"We have kept this feature in TDW to support legacy projects.\n\n{json}\n\n***\n\n")
+            # Add Python and JSON documentation.
+            if is_py_command:
+                json = k.get_json_doc(enums)
+                py = re.match(r"# \w+\n\n((.|\n)*)", k.get_py_doc(enums), flags=re.MULTILINE).group(1).replace(description, "").strip()
+                doc += (f"## Python\n\n{py}\n\nIn Python, you can declare commands as either Python objects or as JSON dictionaries. "
+                        "Whenever possible, you should opt for declared objects to prevent potential bugs. "
+                        "Until TDW 2.0, commands could only be declared as JSON dictionaries. "
+                        f"We have kept this feature in TDW to support legacy projects.\n\n{json}\n\n***\n\n")
+            # Add C# documentation.
             cs = re.match(r"# \w+\n\n((.|\n)*)", k.get_cs_doc(methods=False, enums=enums),
                           flags=re.MULTILINE).group(1).replace(k.description, "").strip()
             doc += f"## C#\n\nThis C# code can only be used in the context of a C# `Trial` subclass.\n\n{cs}"

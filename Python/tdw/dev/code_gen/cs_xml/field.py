@@ -127,7 +127,7 @@ class Field:
             try:
                 self.py_field_type = CS_TO_PY_TYPES[field_type]
             except KeyError as e:
-                print("Invalid key:", field_type, self.name)
+                print("Invalid key:", field_type, self.name, self.id)
                 raise e
         """:field
         If True, the field type is a collection (list, dictionary, etc.).

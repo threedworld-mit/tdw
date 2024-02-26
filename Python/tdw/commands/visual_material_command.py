@@ -6,7 +6,7 @@ from tdw.commands.object_type_command import ObjectTypeCommand
 
 class VisualMaterialCommand(ObjectTypeCommand, ABC):
     """
-    Commands that involve the visual material(s) of an object. See MongoDBRecord.ObjectMaterialData for data of the object's hierarchical substructure.
+    Commands that involve the visual material(s) of an object.
     """
 
     def __init__(self, id: int, object_name: str):

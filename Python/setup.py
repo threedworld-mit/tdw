@@ -8,7 +8,7 @@ readme_path = Path('../README.md')
 if readme_path.exists():
     long_description = readme_path.read_text(encoding='utf-8')
     # Replace relative markdown links with absolute https links.
-    long_description = re.sub(r'\[(.*?)\]\((Documentation/(.*?))\)',
+    long_description = re.sub(r'\[(.*?)]\((Documentation/(.*?))\)',
                               r'[\1](https://github.com/threedworld-mit/tdw/blob/master/\2)',
                               long_description,
                               flags=re.MULTILINE)
@@ -44,5 +44,5 @@ setup(
     keywords='unity simulation ml machine-learning',
     install_requires=['pyzmq', 'numpy', 'pillow', 'tqdm', 'psutil', 'boto3', 'botocore', 'requests',
                       'pyinstaller', 'overrides', 'packaging', 'ikpy==3.1', 'screeninfo', 'websockets',
-                      'inflection', 'py_md_doc']
+                      'inflection', 'py_md_doc', 'inflection']
 )

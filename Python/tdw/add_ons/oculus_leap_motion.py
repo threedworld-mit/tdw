@@ -45,50 +45,6 @@ class OculusLeapMotion(LeapMotion):
         super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
-        self._set_graspable: bool = set_graspable
-        if non_graspable is None:
-            self._non_graspable: List[int] = list()
-        else:
-            self._non_graspable: List[int] = non_graspable
-        self._discrete_collision_detection_mode: bool = discrete_collision_detection_mode
-        """:field
-        A dictionary of [`Transform`](../object_data/transform.md) for each bone in the left hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = [`Transform`](../object_data/transform.md).
-        """
-        self.left_hand_transforms: Dict[FingerBone, Transform] = dict()
-        """:field
-        A dictionary of [`Transform`](../object_data/transform.md) for each bone on the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = [`Transform`](../object_data/transform.md).
-        """
-        self.right_hand_transforms: Dict[FingerBone, Transform] = dict()
-        """:field
-        A dictionary of object IDs for each bone on the left hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
-        """
-        self.left_hand_collisions: Dict[FingerBone, List[int]] = dict()
-        """:field
-        A dictionary of object IDs for each bone in the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
-        """
-        self.right_hand_collisions: Dict[FingerBone, List[int]] = dict()
-        """:field
-        A dictionary of angles per finger bone on the left hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A numpy array of angles in degrees. Some bones have 3 angles and some have 1. See: `LeapMotion.NUM_DOFS`. The palm isn't in this dictionary.
-        """
-        self.left_hand_angles: Dict[FingerBone, np.ndarray] = dict()
-        """:field
-        A dictionary of angles per finger bone on the right hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A numpy array of angles in degrees. Some bones have 3 angles and some have 1. See: `LeapMotion.NUM_DOFS`. The palm isn't in this dictionary.
-        """
-        self.right_hand_angles: Dict[FingerBone, np.ndarray] = dict()
-        """:field
-        If True, the rig and the simulation are done. This can be useful to break a while loop in a controller. Pressing the quit button (see `quit_button`) will set this to True.
-        """
-        self.done = False
-        self._initialize_fingers(transforms=self.left_hand_transforms, collisions=self.left_hand_collisions)
-        self._initialize_fingers(transforms=self.right_hand_transforms, collisions=self.right_hand_collisions)
-        self._max_graspable_mass: float = max_graspable_mass
-        self._min_mass: float = min_mass
-        self._set_object_physic_materials: bool = set_object_physic_materials
-        self._object_static_friction: float = object_static_friction
-        self._object_dynamic_friction: float = object_dynamic_friction
-        self._object_bounciness: float = object_bounciness
-        self._time_step: float = time_step
-        self._button_callbacks: Dict[int, Callable[[], None]] = dict()
         if quit_button is not None:
             self.listen_to_button(quit_button, self._quit)
 

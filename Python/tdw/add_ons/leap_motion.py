@@ -2,7 +2,6 @@ from typing import List, Dict, Callable, Optional
 from abc import ABC, abstractmethod
 import numpy as np
 from tdw.add_ons.vr import VR
-from tdw.vr_data.rig_type import RigType
 from tdw.output_data import OutputData, StaticRigidbodies
 
 
@@ -51,7 +50,7 @@ class LeapMotion(VR, ABC):
         :param quit_button: The button used to quit the program as an integer: 0, 1, 2, or 3. If None, no quit button will be assigned.
         """
 
-        super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
+        super().__init__(output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
@@ -98,8 +97,7 @@ class LeapMotion(VR, ABC):
         self._object_bounciness: float = object_bounciness
         self._time_step: float = time_step
         self._button_callbacks: Dict[int, Callable[[], None]] = dict()
-        if quit_button is not None:
-            self.listen_to_button(quit_button, self._quit)
+
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()

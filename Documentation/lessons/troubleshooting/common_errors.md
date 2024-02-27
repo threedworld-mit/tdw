@@ -112,10 +112,6 @@ If after reading this document you're still unsure how to fix your error, [pleas
 - **Cause:** The app is not damaged. This is a known bug caused by TDW not adhering to MacOS code signing protocols.
 - **Solution:** Move the app and `setup.sh` out of Downloads (for example, into your home directory). Run `setup.sh` (located in the same directory as TDW.app). This will repair TDW.app; you only need to run `setup.sh` once.
 
-### 3. I can't run NVIDIA Flex
-
-- **Cause:** [Flex](../flex/flex.md) doesn't run on OS X.
-
 ## Errors in the Player (build) log
 
 To find the Player log, [read this](https://docs.unity3d.com/Manual/LogFiles.html).

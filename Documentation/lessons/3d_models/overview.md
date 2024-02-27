@@ -26,12 +26,12 @@ for record in librarian.records:
 
 However, there are other model libraries in TDW. Some have free models and others have non-free models that require an access key.
 
-| Model library         | Description                                       | Free |
-| --------------------- | ------------------------------------------------- | ---- |
-| `models_core.json`    | Approximately 400 models.                         | Yes  |
-| `models_full.json`    | Approximately 2400 models.                        | No   |
-| `models_special.json` | Primitives and special-purpose models.            | Yes  |
-| `models_flex.json`    | Primitives optimized for NVIDIA Flex simulations. | Yes  |
+| Model library         | Description                            | Free |
+| --------------------- | -------------------------------------- | ---- |
+| `models_core.json`    | Approximately 400 models.              | Yes  |
+| `models_full.json`    | Approximately 2400 models.             | No   |
+| `models_special.json` | Primitives and special-purpose models. | Yes  |
+| `models_flex.json`    | Primitives                             | Yes  |
 
 You can also import models into TDW and define custom model libraries.
 

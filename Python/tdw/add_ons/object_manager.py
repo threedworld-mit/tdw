@@ -52,7 +52,7 @@ class ObjectManager(AddOn):
 
     ## Usages constraints:
 
-    - This add-on assumes that this is a PhysX simulation, as opposed to a simulation with physics disabled or a Flex simulation.
+    - This add-on assumes that this is a PhysX simulation, as opposed to a simulation with physics disabled.
     - This add-on will record data for *all* objects in the scene. If you only need data for specific objects, you should use low-level TDW commands.
     - By default, this add-on will record [transform data](../object_data/transform.md) but not [rigidbody data](../object_data/rigidbody.md) or [bounds data](../object_data/bound.md). You can set which data the add-on will record in the constructor, but be aware that this can slow down the simulation.
 

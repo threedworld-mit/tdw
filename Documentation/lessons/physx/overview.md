@@ -33,33 +33,15 @@ Advantages:
 Disadvantages:
 
 - Obi is the newest physics engine to be added in TDW and as such hasn't been fully implemented. Right now, it is possible to simulate Obi fluids in TDW but not cloth, softbodies, etc.
-- Obi is much slower than either PhysX or Flex.
+- Obi is much slower than either PhysX.
 
-## 3. Flex
-
-**[Flex](../flex/flex.md)** is a physics engine that supports rigidbodies, softbodies, cloth, and fluids using particles.
-
-Flex is similar to Obi. It was added to TDW years before Obi was added. When possible, we recommend using Obi instead of Flex.
-
-Advantages:
-
-- Flex can simulate physical behavior such as fluids that PhysX can't.
-- Flex is much faster than Obi because it utilizes the GPU while Obi is CPU-only.
-
-Disadvantages:
-
-- Flex doesn't work on OS X.
-- Flex fluids don't work on OS X or Linux.
-- Flex is a discontinued product and has many known bugs that can't be resolved in TDW.
-- Only a subset of TDW [objects](../core_concepts/objects.md) can be used in Flex.
-
-## 4. No physics
+## 3. No physics
 
 It is possible to totally disable physics in TDW, which can be useful if you just want to gather image data.
 
 ## Core concepts of physics engines
 
-PhysX and Flex were both made for video game development, and therefore share a number of core concepts:
+PhysX was both made for video game development, and therefore share a number of core concepts:
 
 - In TDW, rendered frames, output data frames, and physics frames are identical. Every time you call `communicate()`, the build receives and executes commands, advances one physics frame, renders the scene (if applicable) and returns output data. There is an exception to this though, which will be covered later in this tutorial.
 - You don't need to have an agent in the scene to apply a force. Forces can be applied directly to an object.
@@ -67,7 +49,7 @@ PhysX and Flex were both made for video game development, and therefore share a 
 
 ## High-level API: `tdw_physics`
 
-[`tdw_physics`](https://github.com/alters-mit/tdw_physics) is a high-level API for writing physics simulation controllers and outputting data to a standardized format. It includes PhysX and Flex scenarios.
+[`tdw_physics`](https://github.com/alters-mit/tdw_physics) is a high-level API for writing physics simulation controllers and outputting data to a standardized format. 
 
 `tdw_physics` can be very useful for quickly creating physics-enabled trials but it assumes that you know how the underlying system works. For this reason, we recommend that you read the rest of the tutorial and then try using `tdw_physics`.
 
@@ -75,8 +57,7 @@ PhysX and Flex were both made for video game development, and therefore share a 
 
 **Next:**
 
-- **[PhysX](physx.md)** (We recommend you read the PhysX tutorial regardless of whether or not you intend to only use Flex)
-- **[Flex](../flex/flex.md)**
+- **[PhysX](physx.md)** (We recommend you read the PhysX tutorial regardless of whether or not you intend to only use Obi)
 
 [Return to the README](../../../README.md)
 

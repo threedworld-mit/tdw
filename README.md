@@ -172,19 +172,6 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 6. [Colliders and collision materials](Documentation/lessons/obi/colliders_and_collision_materials.md)
 7. [Solvers](Documentation/lessons/obi/solvers.md)
 8. [Obi and robots](Documentation/lessons/obi/robots.md)
-9. [Obi and Flex](Documentation/lessons/obi/obi_and_flex.md)
-
-### 8.3 Physics (Flex)
-
-1. [Flex](Documentation/lessons/flex/flex.md)
-2. [Solid and soft actors](Documentation/lessons/flex/solid_and_soft.md)
-3. [Cloth actors](Documentation/lessons/flex/cloth.md)
-4. [Fluid and source actors](Documentation/lessons/flex/fluid_and_source.md)
-5. [Move, rotate, and scale Flex objects](Documentation/lessons/flex/transform.md)
-6. [`FlexParticles` output data](Documentation/lessons/flex/output_data.md)
-7. [Apply forces to Flex objects](Documentation/lessons/flex/forces.md)
-8. [Reset a Flex scene](Documentation/lessons/flex/reset_scene.md)
-8. [Other Flex commands](Documentation/lessons/flex/other_commands.md)
 
 High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 

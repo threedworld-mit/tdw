@@ -36,11 +36,11 @@ ramp_scene_max
 ramp_with_platform
 ```
 
-It's possible that you'll want to use the `prim_` models if you need to add primitive shapes to a simulation. The `cloth_` and `fluid_` models are used in certain [Flex simulations](../flex/flex.md). 
+It's possible that you'll want to use the `prim_` models if you need to add primitive shapes to a simulation. 
 
 ## `models_flex.json`
 
-`models_flex.json` contains primitives that have been optimized for [Flex simulations](../flex/flex.md).
+`models_flex.json` contains primitives.
 
 ```python
 from tdw.librarian import ModelLibrarian

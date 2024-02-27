@@ -31,7 +31,7 @@ You can optionally render using any cloud rendering service that supports V-Ray 
 - **There must be exactly one camera in the your TDW scene.** If there is no camera or multiple cameras, the V-Ray rendering will fail.
 - **Agents cannot be rendered in V-Ray.** This includes [robots](../robots/overview.md), [Replicants](../replicants/overview.md), and [Magnebots](https://github.com/alters-mit/magnebot). This limitation exists because it is too difficult to convert  body poses from Unity to the V-Ray renderer.
 - **Only certain models and scenes can be rendered in V-Ray.** When you first run a controller with the `VRayExporter` add-on, it will download a list of all valid models and a list of all valid scenes. The lists are saved as `models.txt` and `scenes.txt` , respectively, and are located in `VRayExporter.VRAY_EXPORT_RESOURCES_PATH` (which by default is: `~/vr_export_resources/`). If your controller is trying to render models and scenes *not* on this list, you must replace them with valid models and scenes. The TDW team will add more scenes and models compatible with V-Ray rendering over time.
-- **V-Ray rendering is not compatible with [Obi](../obi/obi.md) or [Flex](../flex/flex.md).** This will be fixed in a later TDW update.
+- **V-Ray rendering is not compatible with [Obi](../obi/obi.md).**
 
 ## Usage
 

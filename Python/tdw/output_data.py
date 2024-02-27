@@ -15,7 +15,6 @@ from tdw.FBOutput import Collision as Col
 from tdw.FBOutput import ImageSensors as ImSe
 from tdw.FBOutput import CameraMatrices as CaMa
 from tdw.FBOutput import IdPassSegmentationColors as IdSC
-from tdw.FBOutput import FlexParticles as Flex
 from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
 from tdw.FBOutput import Meshes as Me
@@ -538,23 +537,6 @@ class IdPassSegmentationColors(OutputData):
 
     def get_segmentation_color(self, index: int) -> np.ndarray:
         return self._colors[index]
-
-
-class FlexParticles(OutputData):
-    def get_data(self) -> Flex.FlexParticles:
-        return Flex.FlexParticles.GetRootAsFlexParticles(self.bytes, 0)
-
-    def get_num_objects(self) -> int:
-        return self.data.ObjectsLength()
-
-    def get_particles(self, index: int) -> np.ndarray:
-        return self.data.Objects(index).ParticlesAsNumpy().view(dtype=np.float32).reshape(-1, 4)
-
-    def get_velocities(self, index: int) -> np.ndarray:
-        return self.data.Objects(index).VelocitiesAsNumpy().view(dtype=np.float32).reshape(-1, 3)
-
-    def get_id(self, index: int) -> int:
-        return self.data.Objects(index).Id()
 
 
 class VRRig(OutputData):

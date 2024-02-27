@@ -602,17 +602,6 @@ class TDWUtils:
             return False
 
     @staticmethod
-    def get_base64_flex_particle_forces(forces: list) -> str:
-        """
-        :param forces: The forces (see Flex documentation for how to arrange this array).
-
-        :return: An array of Flex particle forces encoded in base64.
-        """
-
-        forces = np.array(forces, dtype=np.float32)
-        return base64.b64encode(forces).decode()
-
-    @staticmethod
     def color_to_hashable(color: Union[np.ndarray, Tuple[int, int, int]]) -> int:
         """
         :param color: The color as an RGB array or tuple, where each value is between 0 and 255.

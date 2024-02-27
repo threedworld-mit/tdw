@@ -1,9 +1,9 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
+from tdw.add_ons.fove_human_leap_motion import FoveHumanLeapMotion
 
 """
-Minimal Oculus Leap Motion example.
+Minimal Fove Leap Motion example.
 """
 
 c = Controller()
@@ -21,7 +21,7 @@ commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                   default_physics_values=False,
                                                   mass=1,
                                                   library="models_flex.json"))
-vr = FoveLeapMotion()
+vr = FoveHumanLeapMotion()
 c.add_ons.append(vr)
 c.communicate(commands)
 while not vr.done:

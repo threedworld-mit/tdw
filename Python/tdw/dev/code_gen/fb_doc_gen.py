@@ -267,7 +267,7 @@ class FbDocGen:
         commands = FbDocGen.get_commands(ini)
         root_directory = ini.tdw_path.joinpath("Python/tdw/FBOutput")
 
-        usage_path = ini.tdw_docs_path.joinpath("docs/output_data/usage.txt")
+        usage_path = ini.tdw_docs_path.joinpath("docs/output_data/usage.md")
         usage = usage_path.read_text()
 
         doc = f"# Output Data API\n{usage}\n"

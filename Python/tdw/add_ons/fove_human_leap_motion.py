@@ -1,15 +1,14 @@
 from typing import List, Dict, Callable, Optional
 import numpy as np
-from tdw.add_ons.leap_motion import LeapMotion
+from tdw.add_ons.leap_motion_controller import LeapMotionController
 from tdw.vr_data.rig_type import RigType
-from tdw.vr_data.finger_bone import FingerBone
 from tdw.object_data.transform import Transform
 from tdw.output_data import OutputData, StaticRigidbodies, LeapMotion
 
 
-class FoveHumanLeapMotion(LeapMotion):
+class FoveHumanLeapMotion(LeapMotionController):
     """
-    Add a VR rig to the scene that uses Leap Motion hand tracking.
+    Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
 
     """
 

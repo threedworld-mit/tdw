@@ -6,7 +6,7 @@ from tdw.add_ons.oculus_leap_motion import OculusLeapMotion
 Minimal Oculus Leap Motion example.
 """
 
-c = Controller()
+c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
 z = 0.6
 commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",

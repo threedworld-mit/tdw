@@ -2,10 +2,13 @@ from typing import List, Dict, Callable, Optional
 from abc import ABC, abstractmethod
 import numpy as np
 from tdw.add_ons.vr import VR
-from tdw.output_data import OutputData, StaticRigidbodies
+from tdw.vr_data.finger_bone import FingerBone
+from tdw.object_data.transform import Transform
+from tdw.vr_data.rig_type import RigType
+from tdw.output_data import OutputData, StaticRigidbodies, LeapMotion
 
 
-class LeapMotion(VR, ABC):
+class LeapMotionController(VR, ABC):
     """
     Abstract base class for Leap Motion hand tracking.
 
@@ -21,7 +24,7 @@ class LeapMotion(VR, ABC):
     """
     NUM_DOFS: Dict[FingerBone, int] = {__f: 3 if __f.name[-1] == "0" else 1 for __f in FingerBone if __f != FingerBone.palm}
 
-    def __init__(self, set_graspable: bool = True, output_data: bool = True,
+    def __init__(self, rig_type: RigType =  RigType.oculus_leap_motion, set_graspable: bool = True, output_data: bool = True,
                  position: Dict[str, float] = None, rotation: float = 0, attach_avatar: bool = False,
                  avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None, max_graspable_mass: float = 50,
@@ -50,7 +53,7 @@ class LeapMotion(VR, ABC):
         :param quit_button: The button used to quit the program as an integer: 0, 1, 2, or 3. If None, no quit button will be assigned.
         """
 
-        super().__init__(output_data=output_data, position=position,
+        super().__init__(rig_type=rig_type, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         self._set_graspable: bool = set_graspable
@@ -201,7 +204,7 @@ class LeapMotion(VR, ABC):
         :param collisions: The dictionary of collisions per bone.
         """
 
-        for b in OculusLeapMotion.BONES:
+        for b in LeapMotionController.BONES:
             transforms[b] = Transform(position=np.zeros(shape=3),
                                       rotation=np.zeros(shape=4),
                                       forward=np.zeros(shape=3))
@@ -221,8 +224,8 @@ class LeapMotion(VR, ABC):
         b = 0
         angle_index = 0
         max_num_collisions = leap_motion.get_num_collisions_per_bone()
-        for i in range(len(OculusLeapMotion.BONES)):
-            bone = OculusLeapMotion.BONES[i]
+        for i in range(len(LeapMotionController.BONES)):
+            bone = LeapMotionController.BONES[i]
             # Set the bone transform.
             transforms[bone].position = leap_motion.get_position(hand_index, b)
             transforms[bone].rotation = leap_motion.get_rotation(hand_index, b)
@@ -234,7 +237,7 @@ class LeapMotion(VR, ABC):
                     collisions[bone].append(leap_motion.get_collision_id(hand_index, b, k))
             # Set the angles.
             if bone != FingerBone.palm:
-                dof: int = OculusLeapMotion.NUM_DOFS[bone]
+                dof: int = LeapMotionController.NUM_DOFS[bone]
                 angles[bone] = leap_motion.get_angles(hand_index, angle_index, angle_index + dof)
                 angle_index += dof
             b += 1

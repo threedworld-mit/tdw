@@ -1,13 +1,12 @@
 from typing import List, Dict, Callable, Optional
 import numpy as np
-from tdw.add_ons.leap_motion import LeapMotion
+from tdw.add_ons.leap_motion_controller import LeapMotionController
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.finger_bone import FingerBone
-from tdw.object_data.transform import Transform
-from tdw.output_data import OutputData, StaticRigidbodies, LeapMotion
+from tdw.output_data import OutputData, StaticRigidbodies
 
 
-class OculusLeapMotion(LeapMotion):
+class OculusLeapMotion(LeapMotionController):
     """
     Add a VR rig to the scene that uses Leap Motion hand tracking.
 
@@ -41,8 +40,7 @@ class OculusLeapMotion(LeapMotion):
         :param time_step: The physics time step. Leap Motion tends to work better at this value. The TDW default is 0.01.
         :param quit_button: The button used to quit the program as an integer: 0, 1, 2, or 3. If None, no quit button will be assigned.
         """
-
-        super().__init__(rig_type=RigType.oculus_leap_motion, output_data=output_data, position=position,
+        super().__init__(rig_type = RigType.oculus_leap_motion, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
         if quit_button is not None:
@@ -64,6 +62,7 @@ class OculusLeapMotion(LeapMotion):
         """
 
         self._button_callbacks[button] = callback
+
 
     def _quit(self) -> None:
         """

@@ -18,7 +18,6 @@ from tdw.type_aliases import PATH
 from pathlib import Path
 import boto3
 from botocore.exceptions import ProfileNotFound, ClientError
-import base64
 
 
 class TDWUtils:
@@ -788,8 +787,8 @@ class TDWUtils:
     @staticmethod
     def download_asset_bundles(path: PATH, models: Dict[str, List[str]] = None, scenes: Dict[str, List[str]] = None,
                                materials: Dict[str, List[str]] = None, hdri_skyboxes: Dict[str, List[str]] = None,
-                               robots: Dict[str, List[str]] = None, humanoids: Dict[str, List[str]] = None,
-                               humanoid_animations: Dict[str, List[str]] = None) -> None:
+                               robots: Dict[str, List[str]] = None, replicants: Dict[str, List[str]] = None,
+                               replicant_animations: Dict[str, List[str]] = None) -> None:
         """
         Download asset bundles from TDW's remote S3 server. Create local librarian .json files for each type (models, scenes, etc.).
         This can be useful to speed up the process of scene creation; it is always faster to load local asset bundles though it still takes time to load them into memory.
@@ -806,8 +805,8 @@ class TDWUtils:
         :param materials: A dictionary of materials. Key = The material library, for example `"materials_med.json"`. Value = A list of material names.
         :param hdri_skyboxes: A dictionary of HDRI skyboxes. Key = The HDRI skybox library, for example `"hdri_skyboxes.json"`. Value = A list of HDRI skybox names.
         :param robots: A dictionary of robots. Key = The robot library, for example `"robots.json"`. Value = A list of robot names.
-        :param humanoids: A dictionary of humanoids. Key = The model library, for example `"humanoids.json"`. Value = A list of humanoid names.
-        :param humanoid_animations: A dictionary of humanoid animations. Key = The model library, for example `"humanoid_animations.json"`. Value = A list of humanoid animation names.
+        :param replicants: A dictionary of humanoids. Key = The model library, for example `"replicants.json"`. Value = A list of humanoid names.
+        :param replicant_animations: A dictionary of humanoid animations. Key = The model library, for example `"humanoid_animations.json"`. Value = A list of humanoid animation names.
         """
 
         if isinstance(path, str):
@@ -819,12 +818,12 @@ class TDWUtils:
         private_bucket_prefix: str = "https://tdw-private.s3.amazonaws.com/"
         validated_s3: bool = False
         for asset_bundles, librarian_type, filename in zip([models, scenes, materials, hdri_skyboxes, robots,
-                                                            humanoids, humanoid_animations],
+                                                            replicants, replicant_animations],
                                                            [ModelLibrarian, SceneLibrarian, MaterialLibrarian,
                                                             HDRISkyboxLibrarian, RobotLibrarian, HumanoidLibrarian,
                                                             HumanoidAnimationLibrarian],
                                                            ["models", "scenes", "materials", "hdri_skyboxes",
-                                                            "robots", "humanoids", "humanoid_animations"]):
+                                                            "robots", "replicants", "humanoid_animations"]):
             if asset_bundles is None:
                 continue
             num_total = 0

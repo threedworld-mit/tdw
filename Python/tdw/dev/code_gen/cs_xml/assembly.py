@@ -107,10 +107,15 @@ class Assembly:
                         structs.append(Struct(element=get_root(f.name).find("compounddef")))
         # Inherit fields.
         inheritance: List[Klass] = list()
+        inheritance_ids: List[str] = list()
         for i in range(len(klasses)):
-            Assembly.set_class_inheritance_children(klasses[i], klasses, inheritance)
+            Assembly.set_class_inheritance_children(klasses[i], klasses, inheritance, inheritance_ids)
         for i in range(len(inheritance)):
-            Assembly.set_class_inheritance_parents(inheritance[i], klasses)
+            Assembly.set_class_inheritance_parents(inheritance[i], klasses, inheritance_ids)
+        # This is a command.
+        if "class_t_d_w_input_1_1_command" in inheritance_ids:
+            for i in range(len(inheritance)):
+                inheritance[i].is_command = True
         klasses = inheritance
         # Get the namespace's enums.
         for f in namespace_paths:
@@ -131,15 +136,19 @@ class Assembly:
         return {k: v[k].get_table() for (k, v) in self.enums.items()}
 
     @staticmethod
-    def set_class_inheritance_children(klass: Klass, klasses: List[Klass], inheritance: List[Klass]) -> None:
+    def set_class_inheritance_children(klass: Klass, klasses: List[Klass], inheritance: List[Klass],
+                                       inheritance_ids: List[str]) -> None:
         """
         Iterate through each class to find this class's inherited fields and methods.
 
         :param klass: The class.
         :param klasses: All classes in the assembly.
         :param inheritance: This class's inheritance chain.
+        :param inheritance_ids: This IDs of the classes in the inheritance chain.
         """
 
+        inheritance_ids.append(klass.id)
+        inheritance_ids.extend(klass.child_ids)
         replaced = False
         for i in range(len(inheritance)):
             if inheritance[i].name == klass.name:
@@ -158,18 +167,17 @@ class Assembly:
                         if field.id in field_ids:
                             continue
                         cl.inherited_fields.append(copy(field))
-                    if cl.name == "Command":
-                        klass.is_command = True
-                    Assembly.set_class_inheritance_children(cl, klasses, inheritance)
+                    Assembly.set_class_inheritance_children(cl, klasses, inheritance, inheritance_ids)
 
     @staticmethod
-    def set_class_inheritance_parents(klass: Klass, klasses: List[Klass]) -> None:
+    def set_class_inheritance_parents(klass: Klass, klasses: List[Klass], inheritance_ids: List[str]) -> None:
         """
         Sometimes, doxygen gives us a child class's parents but not vice versa.
         We need to run this method to get the child class's heritage.
 
         :param klass: The class.
         :param klasses: This class's inheritance chain.
+        :param inheritance_ids: This IDs of the classes in the inheritance chain.
         """
 
         # Copy the root parent ID.
@@ -177,8 +185,10 @@ class Assembly:
         # Get all the class's fields.
         field_ids = [f.id for f in klass.fields]
         field_ids.extend([f.id for f in klass.inherited_fields])
+        inheritance_ids.append(klass.id)
         # Loop until we're at a root class.
         while parent_id is not None:
+            inheritance_ids.append(parent_id)
             # Get the parent class.
             cl = [k for k in klasses if k.id == parent_id][0]
             # Inherit the fields.
@@ -191,5 +201,3 @@ class Assembly:
                 field_ids.append(field.id)
             # Set the parent.
             parent_id = copy(cl.parent_id)
-            if cl.name == "Command":
-                klass.is_command = True

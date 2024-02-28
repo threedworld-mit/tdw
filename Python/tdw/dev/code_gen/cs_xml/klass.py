@@ -103,8 +103,8 @@ class Klass(Struct):
         return doc
 
     def _get_fields_for_doc(self) -> List[Field]:
-        fields = super()._get_fields_for_doc()[:]
-        fields.extend(self.inherited_fields)
+        fields = self.inherited_fields[:]
+        fields.extend(super()._get_fields_for_doc()[:])
         return fields
 
     def _get_import_path(self) -> str:

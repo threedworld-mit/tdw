@@ -33,11 +33,7 @@ class LinkTester:
                 if not f.endswith(".md"):
                     continue
                 path = Path(root_dir).joinpath(f)
-                try:
-                    text = path.read_text(encoding="utf-8")
-                except UnicodeDecodeError as e:
-                    print(f)
-                    raise e
+                text = path.read_text(encoding='ISO-8859-1')
                 md_links = md_link.findall(text)
                 md_links: List[str] = [m[1] for m in md_links]
                 bad_links: List[str] = []
@@ -46,9 +42,8 @@ class LinkTester:
                         continue
                     if m.startswith("http"):
                         try:
-                            resp = head(m)
+                            resp = head(m, timeout=10)
                             if resp.status_code != 200:
-                                print(m, resp.status_code)
                                 bad_links.append(m)
                         except:
                             bad_links.append(m)
@@ -57,8 +52,7 @@ class LinkTester:
                         if not link_path.exists():
                             bad_links.append(str(link_path).replace("\\", "/"))
                 if len(bad_links) > 0:
-                    print(f, bad_links)
-                files_with_bad_links[str(path.resolve()).replace("\\", "/")] = bad_links
+                    files_with_bad_links[str(path.resolve()).replace("\\", "/")] = bad_links
         return files_with_bad_links
 
 

@@ -131,12 +131,6 @@ class PyDocGen:
         md.get_docs(output_directory=output_directory.joinpath("robot_data"),
                     import_prefix="from tdw.robot_data")
 
-        # Add documentation for Flex data.
-        md = PyMdDoc(input_directory=c.tdw_path.joinpath("Python/tdw/flex_data"),
-                     files=["fluid_type.py"])
-        md.get_docs(output_directory=output_directory.joinpath("flex_data"),
-                    import_prefix="from tdw.flex_data")
-
         # Add documentation for model tests.
         md = PyMdDoc(input_directory=c.tdw_path.joinpath("Python/tdw/add_ons/model_verifier/model_tests"),
                      files=["model_test.py", "rotate_object_test.py", "missing_materials.py", "physics_quality.py",
@@ -313,6 +307,7 @@ class PyDocGen:
                             "tdw_utils.py",
                             "quaternion_utils.py",
                             "remote_build_launcher.py",
+                            "cardinal_direction.py",
                             "int_pair.py"])
         md.get_docs(output_directory=output_directory)
         vd = VarDoc()

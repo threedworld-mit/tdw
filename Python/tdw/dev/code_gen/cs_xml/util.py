@@ -213,10 +213,7 @@ COMMAND_TAGS: Dict[str, Dict[str, str]] = {"expensive": {"title": "Expensive",
                                                                        "Send the [add_material](add_material.md) command first."},
                                            "sub_object": {"title": "Sub-Object",
                                                           "description": "This command will only work with a sub-object of a Composite Object. "
-                                                                         "The sub-object must be of the correct type. "
-                                                                         "To determine which Composite Objects are currently in the scene, "
-                                                                         "and the types of their sub-objects, "
-                                                                         "send the [send_composite_objects](send_composite_objects.md) command.\n\n"
+                                                                         "The sub-object must be of the correct type."
                                                                          "    - **Type:** ?"},
                                            "depth_of_field": {"title": "Depth of Field",
                                                               "description": "This command modifies the post-processing depth of field. "},

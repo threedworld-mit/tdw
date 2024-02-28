@@ -58,7 +58,7 @@ class CommandsCodeGen:
                     tag_description = v["description"][:]
                     if "?" in tag_description:
                         if split[0] == "send_data" or split[0] == "send_data_once":
-                            tag_description = tag_description.replace("?", f"[`{split[1]}`](../output_data/{underscore(split[1])}.md)")
+                            tag_description = tag_description.replace("?", f"[`{split[1]}`](../output_data/output_data.md#{split[1]})")
                         else:
                             tag_description = tag_description.replace("?", split[1])
                     tag = f"- **{v['title']}:** {tag_description}"

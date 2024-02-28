@@ -104,7 +104,7 @@ class PyDocGen:
 
         # Add documentation for scene bounds.
         md = PyMdDoc(input_directory=c.tdw_path.joinpath("Python/tdw/scene_data"),
-                     files=["scene_bounds.py", "region_bounds.py"])
+                     files=["scene_bounds.py", "region_bounds.py", "interior_region.py", "room.py"])
         md.get_docs(output_directory=output_directory.joinpath("scene_data"))
 
         # Add documentation for object data.
@@ -296,7 +296,7 @@ class PyDocGen:
 
         # Add documentation for lerp data classes.
         ClassInheritance().get_from_directory(input_directory=c.tdw_path.joinpath("Python/tdw/lerp"),
-                                              output_directory=c.tdw_path.joinpath("Documentation/python/lerp"),
+                                              output_directory=output_directory.joinpath("lerp"),
                                               import_path="tdw.lerp",
                                               import_prefix="from tdw.lerp")
 
@@ -308,6 +308,7 @@ class PyDocGen:
                             "quaternion_utils.py",
                             "remote_build_launcher.py",
                             "cardinal_direction.py",
+                            "ordinal_direction.py",
                             "int_pair.py"])
         md.get_docs(output_directory=output_directory)
         vd = VarDoc()

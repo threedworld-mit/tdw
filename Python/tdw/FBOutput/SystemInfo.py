@@ -53,10 +53,34 @@ class SystemInfo(object):
             return self._tab.String(o + self._tab.Pos)
         return None
 
-def SystemInfoStart(builder): builder.StartObject(5)
+    # SystemInfo
+    def Ticks(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(14))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int64Flags, o + self._tab.Pos)
+        return 0
+
+    # SystemInfo
+    def ScreenWidth(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+    # SystemInfo
+    def ScreenHeight(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+        return 0
+
+def SystemInfoStart(builder): builder.StartObject(8)
 def SystemInfoAddOs(builder, os): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(os), 0)
 def SystemInfoAddCpu(builder, cpu): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(cpu), 0)
 def SystemInfoAddBrowser(builder, browser): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(browser), 0)
 def SystemInfoAddGpu(builder, gpu): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(gpu), 0)
 def SystemInfoAddGraphicsApi(builder, graphicsApi): builder.PrependUOffsetTRelativeSlot(4, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(graphicsApi), 0)
+def SystemInfoAddTicks(builder, ticks): builder.PrependInt64Slot(5, ticks, 0)
+def SystemInfoAddScreenWidth(builder, screenWidth): builder.PrependInt32Slot(6, screenWidth, 0)
+def SystemInfoAddScreenHeight(builder, screenHeight): builder.PrependInt32Slot(7, screenHeight, 0)
 def SystemInfoEnd(builder): return builder.EndObject()

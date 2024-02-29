@@ -66,9 +66,7 @@ from tdw.FBOutput import Models as Mods
 from tdw.FBOutput import ObjectScales as ObjSca
 from tdw.FBOutput import PostProcess as PostProc
 from tdw.FBOutput import Scene as Sce
-from tdw.FBOutput import ScreenSize as ScreSi
 from tdw.FBOutput import SystemInfo as SysInfo
-from tdw.FBOutput import TimeSinceStartup as TimeStart
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
@@ -1851,17 +1849,6 @@ class Scene(OutputData):
         return self.data.Url().decode('utf-8')
 
 
-class ScreenSize(OutputData):
-    def get_data(self) -> ScreSi.ScreenSize:
-        return ScreSi.ScreenSize.GetRootAsScreenSize(self.bytes, 0)
-
-    def get_width(self) -> int:
-        return self.data.Width()
-
-    def get_height(self) -> int:
-        return self.data.Height()
-
-
 class ObjectIds:
     def __init__(self, b: bytes):
         self._ids: List[int] = np.frombuffer(b[8:], dtype=np.int32).tolist()
@@ -1954,10 +1941,11 @@ class SystemInfo(OutputData):
     def get_graphics_api(self) -> str:
         return self.data.GraphicsApi().decode('utf-8')
 
-
-class TimeSinceStartup(OutputData):
-    def get_data(self) -> TimeStart.TimeSinceStartup:
-        return TimeStart.TimeSinceStartup.GetRootAsTimeSinceStartup(self.bytes, 0)
-
     def get_ticks(self) -> int:
         return self.data.Ticks()
+
+    def get_screen_width(self) -> int:
+        return self.data.Width()
+
+    def get_screen_height(self) -> int:
+        return self.data.Height()

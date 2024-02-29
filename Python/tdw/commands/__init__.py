@@ -437,7 +437,6 @@ from .send_scales import SendScales
 from .send_scene import SendScene
 from .send_scene_regions import SendSceneRegions
 from .send_screen_positions import SendScreenPositions
-from .send_screen_size import SendScreenSize
 from .send_segmentation_colors import SendSegmentationColors
 from .send_static_composite_objects import SendStaticCompositeObjects
 from .send_static_empty_objects import SendStaticEmptyObjects
@@ -446,7 +445,6 @@ from .send_static_rigidbodies import SendStaticRigidbodies
 from .send_static_robots import SendStaticRobots
 from .send_substructure import SendSubstructure
 from .send_system_info import SendSystemInfo
-from .send_time_since_startup import SendTimeSinceStartup
 from .send_transforms import SendTransforms
 from .send_transform_matrices import SendTransformMatrices
 from .send_version import SendVersion

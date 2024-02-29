@@ -11,8 +11,8 @@ from tdw.robot_data.joint_type import JointType
 from tdw.tdw_utils import TDWUtils
 from tdw.output_data import (OutputData, Version, Transforms, AvatarKinematic, AvatarNonKinematic, AvatarSimpleBody,
                              ImageSensors, AlbedoColors, Models, Scene, ObjectScales, PostProcess, FieldOfView,
-                             ScreenSize, StaticRobot, DynamicRobots, ObjectIds, FastTransforms,
-                             AvatarIds, FastAvatars, FastImageSensors, Framerate)
+                             StaticRobot, DynamicRobots, ObjectIds, FastTransforms, AvatarIds, FastAvatars,
+                             FastImageSensors, Framerate, SystemInfo)
 from tdw.add_ons.add_on import AddOn
 from tdw.controller import Controller
 from tdw.librarian import ModelLibrarian, SceneLibrarian
@@ -215,11 +215,11 @@ class TrialPlayback(AddOn):
                 print(version.get_tdw_version())
                 print(version.get_unity_version())
             # Set the screen size.
-            elif r_id == "scsi":
-                screen_size = ScreenSize(resp[i])
+            elif r_id == "syst":
+                system_info = SystemInfo(resp[i])
                 self.commands.append({"$type": "set_screen_size",
-                                      "width": screen_size.get_width(),
-                                      "height": screen_size.get_height()})
+                                      "width": system_info.get_screen_width(),
+                                      "height": system_info.get_screen_height()})
             # Teleport and rotate objects.
             elif r_id == "tran":
                 transforms = Transforms(resp[i])

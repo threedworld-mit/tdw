@@ -16,7 +16,7 @@ class Drop(Action):
 
     The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
 
-    When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
+    When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../../standalone/lessons/semantic_states/containment.md).
     """
 
     def __init__(self, arm: Arm, dynamic: ReplicantDynamic, max_num_frames: int, offset: Union[float, np.ndarray, Dict[str, float]]):

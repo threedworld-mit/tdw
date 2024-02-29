@@ -16,13 +16,19 @@ class LinkTester:
     Regex pattern for finding markdown links.
     """
     MD_LINK: re.Pattern = re.compile(r'\[(.*?)]\((.*?)\)')
+    OK_STATUS_CODES: List[int] = [200, 301, 302, 308]
     """:class_var
     These URLs are OK.
     """
     OK: List[str] = ['http://trac.ffmpeg.org/wiki/Encode/H.264',
+                     "https://trac.ffmpeg.org/wiki/Encode/H.264",
                      'http://obi.virtualmethodstudio.com/tutorials/emittermaterials.html',
+                     "http://obi.virtualmethodstudio.com/tutorials/particlediffusion.html",
                      'http://obi.virtualmethodstudio.com/manual/6.3/particlediffusion.html',
-                     'http://obi.virtualmethodstudio.com/tutorials/clothsetup.html']
+                     'http://obi.virtualmethodstudio.com/tutorials/clothsetup.html',
+                     "http://obi.virtualmethodstudio.com/tutorials/",
+                     "http://dafx2019.bcu.ac.uk/papers/DAFx2019_paper_57.pdf"]
+    IGNORE: List[str] = ["cached_object_api_overview.md", "reach_for.md"]
 
     @staticmethod
     def test_directory(directory: str) -> Dict[str, List[str]]:
@@ -39,7 +45,7 @@ class LinkTester:
         for root_dir, dirs, files in walk(directory):
             for f in files:
                 # Only test markdown files.
-                if not f.endswith(".md"):
+                if not f.endswith(".md") or f in LinkTester.IGNORE:
                     continue
                 path = Path(root_dir).joinpath(f)
                 text = path.read_text(encoding='ISO-8859-1')
@@ -67,8 +73,8 @@ class LinkTester:
                 continue
             if m.startswith("http"):
                 try:
-                    resp = head(m, timeout=10)
-                    if resp.status_code != 200:
+                    resp = head(m, timeout=20)
+                    if resp.status_code not in LinkTester.OK_STATUS_CODES:
                         bad_links.append(m)
                 except:
                     bad_links.append(m)

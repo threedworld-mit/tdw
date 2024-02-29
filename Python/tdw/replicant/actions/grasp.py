@@ -14,7 +14,7 @@ class Grasp(Action):
 
     The action fails if the hand is already holding an object. Otherwise, the action succeeds.
 
-    When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../lessons/semantic_states/containment.md).
+    When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../../standalone/lessons/semantic_states/containment.md).
     """
 
     def __init__(self, target: int, arm: Arm, dynamic: ReplicantDynamic, angle: Optional[float], axis: Optional[str],

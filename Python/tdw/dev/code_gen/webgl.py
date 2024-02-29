@@ -77,8 +77,8 @@ def write_py_docs(assembly: Assembly) -> None:
     # Write the tests.
     write_py_doc_directory(assembly=assembly,
                            namespace="TDW::WebGL::Trials::Tests",
-                           root_directory=root_directory,
-                           folder="trials/tests")
+                           root_directory=root_directory.joinpath("trials"),
+                           folder="tests")
     # Write the trial adders.
     write_py_doc_directory(assembly=assembly,
                            namespace="TDW::WebGL::TrialAdders",

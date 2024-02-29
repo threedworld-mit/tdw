@@ -25,7 +25,7 @@ class ModelCreator(AssetBundleCreator):
                                    output_directory=EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("cube"))
     ```
 
-    [For more information, read this.](../../lessons/custom_models/custom_models.md)
+    [For more information, read this.](../../standalone/lessons/custom_models/custom_models.md)
     """
 
     def source_file_to_asset_bundles(self, name: str, source_file: PATH, output_directory: PATH,

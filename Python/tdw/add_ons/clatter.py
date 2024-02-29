@@ -13,7 +13,7 @@ from tdw.librarian import MaterialLibrarian, ModelLibrarian, ModelRecord
 
 class Clatter(AddOn):
     """
-    Initialize [Clatter](../../lessons/clatter/overview.md) in TDW.
+    Initialize [Clatter](../../standalone/lessons/clatter/overview.md) in TDW.
     """
 
     # The visual material librarian used for scrape surfaces.
@@ -55,7 +55,7 @@ class Clatter(AddOn):
         :param environment: Either the [`ClatterObject`](../physics_audio/clatter_object.md) used for the environment (floors, walls, etc.), an [`ImpactMaterial`](../physics_audio/impact_material.md), or None. If an `ImpactMaterial`, defaults to: `ClatterObject(environment, 4, 0.5, 0.1, 100)`. If None, defaults to: `ClatterObject(ImpactMaterial.wood_medium, 4, 0.5, 0.1, 100)`.
         :param robot_material: The [`ImpactMaterial`](../physics_audio/impact_material.md) used for robots.
         :param human_material: The [`ImpactMaterial`](../physics_audio/impact_material.md) used for human body parts in VR.
-        :param resonance_audio: If True, use [Resonance Audio](../../lessons/audio/resonance_audio.md) to play audio.
+        :param resonance_audio: If True, use [Resonance Audio](../../standalone/lessons/audio/resonance_audio.md) to play audio.
         :param max_num_events: The maximum number of impacts, scrapes, and rolls that can be processed on a single communicate() call.
         :param dsp_buffer_size: The DSP buffer size. Reduce this to 512 or 256 for reduced latency, but potentially more distortion.
         :param roll_substitute: Roll audio events are not yet supported in Clatter. If a roll is registered, it is instead treated as this value. Options: `"impact"`, `"scrape"`, `"roll"`, `"none"`.

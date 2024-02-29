@@ -222,7 +222,7 @@ class ReplicantBase(AddOn, ABC):
 
         The action fails if the hand is already holding an object. Otherwise, the action succeeds.
 
-        When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../lessons/semantic_states/containment.md).
+        When an object is grasped, it is made kinematic. Any objects contained by the object are parented to it and also made kinematic. For more information regarding containment in TDW, [read this](../../standalone/lessons/semantic_states/containment.md).
 
         :param target: The target object ID.
         :param arm: The [`Arm`](../replicant/arm.md) value for the hand that will grasp the target object.
@@ -268,7 +268,7 @@ class ReplicantBase(AddOn, ABC):
 
         The action ends when the object stops moving or the number of consecutive `communicate()` calls since dropping the object exceeds `self.max_num_frames`.
 
-        When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../lessons/semantic_states/containment.md).
+        When an object is dropped, it is made non-kinematic. Any objects contained by the object are parented to it and also made non-kinematic. For more information regarding containment in TDW, [read this](../../standalone/lessons/semantic_states/containment.md).
 
         :param arm: The [`Arm`](../replicant/arm.md) holding the object.
         :param max_num_frames: Wait this number of `communicate()` calls maximum for the object to stop moving before ending the action.

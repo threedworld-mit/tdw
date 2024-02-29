@@ -32,11 +32,11 @@ class OculusLeapMotion(VR):
                  object_dynamic_friction: float = 1, object_bounciness: float = 0, time_step: float = 0.02,
                  quit_button: Optional[int] = 3):
         """
-        :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
+        :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../standalone/lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
         :param position: The initial position of the VR rig. If None, defaults to `{"x": 0, "y": 0, "z": 0}`
         :param rotation: The initial rotation of the VR rig in degrees.
-        :param attach_avatar: If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
+        :param attach_avatar: If True, attach an [avatar](../../standalone/lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../standalone/lessons/core_concepts/images.md). The avatar's ID is `"vr"`.
         :param avatar_camera_width: The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow.
         :param headset_aspect_ratio: The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices.
         :param headset_resolution_scale: The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75

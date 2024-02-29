@@ -35,6 +35,11 @@ class PyDocGen:
                                                          "VrayExporter": "VRayExporter",
                                                          "v_ray_exporter": "vray_exporter"},
                                               excludes=["avatar_body.py"])
+        # Add a doc for the AvatarBody enum.
+        md = PyMdDoc(input_directory=add_ons_input_directory,
+                     files=["avatar_body.py"])
+        md.get_docs(output_directory=add_ons_output_directory,
+                    import_prefix=add_ons_import_prefix)
         # Add documentation for UI widget add-ons.
         ui_widgets_output_directory = output_directory.joinpath("add_ons/ui_widgets")
         ui_widgets_input_directory = c.tdw_path.joinpath("Python/tdw/add_ons/ui_widgets")

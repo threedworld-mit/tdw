@@ -33,7 +33,7 @@ if __name__ == "__main__":
     # Test documentation URLs.
     if args.links:
         print("Testing all documentation links...")
-        bad_links = LinkTester.test(str(Config().tdw_docs_path.joinpath("docs")))
+        bad_links = LinkTester.test_directory(str(Config().tdw_docs_path.joinpath("docs")))
         if len(bad_links) > 0:
             print(dumps(bad_links, indent=2, sort_keys=True))
         print("...Done!")

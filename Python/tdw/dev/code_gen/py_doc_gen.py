@@ -328,6 +328,7 @@ class PyDocGen:
                             "asset_bundles.py",
                             "config.py",
                             "dockerizer.py",
+                            "link_tester.py",
                             "pypi_uploader.py"])
         md.get_docs(output_directory=dev_path_md)
         vd = VarDoc()
@@ -336,8 +337,9 @@ class PyDocGen:
         dev_path_py = dev_path_py.joinpath("code_gen")
         dev_path_md = dev_path_md.joinpath("code_gen")
         md = PyMdDoc(input_directory=dev_path_py,
-                     files=["commands_code_gen.py",
+                     files=["commands_gen.py",
                             "cached_objects.py",
+                            'webgl_gen.py',
                             "fb_doc_gen.py",
                             "py_doc_gen.py"])
         md.get_docs(output_directory=dev_path_md)

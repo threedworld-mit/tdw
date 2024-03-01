@@ -3,10 +3,11 @@ from json import dumps
 from tdw.dev.config import Config
 from tdw.dev.link_tester import LinkTester
 from tdw.dev.code_gen.cs_xml.assembly import Assembly
-from tdw.dev.code_gen.commands_code_gen import CommandsCodeGen
+from tdw.dev.code_gen.commands_gen import CommandsGen
 from tdw.dev.code_gen.cached_objects import CachedObjects
 from tdw.dev.code_gen.fb_doc_gen import FbDocGen
 from tdw.dev.code_gen.py_doc_gen import PyDocGen
+from tdw.dev.code_gen.webgl_gen import WebGlGen
 
 
 """
@@ -21,9 +22,13 @@ if __name__ == "__main__":
     assembly = Assembly()
     print("Generating code and docs...")
     # Generate command classes and documentation.
-    CommandsCodeGen.generate_commands(assembly)
+    CommandsGen.generate(assembly)
     # Generate cached objects documentation.
     CachedObjects.generate(assembly)
+    # Generate WebGL classes and documentation.
+    WebGlGen.assembly_py(assembly)
+    WebGlGen.write_py_docs(assembly)
+    WebGlGen.write_cs_docs(assembly)
     # Generate output data documentation.
     FbDocGen.generate()
     # Generate Python API documentation.

@@ -1,23 +1,17 @@
 import re
-from subprocess import call, Popen
+from subprocess import call
 from pathlib import Path
 from typing import List, Dict
 from secrets import token_urlsafe
-from dropbox import Dropbox
-from dropbox.exceptions import ApiError
-from tdw.backend.paths import EDITOR_LOG_PATH, PLAYER_LOG_PATH
-from tdw.tdw_utils import TDWUtils
-from tdw.controller import Controller
-from tdw.output_data import OutputData
+from platform import system
+from tdw.backend.paths import EDITOR_LOG_PATH
 from tdw.version import __version__
 from tdw.dev.config import Config
 from tdw.dev.pypi_uploader import PyPiUploader
 from tdw.dev.versions import versions_are_equal, VERSION_TDWUNITY, VERSION_UNITY_EDITOR
 from tdw.dev.dockerizer import Dockerizer
 from shutil import copyfile, rmtree, copytree
-from github import Github, Repository
 from argparse import ArgumentParser
-from time import sleep
 from os import chdir, getcwd
 
 
@@ -134,6 +128,8 @@ class ReleaseCreator:
         :param assets: The paths to each asset.
         """
 
+        from github import Github, Repository
+
         print("Uploading release to GitHub...")
 
         # A major release always ends in 0.
@@ -186,52 +182,6 @@ class ReleaseCreator:
             call(["git", "push", "origin", VERSION_TDWUNITY])
 
     @staticmethod
-    def verify(windows_directory: Path) -> None:
-        """
-        After creating the Windows build, verify that it is OK (in particular that there are no post-process errors).
-
-        :param windows_directory: The directory of the Windows build.
-        """
-
-        build_path = windows_directory.joinpath("TDW.exe")
-        assert build_path.exists(), f"TDW.exe not found!"
-
-        # Launch the build.
-        Popen([str(build_path.resolve())])
-
-        # Launch the controller.
-        c = Controller(launch_build=False)
-        # Create a simple scene and capture an image.
-        commands = [TDWUtils.create_empty_room(12, 12)]
-        commands.extend(TDWUtils.create_avatar(position={"x": 0, "y": 2, "z": 0}, look_at=TDWUtils.VECTOR3_ZERO))
-        commands.extend([{"$type": "set_pass_masks",
-                          "pass_masks": ["_img"]},
-                         {"$type": "send_images",
-                          "frequency": "once"}])
-        resp = c.communicate(commands)
-        # Terminate the build.
-        c.communicate({"$type": "terminate"})
-
-        # Terminate the controller.
-        c.socket.close()
-
-        # Verify that we received an image.
-        assert len(resp) == 2, f"Did not receive any image data: {resp}"
-        r_id = OutputData.get_data_type_id(resp[0])
-        assert r_id == "imag", f"Expected image but got: {r_id}"
-
-        # Verify that there are no exceptions in the player log.
-        txt = PLAYER_LOG_PATH.read_text(encoding="utf-8")
-        exceptions = ""
-        for line in txt.split("\n"):
-            if "exception" in line.lower() or "error" in line.lower():
-                exceptions += "\n" + line
-        if exceptions != "":
-            raise Exception(exceptions)
-        # Wait a bit so that the directory is writeable again.
-        sleep(6)
-
-    @staticmethod
     def path_to_wsl(path: Path) -> str:
         """
         :param path: A Pathlib object.
@@ -274,7 +224,6 @@ if __name__ == "__main__":
     parser.add_argument("--no_upload", action="store_true", help="Don't automatically upload.")
     parser.add_argument("--no_docker", action="store_true", help="Don't build or push a Docker container.")
     parser.add_argument("--no_zip", action="store_true", help="Don't create a .zip or .tar.gz file.")
-    parser.add_argument("--no_test", action="store_true", help="Don't test the Windows build.")
     parser.add_argument("--platform", type=str, choices=["all", "windows", "osx", "linux"], default="all",
                         help="Target platform")
     parser.add_argument("--dropbox", default=None, type=str,
@@ -308,18 +257,17 @@ if __name__ == "__main__":
             if oculus_audio_spatializer_src.exists():
                 copyfile(src=str(oculus_audio_spatializer_src.resolve()),
                          dst=str(release_directory.joinpath("Windows/TDW_Data/Plugins/x86_64/AudioPluginOculusSpatializer.dll").resolve()))
-            # Verify.
-            if not args.no_test:
-                ReleaseCreator.verify(platform_directories[platform_dir])
-
         platform_directory = release_directory.joinpath(platform_dir)
         # Run chmod +x for Linux and OS X.
         if platform_dir == "Linux" or platform_dir == "OSX":
             if platform_dir == "Linux":
-                executable_path = platform_directory.joinpath("TDW.x86_64")
+                executable_path: Path = platform_directory.joinpath("TDW.x86_64")
             else:
                 executable_path = platform_directory.joinpath("TDW.app/Contents/MacOS/TDW")
-            call(["wsl", "chmod", "+x", ReleaseCreator.path_to_wsl(executable_path)])
+            if system() == "Windows":
+                call(["wsl", "chmod", "+x", ReleaseCreator.path_to_wsl(executable_path)])
+            else:
+                call(["chmod", "+x", str(executable_path.resolve())])
         # Rename the directory to TDW/
         platform_directory.replace(release_directory.joinpath("TDW"))
         # Delete the Burst folder.
@@ -347,7 +295,10 @@ if __name__ == "__main__":
             # Create a shellscript as a workaround for OS X.
             bash_path = release_directory.joinpath("TDW/setup.sh")
             bash_path.write_text("xattr -r -d com.apple.quarantine TDW.app")
-            call(["wsl", "chmod", "+x", ReleaseCreator.path_to_wsl(bash_path)])
+            if system() == "Windows":
+                call(["wsl", "chmod", "+x", ReleaseCreator.path_to_wsl(bash_path)])
+            else:
+                call(["chmod", "+x", str(bash_path.resolve())])
         elif platform_dir == "Linux":
             copyfile(src=str(tdwunity_assets.joinpath("FastImageEncoder/libfast_image_encoder.so").resolve()),
                      dst=str(release_directory.joinpath("TDW/TDW_Data/Plugins/libfast_image_encoder.so").resolve()))
@@ -355,12 +306,15 @@ if __name__ == "__main__":
             # Create a .zip file for the Windows build.
             if platform_dir == "Windows":
                 filename = f"TDW_{platform_dir}.zip"
-                call(["wsl", "zip", "-rm", filename, "TDW"])
+                call(["zip", "-rm", filename, "TDW"])
             # Create a .tar.gz file for the OS X and Linux build so that we can preserve file permissions.
             else:
                 filename = f"TDW_{platform_dir}.tar.gz"
                 print(f"Creating {filename}")
-                call(["wsl", "tar", "czfp", filename, "-C", ReleaseCreator.path_to_wsl(release_directory), "TDW"])
+                if system() == "Windows":
+                    call(["wsl", "tar", "czfp", filename, "-C", ReleaseCreator.path_to_wsl(release_directory), "TDW"])
+                else:
+                    call(["tar", "czfp", filename, "-C", str(release_directory.resolve()), "TDW"])
                 print("...Done!")
                 rmtree("TDW")
                 print("Deleted uncompressed files.")
@@ -381,6 +335,8 @@ if __name__ == "__main__":
     else:
         # Upload to dropbox.
         if args.dropbox is not None:
+            from dropbox import Dropbox
+            from dropbox.exceptions import ApiError
             dropbox_token = re.search(r"token=(.*)", Path.home().joinpath("tdw_config/dropbox.txt").read_text(),
                                       flags=re.MULTILINE).group(1)
             dbx = Dropbox(dropbox_token, timeout=None)

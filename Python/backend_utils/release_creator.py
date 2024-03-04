@@ -31,10 +31,7 @@ class ReleaseCreator:
     PLATFORMS = {"Windows": {"extension": ".exe", "call": ["-buildWindows64Player"]},
                  "OSX": {"extension": ".app", "call": ["-buildOSXUniversalPlayer"]},
                  "Linux": {"extension": ".x86_64", "call": ["-buildLinux64Player"]}}
-    # Use this argument when calling Unity.
-    PROJECT_PATH_ARG = "-projectPath"
     CONFIG: Config = Config()
-    TDWUNITY_PATH = str(CONFIG.tdwunity_path.joinpath("TDWUnity").resolve())
     DEST_PATH = CONFIG.tdwunity_path.joinpath("bin")
     if not DEST_PATH.exists():
         DEST_PATH.mkdir(parents=True)
@@ -53,7 +50,8 @@ class ReleaseCreator:
         Returns the beginning of a Unity Editor call.
         """
 
-        return [ReleaseCreator.get_editor_path(), "-quit", "-batchmode"]
+        return [ReleaseCreator.get_editor_path(), "-quit", "-batchmode", "-projectPath",
+                str(ReleaseCreator.CONFIG.tdwunity_path.joinpath("TDWUnity").resolve())]
 
     @staticmethod
     def create_platform_directories() -> (Path, Dict[str, Path]):
@@ -88,9 +86,7 @@ class ReleaseCreator:
 
         build_path = platform_path.joinpath(f"TDW{ReleaseCreator.PLATFORMS[platform]['extension']}")
 
-        build_call = ReleaseCreator.get_unity_call()[:]
-        build_call.extend([ReleaseCreator.PROJECT_PATH_ARG,
-                           ReleaseCreator.TDWUNITY_PATH])
+        build_call = ReleaseCreator.get_unity_call()
         build_call.extend(ReleaseCreator.PLATFORMS[platform]["call"])
         build_call.append(str(build_path.resolve()))
         print(f"Creating build for {platform}...")
@@ -125,9 +121,7 @@ class ReleaseCreator:
         Reset the build target to Windows.
         """
 
-        build_call = ReleaseCreator.get_unity_call()[:]
-        build_call.extend([ReleaseCreator.PROJECT_PATH_ARG,
-                           ReleaseCreator.TDWUNITY_PATH])
+        build_call = ReleaseCreator.get_unity_call()
         build_call.extend(["-executeMethod", "BuildTargeter.SetWindowsTarget"])
         call(build_call)
         print("Reset build target to Windows")
@@ -305,14 +299,15 @@ if __name__ == "__main__":
 
         # Create the build.
         ReleaseCreator.create_build(platform_dir, platform_directories[platform_dir])
+        tdw_third_party_path: Path = ReleaseCreator.CONFIG.tdwunity_path.joinpath("TDWUnity/Assets/TDWThirdParty").resolve()
 
         if platform_dir == "Windows":
             # Copy the Oculus audio spatializer .dll file.
-            oculus_audio_spatializer_src = ReleaseCreator.CONFIG.tdwunity_path.joinpath(
-                "TDWBase/Assets/Oculus/Spatializer/Plugins/x86_64/AudioPluginOculusSpatializer.dll")
-            oculus_audio_spatializer_dst = release_directory.joinpath(
-                "Windows/TDW_Data/Plugins/x86_64/AudioPluginOculusSpatializer.dll")
-            copyfile(src=str(oculus_audio_spatializer_src.resolve()), dst=str(oculus_audio_spatializer_dst.resolve()))
+            oculus_audio_spatializer_src = tdw_third_party_path.joinpath(
+                "Oculus/Spatializer/Plugins/x86_64/AudioPluginOculusSpatializer.dll").resolve()
+            if oculus_audio_spatializer_src.exists():
+                copyfile(src=str(oculus_audio_spatializer_src.resolve()),
+                         dst=str(release_directory.joinpath("Windows/TDW_Data/Plugins/x86_64/AudioPluginOculusSpatializer.dll").resolve()))
             # Verify.
             if not args.no_test:
                 ReleaseCreator.verify(platform_directories[platform_dir])
@@ -338,33 +333,24 @@ if __name__ == "__main__":
         # Copy files.
         if platform_dir == "OSX":
             # Copy the Resonance Audio .bundle plugin file.
-            resonance_audio_src = tdwunity_assets.joinpath(
-                "ResonanceAudio/Plugins/x86_64/audiopluginresonanceaudio.bundle")
-            resonance_audio_dst = release_directory.joinpath(
-                "TDW/TDW.app/Contents/PlugIns/audiopluginresonanceaudio.bundle")
-            copyfile(src=str(resonance_audio_src.resolve()), dst=str(resonance_audio_dst.resolve()))
+            copyfile(src=str(tdwunity_assets.joinpath("ResonanceAudio/Plugins/x86_64/audiopluginresonanceaudio.bundle").resolve()),
+                     dst=str(release_directory.joinpath("TDW/TDW.app/Contents/PlugIns/audiopluginresonanceaudio.bundle").resolve()))
             # Copy the Oculus audio spatializer .bundle directory.
-            oculus_audio_spatializer_src = tdwunity_assets.joinpath(
+            oculus_audio_spatializer_src = tdw_third_party_path.joinpath(
                 "Oculus/Spatializer/Plugins/AudioPluginOculusSpatializer.bundle")
-            oculus_audio_spatializer_dst = release_directory.joinpath(
-                "TDW/TDW.app/Contents/PlugIns/AudioPluginOculusSpatializer.bundle")
-            copytree(src=str(oculus_audio_spatializer_src.resolve()), dst=str(oculus_audio_spatializer_dst.resolve()))
+            if oculus_audio_spatializer_src.exists():
+                copytree(src=str(oculus_audio_spatializer_src.resolve()),
+                         dst=str(release_directory.joinpath("TDW/TDW.app/Contents/PlugIns/AudioPluginOculusSpatializer.bundle").resolve()))
             # Copy fast_image_encoder.
-            fast_image_encoder_src = tdwunity_assets.joinpath(
-                "FastImageEncoder/libfast_image_encoder.dylib")
-            fast_image_encoder_dst = release_directory.joinpath(
-                "TDW/TDW.app/Contents/PlugIns/libfast_image_encoder.dylib")
-            copyfile(src=str(fast_image_encoder_src.resolve()), dst=str(fast_image_encoder_dst.resolve()))
+            copyfile(src=str(tdwunity_assets.joinpath("FastImageEncoder/libfast_image_encoder.dylib").resolve()),
+                     dst=str(release_directory.joinpath("TDW/TDW.app/Contents/PlugIns/libfast_image_encoder.dylib")))
             # Create a shellscript as a workaround for OS X.
             bash_path = release_directory.joinpath("TDW/setup.sh")
             bash_path.write_text("xattr -r -d com.apple.quarantine TDW.app")
             call(["wsl", "chmod", "+x", ReleaseCreator.path_to_wsl(bash_path)])
         elif platform_dir == "Linux":
-            fast_image_encoder_src = tdwunity_assets.joinpath(
-                "FastImageEncoder/libfast_image_encoder.so")
-            fast_image_encoder_dst = release_directory.joinpath(
-                "TDW/TDW_Data/Plugins/libfast_image_encoder.so")
-            copyfile(src=str(fast_image_encoder_src.resolve()), dst=str(fast_image_encoder_dst.resolve()))
+            copyfile(src=str(tdwunity_assets.joinpath("FastImageEncoder/libfast_image_encoder.so").resolve()),
+                     dst=str(release_directory.joinpath("TDW/TDW_Data/Plugins/libfast_image_encoder.so").resolve()))
         if not args.no_zip:
             # Create a .zip file for the Windows build.
             if platform_dir == "Windows":

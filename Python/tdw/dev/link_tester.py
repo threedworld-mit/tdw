@@ -31,9 +31,10 @@ class LinkTester:
     IGNORE: List[str] = ["cached_object_api_overview.md", "reach_for.md"]
 
     @staticmethod
-    def test_directory(directory: str) -> Dict[str, List[str]]:
+    def test_directory(directory: str, http: bool) -> Dict[str, List[str]]:
         """
         :param directory: The root directory.
+        :param http: If True, test HTTP and HTTPS URLs.
 
         :return: A dictionary: Key = File path. Value = A list of bad links.
         """
@@ -49,18 +50,19 @@ class LinkTester:
                     continue
                 path = Path(root_dir).joinpath(f)
                 text = path.read_text(encoding='ISO-8859-1')
-                bad_links = LinkTester.test_text(text, path)
+                bad_links = LinkTester.test_text(text, path, http)
                 if len(bad_links) > 0:
                     files_with_bad_links[str(path.resolve()).replace("\\", "/")] = bad_links
         return files_with_bad_links
 
     @staticmethod
-    def test_text(text: str, path: Path) -> List[str]:
+    def test_text(text: str, path: Path, http: bool) -> List[str]:
         """
         Test the text of a file.
 
         :param text: The text of a file.
         :param path: The path to the file.
+        :param http: If True, test HTTP and HTTPS URLs.
 
         :return: A list of bad links.
         """
@@ -72,6 +74,8 @@ class LinkTester:
             if m in LinkTester.OK:
                 continue
             if m.startswith("http"):
+                if not http:
+                    continue
                 try:
                     resp = head(m, timeout=20)
                     if resp.status_code not in LinkTester.OK_STATUS_CODES:
@@ -86,5 +90,10 @@ class LinkTester:
 
 
 if __name__ == "__main__":
-    result = LinkTester.test_directory(str(Config().tdw_docs_path.joinpath("docs")))
+    from argparse import ArgumentParser
+
+    parser = ArgumentParser()
+    parser.add_argument("--http", action="store_true", help="Test HTTP and HTTPS URLs")
+    args = parser.parse_args()
+    result = LinkTester.test_directory(directory=str(Config().tdw_docs_path.joinpath("docs")), http=args.http)
     print(dumps(result, indent=2, sort_keys=True))

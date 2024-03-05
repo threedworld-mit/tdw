@@ -25,7 +25,7 @@ class ObjectStatic:
         """
         self.object_id: int = object_id
         """:field
-        [The name of the model.](https://github.com/threedworld-mit/tdw/blob/master/Documentation/python/librarian/model_librarian.md)
+        [The name of the model.](../../librarian/model_librarian.md)
         """
         self.name: str = name.lower()
         """:field

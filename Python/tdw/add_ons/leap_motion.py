@@ -5,10 +5,11 @@ from tdw.add_ons.vr import VR
 from tdw.vr_data.finger_bone import FingerBone
 from tdw.object_data.transform import Transform
 from tdw.vr_data.rig_type import RigType
-from tdw.output_data import OutputData, StaticRigidbodies, LeapMotion
+from tdw.output_data import OutputData, StaticRigidbodies
+from tdw.output_data import LeapMotion as LeapMotionOutputData
 
 
-class LeapMotionController(VR, ABC):
+class LeapMotion(VR, ABC):
     """
     Abstract base class for Leap Motion hand tracking.
 
@@ -153,13 +154,13 @@ class LeapMotionController(VR, ABC):
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "leap":
-                leap_motion = LeapMotion(resp[i])
-                self._set_hand(leap_motion=leap_motion,
+                leap_motion = LeapMotionOutputData(resp[i])
+                self._set_hand(leap_motion_data=leap_motion,
                                hand_index=0,
                                transforms=self.left_hand_transforms,
                                collisions=self.left_hand_collisions,
                                angles=self.left_hand_angles)
-                self._set_hand(leap_motion=leap_motion,
+                self._set_hand(leap_motion_data=leap_motion,
                                hand_index=1,
                                transforms=self.right_hand_transforms,
                                collisions=self.right_hand_collisions,
@@ -204,17 +205,17 @@ class LeapMotionController(VR, ABC):
         :param collisions: The dictionary of collisions per bone.
         """
 
-        for b in LeapMotionController.BONES:
+        for b in LeapMotion.BONES:
             transforms[b] = Transform(position=np.zeros(shape=3),
                                       rotation=np.zeros(shape=4),
                                       forward=np.zeros(shape=3))
             collisions[b] = list()
 
     @staticmethod
-    def _set_hand(leap_motion: LeapMotion, hand_index: int, transforms: Dict[FingerBone, Transform],
+    def _set_hand(leap_motion_data: LeapMotionOutputData, hand_index: int, transforms: Dict[FingerBone, Transform],
                   collisions: Dict[FingerBone, List[int]], angles: Dict[FingerBone, np.ndarray]) -> None:
         """
-        :param leap_motion: The `LeapMotion` output data.
+        :param leap_motion: The `LeapMotionOutputData` output data.
         :param hand_index: The index of the hand.
         :param transforms: The dictionary of bone transforms.
         :param collisions: The dictionary of collisions per bone.
@@ -223,22 +224,22 @@ class LeapMotionController(VR, ABC):
 
         b = 0
         angle_index = 0
-        max_num_collisions = leap_motion.get_num_collisions_per_bone()
-        for i in range(len(LeapMotionController.BONES)):
-            bone = LeapMotionController.BONES[i]
+        max_num_collisions = leap_motion_data.get_num_collisions_per_bone()
+        for i in range(len(LeapMotion.BONES)):
+            bone = LeapMotion.BONES[i]
             # Set the bone transform.
-            transforms[bone].position = leap_motion.get_position(hand_index, b)
-            transforms[bone].rotation = leap_motion.get_rotation(hand_index, b)
-            transforms[bone].forward = leap_motion.get_forward(hand_index, b)
+            transforms[bone].position = leap_motion_data.get_position(hand_index, b)
+            transforms[bone].rotation = leap_motion_data.get_rotation(hand_index, b)
+            transforms[bone].forward = leap_motion_data.get_forward(hand_index, b)
             # Reset the collision data.
             collisions[bone].clear()
             for k in range(max_num_collisions):
-                if leap_motion.get_is_collision(hand_index, b, k):
-                    collisions[bone].append(leap_motion.get_collision_id(hand_index, b, k))
+                if leap_motion_data.get_is_collision(hand_index, b, k):
+                    collisions[bone].append(leap_motion_data.get_collision_id(hand_index, b, k))
             # Set the angles.
             if bone != FingerBone.palm:
-                dof: int = LeapMotionController.NUM_DOFS[bone]
-                angles[bone] = leap_motion.get_angles(hand_index, angle_index, angle_index + dof)
+                dof: int = LeapMotion.NUM_DOFS[bone]
+                angles[bone] = leap_motion_data.get_angles(hand_index, angle_index, angle_index + dof)
                 angle_index += dof
             b += 1
 

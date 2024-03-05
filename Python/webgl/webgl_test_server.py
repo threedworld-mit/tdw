@@ -32,7 +32,7 @@ if __name__ == "__main__":
                         help="The directory of the TDW WebGL Build")
     parser.add_argument("--port",
                         type=int,
-                        default=8000,
+                        default=1453,
                         help="The network port")
     parser.add_argument("--browser", action="store_true", help="If True, open a browser tab.")
     parsed_args = parser.parse_args()

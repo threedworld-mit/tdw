@@ -41,7 +41,7 @@ class FoveHumanLeapMotion(LeapMotion):
 
         super().__init__(rig_type=RigType.fove_human_leap_motion, output_data=output_data, position=position,
                          rotation=rotation, attach_avatar=attach_avatar, avatar_camera_width=avatar_camera_width,
-                         headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale)
+                         headset_aspect_ratio=headset_aspect_ratio, headset_resolution_scale=headset_resolution_scale, time_step=time_step)
         if quit_button is not None:
             self.listen_to_button(quit_button, self._quit)
 

@@ -6,12 +6,13 @@ from tdw.add_ons.fove_human_leap_motion import FoveHumanLeapMotion
 Minimal Fove Leap Motion example.
 """
 
-c = Controller()
+c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
-z = 0.6
+z = 0.3
 commands.extend(Controller.get_add_physics_object(model_name="small_table_green_marble",
                                                   object_id=Controller.get_unique_id(),
                                                   position={"x": 0, "y": 0, "z": z},
+                                                  scale_factor={"x": 1.0, "y": 1.0, "z": 1.0},
                                                   kinematic=True))
 commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                   object_id=Controller.get_unique_id(),
@@ -21,7 +22,9 @@ commands.extend(Controller.get_add_physics_object(model_name="cube",
                                                   default_physics_values=False,
                                                   mass=1,
                                                   library="models_flex.json"))
-vr = FoveHumanLeapMotion()
+commands.extend([{"$type": "set_post_process", "value": False}, 
+                 {"$type": "set_target_framerate", "framerate": -1}])
+vr = FoveHumanLeapMotion(time_step=0.02)
 c.add_ons.append(vr)
 c.communicate(commands)
 while not vr.done:

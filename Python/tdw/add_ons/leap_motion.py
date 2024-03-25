@@ -110,9 +110,11 @@ class LeapMotion(VR, ABC):
         if self._set_graspable:
             commands.append({"$type": "send_static_rigidbodies",
                              "frequency": "once"})
+        """
         if self._output_data:
             commands.append({"$type": "send_leap_motion",
                              "frequency": "always"})
+        """
         self._create_rig = False
         return commands
 

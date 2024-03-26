@@ -77,7 +77,7 @@ c.communicate(commands)
 
 commands = []
 commands.extend([{"$type": "set_use_fove_headset_position", "use_position": False},
-                 {"$type": "set_show_leap_hands", "show_hands": False}])
+                 {"$type": "set_show_leap_hands", "show_hands": True}])
 c.communicate(commands)
 
 while not vr.done:

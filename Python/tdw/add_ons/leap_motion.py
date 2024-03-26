@@ -216,7 +216,7 @@ class LeapMotion(VR, ABC):
     def _set_hand(leap_motion_data: LeapMotionOutputData, hand_index: int, transforms: Dict[FingerBone, Transform],
                   collisions: Dict[FingerBone, List[int]], angles: Dict[FingerBone, np.ndarray]) -> None:
         """
-        :param leap_motion: The `LeapMotionOutputData` output data.
+        :param leap_motion_data: The `LeapMotionOutputData` output data.
         :param hand_index: The index of the hand.
         :param transforms: The dictionary of bone transforms.
         :param collisions: The dictionary of collisions per bone.

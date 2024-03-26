@@ -71,9 +71,15 @@ commands.extend(Controller.get_add_physics_object(model_name="rh10",
                                                   library="models_core.json"))
 commands.extend([{"$type": "set_post_process", "value": False}, 
                  {"$type": "set_target_framerate", "framerate": -1}])
-vr = FoveHumanLeapMotion(position={"x": 0, "y": 1.195, "z": -0.475}, time_step=0.02, use_headset_position=False)
+vr = FoveHumanLeapMotion(position={"x": 0, "y": 1.195, "z": -0.475}, time_step=0.02)
 c.add_ons.append(vr)
 c.communicate(commands)
+
+commands = []
+commands.extend([{"$type": "set_use_fove_headset_position", "use_position": False},
+                 {"$type": "set_show_leap_hands", "show_hands": False}])
+c.communicate(commands)
+
 while not vr.done:
     c.communicate([])
 c.communicate({"$type": "terminate"})

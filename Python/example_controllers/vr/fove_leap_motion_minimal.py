@@ -1,6 +1,6 @@
 from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
-from tdw.add_ons.fove_human_leap_motion import FoveHumanLeapMotion
+from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 
 """
 Minimal Fove Leap Motion example.
@@ -69,9 +69,7 @@ commands.extend(Controller.get_add_physics_object(model_name="rh10",
                                                   default_physics_values=False,
                                                   mass=1,
                                                   library="models_core.json"))
-commands.extend([{"$type": "set_post_process", "value": False}, 
-                 {"$type": "set_target_framerate", "framerate": -1}])
-vr = FoveHumanLeapMotion(position={"x": 0, "y": 1.195, "z": -0.475}, time_step=0.02)
+vr = FoveLeapMotion(position={"x": 0, "y": 1.195, "z": -0.475}, time_step=0.02)
 c.add_ons.append(vr)
 c.communicate(commands)
 

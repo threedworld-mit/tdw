@@ -65,6 +65,8 @@ class FoveLeapMotion(LeapMotion):
                           "allow": self._allow_headset_movement},
                          {"$type": "show_leap_motion_hands",
                           "show": self._show_hands},
+                         {"$type": "set_vsync_count",
+                          "count": 0},
                          {"$type": "set_post_process",
                           "value": False},
                          {"$type": "set_target_framerate",

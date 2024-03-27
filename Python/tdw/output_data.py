@@ -65,7 +65,9 @@ from tdw.FBOutput import EulerAngles as Eulers
 from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.FBOutput import AlbedoColors as AlbCol
+from tdw.FBOutput import Fove as Fov
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
+from tdw.vr_data.fove.eye_state import EyeState
 from tdw.container_data.container_tag import ContainerTag
 from tdw.replicant.action_status import ActionStatus
 import numpy as np
@@ -1774,3 +1776,28 @@ class AlbedoColors(OutputData):
 
     def get_color(self, index: int) -> np.ndarray:
         return self._colors[index]
+
+
+class Fove(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._eye_directions: np.ndarray = self.data.DirectionsAsNumpy().reshape((3, 3))
+        self._eye_states: np.ndarray = self.data.EyeStatesAsNumpy()
+
+    def get_data(self) -> Fov.Fove:
+        return Fov.Fove.GetRootAsFove(self.bytes, 0)
+
+    def get_eye_direction(self, index: int) -> np.ndarray:
+        return self._eye_directions[index]
+
+    def get_eye_state(self, index: int) -> EyeState:
+        return EyeState(self._eye_states[index])
+
+    def is_gazing_at_object(self) -> bool:
+        return self.data.GazingAtObject()
+
+    def get_object_id(self) -> int:
+        return self.data.ObjectId()
+
+    def get_combined_depth(self) -> float:
+        return self.data.CombinedDepth()

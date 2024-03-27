@@ -63,17 +63,47 @@ class Fove(object):
         return 0
 
     # Fove
-    def GazingAtObject(self):
+    def ObjectHits(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
         if o != 0:
-            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
-        return False
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
+        return 0
 
     # Fove
-    def ObjectId(self):
+    def ObjectHitsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.BoolFlags, o)
+        return 0
+
+    # Fove
+    def ObjectHitsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(8))
+        if o != 0:
+            return self._tab.VectorLen(o)
+        return 0
+
+    # Fove
+    def ObjectIds(self, j):
         o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
         if o != 0:
-            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, o + self._tab.Pos)
+            a = self._tab.Vector(o)
+            return self._tab.Get(tdw.flatbuffers.number_types.Int32Flags, a + tdw.flatbuffers.number_types.UOffsetTFlags.py_type(j * 4))
+        return 0
+
+    # Fove
+    def ObjectIdsAsNumpy(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.GetVectorAsNumpy(tdw.flatbuffers.number_types.Int32Flags, o)
+        return 0
+
+    # Fove
+    def ObjectIdsLength(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(10))
+        if o != 0:
+            return self._tab.VectorLen(o)
         return 0
 
     # Fove
@@ -88,7 +118,9 @@ def FoveAddEyeDirections(builder, eyeDirections): builder.PrependUOffsetTRelativ
 def FoveStartEyeDirectionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def FoveAddEyeStates(builder, eyeStates): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(eyeStates), 0)
 def FoveStartEyeStatesVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def FoveAddGazingAtObject(builder, gazingAtObject): builder.PrependBoolSlot(2, gazingAtObject, 0)
-def FoveAddObjectId(builder, objectId): builder.PrependInt32Slot(3, objectId, 0)
+def FoveAddObjectHits(builder, objectHits): builder.PrependUOffsetTRelativeSlot(2, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objectHits), 0)
+def FoveStartObjectHitsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
+def FoveAddObjectIds(builder, objectIds): builder.PrependUOffsetTRelativeSlot(3, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(objectIds), 0)
+def FoveStartObjectIdsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def FoveAddCombinedDepth(builder, combinedDepth): builder.PrependFloat32Slot(4, combinedDepth, 0.0)
 def FoveEnd(builder): return builder.EndObject()

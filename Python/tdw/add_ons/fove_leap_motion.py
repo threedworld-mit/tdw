@@ -1,7 +1,6 @@
 from typing import List, Dict, Optional
-import numpy as np
 from tdw.add_ons.leap_motion import LeapMotion
-from tdw.output_data import OutputData, Fove, SegmentationColors
+from tdw.output_data import OutputData, Fove
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.fove.eye import Eye
 
@@ -62,25 +61,21 @@ class FoveLeapMotion(LeapMotion):
         self._allow_headset_movement: bool = allow_headset_movement
         self._show_hands: bool = show_hands
         """:field
-        The state and direction of the left eye.
+        The state, direction, and gaze object of the left eye.
         """
         self.left_eye: Optional[Eye] = None
         """:field
-        The state and direction of the right eye.
+        The state, direction, and gaze object of the right eye.
         """
         self.right_eye: Optional[Eye] = None
         """:field
-        The converged direction of the left and right eyes.
+        The state, direction, and gaze object of the converged eyes.
         """
-        self.converged_eye_direction: np.ndarray = np.zeros(3)
+        self.converged_eyes: Optional[Eye] = None
         """:field
         The combined eye depth.
         """
         self.combined_depth: float = 0
-        """:field
-        The ID of the object the eyes are gazing at. If None, the eyes are not gazing at a TDW object.
-        """
-        self.gaze_target: Optional[int] = None
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -93,31 +88,19 @@ class FoveLeapMotion(LeapMotion):
                          {"$type": "set_post_process",
                           "value": False},
                          {"$type": "set_target_framerate",
-                          "framerate": -1},
-                         {"$type": "send_segmentation_colors"}])
+                          "framerate": -1}])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
         super().on_send(resp=resp)
         for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            # Make objects gazeable.
-            if r_id == "segm":
-                segm = SegmentationColors(resp[i])
-                for j in range(segm.get_num()):
-                    self.commands.append({"$type": "set_fove_gazeable",
-                                          "id": segm.get_object_id(j)})
             # Update FOVE data.
-            elif r_id == "fove":
+            if OutputData.get_data_type_id(resp[i]) == "fove":
                 fove = Fove(resp[i])
                 self.left_eye = FoveLeapMotion._get_eye(0, fove)
                 self.right_eye = FoveLeapMotion._get_eye(1, fove)
-                self.converged_eye_direction = fove.get_eye_direction(2)
+                self.converged_eyes = FoveLeapMotion._get_eye(2, fove)
                 self.combined_depth = fove.get_combined_depth()
-                if fove.is_gazing_at_object():
-                    self.gaze_target = fove.get_object_id()
-                else:
-                    self.gaze_target = None
 
     @staticmethod
     def _get_eye(index: int, fove: Fove) -> Eye:
@@ -129,4 +112,5 @@ class FoveLeapMotion(LeapMotion):
         """
 
         return Eye(state=fove.get_eye_state(index),
-                   direction=fove.get_eye_direction(index))
+                   direction=fove.get_eye_direction(index),
+                   gaze_id=fove.get_object_id(index) if fove.get_object_hit(index) else None)

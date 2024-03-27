@@ -56,7 +56,7 @@ from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import TransformMatrices as TranMat
 from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
-from tdw.FBOutput import FieldOfView as Fov
+from tdw.FBOutput import FieldOfView as Fofv
 from tdw.FBOutput import Replicants as Repl
 from tdw.FBOutput import LeapMotion as Leap
 from tdw.FBOutput import Framerate as Frame
@@ -1530,10 +1530,10 @@ class AvatarTransformMatrices(OutputData):
 
     def get_sensor_matrix(self, index: int) -> np.array:
         return self._sensor_container_matrices[index]
-        
+
 class FieldOfView(OutputData):
-    def get_data(self) -> Fov.FieldOfView:
-        return Fov.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)
+    def get_data(self) -> Fofv.FieldOfView:
+        return Fofv.FieldOfView.GetRootAsFieldOfView(self.bytes, 0)
 
     def get_avatar_id(self) -> str:
         return self.data.AvatarId().decode('utf-8')
@@ -1783,6 +1783,8 @@ class Fove(OutputData):
         super().__init__(b)
         self._eye_directions: np.ndarray = self.data.DirectionsAsNumpy().reshape((3, 3))
         self._eye_states: np.ndarray = self.data.EyeStatesAsNumpy()
+        self._object_hits: np.ndarray = self.data.ObjectHitsAsNumpy()
+        self._object_ids: np.ndarray = self.data.ObjectIdsAsNumpy()
 
     def get_data(self) -> Fov.Fove:
         return Fov.Fove.GetRootAsFove(self.bytes, 0)
@@ -1793,11 +1795,11 @@ class Fove(OutputData):
     def get_eye_state(self, index: int) -> EyeState:
         return EyeState(self._eye_states[index])
 
-    def is_gazing_at_object(self) -> bool:
-        return self.data.GazingAtObject()
+    def get_object_hit(self, index: int) -> bool:
+        return bool(self._object_hits[index])
 
-    def get_object_id(self) -> int:
-        return self.data.ObjectId()
+    def get_object_id(self, index: int) -> int:
+        return int(self._object_ids[index])
 
     def get_combined_depth(self) -> float:
         return self.data.CombinedDepth()

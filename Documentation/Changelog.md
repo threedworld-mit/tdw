@@ -18,6 +18,10 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 - Added: `QuaternionUtils.world_to_local_rotation(world_rotation, local_coord_rotation)`
 
+### Model Library
+
+- Flagged `b03_restoration_hardware_pedestal_salvaged_round_tables` as `do_not_use`
+
 ## v1.12.23
 
 ### Command API

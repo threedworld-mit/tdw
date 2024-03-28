@@ -9522,6 +9522,7 @@
             "wnid": "n04041069"
         },
         "b03_restoration_hardware_pedestal_salvaged_round_tables": {
+            "affordance_points": [],
             "asset_bundle_sizes": {
                 "Darwin": 11288525,
                 "Linux": 11460691,
@@ -9580,16 +9581,16 @@
                     },
                     "radius": 0.60775113,
                     "rotation": {
-                        "x": 0,
-                        "y": 0,
-                        "z": 0
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
                     },
                     "shape": "cylinder",
                     "tag": "on"
                 }
             ],
-            "do_not_use": false,
-            "do_not_use_reason": "",
+            "do_not_use": true,
+            "do_not_use_reason": "Bad colliders",
             "flex": false,
             "name": "b03_restoration_hardware_pedestal_salvaged_round_tables",
             "physics_quality": -1,

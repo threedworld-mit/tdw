@@ -1,5 +1,5 @@
 from typing import List, Dict, Callable, Optional
-from abc import ABC, abstractmethod
+from abc import ABC
 import numpy as np
 from tdw.add_ons.vr import VR
 from tdw.vr_data.finger_bone import FingerBone
@@ -101,7 +101,8 @@ class LeapMotion(VR, ABC):
         self._object_bounciness: float = object_bounciness
         self._time_step: float = time_step
         self._button_callbacks: Dict[int, Callable[[], None]] = dict()
-
+        if quit_button is not None:
+            self.listen_to_button(quit_button, self._quit)
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -215,7 +216,7 @@ class LeapMotion(VR, ABC):
     def _set_hand(leap_motion_data: LeapMotionOutputData, hand_index: int, transforms: Dict[FingerBone, Transform],
                   collisions: Dict[FingerBone, List[int]], angles: Dict[FingerBone, np.ndarray]) -> None:
         """
-        :param leap_motion: The `LeapMotionOutputData` output data.
+        :param leap_motion_data: The `LeapMotionOutputData` output data.
         :param hand_index: The index of the hand.
         :param transforms: The dictionary of bone transforms.
         :param collisions: The dictionary of collisions per bone.

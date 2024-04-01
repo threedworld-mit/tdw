@@ -1781,7 +1781,7 @@ class AlbedoColors(OutputData):
 class Fove(OutputData):
     def __init__(self, b):
         super().__init__(b)
-        self._eye_directions: np.ndarray = self.data.DirectionsAsNumpy().reshape((3, 3))
+        self._eye_directions: np.ndarray = self.data.EyeDirectionsAsNumpy().reshape((3, 3))
         self._eye_states: np.ndarray = self.data.EyeStatesAsNumpy()
         self._object_hits: np.ndarray = self.data.ObjectHitsAsNumpy()
         self._object_ids: np.ndarray = self.data.ObjectIdsAsNumpy()

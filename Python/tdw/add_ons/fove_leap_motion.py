@@ -3,6 +3,7 @@ from tdw.add_ons.leap_motion import LeapMotion
 from tdw.output_data import OutputData, Fove
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.fove.eye import Eye
+from tdw.vr_data.fove.eye_state import EyeState
 
 
 class FoveLeapMotion(LeapMotion):
@@ -101,18 +102,19 @@ class FoveLeapMotion(LeapMotion):
                 fove = Fove(resp[i])
                 self.left_eye = FoveLeapMotion._get_eye(0, fove)
                 self.right_eye = FoveLeapMotion._get_eye(1, fove)
-                self.converged_eyes = FoveLeapMotion._get_eye(2, fove)
+                self.converged_eyes = FoveLeapMotion._get_eye(2, fove, converged=True)
                 self.combined_depth = fove.get_combined_depth()
 
     @staticmethod
-    def _get_eye(index: int, fove: Fove) -> Eye:
+    def _get_eye(index: int, fove: Fove, converged: bool = False) -> Eye:
         """
         :param index: The index of the raw eye data.
         :param fove: `Fove` output data.
+        :param converged: If True, this is the converged eyes.
 
         :return: `Eye` data.
         """
 
-        return Eye(state=fove.get_eye_state(index),
+        return Eye(state=EyeState.converged if converged else fove.get_eye_state(index),
                    direction=fove.get_eye_direction(index),
                    gaze_id=fove.get_object_id(index) if fove.get_object_hit(index) else None)

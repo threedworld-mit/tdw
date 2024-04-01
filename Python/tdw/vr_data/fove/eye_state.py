@@ -9,3 +9,4 @@ class EyeState(Enum):
     not_detected = 0
     opened = 1
     closed = 2
+    converged = 3

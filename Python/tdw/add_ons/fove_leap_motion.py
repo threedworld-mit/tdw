@@ -88,7 +88,9 @@ class FoveLeapMotion(LeapMotion):
                          {"$type": "set_post_process",
                           "value": False},
                          {"$type": "set_target_framerate",
-                          "framerate": -1}])
+                          "framerate": -1},
+                         {"$type": "send_fove",
+                          "frequency": "always"}])
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:

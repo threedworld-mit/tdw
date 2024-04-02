@@ -4,6 +4,7 @@ from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 from tdw.output_data import OutputData, Fove
 from tdw.add_ons.object_manager import ObjectManager
 from tdw.vr_data.fove.eye import Eye
+from tdw.vr_data.fove.eye_state import EyeState
 
 """
 Minimal Fove Leap Motion example.
@@ -81,13 +82,19 @@ c.communicate(commands)
 
 while not vr.done:
     resp=c.communicate([])
-    object_id = vr.converged_eyes.gaze_id
+    # Use the appropriate gaze ray based on eye state.
+    if vr.left_eye.state == EyeState.closed and vr.right_eye.state == EyeState.opened:
+        object_id = vr.right_eye.gaze_id
+    elif vr.right_eye.state == EyeState.closed and vr.left_eye.state == EyeState.opened:
+        object_id = vr.left_eye.gaze_id
+    else:
+        object_id = vr.converged_eyes.gaze_id
     # Reset albedo color of all objects to normal when gaze is not on any object, or on the table.
     if (object_id is None) or (object_id == table_id):
         for id in om.transforms:
             c.communicate({"$type": "set_color", "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "id": id})
     else:
-        # Highlight objects blue when gaze is on them.
+        # Highlight objects in blue when gaze is on them.
         c.communicate({"$type": "set_color", "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}, "id": object_id})
 
 c.communicate({"$type": "terminate"})

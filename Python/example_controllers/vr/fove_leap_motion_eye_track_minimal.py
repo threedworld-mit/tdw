@@ -82,10 +82,12 @@ c.communicate(commands)
 while not vr.done:
     resp=c.communicate([])
     object_id = vr.converged_eyes.gaze_id
+    # Reset albedo color of all objects to normal when gaze is not on any object, or on the table.
     if (object_id is None) or (object_id == table_id):
         for id in om.transforms:
             c.communicate({"$type": "set_color", "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "id": id})
     else:
+        # Highlight objects blue when gaze is on them.
         c.communicate({"$type": "set_color", "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}, "id": object_id})
 
 c.communicate({"$type": "terminate"})

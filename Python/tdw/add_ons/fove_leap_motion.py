@@ -4,6 +4,7 @@ from tdw.output_data import OutputData, Fove
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.fove.eye import Eye
 from tdw.vr_data.fove.eye_state import EyeState
+from tdw.vr_data.fove.run_mode import RunMode
 
 
 class FoveLeapMotion(LeapMotion):
@@ -11,7 +12,7 @@ class FoveLeapMotion(LeapMotion):
     Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
     """
 
-    def __init__(self, allow_headset_movement: bool = False, show_hands: bool = True, set_graspable: bool = True,
+    def __init__(self, perform_calibration: bool = False, allow_headset_movement: bool = False, show_hands: bool = True, set_graspable: bool = True,
                  output_data: bool = True, position: Dict[str, float] = None, rotation: float = 0,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None, max_graspable_mass: float = 50,
@@ -20,6 +21,7 @@ class FoveLeapMotion(LeapMotion):
                  object_dynamic_friction: float = 1, object_bounciness: float = 0, time_step: float = 0.02,
                  quit_button: Optional[int] = 3):
         """
+        :param perform_calibration: If True, perform the calibration protocol.
         :param allow_headset_movement: If True, allow headset movement.
         :param show_hands: If True, show the hands.
         :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
@@ -59,6 +61,7 @@ class FoveLeapMotion(LeapMotion):
                          object_dynamic_friction=object_dynamic_friction,
                          object_bounciness=object_bounciness,
                          time_step=time_step, quit_button=quit_button)
+        self._perform_calibration: bool = perform_calibration
         self._allow_headset_movement: bool = allow_headset_movement
         self._show_hands: bool = show_hands
         """:field

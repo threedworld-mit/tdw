@@ -5,6 +5,7 @@ from tdw.output_data import OutputData, Fove
 from tdw.add_ons.object_manager import ObjectManager
 from tdw.vr_data.fove.eye import Eye
 from tdw.vr_data.fove.eye_state import EyeState
+import time
 
 """
 Minimal Fove Leap Motion example.
@@ -12,17 +13,16 @@ Minimal Fove Leap Motion example.
 
 c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
-x_positions = [-0.35, 0, 0.35, -0.35, 0, 0.35]
-y_positions = [1.1, 1.1, 1.1, 0.9, 0.9, 0.9]
+five_point_x_positions = [-0.25, 0, 0.25, -0.25, 0.25]
+five_point_y_positions = [1.1, 1, 0.9, 0.9, 1.1]
 
-table_id = Controller.get_unique_id()
 # Group 1.
 for i in range(6):
     commands.extend(Controller.get_add_physics_object(model_name="sphere",
                                                       object_id=Controller.get_unique_id(),
-                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.75},
+                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.15},
                                                       scale_mass=False,
-                                                      scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
+                                                      scale_factor={"x": 0.0127, "y": 0.0127, "z": 0.0127},
                                                       kinematic=True,
                                                       gravity=False,
                                                       library="models_flex.json"))
@@ -30,9 +30,19 @@ for i in range(6):
 for i in range(6):
     commands.extend(Controller.get_add_physics_object(model_name="sphere",
                                                       object_id=Controller.get_unique_id(),
-                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -1.25},
+                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.4},
                                                       scale_mass=False,
-                                                      scale_factor={"x": 0.05, "y": 0.05, "z": 0.05},
+                                                      scale_factor={"x": 0.0127, "y": 0.0127, "z": 0.0127},
+                                                      kinematic=True,
+                                                      gravity=False,
+                                                      library="models_flex.json"))
+# Group 3
+for i in range(6):
+    commands.extend(Controller.get_add_physics_object(model_name="sphere",
+                                                      object_id=Controller.get_unique_id(),
+                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.65},
+                                                      scale_mass=False,
+                                                      scale_factor={"x": 0.0127, "y": 0.0127, "z": 0.0127},
                                                       kinematic=True,
                                                       gravity=False,
                                                       library="models_flex.json"))
@@ -51,8 +61,8 @@ while not vr.done:
         object_id = vr.left_eye.gaze_id
     else:
         object_id = vr.converged_eyes.gaze_id
-    # Reset albedo color of all objects to normal when gaze is not on any object, or on the table.
-    if (object_id is None) or (object_id == table_id):
+    # Reset albedo color of all objects to normal when gaze is not on any object.
+    if (object_id is None):
         for id in om.transforms:
             c.communicate({"$type": "set_color", "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "id": id})
     else:

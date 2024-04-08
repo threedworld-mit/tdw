@@ -13,34 +13,24 @@ Minimal Fove Leap Motion example.
 
 c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
-five_point_x_positions = [-0.25, 0, 0.25, -0.25, 0.25]
-five_point_y_positions = [1.1, 1, 0.9, 0.9, 1.1]
+g1_z = -0.15
+g2_z = -0.4
+g3_z = -0.65
+xlt = -0.25
+xmid = 0
+xrt = 0.25
+yup = 1.1
+ymid = 1.0
+ylow = 0.9
+five_point_x_positions = [xlt, xmid, xrt, xlt, xrt, xlt, xmid, xrt, xlt, xrt, xlt,xmid, xrt, xlt, xrt]
+five_point_y_positions = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
+five_point_z_positions = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
 
-# Group 1.
-for i in range(6):
+# Groups 1-3.
+for i in range(15):
     commands.extend(Controller.get_add_physics_object(model_name="sphere",
                                                       object_id=Controller.get_unique_id(),
-                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.15},
-                                                      scale_mass=False,
-                                                      scale_factor={"x": 0.0127, "y": 0.0127, "z": 0.0127},
-                                                      kinematic=True,
-                                                      gravity=False,
-                                                      library="models_flex.json"))
-# Group 2
-for i in range(6):
-    commands.extend(Controller.get_add_physics_object(model_name="sphere",
-                                                      object_id=Controller.get_unique_id(),
-                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.4},
-                                                      scale_mass=False,
-                                                      scale_factor={"x": 0.0127, "y": 0.0127, "z": 0.0127},
-                                                      kinematic=True,
-                                                      gravity=False,
-                                                      library="models_flex.json"))
-# Group 3
-for i in range(6):
-    commands.extend(Controller.get_add_physics_object(model_name="sphere",
-                                                      object_id=Controller.get_unique_id(),
-                                                      position={"x": x_positions[i], "y": y_positions[i], "z": -0.65},
+                                                      position={"x": x_positions[i], "y": y_positions[i], "z": five_point_z_position[i]},
                                                       scale_mass=False,
                                                       scale_factor={"x": 0.0127, "y": 0.0127, "z": 0.0127},
                                                       kinematic=True,

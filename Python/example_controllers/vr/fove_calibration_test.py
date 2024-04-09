@@ -37,7 +37,7 @@ for i in range(15):
     commands.extend(Controller.get_add_physics_object(model_name="sphere",
                                                       object_id=obj_id,
                                                       position={"x": five_pnt_x_pos[i], "y": five_pnt_y_pos[i], "z": five_pnt_z_pos[i]},
-                                                      scale_mass=True,
+                                                      scale_mass=False,
                                                       scale_factor={"x": 0.025, "y": 0.025, "z": 0.025},
                                                       default_physics_values=False,
                                                       mass=1.0,

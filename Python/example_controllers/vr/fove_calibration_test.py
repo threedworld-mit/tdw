@@ -15,9 +15,9 @@ c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend([{"$type": "set_physics_solver_iterations", "iterations": 15},
                  {"$type": "set_time_step", "time_step": 0.01}])
-g1_z = -0.35
-g2_z = -0.45
-g3_z = -0.55
+g1_z = -0.3
+g2_z = -0.4
+g3_z = -0.5
 xlt = -0.15
 xmid = 0
 xrt = 0.15
@@ -53,7 +53,8 @@ om = ObjectManager()
 c.add_ons.append(om)
 c.communicate(commands)
 
-timer_started = False  
+timer_started = False
+calibration_started = False   
 while not vr.done:
     commands = []
     for sphere_id in sphere_ids: 
@@ -84,8 +85,12 @@ while not vr.done:
                 color = {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
         commands.append({"$type": "set_color", "color": color, "id": sphere_id})
     c.communicate(commands)
+    commands = []
     if (len(sphere_ids)) == 0:
         # All spheres have been touched, so start calibration using the stored eye tracking data.
-        print("Starting calibration")
+        if not calibration_started:
+            calibration_started = True
+            commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
+    c.communicate(commands)
 
 c.communicate({"$type": "terminate"})

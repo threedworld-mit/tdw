@@ -73,6 +73,8 @@ while not vr.done:
         for bone in vr.right_hand_collisions:
             if sphere_id in vr.right_hand_collisions[bone]:
                 touching = True
+                # Clear gaze depth list.
+                gaze_depth_list = []
                 if timer_started == False: 
                     start_time = time.time()
                     timer_started = True
@@ -89,18 +91,16 @@ while not vr.done:
             else:
                 # User touched this sphere for the defined duration, so render it inactive.
                 commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
-                sphere_ids.remove(sphere_id)
                 # Get average of gaze_depth values captured during touch event.
                 eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
                 print("ID = " + str(sphere_id) + ", avg. = " + str(eye_data[sphere_id]))
-                # Clear gaze depth list.
+                # Clear gaze depth list and remove sphere ID from use.
                 gaze_depth_list = []
+                sphere_ids.remove(sphere_id)
                 timer_started = False
         else:
             # Reset color if sphere is still active and not being touched.
             if sphere_id in sphere_ids:
-                # Clear gaze depth list.
-                gaze_depth_list = []
                 color = {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
         commands.append({"$type": "set_color", "color": color, "id": sphere_id})
     c.communicate(commands)

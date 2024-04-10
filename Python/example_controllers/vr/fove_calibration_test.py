@@ -1,4 +1,5 @@
 from tdw.controller import Controller
+from typing import List, Dict
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 from tdw.output_data import OutputData, Fove
@@ -29,8 +30,23 @@ five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, y
 five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
 sphere_ids = []
 touch_time = 0.5
+eye_data: Dict[int, float] = dict()
+timer_started = False
+calibration_started = False 
+gaze_depth_list = []
 
-# Groups 1-3.
+vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
+c.add_ons.append(vr)
+om = ObjectManager()
+c.add_ons.append(om)
+c.communicate(commands)
+
+# Run FOVE spiral calibration.
+commands = []
+commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
+c.communicate(commands)
+commands = []
+# Create sphere groups 1-3.
 for i in range(15):
     obj_id = Controller.get_unique_id()
     sphere_ids.append(obj_id)
@@ -47,14 +63,7 @@ for i in range(15):
                                                       kinematic=True,
                                                       gravity=False,
                                                       library="models_flex.json"))
-vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
-c.add_ons.append(vr)
-om = ObjectManager()
-c.add_ons.append(om)
 c.communicate(commands)
-
-timer_started = False
-calibration_started = False   
 while not vr.done:
     commands = []
     for sphere_id in sphere_ids: 
@@ -73,24 +82,27 @@ while not vr.done:
                 # Touch event is still under defined duration, so keep it blue.
                 color = {"r": 0, "g": 0, "b": 1.0, "a": 1.0}
                 # Store eye tracking data for the user looking at this sphere.
-                print(" Dir = " + str(vr.converged_eyes.direction) + ", depth = " + str(vr.combined_depth))
+                #print(" Dir = " + str(vr.converged_eyes.direction) + ", depth = " + str(vr.combined_depth))
+                gaze_depth_list.append(vr.combined_depth)
             else:
                 # User touched this sphere for the defined duration, so render it inactive.
                 commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
                 sphere_ids.remove(sphere_id)
+                # Get average of gaze_depth values captured during touch event.
+                eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
+                # Clear gaze depth list.
+                gaze_depth_list = []
                 timer_started = False
         else:
             # Reset color if sphere is still active and not being touched.
             if sphere_id in sphere_ids:
+                # Clear gaze depth list.
+                gaze_depth_list = []
                 color = {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
         commands.append({"$type": "set_color", "color": color, "id": sphere_id})
     c.communicate(commands)
-    commands = []
     if (len(sphere_ids)) == 0:
-        # All spheres have been touched, so start calibration using the stored eye tracking data.
-        if not calibration_started:
-            calibration_started = True
-            commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
-    c.communicate(commands)
+        # All spheres have been touched, so begin waiting for hardware button trigger.
+        c.communicate([])
 
 c.communicate({"$type": "terminate"})

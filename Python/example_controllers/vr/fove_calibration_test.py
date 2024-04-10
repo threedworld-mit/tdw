@@ -13,9 +13,6 @@ Minimal Fove Leap Motion example.
 """
 
 c = Controller(launch_build=False)
-# Run FOVE spiral calibration.
-c.communicate({"$type": "start_fove_calibration", "profile_name": "test"})
-
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend([{"$type": "set_physics_solver_iterations", "iterations": 15},
                  {"$type": "set_time_step", "time_step": 0.01}])
@@ -23,6 +20,9 @@ vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
 c.add_ons.append(vr)
 om = ObjectManager()
 c.add_ons.append(om)
+# Run FOVE spiral calibration.
+commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
+c.communicate(commands)
 
 g1_z = -0.3
 g2_z = -0.4
@@ -40,9 +40,9 @@ sphere_ids = []
 touch_time = 0.5
 eye_data: Dict[int, float] = dict()
 timer_started = False
-calibration_started = False 
 gaze_depth_list = []
 
+commands = []
 # Create sphere groups 1-3.
 for i in range(15):
     obj_id = Controller.get_unique_id()

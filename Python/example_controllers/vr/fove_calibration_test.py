@@ -20,7 +20,9 @@ vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
 c.add_ons.append(vr)
 om = ObjectManager()
 c.add_ons.append(om)
+c.communicate(commands)
 # Run FOVE spiral calibration.
+commands = []
 commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
 c.communicate(commands)
 

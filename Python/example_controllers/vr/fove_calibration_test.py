@@ -13,6 +13,9 @@ Minimal Fove Leap Motion example.
 """
 
 c = Controller(launch_build=False)
+# Run FOVE spiral calibration.
+c.communicate({"$type": "start_fove_calibration", "profile_name": "test"})
+
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend([{"$type": "set_physics_solver_iterations", "iterations": 15},
                  {"$type": "set_time_step", "time_step": 0.01}])
@@ -20,12 +23,6 @@ vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
 c.add_ons.append(vr)
 om = ObjectManager()
 c.add_ons.append(om)
-c.communicate(commands)
-
-# Run FOVE spiral calibration.
-commands = []
-commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
-c.communicate(commands)
 
 g1_z = -0.3
 g2_z = -0.4
@@ -46,7 +43,6 @@ timer_started = False
 calibration_started = False 
 gaze_depth_list = []
 
-commands = []
 # Create sphere groups 1-3.
 for i in range(15):
     obj_id = Controller.get_unique_id()
@@ -86,16 +82,16 @@ while not vr.done:
                 # Touch event is still under defined duration, so keep it blue.
                 color = {"r": 0, "g": 0, "b": 1.0, "a": 1.0}
                 # Store eye tracking data for the user looking at this sphere.
-                #print(" Dir = " + str(vr.converged_eyes.direction) + ", depth = " + str(vr.combined_depth))
                 gaze_depth_list.append(vr.combined_depth)
             else:
                 # User touched this sphere for the defined duration, so render it inactive.
                 commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
                 # Get average of gaze_depth values captured during touch event.
-                eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
-                print("ID = " + str(sphere_id) + ", avg. = " + str(eye_data[sphere_id]))
-                # Clear gaze depth list and remove sphere ID from use.
-                gaze_depth_list = []
+                if len(gaze_depth_list) > 0:
+                    eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
+                    print("ID = " + str(sphere_id) + ", avg. = " + str(eye_data[sphere_id]))
+                    # Clear gaze depth list and remove sphere ID from use.
+                    gaze_depth_list = []
                 sphere_ids.remove(sphere_id)
                 timer_started = False
         else:

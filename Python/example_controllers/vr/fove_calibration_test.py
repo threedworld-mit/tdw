@@ -84,6 +84,7 @@ while not vr.done:
                 # Touch event is still under defined duration, so keep it blue.
                 color = {"r": 0, "g": 0, "b": 1.0, "a": 1.0}
                 # Store eye tracking data for the user looking at this sphere.
+                print(str(vr.combined_depth))
                 gaze_depth_list.append(vr.combined_depth)
             else:
                 # User touched this sphere for the defined duration, so render it inactive.

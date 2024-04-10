@@ -92,7 +92,7 @@ while not vr.done:
                 sphere_ids.remove(sphere_id)
                 # Get average of gaze_depth values captured during touch event.
                 eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
-                print("ID = " = str(sphere_id) + ", avg. = " + str(eye_data[sphere_id]))
+                print("ID = " + str(sphere_id) + ", avg. = " + str(eye_data[sphere_id]))
                 # Clear gaze depth list.
                 gaze_depth_list = []
                 timer_started = False

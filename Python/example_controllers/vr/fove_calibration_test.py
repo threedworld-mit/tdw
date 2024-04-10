@@ -16,6 +16,17 @@ c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
 commands.extend([{"$type": "set_physics_solver_iterations", "iterations": 15},
                  {"$type": "set_time_step", "time_step": 0.01}])
+vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
+c.add_ons.append(vr)
+om = ObjectManager()
+c.add_ons.append(om)
+c.communicate(commands)
+
+# Run FOVE spiral calibration.
+commands = []
+commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
+c.communicate(commands)
+
 g1_z = -0.3
 g2_z = -0.4
 g3_z = -0.5
@@ -35,16 +46,6 @@ timer_started = False
 calibration_started = False 
 gaze_depth_list = []
 
-vr = FoveLeapMotion(position={"x": 0, "y": 1, "z": 0}, time_step=0.01)
-c.add_ons.append(vr)
-om = ObjectManager()
-c.add_ons.append(om)
-c.communicate(commands)
-
-# Run FOVE spiral calibration.
-commands = []
-commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
-c.communicate(commands)
 commands = []
 # Create sphere groups 1-3.
 for i in range(15):
@@ -64,6 +65,7 @@ for i in range(15):
                                                       gravity=False,
                                                       library="models_flex.json"))
 c.communicate(commands)
+
 while not vr.done:
     commands = []
     for sphere_id in sphere_ids: 
@@ -90,6 +92,7 @@ while not vr.done:
                 sphere_ids.remove(sphere_id)
                 # Get average of gaze_depth values captured during touch event.
                 eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
+                print("ID = " = str(sphere_id) + ", avg. = " + str(eye_data[sphere_id]))
                 # Clear gaze depth list.
                 gaze_depth_list = []
                 timer_started = False

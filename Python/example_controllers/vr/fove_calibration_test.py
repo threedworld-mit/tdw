@@ -71,11 +71,11 @@ while not vr.done:
         for bone in vr.right_hand_collisions:
             if sphere_id in vr.right_hand_collisions[bone]:
                 touching = True
-                # Clear gaze depth list.
-                gaze_depth_list = []
                 if timer_started == False: 
                     start_time = time.time()
                     timer_started = True
+                    # Clear gaze depth list.
+                    gaze_depth_list = []
                 break
         if touching:
             if timer_started:
@@ -84,7 +84,6 @@ while not vr.done:
                 # Touch event is still under defined duration, so keep it blue.
                 color = {"r": 0, "g": 0, "b": 1.0, "a": 1.0}
                 # Store eye tracking data for the user looking at this sphere.
-                print(str(vr.combined_depth))
                 gaze_depth_list.append(vr.combined_depth)
             else:
                 # User touched this sphere for the defined duration, so render it inactive.

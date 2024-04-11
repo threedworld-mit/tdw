@@ -1783,8 +1783,10 @@ class Fove(OutputData):
         super().__init__(b)
         self._eye_directions: np.ndarray = self.data.EyeDirectionsAsNumpy().reshape((3, 3))
         self._eye_states: np.ndarray = self.data.EyeStatesAsNumpy()
+        self._hits: np.ndarray = self.data.HitsAsNumpy()
         self._object_hits: np.ndarray = self.data.ObjectHitsAsNumpy()
         self._object_ids: np.ndarray = self.data.ObjectIdsAsNumpy()
+        self._hit_postions: np.ndarray = self.data.HitPositionsAsNumpy().reshape((3, 3))
 
     def get_data(self) -> Fov.Fove:
         return Fov.Fove.GetRootAsFove(self.bytes, 0)
@@ -1795,11 +1797,17 @@ class Fove(OutputData):
     def get_eye_state(self, index: int) -> EyeState:
         return EyeState(self._eye_states[index])
 
+    def get_hit(self, index: int) -> bool:
+        return bool(self._hits[index])
+
     def get_object_hit(self, index: int) -> bool:
         return bool(self._object_hits[index])
 
     def get_object_id(self, index: int) -> int:
         return int(self._object_ids[index])
+
+    def get_hit_position(self, index: int) -> np.ndarray:
+        return self._hit_postions[index]
 
     def get_combined_depth(self) -> float:
         return self.data.CombinedDepth()

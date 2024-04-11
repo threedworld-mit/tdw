@@ -31,4 +31,4 @@ class Eye:
         """:field
         The position hit by the eye's ray. The ray can hit either an object or a scene mesh. Can be None.
         """
-        self.gaze_id: gaze_position[np.ndarray] = gaze_position
+        self.gaze_position: gaze_position[np.ndarray] = gaze_position

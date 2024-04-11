@@ -25,17 +25,18 @@ c.communicate(commands)
 commands = []
 commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
 c.communicate(commands)
+c.communicate([])
 
 g1_z = -0.3
-g2_z = -0.4
-g3_z = -0.5
-xlt = -0.15
+g2_z = -0.35
+g3_z = -0.4
+xlt = -0.135
 xmid = 0
-xrt = 0.15
-yup = 1.1
-ymid = 1.0
-ylow = 0.9
-five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt, xmid, xrt, xlt, xrt, xlt,xmid, xrt, xlt, xrt]
+xrt = 0.135
+yup = 0.9
+ymid = 0.8
+ylow = 0.7
+five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt + 0.0175, xmid, xrt - 0.0175, xlt + 0.0175, xrt - 0.0175, xlt + 0.025, xmid, xrt - 0.025, xlt + 0.025, xrt - 0.025]
 five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
 five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
 sphere_ids = []
@@ -75,7 +76,7 @@ while not vr.done:
                     start_time = time.time()
                     timer_started = True
                     # Clear gaze depth list.
-                    gaze_depth_list = []
+                    gaze_depth_list.clear()
                 break
         if touching:
             if timer_started:
@@ -91,15 +92,16 @@ while not vr.done:
                 # Get average of gaze_depth values captured during touch event.
                 if len(gaze_depth_list) > 0:
                     eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
-                    print("ID = " + str(sphere_id) + ", Avg. = " + str(eye_data[sphere_id]) + "Length = " + str(len(gaze_depth_list)))
+                    print("ID = " + str(sphere_id) + ", Avg. = " + str(eye_data[sphere_id]) + ", Length = " + str(len(gaze_depth_list)))
                     # Clear gaze depth list and remove sphere ID from use.
-                    gaze_depth_list = []
+                    gaze_depth_list.clear()
                 sphere_ids.remove(sphere_id)
                 timer_started = False
         else:
             # Reset color if sphere is still active and not being touched.
             if sphere_id in sphere_ids:
                 color = {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
+                #gaze_depth_list.clear()
         commands.append({"$type": "set_color", "color": color, "id": sphere_id})
     c.communicate(commands)
     if (len(sphere_ids)) == 0:

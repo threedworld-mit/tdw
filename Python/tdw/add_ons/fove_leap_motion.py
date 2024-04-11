@@ -117,4 +117,5 @@ class FoveLeapMotion(LeapMotion):
 
         return Eye(state=EyeState.converged if converged else fove.get_eye_state(index),
                    direction=fove.get_eye_direction(index),
-                   gaze_id=fove.get_object_id(index) if fove.get_object_hit(index) else None)
+                   gaze_id=fove.get_object_id(index) if fove.get_object_hit(index) else None,
+                   gaze_position=fove.get_hit_position(index) if fove.get_hit(index) else None)

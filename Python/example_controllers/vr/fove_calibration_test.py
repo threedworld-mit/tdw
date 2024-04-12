@@ -1,16 +1,22 @@
 from tdw.controller import Controller
+import numpy as np
 from typing import List, Dict
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 from tdw.output_data import OutputData, Fove
 from tdw.add_ons.object_manager import ObjectManager
+from tdw.object_data.transform import Transform
 from tdw.vr_data.fove.eye import Eye
 from tdw.vr_data.fove.eye_state import EyeState
 import time
 
 """
-Minimal Fove Leap Motion example.
+Fove eye/hand calibration protocol.
 """
+
+def insert_position(eye: bool, index: int, position: np.ndarray):
+    axis_0_index = 0 if eye else 1
+    array[axis_0_index][index] = position
 
 c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
@@ -25,24 +31,29 @@ c.communicate(commands)
 commands = []
 commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
 c.communicate(commands)
+c.communicate([])
 
 g1_z = -0.3
-g2_z = -0.4
-g3_z = -0.5
-xlt = -0.15
+g2_z = -0.35
+g3_z = -0.4
+xlt = -0.125
 xmid = 0
-xrt = 0.15
+xrt = 0.125
 yup = 1.1
 ymid = 1.0
 ylow = 0.9
-five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt, xmid, xrt, xlt, xrt, xlt,xmid, xrt, xlt, xrt]
+five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt - 0.0175, xmid, xrt + 0.0175, xlt - 0.0175, xrt + 0.0175, xlt - 0.025, xmid, xrt + 0.025, xlt - 0.025, xrt + 0.025]
 five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
 five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
 sphere_ids = []
+sphere_ids_static = []
 touch_time = 0.5
 eye_data: Dict[int, float] = dict()
+finger_data: Dict[int, Transform] = dict()
 timer_started = False
 gaze_depth_list = []
+finger_pos_list = []
+array = np.zeros(shape=(2, 15, 3))
 
 commands = []
 # Create sphere groups 1-3.
@@ -52,7 +63,7 @@ for i in range(15):
     commands.extend(Controller.get_add_physics_object(model_name="sphere",
                                                       object_id=obj_id,
                                                       position={"x": five_pnt_x_pos[i], "y": five_pnt_y_pos[i], "z": five_pnt_z_pos[i]},
-                                                      scale_mass=False,
+                                                      scale_mass=True,
                                                       scale_factor={"x": 0.025, "y": 0.025, "z": 0.025},
                                                       default_physics_values=False,
                                                       mass=1.0,
@@ -63,7 +74,8 @@ for i in range(15):
                                                       gravity=False,
                                                       library="models_flex.json"))
 c.communicate(commands)
-
+# Make a static copy of the sphere ID list, for indexing reference. 
+sphere_ids_static = sphere_ids.copy()
 while not vr.done:
     commands = []
     for sphere_id in sphere_ids: 
@@ -71,30 +83,27 @@ while not vr.done:
         for bone in vr.right_hand_collisions:
             if sphere_id in vr.right_hand_collisions[bone]:
                 touching = True
+                # Start half-second timer.
                 if timer_started == False: 
                     start_time = time.time()
                     timer_started = True
-                    # Clear gaze depth list.
-                    gaze_depth_list = []
+                    #gaze_depth_list.clear()
                 break
         if touching:
             if timer_started:
                 curr_time = time.time()
             if  (curr_time - start_time) < touch_time:
-                # Touch event is still under defined duration, so keep it blue.
+                # Touch event is still within defined duration, so keep it blue.
                 color = {"r": 0, "g": 0, "b": 1.0, "a": 1.0}
                 # Store eye tracking data for the user looking at this sphere.
-                gaze_depth_list.append(vr.combined_depth)
+                insert_position(True, sphere_ids_static.index(sphere_id), vr.converged_eyes.gaze_position)
+                # Store finger position as well.
+                insert_position(False, sphere_ids_static.index(sphere_id), vr.right_hand_transforms[bone].position)
             else:
-                # User touched this sphere for the defined duration, so render it inactive.
+                # User touched this sphere for the defined duration, so end touch event and remove sphere ID from use.
                 commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
-                # Get average of gaze_depth values captured during touch event.
-                if len(gaze_depth_list) > 0:
-                    eye_data[sphere_id] = sum(gaze_depth_list) / len(gaze_depth_list)
-                    print("ID = " + str(sphere_id) + ", Avg. = " + str(eye_data[sphere_id]) + "Length = " + str(len(gaze_depth_list)))
-                    # Clear gaze depth list and remove sphere ID from use.
-                    gaze_depth_list = []
                 sphere_ids.remove(sphere_id)
+                #gaze_depth_list.clear()              
                 timer_started = False
         else:
             # Reset color if sphere is still active and not being touched.
@@ -103,7 +112,8 @@ while not vr.done:
         commands.append({"$type": "set_color", "color": color, "id": sphere_id})
     c.communicate(commands)
     if (len(sphere_ids)) == 0:
-        # All spheres have been touched, so begin waiting for hardware button trigger.
-        c.communicate([])
+        # All spheres have been touched, so write out the stored data array. 
+        # If we do the averaging, we would do it here.
+        np.save("arr", array)
 
 c.communicate({"$type": "terminate"})

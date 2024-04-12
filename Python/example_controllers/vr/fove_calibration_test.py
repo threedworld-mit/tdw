@@ -39,10 +39,10 @@ g3_z = -0.4
 xlt = -0.125
 xmid = 0
 xrt = 0.125
-yup = 1.1
-ymid = 1.0
-ylow = 0.9
-five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt - 0.0175, xmid, xrt + 0.0175, xlt - 0.0175, xrt + 0.0175, xlt - 0.025, xmid, xrt + 0.025, xlt - 0.025, xrt + 0.025]
+yup = 0.9
+ymid = 0.8
+ylow = 0.7
+five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt + 0.0175, xmid, xrt - 0.0175, xlt + 0.0175, xrt - 0.0175, xlt + 0.025, xmid, xrt - 0.025, xlt + 0.025, xrt - 0.025]
 five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
 five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
 sphere_ids = []
@@ -54,6 +54,7 @@ timer_started = False
 gaze_depth_list = []
 finger_pos_list = []
 array = np.zeros(shape=(2, 15, 3))
+saved_data = False
 
 commands = []
 # Create sphere groups 1-3.
@@ -102,6 +103,7 @@ while not vr.done:
             else:
                 # User touched this sphere for the defined duration, so end touch event and remove sphere ID from use.
                 commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
+                print("Completed sphere " + str(sphere_id))
                 sphere_ids.remove(sphere_id)
                 #gaze_depth_list.clear()              
                 timer_started = False
@@ -114,6 +116,9 @@ while not vr.done:
     if (len(sphere_ids)) == 0:
         # All spheres have been touched, so write out the stored data array. 
         # If we do the averaging, we would do it here.
-        np.save("arr", array)
+        if not saved_data:
+            with open('C:\\Users\\weiwe\\OneDrive\\Documents\\eye_hand_data\\arr_' + str(time.time()) + ".npy", 'wb') as f:
+                np.save(f, array)
+                saved_data = True
 
 c.communicate({"$type": "terminate"})

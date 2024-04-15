@@ -48,11 +48,7 @@ five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3
 sphere_ids = []
 sphere_ids_static = []
 touch_time = 0.5
-eye_data: Dict[int, float] = dict()
-finger_data: Dict[int, Transform] = dict()
 timer_started = False
-gaze_depth_list = []
-finger_pos_list = []
 array = np.zeros(shape=(2, 15, 3))
 saved_data = False
 
@@ -102,8 +98,8 @@ while not vr.done:
                 insert_position(False, sphere_ids_static.index(sphere_id), vr.right_hand_transforms[bone].position)
             else:
                 # User touched this sphere for the defined duration, so end touch event and remove sphere ID from use.
-                commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
-                print("Completed sphere " + str(sphere_id))
+                #commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
+                commands.append({"$type": "hide_object", "id": sphere_id})
                 sphere_ids.remove(sphere_id)
                 #gaze_depth_list.clear()              
                 timer_started = False

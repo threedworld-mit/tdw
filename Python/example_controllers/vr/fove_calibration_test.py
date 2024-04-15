@@ -84,7 +84,6 @@ while not vr.done:
                 if timer_started == False: 
                     start_time = time.time()
                     timer_started = True
-                    #gaze_depth_list.clear()
                 break
         if touching:
             if timer_started:
@@ -98,10 +97,8 @@ while not vr.done:
                 insert_position(False, sphere_ids_static.index(sphere_id), vr.right_hand_transforms[bone].position)
             else:
                 # User touched this sphere for the defined duration, so end touch event and remove sphere ID from use.
-                #commands.append({"$type": "set_object_visibility", "id": sphere_id, "visible": False})
                 commands.append({"$type": "hide_object", "id": sphere_id})
-                sphere_ids.remove(sphere_id)
-                #gaze_depth_list.clear()              
+                sphere_ids.remove(sphere_id)              
                 timer_started = False
         else:
             # Reset color if sphere is still active and not being touched.

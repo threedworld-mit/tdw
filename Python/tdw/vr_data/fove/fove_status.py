@@ -7,9 +7,11 @@ class FoveStatus(Enum):
     """
 
     fove_spiral = 0  # Running the FOVE spiral calibration.
-    eye_hand = 1  # Performing the sphere touch calibration protocol.
-    waiting_for_trigger = 2  # Listening on the port for the hardware trigger.
-    trial_ongoing = 3  # Received trigger. Trial has begun and is in process.
-    trial_success = 4  # Trial completed successfully.
-    trial_failure = 5  # Trial failed.
+    fove_spiral_completed = 1  # Running the FOVE spiral calibration.
+    eye_hand_ongoing = 2  # Performing the sphere touch calibration protocol.
+    eye_hand_complete = 3  # Sphere touch calibration protocol completed.
+    waiting_for_trigger = 4  # Listening on the port for the hardware trigger.
+    trial_ongoing = 5  # Received trigger. Trial has begun and is in process.
+    trial_success = 6  # Trial completed successfully.
+    trial_failure = 7  # Trial failed.
 

@@ -143,7 +143,7 @@ class FoveLeapMotion(LeapMotion):
                 self.right_eye = FoveLeapMotion._get_eye(1, fove)
                 self.converged_eyes = FoveLeapMotion._get_eye(2, fove, converged=True)
                 self.combined_depth = fove.get_combined_depth()
-        if self.fove_status == FoveStatus.fove_spiral_completed:
+        if self.initialized:
             commands = []
             # Create sphere groups 1-3.
             for i in range(15):

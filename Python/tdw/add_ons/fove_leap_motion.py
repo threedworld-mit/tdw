@@ -138,10 +138,9 @@ class FoveLeapMotion(LeapMotion):
                 is_calibrated = fove.get_is_calibrated()
         # Run FOVE's built-in calibration.
         if self.calibration_state == CalibrationState.calibrating:
-            for i in range(len(resp) - 1):
-                if is_calibrated:
-                    # Initialize sphere calibration.
-                    self._initialize_sphere_calibration()
+            if is_calibrated:
+                # Initialize sphere calibration.
+                self._initialize_sphere_calibration()
         # Evaluate sphere calibration.
         elif self.calibration_state == CalibrationState.calibrating_with_spheres:
             self._evaluate_sphere_calibration()

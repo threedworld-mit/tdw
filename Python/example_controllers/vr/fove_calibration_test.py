@@ -20,6 +20,7 @@ c.add_ons.append(om)
 c.communicate(commands)
 
 while not fove.done:
+    # Test if calibration done.
     if fove.calibration_state == CalibrationState.running:
         fove.initialize_scene()
     c.communicate([])

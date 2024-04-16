@@ -3,6 +3,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 from tdw.output_data import OutputData, Fove
 from tdw.add_ons.object_manager import ObjectManager
+from tdw.vr_data.fove.calibration_state import CalibrationState
 import time
 
 """

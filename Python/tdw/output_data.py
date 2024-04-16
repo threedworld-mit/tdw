@@ -1811,3 +1811,6 @@ class Fove(OutputData):
 
     def get_combined_depth(self) -> float:
         return self.data.CombinedDepth()
+
+    def get_is_calibrated(self) -> bool:
+        return self.data.Calibrated()

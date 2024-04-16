@@ -1,10 +1,14 @@
 from typing import List, Dict, Optional
+from tdw.controller import Controller
 from tdw.add_ons.leap_motion import LeapMotion
 from tdw.output_data import OutputData, Fove
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.fove.eye import Eye
+from tdw.vr_data.fove.fove_status import FoveStatus
 from tdw.vr_data.fove.eye_state import EyeState
 from tdw.vr_data.fove.run_mode import RunMode
+import time
+import numpy as np
 
 
 class FoveLeapMotion(LeapMotion):
@@ -80,6 +84,32 @@ class FoveLeapMotion(LeapMotion):
         The combined eye depth.
         """
         self.combined_depth: float = 0
+        """:field
+        The status of calibration.
+        """
+        self.fove_status: FoveStatus = FoveStatus.fove_spiral
+        """:field
+        The numpy array used to store the eye/hand data.
+        """
+        self.eye_hand_array: np.ndarray = np.zeros(shape=(2, 15, 3))
+        # Variables relative to the sphere placement and processing of the hand/eye protocol.
+        g1_z = -0.3
+        g2_z = -0.35
+        g3_z = -0.4
+        xlt = -0.125
+        xmid = 0
+        xrt = 0.125
+        yup = 0.9
+        ymid = 0.8
+        ylow = 0.7
+        five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt + 0.0175, xmid, xrt - 0.0175, xlt + 0.0175, xrt - 0.0175, xlt + 0.025, xmid, xrt - 0.025, xlt + 0.025, xrt - 0.025]
+        five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
+        five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
+        sphere_ids = []
+        sphere_ids_static = []
+        touch_time = 0.5
+        timer_started = False
+        saved_data = False
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -93,8 +123,14 @@ class FoveLeapMotion(LeapMotion):
                           "value": False},
                          {"$type": "set_target_framerate",
                           "framerate": -1},
+                         {"$type": "set_physics_solver_iterations", 
+                          "iterations": 15},
+                         {"$type": "set_time_step", 
+                          "time_step": 0.01},
                          {"$type": "send_fove",
                           "frequency": "always"}])
+        # Run FOVE spiral calibration.
+        commands.append({"$type": "start_fove_calibration", "profile_name": "test"})
         return commands
 
     def on_send(self, resp: List[bytes]) -> None:
@@ -107,6 +143,72 @@ class FoveLeapMotion(LeapMotion):
                 self.right_eye = FoveLeapMotion._get_eye(1, fove)
                 self.converged_eyes = FoveLeapMotion._get_eye(2, fove, converged=True)
                 self.combined_depth = fove.get_combined_depth()
+        if self.initialized:
+            commands = []
+            # Create sphere groups 1-3.
+            for i in range(15):
+                obj_id = Controller.get_unique_id()
+                sphere_ids.append(obj_id)
+                commands.extend(Controller.get_add_physics_object(model_name="sphere",
+                                                                  object_id=obj_id,
+                                                                  position={"x": five_pnt_x_pos[i], "y": five_pnt_y_pos[i], "z": five_pnt_z_pos[i]},
+                                                                  scale_mass=True,
+                                                                  scale_factor={"x": 0.025, "y": 0.025, "z": 0.025},
+                                                                  default_physics_values=False,
+                                                                  mass=1.0,
+                                                                  dynamic_friction=1.0,
+                                                                  static_friction=1.0,
+                                                                  bounciness=0,
+                                                                  kinematic=True,
+                                                                  gravity=False,
+                                                                  library="models_flex.json"))
+            # Make a static copy of the sphere ID list, for indexing reference. 
+            sphere_ids_static = sphere_ids.copy()
+            # Indicate we are ready to start the hand-eye calibration protocol.
+            self.fove_status = FoveStatus.eye_hand_ongoing
+            return
+        if self.fove_status == FoveStatus.eye_hand_ongoing:
+            commands = []
+            for sphere_id in sphere_ids: 
+                touching = False
+                for bone in vr.right_hand_collisions:
+                    if sphere_id in vr.right_hand_collisions[bone]:
+                        touching = True
+                        # Start half-second timer.
+                        if timer_started == False: 
+                            start_time = time.time()
+                            timer_started = True
+                        break
+                if touching:
+                    if timer_started:
+                        curr_time = time.time()
+                    if  (curr_time - start_time) < touch_time:
+                        # Touch event is still within defined duration, so keep it blue.
+                        color = {"r": 0, "g": 0, "b": 1.0, "a": 1.0}
+                        # Store eye tracking data for the user looking at this sphere.
+                        if vr.converged_eyes.gaze_position is not None:
+                            insert_position(True, sphere_ids_static.index(sphere_id), vr.converged_eyes.gaze_position)
+                        # Store finger position as well.
+                        insert_position(False, sphere_ids_static.index(sphere_id), vr.right_hand_transforms[bone].position)
+                    else:
+                        # User touched this sphere for the defined duration, so end touch event and remove sphere ID from use.
+                        commands.append({"$type": "hide_object", "id": sphere_id})
+                        sphere_ids.remove(sphere_id)              
+                        timer_started = False
+                else:
+                    # Reset color if sphere is still active and not being touched.
+                    if sphere_id in sphere_ids:
+                        color = {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}
+                commands.append({"$type": "set_color", "color": color, "id": sphere_id})
+            if (len(sphere_ids)) == 0:
+                # All spheres have been touched, so write out the stored data array. 
+                # If we do the averaging, we would do it here.
+                if not saved_data:
+                    with open('C:\\Users\\weiwe\\OneDrive\\Documents\\eye_hand_data\\arr_' + str(time.time()) + ".npy", 'wb') as f:
+                        np.save(f, eye_hand_array)
+                        saved_data = True
+                self.fove_status = FoveStatus.eye_hand_complete
+
 
     @staticmethod
     def _get_eye(index: int, fove: Fove, converged: bool = False) -> Eye:
@@ -120,4 +222,9 @@ class FoveLeapMotion(LeapMotion):
 
         return Eye(state=EyeState.converged if converged else fove.get_eye_state(index),
                    direction=fove.get_eye_direction(index),
-                   gaze_id=fove.get_object_id(index) if fove.get_object_hit(index) else None)
+                   gaze_id=fove.get_object_id(index) if fove.get_object_hit(index) else None,
+                   gaze_position=fove.get_hit_position(index) if fove.get_hit(index) else None)
+
+    def insert_position(eye: bool, index: int, position: np.ndarray):
+        axis_0_index = 0 if eye else 1
+        eye_hand_array[axis_0_index][index] = position

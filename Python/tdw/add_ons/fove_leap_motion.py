@@ -199,6 +199,10 @@ class FoveLeapMotion(LeapMotion):
                                                                    scale_factor={"x": scale, "y": scale, "z": scale},
                                                                    kinematic=True,
                                                                    library="models_flex.json"))
+            # Ignore physics helpers.
+            self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
+                                  "id": sphere.id})
+        # Requests static
 
     def _evaluate_sphere_calibration(self) -> None:
         """

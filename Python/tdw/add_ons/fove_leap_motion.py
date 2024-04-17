@@ -143,6 +143,7 @@ class FoveLeapMotion(LeapMotion):
                 self._initialize_sphere_calibration()
         # Evaluate sphere calibration.
         elif self.calibration_state == CalibrationState.calibrating_with_spheres:
+            self._set_leap_motion_data(resp=resp)
             self._evaluate_sphere_calibration()
         # Run the simulation normally.
         else:

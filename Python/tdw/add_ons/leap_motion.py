@@ -152,24 +152,7 @@ class LeapMotion(VR, ABC):
                     break
             self._set_graspable = False
         super().on_send(resp=resp)
-        for i in range(len(resp) - 1):
-            r_id = OutputData.get_data_type_id(resp[i])
-            if r_id == "leap":
-                leap_motion = LeapMotionOutputData(resp[i])
-                self._set_hand(leap_motion_data=leap_motion,
-                               hand_index=0,
-                               transforms=self.left_hand_transforms,
-                               collisions=self.left_hand_collisions,
-                               angles=self.left_hand_angles)
-                self._set_hand(leap_motion_data=leap_motion,
-                               hand_index=1,
-                               transforms=self.right_hand_transforms,
-                               collisions=self.right_hand_collisions,
-                               angles=self.right_hand_angles)
-                # Handle button callbacks.
-                for button_index in self._button_callbacks:
-                    if leap_motion.get_is_button_pressed(button_index):
-                        self._button_callbacks[button_index]()
+        self._set_leap_motion_data(resp=resp)
 
     def listen_to_button(self, button: int, callback: Callable[[], None]) -> None:
         """
@@ -243,6 +226,32 @@ class LeapMotion(VR, ABC):
                 angles[bone] = leap_motion_data.get_angles(hand_index, angle_index, angle_index + dof)
                 angle_index += dof
             b += 1
+
+    def _set_leap_motion_data(self, resp: List[bytes]) -> None:
+        """
+        Update Leap Motion data.
+
+        :param resp: The response from the build.
+        """
+
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "leap":
+                leap_motion = LeapMotionOutputData(resp[i])
+                self._set_hand(leap_motion_data=leap_motion,
+                               hand_index=0,
+                               transforms=self.left_hand_transforms,
+                               collisions=self.left_hand_collisions,
+                               angles=self.left_hand_angles)
+                self._set_hand(leap_motion_data=leap_motion,
+                               hand_index=1,
+                               transforms=self.right_hand_transforms,
+                               collisions=self.right_hand_collisions,
+                               angles=self.right_hand_angles)
+                # Handle button callbacks.
+                for button_index in self._button_callbacks:
+                    if leap_motion.get_is_button_pressed(button_index):
+                        self._button_callbacks[button_index]()
 
     def _quit(self) -> None:
         """

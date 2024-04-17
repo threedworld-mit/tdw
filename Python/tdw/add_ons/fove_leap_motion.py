@@ -210,12 +210,14 @@ class FoveLeapMotion(LeapMotion):
         """
 
         for i in range(len(self._calibration_spheres)):
+            if self._calibration_spheres[i].done:
+                continue
+            colliding = False
             for bone in self.right_hand_collisions:
                 # A sphere that isn't done is colliding with a hand.
-                if (not self._calibration_spheres[i].done) and self._calibration_spheres[i].id in self.right_hand_collisions[bone]:
+                if self._calibration_spheres[i].id in self.right_hand_collisions[bone]:
                     # Start calibration.
-                    if not self._calibration_spheres[i].colliding:
-                        self._calibration_spheres[i].colliding = True
+                    if not self._calibration_spheres[i].t0 is None:
                         # Set the start time.
                         self._calibration_spheres[i].t0 = time.time()
                         # Set the sphere's color.
@@ -233,14 +235,15 @@ class FoveLeapMotion(LeapMotion):
                         self.commands.append({"$type": "hide_object",
                                               "id": self._calibration_spheres[i].id})
                     # We only need to evaluate one bone per sphere.
+                    colliding = True
                     break
-                # The sphere is not colliding with a hand.
-                else:
-                    self._calibration_spheres[i].colliding = False
-                    # Set the sphere's color.
-                    self.commands.append({"$type": "set_color",
-                                          "id": self._calibration_spheres[i].id,
-                                          "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}})
+            # Reset the non-calibrated sphere.
+            if not colliding and self._calibration_spheres[i].t0 is not None:
+                self._calibration_spheres[i].t0 = None
+                # Set the sphere's color.
+                self.commands.append({"$type": "set_color",
+                                      "id": self._calibration_spheres[i].id,
+                                      "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}})
         # Check whether the entire calibration is done.
         if all([sphere.done for sphere in self._calibration_spheres]):
             # Set the state to `running`

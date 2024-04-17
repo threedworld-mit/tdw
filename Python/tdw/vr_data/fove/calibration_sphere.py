@@ -1,3 +1,4 @@
+from typing import Optional
 from tdw.controller import Controller
 
 
@@ -16,13 +17,9 @@ class CalibrationSphere:
         """
         self.id: int = Controller.get_unique_id()
         """:field
-        If True, the hand is colliding with this sphere.
+        The start time of a collision with a hand. If None, there is no collision.
         """
-        self.colliding: bool = False
-        """:field
-        The start time of a collision with a hand.
-        """
-        self.t0: float = 0
+        self.t0: Optional[float] = None
         """:field
         If True, we're done calibrating with this sphere.
         """

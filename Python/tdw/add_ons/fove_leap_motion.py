@@ -220,7 +220,7 @@ class FoveLeapMotion(LeapMotion):
                 # A sphere that isn't done is colliding with a hand.
                 if self._calibration_spheres[i].id in self.right_hand_collisions[bone]:
                     # Start calibration.
-                    if not self._calibration_spheres[i].t0 is None:
+                    if self._calibration_spheres[i].t0 is None:
                         # Set the start time.
                         self._calibration_spheres[i].t0 = time.time()
                         # Set the sphere's color.

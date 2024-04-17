@@ -157,7 +157,14 @@ class Fove(object):
             return self._tab.Get(tdw.flatbuffers.number_types.Float32Flags, o + self._tab.Pos)
         return 0.0
 
-def FoveStart(builder): builder.StartObject(7)
+    # Fove
+    def Calibrated(self):
+        o = tdw.flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(18))
+        if o != 0:
+            return bool(self._tab.Get(tdw.flatbuffers.number_types.BoolFlags, o + self._tab.Pos))
+        return False
+
+def FoveStart(builder): builder.StartObject(8)
 def FoveAddEyeDirections(builder, eyeDirections): builder.PrependUOffsetTRelativeSlot(0, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(eyeDirections), 0)
 def FoveStartEyeDirectionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def FoveAddEyeStates(builder, eyeStates): builder.PrependUOffsetTRelativeSlot(1, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(eyeStates), 0)
@@ -171,4 +178,5 @@ def FoveStartObjectIdsVector(builder, numElems): return builder.StartVector(4, n
 def FoveAddHitPositions(builder, hitPositions): builder.PrependUOffsetTRelativeSlot(5, tdw.flatbuffers.number_types.UOffsetTFlags.py_type(hitPositions), 0)
 def FoveStartHitPositionsVector(builder, numElems): return builder.StartVector(4, numElems, 4)
 def FoveAddCombinedDepth(builder, combinedDepth): builder.PrependFloat32Slot(6, combinedDepth, 0.0)
+def FoveAddCalibrated(builder, calibrated): builder.PrependBoolSlot(7, calibrated, 0)
 def FoveEnd(builder): return builder.EndObject()

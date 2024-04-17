@@ -153,8 +153,9 @@ class FoveLeapMotion(LeapMotion):
         This must be called after sphere calibration and after scene initialization.
         """
 
-        self.commands.append({"$type": "send_static_rigidbodies",
-                              "frequency": "once"})
+        self.commands.extend([{"$type": "send_static_rigidbodies",
+                               "frequency": "once"},
+                              {"$type": "refresh_leap_motion_rig"}])
 
     @staticmethod
     def _get_eye(index: int, fove: Fove, converged: bool = False) -> Eye:
@@ -202,7 +203,8 @@ class FoveLeapMotion(LeapMotion):
             # Ignore physics helpers.
             self.commands.append({"$type": "ignore_leap_motion_physics_helpers",
                                   "id": sphere.id})
-        # Requests static
+        # Re-cache the known objects in the scene.
+        self.commands.append({"$type": "refresh_leap_motion_rig"})
 
     def _evaluate_sphere_calibration(self) -> None:
         """

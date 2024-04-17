@@ -1,6 +1,5 @@
 from typing import List, Dict, Optional
 from tdw.tdw_utils import TDWUtils
-from tdw.controller import Controller
 from tdw.add_ons.leap_motion import LeapMotion
 from tdw.output_data import OutputData, Fove
 from tdw.vr_data.rig_type import RigType
@@ -17,6 +16,10 @@ class FoveLeapMotion(LeapMotion):
     """
     Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
     """
+
+    _CALIBRATION_COLOR_NOT_COLLIDING: Dict[str, float] = {"r": 1, "g": 1, "b": 1, "a": 1}
+    _CALIBRATION_SPHERE_DIAMETER: float = 0.025
+    _CALIBRATION_SPHERE_RADIUS: float = _CALIBRATION_SPHERE_DIAMETER / 2.0
 
     def __init__(self, calibration_data_path: PATH, perform_calibration: bool = False,
                  allow_headset_movement: bool = False, show_hands: bool = True, set_graspable: bool = True,
@@ -89,18 +92,21 @@ class FoveLeapMotion(LeapMotion):
         """
         self.combined_depth: float = 0
         """:field
-        The numpy array used to store the eye/hand data.
-        """
-        self.eye_hand_array: np.ndarray = np.zeros(shape=(2, 15, 3))
-        """:field
         An enum state machine flag that is used to check whether the FOVE headset is calibrating.
         """
         self.calibration_state: CalibrationState = CalibrationState.calibrating
         # The IDs of the calibration spheres.
-        num_spheres = 15
-        self._calibration_spheres: List[CalibrationSphere] = [CalibrationSphere() for _ in range(num_spheres)]
+        self._calibration_spheres: List[CalibrationSphere] = [CalibrationSphere(position) for position in
+                                                              np.array([[-0.125, 0.9, -0.3], [0, 0.8, -0.3],
+                                                                        [0.125, 0.7, -0.3], [-0.125, 0.7, -0.3],
+                                                                        [0.125, 0.9, -0.3], [-0.1075, 0.9, -0.35],
+                                                                        [0, 0.8, -0.35], [0.1075, 0.7, -0.35],
+                                                                        [-0.1075, 0.7, -0.35], [0.1075, 0.9, -0.35],
+                                                                        [-0.1, 0.9, -0.4], [0, 0.8, -0.4],
+                                                                        [0.1, 0.7, -0.4], [-0.1, 0.7, -0.4],
+                                                                        [0.1, 0.9, -0.4]])]
         # The calibration data.
-        self._sphere_calibration_data: np.ndarray = np.zeros(shape=(2, num_spheres, 3))
+        self._sphere_calibration_data: np.ndarray = np.zeros(shape=(2, len(self._calibration_spheres), 3))
         self._calibration_data_path: str = TDWUtils.get_string_path(calibration_data_path)
 
     def get_initialization_commands(self) -> List[dict]:
@@ -177,48 +183,42 @@ class FoveLeapMotion(LeapMotion):
         """
 
         self.calibration_state = CalibrationState.calibrating_with_spheres
-        g1_z = -0.3
-        g2_z = -0.35
-        g3_z = -0.4
-        xlt = -0.125
-        xmid = 0
-        xrt = 0.125
-        yup = 0.9
-        ymid = 0.8
-        ylow = 0.7
-        five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt + 0.0175, xmid, xrt - 0.0175, xlt + 0.0175, xrt - 0.0175, xlt + 0.025, xmid, xrt - 0.025, xlt + 0.025, xrt - 0.025]
-        five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
-        five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]
-        scale = 0.025
-        for i, sphere in enumerate(self._calibration_spheres):
-            self.commands.extend(Controller.get_add_physics_object(model_name="sphere",
-                                                                   object_id=sphere.id,
-                                                                   position={"x": five_pnt_x_pos[i],
-                                                                             "y": five_pnt_y_pos[i],
-                                                                             "z": five_pnt_z_pos[i]},
-                                                                   scale_factor={"x": scale, "y": scale, "z": scale},
-                                                                   kinematic=True,
-                                                                   library="models_flex.json"))
+        # Add position markers at each position.
+        self.commands.extend([{"$type": "add_position_marker",
+                               "position": TDWUtils.array_to_vector3(sphere.position),
+                               "color": FoveLeapMotion._CALIBRATION_COLOR_NOT_COLLIDING,
+                               "scale": FoveLeapMotion._CALIBRATION_SPHERE_DIAMETER}
+                              for sphere in self._calibration_spheres])
 
     def _evaluate_sphere_calibration(self) -> None:
         """
         Evaluate an ongoing sphere calibration.
         """
 
+        # Iterate through the spheres.
         for i in range(len(self._calibration_spheres)):
-            for bone in self.right_hand_collisions:
-                # A sphere that isn't done is colliding with a hand.
-                if (not self._calibration_spheres[i].done) and self._calibration_spheres[i].id in self.right_hand_collisions[bone]:
+            # Ignore spheres that are done.
+            if self._calibration_spheres[i].done:
+                continue
+            colliding = False
+            # Check if any of the right hand's bones are within the position marker's radius.
+            for bone in self.right_hand_transforms:
+                if (np.linalg.norm(self.right_hand_transforms[bone].position - self._calibration_spheres[i].position)
+                        <= FoveLeapMotion._CALIBRATION_SPHERE_RADIUS):
+                    colliding = True
                     # Start calibration.
-                    if not self._calibration_spheres[i].colliding:
-                        self._calibration_spheres[i].colliding = True
+                    if self._calibration_spheres[i].t0 is None:
                         # Set the start time.
                         self._calibration_spheres[i].t0 = time.time()
-                        # Set the sphere's color.
-                        self.commands.append({"$type": "set_color",
-                                              "id": self._calibration_spheres[i].id,
-                                              "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}})
-                    # At least half a second has elapsed.
+                        # Remove all existing position markers.
+                        self.commands.append({"$type": "remove_position_markers"})
+                        # Replace the position markers. Set this marker's color.
+                        self.commands.extend([{"$type": "add_position_marker",
+                                               "position": TDWUtils.array_to_vector3(sphere.position),
+                                               "color": {"r": 0, "g": 0, "b": 1, "a": 1} if i == j else FoveLeapMotion._CALIBRATION_COLOR_NOT_COLLIDING,
+                                               "scale": FoveLeapMotion._CALIBRATION_SPHERE_DIAMETER}
+                                              for j, sphere in enumerate(self._calibration_spheres) if not sphere.done])
+                    # Continue ongoing calibration.
                     elif time.time() - self._calibration_spheres[i].t0 >= 0.5:
                         # The sphere is done.
                         self._calibration_spheres[i].done = True
@@ -226,22 +226,32 @@ class FoveLeapMotion(LeapMotion):
                         self._sphere_calibration_data[0][i] = self.converged_eyes.gaze_position
                         self._sphere_calibration_data[1][i] = self.right_hand_transforms[bone].position
                         # Hide the sphere.
-                        self.commands.append({"$type": "hide_object",
-                                              "id": self._calibration_spheres[i].id})
-                    # We only need to evaluate one bone per sphere.
+                        self._reset_sphere_colors()
+                    # We only need to check one bone.
                     break
-                # The sphere is not colliding with a hand.
-                else:
-                    self._calibration_spheres[i].colliding = False
-                    # Set the sphere's color.
-                    self.commands.append({"$type": "set_color",
-                                          "id": self._calibration_spheres[i].id,
-                                          "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}})
+            # The user exited a collision before calibration was done.
+            if not colliding and self._calibration_spheres[i].t0 is not None:
+                self._calibration_spheres[i].t0 = None
+                self._reset_sphere_colors()
         # Check whether the entire calibration is done.
         if all([sphere.done for sphere in self._calibration_spheres]):
-            # Set the state to `running`
+            # Set the state to `running`.
             self.calibration_state = CalibrationState.running
             # Save the data to disk.
             np.save(self._calibration_data_path, self._sphere_calibration_data)
             # Destroy the spheres.
-            self.commands.extend([{"$type": "destroy_object", "id": sphere.id} for sphere in self._calibration_spheres])
+            self.commands.append({"$type": "remove_position_markers"})
+
+    def _reset_sphere_colors(self) -> None:
+        """
+        Destroy all position markers and set their colors to the non-colliding color.
+        """
+
+        # Remove all existing position markers.
+        self.commands.append({"$type": "remove_position_markers"})
+        # Replace the position markers.
+        self.commands.extend([{"$type": "add_position_marker",
+                               "position": TDWUtils.array_to_vector3(sphere.position),
+                               "color": FoveLeapMotion._CALIBRATION_COLOR_NOT_COLLIDING,
+                               "scale": FoveLeapMotion._CALIBRATION_SPHERE_DIAMETER}
+                              for j, sphere in enumerate(self._calibration_spheres) if not sphere.done])

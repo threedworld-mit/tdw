@@ -1,4 +1,5 @@
-from tdw.controller import Controller
+from typing import Optional
+import numpy as np
 
 
 class CalibrationSphere:
@@ -6,23 +7,19 @@ class CalibrationSphere:
     Metadata for a sphere used for FOVE calibration.
     """
 
-    def __init__(self):
+    def __init__(self, position: np.ndarray):
         """
-        (no arguments)
+        :param position: The position of the sphere.
         """
 
         """:field
-        The object ID.
+        The position of the sphere.
         """
-        self.id: int = Controller.get_unique_id()
+        self.position: np.ndarray = position
         """:field
-        If True, the hand is colliding with this sphere.
+        The start time of a collision with a hand. If None, the hand isn't colliding with the sphere.
         """
-        self.colliding: bool = False
-        """:field
-        The start time of a collision with a hand.
-        """
-        self.t0: float = 0
+        self.t0: Optional[int] = None
         """:field
         If True, we're done calibrating with this sphere.
         """

@@ -18,7 +18,7 @@ class FoveLeapMotion(LeapMotion):
     Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
     """
 
-    def __init__(self, calibration_data_path: PATH, perform_calibration: bool = False,
+    def __init__(self, calibration_data_path: PATH, timestamp: bool = False, perform_calibration: bool = False,
                  allow_headset_movement: bool = False, show_hands: bool = True, set_graspable: bool = True,
                  output_data: bool = True, position: Dict[str, float] = None, rotation: float = 0,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
@@ -29,6 +29,7 @@ class FoveLeapMotion(LeapMotion):
                  quit_button: Optional[int] = 3):
         """
         :param calibration_data_path: Calibration data will be saved to this file. Do not include a file extension!
+        :param timestamp: Whether to append a time.time() timestamp to the calibration_data_path
         :param perform_calibration: If True, perform the calibration protocol.
         :param allow_headset_movement: If True, allow headset movement.
         :param show_hands: If True, show the hands.
@@ -102,6 +103,7 @@ class FoveLeapMotion(LeapMotion):
         # The calibration data.
         self._sphere_calibration_data: np.ndarray = np.zeros(shape=(2, num_spheres, 3))
         self._calibration_data_path: str = TDWUtils.get_string_path(calibration_data_path)
+        self._timestamp = timestamp
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -252,6 +254,8 @@ class FoveLeapMotion(LeapMotion):
             # Set the state to `running`
             self.calibration_state = CalibrationState.running
             # Save the data to disk.
+            if self._timestamp:
+                self._calibration_data_path = self._calibration_data_path + str(time.time())
             np.save(self._calibration_data_path, self._sphere_calibration_data)
             # Destroy the spheres.
             self.commands.extend([{"$type": "destroy_object", "id": sphere.id} for sphere in self._calibration_spheres])

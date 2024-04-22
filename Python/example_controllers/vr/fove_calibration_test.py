@@ -12,11 +12,14 @@ Fove eye/hand calibration protocol.
 
 c = Controller(launch_build=False)
 commands = [TDWUtils.create_empty_room(12, 12)]
-fove = FoveLeapMotion(position={"x": -0.36, "y": 0.65, "z": -0.25}, 
-                                time_step=0.01,
-                                allow_headset_movement=True,
-                                calibration_data_path="D:\\eye_hand_data\\eye_hand_data_",
-                                timestamp=True)
+fove = FoveLeapMotion(position={"x": 0, "y": 1.0, "z": 0},
+                      rotation=180.0,
+                      attach_avatar=False,
+                      time_step=0.01,
+                      allow_headset_movement=False,
+                      allow_headset_rotation=False,
+                      calibration_data_path="D:\\eye_hand_data\\eye_hand_data_",
+                      timestamp=True)
 c.add_ons.append(fove)
 om = ObjectManager()
 c.add_ons.append(om)

@@ -19,7 +19,7 @@ class FoveLeapMotion(LeapMotion):
     """
 
     def __init__(self, calibration_data_path: PATH, timestamp: bool = False, perform_calibration: bool = False,
-                 allow_headset_movement: bool = False, show_hands: bool = True, set_graspable: bool = True,
+                 allow_headset_movement: bool = False, allow_headset_rotation: bool = True, show_hands: bool = True, set_graspable: bool = True,
                  output_data: bool = True, position: Dict[str, float] = None, rotation: float = 0,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
                  headset_resolution_scale: float = 1.0, non_graspable: List[int] = None, max_graspable_mass: float = 50,
@@ -32,6 +32,7 @@ class FoveLeapMotion(LeapMotion):
         :param timestamp: Whether to append a time.time() timestamp to the calibration_data_path
         :param perform_calibration: If True, perform the calibration protocol.
         :param allow_headset_movement: If True, allow headset movement.
+        :param allow_headset_rotation: If True, allow headset rotation.
         :param show_hands: If True, show the hands.
         :param set_graspable: If True, enabled "physics helpers" for all [non-kinematic objects](../../lessons/physx/physics_objects.md) that aren't listed in `non_graspable`. It's essentially not possible to grasp an object that doesn't have physics helpers.
         :param output_data: If True, send [`VRRig` output data](../../api/output_data.md#VRRig) per-frame.
@@ -56,7 +57,8 @@ class FoveLeapMotion(LeapMotion):
         super().__init__(rig_type=RigType.fove_leap_motion,
                          output_data=output_data,
                          position=position,
-                         rotation=rotation, attach_avatar=attach_avatar,
+                         rotation=rotation, 
+                         attach_avatar=attach_avatar,
                          avatar_camera_width=avatar_camera_width,
                          headset_aspect_ratio=headset_aspect_ratio,
                          headset_resolution_scale=headset_resolution_scale,
@@ -72,6 +74,7 @@ class FoveLeapMotion(LeapMotion):
                          time_step=time_step, quit_button=quit_button)
         self._perform_calibration: bool = perform_calibration
         self._allow_headset_movement: bool = allow_headset_movement
+        self._allow_headset_rotation: bool = allow_headset_rotation
         self._show_hands: bool = show_hands
         """:field
         The state, direction, and gaze object of the left eye.
@@ -109,6 +112,8 @@ class FoveLeapMotion(LeapMotion):
         commands = super().get_initialization_commands()
         commands.extend([{"$type": "allow_fove_headset_movement",
                           "allow": self._allow_headset_movement},
+                         {"$type": "allow_fove_headset_rotation",
+                          "allow": self._allow_headset_rotation},
                          {"$type": "show_leap_motion_hands",
                           "show": self._show_hands},
                          {"$type": "set_vsync_count",
@@ -181,15 +186,15 @@ class FoveLeapMotion(LeapMotion):
         """
 
         self.calibration_state = CalibrationState.calibrating_with_spheres
-        g1_z = -0.3
-        g2_z = -0.35
+        g1_z = -0.35
+        g2_z = -0.375
         g3_z = -0.4
         xlt = -0.125
         xmid = 0
         xrt = 0.125
-        yup = 0.9
-        ymid = 0.8
-        ylow = 0.7
+        yup = 1.1
+        ymid = 1.0
+        ylow = 0.9
         five_pnt_x_pos = [xlt, xmid, xrt, xlt, xrt, xlt + 0.0175, xmid, xrt - 0.0175, xlt + 0.0175, xrt - 0.0175, xlt + 0.025, xmid, xrt - 0.025, xlt + 0.025, xrt - 0.025]
         five_pnt_y_pos = [yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup, yup, ymid, ylow, ylow, yup]
         five_pnt_z_pos = [g1_z, g1_z, g1_z, g1_z, g1_z, g2_z, g2_z, g2_z, g2_z, g2_z, g3_z, g3_z, g3_z, g3_z, g3_z]

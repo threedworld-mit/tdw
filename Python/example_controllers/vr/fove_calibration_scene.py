@@ -127,7 +127,6 @@ while not fove.done:
 
     resp=c.communicate([])
     # Use the appropriate gaze ray based on eye state.
-    prev_object_id = 0
     if scene_initialized:
         if fove.left_eye.state == EyeState.closed and fove.right_eye.state == EyeState.opened:
             curr_object_id = fove.right_eye.gaze_id
@@ -135,13 +134,13 @@ while not fove.done:
             curr_object_id = fove.left_eye.gaze_id
         else:
             curr_object_id = fove.converged_eyes.gaze_id
-        # Reset albedo color of all objects to normal when gaze is not on any object, or on the table.
-        if (curr_object_id is None) or (curr_object_id == table_id) or (curr_object_id != prev_object_id and prev_object_id != 0):
-            for id in om.transforms:
+        for id in om.transforms:
+            # Highlight objects in blue when gaze is on them, skipping the table.
+            if (curr_object_id is not None) and (curr_object_id != table_id) and id == curr_object_id:
+                c.communicate({"$type": "set_color", "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}, "id": curr_object_id})
+            # Reset albedo color of all objects except gazed object to normal.
+            else:
                 c.communicate({"$type": "set_color", "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "id": id})
-        else:
-            # Highlight objects in blue when gaze is on them.
-            c.communicate({"$type": "set_color", "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}, "id": curr_object_id})
-        prev_object_id = curr_object_id
+
    
 c.communicate({"$type": "terminate"})

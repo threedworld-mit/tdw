@@ -38,7 +38,7 @@ table_set_ids.append(object_id)
 object_id=Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="baseball",
                                                   object_id=object_id,
-                                                  position={"x": 0, "y": 1, "z": 0},
+                                                  position={"x": -0.044, "y": 1, "z": 0.0360},
                                                   scale_mass=False,
                                                   scale_factor={"x": 1, "y": 1, "z": 1},
                                                   default_physics_values=False,
@@ -49,7 +49,7 @@ table_set_ids.append(object_id)
 object_id=Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="b03_cocacola_can_cage",
                                                   object_id=object_id,
-                                                  position={"x": 0.145, "y": 1, "z": 0.07},
+                                                  position={"x": 0.119, "y": 1, "z": 0.176},
                                                   scale_mass=False,
                                                   scale_factor={"x": 1.35, "y": 1.35, "z": 1.35},
                                                   default_physics_values=False,
@@ -60,7 +60,7 @@ table_set_ids.append(object_id)
 object_id=Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="vase_02",
                                                   object_id=object_id,
-                                                  position={"x": -0.25, "y": 1, "z": -0.02},
+                                                  position={"x": -0.211, "y": 1, "z": 0.1489},
                                                   scale_mass=False,
                                                   scale_factor={"x": 0.85, "y": 0.85, "z": 0.85},
                                                   default_physics_values=False,
@@ -82,7 +82,7 @@ table_set_ids.append(object_id)
 object_id=Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="mouse_02_vray",
                                                   object_id=object_id,
-                                                  position={"x": 0.433, "y": 1, "z": -0.15},
+                                                  position={"x": 0.344, "y": 1, "z": 0.0420},
                                                   scale_mass=False,
                                                   scale_factor={"x": 1, "y": 1, "z": 1},
                                                   default_physics_values=False,
@@ -93,7 +93,7 @@ table_set_ids.append(object_id)
 object_id=Controller.get_unique_id()
 commands.extend(Controller.get_add_physics_object(model_name="rh10",
                                                   object_id=object_id,
-                                                  position={"x": -0.4, "y": 1, "z": -0.15},
+                                                  position={"x": -0.3, "y": 1, "z": -0.15},
                                                   scale_mass=False,
                                                   scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                                                   default_physics_values=False,

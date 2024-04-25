@@ -232,6 +232,105 @@ Result:
 
 ![](images/image.jpg)
 
+## Create a UI "mask"
+
+Creating a UI mask is as simple as creating a new image and drawing a transparent shape:
+
+```python
+from io import BytesIO
+from PIL import Image, ImageDraw
+
+w = 512
+h = 512
+image = Image.new(mode="RGBA", size=(w, h), color=(0, 0, 0, 255))
+# Draw a circle on the mask.
+draw = ImageDraw.Draw(image)
+diameter = 256
+x = w // 2 - diameter // 2
+y = h // 2 - diameter // 2
+draw.ellipse([(x, y), (y + diameter, y + diameter)], fill=(0, 0, 0, 0))
+# Convert the PIL image to bytes.
+with BytesIO() as output:
+    image.save(output, "PNG")
+    mask = output.getvalue()
+# `mask` can now be used by `ui.add_image()`
+```
+
+## Move a UI element
+
+To move a UI image or text, call `ui.set_position(id, position)`, which sends [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position).
+
+In this example, an image with a "mask" is added to the scene. This image is larger than the screen size so that it can be moved while still covering the entire screen:
+
+```python
+from io import BytesIO
+from PIL import Image, ImageDraw
+from tdw.controller import Controller
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.ui import UI
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+
+c = Controller()
+# Add the UI add-on and the camera.
+camera = ThirdPersonCamera(position={"x": 0, "y": 0, "z": -1.2},
+                           avatar_id="a")
+ui = UI()
+c.add_ons.extend([camera, ui])
+ui.attach_canvas_to_avatar(avatar_id="a")
+screen_size = 512
+commands = [{"$type": "create_empty_environment"},
+            {"$type": "set_screen_size",
+             "width": screen_size,
+             "height": screen_size}]
+# Add a cube slightly off-center.
+commands.extend(Controller.get_add_physics_object(model_name="cube",
+                                                  library="models_flex.json",
+                                                  object_id=0,
+                                                  position={"x": 0.25, "y": 0, "z": 1},
+                                                  rotation={"x": 30, "y": 10, "z": 0},
+                                                  kinematic=True))
+c.communicate(commands)
+
+# Enable image capture.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ui_mask")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(path=path, avatar_ids=["a"])
+c.add_ons.append(capture)
+
+# Create the UI image with PIL.
+# The image is larger than the screen size so we can move it around.
+image_size = screen_size * 3
+image = Image.new(mode="RGBA", size=(image_size, image_size), color=(0, 0, 0, 255))
+# Draw a circle on the mask.
+draw = ImageDraw.Draw(image)
+diameter = 256
+d = image_size // 2 - diameter // 2
+draw.ellipse([(d, d), (d + diameter, d + diameter)], fill=(0, 0, 0, 0))
+# Convert the PIL image to bytes.
+with BytesIO() as output:
+    image.save(output, "PNG")
+    mask = output.getvalue()
+x = 0
+y = 0
+# Add the image.
+mask_id = ui.add_image(image=mask, position={"x": x, "y": y}, size={"x": image_size, "y": image_size}, raycast_target=False)
+c.communicate([])
+
+# Move the image.
+for i in range(100):
+    x += 4
+    y += 3
+    ui.set_position(ui_id=mask_id, position={"x": x, "y": y})
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/mask.gif)
+
 ## Destroy UI elements
 
 Destroy a specific UI element via `ui.destroy(ui_id)`, which sends [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element).
@@ -253,6 +352,7 @@ Example controllers:
 - [hello_world_ui.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/hello_world_ui.py) Minimal UI example.
 - [anchors_and_pivots.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/anchors_and_pivots.py) Anchor text to the top-left corner of the screen.
 - [image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/image.py) Add a UI image.
+- [mask.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/mask.py) Create black background with a circular "hole" in it and move the image around.
 
 Python API:
 
@@ -265,6 +365,7 @@ Command API:
 - [`add_ui_text`](../../api/command_api.md#add_ui_text)
 - [`add_ui_image`](../../api/command_api.md#add_ui_image)
 - [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size)
+- [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
 - [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element)
 - [`destroy_ui_canvas`](../../api/command_api.md#destroy_ui_canvas)

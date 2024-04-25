@@ -149,6 +149,18 @@ class UI(AddOn):
         self.commands.append({"$type": "attach_ui_canvas_to_vr_rig",
                               "plane_distance": plane_distance})
 
+    def set_position(self, ui_id: int, position: Dict[str, float]) -> None:
+        """
+        Set the position of a UI element.
+
+        :param ui_id: The UI element's ID.
+        :param position: The screen (pixel) position as a Vector2. Values must be integers.
+        """
+
+        self.commands.append({"$type": "set_ui_element_position",
+                              "id": ui_id,
+                              "position": position})
+
     def destroy(self, ui_id: int) -> None:
         """
         Destroy a UI element.

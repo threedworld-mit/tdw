@@ -4,6 +4,32 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.25
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_ui_element_position` | Set the position of a UI element. |
+
+### `tdw` module
+
+- Added: `ui.set_position(id, position)`.
+
+### Example Controllers
+
+- Added: `ui/mask.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/ui/ui.md` | Added a section describing how to create an image "mask".<br>Added a section describing how to move an image. |
+
 ## v1.12.24
 
 ### Command API

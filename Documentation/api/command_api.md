@@ -844,6 +844,7 @@
 | --- | --- |
 | [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
 | [`set_ui_color`](#set_ui_color) | Set the color of a UI image or text. |
+| [`set_ui_element_position`](#set_ui_element_position) | Set the position of a UI element. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
@@ -11062,6 +11063,27 @@ Set the color of a UI image or text.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"color"` | Color | The new color. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_position`**
+
+Set the position of a UI element.
+
+
+```python
+{"$type": "set_ui_element_position", "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_position", "id": 1, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

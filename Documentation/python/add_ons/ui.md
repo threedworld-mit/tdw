@@ -169,6 +169,17 @@ Attach the UI canvas to a VR rig.
 | --- | --- | --- | --- |
 | plane_distance |  float  | 0.25 | The distance from the camera to the UI canvas. |
 
+#### set_position
+
+**`self.set_position(ui_id, position)`**
+
+Set the position of a UI element.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| ui_id |  int |  | The UI element's ID. |
+| position |  Dict[str, float] |  | The screen (pixel) position as a Vector2. Values must be integers. |
+
 #### destroy
 
 **`self.destroy(ui_id)`**

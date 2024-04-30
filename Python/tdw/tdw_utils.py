@@ -6,7 +6,7 @@ from requests import get
 from tqdm import tqdm
 from scipy.spatial import distance
 from tdw.output_data import IsOnNavMesh, Images, Bounds
-from pil import Image
+from PIL import Image
 import io
 import os
 from tdw.controller import Controller

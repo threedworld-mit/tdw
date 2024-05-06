@@ -104,7 +104,7 @@ commands.extend(Controller.get_add_physics_object(model_name="rh10",
                                                   library="models_core.json"))
 commands.append({"$type": "hide_object","id": object_id})
 table_set_ids.append(object_id)
-fove = FoveLeapMotion(use_right_hand=False,
+fove = FoveLeapMotion(use_right_hand=True,
                       position={"x": 0, "y": 1.0, "z": 0},
                       rotation=180.0,
                       time_step=0.01,
@@ -133,23 +133,22 @@ while not fove.done:
         fove.initialize_scene()
         commands.append({"$type": "teleport_vr_rig", "position": {"x": 0, "y": 1.2, "z": 0.35}})
         scene_initialized = True
-        # Create the UI image with PIL.
-        # The image is larger than the screen size so we can move it around.
-        image_size = screen_size * 4
-        image = Image.new(mode="RGBA", size=(image_size, image_size), color=(0, 0, 0, 255))
-        # Draw a circle on the mask.
-        draw = ImageDraw.Draw(image)
-        diameter = 384
-        d = image_size // 2 - diameter // 2
-        draw.ellipse([(d, d), (d + diameter, d + diameter)], fill=(0, 0, 0, 0))
-        # Convert the PIL image to bytes.
-        with BytesIO() as output:
-            image.save(output, "PNG")
-            mask = output.getvalue()
+        # Create the background UI image.
+        bg_size = screen_size * 4
+        base_id = ui.add_image(image=Image.new(mode="RGBA", size=(bg_size, bg_size), color=(0, 0, 0, 255)),
+                               position={"x": 0, "y": 0},
+                               size={"x": bg_size, "y": bg_size})
+
+        # Create the cutout image.
+        diameter = 256
+        mask = Image.new(mode="RGBA", size=(diameter, diameter), color=(0, 0, 0, 0))
+        # Draw a circle.
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse([(0, 0), (diameter, diameter)], fill=(255, 255, 255, 255))
         x = 0
         y = 0
-        # Add the image.
-        mask_id = ui.add_image(image=mask, position={"x": x, "y": y}, size={"x": image_size, "y": image_size}, raycast_target=False)
+        # Add the cutout.
+        cutout_id = ui.add_cutout(image=mask, position={"x": x, "y": y}, size={"x": diameter, "y": diameter}, base_id=base_id)
         c.communicate([])
         c.communicate(commands)
 

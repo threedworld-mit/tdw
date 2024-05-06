@@ -109,7 +109,7 @@ Add a UI image to the scene.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| image |  Union[str, Path, bytes] |  | The image. If a string or `Path`, this is a filepath. If `bytes`, this is the image byte data. |
+| image |  Union[str, Path, bytes, Image.Image] |  | The image. If a string or `Path`, this is a filepath. If `bytes`, this is the image byte data. If `Image.Image`, this is a PIL image. |
 | position |  Dict[str, int] |  | The screen (pixel) position as a Vector2. Values must be integers. |
 | size |  Dict[str, int] |  | The pixel size of the image as a Vector2. Values must be integers and must match the actual image size. |
 | rgba |  bool  | True | If True, this is an RGBA image. If False, this is an RGB image. |
@@ -118,6 +118,27 @@ Add a UI image to the scene.
 | pivot |  Dict[str, float] | None | The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
 | color |  Dict[str, float] | None | The color of the text. If None, defaults to `{"r": 1, "g": 1, "b": 1, "a": 1}`. |
 | raycast_target |  bool  | True | If True, raycasts will hit the UI element. |
+
+_Returns:_  The ID of the new UI element.
+
+#### add_cutout
+
+**`self.add_cutout(base_id, image, position, size)`**
+
+**`self.add_cutout(base_id, image, position, size, scale_factor=None, anchor=None, pivot=None)`**
+
+Add a UI image that cuts a transparent hole in another UI image.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| base_id |  int |  | The ID of the image that will have a hole in it. This can be added on the same frame as the cutout image but it must be added prior to the cutout image. |
+| image |  Union[str, Path, bytes, Image.Image] |  | The image. *This must be an RGBA image.* If a string or `Path`, this is a filepath. If `bytes`, this is the image byte data. If `Image.Image`, this is a PIL image. |
+| position |  Dict[str, int] |  | The screen (pixel) position as a Vector2. Values must be integers. |
+| size |  Dict[str, int] |  | The pixel size of the image as a Vector2. Values must be integers and must match the actual image size. |
+| scale_factor |  Dict[str, float] | None | Scale the UI image by this factor. If None, defaults to {"x": 1, "y": 1}. |
+| anchor |  Dict[str, float] | None | The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
+| pivot |  Dict[str, float] | None | The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`. |
 
 _Returns:_  The ID of the new UI element.
 
@@ -131,17 +152,6 @@ Set the text of a UI text element that is already in the scene.
 | --- | --- | --- | --- |
 | ui_id |  int |  | The ID of the UI text element. |
 | text |  str |  | The text. |
-
-#### set_size
-
-**`self.set_size(ui_id, size)`**
-
-Set the size of a UI element that is already in the scene.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| ui_id |  int |  | The ID of the UI element. |
-| size |  Dict[str, float] |  | The size. |
 
 #### attach_canvas_to_avatar
 
@@ -179,6 +189,28 @@ Set the position of a UI element.
 | --- | --- | --- | --- |
 | ui_id |  int |  | The UI element's ID. |
 | position |  Dict[str, float] |  | The screen (pixel) position as a Vector2. Values must be integers. |
+
+#### set_size
+
+**`self.set_size(ui_id, size)`**
+
+Set the size of a UI element that is already in the scene.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| ui_id |  int |  | The ID of the UI element. |
+| size |  Dict[str, float] |  | The size. |
+
+#### set_rotation
+
+**`self.set_rotation(ui_id, angle)`**
+
+Rotate a UI element to an angle.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| ui_id |  int |  | The ID of the UI element. |
+| angle |  float |  | The new rotation angle in degrees. |
 
 #### destroy
 

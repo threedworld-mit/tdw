@@ -835,8 +835,14 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
 | [`add_ui_text`](#add_ui_text) | Add UI text to the scene. |
+
+**Add Ui Image Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_cutout`](#add_ui_cutout) | Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. The cutout image must be RGBA32. |
+| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
 
 **Set Ui Element Command**
 
@@ -845,6 +851,7 @@
 | [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
 | [`set_ui_color`](#set_ui_color) | Set the color of a UI image or text. |
 | [`set_ui_element_position`](#set_ui_element_position) | Set the position of a UI element. |
+| [`set_ui_element_rotation`](#set_ui_element_rotation) | Rotate a UI element to a new angle. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
@@ -10973,35 +10980,6 @@ These commands add UI elements to the scene.
 
 ***
 
-## **`add_ui_image`**
-
-Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
-
-
-```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
-```
-
-```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"size"` | Vector2Int | The actual pixel size of the image. | |
-| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
-| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
-| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
-| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
-| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
-| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
-| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
-| `"id"` | int | The unique ID of the UI element. | |
-| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
-
-***
-
 ## **`add_ui_text`**
 
 Add UI text to the scene.
@@ -11012,18 +10990,77 @@ Add UI text to the scene.
 ```
 
 ```python
-{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"text"` | string | The text. | |
 | `"font_size"` | int | The font size. | 14 |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# AddUiImageCommand
+
+These commands add UI images to the scene.
+
+***
+
+## **`add_ui_cutout`**
+
+Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. The cutout image must be RGBA32.
+
+
+```python
+{"$type": "add_ui_cutout", "base_id": 1, "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_cutout", "base_id": 1, "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"base_id"` | int | The cutout will draw a hole in the image with this ID. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`add_ui_image`**
+
+Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
+
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -11090,6 +11127,27 @@ Set the position of a UI element.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_rotation`**
+
+Rotate a UI element to a new angle.
+
+
+```python
+{"$type": "set_ui_element_rotation", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_rotation", "angle": 0.125, "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The UI element's new rotation in degrees. | |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

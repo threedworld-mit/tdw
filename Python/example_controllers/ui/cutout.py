@@ -1,4 +1,3 @@
-from io import BytesIO
 from PIL import Image, ImageDraw
 from tdw.controller import Controller
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
@@ -39,29 +38,28 @@ print(f"Images will be saved to: {path}")
 capture = ImageCapture(path=path, avatar_ids=["a"])
 c.add_ons.append(capture)
 
-# Create the UI image with PIL.
-# The image is larger than the screen size so we can move it around.
-image_size = screen_size * 3
-image = Image.new(mode="RGBA", size=(image_size, image_size), color=(0, 0, 0, 255))
-# Draw a circle on the mask.
-draw = ImageDraw.Draw(image)
+# Create the background UI image.
+bg_size = screen_size * 2
+base_id = ui.add_image(image=Image.new(mode="RGBA", size=(bg_size, bg_size), color=(0, 0, 0, 255)),
+                       position={"x": 0, "y": 0},
+                       size={"x": bg_size, "y": bg_size})
+
+# Create the cutout image.
 diameter = 256
-d = image_size // 2 - diameter // 2
-draw.ellipse([(d, d), (d + diameter, d + diameter)], fill=(0, 0, 0, 0))
-# Convert the PIL image to bytes.
-with BytesIO() as output:
-    image.save(output, "PNG")
-    mask = output.getvalue()
+mask = Image.new(mode="RGBA", size=(diameter, diameter), color=(0, 0, 0, 0))
+# Draw a circle.
+draw = ImageDraw.Draw(mask)
+draw.ellipse([(0, 0), (diameter, diameter)], fill=(255, 255, 255, 255))
 x = 0
 y = 0
-# Add the image.
-mask_id = ui.add_image(image=mask, position={"x": x, "y": y}, size={"x": image_size, "y": image_size}, raycast_target=False)
+# Add the cutout.
+cutout_id = ui.add_cutout(image=mask, position={"x": x, "y": y}, size={"x": diameter, "y": diameter}, base_id=base_id)
 c.communicate([])
 
-# Move the image.
+# Move the cutout.
 for i in range(100):
     x += 4
     y += 3
-    ui.set_position(ui_id=mask_id, position={"x": x, "y": y})
+    ui.set_position(ui_id=cutout_id, position={"x": x, "y": y})
     c.communicate([])
 c.communicate({"$type": "terminate"})

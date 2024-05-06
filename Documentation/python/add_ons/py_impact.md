@@ -141,31 +141,72 @@ When using PyImpact, please cite  [Traer,Cusimano and McDermott, A perceptually 
 | scrape_objects |  Dict[int, ScrapeModel] | None | If `scrape == True` and this is not None, this dictionary can be used to manually set scrape surfaces. Key = Object ID. Value = [`ScrapeModel`](../physics_audio/scrape_model.md). |
 | min_time_between_impact_events |  float  | 0.25 | The minimum time in seconds between two impact events that involve the same primary object. |
 
-***
+#### get_initialization_commands
 
-### General
+**`self.get_initialization_commands()`**
 
-These functions are meant for most use-cases. For general use-cases, PyImpact will generate audio automatically. In *all* use-cases, you'll need to manually reset PyImapct whenevery you reset the scene.
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
 
-#### reset
+_Returns:_  A list of commands that will initialize this add-on.
 
-**`self.reset()`**
+#### on_send
 
-**`self.reset(initial_amp=0.5, static_audio_data_overrides=None, scrape_objects=None)`**
+**`self.on_send(resp)`**
 
-Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
+This is called within `Controller.communicate(commands)` after commands are sent to the build and a response is received.
+
+Use this function to send commands to the build on the next `Controller.communicate(commands)` call, given the `resp` response.
+Any commands in the `self.commands` list will be sent on the *next* `Controller.communicate(commands)` call.
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
-| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
-| static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
-| scrape_objects |  Dict[int, ScrapeModel] | None | A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor. |
+| resp |  List[bytes] |  | The response from the build. |
 
-***
+#### before_send
 
-### Advanced
+**`self.before_send(commands)`**
 
-These functions manually create audio data, including .wav data and TDW commands.
+This is called within `Controller.communicate(commands)` before sending commands to the build. By default, this function doesn't do anything.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| commands |  List[dict] |  | The commands that are about to be sent to the build. |
+
+#### get_early_initialization_commands
+
+**`self.get_early_initialization_commands()`**
+
+This function gets called exactly once per add-on. To re-initialize, set `self.initialized = False`.
+
+These commands are added to the list being sent on `communicate()` *before* any other commands, including those added by the user and by other add-ons.
+
+Usually, you shouldn't override this function. It is useful for a small number of add-ons, such as loading screens, which should initialize before anything else.
+
+_Returns:_  A list of commands that will initialize this add-on.
+
+#### get_impact_sound
+
+**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
+
+Produce sound of two colliding objects as a byte array.
+
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| primary_id |  int |  | The object ID for the primary (target) object. |
+| primary_material |  str |  | The material label for the primary (target) object. |
+| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
+| secondary_material |  str |  | The material label for the secondary (other) object. |
+| primary_amp |  float |  | Sound amplitude of primary (target) object. |
+| secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
+| primary_resonance |  float |  | The resonance of the primary (target) object. |
+| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
+| velocity |  np.ndarray |  | The velocity. |
+| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
+| primary_mass |  float |  | The mass of the primary (target) object. |
+| secondary_mass |  float |  | The mass of the secondary (target) object. |
+
+_Returns:_  Sound data as a Base64Sound object.
 
 #### get_impact_sound_command
 
@@ -218,30 +259,6 @@ _Returns:_  A `play_audio_data` or `play_point_source_data` command that can be 
 
 _Returns:_  A command to play a scrape sound.
 
-#### get_impact_sound
-
-**`self.get_impact_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass)`**
-
-Produce sound of two colliding objects as a byte array.
-
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| primary_id |  int |  | The object ID for the primary (target) object. |
-| primary_material |  str |  | The material label for the primary (target) object. |
-| secondary_id |  Optional[int] |  | The object ID for the secondary (other) object. |
-| secondary_material |  str |  | The material label for the secondary (other) object. |
-| primary_amp |  float |  | Sound amplitude of primary (target) object. |
-| secondary_amp |  float |  | Sound amplitude of the secondary (other) object. |
-| primary_resonance |  float |  | The resonance of the primary (target) object. |
-| secondary_resonance |  float |  | The resonance of the secondary (other) object. |
-| velocity |  np.ndarray |  | The velocity. |
-| contact_normals |  List[np.ndarray] |  | The collision contact normals. |
-| primary_mass |  float |  | The mass of the primary (target) object. |
-| secondary_mass |  float |  | The mass of the secondary (target) object. |
-
-_Returns:_  Sound data as a Base64Sound object.
-
 #### get_scrape_sound
 
 **`self.get_scrape_sound(primary_id, primary_material, secondary_id, secondary_material, primary_amp, secondary_amp, primary_resonance, secondary_resonance, velocity, contact_normals, primary_mass, secondary_mass, scrape_material)`**
@@ -282,5 +299,16 @@ _(Static)_
 
 _Returns:_  The `size` integer of the object.
 
-***
+#### reset
 
+**`self.reset()`**
+
+**`self.reset(initial_amp=0.5, static_audio_data_overrides=None, scrape_objects=None)`**
+
+Reset PyImpact. This is somewhat faster than creating a new PyImpact object per trial.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| initial_amp |  float  | 0.5 | The initial amplitude, i.e. the "master volume". Must be > 0 and < 1. |
+| static_audio_data_overrides |  Dict[int, ObjectAudioStatic] | None | If not None, a dictionary of audio data. Key = Object ID; Value = [`ObjectAudioStatic`](../physics_audio/object_audio_static.md). These audio values will be applied to these objects instead of default values. |
+| scrape_objects |  Dict[int, ScrapeModel] | None | A dictionary of [scrape objects](../physics_audio/scrape_model.md) in the scene. Key = Object ID. Ignored if None or `scrape == False` in the constructor. |

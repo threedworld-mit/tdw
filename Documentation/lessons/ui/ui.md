@@ -189,7 +189,7 @@ Add UI images via `ui.add_image(image, position, size)`, which sends [`add_ui_im
 
 Mandatory parameters:
 
-- The `image` parameter can be a string (a filepath), a `Path` object (a filepath), or bytes (the image byte data). If `image` is a filepath, then it must be valid on the computer running the *controller*.
+- The `image` parameter can be a string (a filepath), a `Path` object (a filepath), bytes (the image byte data), or PIL image. If `image` is a filepath, then it must be valid on the computer running the *controller*.
 - The `position` parameter is the position of the image; see above for how to set this.
 - The `size` parameter is the actual pixel size of the images as a Vector2.
 
@@ -199,8 +199,6 @@ Optional parameters:
 - The `scale_factor` parameter can be set to resize the image.
 - See above for how `anchor` and `pivot` work.
 - `color` is the same as in text; an RGBA dictionary with values ranging from 0 to 1. `color` will tint an image; by default, it is white (no tint).
-
-You can dynamically resize an image (or text, though it's less useful) via `ui.set_size(ui_id, size)`, which sends [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size).
 
 ```python
 from tdw.controller import Controller
@@ -232,6 +230,97 @@ Result:
 
 ![](images/image.jpg)
 
+## Transform a UI element
+
+- Resize an image or text via `ui.set_size(ui_id, size)`, which sends [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size).
+- Move a UI image or text via `ui.set_position(id, position)`, which sends [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position).
+- Rotate a UI image or text via `ui.set_rotation(id, angle)`, which sends [`set_ui_element_rotation`](../../api/command_api.md#set_ui_element_rotation).
+
+## Create a cutout
+
+Call `ui.add_cutout(base_id, image, position)` to cut a transparent hole in another UI element. This function sends [`add_ui_cutout`](../../api/command_api.md#add_ui_cutout).
+
+Mandatory parameters:
+
+- `base_id` is the ID of the image that will have a hole in it. This can be added on the same frame as the cutout image but it must be added prior to the cutout image.
+- The `image` parameter can be a string (a filepath), a `Path` object (a filepath), bytes (the image byte data), or PIL image. If `image` is a filepath, then it must be valid on the computer running the *controller*.
+- The `position` parameter is the position of the image; see above for how to set this.
+- The `size` parameter is the actual pixel size of the images as a Vector2.
+
+Optional parameters:
+
+- The `scale_factor` parameter can be set to resize the image.
+- See above for how `anchor` and `pivot` work.
+
+This example adds a cube, a base image, and a cutout image, and then moves the cutout around the screen:
+
+```python
+from PIL import Image, ImageDraw
+from tdw.controller import Controller
+from tdw.add_ons.third_person_camera import ThirdPersonCamera
+from tdw.add_ons.ui import UI
+from tdw.add_ons.image_capture import ImageCapture
+from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
+
+
+c = Controller()
+# Add the UI add-on and the camera.
+camera = ThirdPersonCamera(position={"x": 0, "y": 0, "z": -1.2},
+                           avatar_id="a")
+ui = UI()
+c.add_ons.extend([camera, ui])
+ui.attach_canvas_to_avatar(avatar_id="a")
+screen_size = 512
+commands = [{"$type": "create_empty_environment"},
+            {"$type": "set_screen_size",
+             "width": screen_size,
+             "height": screen_size}]
+# Add a cube slightly off-center.
+commands.extend(Controller.get_add_physics_object(model_name="cube",
+                                                  library="models_flex.json",
+                                                  object_id=0,
+                                                  position={"x": 0.25, "y": 0, "z": 1},
+                                                  rotation={"x": 30, "y": 10, "z": 0},
+                                                  kinematic=True))
+c.communicate(commands)
+
+# Enable image capture.
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("ui_mask")
+print(f"Images will be saved to: {path}")
+capture = ImageCapture(path=path, avatar_ids=["a"])
+c.add_ons.append(capture)
+
+# Create the background UI image.
+bg_size = screen_size * 2
+base_id = ui.add_image(image=Image.new(mode="RGBA", size=(bg_size, bg_size), color=(0, 0, 0, 255)),
+                       position={"x": 0, "y": 0},
+                       size={"x": bg_size, "y": bg_size})
+
+# Create the cutout image.
+diameter = 256
+mask = Image.new(mode="RGBA", size=(diameter, diameter), color=(0, 0, 0, 0))
+# Draw a circle.
+draw = ImageDraw.Draw(mask)
+draw.ellipse([(0, 0), (diameter, diameter)], fill=(255, 255, 255, 255))
+x = 0
+y = 0
+# Add the cutout.
+cutout_id = ui.add_cutout(image=mask, position={"x": x, "y": y}, size={"x": diameter, "y": diameter}, base_id=base_id)
+c.communicate([])
+
+# Move the cutout.
+for i in range(100):
+    x += 4
+    y += 3
+    ui.set_position(ui_id=cutout_id, position={"x": x, "y": y})
+    c.communicate([])
+c.communicate({"$type": "terminate"})
+```
+
+Result:
+
+![](images/mask.gif)
+
 ## Destroy UI elements
 
 Destroy a specific UI element via `ui.destroy(ui_id)`, which sends [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element).
@@ -253,6 +342,7 @@ Example controllers:
 - [hello_world_ui.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/hello_world_ui.py) Minimal UI example.
 - [anchors_and_pivots.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/anchors_and_pivots.py) Anchor text to the top-left corner of the screen.
 - [image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/image.py) Add a UI image.
+- [cutout.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/cutout.py) Create black background with a circular "hole" in it and move the image around.
 
 Python API:
 
@@ -265,6 +355,9 @@ Command API:
 - [`add_ui_text`](../../api/command_api.md#add_ui_text)
 - [`add_ui_image`](../../api/command_api.md#add_ui_image)
 - [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size)
+- [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position)
+- [`set_ui_element_rotation`](../../api/command_api.md#set_ui_element_rotation)
+- [`add_ui_cutout`](../../api/command_api.md#add_ui_cutout)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
 - [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element)
 - [`destroy_ui_canvas`](../../api/command_api.md#destroy_ui_canvas)

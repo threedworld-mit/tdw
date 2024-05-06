@@ -835,8 +835,14 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
 | [`add_ui_text`](#add_ui_text) | Add UI text to the scene. |
+
+**Add Ui Image Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_cutout`](#add_ui_cutout) | Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. The cutout image must be RGBA32. |
+| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
 
 **Set Ui Element Command**
 
@@ -844,6 +850,8 @@
 | --- | --- |
 | [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
 | [`set_ui_color`](#set_ui_color) | Set the color of a UI image or text. |
+| [`set_ui_element_position`](#set_ui_element_position) | Set the position of a UI element. |
+| [`set_ui_element_rotation`](#set_ui_element_rotation) | Rotate a UI element to a new angle. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
@@ -6549,7 +6557,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6559,6 +6567,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6586,7 +6595,7 @@ Tell a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6596,6 +6605,7 @@ Tell a Replicant to start to reach for a target position.
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6623,7 +6633,7 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 ```
 
 ```python
-{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6633,6 +6643,7 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6668,7 +6679,7 @@ Tell a WheelchairReplicant to start to reach for a target object. The Wheelchair
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6679,6 +6690,7 @@ Tell a WheelchairReplicant to start to reach for a target object. The Wheelchair
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6705,7 +6717,7 @@ Tell a WheelchairReplicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6717,6 +6729,7 @@ Tell a WheelchairReplicant to start to reach for a target position.
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6743,7 +6756,7 @@ Tell a WheelchairReplicant to start to reset the arm to its neutral position.
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6753,6 +6766,7 @@ Tell a WheelchairReplicant to start to reset the arm to its neutral position.
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -10966,35 +10980,6 @@ These commands add UI elements to the scene.
 
 ***
 
-## **`add_ui_image`**
-
-Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
-
-
-```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
-```
-
-```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"size"` | Vector2Int | The actual pixel size of the image. | |
-| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
-| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
-| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
-| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
-| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
-| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
-| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
-| `"id"` | int | The unique ID of the UI element. | |
-| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
-
-***
-
 ## **`add_ui_text`**
 
 Add UI text to the scene.
@@ -11005,18 +10990,77 @@ Add UI text to the scene.
 ```
 
 ```python
-{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"text"` | string | The text. | |
 | `"font_size"` | int | The font size. | 14 |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# AddUiImageCommand
+
+These commands add UI images to the scene.
+
+***
+
+## **`add_ui_cutout`**
+
+Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. The cutout image must be RGBA32.
+
+
+```python
+{"$type": "add_ui_cutout", "base_id": 1, "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_cutout", "base_id": 1, "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"base_id"` | int | The cutout will draw a hole in the image with this ID. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`add_ui_image`**
+
+Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
+
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -11062,6 +11106,48 @@ Set the color of a UI image or text.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"color"` | Color | The new color. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_position`**
+
+Set the position of a UI element.
+
+
+```python
+{"$type": "set_ui_element_position", "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_position", "id": 1, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_rotation`**
+
+Rotate a UI element to a new angle.
+
+
+```python
+{"$type": "set_ui_element_rotation", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_rotation", "angle": 0.125, "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The UI element's new rotation in degrees. | |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

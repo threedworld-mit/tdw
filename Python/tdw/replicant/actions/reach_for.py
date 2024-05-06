@@ -116,32 +116,15 @@ class ReachFor(ArmMotion):
         return commands
 
     def _get_reach_for_position(self, target: Dict[str, float], arm: Arm, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> List[dict]:
-        commands = [{"$type": "replicant_reach_for_position" if self.absolute else "replicant_reach_for_relative_position",
-                     "id": static.replicant_id,
-                     "position": target,
-                     "duration": self.duration,
-                     "arm": arm.name,
-                     "max_distance": self.max_distance,
-                     "arrived_at": self.arrived_at,
-                     "offset": self._get_offset(arm=arm, resp=resp, static=static, dynamic=dynamic)}]
-        # Tell the offhand to follow.
-        if self.offhand_follows:
-            # Get the offset to the target.
-            offset = TDWUtils.vector3_to_array(target) - dynamic.body_parts[static.hands[self.arms[0]]].position
-            # Get the offhand.
-            offhand = Arm.right if self.arms[0] == Arm.left else Arm.left
-            # Get the position.
-            position = dynamic.body_parts[static.hands[offhand]].position + offset
-            # Set the target of the offhand.
-            commands.append({"$type": "replicant_reach_for_position",
-                             "id": static.replicant_id,
-                             "position": TDWUtils.array_to_vector3(position),
-                             "duration": self.duration,
-                             "arm": offhand.name,
-                             "max_distance": self.max_distance,
-                             "arrived_at": self.arrived_at,
-                             "offset": self._get_offset(arm=offhand, resp=resp, static=static, dynamic=dynamic)})
-        return commands
+        return [{"$type": "replicant_reach_for_position" if self.absolute else "replicant_reach_for_relative_position",
+                 "id": static.replicant_id,
+                 "position": target,
+                 "duration": self.duration,
+                 "arm": arm.name,
+                 "max_distance": self.max_distance,
+                 "arrived_at": self.arrived_at,
+                 "offset": self._get_offset(arm=arm, resp=resp, static=static, dynamic=dynamic),
+                 "offhand_follows": self.offhand_follows}]
 
     def _get_offset(self, arm: Arm, resp: List[bytes], static: ReplicantStatic, dynamic: ReplicantDynamic) -> Dict[str, float]:
         if self.from_held and arm in dynamic.held_objects:

@@ -59,13 +59,13 @@ class UI(AddOn):
         self.commands.append(cmd)
         return ui_id
 
-    def add_image(self, image: Union[str, Path, bytes], position: Dict[str, int], size: Dict[str, int],
+    def add_image(self, image: Union[str, Path, bytes, Image.Image], position: Dict[str, int], size: Dict[str, int],
                   rgba: bool = True, scale_factor: Dict[str, float] = None, anchor: Dict[str, float] = None,
                   pivot: Dict[str, float] = None, color: Dict[str, float] = None, raycast_target: bool = True) -> int:
         """
         Add a UI image to the scene.
 
-        :param image: The image. If a string or `Path`, this is a filepath. If `bytes`, this is the image byte data.
+        :param image: The image. If a string or `Path`, this is a filepath. If `bytes`, this is the image byte data. If `Image.Image`, this is a PIL image.
         :param position: The screen (pixel) position as a Vector2. Values must be integers.
         :param size: The pixel size of the image as a Vector2. Values must be integers and must match the actual image size.
         :param rgba: If True, this is an RGBA image. If False, this is an RGB image.
@@ -78,14 +78,7 @@ class UI(AddOn):
         :return: The ID of the new UI element.
         """
 
-        if isinstance(image, str):
-            img = b64encode(Path(image).read_bytes()).decode("utf-8")
-        elif isinstance(image, Path):
-            img = b64encode(image.read_bytes()).decode("utf-8")
-        elif isinstance(image, bytes):
-            img = b64encode(image).decode("utf-8")
-        else:
-            raise Exception(f"Invalid image type: {image.__class__}")
+        img = UI._get_base64_image(image)
         if scale_factor is None:
             scale_factor = {"x": 1, "y": 1}
         cmd, ui_id = self._get_add_element(command_type="add_ui_image", anchor=anchor, pivot=pivot,
@@ -95,6 +88,44 @@ class UI(AddOn):
                     "rgba": rgba,
                     "scale_factor": scale_factor})
         self.commands.append(cmd)
+        return ui_id
+
+    def add_cutout(self, base_id: int, image: Union[str, Path, bytes, Image.Image], position: Dict[str, int],
+                   size: Dict[str, int], scale_factor: Dict[str, float] = None, anchor: Dict[str, float] = None,
+                   pivot: Dict[str, float] = None) -> int:
+        """
+        Add a UI image that cuts a transparent hole in another UI image.
+
+        :param base_id: The ID of the image that will have a hole in it. This can be added on the same frame as the cutout image but it must be added prior to the cutout image.
+        :param image: The image. *This must be an RGBA image.* If a string or `Path`, this is a filepath. If `bytes`, this is the image byte data. If `Image.Image`, this is a PIL image.
+        :param position: The screen (pixel) position as a Vector2. Values must be integers.
+        :param size: The pixel size of the image as a Vector2. Values must be integers and must match the actual image size.
+        :param scale_factor: Scale the UI image by this factor. If None, defaults to {"x": 1, "y": 1}.
+        :param anchor: The anchor as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
+        :param pivot: The pivot as a Vector2. Values are floats between 0 and 1. If None, defaults to `{"x": 0.5, "y": 0.5}`.
+
+        :return: The ID of the new UI element.
+        """
+
+        img = UI._get_base64_image(image)
+        if scale_factor is None:
+            scale_factor = {"x": 1, "y": 1}
+        if anchor is None:
+            anchor = {"x": 0.5, "y": 0.5}
+        if pivot is None:
+            pivot = {"x": 0.5, "y": 0.5}
+        ui_id = Controller.get_unique_id()
+        self._ui_ids.append(ui_id)
+        self.commands.append({"$type": "add_ui_cutout",
+                              "id": ui_id,
+                              "canvas_id": self._canvas_id,
+                              "anchor": anchor,
+                              "pivot": pivot,
+                              "position": position,
+                              "size": size,
+                              "scale_factor": scale_factor,
+                              "image": img,
+                              "base_id": base_id})
         return ui_id
 
     def set_text(self, ui_id: int, text: str) -> None:
@@ -109,19 +140,6 @@ class UI(AddOn):
                               "id": ui_id,
                               "canvas_id": self._canvas_id,
                               "text": text})
-
-    def set_size(self, ui_id: int, size: Dict[str, float]) -> None:
-        """
-        Set the size of a UI element that is already in the scene.
-
-        :param ui_id: The ID of the UI element.
-        :param size: The size.
-        """
-
-        self.commands.append({"$type": "set_ui_element_size",
-                              "id": ui_id,
-                              "canvas_id": self._canvas_id,
-                              "size": size})
 
     def attach_canvas_to_avatar(self, avatar_id: str = "a", focus_distance: float = 2.5, plane_distance: float = 0.101) -> None:
         """
@@ -148,6 +166,44 @@ class UI(AddOn):
 
         self.commands.append({"$type": "attach_ui_canvas_to_vr_rig",
                               "plane_distance": plane_distance})
+
+    def set_position(self, ui_id: int, position: Dict[str, float]) -> None:
+        """
+        Set the position of a UI element.
+
+        :param ui_id: The UI element's ID.
+        :param position: The screen (pixel) position as a Vector2. Values must be integers.
+        """
+
+        self.commands.append({"$type": "set_ui_element_position",
+                              "id": ui_id,
+                              "position": position})
+
+    def set_size(self, ui_id: int, size: Dict[str, float]) -> None:
+        """
+        Set the size of a UI element that is already in the scene.
+
+        :param ui_id: The ID of the UI element.
+        :param size: The size.
+        """
+
+        self.commands.append({"$type": "set_ui_element_size",
+                              "id": ui_id,
+                              "canvas_id": self._canvas_id,
+                              "size": size})
+
+    def set_rotation(self, ui_id: int, angle: float) -> None:
+        """
+        Rotate a UI element to an angle.
+
+        :param ui_id: The ID of the UI element.
+        :param angle: The new rotation angle in degrees.
+        """
+
+        self.commands.append({"$type": "set_ui_element_rotation",
+                              "id": ui_id,
+                              "canvas_id": self._canvas_id,
+                              "angle": angle})
 
     def destroy(self, ui_id: int) -> None:
         """
@@ -219,3 +275,23 @@ class UI(AddOn):
         with BytesIO() as output:
             Image.new(mode="RGB", size=(size["x"], size["y"]), color=color).save(output, "PNG")
             return output.getvalue()
+
+    @staticmethod
+    def _get_base64_image(image: Union[str, Path, bytes, Image.Image]) -> str:
+        """
+        :param image: Image data as a path to a file, raw bytes, or a PIL image.
+
+        :return: The image encoded as a base64 string.
+        """
+        
+        if isinstance(image, str) or isinstance(image, Path):
+            image_bytes = Path(image).read_bytes()
+        elif isinstance(image, bytes):
+            image_bytes = image
+        elif isinstance(image, Image.Image):
+            with BytesIO() as output:
+                image.save(output, "PNG")
+                image_bytes = output.getvalue()
+        else:
+            raise Exception(f"Invalid image type: {image.__class__}")
+        return b64encode(image_bytes).decode("utf-8")

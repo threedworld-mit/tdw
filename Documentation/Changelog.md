@@ -4,6 +4,76 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.27
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `add_ui_cutout` | Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. |
+| `set_ui_element_rotation` | Rotate a UI element to a new angle. |
+
+### `tdw` module
+
+- Added: `ui.add_cutout(base_id, image, position)` Add a UI image that cuts a transparent hole in another UI image.
+- Added: `ui.set_ui_element_rotation(ui_id, angle)` Rotate a UI element to an angle.
+- Modified: The `image` parameter  `ui.add_image(image, position)` can now be a PIL image.
+
+### Example Controllers
+
+- Replaced `ui/mask.py` with `ui/cutout.py`, which uses the new cutout functionality.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/ui/ui.md` | Replaced "mask" section with a new section describing how to add a cutout.<br>Added a section for how to transform UI elements. |
+
+## v1.12.26
+
+### Command API
+
+#### Modified Commands
+
+| Command | Description |
+| --- | --- |
+| `replicant_reach_for_position`<br>`replicant_reach_for_relative_position`<br>`wheelchair_replicant_reach_for_position` | Added parameter `offhand_follows`. |
+
+### `tdw` module
+
+- Fixed: `replicant.reach_for(target, offhand_follows=True, absolute=False)` doesn't move the offhand to the correct position. The code responsbile for calculating the offhand target has been moved from `tdw` into the build.
+- Likewise for `wheelchair_replicant.reach_for(target, offhand_follows=True, absolute=False)`
+
+## v1.12.25
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_ui_element_position` | Set the position of a UI element. |
+
+### `tdw` module
+
+- Added: `ui.set_position(id, position)`.
+
+### Example Controllers
+
+- Added: `ui/mask.py`
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/ui/ui.md` | Added a section describing how to create an image "mask".<br>Added a section describing how to move an image. |
+
 ## v1.12.24
 
 ### Command API

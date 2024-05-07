@@ -7,9 +7,9 @@ class CalibrationMethod(Enum):
     """
 
     default = 0
-    one_point = 1  #requires license
+    one_point = 1  # Requires license.
     spiral = 2
     one_point_with_no_glasses_spiral_with_glasses = 3
-    zero_point = 4  #requires license
+    zero_point = 4  # Requires license.
     default_calibration = 5
 

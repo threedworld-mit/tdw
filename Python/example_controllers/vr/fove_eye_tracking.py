@@ -4,15 +4,10 @@ from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 from tdw.add_ons.ui import UI
 from tdw.replicant.arm import Arm
-from tdw.output_data import OutputData, Fove
 from tdw.add_ons.object_manager import ObjectManager
 from tdw.vr_data.fove.calibration_state import CalibrationState
-from tdw.vr_data.fove.eye import Eye
 from tdw.vr_data.fove.eye_state import EyeState
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-import time
-from io import BytesIO
-from PIL import Image, ImageDraw
 
 
 """
@@ -78,8 +73,8 @@ add_and_hide_object(model_name="rh10",
                     position={"x": -0.3, "y": 1, "z": -0.15},
                     scale_factor={"x": 0.2, "y": 0.2, "z": 0.2},
                     kinematic=False)
-path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("fove_scene")
-print(f"Calibration data will be saved to: {path}")
+path = EXAMPLE_CONTROLLER_OUTPUT_PATH.joinpath("fove_scene/calibration_data_")
+print(f"Calibration data will be saved to: {path.parent}")
 fove = FoveLeapMotion(calibration_hand=Arm.left,
                       position={"x": 0, "y": 1.0, "z": 0},
                       rotation=180.0,
@@ -100,32 +95,15 @@ while not fove.done:
     # Test if calibration done.
     if fove.calibration_state == CalibrationState.running and not scene_initialized:
         commands = []
+        # Show the objects once calibration is done.
         for i in range(len(table_set_ids) - 1):
             commands.append({"$type": "show_object",
                              "id": table_set_ids[i]})
         fove.initialize_scene()
-        commands.append({"$type": "teleport_vr_rig", "position": {"x": 0, "y": 1.2, "z": 0.35}})
+        commands.append({"$type": "teleport_vr_rig",
+                         "position": {"x": 0, "y": 1.2, "z": 0.5}})
         scene_initialized = True
-        # Create the UI image with PIL.
-        # The image is larger than the screen size so we can move it around.
-        image_size = screen_size * 4
-        image = Image.new(mode="RGBA", size=(image_size, image_size), color=(0, 0, 0, 255))
-        # Draw a circle on the mask.
-        draw = ImageDraw.Draw(image)
-        diameter = 384
-        d = image_size // 2 - diameter // 2
-        draw.ellipse([(d, d), (d + diameter, d + diameter)], fill=(0, 0, 0, 0))
-        # Convert the PIL image to bytes.
-        with BytesIO() as output:
-            image.save(output, "PNG")
-            mask = output.getvalue()
-        x = 0
-        y = 0
-        # Add the image.
-        mask_id = ui.add_image(image=mask, position={"x": x, "y": y}, size={"x": image_size, "y": image_size}, raycast_target=False)
-        c.communicate([])
         c.communicate(commands)
-
     resp = c.communicate([])
     # Use the appropriate gaze ray based on eye state.
     if scene_initialized:
@@ -135,13 +113,15 @@ while not fove.done:
             curr_object_id = fove.left_eye.gaze_id
         else:
             curr_object_id = fove.converged_eyes.gaze_id
-        for id in om.transforms:
+        for oid in om.transforms:
             # Highlight objects in blue when gaze is on them, skipping the table.
-            if (curr_object_id is not None) and (curr_object_id != table_id) and id == curr_object_id:
-                c.communicate({"$type": "set_color", "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}, "id": curr_object_id})
+            if (curr_object_id is not None) and (curr_object_id != table_id) and oid == curr_object_id:
+                c.communicate({"$type": "set_color",
+                               "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0},
+                               "id": curr_object_id})
             # Reset albedo color of all objects except gazed object to normal.
             else:
-                c.communicate({"$type": "set_color", "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0}, "id": id})
-
-   
+                c.communicate({"$type": "set_color",
+                               "color": {"r": 1.0, "g": 1.0, "b": 1.0, "a": 1.0},
+                               "id": oid})
 c.communicate({"$type": "terminate"})

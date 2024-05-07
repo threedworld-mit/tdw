@@ -118,14 +118,16 @@ while not fove.done:
     # Test if calibration done.
     if fove.calibration_state == CalibrationState.running and not scene_initialized:
         commands = []
+        # Show the objects once calibration is done.
         for i in range(len(table_set_ids) - 1):
-            commands.append({"$type": "show_object","id": table_set_ids[i]})
+            commands.append({"$type": "show_object",
+                             "id": table_set_ids[i]})
         fove.initialize_scene()
-        commands.append({"$type": "teleport_vr_rig", "position": {"x": 0, "y": 1.2, "z": 0.5}})
+        commands.append({"$type": "teleport_vr_rig",
+                         "position": {"x": 0, "y": 1.2, "z": 0.5}})
         scene_initialized = True
         c.communicate(commands)
-
-    resp=c.communicate([])
+    resp = c.communicate([])
     # Use the appropriate gaze ray based on eye state.
     if scene_initialized:
         if fove.left_eye.state == EyeState.closed and fove.right_eye.state == EyeState.opened:
@@ -134,9 +136,9 @@ while not fove.done:
             curr_object_id = fove.left_eye.gaze_id
         else:
             curr_object_id = fove.converged_eyes.gaze_id
-        for id in om.transforms:
+        for oid in om.transforms:
             # Highlight objects in blue when gaze is on them, skipping the table.
-            if (curr_object_id is not None) and (curr_object_id != table_id) and id == curr_object_id:
+            if (curr_object_id is not None) and (curr_object_id != table_id) and oid == curr_object_id:
                 c.communicate({"$type": "set_color", "color": {"r": 0, "g": 0, "b": 1.0, "a": 1.0}, "id": curr_object_id})
             # Reset albedo color of all objects except gazed object to normal.
             else:

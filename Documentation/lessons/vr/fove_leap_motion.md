@@ -10,8 +10,7 @@ The **FOVELeap Motion** is a VR rig that uses an FOVE headset and [Leap Motion h
 - GPU
 - FOVE headset
 - FOVE runtime app. Installation is free but you must first fill out an [application form](https://fove-inc.com/fove-vr-platform-contact/). You will then receive an email with the license information and a link to the download. Install and launch the app. Paste the license into a pop-up window. Then click right on the FOVE tray at the bottom-right corner of the screen and click on "Activate".
-- [Leap Motion Controller 2](https://www.adafruit.com/product/5758?gad_source=1&gclid=CjwKCAjwouexBhAuEiwAtW_Zx9KomkkHvehnqVFPDCMP_JWbjV90IfHUHmakS2DXqvsZ5Xn6cNMc-xoCr-QQAvD_BwE)
-- [UltraLeap device mount](https://www.mouser.com/ProductDetail/Ultraleap/LM-VR?qs=wnTfsH77Xs4W1KBbR6YVHQ%3D%3D) 
+- [Leap Motion Controller 2 and device mount](https://www.adafruit.com/product/5758?gad_source=1&gclid=CjwKCAjwouexBhAuEiwAtW_Zx9KomkkHvehnqVFPDCMP_JWbjV90IfHUHmakS2DXqvsZ5Xn6cNMc-xoCr-QQAvD_BwE)
 - [UltraLeap Gemini Tracking Software](https://developer.leapmotion.com/tracking-software-download) After installing Gemini Tracking software, you can open a useful control panel from the system tray that will show you the Leap camera view. You may need to set a couple of things in that control panel, the first time you use the hand tracking.
 
 ## Setup

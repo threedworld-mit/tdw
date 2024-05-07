@@ -2,7 +2,7 @@
 
 # FOVE Leap Motion
 
-The **FOVELeap Motion** is a VR rig that uses an Oculus headset and [Leap Motion hand tracking](https://www.ultraleap.com/).
+The **FOVELeap Motion** is a VR rig that uses an FOVE headset and [Leap Motion hand tracking](https://www.ultraleap.com/).
 
 ## Requirements
 
@@ -10,14 +10,14 @@ The **FOVELeap Motion** is a VR rig that uses an Oculus headset and [Leap Motion
 - GPU
 - FOVE headset
 - FOVE runtime app. Installation is free but you must first fill out an [application form](https://fove-inc.com/fove-vr-platform-contact/). You will then receive an email with the license information and a link to the download. Install and launch the app. Paste the license into a pop-up window. Then click right on the FOVE tray at the bottom-right corner of the screen and click on "Activate".
-- Leap Motion Controller 2
-- [UltraLeap device mount](https://www.mouser.com/ProductDetail/Ultraleap/LM-VR?qs=wnTfsH77Xs4W1KBbR6YVHQ%3D%3D) The device doesn't easily attach to the VR headset. Consider using double-sided tape.
+- [Leap Motion Controller 2](https://www.adafruit.com/product/5758?gad_source=1&gclid=CjwKCAjwouexBhAuEiwAtW_Zx9KomkkHvehnqVFPDCMP_JWbjV90IfHUHmakS2DXqvsZ5Xn6cNMc-xoCr-QQAvD_BwE)
+- [UltraLeap device mount](https://www.mouser.com/ProductDetail/Ultraleap/LM-VR?qs=wnTfsH77Xs4W1KBbR6YVHQ%3D%3D) 
 - [UltraLeap Gemini Tracking Software](https://developer.leapmotion.com/tracking-software-download) After installing Gemini Tracking software, you can open a useful control panel from the system tray that will show you the Leap camera view. You may need to set a couple of things in that control panel, the first time you use the hand tracking.
 
 ## Setup
 
 - Start the FOVE runtime app. When first launching the runtime, it will start automatically and the "switch" under the word "FOVE" will be green. For the headset to be fully recognized,  click the switch and then click it back on again.
-- Start the UltraLeap Gemini tracking app
+- Start the UltraLeap Gemini tracking app, if it hasn't started automatically.
 
 ## Rig description
 
@@ -81,7 +81,7 @@ For headset tracking, the FOVE uses a single IR sensor that is read by IR LEDs i
 
 By default, the FOVE Leap Motion rig will *not* track the headset. To  enable positional tracking, set `allow_headset_movement=True` in the add-on's constructor. To enable rotational tracking, set `allow_headset_rotation=True` in the add-on's constructor.
 
-To enable tracking (positional and/or rotational) you must also run the FOVE Debug Tool. Click on the FOVE runtime tray and select "Launch Debug Tool". Once launched, a green light will appear on the position tracker.
+To enable positional tracking, you must also run the FOVE Debug Tool. Click on the FOVE runtime tray and select "Launch Debug Tool". Once launched, a green light will appear on the position tracker.
 
 ### Tilt the headset
 
@@ -89,7 +89,7 @@ If rotational tracking is disabled, it still might be useful to tilt (pitch) the
 
 ### UI Buttons
 
-UI buttons work exactly the same as they do in the [Oculus Leap Motion rig](oculus_leap_motion.md#ui-buttons).
+Unlike the [Oculus Leap Motion rig](oculus_leap_motion.md#ui-buttons), UI buttons are disabled in the FOVE Leap Motion rig.
 
 ### The `vr.done` field
 

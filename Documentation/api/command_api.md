@@ -844,6 +844,7 @@
 | --- | --- |
 | [`destroy_ui_element`](#destroy_ui_element) | Destroy a UI element in the scene. |
 | [`set_ui_color`](#set_ui_color) | Set the color of a UI image or text. |
+| [`set_ui_element_position`](#set_ui_element_position) | Set the position of a UI element. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
@@ -6549,7 +6550,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6559,6 +6560,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6586,7 +6588,7 @@ Tell a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6596,6 +6598,7 @@ Tell a Replicant to start to reach for a target position.
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6623,7 +6626,7 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 ```
 
 ```python
-{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6633,6 +6636,7 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6668,7 +6672,7 @@ Tell a WheelchairReplicant to start to reach for a target object. The Wheelchair
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6679,6 +6683,7 @@ Tell a WheelchairReplicant to start to reach for a target object. The Wheelchair
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6705,7 +6710,7 @@ Tell a WheelchairReplicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6717,6 +6722,7 @@ Tell a WheelchairReplicant to start to reach for a target position.
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6743,7 +6749,7 @@ Tell a WheelchairReplicant to start to reset the arm to its neutral position.
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6753,6 +6759,7 @@ Tell a WheelchairReplicant to start to reset the arm to its neutral position.
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -11062,6 +11069,27 @@ Set the color of a UI image or text.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"color"` | Color | The new color. | |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_position`**
+
+Set the position of a UI element.
+
+
+```python
+{"$type": "set_ui_element_position", "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_position", "id": 1, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 

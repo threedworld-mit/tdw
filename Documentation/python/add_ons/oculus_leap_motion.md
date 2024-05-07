@@ -4,10 +4,6 @@
 
 Add a VR rig to the scene that uses Leap Motion hand tracking.
 
-Per `communicate()` call, this add-on updates the positions of the VR rig as well as each bone of each finger, and updates per-bone collision data.
-
-***
-
 ## Class Variables
 
 | Variable | Type | Description | Value |
@@ -50,15 +46,31 @@ Per `communicate()` call, this add-on updates the positions of the VR rig as wel
 
 - `initialized` If True, this module has been initialized.
 
+- `rig` The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
+
+- `left_hand` The [`Transform`](../object_data/transform.md) data of the left hand. If `output_data == False`, this is never updated.
+
+- `right_hand` The [`Transform`](../object_data/transform.md) data of the right hand. If `output_data == False`, this is never updated.
+
+- `head` The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
+
+- `held_left` A numpy of object IDs held by the left hand.
+
+- `held_right` A numpy of object IDs held by the right hand.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
 ***
 
 ## Functions
 
 #### \_\_init\_\_
 
-**`OculusLeapMotion()`**
+**`OculusOculusLeapMotion()`**
 
-**`OculusLeapMotion(set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, max_graspable_mass=50, min_mass=1, discrete_collision_detection_mode=True, set_object_physic_materials=True, object_static_friction=1, object_dynamic_friction=1, object_bounciness=0, time_step=0.02, quit_button=3)`**
+**`OculusOculusLeapMotion(set_graspable=True, output_data=True, position=None, rotation=0, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, max_graspable_mass=50, min_mass=1, discrete_collision_detection_mode=True, set_object_physic_materials=True, object_static_friction=1, object_dynamic_friction=1, object_bounciness=0, time_step=0.02, quit_button=3)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |

@@ -3,6 +3,7 @@ from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.add_ons.leap_motion import LeapMotion
 from tdw.output_data import OutputData, Fove
+from tdw.replicant.arm import Arm
 from tdw.vr_data.rig_type import RigType
 from tdw.vr_data.fove.eye import Eye
 from tdw.vr_data.fove.eye_state import EyeState
@@ -18,7 +19,7 @@ class FoveLeapMotion(LeapMotion):
     Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
     """
 
-    def __init__(self, calibration_data_path: PATH, use_right_hand: bool = True, timestamp: bool = False, perform_calibration: bool = False,
+    def __init__(self, calibration_data_path: PATH, calibration_hand: Arm = Arm.right, timestamp: bool = False, perform_calibration: bool = False,
                  allow_headset_movement: bool = False, allow_headset_rotation: bool = True, show_hands: bool = True, set_graspable: bool = True,
                  output_data: bool = True, position: Dict[str, float] = None, rotation: float = 0,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
@@ -29,7 +30,7 @@ class FoveLeapMotion(LeapMotion):
                  quit_button: Optional[int] = 3):
         """
         :param calibration_data_path: Calibration data will be saved to this file. Do not include a file extension!
-        :param use_right_hand: If True, use right hand for sphere calibration.
+        :param calibration_hand: The hand used for sphere calibration.
         :param timestamp: Whether to append a time.time() timestamp to the calibration_data_path
         :param perform_calibration: If True, perform the calibration protocol.
         :param allow_headset_movement: If True, allow headset movement.
@@ -101,10 +102,6 @@ class FoveLeapMotion(LeapMotion):
         An enum state machine flag that is used to check whether the FOVE headset is calibrating.
         """
         self.calibration_state: CalibrationState = CalibrationState.calibrating
-        """:field
-        A dictionary of object IDs for each bone on the calibrating hand. Key = [`FingerBone`](../vr_data/finger_bone.md). Value = A list of IDs of objects that the bone is colliding with.
-        """
-        self.hand_collisions: Dict[FingerBone, List[int]] = dict()
         # The IDs of the calibration spheres.
         num_spheres = 15
         self._calibration_spheres: List[CalibrationSphere] = [CalibrationSphere() for _ in range(num_spheres)]
@@ -112,8 +109,8 @@ class FoveLeapMotion(LeapMotion):
         self._sphere_calibration_data: np.ndarray = np.zeros(shape=(2, num_spheres, 3))
         self._calibration_data_path: str = TDWUtils.get_string_path(calibration_data_path)
         self._timestamp = timestamp
-        # Which hand to use for sphere calibration.
-        self.use_right_hand = use_right_hand
+        # The hand to use for sphere calibration.
+        self._calibration_hand: Arm = calibration_hand
 
     def get_initialization_commands(self) -> List[dict]:
         commands = super().get_initialization_commands()
@@ -172,6 +169,16 @@ class FoveLeapMotion(LeapMotion):
                                "frequency": "once"},
                               {"$type": "refresh_leap_motion_rig"}])
 
+    def tilt_headset_by(self, angle: float) -> None:
+        """
+        Tilt the headset in the scene by an angle.
+
+        :param angle: The angle in degrees.
+        """
+
+        self.commands.append({"$type": "tilt_fove_rig_by",
+                              "angle": angle})
+
     @staticmethod
     def _get_eye(index: int, fove: Fove, converged: bool = False) -> Eye:
         """
@@ -225,17 +232,15 @@ class FoveLeapMotion(LeapMotion):
         """
         Evaluate an ongoing sphere calibration.
         """
-        if self.use_right_hand:
-            self.hand_collisions = self.right_hand_collisions
-        else:
-            self.hand_collisions = self.left_hand_collisions
+
+        hand_collisions = self.right_hand_collisions if self._calibration_hand == Arm.right else self.left_hand_collisions
         for i in range(len(self._calibration_spheres)):
             if self._calibration_spheres[i].done:
                 continue
             colliding = False
-            for bone in self.hand_collisions:
+            for bone in hand_collisions:
                 # A sphere that isn't done is colliding with a hand.
-                if self._calibration_spheres[i].id in self.hand_collisions[bone]:
+                if self._calibration_spheres[i].id in hand_collisions[bone]:
                     # Start calibration.
                     if self._calibration_spheres[i].t0 is None:
                         # Set the start time.

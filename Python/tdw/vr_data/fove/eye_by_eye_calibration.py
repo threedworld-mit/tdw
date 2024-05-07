@@ -8,4 +8,4 @@ class EyeByEyeCalibration(Enum):
 
     default = 0
     disabled = 1
-    enabled = 2  #requires license
+    enabled = 2  # Requires license.

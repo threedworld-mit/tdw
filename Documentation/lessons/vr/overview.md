@@ -40,6 +40,7 @@ Other visual effects such as [HDRI skyboxes](../photorealism/lighting.md) *do* w
 
 - [Oculus Touch](oculus_touch.md)
 - [Oculus Leap Motion](oculus_leap_motion.md)
+- [FOVE Leap Motion](fove_leap_motion.md)
 
 ***
 

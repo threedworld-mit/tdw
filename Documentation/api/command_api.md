@@ -39,6 +39,7 @@
 | [`set_socket_timeout`](#set_socket_timeout) | Set the timeout behavior for the socket used to communicate with the controller. |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
+| [`set_vsync_count`](#set_vsync_count) | Set the renderer's vsync count. For more information, read this: <ulink url="https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html">https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
 | [`stop_all_audio`](#stop_all_audio) | Stop all ongoing audio. |
 | [`terminate`](#terminate) | Terminate the build.  |
@@ -815,6 +816,7 @@
 
 | Command | Description |
 | --- | --- |
+| [`send_fove`](#send_fove) | Send FOVE headset data.  |
 | [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data. |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
@@ -866,14 +868,20 @@
 
 | Command | Description |
 | --- | --- |
+| [`allow_fove_headset_movement`](#allow_fove_headset_movement) | Handle whether to send the Fove Headset position or not.  |
+| [`allow_fove_headset_rotation`](#allow_fove_headset_rotation) | Handle whether to send the Fove Headset orientation or not.  |
 | [`attach_avatar_to_vr_rig`](#attach_avatar_to_vr_rig) | Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS.  |
 | [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
+| [`refresh_leap_motion_rig`](#refresh_leap_motion_rig) | Refresh a Leap Motion rig in the scene. This must be sent whenever new objects are added to the scene after the rig was created.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
 | [`set_vr_loading_screen`](#set_vr_loading_screen) | Show or hide the VR rig's loading screen.  |
 | [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
+| [`show_leap_motion_hands`](#show_leap_motion_hands) | Visually show or hide Leap Motion hands.  |
+| [`start_fove_calibration`](#start_fove_calibration) | Start the FOVE headset's internal calibration. |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
+| [`tilt_fove_rig_by`](#tilt_fove_rig_by) | Tilt (pitch) the Fove rig by an angle.  |
 
 # Command
 
@@ -1012,6 +1020,7 @@ The type of VR rig to add to the scene.
 | `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
 | `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
 | `"oculus_leap_motion"` | A VR rig based on an Oculus headset (Rift S, Quest 2) with Leap Motion hand tracking. &lt;/summary |
+| `"fove_leap_motion"` | A VR rig based on a FOVE human headset with Leap Motion hand tracking. &lt;/summary |
 
 ***
 
@@ -1515,6 +1524,25 @@ Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"time_step"` | float | Time.fixedDeltaTime | 0.01 |
+
+***
+
+## **`set_vsync_count`**
+
+Set the renderer's vsync count. For more information, read this: <ulink url="https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html">https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html</ulink>
+
+
+```python
+{"$type": "set_vsync_count"}
+```
+
+```python
+{"$type": "set_vsync_count", "count": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"count"` | int | The vsync count. | 1 |
 
 ***
 
@@ -10766,6 +10794,38 @@ These commands send data that is specific to certain types of VR rigs.
 
 ***
 
+## **`send_fove`**
+
+Send FOVE headset data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Fove`](output_data.md#Fove)</font>
+
+```python
+{"$type": "send_fove"}
+```
+
+```python
+{"$type": "send_fove", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_leap_motion`**
 
 Send Leap Motion hand tracking data.
@@ -11263,6 +11323,46 @@ These commands utilize VR in TDW.
 
 ***
 
+## **`allow_fove_headset_movement`**
+
+Handle whether to send the Fove Headset position or not. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "allow_fove_headset_movement"}
+```
+
+```python
+{"$type": "allow_fove_headset_movement", "allow": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"allow"` | bool | Whether or not to send positional information from the headset. Default is to NOT send position, just orientation. | False |
+
+***
+
+## **`allow_fove_headset_rotation`**
+
+Handle whether to send the Fove Headset orientation or not. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "allow_fove_headset_rotation"}
+```
+
+```python
+{"$type": "allow_fove_headset_rotation", "allow": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"allow"` | bool | Whether or not to send orientation information from the headset. Default is to send orientation. | True |
+
+***
+
 ## **`attach_avatar_to_vr_rig`**
 
 Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS. 
@@ -11300,6 +11400,18 @@ Destroy the current VR rig.
 
 ```python
 {"$type": "destroy_vr_rig"}
+```
+
+***
+
+## **`refresh_leap_motion_rig`**
+
+Refresh a Leap Motion rig in the scene. This must be sent whenever new objects are added to the scene after the rig was created. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "refresh_leap_motion_rig"}
 ```
 
 ***
@@ -11393,6 +11505,82 @@ Controls the actual size of eye textures as a multiplier of the device's default
 
 ***
 
+## **`show_leap_motion_hands`**
+
+Visually show or hide Leap Motion hands. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "show_leap_motion_hands"}
+```
+
+```python
+{"$type": "show_leap_motion_hands", "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | Whether or not to show the visual representation of the Leap Motion hands. If false, hand tracking, grasping etc. will function as normal but the hands will be invisible. | True |
+
+***
+
+## **`start_fove_calibration`**
+
+Start the FOVE headset's internal calibration.
+
+
+```python
+{"$type": "start_fove_calibration"}
+```
+
+```python
+{"$type": "start_fove_calibration", "restart": True, "eye_by_eye": "Disabled", "method": "Spiral", "eye_torsion": "Default", "profile_name": "new profile"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"restart"` | bool | If true, restart an ongoing calibration. | True |
+| `"eye_by_eye"` | EyeByEyeCalibration | Indicate whether each eye should be calibrated separately or not. | "Disabled" |
+| `"method"` | CalibrationMethod | Indicate the calibration method to use. | "Spiral" |
+| `"eye_torsion"` | EyeTorsionCalibration | Indicate whether each eye torsion calibration should be run. | "Default" |
+| `"profile_name"` | string | Name to give the new calibration profile. This will typically be a subject's name. | "new profile" |
+
+#### CalibrationMethod
+
+FOVE calibration methods.
+
+| Value | Description |
+| --- | --- |
+| `"Default"` | Use the calibration method specified in the configuration file (default: single point). |
+| `"OnePoint"` | Use the simple point calibration method (Requires license). |
+| `"Spiral"` | Use the spiral calibration method. |
+| `"OnePointWithNoGlassesSpiralWithGlasses"` | Use the 1-point calibration method for user without eyeglasses, and the spiral calibration method if user has eyeglasses. |
+| `"ZeroPoint"` | Use the zero point calibration method (Requires license). |
+| `"DefaultCalibration"` | Use a premade calibration profile with average human parameters built-in. |
+
+#### EyeByEyeCalibration
+
+Indicate whether each eye should be calibrated separately or not.
+
+| Value | Description |
+| --- | --- |
+| `"Default"` | Use the settings coming from the configuration file (default: Disabled) |
+| `"Disabled"` | Calibrate both eye simultaneously |
+| `"Enabled"` | Calibrate each eye separately, first the left, then the right (Requires license) |
+
+#### EyeTorsionCalibration
+
+Indicate whether each eye torsion calibration should be run.
+
+| Value | Description |
+| --- | --- |
+| `"Default"` | Use the settings coming from the configuration file (default: IfNeeded) |
+| `"IfEnabled"` | Run eye torsion calibration only if the capability is currently enabled |
+| `"Always"` | Always run eye torsion calibration independently of whether the capability is used |
+
+***
+
 ## **`teleport_vr_rig`**
 
 Teleport the VR rig to a new position. 
@@ -11406,3 +11594,19 @@ Teleport the VR rig to a new position.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The position to teleport to. | |
+
+***
+
+## **`tilt_fove_rig_by`**
+
+Tilt (pitch) the Fove rig by an angle. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "tilt_fove_rig_by", "angle": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle of rotation in degrees. | |

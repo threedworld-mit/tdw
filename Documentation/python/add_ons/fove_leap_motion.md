@@ -199,3 +199,13 @@ _Returns:_  A list of commands that will initialize this add-on.
 **`self.initialize_scene()`**
 
 This must be called after sphere calibration and after scene initialization.
+
+#### tilt_headset_by
+
+**`self.tilt_headset_by(angle)`**
+
+Tilt the headset in the scene by an angle.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| angle |  float |  | The angle in degrees. |

@@ -169,6 +169,16 @@ class FoveLeapMotion(LeapMotion):
                                "frequency": "once"},
                               {"$type": "refresh_leap_motion_rig"}])
 
+    def tilt_headset_by(self, angle: float) -> None:
+        """
+        Tilt the headset in the scene by an angle.
+
+        :param angle: The angle in degrees.
+        """
+
+        self.commands.append({"$type": "tilt_fove_rig_by",
+                              "angle": angle})
+
     @staticmethod
     def _get_eye(index: int, fove: Fove, converged: bool = False) -> Eye:
         """

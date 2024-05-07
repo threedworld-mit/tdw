@@ -11,7 +11,7 @@ from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
 
 
 """
-Fove eye/hand calibration protocol.
+Use eye tracking data to reveal and highlight objects in the scene.
 """
 
 

@@ -289,6 +289,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch](Documentation/lessons/vr/oculus_touch.md)
 3. [Oculus Leap Motion](Documentation/lessons/vr/oculus_leap_motion.md)
+4. [FOVE Leap Motion](Documentation/lessons/vr/fove_leap_motion.md)
 
 ### 11.8 Keyboard and Mouse
 

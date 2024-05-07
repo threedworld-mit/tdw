@@ -2,7 +2,6 @@ from tdw.controller import Controller
 from tdw.tdw_utils import TDWUtils
 from tdw.add_ons.fove_leap_motion import FoveLeapMotion
 from tdw.backend.paths import EXAMPLE_CONTROLLER_OUTPUT_PATH
-from tdw.add_ons.object_manager import ObjectManager
 from tdw.vr_data.fove.calibration_state import CalibrationState
 
 """
@@ -22,8 +21,6 @@ fove = FoveLeapMotion(position={"x": 0, "y": 1.0, "z": 0},
                       calibration_data_path=str(path.resolve()),
                       timestamp=True)
 c.add_ons.append(fove)
-om = ObjectManager()
-c.add_ons.append(om)
 c.communicate(commands)
 
 while not fove.done:

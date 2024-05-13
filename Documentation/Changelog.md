@@ -4,6 +4,28 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.27
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_ui_element_depth` | Set the depth of a UI element. |
+
+### `tdw` module
+
+- Added: `ui.set_depth(id, depth)`.
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/ui/ui.md` | Added a section describing how to set a UI element's depth. |
+
 ## v1.12.26
 
 ### Command API

@@ -161,6 +161,20 @@ class UI(AddOn):
                               "id": ui_id,
                               "position": position})
 
+    def set_depth(self, ui_id: int, depth: float) -> None:
+        """
+        Set the depth (z value) of a UI element relative its canvas (not its camera).
+
+        If the canvas is attached to an avatar or VR rig, the canvas depth relative to the camera is the `plane_distance`.
+
+        :param ui_id: The UI element's ID.
+        :param depth: The depth (z value) in meters.
+        """
+
+        self.commands.append({"$type": "set_ui_element_depth",
+                              "id": ui_id,
+                              "depth": depth})
+
     def destroy(self, ui_id: int) -> None:
         """
         Destroy a UI element.

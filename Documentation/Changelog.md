@@ -4,7 +4,7 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
-## v1.12.26
+## v1.12.27
 
 ### Command API
 
@@ -25,6 +25,21 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 | Document | Modification |
 | --- | --- |
 | `lessons/ui/ui.md` | Added a section describing how to set a UI element's depth. |
+
+## v1.12.26
+
+### Command API
+
+#### Modified Commands
+
+| Command | Description |
+| --- | --- |
+| `replicant_reach_for_position`<br>`replicant_reach_for_relative_position`<br>`wheelchair_replicant_reach_for_position` | Added parameter `offhand_follows`. |
+
+### `tdw` module
+
+- Fixed: `replicant.reach_for(target, offhand_follows=True, absolute=False)` doesn't move the offhand to the correct position. The code responsbile for calculating the offhand target has been moved from `tdw` into the build.
+- Likewise for `wheelchair_replicant.reach_for(target, offhand_follows=True, absolute=False)`
 
 ## v1.12.25
 

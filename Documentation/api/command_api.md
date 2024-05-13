@@ -6551,7 +6551,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 ```
 
 ```python
-{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6561,6 +6561,7 @@ Tell the Replicant to start to reach for a target object. The Replicant will try
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6588,7 +6589,7 @@ Tell a Replicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6598,6 +6599,7 @@ Tell a Replicant to start to reach for a target position.
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6625,7 +6627,7 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 ```
 
 ```python
-{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "replicant_reach_for_relative_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6635,6 +6637,7 @@ Instruct a Replicant to start to reach for a target position relative to the Rep
 | `"arrived_at"` | float | If the hand is this distance from the target position or less, the action succeeded. | 0.02 |
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"duration"` | float | The duration of the motion in seconds. | |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
@@ -6670,7 +6673,7 @@ Tell a WheelchairReplicant to start to reach for a target object. The Wheelchair
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reach_for_object", "object_id": 1, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6681,6 +6684,7 @@ Tell a WheelchairReplicant to start to reach for a target object. The Wheelchair
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6707,7 +6711,7 @@ Tell a WheelchairReplicant to start to reach for a target position.
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reach_for_position", "position": {"x": 1.1, "y": 0.0, "z": 0}, "absolute": True, "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6719,6 +6723,7 @@ Tell a WheelchairReplicant to start to reach for a target position.
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 
@@ -6745,7 +6750,7 @@ Tell a WheelchairReplicant to start to reset the arm to its neutral position.
 ```
 
 ```python
-{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}}
+{"$type": "wheelchair_replicant_reset_arm", "duration": 0.125, "arm": "left", "id": 1, "max_distance": 1.5, "arrived_at": 0.02, "set_status": True, "offset": {"x": 0, "y": 0, "z": 0}, "offhand_follows": False}
 ```
 
 | Parameter | Type | Description | Default |
@@ -6755,6 +6760,7 @@ Tell a WheelchairReplicant to start to reset the arm to its neutral position.
 | `"set_status"` | bool | If True, when this command ends, it will set the Replicant output data's status. | True |
 | `"offset"` | Vector3 | This offset will be applied to the target position. | {"x": 0, "y": 0, "z": 0} |
 | `"duration"` | float | The duration of the motion in seconds. | |
+| `"offhand_follows"` | bool | If True, the offhand will follow the primary hand, meaning that it will maintain the same relative position. | False |
 | `"arm"` | Arm | The arm doing the action. | |
 | `"id"` | int | The unique object ID. | |
 

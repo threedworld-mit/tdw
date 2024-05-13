@@ -4,6 +4,32 @@
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).
 
+## v1.12.27
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_ui_element_depth` | Set the depth of a UI element. |
+
+### `tdw` module
+
+- Added: `ui.set_depth(id, depth)`.
+
+### Model Library
+
+- Added affordance points to: 4ft_wood_shelving, appliance-ge-profile-microwave3, arflex_strips_sofa, b03_grandpiano2014, b04_backpack, cabinet_24_door_drawer_wood_beach_honey, dining_room_table, dishwasher_4, emeco_navy_chair, hp_printer, kettle_2, sm_tv, b04_bike, huffy_nel_lusso_womens_cruiser_bike_2011vray
+
+### Documentation
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/ui/ui.md` | Added a section describing how to set a UI element's depth. |
+
 ## v1.12.26
 
 ### Command API

@@ -12,18 +12,15 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 | Command | Description |
 | --- | --- |
-| `add_ui_cutout` | Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. |
-| `set_ui_element_rotation` | Rotate a UI element to a new angle. |
+| `set_ui_element_depth` | Set the depth of a UI element. |
 
 ### `tdw` module
 
-- Added: `ui.add_cutout(base_id, image, position)` Add a UI image that cuts a transparent hole in another UI image.
-- Added: `ui.set_ui_element_rotation(ui_id, angle)` Rotate a UI element to an angle.
-- Modified: The `image` parameter  `ui.add_image(image, position)` can now be a PIL image.
+- Added: `ui.set_depth(id, depth)`.
 
-### Example Controllers
+### Model Library
 
-- Replaced `ui/mask.py` with `ui/cutout.py`, which uses the new cutout functionality.
+- Added affordance points to: 4ft_wood_shelving, appliance-ge-profile-microwave3, arflex_strips_sofa, b03_grandpiano2014, b04_backpack, cabinet_24_door_drawer_wood_beach_honey, dining_room_table, dishwasher_4, emeco_navy_chair, hp_printer, kettle_2, sm_tv, b04_bike, huffy_nel_lusso_womens_cruiser_bike_2011vray
 
 ### Documentation
 
@@ -31,7 +28,7 @@ To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1
 
 | Document | Modification |
 | --- | --- |
-| `lessons/ui/ui.md` | Replaced "mask" section with a new section describing how to add a cutout.<br>Added a section for how to transform UI elements. |
+| `lessons/ui/ui.md` | Added a section describing how to set a UI element's depth. |
 
 ## v1.12.26
 

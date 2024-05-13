@@ -321,6 +321,14 @@ Result:
 
 ![](images/mask.gif)
 
+## Set a UI element's depth (z value)
+
+Call `ui.set_depth(id, depth)` to set a UI element's depth relative to its parent canvas. This function sends [`set_ui_element_depth`](../../api/command_api.md#set_ui_element_depth).
+
+`depth` is measured in meters from the parent canvas.
+
+If the canvas is attached to a camera (see `ui.attach_canvato_avatar(avatar_id, focus_distance, plane_distance)` or to a VR rig's camera (see `ui.attach_canvas_to_vr_rg(plane_distance)`), the canvas' distance from the camera is `plane_distance`, and so the true local z value is `plane_distance + depth`.
+
 ## Destroy UI elements
 
 Destroy a specific UI element via `ui.destroy(ui_id)`, which sends [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element).
@@ -358,6 +366,7 @@ Command API:
 - [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position)
 - [`set_ui_element_rotation`](../../api/command_api.md#set_ui_element_rotation)
 - [`add_ui_cutout`](../../api/command_api.md#add_ui_cutout)
+- [`set_ui_element_depth`](../../api/command_api.md#set_ui_element_depth)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
 - [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element)
 - [`destroy_ui_canvas`](../../api/command_api.md#destroy_ui_canvas)

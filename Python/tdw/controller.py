@@ -56,6 +56,12 @@ class Controller:
         # A list of modules that will add commands on `communicate()`.
         self.add_ons: List[AddOn] = list()
 
+        context = zmq.Context()
+        # noinspection PyUnresolvedReferences
+        self.socket = context.socket(zmq.REP)
+        # Bind the socket.
+        port = self._bind_socket(port=port)
+
         # Check for updates. Download a new build if there is one.
         if check_version:
             can_launch_build = Update.check_for_update(download_build=launch_build)
@@ -68,10 +74,6 @@ class Controller:
         # Launch the build.
         if launch_build and can_launch_build:
             Controller.launch_build(port=port)
-        context = zmq.Context()
-        # noinspection PyUnresolvedReferences
-        self.socket = context.socket(zmq.REP)
-        self.socket.bind('tcp://*:' + str(port))
 
         self.socket.recv()
 
@@ -607,6 +609,18 @@ class Controller:
               f"{str(log_path.resolve())}")
         print(f"If the build is on a remote Linux server, the log path is probably"
               f" ~/.config/unity3d/MIT/TDW/Player.log (where ~ is your home directory)")
+
+    def _bind_socket(self, port: int) -> int:
+        """
+        Bind the socket to a port.
+
+        :param port: The port.
+
+        :return: The port.
+        """
+
+        self.socket.bind('tcp://*:' + str(port))
+        return port
 
     @staticmethod
     def _get_container_shape_command(command_name: str, object_id: int, position: Dict[str, float],

@@ -3,8 +3,9 @@ import pytest
 import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
                              AvatarTransformMatrices, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
-                             FieldOfView, ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, QuitSignal,
-                             Raycast, Rigidbodies, SegmentationColors, StaticRigidbodies, Substructure, Volumes,
+                             FieldOfView, IdPassSegmentationColors, ImageSensors, LocalTransforms, Meshes, Occlusion,
+                             OccupancyMap, QuitSignal, Raycast, Rigidbodies, SegmentationColors, StaticRigidbodies,
+                             Substructure, Volumes,
                              Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
@@ -407,7 +408,9 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
                 {"$type": "set_pass_masks",
                  "pass_masks": ["_img", "_id", "_category", "_mask", "_depth", "_depth_simple", "_normals", "_flow", "_albedo"]},
                 {"$type": "send_images"},
-                {"$type": "send_occlusion"}]
+                {"$type": "send_occlusion"},
+                {"$type": "send_segmentation_colors"},
+                {"$type": "send_id_pass_segmentation_colors"}]
     resp = controller.communicate(commands)
     # Test avatar data.
     a: output_data_type = output_data_type(get_output_data(resp, avatar_data_id))
@@ -435,6 +438,12 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     assert occlusion.get_avatar_id() == "a"
     assert occlusion.get_occluded() == occlusion_value
     assert occlusion.get_unoccluded() == occlusion_value
+    # Test segmentation colors.
+    segmentation_color = tuple(SegmentationColors(get_output_data(resp, "segm")).get_object_color(0))
+    id_pass_segmentation_colors = IdPassSegmentationColors(get_output_data(resp, "ipsc"))
+    assert id_pass_segmentation_colors.get_avatar_id() == "a"
+    assert id_pass_segmentation_colors.get_num_segmentation_colors() == 1
+    assert tuple(id_pass_segmentation_colors.get_segmentation_color(0)) == segmentation_color
     # We might need to test this more.
     return a
 
@@ -452,8 +461,6 @@ DynamicEmptyObjects
 DynamicRobots
 EnvironmentColliderIntersections
 Framerate
-IdPassGrayscale
-IdPassSegmentationColors
 Images
 IsOnNavMesh
 Lights

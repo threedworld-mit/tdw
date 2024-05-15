@@ -3,11 +3,15 @@ import pytest
 import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
                              AvatarTransformMatrices, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
-                             ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, QuitSignal, Raycast,
-                             Rigidbodies, SegmentationColors, StaticRigidbodies, Substructure, Volumes, Transforms)
+                             FieldOfView, ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, QuitSignal,
+                             Raycast, Rigidbodies, SegmentationColors, StaticRigidbodies, Substructure, Volumes,
+                             Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
+
+
+FIELD_OF_VIEW: float = 54.4322
 
 
 @pytest.fixture()
@@ -335,12 +339,18 @@ def assert_num(output_data, expected_num: int = 2) -> None:
 
 
 def assert_float(a: float, b: float, delta: float = 0.0001) -> None:
-    assert abs(abs(a) - abs(b)) <= delta
+    c = abs(abs(a) - abs(b))
+    if c > delta:
+        print(f"{a}, {b}, {c}")
+    assert c <= delta
 
 
 def assert_arr(a: np.ndarray, b: np.ndarray, delta: float = 0.0001) -> None:
     assert a.shape == b.shape
-    assert np.linalg.norm(a - b) <= delta
+    c = np.linalg.norm(a - b)
+    if c > delta:
+        print(f"{a}, {b}, {c}")
+    assert c <= delta
 
 
 def assert_transforms(data: Union[LocalTransforms, Transforms], object_ids: List[int],
@@ -358,14 +368,15 @@ def assert_transforms(data: Union[LocalTransforms, Transforms], object_ids: List
 
 def test_avatars(controller):
     # Test each avatar.
-    simple_body = avatar(controller, "A_Simple_Body", AvatarSimpleBody, "avsb")
+    simple_body = avatar(controller, "A_Simple_Body", AvatarSimpleBody, "avsb", 28)
     assert isinstance(simple_body, AvatarSimpleBody)
     assert simple_body.get_visible_body() == "Capsule"
-    avatar(controller, "A_Img_Caps_Kinematic", AvatarKinematic, "avki")
-    avatar(controller, "A_First_Person", AvatarKinematic, "avki")
+    avatar(controller, "A_Img_Caps_Kinematic", AvatarKinematic, "avki", 32)
+    avatar(controller, "A_First_Person", AvatarKinematic, "avki", 32)
 
 
-def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic], avatar_data_id: str) -> AvatarKinematic:
+def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic], avatar_data_id: str,
+           occlusion_value: int) -> AvatarKinematic:
     png = False
     # Create a scene. Add an object. Add an avatar. Look at the object. Send output data.
     avatar_position = {"x": 3, "y": 2, "z": 0}
@@ -386,6 +397,7 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
                 {"$type": "send_image_sensors"},
                 {"$type": "send_avatar_transform_matrices"},
                 {"$type": "send_camera_matrices"},
+                {"$type": "send_field_of_view"},
                 {"$type": "set_post_process",
                  "value": False},
                 {"$type": "set_render_quality",
@@ -404,6 +416,25 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     assert_arr(np.array(a.get_position()), TDWUtils.vector3_to_array(avatar_position))
     assert_arr(np.array(a.get_rotation()), QuaternionUtils.IDENTITY)
     assert_arr(np.array(a.get_forward()), QuaternionUtils.FORWARD)
+    # Test field of view.
+    field_of_view = FieldOfView(get_output_data(resp, "fofv"))
+    assert field_of_view.get_avatar_id() == "a"
+    assert_float(field_of_view.get_fov(), FIELD_OF_VIEW)
+    assert field_of_view.get_sensor_name() == "SensorContainer"
+    assert_float(field_of_view.get_focal_length(), 35)
+    # Test image sensor data.
+    image_sensors = ImageSensors(get_output_data(resp, "imse"))
+    assert image_sensors.get_avatar_id() == "a"
+    assert image_sensors.get_num_sensors() == 1
+    assert_float(image_sensors.get_sensor_field_of_view(0), FIELD_OF_VIEW)
+    assert image_sensors.get_sensor_on(0)
+    assert image_sensors.get_sensor_name(0) == "SensorContainer"
+    # We're not going to test rotation because it varies between avatars.
+    # Test occlusion.
+    occlusion = Occlusion(get_output_data(resp, "occl"))
+    assert occlusion.get_avatar_id() == "a"
+    assert occlusion.get_occluded() == occlusion_value
+    assert occlusion.get_unoccluded() == occlusion_value
     # We might need to test this more.
     return a
 
@@ -412,7 +443,6 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
 AudioSourceDone
 AudioSources
 AvatarSegmentationColor
-AvatarSimpleBody
 AvatarTransformMatrices
 CameraMatrices
 Containment
@@ -420,13 +450,11 @@ Drones
 DynamicCompositeObjects
 DynamicEmptyObjects
 DynamicRobots
-EnvironmentColliderIntersection
-FieldOfView
+EnvironmentColliderIntersections
 Framerate
 IdPassGrayscale
 IdPassSegmentationColors
 Images
-ImageSensors
 IsOnNavMesh
 Lights
 Magnebot
@@ -434,7 +462,6 @@ MagnebotWheels
 NavMeshPath
 ObiParticles
 ObjectColliderIntersection
-Occlusion
 Overlap
 Replicants
 ReplicantSegmentationColors

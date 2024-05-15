@@ -2,8 +2,8 @@ from typing import List, Union, Dict
 import pytest
 import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
-                             LocalTransforms, Meshes, QuitSignal, Rigidbodies, SegmentationColors, StaticRigidbodies,
-                             Substructure, Volumes, Transforms)
+                             LocalTransforms, Meshes, OccupancyMap, QuitSignal, Raycast, Rigidbodies, SegmentationColors,
+                             StaticRigidbodies, Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -194,15 +194,41 @@ def test_collisions(controller):
     resp = controller.communicate(commands)
     sleeping = False
     frame = 0
+    entered_object = False
+    exited_object = False
+    entered_env_0 = 0
+    exited_env_0 = 0
+    entered_env_1 = 0
+    exited_env_1 = 0
     while not sleeping and frame < 300:
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "coll":
                 collision = Collision(resp[i])
-                if collision.get_state() == "enter":
+                state = collision.get_state()
+                if state == "enter":
                     assert frame == 32
-
-                print(f"collision {collision.get_state()} {collision.get_impulse()} {np.linalg.norm(collision.get_relative_velocity())} {frame}")
+                    assert np.linalg.norm(collision.get_impulse()) > 17
+                    assert np.linalg.norm(collision.get_relative_velocity()) > 6
+                    entered_object = True
+                elif state == "exit":
+                    assert frame == 39
+                    assert_float(float(np.linalg.norm(collision.get_impulse())), 0)
+                    assert np.linalg.norm(collision.get_relative_velocity()) > 3.5
+                    exited_object = True
+            elif r_id == "enco":
+                collision = EnvironmentCollision(resp[i])
+                # Count the collision events per object.
+                if collision.get_state() == "enter":
+                    if collision.get_object_id() == object_id_0:
+                        entered_env_0 += 1
+                    else:
+                        entered_env_1 += 1
+                else:
+                    if collision.get_object_id() == object_id_0:
+                        exited_env_0 += 1
+                    else:
+                        exited_env_1 += 1
             elif r_id == "rigi":
                 rigidbodies = Rigidbodies(resp[i])
                 sleeping = all([rigidbodies.get_sleeping(index) for index in range(rigidbodies.get_num())])
@@ -210,6 +236,90 @@ def test_collisions(controller):
         frame += 1
     assert sleeping
     assert frame == 212
+    assert entered_object
+    assert exited_object
+    assert entered_env_0 == 2
+    assert entered_env_1 == 4
+    assert exited_env_0 == 1
+    assert exited_env_1 == 3
+
+
+def test_raycast(controller):
+    commands = [TDWUtils.create_empty_room(12, 12)]
+    scale = 0.2
+    arr = np.arange(-2, 2, step=scale * 3)
+    object_ids = []
+    positions = []
+    for x in arr:
+        for z in arr:
+            object_id = TestController.get_unique_id()
+            position = {"x": float(x), "y": 0, "z": float(z)}
+            commands.extend(TestController.get_add_physics_object(model_name="cube",
+                                                                  object_id=object_id,
+                                                                  library="models_flex.json",
+                                                                  position=position,
+                                                                  scale_factor={"x": scale, "y": scale, "z": scale},
+                                                                  kinematic=True))
+            object_ids.append(object_id)
+            positions.append(position)
+    # Raycast some, but not all, objects.
+    for index in [2, 4, 6]:
+        position = positions[index]
+        commands.append({"$type": "send_raycast",
+                         "id": object_ids[index],
+                         "origin": {"x": position["x"], "y": 100, "z": position["z"]},
+                         "destination": position})
+    # Raycast the scene.
+    raycast_scene_id = TestController.get_unique_id()
+    d = 3
+    commands.append({"$type": "send_raycast",
+                     "id": raycast_scene_id,
+                     "origin": {"x": d, "y": 100, "z": d},
+                     "destination": {"x": d, "y": 0, "z": d}})
+    # Raycast the void.
+    raycast_void_id = TestController.get_unique_id()
+    d = 100
+    commands.append({"$type": "send_raycast",
+                     "id": raycast_void_id,
+                     "origin": {"x": d, "y": 100, "z": d},
+                     "destination": {"x": d, "y": 0, "z": d}})
+    resp = controller.communicate(commands)
+    for i in range(len(resp) - 1):
+        # There shouldn't be any other output data.
+        assert OutputData.get_data_type_id(resp[i]) == "rayc"
+        raycast = Raycast(resp[i])
+        raycast_id = raycast.get_raycast_id()
+        # This raycast hit an object.
+        if raycast_id in object_ids:
+            assert raycast.get_hit()
+            assert raycast.get_hit_object()
+            assert raycast.get_object_id() == raycast_id
+            assert raycast.get_point()[1] >= scale
+            assert_arr(np.array(raycast.get_normal()), np.array([0, 1, 0]))
+        # This raycast hit the floor.
+        elif raycast_id == raycast_scene_id:
+            assert raycast.get_hit()
+            assert not raycast.get_hit_object()
+            assert_arr(np.array(raycast.get_normal()), np.array([0, 1, 0]))
+        elif raycast_id == raycast_void_id:
+            assert not raycast.get_hit()
+            assert not raycast.get_hit_object()
+        else:
+            raise Exception(f"Unexpected raycast ID: {raycast_id}")
+    # Test the occupancy map.
+    resp = controller.communicate({"$type": "send_occupancy_map"})
+    assert len(resp) == 2
+    assert OutputData.get_data_type_id(resp[0]) == "occu"
+    occupancy_map = OccupancyMap(resp[0])
+    assert tuple(occupancy_map.get_shape()) == (23, 23)
+    occupancy = occupancy_map.get_map()
+    for row in range(7, 9):
+        for col in range(7, 14):
+            assert occupancy[row][col] == 1
+    assert occupancy[10][10] == 3
+    for row in range(11, 14):
+        for col in range(7, 14):
+            assert occupancy[row][col] == 1
 
 
 def get_output_data(resp: List[bytes], r_id: str) -> bytes:
@@ -255,14 +365,12 @@ AvatarSegmentationColor
 AvatarSimpleBody
 AvatarTransformMatrices
 CameraMatrices
-Collision
 Containment
 Drones
 DynamicCompositeObjects
 DynamicEmptyObjects
 DynamicRobots
 EnvironmentColliderIntersection
-EnvironmentCollision
 FieldOfView
 Framerate
 IdPassGrayscale
@@ -279,10 +387,8 @@ NavMeshPath
 ObiParticles
 ObjectColliderIntersection
 Occlusion
-OccupancyMap
 OculusTouchButtons
 Overlap
-Raycast
 Replicants
 ReplicantSegmentationColors
 RobotJointVelocities

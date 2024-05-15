@@ -234,6 +234,7 @@ class FoveLeapMotion(LeapMotion):
         """
 
         hand_collisions = self.right_hand_collisions if self._calibration_hand == Arm.right else self.left_hand_collisions
+        hand_transforms = self.right_hand_transforms if self._calibration_hand == Arm.right else self.left_hand_transforms
         for i in range(len(self._calibration_spheres)):
             if self._calibration_spheres[i].done:
                 continue
@@ -255,7 +256,7 @@ class FoveLeapMotion(LeapMotion):
                         self._calibration_spheres[i].done = True
                         # Store the calibration data.
                         self._sphere_calibration_data[0][i] = self.converged_eyes.gaze_position
-                        self._sphere_calibration_data[1][i] = self.right_hand_transforms[bone].position
+                        self._sphere_calibration_data[1][i] = hand_transforms[bone].position
                         # Hide the sphere.
                         self.commands.append({"$type": "hide_object",
                                               "id": self._calibration_spheres[i].id})

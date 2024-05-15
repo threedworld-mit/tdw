@@ -1,9 +1,9 @@
 from typing import List, Union, Dict
 import pytest
 import numpy as np
-from tdw.output_data import (OutputData, AlbedoColors, Bounds, Categories, EulerAngles, LocalTransforms, Meshes,
-                             QuitSignal, Rigidbodies, SegmentationColors, StaticRigidbodies, Substructure, Volumes,
-                             Transforms)
+from tdw.output_data import (OutputData, AlbedoColors, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
+                             LocalTransforms, Meshes, QuitSignal, Rigidbodies, SegmentationColors, StaticRigidbodies,
+                             Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -21,7 +21,7 @@ def controller(request):
     return c
 
 
-def test_output_data(controller):
+def test_object_output_data(controller):
     assert isinstance(controller, TestController)
     # This should throw an exception.
     with pytest.raises(Exception) as _:
@@ -141,7 +141,13 @@ def test_output_data(controller):
                                     "id": cube_id,
                                     "force": {"x": 0.5, "y": 1, "z": 12}},
                                    {"$type": "send_static_rigidbodies"},
-                                   {"$type": "send_rigidbodies"}])
+                                   {"$type": "send_rigidbodies",
+                                    "frequency": "always"},
+                                   {"$type": "send_collisions",
+                                    "enter": True,
+                                    "stay": False,
+                                    "exit": True,
+                                    "collision_types": ["obj", "env"]}])
     # Test rigidbodies.
     rigidbodies = Rigidbodies(get_output_data(resp, "rigi"))
     for i in range(rigidbodies.get_num()):
@@ -160,6 +166,20 @@ def test_output_data(controller):
         assert_float(static_rigidbodies.get_static_friction(i), 0.7)
         assert_float(static_rigidbodies.get_dynamic_friction(i), 0.7)
         assert_float(static_rigidbodies.get_bounciness(i), 0.3)
+    sleeping = False
+    frame = 0
+    while not sleeping:
+        print(frame)
+        for i in range(len(resp) - 1):
+            r_id = OutputData.get_data_type_id(resp[i])
+            if r_id == "coll":
+                collision = Collision(resp[i])
+                print(f"collision {collision.get_state()} {collision.get_impulse()} {np.linalg.norm(collision.get_relative_velocity())}")
+            elif r_id == "rigi":
+                rigidbodies = Rigidbodies(resp[i])
+                sleeping = all([rigidbodies.get_sleeping(index) for index in range(rigidbodies.get_num())])
+        frame += 1
+
 
 
 def get_output_data(resp: List[bytes], r_id: str) -> bytes:

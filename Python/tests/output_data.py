@@ -1,12 +1,12 @@
 from typing import List, Union, Dict, Type
+from pathlib import Path
 import pytest
 import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
                              AvatarTransformMatrices, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
-                             FieldOfView, IdPassSegmentationColors, ImageSensors, LocalTransforms, Meshes, Occlusion,
-                             OccupancyMap, QuitSignal, Raycast, Rigidbodies, SegmentationColors, StaticRigidbodies,
-                             Substructure, Volumes,
-                             Transforms)
+                             FieldOfView, IdPassSegmentationColors, Images, ImageSensors, LocalTransforms, Meshes,
+                             Occlusion, OccupancyMap, QuitSignal, Raycast, Rigidbodies, SegmentationColors,
+                             StaticRigidbodies, Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -381,6 +381,7 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     png = False
     # Create a scene. Add an object. Add an avatar. Look at the object. Send output data.
     avatar_position = {"x": 3, "y": 2, "z": 0}
+    pass_masks = ["_img", "_id", "_category", "_mask", "_depth", "_depth_simple", "_normals", "_flow", "_albedo"]
     commands = [{"$type": "load_scene",
                  "scene_name": "ProcGenScene"},
                 TDWUtils.create_empty_room(12, 12),
@@ -406,7 +407,7 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
                 {"$type": "set_img_pass_encoding",
                  "value": png},
                 {"$type": "set_pass_masks",
-                 "pass_masks": ["_img", "_id", "_category", "_mask", "_depth", "_depth_simple", "_normals", "_flow", "_albedo"]},
+                 "pass_masks": pass_masks},
                 {"$type": "send_images"},
                 {"$type": "send_occlusion"},
                 {"$type": "send_segmentation_colors"},
@@ -445,6 +446,20 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     assert id_pass_segmentation_colors.get_num_segmentation_colors() == 1
     assert tuple(id_pass_segmentation_colors.get_segmentation_color(0)) == segmentation_color
     # We might need to test this more.
+    images = Images(get_output_data(resp, "imag"))
+    assert images.get_avatar_id() == "a"
+    assert images.get_sensor_name() == "SensorContainer"
+    assert images.get_width() == 256
+    assert images.get_height() == 256
+    assert images.get_num_passes() == len(pass_masks)
+    image_directory = Path("image_passes").joinpath(avatar_type)
+    if not image_directory.exists():
+        image_directory.mkdir(parents=True)
+    # Compare each image to a canonical image.
+    for i in range(images.get_num_passes()):
+        assert images.get_extension(i) == ("png" if i > 0 else "jpg")
+        assert images.get_pass_mask(i) in pass_masks
+        assert_arr(images.get_image(i), np.load(str(image_directory.joinpath(f"{images.get_pass_mask(i)}.npy"))))
     return a
 
 
@@ -461,7 +476,6 @@ DynamicEmptyObjects
 DynamicRobots
 EnvironmentColliderIntersections
 Framerate
-Images
 IsOnNavMesh
 Lights
 Magnebot

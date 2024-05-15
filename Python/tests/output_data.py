@@ -1,9 +1,10 @@
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Type
 import pytest
 import numpy as np
-from tdw.output_data import (OutputData, AlbedoColors, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
-                             LocalTransforms, Meshes, OccupancyMap, QuitSignal, Raycast, Rigidbodies, SegmentationColors,
-                             StaticRigidbodies, Substructure, Volumes, Transforms)
+from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
+                             AvatarTransformMatrices, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
+                             ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, QuitSignal, Raycast,
+                             Rigidbodies, SegmentationColors, StaticRigidbodies, Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -355,12 +356,61 @@ def assert_transforms(data: Union[LocalTransforms, Transforms], object_ids: List
         assert_arr(data.get_forward(index), QuaternionUtils.multiply_by_vector(rot, QuaternionUtils.FORWARD))
 
 
+def test_avatars(controller):
+    # Test each avatar.
+    simple_body = avatar(controller, "A_Simple_Body", AvatarSimpleBody, "avsb")
+    assert isinstance(simple_body, AvatarSimpleBody)
+    assert simple_body.get_visible_body() == "Capsule"
+    avatar(controller, "A_Img_Caps_Kinematic", AvatarKinematic, "avki")
+    avatar(controller, "A_First_Person", AvatarKinematic, "avki")
+
+
+def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic], avatar_data_id: str) -> AvatarKinematic:
+    png = False
+    # Create a scene. Add an object. Add an avatar. Look at the object. Send output data.
+    avatar_position = {"x": 3, "y": 2, "z": 0}
+    commands = [{"$type": "load_scene",
+                 "scene_name": "ProcGenScene"},
+                TDWUtils.create_empty_room(12, 12),
+                {"$type": "simulate_physics",
+                 "value": False},
+                TestController.get_add_object(model_name="cube",
+                                              object_id=0,
+                                              library="models_flex.json"),
+                {"$type": "create_avatar", "type": avatar_type},
+                {"$type": "teleport_avatar_to", "position": avatar_position},
+                {"$type": "look_at",
+                 "object_id": 0,
+                 "use_centroid": True},
+                {"$type": "send_avatars"},
+                {"$type": "send_image_sensors"},
+                {"$type": "send_avatar_transform_matrices"},
+                {"$type": "send_camera_matrices"},
+                {"$type": "set_post_process",
+                 "value": False},
+                {"$type": "set_render_quality",
+                 "render_quality": 0},
+                {"$type": "set_img_pass_encoding",
+                 "value": png},
+                {"$type": "set_pass_masks",
+                 "pass_masks": ["_img", "_id", "_category", "_mask", "_depth", "_depth_simple", "_normals", "_flow", "_albedo"]},
+                {"$type": "send_images"},
+                {"$type": "send_occlusion"}]
+    resp = controller.communicate(commands)
+    # Test avatar data.
+    a: output_data_type = output_data_type(get_output_data(resp, avatar_data_id))
+    assert a.get_avatar_id() == "a"
+    # Compare the transforms.
+    assert_arr(np.array(a.get_position()), TDWUtils.vector3_to_array(avatar_position))
+    assert_arr(np.array(a.get_rotation()), QuaternionUtils.IDENTITY)
+    assert_arr(np.array(a.get_forward()), QuaternionUtils.FORWARD)
+    # We might need to test this more.
+    return a
+
 
 """
 AudioSourceDone
 AudioSources
-AvatarKinematic
-AvatarNonKinematic
 AvatarSegmentationColor
 AvatarSimpleBody
 AvatarTransformMatrices
@@ -378,20 +428,16 @@ IdPassSegmentationColors
 Images
 ImageSensors
 IsOnNavMesh
-Keyboard
 Lights
 Magnebot
 MagnebotWheels
-Mouse
 NavMeshPath
 ObiParticles
 ObjectColliderIntersection
 Occlusion
-OculusTouchButtons
 Overlap
 Replicants
 ReplicantSegmentationColors
-RobotJointVelocities
 SceneRegions
 ScreenPosition
 StaticCompositeObjects

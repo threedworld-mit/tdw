@@ -139,15 +139,9 @@ def test_object_output_data(controller):
                                     "value": True},
                                    {"$type": "apply_force_to_object",
                                     "id": cube_id,
-                                    "force": {"x": 0.5, "y": 1, "z": 12}},
+                                    "force": {"x": 12, "y": 1, "z": 0.5}},
                                    {"$type": "send_static_rigidbodies"},
-                                   {"$type": "send_rigidbodies",
-                                    "frequency": "always"},
-                                   {"$type": "send_collisions",
-                                    "enter": True,
-                                    "stay": False,
-                                    "exit": True,
-                                    "collision_types": ["obj", "env"]}])
+                                   {"$type": "send_rigidbodies"}])
     # Test rigidbodies.
     rigidbodies = Rigidbodies(get_output_data(resp, "rigi"))
     for i in range(rigidbodies.get_num()):
@@ -166,20 +160,56 @@ def test_object_output_data(controller):
         assert_float(static_rigidbodies.get_static_friction(i), 0.7)
         assert_float(static_rigidbodies.get_dynamic_friction(i), 0.7)
         assert_float(static_rigidbodies.get_bounciness(i), 0.3)
+
+
+def test_collisions(controller):
+    commands = [TDWUtils.create_empty_room(12, 12)]
+    object_id_0 = TestController.get_unique_id()
+    object_id_1 = TestController.get_unique_id()
+    commands.extend(TestController.get_add_physics_object(model_name="cube",
+                                                          object_id=object_id_0,
+                                                          position={"x": 0, "y": 0.5, "z": 0},
+                                                          library="models_flex.json",
+                                                          default_physics_values=False,
+                                                          static_friction=0.7,
+                                                          dynamic_friction=0.7,
+                                                          bounciness=0.9,
+                                                          mass=3))
+    commands.extend(TestController.get_add_physics_object(model_name="cube",
+                                                          object_id=object_id_1,
+                                                          position={"x": 0, "y": 3, "z": 0},
+                                                          library="models_flex.json",
+                                                          default_physics_values=False,
+                                                          static_friction=0.7,
+                                                          dynamic_friction=0.7,
+                                                          bounciness=0.9,
+                                                          mass=3))
+    commands.extend([{"$type": "send_rigidbodies",
+                      "frequency": "always"},
+                     {"$type": "send_collisions",
+                      "enter": True,
+                      "stay": False,
+                      "exit": True,
+                      "collision_types": ["obj", "env"]}])
+    resp = controller.communicate(commands)
     sleeping = False
     frame = 0
-    while not sleeping:
-        print(frame)
+    while not sleeping and frame < 300:
         for i in range(len(resp) - 1):
             r_id = OutputData.get_data_type_id(resp[i])
             if r_id == "coll":
                 collision = Collision(resp[i])
-                print(f"collision {collision.get_state()} {collision.get_impulse()} {np.linalg.norm(collision.get_relative_velocity())}")
+                if collision.get_state() == "enter":
+                    assert frame == 32
+
+                print(f"collision {collision.get_state()} {collision.get_impulse()} {np.linalg.norm(collision.get_relative_velocity())} {frame}")
             elif r_id == "rigi":
                 rigidbodies = Rigidbodies(resp[i])
                 sleeping = all([rigidbodies.get_sleeping(index) for index in range(rigidbodies.get_num())])
+        resp = controller.communicate([])
         frame += 1
-
+    assert sleeping
+    assert frame == 212
 
 
 def get_output_data(resp: List[bytes], r_id: str) -> bytes:

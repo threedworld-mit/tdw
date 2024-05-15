@@ -1,7 +1,4 @@
-from typing import List
-import numpy as np
 from tdw.controller import Controller
-from tdw.output_data import OutputData
 
 
 class TestController(Controller):

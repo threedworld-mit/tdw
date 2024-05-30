@@ -3,10 +3,11 @@ from pathlib import Path
 import pytest
 import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
-                             AvatarTransformMatrices, Bounds, Categories, Collision, EnvironmentCollision, EulerAngles,
-                             FieldOfView, IdPassSegmentationColors, Images, ImageSensors, LocalTransforms, Meshes,
-                             Occlusion, OccupancyMap, QuitSignal, Raycast, Rigidbodies, SegmentationColors,
-                             StaticRigidbodies, Substructure, Volumes, Transforms)
+                             AvatarTransformMatrices, Bounds, CameraMatrices, Categories, Collision,
+                             EnvironmentCollision, EulerAngles, FieldOfView, IdPassSegmentationColors, Images,
+                             ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, QuitSignal, Raycast,
+                             Rigidbodies, ScreenPosition, SegmentationColors, StaticRigidbodies, Substructure, Volumes,
+                             Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -372,6 +373,11 @@ def test_avatars(controller):
     simple_body = avatar(controller, "A_Simple_Body", AvatarSimpleBody, "avsb", 28)
     assert isinstance(simple_body, AvatarSimpleBody)
     assert simple_body.get_visible_body() == "Capsule"
+    # Test the avatar's segmentation color.
+    resp = controller.communicate([{"$type": "send_avatar_segmentation_colors"}])
+    avatar_segmentation_color = AvatarSegmentationColor(get_output_data(resp, "avsc"))
+    assert avatar_segmentation_color.get_id() == "a"
+    # Test the other avatars.
     avatar(controller, "A_Img_Caps_Kinematic", AvatarKinematic, "avki", 32)
     avatar(controller, "A_First_Person", AvatarKinematic, "avki", 32)
 
@@ -382,6 +388,7 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     # Create a scene. Add an object. Add an avatar. Look at the object. Send output data.
     avatar_position = {"x": 3, "y": 2, "z": 0}
     pass_masks = ["_img", "_id", "_category", "_mask", "_depth", "_depth_simple", "_normals", "_flow", "_albedo"]
+    screen_position_v3 = {"x": 0.5, "y": 1, "z": 1}
     commands = [{"$type": "load_scene",
                  "scene_name": "ProcGenScene"},
                 TDWUtils.create_empty_room(12, 12),
@@ -411,7 +418,10 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
                 {"$type": "send_images"},
                 {"$type": "send_occlusion"},
                 {"$type": "send_segmentation_colors"},
-                {"$type": "send_id_pass_segmentation_colors"}]
+                {"$type": "send_id_pass_segmentation_colors"},
+                {"$type": "send_screen_positions",
+                 "position_ids": [0],
+                 "positions": [screen_position_v3]}]
     resp = controller.communicate(commands)
     # Test avatar data.
     a: output_data_type = output_data_type(get_output_data(resp, avatar_data_id))
@@ -420,32 +430,25 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     assert_arr(np.array(a.get_position()), TDWUtils.vector3_to_array(avatar_position))
     assert_arr(np.array(a.get_rotation()), QuaternionUtils.IDENTITY)
     assert_arr(np.array(a.get_forward()), QuaternionUtils.FORWARD)
+    # Test transform matrices.
+    avatar_transform_matrices = AvatarTransformMatrices(get_output_data(resp, "atrm"))
+    assert avatar_transform_matrices.get_num() == 1
+    assert avatar_transform_matrices.get_id(0) == "a"
+    assert_arr(avatar_transform_matrices.get_avatar_matrix(0), np.load("transform_matrices/avatar.npy"))
+    # Test camera matrices.
+    camera_matrices = CameraMatrices(get_output_data(resp, "cama"))
+    assert camera_matrices.get_avatar_id() == "a"
+    assert camera_matrices.get_sensor_name() == "SensorContainer"
+    # Compare the matrices to a canonical matrices.
+    assert_arr(camera_matrices.get_projection_matrix(), np.load("camera_matrices/projection_matrix.npy"))
+    assert_arr(camera_matrices.get_camera_matrix(), np.load(f"camera_matrices/{avatar_type.lower()}.npy"))
     # Test field of view.
     field_of_view = FieldOfView(get_output_data(resp, "fofv"))
     assert field_of_view.get_avatar_id() == "a"
     assert_float(field_of_view.get_fov(), FIELD_OF_VIEW)
     assert field_of_view.get_sensor_name() == "SensorContainer"
     assert_float(field_of_view.get_focal_length(), 35)
-    # Test image sensor data.
-    image_sensors = ImageSensors(get_output_data(resp, "imse"))
-    assert image_sensors.get_avatar_id() == "a"
-    assert image_sensors.get_num_sensors() == 1
-    assert_float(image_sensors.get_sensor_field_of_view(0), FIELD_OF_VIEW)
-    assert image_sensors.get_sensor_on(0)
-    assert image_sensors.get_sensor_name(0) == "SensorContainer"
-    # We're not going to test rotation because it varies between avatars.
-    # Test occlusion.
-    occlusion = Occlusion(get_output_data(resp, "occl"))
-    assert occlusion.get_avatar_id() == "a"
-    assert occlusion.get_occluded() == occlusion_value
-    assert occlusion.get_unoccluded() == occlusion_value
-    # Test segmentation colors.
-    segmentation_color = tuple(SegmentationColors(get_output_data(resp, "segm")).get_object_color(0))
-    id_pass_segmentation_colors = IdPassSegmentationColors(get_output_data(resp, "ipsc"))
-    assert id_pass_segmentation_colors.get_avatar_id() == "a"
-    assert id_pass_segmentation_colors.get_num_segmentation_colors() == 1
-    assert tuple(id_pass_segmentation_colors.get_segmentation_color(0)) == segmentation_color
-    # We might need to test this more.
+    # Test images.
     images = Images(get_output_data(resp, "imag"))
     assert images.get_avatar_id() == "a"
     assert images.get_sensor_name() == "SensorContainer"
@@ -460,15 +463,38 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
         assert images.get_extension(i) == ("png" if i > 0 else "jpg")
         assert images.get_pass_mask(i) in pass_masks
         assert_arr(images.get_image(i), np.load(str(image_directory.joinpath(f"{images.get_pass_mask(i)}.npy"))))
+    # Test image sensor data.
+    image_sensors = ImageSensors(get_output_data(resp, "imse"))
+    assert image_sensors.get_avatar_id() == "a"
+    assert image_sensors.get_num_sensors() == 1
+    assert_float(image_sensors.get_sensor_field_of_view(0), FIELD_OF_VIEW)
+    assert image_sensors.get_sensor_on(0)
+    assert image_sensors.get_sensor_name(0) == "SensorContainer"
+    # We're not going to test rotation because it varies between avatars.
+    # Test occlusion.
+    occlusion = Occlusion(get_output_data(resp, "occl"))
+    assert occlusion.get_avatar_id() == "a"
+    assert occlusion.get_occluded() == occlusion_value
+    assert occlusion.get_unoccluded() == occlusion_value
+    # Test screen position.
+    screen_position = ScreenPosition(get_output_data(resp, "scre"))
+    assert screen_position.get_id() == 0
+    assert screen_position.get_avatar_id() == "a"
+    assert screen_position.get_sensor_name() == "SensorContainer"
+    assert_arr(np.array(screen_position.get_world()), TDWUtils.vector3_to_array(screen_position_v3))
+    assert_arr(np.array(screen_position.get_screen()).astype(int), np.array([213, 140, 3]), delta=12)
+    # Test segmentation colors.
+    segmentation_color = tuple(SegmentationColors(get_output_data(resp, "segm")).get_object_color(0))
+    id_pass_segmentation_colors = IdPassSegmentationColors(get_output_data(resp, "ipsc"))
+    assert id_pass_segmentation_colors.get_avatar_id() == "a"
+    assert id_pass_segmentation_colors.get_num_segmentation_colors() == 1
+    assert tuple(id_pass_segmentation_colors.get_segmentation_color(0)) == segmentation_color
     return a
 
 
 """
 AudioSourceDone
 AudioSources
-AvatarSegmentationColor
-AvatarTransformMatrices
-CameraMatrices
 Containment
 Drones
 DynamicCompositeObjects
@@ -487,11 +513,16 @@ Overlap
 Replicants
 ReplicantSegmentationColors
 SceneRegions
-ScreenPosition
 StaticCompositeObjects
 StaticEmptyObjects
 StaticOculusTouch
 StaticRobot
 TransformMatrices
 TriggerCollision
+"""
+
+"""
+https://threedw.slack.com/archives/D0456ALLE3S/p1705091578099959
+https://threedw.slack.com/archives/D0456ALLE3S/p1705091613415289
+https://threedw.slack.com/archives/D0456ALLE3S/p1705091631268829
 """

@@ -1,5 +1,91 @@
 # CHANGELOG
 
+# v1.13.x
+
+**TDW is now in long-term service (LTS). TDW will continue to receive minor updates and bug fixes but no new features.**
+
+## v1.13.0
+
+### New Features
+
+- **Added a new VR rig: FOVE Leap Motion.** This rig requires a FOVE headset and Leap Motion sensor.
+
+### Command API
+
+#### New Commands
+
+| Command | Description |
+| --- | --- |
+| `set_vsync_count` | Set the renderer's vsync count. |
+| `send_fove` | Send FOVE headset data. |
+| `add_ui_cutout`  |  Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. |
+| `set_ui_element_rotation` | Rotate a UI element to a new angle. |
+| `allow_fove_headset_movement` | Handle whether to send the Fove Headset position or not.  | 
+| `allow_fove_headset_rotation` | Handle whether to send the Fove Headset orientation or not.  | 
+| `refresh_leap_motion_rig` | Refresh a Leap Motion rig in the scene. This must be sent whenever new objects are added to the scene after the rig was created.  |
+| `show_leap_motion_hands` | Visually show or hide Leap Motion hands.  | 
+| `start_fove_calibration` | Start the FOVE headset's internal calibration. |
+| `tilt_fove_rig_by` | Tilt (pitch) the Fove rig by an angle.  |
+
+#### Modified Commands
+
+| Command | Modification |
+| --- | --- |
+| `create_vr_rig` | Added new rig: `fove_leap_motion` |
+
+### Output Data
+
+### New Output Data
+
+| Output Data | Description |
+| --- | --- |
+| `Fove` | FOVE headset and eye tracking data. |
+
+### `tdw` module
+
+- **Added: `FoveLeapMotion` add-on.**
+- Added data classes and enums used by `FoveLeapMotion`:
+  - `CalibrationMethod`
+  - `CalibrationSphere`
+  - `CalibrationState`
+  - `EyeByEyeCalibration`
+  - `EyeState`
+  - `Eye`
+- Added: `Autohand` Abstract base class for all VR rigs that use Autohand.
+- Added: `LeapMotion` Abstract base class for all VR rigs that use Leap Motion.
+- Modified the `UI` add-on:
+  - The `image` parameter in `add_image()` can now be a PIL image.
+  - Added: `add_cutout()`  Add a UI image that cuts a transparent hole in another UI image.
+  - Added: `set_rotation(ui_id, angle)`
+
+### Model Library
+
+- Added to `models_core.json`: baseball,
+
+### Example Controllers
+
+- Replaced `ui/mask.py` with `ui/cutout.py`
+- Added: `vr/fove_eye_tracking.py`
+- Added: `vr/fove_minimal.py`
+
+### Documentation 
+
+#### New Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/vr/fove_leap_motion.md` | FOVE Leap Motion documentation. |
+| `python/add_ons/autohand.md` | API documentation for `Autohand`. |
+| `python/add_ons/fove_leap_motion.md` | API documentation for `FoveLeapMotion`. |
+| `python/add_ons/leap_motion.md` | API documentation for `LeapMotion`. |
+| `python/vr_data/fove/calibration_method.md`<br>`python/vr_data/fove/calibration_sphere.md`<br>`python/vr_data/fove/calibration_state.md`<br>`python/vr_data/fove/eye_by_eye_calibration.md`<br>`python/vr_data/fove/eye_state.md`<br>`python/vr_data/fove/eye.md` | API documentation for data classes used by the `FoveLeapMotion` add-on. |
+
+#### Modified Documentation
+
+| Document | Modification |
+| --- | --- |
+| `lessons/ui/ui.md` | Replaced the UI mask section with a UI cutout section.<br>Moved transform-related sections into a single section. |
+
 # v1.12.x
 
 To upgrade from TDW v1.11 to v1.12, read [this guide](upgrade_guides/v1.11_to_v1.12.md).

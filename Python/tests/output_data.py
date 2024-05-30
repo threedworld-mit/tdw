@@ -15,10 +15,26 @@ from test_controller import TestController
 from util import get_output_data, assert_float, assert_arr, controller
 
 
+"""
+Unit tests for most, but not all, output data types.
+
+Excluded output data types include:
+    - Types used by agents (e.g. StaticRobot)
+    - Types that require user input and/or special hardware (e.g. VRRig)
+    - Types require audio (e.g. AudioSources)
+    - Types that we can assume always work (e.g. Version)
+    - Types that should be tested via an AddOn (e.g. composite object data)
+"""
+
+
 FIELD_OF_VIEW: float = 54.4322
 
 
 def test_object_output_data(controller):
+    """
+    Test per-object data for two objects in the scene.
+    """
+
     assert isinstance(controller, TestController)
     # This should throw an exception.
     with pytest.raises(Exception) as _:
@@ -160,6 +176,10 @@ def test_object_output_data(controller):
 
 
 def test_collisions(controller):
+    """
+    Add two objects to the scene and test for expected collision data.
+    """
+
     commands = [TDWUtils.create_empty_room(12, 12)]
     object_id_0 = TestController.get_unique_id()
     object_id_1 = TestController.get_unique_id()
@@ -242,6 +262,10 @@ def test_collisions(controller):
 
 
 def test_raycast(controller):
+    """
+    Test raycast data.
+    """
+
     commands = [TDWUtils.create_empty_room(12, 12)]
     scale = 0.2
     arr = np.arange(-2, 2, step=scale * 3)
@@ -320,11 +344,19 @@ def test_raycast(controller):
 
 
 def assert_num(output_data, expected_num: int = 2) -> None:
+    """
+    Assert that the output data's `get_num()` method returns `expected_num`
+    """
+
     assert output_data.get_num() == expected_num
 
 
 def assert_transforms(data: Union[LocalTransforms, Transforms], object_ids: List[int],
                       positions: List[Dict[str, float]], rotations: List[Dict[str, float]]):
+    """
+    Assert that `data` is transform data and that it matches expected IDs, positions, and rotations.
+    """
+
     assert_num(data)
     for index, object_id, position, rotation in zip([0, 1], object_ids, positions, rotations):
         assert data.get_id(index) == object_id
@@ -337,6 +369,10 @@ def assert_transforms(data: Union[LocalTransforms, Transforms], object_ids: List
 
 
 def test_avatars(controller):
+    """
+    Test each type of avatar, including transform data and image capture.
+    """
+
     # Test each avatar.
     simple_body = avatar(controller, "A_Simple_Body", AvatarSimpleBody, "avsb", 28)
     assert isinstance(simple_body, AvatarSimpleBody)
@@ -352,6 +388,10 @@ def test_avatars(controller):
 
 def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic], avatar_data_id: str,
            occlusion_value: int) -> AvatarKinematic:
+    """
+    Per-avatar tests.
+    """
+
     png = False
     # Create a scene. Add an object. Add an avatar. Look at the object. Send output data.
     avatar_position = {"x": 3, "y": 2, "z": 0}
@@ -461,6 +501,10 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
 
 
 def test_scene(controller):
+    """
+    Test scene and NavMesh output data.
+    """
+
     is_on_nav_mesh_position = {"x": 1, "y": 0, "z": -0.76}
     nav_mesh_path_0 = {"x": 1, "y": 0, "z": -1}
     nav_mesh_path_1 = {"x": -1.5, "y": 0, "z": 1.5}
@@ -504,6 +548,10 @@ def test_scene(controller):
 
 
 def test_empty_objects(controller):
+    """
+    Test affordance points (empy objects).
+    """
+
     object_id = 100
     commands = [TDWUtils.create_empty_room(12, 12)]
     commands.extend(TestController.get_add_physics_object(model_name="basket_18inx18inx12iin_bamboo",
@@ -552,6 +600,10 @@ def assert_dynamic_empty_object(dynamic_empty_objects: DynamicEmptyObjects, inde
 
 
 def test_collider_intersections(controller):
+    """
+    Test collider intersection data between an object intersecting with the floor and an object intersecting with an object.
+    """
+
     object_id_0 = 100
     object_id_1 = 101
     resp = controller.communicate([TestController.get_add_scene("mm_kitchen_1a"),
@@ -579,6 +631,10 @@ def test_collider_intersections(controller):
 
 
 def test_overlap(controller):
+    """
+    Test each overlap shape.
+    """
+
     object_id = 100
     commands = [TDWUtils.create_empty_room(12, 12)]
     commands.extend(TestController.get_add_physics_object(model_name="cube",
@@ -622,14 +678,3 @@ def test_overlap(controller):
             assert overlap.get_walls()
         else:
             raise Exception(f"Invalid overlap ID: {overlap_id}")
-
-
-
-
-
-
-"""
-ObiParticles
-TransformMatrices
-TriggerCollision
-"""

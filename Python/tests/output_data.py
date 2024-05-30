@@ -7,8 +7,8 @@ from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSi
                              DynamicEmptyObjects, EnvironmentColliderIntersection, EnvironmentCollision, EulerAngles,
                              FieldOfView, IdPassSegmentationColors, Images, IsOnNavMesh, ImageSensors, Lights,
                              LocalTransforms, Meshes, NavMeshPath, ObjectColliderIntersection, Occlusion, OccupancyMap,
-                             Raycast, Rigidbodies, SceneRegions, ScreenPosition, SegmentationColors, StaticEmptyObjects,
-                             StaticRigidbodies, Substructure, Volumes, Transforms)
+                             Overlap, Raycast, Rigidbodies, SceneRegions, ScreenPosition, SegmentationColors,
+                             StaticEmptyObjects, StaticRigidbodies, Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -578,9 +578,50 @@ def test_collider_intersections(controller):
     assert_float(obj.get_distance(), 0.5, delta=0.001)
 
 
-
-
-
+def test_overlap(controller):
+    object_id = 100
+    commands = [TDWUtils.create_empty_room(12, 12)]
+    commands.extend(TestController.get_add_physics_object(model_name="cube",
+                                                          object_id=object_id,
+                                                          library="models_flex.json",
+                                                          kinematic=True))
+    box_id = 0
+    capsule_id = 1
+    sphere_id = 2
+    commands.extend([{"$type": "send_overlap_box",
+                      "id": box_id,
+                      "position": {"x": 0, "y": 0.5, "z": 0},
+                      "rotation": TDWUtils.array_to_vector4(
+                          QuaternionUtils.euler_angles_to_quaternion(np.array([25, 35, 5]))),
+                      "half_extents": {"x": 0.25, "y": 0.5, "z": 0.1}},
+                     {"$type": "send_overlap_capsule",
+                      "id": capsule_id,
+                      "position": {"x": 4, "y": 0.5, "z": 0},
+                      "end": {"x": 5, "y": 1.5, "z": -0.1},
+                      "radius": 0.5},
+                     {"$type": "send_overlap_sphere",
+                      "id": sphere_id,
+                      "radius": 2,
+                      "position": {"x": 1, "y": 0.5, "z": -0.75}}])
+    resp = controller.communicate(commands)
+    assert len(resp) == 4
+    overlap_ids = [box_id, capsule_id, sphere_id]
+    for i in range(len(resp) - 1):
+        assert OutputData.get_data_type_id(resp[i]) == "over"
+        overlap = Overlap(resp[i])
+        overlap_id = overlap.get_id()
+        assert overlap_id in overlap_ids
+        object_ids = overlap.get_object_ids()
+        assert overlap.get_env()
+        if overlap_id == box_id or overlap_id == sphere_id:
+            assert len(object_ids) == 1
+            assert object_ids[0] == object_id
+            assert not overlap.get_walls()
+        elif overlap_id == capsule_id:
+            assert len(object_ids) == 0
+            assert overlap.get_walls()
+        else:
+            raise Exception(f"Invalid overlap ID: {overlap_id}")
 
 
 
@@ -588,11 +629,7 @@ def test_collider_intersections(controller):
 
 
 """
-AudioSourceDone
-AudioSources
-Containment
 ObiParticles
-Overlap
 TransformMatrices
 TriggerCollision
 """

@@ -4,9 +4,11 @@ import pytest
 import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
                              AvatarTransformMatrices, Bounds, CameraMatrices, Categories, Collision,
-                             EnvironmentCollision, EulerAngles, FieldOfView, IdPassSegmentationColors, Images,
-                             ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, Raycast, Rigidbodies,
-                             ScreenPosition, SegmentationColors, StaticRigidbodies, Substructure, Volumes, Transforms)
+                             DynamicEmptyObjects, EnvironmentColliderIntersection, EnvironmentCollision, EulerAngles,
+                             FieldOfView, IdPassSegmentationColors, Images, IsOnNavMesh, ImageSensors, Lights,
+                             LocalTransforms, Meshes, NavMeshPath, ObjectColliderIntersection, Occlusion, OccupancyMap,
+                             Raycast, Rigidbodies, SceneRegions, ScreenPosition, SegmentationColors, StaticEmptyObjects,
+                             StaticRigidbodies, Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
@@ -317,9 +319,6 @@ def test_raycast(controller):
             assert occupancy[row][col] == 1
 
 
-
-
-
 def assert_num(output_data, expected_num: int = 2) -> None:
     assert output_data.get_num() == expected_num
 
@@ -461,6 +460,129 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     return a
 
 
+def test_scene(controller):
+    is_on_nav_mesh_position = {"x": 1, "y": 0, "z": -0.76}
+    nav_mesh_path_0 = {"x": 1, "y": 0, "z": -1}
+    nav_mesh_path_1 = {"x": -1.5, "y": 0, "z": 1.5}
+    resp = controller.communicate([TestController.get_add_scene("tdw_room"),
+                                   {"$type": "send_lights"},
+                                   {"$type": "send_scene_regions"},
+                                   {"$type": "bake_nav_mesh"},
+                                   {"$type": "send_is_on_nav_mesh",
+                                    "position": is_on_nav_mesh_position},
+                                   {"$type": "send_nav_mesh_path",
+                                    "origin": nav_mesh_path_0,
+                                    "destination": nav_mesh_path_1}])
+    # Test lights.
+    lights = Lights(get_output_data(resp, "ligh"))
+    assert lights.get_num_directional_lights() == 1
+    assert_float(lights.get_directional_light_intensity(0), 1.25)
+    assert_arr(np.array(lights.get_directional_light_color(0)), np.array([255, 244, 214]))
+    assert lights.get_num_point_lights() == 1
+    assert_float(lights.get_point_light_intensity(0), 1.25)
+    assert_arr(np.array(lights.get_point_light_color(0)), np.array([255, 255, 255]))
+    assert_float(lights.get_point_light_range(0), 10)
+    # Test scene regions.
+    scene_regions = SceneRegions(get_output_data(resp, "sreg"))
+    assert scene_regions.get_num() == 1
+    assert scene_regions.get_id(0) == 0
+    assert_arr(np.array(scene_regions.get_center(0)), np.array([-0.2965, 0, 0.3843]))
+    assert_arr(np.array(scene_regions.get_bounds(0)), np.array([8.2549, 3.3887, 8.3651]))
+    # Test nav mesh.
+    is_on_nav_mesh = IsOnNavMesh(get_output_data(resp, "isnm"))
+    assert is_on_nav_mesh.get_id() == 0
+    assert is_on_nav_mesh.get_is_on()
+    assert_arr(np.array(is_on_nav_mesh.get_position()), TDWUtils.vector3_to_array(is_on_nav_mesh_position), delta=0.1)
+    # Test nav mesh path.
+    nav_mesh_path = NavMeshPath(get_output_data(resp, "path"))
+    assert nav_mesh_path.get_state() == "complete"
+    assert nav_mesh_path.get_id() == 0
+    assert_arr(nav_mesh_path.get_path(),
+               np.array([TDWUtils.vector3_to_array(nav_mesh_path_0),
+                         TDWUtils.vector3_to_array(nav_mesh_path_1)]),
+               delta=0.1)
+
+
+def test_empty_objects(controller):
+    object_id = 100
+    commands = [TDWUtils.create_empty_room(12, 12)]
+    commands.extend(TestController.get_add_physics_object(model_name="basket_18inx18inx12iin_bamboo",
+                                                          object_id=object_id,
+                                                          kinematic=True))
+    commands.extend([{"$type": "send_static_empty_objects"},
+                     {"$type": "send_dynamic_empty_objects"}])
+    resp = controller.communicate(commands)
+    # Test static data.
+    static_empty_objects = StaticEmptyObjects(get_output_data(resp, "stem"))
+    assert static_empty_objects.get_num() == 4
+    for i in range(static_empty_objects.get_num()):
+        assert static_empty_objects.get_object_id(i) == object_id
+    dynamic_empty_objects = DynamicEmptyObjects(get_output_data(resp, "dyem"))
+    # Test dynamic data.
+    assert dynamic_empty_objects.get_num() == 4
+    assert_dynamic_empty_object(dynamic_empty_objects, 0, x_value=True, x_positive=False)
+    assert_dynamic_empty_object(dynamic_empty_objects, 1, x_value=True)
+    assert_dynamic_empty_object(dynamic_empty_objects, 2, z_value=True)
+    assert_dynamic_empty_object(dynamic_empty_objects, 3, z_value=True, z_positive=False)
+
+
+def assert_dynamic_empty_object(dynamic_empty_objects: DynamicEmptyObjects, index: int,
+                                x_value: bool = False, x_positive: bool = True,
+                                z_value: bool = False, z_positive: bool = True) -> None:
+    """
+    Test dynamic empty object positions.
+
+    The model is a basket with evenly-spaced empty objects.
+
+    :param dynamic_empty_objects: The deserialized output data.
+    :param index: The index of the empty object.
+    :param x_value: If True, x = 0.2285. If False, x = 0.
+    :param x_positive: Whether x is positive or negative.
+    :param z_value: If True, z = 0.2285. If False, z = 0.
+    :param z_positive: Whether z is positive or negative.
+    """
+
+    x = 0.2285 if x_value else 0
+    if not x_positive:
+        x = -x
+    z = 0.2285 if z_value else 0
+    if not z_positive:
+        z = -z
+    assert_arr(dynamic_empty_objects.get_position(index), np.array([x, 0.305, z]))
+
+
+def test_collider_intersections(controller):
+    object_id_0 = 100
+    object_id_1 = 101
+    resp = controller.communicate([TestController.get_add_scene("mm_kitchen_1a"),
+                                   TestController.get_add_object(model_name="cube",
+                                                                 object_id=object_id_0,
+                                                                 library="models_flex.json",
+                                                                 position={"x": 0, "y": -0.1, "z": 0}),
+                                   TestController.get_add_object(model_name="cube",
+                                                                 object_id=object_id_1,
+                                                                 library="models_flex.json",
+                                                                 position={"x": 0, "y": 0.2, "z": 0}),
+                                   {"$type": "send_collider_intersections",
+                                    "obj_intersection_ids": [[object_id_0, object_id_1]],
+                                    "env_intersection_ids": [object_id_0, object_id_1]}])
+    assert len(resp) == 3
+    # Environment intersection.
+    env = EnvironmentColliderIntersection(get_output_data(resp, "enci"))
+    assert env.get_object_id() == object_id_0
+    assert_float(env.get_distance(), 0.02, delta=0.001)
+    # Objects intersection.
+    obj = ObjectColliderIntersection(get_output_data(resp, "obci"))
+    assert obj.get_object_id_a() == object_id_0
+    assert obj.get_object_id_b() == object_id_1
+    assert_float(obj.get_distance(), 0.5, delta=0.001)
+
+
+
+
+
+
+
 
 
 
@@ -469,25 +591,8 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
 AudioSourceDone
 AudioSources
 Containment
-Drones
-DynamicEmptyObjects
-DynamicRobots
-EnvironmentColliderIntersections
-Framerate
-IsOnNavMesh
-Lights
-Magnebot
-MagnebotWheels
-NavMeshPath
 ObiParticles
-ObjectColliderIntersection
 Overlap
-Replicants
-ReplicantSegmentationColors
-SceneRegions
-StaticEmptyObjects
-StaticOculusTouch
-StaticRobot
 TransformMatrices
 TriggerCollision
 """

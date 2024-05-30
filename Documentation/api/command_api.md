@@ -11655,9 +11655,9 @@ Indicate whether each eye torsion calibration should be run.
 
 | Value | Description |
 | --- | --- |
-| `"Default"` | Use the settings coming from the configuration file (default: IfNeeded) |
-| `"IfEnabled"` | Run eye torsion calibration only if the capability is currently enabled |
-| `"Always"` | Always run eye torsion calibration independently of whether the capability is used |
+| `"Default"` | Use the settings coming from the configuration file. |
+| `"IfEnabled"` | Run eye torsion calibration only if the capability is currently enabled. |
+| `"Always"` | Always run eye torsion calibration independently of whether the capability is used. |
 
 ***
 

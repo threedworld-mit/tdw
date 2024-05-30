@@ -248,7 +248,7 @@ Result:
 
 Example controllers:
 
-- [loading_screen.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/loading_screen.py) Add a loading screen and then create a scene.
+- [loading.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/loading.py) Add a loading screen and then create a scene.
 - [progress.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/progress.py) Add a progress bar that increments every time you click an object until all objects have been clicked.
 - [timer.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/timer.py) Add a timer bar to the screen. Click all the objects before time runs out.
 

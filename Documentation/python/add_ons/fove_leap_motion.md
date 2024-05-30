@@ -66,7 +66,7 @@ Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
 
 **`FoveFoveLeapMotion(calibration_data_path)`**
 
-**`FoveFoveLeapMotion(calibration_data_path, calibration_hand=Arm.right, timestamp=False, perform_calibration=False, allow_headset_movement=False, allow_headset_rotation=True, show_hands=True, set_graspable=True, output_data=True, position=None, rotation=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, max_graspable_mass=50, min_mass=1, discrete_collision_detection_mode=True, set_object_physic_materials=True, object_static_friction=1, object_dynamic_friction=1, object_bounciness=0, time_step=0.02, quit_button=3)`**
+**`FoveFoveLeapMotion(calibration_data_path, calibration_hand=Arm.right, timestamp=False, perform_calibration=False, restart_calibration=False, eye_by_eye_calibration=EyeByEyeCalibration.disabled, calibration_method=CalibrationMethod.spiral, eye_torsion_calibration=EyeTorsionCalibration.default, allow_headset_movement=False, allow_headset_rotation=True, show_hands=True, set_graspable=True, output_data=True, position=None, rotation=True, attach_avatar=False, avatar_camera_width=512, headset_aspect_ratio=0.9, headset_resolution_scale=1.0, non_graspable=None, max_graspable_mass=50, min_mass=1, discrete_collision_detection_mode=True, set_object_physic_materials=True, object_static_friction=1, object_dynamic_friction=1, object_bounciness=0, time_step=0.02, quit_button=3)`**
 
 | Parameter | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -74,6 +74,10 @@ Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
 | calibration_hand |  Arm  | Arm.right | The hand used for sphere calibration. |
 | timestamp |  bool  | False | Whether to append a time.time() timestamp to the calibration_data_path |
 | perform_calibration |  bool  | False | If True, perform the calibration protocol. |
+| restart_calibration |  bool  | False | If True, restart an ongoing calibration. |
+| eye_by_eye_calibration |  EyeByEyeCalibration  | EyeByEyeCalibration.disabled | Indicate whether each eye should be calibrated separately or not. |
+| calibration_method |  CalibrationMethod  | CalibrationMethod.spiral | Indicate the calibration method to use. |
+| eye_torsion_calibration |  EyeTorsionCalibration  | EyeTorsionCalibration.default | Indicate whether each eye torsion calibration should be run. |
 | allow_headset_movement |  bool  | False | If True, allow headset movement. |
 | allow_headset_rotation |  bool  | True | If True, allow headset rotation. |
 | show_hands |  bool  | True | If True, show the hands. |

@@ -49,6 +49,7 @@
   - `CalibrationSphere`
   - `CalibrationState`
   - `EyeByEyeCalibration`
+  - `EyeTorsionCalibration`
   - `EyeState`
   - `Eye`
 - Added: `Autohand` Abstract base class for all VR rigs that use Autohand.
@@ -78,7 +79,7 @@
 | `python/add_ons/autohand.md` | API documentation for `Autohand`. |
 | `python/add_ons/fove_leap_motion.md` | API documentation for `FoveLeapMotion`. |
 | `python/add_ons/leap_motion.md` | API documentation for `LeapMotion`. |
-| `python/vr_data/fove/calibration_method.md`<br>`python/vr_data/fove/calibration_sphere.md`<br>`python/vr_data/fove/calibration_state.md`<br>`python/vr_data/fove/eye_by_eye_calibration.md`<br>`python/vr_data/fove/eye_state.md`<br>`python/vr_data/fove/eye.md` | API documentation for data classes used by the `FoveLeapMotion` add-on. |
+| `python/vr_data/fove/calibration_method.md`<br>`python/vr_data/fove/calibration_sphere.md`<br>`python/vr_data/fove/calibration_state.md`<br>`python/vr_data/fove/eye_by_eye_calibration.md`<br>`python/vr_data/fove/eye_torsion_calibration.md`<br>`python/vr_data/fove/eye_state.md`<br>`python/vr_data/fove/eye.md` | API documentation for data classes used by the `FoveLeapMotion` add-on. |
 
 #### Modified Documentation
 

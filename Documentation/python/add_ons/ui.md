@@ -190,19 +190,6 @@ Set the position of a UI element.
 | ui_id |  int |  | The UI element's ID. |
 | position |  Dict[str, float] |  | The screen (pixel) position as a Vector2. Values must be integers. |
 
-#### set_depth
-
-**`self.set_depth(ui_id, depth)`**
-
-Set the depth (z value) of a UI element relative its canvas (not its camera).
-
-If the canvas is attached to an avatar or VR rig, the canvas depth relative to the camera is the `plane_distance`.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| ui_id |  int |  | The UI element's ID. |
-| depth |  float |  | The depth (z value) in meters. |
-
 #### set_size
 
 **`self.set_size(ui_id, size)`**
@@ -224,6 +211,19 @@ Rotate a UI element to an angle.
 | --- | --- | --- | --- |
 | ui_id |  int |  | The ID of the UI element. |
 | angle |  float |  | The new rotation angle in degrees. |
+
+#### set_depth
+
+**`self.set_depth(ui_id, depth)`**
+
+Set the depth (z value) of a UI element relative its canvas (not its camera).
+
+If the canvas is attached to an avatar or VR rig, the canvas depth relative to the camera is the `plane_distance`.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| ui_id |  int |  | The UI element's ID. |
+| depth |  float |  | The depth (z value) in meters. |
 
 #### destroy
 

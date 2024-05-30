@@ -1,4 +1,7 @@
 from typing import List, Dict, Optional
+import time
+import numpy as np
+from inflection import camelize
 from tdw.tdw_utils import TDWUtils
 from tdw.controller import Controller
 from tdw.add_ons.leap_motion import LeapMotion
@@ -9,9 +12,10 @@ from tdw.vr_data.fove.eye import Eye
 from tdw.vr_data.fove.eye_state import EyeState
 from tdw.vr_data.fove.calibration_state import CalibrationState
 from tdw.vr_data.fove.calibration_sphere import CalibrationSphere
+from tdw.vr_data.fove.eye_by_eye_calibration import EyeByEyeCalibration
+from tdw.vr_data.fove.eye_torsion_calibration import EyeTorsionCalibration
+from tdw.vr_data.fove.calibration_method import CalibrationMethod
 from tdw.type_aliases import PATH
-import time
-import numpy as np
 
 
 class FoveLeapMotion(LeapMotion):
@@ -19,7 +23,11 @@ class FoveLeapMotion(LeapMotion):
     Add a FOVE human VR rig to the scene that uses Leap Motion hand tracking.
     """
 
-    def __init__(self, calibration_data_path: PATH, calibration_hand: Arm = Arm.right, timestamp: bool = False, perform_calibration: bool = False,
+    def __init__(self, calibration_data_path: PATH, calibration_hand: Arm = Arm.right, timestamp: bool = False,
+                 perform_calibration: bool = False, restart_calibration: bool = False,
+                 eye_by_eye_calibration: EyeByEyeCalibration = EyeByEyeCalibration.disabled,
+                 calibration_method: CalibrationMethod = CalibrationMethod.spiral,
+                 eye_torsion_calibration: EyeTorsionCalibration = EyeTorsionCalibration.default,
                  allow_headset_movement: bool = False, allow_headset_rotation: bool = True, show_hands: bool = True, set_graspable: bool = True,
                  output_data: bool = True, position: Dict[str, float] = None, rotation: float = 0,
                  attach_avatar: bool = False, avatar_camera_width: int = 512, headset_aspect_ratio: float = 0.9,
@@ -33,6 +41,10 @@ class FoveLeapMotion(LeapMotion):
         :param calibration_hand: The hand used for sphere calibration.
         :param timestamp: Whether to append a time.time() timestamp to the calibration_data_path
         :param perform_calibration: If True, perform the calibration protocol.
+        :param restart_calibration: If True, restart an ongoing calibration.
+        :param eye_by_eye_calibration: Indicate whether each eye should be calibrated separately or not.
+        :param calibration_method: Indicate the calibration method to use.
+        :param eye_torsion_calibration: Indicate whether each eye torsion calibration should be run.
         :param allow_headset_movement: If True, allow headset movement.
         :param allow_headset_rotation: If True, allow headset rotation.
         :param show_hands: If True, show the hands.
@@ -78,6 +90,10 @@ class FoveLeapMotion(LeapMotion):
         self._allow_headset_movement: bool = allow_headset_movement
         self._allow_headset_rotation: bool = allow_headset_rotation
         self._show_hands: bool = show_hands
+        self._restart_calibration: bool = restart_calibration
+        self._eye_by_eye_calibration: EyeByEyeCalibration = eye_by_eye_calibration
+        self._calibration_method: CalibrationMethod = calibration_method
+        self._eye_torsion_calibration: EyeTorsionCalibration = eye_torsion_calibration
         """:field
         The state, direction, and gaze object of the left eye.
         """
@@ -133,6 +149,10 @@ class FoveLeapMotion(LeapMotion):
                          {"$type": "send_fove",
                           "frequency": "always"},
                          {"$type": "start_fove_calibration",
+                          "restart": self._restart_calibration,
+                          "eye_by_eye": camelize(self._eye_by_eye_calibration.name, uppercase_first_letter=True),
+                          "method": camelize(self._calibration_method.name, uppercase_first_letter=True),
+                          "eye_torsion": camelize(self._eye_torsion_calibration.name, uppercase_first_letter=True),
                           "profile_name": "test"}])
         return commands
 

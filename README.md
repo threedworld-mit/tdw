@@ -693,6 +693,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [Eye](Documentation/python/vr_data/fove/eye.md)
 - [EyeByEyeCalibration](Documentation/python/vr_data/fove/eye_by_eye_calibration.md)
 - [EyeState](Documentation/python/vr_data/fove/eye_state.md)
+- [EyeTorsionCalibration](Documentation/python/vr_data/fove/eye_torsion_calibration.md)
 
 **tdw.wheelchair_replicant**
 

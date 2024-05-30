@@ -5,27 +5,15 @@ import numpy as np
 from tdw.output_data import (OutputData, AlbedoColors, AvatarKinematic, AvatarSimpleBody, AvatarSegmentationColor,
                              AvatarTransformMatrices, Bounds, CameraMatrices, Categories, Collision,
                              EnvironmentCollision, EulerAngles, FieldOfView, IdPassSegmentationColors, Images,
-                             ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, QuitSignal, Raycast,
-                             Rigidbodies, ScreenPosition, SegmentationColors, StaticRigidbodies, Substructure, Volumes,
-                             Transforms)
+                             ImageSensors, LocalTransforms, Meshes, Occlusion, OccupancyMap, Raycast, Rigidbodies,
+                             ScreenPosition, SegmentationColors, StaticRigidbodies, Substructure, Volumes, Transforms)
 from tdw.tdw_utils import TDWUtils
 from tdw.quaternion_utils import QuaternionUtils
 from test_controller import TestController
+from util import get_output_data, assert_float, assert_arr, controller
 
 
 FIELD_OF_VIEW: float = 54.4322
-
-
-@pytest.fixture()
-def controller(request):
-    c = TestController()
-
-    def teardown():
-        resp = c.communicate({"$type": "terminate"})
-        assert QuitSignal(get_output_data(resp, "quit")).get_ok()
-    request.addfinalizer(teardown)
-
-    return c
 
 
 def test_object_output_data(controller):
@@ -329,30 +317,11 @@ def test_raycast(controller):
             assert occupancy[row][col] == 1
 
 
-def get_output_data(resp: List[bytes], r_id: str) -> bytes:
-    for i in range(len(resp) - 1):
-        if r_id == OutputData.get_data_type_id(resp[i]):
-            return resp[i]
-    raise Exception(f"Output data {r_id} not found.")
+
 
 
 def assert_num(output_data, expected_num: int = 2) -> None:
     assert output_data.get_num() == expected_num
-
-
-def assert_float(a: float, b: float, delta: float = 0.0001) -> None:
-    c = abs(abs(a) - abs(b))
-    if c > delta:
-        print(f"{a}, {b}, {c}")
-    assert c <= delta
-
-
-def assert_arr(a: np.ndarray, b: np.ndarray, delta: float = 0.0001) -> None:
-    assert a.shape == b.shape
-    c = np.linalg.norm(a - b)
-    if c > delta:
-        print(f"{a}, {b}, {c}")
-    assert c <= delta
 
 
 def assert_transforms(data: Union[LocalTransforms, Transforms], object_ids: List[int],
@@ -492,12 +461,15 @@ def avatar(controller, avatar_type: str, output_data_type: Type[AvatarKinematic]
     return a
 
 
+
+
+
+
 """
 AudioSourceDone
 AudioSources
 Containment
 Drones
-DynamicCompositeObjects
 DynamicEmptyObjects
 DynamicRobots
 EnvironmentColliderIntersections
@@ -513,16 +485,9 @@ Overlap
 Replicants
 ReplicantSegmentationColors
 SceneRegions
-StaticCompositeObjects
 StaticEmptyObjects
 StaticOculusTouch
 StaticRobot
 TransformMatrices
 TriggerCollision
-"""
-
-"""
-https://threedw.slack.com/archives/D0456ALLE3S/p1705091578099959
-https://threedw.slack.com/archives/D0456ALLE3S/p1705091613415289
-https://threedw.slack.com/archives/D0456ALLE3S/p1705091631268829
 """

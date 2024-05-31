@@ -39,6 +39,7 @@
 | [`set_socket_timeout`](#set_socket_timeout) | Set the timeout behavior for the socket used to communicate with the controller. |
 | [`set_target_framerate`](#set_target_framerate) | Set the target render framerate of the build. For more information: <ulink url="https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html">https://docs.unity3d.com/ScriptReference/Application-targetFrameRate.html</ulink> |
 | [`set_time_step`](#set_time_step) | Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). NOTE: Doubling the time_step is NOT equivalent to advancing two physics steps. For more information, see: <ulink url="https://docs.unity3d.com/Manual/TimeFrameManagement.html">https://docs.unity3d.com/Manual/TimeFrameManagement.html</ulink> |
+| [`set_vsync_count`](#set_vsync_count) | Set the renderer's vsync count. For more information, read this: <ulink url="https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html">https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html</ulink> |
 | [`step_physics`](#step_physics) | Step through the physics without triggering new avatar output, or new commands. |
 | [`stop_all_audio`](#stop_all_audio) | Stop all ongoing audio. |
 | [`terminate`](#terminate) | Terminate the build.  |
@@ -351,7 +352,6 @@
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
-| [`scale_object_to`](#scale_object_to) | Scale the object to the given value. This is only useful if you know the model scale beforehand, which is not always (1, 1, 1). This command is only useful when used with send_scales, because ObjectScales output data will return the actual scale of each object.  |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_object_visibility`](#set_object_visibility) | Toggle whether an object is visible. An invisible object will still have physics colliders and respond to physics events. |
@@ -758,28 +758,6 @@
 | [`send_occlusion`](#send_occlusion) | Send the extent to which the scene environment is occluding objects in the frame.  |
 | [`send_screen_positions`](#send_screen_positions) | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera.  |
 
-**Send Fixed Length Data Command**
-
-| Command | Description |
-| --- | --- |
-| [`send_mouse`](#send_mouse) | Send mouse output data.  |
-| [`send_version`](#send_version) | Receive data about the build version.  |
-
-**Send Fixed Length Avatars Data Command**
-
-| Command | Description |
-| --- | --- |
-| [`send_avatar_ids`](#send_avatar_ids) | Send the IDs of each avatar in the scene.  |
-| [`send_fast_avatars`](#send_fast_avatars) | Send the position and rotation of each avatar in the scene. This is slightly faster than SendAvatars, and FastAvatars compresses much better than Avatars. However, FastAvatars doesn't contain avatar IDs, which makes it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastAvatars.  |
-| [`send_fast_image_sensors`](#send_fast_image_sensors) | Send the and rotation of each avatar's camera in the scene. This is slightly faster than SendImageSensors, and FastImageSensors compresses much better than ImageSensors. However, FastImageSensors is missing a lot of information contained in ImageSensors, including avatar IDs, making it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastImageSensors.  |
-
-**Send Fixed Length Object Data Command**
-
-| Command | Description |
-| --- | --- |
-| [`send_fast_transforms`](#send_fast_transforms) | Send FastTransforms output data. This is slightly faster than SendTransforms, and FastTransforms compresses much better than Transforms. However, FastTransforms excludes some data (see output data documentation) and it is also harder to use. See: send_object_ids which serializes the object IDs in the same order as the data in FastTransforms.  |
-| [`send_object_ids`](#send_object_ids) | Send the IDs of all Rigidbody objects (models and composite sub-objects) in the scene. The object IDs are sorted.  |
-
 **Send Single Data Command**
 
 | Command | Description |
@@ -796,13 +774,13 @@
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
+| [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
-| [`send_post_process`](#send_post_process) | Send post-processing values.  |
 | [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
-| [`send_scene`](#send_scene) | Send streamed scene metadata.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
+| [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
 **Send Objects Block Command**
@@ -820,9 +798,7 @@
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_euler_angles`](#send_euler_angles) | Send the rotations of each object expressed as Euler angles.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
-| [`send_models`](#send_models) | Send name and URL of each model in the scene.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
-| [`send_scales`](#send_scales) | Send Scales data of objects in the scene. The scales are the worldspace scales rather than a factor. Send scale_object_to, not scale_object  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
@@ -840,7 +816,8 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data.  |
+| [`send_fove`](#send_fove) | Send FOVE headset data.  |
+| [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data. |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 
@@ -860,8 +837,14 @@
 
 | Command | Description |
 | --- | --- |
-| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
 | [`add_ui_text`](#add_ui_text) | Add UI text to the scene. |
+
+**Add Ui Image Command**
+
+| Command | Description |
+| --- | --- |
+| [`add_ui_cutout`](#add_ui_cutout) | Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. The cutout image must be RGBA32. |
+| [`add_ui_image`](#add_ui_image) | Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image. |
 
 **Set Ui Element Command**
 
@@ -871,6 +854,7 @@
 | [`set_ui_color`](#set_ui_color) | Set the color of a UI image or text. |
 | [`set_ui_element_depth`](#set_ui_element_depth) | Set the depth (z value) of a UI element relative its canvas (not its camera). |
 | [`set_ui_element_position`](#set_ui_element_position) | Set the position of a UI element. |
+| [`set_ui_element_rotation`](#set_ui_element_rotation) | Rotate a UI element to a new angle. |
 | [`set_ui_element_size`](#set_ui_element_size) | Set the size of a UI element. |
 | [`set_ui_text`](#set_ui_text) | Set the text of a Text object that is already on the screen. |
 
@@ -892,14 +876,20 @@
 
 | Command | Description |
 | --- | --- |
+| [`allow_fove_headset_movement`](#allow_fove_headset_movement) | Handle whether to send the Fove Headset position or not.  |
+| [`allow_fove_headset_rotation`](#allow_fove_headset_rotation) | Handle whether to send the Fove Headset orientation or not.  |
 | [`attach_avatar_to_vr_rig`](#attach_avatar_to_vr_rig) | Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS.  |
 | [`create_vr_obi_colliders`](#create_vr_obi_colliders) | Create Obi colliders for a VR rig if there aren't any.  |
 | [`destroy_vr_rig`](#destroy_vr_rig) | Destroy the current VR rig.  |
+| [`refresh_leap_motion_rig`](#refresh_leap_motion_rig) | Refresh a Leap Motion rig in the scene. This must be sent whenever new objects are added to the scene after the rig was created.  |
 | [`rotate_vr_rig_by`](#rotate_vr_rig_by) | Rotate the VR rig by an angle.  |
 | [`set_vr_loading_screen`](#set_vr_loading_screen) | Show or hide the VR rig's loading screen.  |
 | [`set_vr_obi_collision_material`](#set_vr_obi_collision_material) | Set the Obi collision material of the VR rig.  |
 | [`set_vr_resolution_scale`](#set_vr_resolution_scale) | Controls the actual size of eye textures as a multiplier of the device's default resolution.  |
+| [`show_leap_motion_hands`](#show_leap_motion_hands) | Visually show or hide Leap Motion hands.  |
+| [`start_fove_calibration`](#start_fove_calibration) | Start the FOVE headset's internal calibration. |
 | [`teleport_vr_rig`](#teleport_vr_rig) | Teleport the VR rig to a new position.  |
+| [`tilt_fove_rig_by`](#tilt_fove_rig_by) | Tilt (pitch) the Fove rig by an angle.  |
 
 # Command
 
@@ -1038,6 +1028,7 @@ The type of VR rig to add to the scene.
 | `"oculus_touch_robot_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as robot hands. |
 | `"oculus_touch_human_hands"` | A VR rig based on an Oculus headset (Rift S, Quest 2), Touch controllers and AutoHand grasping. Hands are visualized as human hands. |
 | `"oculus_leap_motion"` | A VR rig based on an Oculus headset (Rift S, Quest 2) with Leap Motion hand tracking. &lt;/summary |
+| `"fove_leap_motion"` | A VR rig based on a FOVE human headset with Leap Motion hand tracking. &lt;/summary |
 
 ***
 
@@ -1541,6 +1532,25 @@ Set Time.fixedDeltaTime (Unity's physics step, as opposed to render time step). 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"time_step"` | float | Time.fixedDeltaTime | 0.01 |
+
+***
+
+## **`set_vsync_count`**
+
+Set the renderer's vsync count. For more information, read this: <ulink url="https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html">https://docs.unity3d.com/ScriptReference/QualitySettings-vSyncCount.html</ulink>
+
+
+```python
+{"$type": "set_vsync_count"}
+```
+
+```python
+{"$type": "set_vsync_count", "count": 1}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"count"` | int | The vsync count. | 1 |
 
 ***
 
@@ -4920,29 +4930,6 @@ Scale the object by a factor from its current scale.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
-| `"id"` | int | The unique object ID. | |
-
-***
-
-## **`scale_object_to`**
-
-Scale the object to the given value. This is only useful if you know the model scale beforehand, which is not always (1, 1, 1). This command is only useful when used with send_scales, because ObjectScales output data will return the actual scale of each object. 
-
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `scale_object`</font>
-
-```python
-{"$type": "scale_object_to", "id": 1}
-```
-
-```python
-{"$type": "scale_object_to", "id": 1, "scale": {"x": 1, "y": 1, "z": 1}}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"scale"` | Vector3 | The object's new scale. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -9671,263 +9658,6 @@ Options for when to send data.
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
 
-# SendFixedLengthDataCommand
-
-These commands send fixed-length data, meaning that the output byte array size is always the same if the send frequency is "always". The output byte array is resized whenever these commands are sent. This means that these commands are significantly slower if they are sent per-communicate call with frequency "once".
-
-***
-
-## **`send_mouse`**
-
-Send mouse output data. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
-
-```python
-{"$type": "send_mouse"}
-```
-
-```python
-{"$type": "send_mouse", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_version`**
-
-Receive data about the build version. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Version`](output_data.md#Version)</font>
-
-```python
-{"$type": "send_version"}
-```
-
-```python
-{"$type": "send_version", "log": True, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"log"` | bool | If True, log the TDW version in the Player or Editor log. | True |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-# SendFixedLengthAvatarsDataCommand
-
-Abstract base class for sending avatar data where the size of the output data is the same on every communicate call.
-
-***
-
-## **`send_avatar_ids`**
-
-Send the IDs of each avatar in the scene. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`AvatarIds`](output_data.md#AvatarIds)</font>
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
-
-```python
-{"$type": "send_avatar_ids"}
-```
-
-```python
-{"$type": "send_avatar_ids", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | string [] | The avatar IDs. If empty, data for all avatars in the scene will be sent. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_fast_avatars`**
-
-Send the position and rotation of each avatar in the scene. This is slightly faster than SendAvatars, and FastAvatars compresses much better than Avatars. However, FastAvatars doesn't contain avatar IDs, which makes it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastAvatars. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`FastAvatars`](output_data.md#FastAvatars)</font>
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
-
-```python
-{"$type": "send_fast_avatars"}
-```
-
-```python
-{"$type": "send_fast_avatars", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | string [] | The avatar IDs. If empty, data for all avatars in the scene will be sent. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_fast_image_sensors`**
-
-Send the and rotation of each avatar's camera in the scene. This is slightly faster than SendImageSensors, and FastImageSensors compresses much better than ImageSensors. However, FastImageSensors is missing a lot of information contained in ImageSensors, including avatar IDs, making it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastImageSensors. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`FastImageSensors`](output_data.md#FastImageSensors)</font>
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `send_image_sensors`</font>
-
-```python
-{"$type": "send_fast_image_sensors"}
-```
-
-```python
-{"$type": "send_fast_image_sensors", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | string [] | The avatar IDs. If empty, data for all avatars in the scene will be sent. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-# SendFixedLengthObjectDataCommand
-
-Abstract base class for sending object data where the size of the output data is the same on every communicate call.
-
-***
-
-## **`send_fast_transforms`**
-
-Send FastTransforms output data. This is slightly faster than SendTransforms, and FastTransforms compresses much better than Transforms. However, FastTransforms excludes some data (see output data documentation) and it is also harder to use. See: send_object_ids which serializes the object IDs in the same order as the data in FastTransforms. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`FastTransforms`](output_data.md#FastTransforms)</font>
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
-
-```python
-{"$type": "send_fast_transforms"}
-```
-
-```python
-{"$type": "send_fast_transforms", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | int [] | Send data for objects with these IDs. If this is empty, data for all objects will be sent. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_object_ids`**
-
-Send the IDs of all Rigidbody objects (models and composite sub-objects) in the scene. The object IDs are sorted. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`ObjectIds`](output_data.md#ObjectIds)</font>
-- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
-
-    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
-
-```python
-{"$type": "send_object_ids"}
-```
-
-```python
-{"$type": "send_object_ids", "ids": [], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | int [] | Send data for objects with these IDs. If this is empty, data for all objects will be sent. | [] |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
 # SendSingleDataCommand
 
 These commands send a single data object.
@@ -10324,6 +10054,38 @@ Options for when to send data.
 
 ***
 
+## **`send_mouse`**
+
+Send mouse output data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
+
+```python
+{"$type": "send_mouse"}
+```
+
+```python
+{"$type": "send_mouse", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_obi_particles`**
 
 Send particle data for all Obi actors in the scene. 
@@ -10357,38 +10119,6 @@ Options for when to send data.
 
 ***
 
-## **`send_post_process`**
-
-Send post-processing values. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`PostProcess`](output_data.md#PostProcess)</font>
-
-```python
-{"$type": "send_post_process"}
-```
-
-```python
-{"$type": "send_post_process", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_replicant_segmentation_colors`**
 
 Send the segmentationColor of each Replicant in the scene. 
@@ -10403,38 +10133,6 @@ Send the segmentationColor of each Replicant in the scene.
 
 ```python
 {"$type": "send_replicant_segmentation_colors", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_scene`**
-
-Send streamed scene metadata. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Scene`](output_data.md#Scene)</font>
-
-```python
-{"$type": "send_scene"}
-```
-
-```python
-{"$type": "send_scene", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -10535,6 +10233,39 @@ Send the IDs of each empty object and the IDs of their parent objects.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_version`**
+
+Receive data about the build version. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Version`](output_data.md#Version)</font>
+
+```python
+{"$type": "send_version"}
+```
+
+```python
+{"$type": "send_version", "log": True, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"log"` | bool | If True, log the TDW version in the Player or Editor log. | True |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -10663,7 +10394,7 @@ Send the main albedo color of each object in the scene.
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`AlbedoColors`](output_data.md#AlbedoColors)</font>
+    - <font style="color:green">**Type:** [`SendAlbedoColors`](output_data.md#SendAlbedoColors)</font>
 
 ```python
 {"$type": "send_albedo_colors", "ids": [0, 1, 2]}
@@ -10795,39 +10526,6 @@ Options for when to send data.
 
 ***
 
-## **`send_models`**
-
-Send name and URL of each model in the scene. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Models`](output_data.md#Models)</font>
-
-```python
-{"$type": "send_models", "ids": [0, 1, 2]}
-```
-
-```python
-{"$type": "send_models", "ids": [0, 1, 2], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_rigidbodies`**
 
 Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene. 
@@ -10842,39 +10540,6 @@ Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.
 
 ```python
 {"$type": "send_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_scales`**
-
-Send Scales data of objects in the scene. The scales are the worldspace scales rather than a factor. Send scale_object_to, not scale_object 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`ObjectScales`](output_data.md#ObjectScales)</font>
-
-```python
-{"$type": "send_scales", "ids": [0, 1, 2]}
-```
-
-```python
-{"$type": "send_scales", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -11137,13 +10802,42 @@ These commands send data that is specific to certain types of VR rigs.
 
 ***
 
-## **`send_leap_motion`**
+## **`send_fove`**
 
-Send Leap Motion hand tracking data. 
+Send FOVE headset data. 
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`LeapMotion`](output_data.md#LeapMotion)</font>
+    - <font style="color:green">**Type:** [`Fove`](output_data.md#Fove)</font>
+
+```python
+{"$type": "send_fove"}
+```
+
+```python
+{"$type": "send_fove", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_leap_motion`**
+
+Send Leap Motion hand tracking data.
+
 
 ```python
 {"$type": "send_leap_motion"}
@@ -11347,35 +11041,6 @@ These commands add UI elements to the scene.
 
 ***
 
-## **`add_ui_image`**
-
-Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
-
-
-```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
-```
-
-```python
-{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"image"` | string | base64 string representation of the image byte array. | |
-| `"size"` | Vector2Int | The actual pixel size of the image. | |
-| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
-| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
-| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
-| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
-| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
-| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
-| `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
-| `"id"` | int | The unique ID of the UI element. | |
-| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
-
-***
-
 ## **`add_ui_text`**
 
 Add UI text to the scene.
@@ -11386,18 +11051,77 @@ Add UI text to the scene.
 ```
 
 ```python
-{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "canvas_id": 0}
+{"$type": "add_ui_text", "text": "string", "id": 1, "font_size": 14, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
 ```
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"text"` | string | The text. | |
 | `"font_size"` | int | The font size. | 14 |
+| `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
 | `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+# AddUiImageCommand
+
+These commands add UI images to the scene.
+
+***
+
+## **`add_ui_cutout`**
+
+Add a UI "cutout" image to the scene. This will draw a hole in a base UI element. The cutout image must be RGBA32.
+
+
+```python
+{"$type": "add_ui_cutout", "base_id": 1, "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_cutout", "base_id": 1, "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"base_id"` | int | The cutout will draw a hole in the image with this ID. | |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`add_ui_image`**
+
+Add a UI image to the scene. Note that the size parameter must match the actual pixel size of the image.
+
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1}
+```
+
+```python
+{"$type": "add_ui_image", "image": "string", "size": {"x": 1, "y": 2}, "id": 1, "rgba": True, "color": {"r": 1, "g": 1, "b": 1, "a": 1}, "raycast_target": True, "scale_factor": {"x": 1, "y": 1}, "anchor": {"x": 0.5, "y": 0.5}, "pivot": {"x": 0.5, "y": 0.5}, "position": {"x": 0, "y": 0}, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"rgba"` | bool | If True, this is an RGBA image. If False, this is an RGB image. | True |
 | `"color"` | Color | The color of the UI element. | {"r": 1, "g": 1, "b": 1, "a": 1} |
 | `"raycast_target"` | bool | If True, raycasts will hit the UI element. | True |
+| `"image"` | string | base64 string representation of the image byte array. | |
+| `"size"` | Vector2Int | The actual pixel size of the image. | |
+| `"scale_factor"` | Vector2 | Scale the image by this factor. | {"x": 1, "y": 1} |
+| `"anchor"` | Vector2 | The anchor of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the anchor is in the center. | {"x": 0.5, "y": 0.5} |
+| `"pivot"` | Vector2 | The pivot of the UI element. The values must be from 0 (left or bottom) to 1 (right or top). By default, the pivot is in the center. | {"x": 0.5, "y": 0.5} |
+| `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -11485,6 +11209,27 @@ Set the position of a UI element.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector2Int | The anchor position of the UI element in pixels. x is lateral, y is vertical. The anchor position is not the true pixel position. For example, if the anchor is {"x": 0, "y": 0} and the position is {"x": 0, "y": 0}, the UI element will be in the bottom-left of the screen. | {"x": 0, "y": 0} |
+| `"id"` | int | The unique ID of the UI element. | |
+| `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
+
+***
+
+## **`set_ui_element_rotation`**
+
+Rotate a UI element to a new angle.
+
+
+```python
+{"$type": "set_ui_element_rotation", "angle": 0.125, "id": 1}
+```
+
+```python
+{"$type": "set_ui_element_rotation", "angle": 0.125, "id": 1, "canvas_id": 0}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The UI element's new rotation in degrees. | |
 | `"id"` | int | The unique ID of the UI element. | |
 | `"canvas_id"` | int | The unique ID of the UI canvas. | 0 |
 
@@ -11658,6 +11403,46 @@ These commands utilize VR in TDW.
 
 ***
 
+## **`allow_fove_headset_movement`**
+
+Handle whether to send the Fove Headset position or not. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "allow_fove_headset_movement"}
+```
+
+```python
+{"$type": "allow_fove_headset_movement", "allow": False}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"allow"` | bool | Whether or not to send positional information from the headset. Default is to NOT send position, just orientation. | False |
+
+***
+
+## **`allow_fove_headset_rotation`**
+
+Handle whether to send the Fove Headset orientation or not. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "allow_fove_headset_rotation"}
+```
+
+```python
+{"$type": "allow_fove_headset_rotation", "allow": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"allow"` | bool | Whether or not to send orientation information from the headset. Default is to send orientation. | True |
+
+***
+
 ## **`attach_avatar_to_vr_rig`**
 
 Attach an avatar (A_Img_Caps_Kinematic) to the VR rig in the scene. This avatar will work like all others, i.e it can send images and other data. The avatar will match the position and rotation of the VR rig's head. By default, this feature is disabled because it slows down the simulation's FPS. 
@@ -11695,6 +11480,18 @@ Destroy the current VR rig.
 
 ```python
 {"$type": "destroy_vr_rig"}
+```
+
+***
+
+## **`refresh_leap_motion_rig`**
+
+Refresh a Leap Motion rig in the scene. This must be sent whenever new objects are added to the scene after the rig was created. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "refresh_leap_motion_rig"}
 ```
 
 ***
@@ -11788,6 +11585,82 @@ Controls the actual size of eye textures as a multiplier of the device's default
 
 ***
 
+## **`show_leap_motion_hands`**
+
+Visually show or hide Leap Motion hands. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "show_leap_motion_hands"}
+```
+
+```python
+{"$type": "show_leap_motion_hands", "show": True}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"show"` | bool | Whether or not to show the visual representation of the Leap Motion hands. If false, hand tracking, grasping etc. will function as normal but the hands will be invisible. | True |
+
+***
+
+## **`start_fove_calibration`**
+
+Start the FOVE headset's internal calibration.
+
+
+```python
+{"$type": "start_fove_calibration"}
+```
+
+```python
+{"$type": "start_fove_calibration", "restart": True, "eye_by_eye": "Disabled", "method": "Spiral", "eye_torsion": "Default", "profile_name": "new profile"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"restart"` | bool | If true, restart an ongoing calibration. | True |
+| `"eye_by_eye"` | EyeByEyeCalibration | Indicate whether each eye should be calibrated separately or not. | "Disabled" |
+| `"method"` | CalibrationMethod | Indicate the calibration method to use. | "Spiral" |
+| `"eye_torsion"` | EyeTorsionCalibration | Indicate whether each eye torsion calibration should be run. | "Default" |
+| `"profile_name"` | string | Name to give the new calibration profile. This will typically be a subject's name. | "new profile" |
+
+#### CalibrationMethod
+
+FOVE calibration methods.
+
+| Value | Description |
+| --- | --- |
+| `"Default"` | Use the calibration method specified in the configuration file (default: single point). |
+| `"OnePoint"` | Use the simple point calibration method (Requires license). |
+| `"Spiral"` | Use the spiral calibration method. |
+| `"OnePointWithNoGlassesSpiralWithGlasses"` | Use the 1-point calibration method for user without eyeglasses, and the spiral calibration method if user has eyeglasses. |
+| `"ZeroPoint"` | Use the zero point calibration method (Requires license). |
+| `"DefaultCalibration"` | Use a premade calibration profile with average human parameters built-in. |
+
+#### EyeByEyeCalibration
+
+Indicate whether each eye should be calibrated separately or not.
+
+| Value | Description |
+| --- | --- |
+| `"Default"` | Use the settings coming from the configuration file (default: Disabled) |
+| `"Disabled"` | Calibrate both eye simultaneously |
+| `"Enabled"` | Calibrate each eye separately, first the left, then the right (Requires license) |
+
+#### EyeTorsionCalibration
+
+Indicate whether each eye torsion calibration should be run.
+
+| Value | Description |
+| --- | --- |
+| `"Default"` | Use the settings coming from the configuration file. |
+| `"IfEnabled"` | Run eye torsion calibration only if the capability is currently enabled. |
+| `"Always"` | Always run eye torsion calibration independently of whether the capability is used. |
+
+***
+
 ## **`teleport_vr_rig`**
 
 Teleport the VR rig to a new position. 
@@ -11801,3 +11674,19 @@ Teleport the VR rig to a new position.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"position"` | Vector3 | The position to teleport to. | |
+
+***
+
+## **`tilt_fove_rig_by`**
+
+Tilt (pitch) the Fove rig by an angle. 
+
+- <font style="color:green">**VR**: This command will only work if you've already sent [create_vr_rig](#create_vr_rig).</font>
+
+```python
+{"$type": "tilt_fove_rig_by", "angle": 0.125}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"angle"` | float | The angle of rotation in degrees. | |

@@ -71,6 +71,7 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [EulerAngles](#EulerAngles) | The rotation of each object in the scene expressed as Euler angles. | `eule` |
 | [FieldOfView](#FieldOfView) | An avatar's camera field of view and focal length. | `fofv` |
 | [FlexParticles](#FlexParticles) | NVIDIA Flex data. | `flex` |
+| [Fove](#Fove) | FOVE headset and eye tracking data. | `fove` |
 | [Framerate](#Framerate) | Framerate data. | `fram` |
 | [IdPassGrayscale](#IdPassGrayscale) | The average grayscale value of the _id pass. | `idgs` |
 | [IdPassSegmentationColors](#IdPassSegmentationColors) | All segmentation colors in an _id pass. | `ipsc` |
@@ -475,6 +476,25 @@ NVIDIA Flex data.
 | `get_particles(index)` | The Flex particle positions and inverse mass. | `np.ndarray` |
 | `get_velocities(index)` | The Flex particle velocities. | `np.ndarray` |
 | `get_id(index)` | The unique ID of the object. | `int` |
+
+## Fove
+
+`f = Fove(byte_array)`
+
+**Identifier:** `fove`
+
+FOVE headset and eye tracking data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_eye_direction(index)` | The direction of the eye. | `np.ndarray` |
+| `get_eye_state(index)` | The state of the eye. | `EyeState` |
+| `get_hit(index)` | The hit. | `bool` |
+| `get_object_hit(index)` | The hit of the object. | `bool` |
+| `get_object_id(index)` | The ID of the object. | `int` |
+| `get_hit_position(index)` | The position of the hit in the order of (x, y, z). | `np.ndarray` |
+| `get_combined_depth()` | The combined depth value. | `float` |
+| `get_is_calibrated()` | The calibrated of the is. | `bool` |
 
 ## Framerate
 

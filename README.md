@@ -289,6 +289,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 1. [Overview](Documentation/lessons/vr/overview.md)
 2. [Oculus Touch](Documentation/lessons/vr/oculus_touch.md)
 3. [Oculus Leap Motion](Documentation/lessons/vr/oculus_leap_motion.md)
+4. [FOVE Leap Motion](Documentation/lessons/vr/fove_leap_motion.md)
 
 ### 11.8 Keyboard and Mouse
 
@@ -371,6 +372,7 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [AddOn](Documentation/python/add_ons/add_on.md)
 - [AudioInitializer](Documentation/python/add_ons/audio_initializer.md)
 - [AudioInitializerBase](Documentation/python/add_ons/audio_initializer_base.md)
+- [Autohand](Documentation/python/add_ons/autohand.md)
 - [AvatarBody](Documentation/python/add_ons/avatar_body.md)
 - [Benchmark](Documentation/python/add_ons/benchmark.md)
 - [CinematicCamera](Documentation/python/add_ons/cinematic_camera.md)
@@ -384,10 +386,12 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [FirstPersonAvatar](Documentation/python/add_ons/first_person_avatar.md)
 - [Floorplan](Documentation/python/add_ons/floorplan.md)
 - [FloorplanFlood](Documentation/python/add_ons/floorplan_flood.md)
+- [FoveLeapMotion](Documentation/python/add_ons/fove_leap_motion.md)
 - [ImageCapture](Documentation/python/add_ons/image_capture.md)
 - [InteriorSceneLighting](Documentation/python/add_ons/interior_scene_lighting.md)
 - [JsonWriter](Documentation/python/add_ons/json_writer.md)
 - [Keyboard](Documentation/python/add_ons/keyboard.md)
+- [LeapMotion](Documentation/python/add_ons/leap_motion.md)
 - [LisdfReader](Documentation/python/add_ons/lisdf_reader.md)
 - [Logger](Documentation/python/add_ons/logger.md)
 - [LogPlayback](Documentation/python/add_ons/log_playback.md)
@@ -680,6 +684,16 @@ High-level API: [tdw_physics](https://github.com/alters-mit/tdw_physics)
 - [FingerBone](Documentation/python/vr_data/finger_bone.md)
 - [OculusTouchButton](Documentation/python/vr_data/oculus_touch_button.md)
 - [RigType](Documentation/python/vr_data/rig_type.md)
+
+**tdw.vr_data.fove**
+
+- [CalibrationMethod](Documentation/python/vr_data/fove/calibration_method.md)
+- [CalibrationSphere](Documentation/python/vr_data/fove/calibration_sphere.md)
+- [CalibrationState](Documentation/python/vr_data/fove/calibration_state.md)
+- [Eye](Documentation/python/vr_data/fove/eye.md)
+- [EyeByEyeCalibration](Documentation/python/vr_data/fove/eye_by_eye_calibration.md)
+- [EyeState](Documentation/python/vr_data/fove/eye_state.md)
+- [EyeTorsionCalibration](Documentation/python/vr_data/fove/eye_torsion_calibration.md)
 
 **tdw.wheelchair_replicant**
 

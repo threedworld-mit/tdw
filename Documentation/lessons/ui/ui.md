@@ -189,7 +189,7 @@ Add UI images via `ui.add_image(image, position, size)`, which sends [`add_ui_im
 
 Mandatory parameters:
 
-- The `image` parameter can be a string (a filepath), a `Path` object (a filepath), or bytes (the image byte data). If `image` is a filepath, then it must be valid on the computer running the *controller*.
+- The `image` parameter can be a string (a filepath), a `Path` object (a filepath), bytes (the image byte data), or PIL image. If `image` is a filepath, then it must be valid on the computer running the *controller*.
 - The `position` parameter is the position of the image; see above for how to set this.
 - The `size` parameter is the actual pixel size of the images as a Vector2.
 
@@ -199,8 +199,6 @@ Optional parameters:
 - The `scale_factor` parameter can be set to resize the image.
 - See above for how `anchor` and `pivot` work.
 - `color` is the same as in text; an RGBA dictionary with values ranging from 0 to 1. `color` will tint an image; by default, it is white (no tint).
-
-You can dynamically resize an image (or text, though it's less useful) via `ui.set_size(ui_id, size)`, which sends [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size).
 
 ```python
 from tdw.controller import Controller
@@ -232,38 +230,31 @@ Result:
 
 ![](images/image.jpg)
 
-## Create a UI "mask"
+## Transform a UI element
 
-Creating a UI mask is as simple as creating a new image and drawing a transparent shape:
+- Resize an image or text via `ui.set_size(ui_id, size)`, which sends [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size).
+- Move a UI image or text via `ui.set_position(id, position)`, which sends [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position).
+- Rotate a UI image or text via `ui.set_rotation(id, angle)`, which sends [`set_ui_element_rotation`](../../api/command_api.md#set_ui_element_rotation).
 
-```python
-from io import BytesIO
-from PIL import Image, ImageDraw
+## Create a cutout
 
-w = 512
-h = 512
-image = Image.new(mode="RGBA", size=(w, h), color=(0, 0, 0, 255))
-# Draw a circle on the mask.
-draw = ImageDraw.Draw(image)
-diameter = 256
-x = w // 2 - diameter // 2
-y = h // 2 - diameter // 2
-draw.ellipse([(x, y), (y + diameter, y + diameter)], fill=(0, 0, 0, 0))
-# Convert the PIL image to bytes.
-with BytesIO() as output:
-    image.save(output, "PNG")
-    mask = output.getvalue()
-# `mask` can now be used by `ui.add_image()`
-```
+Call `ui.add_cutout(base_id, image, position)` to cut a transparent hole in another UI element. This function sends [`add_ui_cutout`](../../api/command_api.md#add_ui_cutout).
 
-## Move a UI element
+Mandatory parameters:
 
-To move a UI image or text, call `ui.set_position(id, position)`, which sends [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position).
+- `base_id` is the ID of the image that will have a hole in it. This can be added on the same frame as the cutout image but it must be added prior to the cutout image.
+- The `image` parameter can be a string (a filepath), a `Path` object (a filepath), bytes (the image byte data), or PIL image. If `image` is a filepath, then it must be valid on the computer running the *controller*.
+- The `position` parameter is the position of the image; see above for how to set this.
+- The `size` parameter is the actual pixel size of the images as a Vector2.
 
-In this example, an image with a "mask" is added to the scene. This image is larger than the screen size so that it can be moved while still covering the entire screen:
+Optional parameters:
+
+- The `scale_factor` parameter can be set to resize the image.
+- See above for how `anchor` and `pivot` work.
+
+This example adds a cube, a base image, and a cutout image, and then moves the cutout around the screen:
 
 ```python
-from io import BytesIO
 from PIL import Image, ImageDraw
 from tdw.controller import Controller
 from tdw.add_ons.third_person_camera import ThirdPersonCamera
@@ -299,30 +290,29 @@ print(f"Images will be saved to: {path}")
 capture = ImageCapture(path=path, avatar_ids=["a"])
 c.add_ons.append(capture)
 
-# Create the UI image with PIL.
-# The image is larger than the screen size so we can move it around.
-image_size = screen_size * 3
-image = Image.new(mode="RGBA", size=(image_size, image_size), color=(0, 0, 0, 255))
-# Draw a circle on the mask.
-draw = ImageDraw.Draw(image)
+# Create the background UI image.
+bg_size = screen_size * 2
+base_id = ui.add_image(image=Image.new(mode="RGBA", size=(bg_size, bg_size), color=(0, 0, 0, 255)),
+                       position={"x": 0, "y": 0},
+                       size={"x": bg_size, "y": bg_size})
+
+# Create the cutout image.
 diameter = 256
-d = image_size // 2 - diameter // 2
-draw.ellipse([(d, d), (d + diameter, d + diameter)], fill=(0, 0, 0, 0))
-# Convert the PIL image to bytes.
-with BytesIO() as output:
-    image.save(output, "PNG")
-    mask = output.getvalue()
+mask = Image.new(mode="RGBA", size=(diameter, diameter), color=(0, 0, 0, 0))
+# Draw a circle.
+draw = ImageDraw.Draw(mask)
+draw.ellipse([(0, 0), (diameter, diameter)], fill=(255, 255, 255, 255))
 x = 0
 y = 0
-# Add the image.
-mask_id = ui.add_image(image=mask, position={"x": x, "y": y}, size={"x": image_size, "y": image_size}, raycast_target=False)
+# Add the cutout.
+cutout_id = ui.add_cutout(image=mask, position={"x": x, "y": y}, size={"x": diameter, "y": diameter}, base_id=base_id)
 c.communicate([])
 
-# Move the image.
+# Move the cutout.
 for i in range(100):
     x += 4
     y += 3
-    ui.set_position(ui_id=mask_id, position={"x": x, "y": y})
+    ui.set_position(ui_id=cutout_id, position={"x": x, "y": y})
     c.communicate([])
 c.communicate({"$type": "terminate"})
 ```
@@ -360,7 +350,7 @@ Example controllers:
 - [hello_world_ui.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/hello_world_ui.py) Minimal UI example.
 - [anchors_and_pivots.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/anchors_and_pivots.py) Anchor text to the top-left corner of the screen.
 - [image.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/image.py) Add a UI image.
-- [mask.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/mask.py) Create black background with a circular "hole" in it and move the image around.
+- [cutout.py](https://github.com/threedworld-mit/tdw/blob/master/Python/example_controllers/ui/cutout.py) Create black background with a circular "hole" in it and move the image around.
 
 Python API:
 
@@ -374,6 +364,8 @@ Command API:
 - [`add_ui_image`](../../api/command_api.md#add_ui_image)
 - [`set_ui_element_size`](../../api/command_api.md#set_ui_element_size)
 - [`set_ui_element_position`](../../api/command_api.md#set_ui_element_position)
+- [`set_ui_element_rotation`](../../api/command_api.md#set_ui_element_rotation)
+- [`add_ui_cutout`](../../api/command_api.md#add_ui_cutout)
 - [`set_ui_element_depth`](../../api/command_api.md#set_ui_element_depth)
 - [`set_target_framerate`](../../api/command_api.md#set_target_framerate)
 - [`destroy_ui_element`](../../api/command_api.md#destroy_ui_element)

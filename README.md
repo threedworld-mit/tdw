@@ -2,6 +2,10 @@
 
 **ThreeDWorld (TDW)** is a platform for interactive multi-modal physical simulation. With TDW, users can simulate high-fidelity sensory data and physical interactions between mobile agents and objects in a wide variety of rich 3D environments.
 
+TDW was developed primarily by Jeremy Schwartz and [Esther Alter](https://github.com/alters-mit). It is now maintained by Esther Alter.
+
+**TDW is now in long-term support (LTS). TDW will receive only minor updates and bug fixes.**
+
 ![](splash.jpg)
 
 - [Code of Conduct](https://github.com/threedworld-mit/tdw/blob/master/code_of_conduct.md)

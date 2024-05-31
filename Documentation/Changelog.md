@@ -2,7 +2,7 @@
 
 # v1.13.x
 
-**TDW is now in long-term service (LTS). TDW will continue to receive minor updates and bug fixes but no new features.**
+**TDW is now in long-term support (LTS). TDW will receive only minor updates and bug fixes.**
 
 ## v1.13.0
 

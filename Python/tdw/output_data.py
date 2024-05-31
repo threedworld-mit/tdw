@@ -1944,7 +1944,7 @@ class AvatarIds:
         lengths: np.ndarray = np.frombuffer(b[12:offset], dtype=np.int32)
         self._ids: List[str] = list()
         for length in lengths:
-            self._ids.append(b[offset: offset + length].decode('ascii'))
+            self._ids.append(b[offset: offset + length].decode('utf8'))
             offset += length
         self._types: np.ndarray = np.frombuffer(b[offset:], dtype=np.uint8)
 

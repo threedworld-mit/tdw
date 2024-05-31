@@ -351,6 +351,7 @@
 | [`rotate_object_to`](#rotate_object_to) | Set the rotation quaternion of the object. |
 | [`rotate_object_to_euler_angles`](#rotate_object_to_euler_angles) | Set the rotation of the object with Euler angles.  |
 | [`scale_object`](#scale_object) | Scale the object by a factor from its current scale. |
+| [`scale_object_to`](#scale_object_to) | Scale the object to the given value. This is only useful if you know the model scale beforehand, which is not always (1, 1, 1). This command is only useful when used with send_scales, because ObjectScales output data will return the actual scale of each object.  |
 | [`set_color`](#set_color) | Set the albedo RGBA color of an object.  |
 | [`set_obi_collision_material`](#set_obi_collision_material) | Set the Obi collision material of an object.  |
 | [`set_object_visibility`](#set_object_visibility) | Toggle whether an object is visible. An invisible object will still have physics colliders and respond to physics events. |
@@ -757,6 +758,28 @@
 | [`send_occlusion`](#send_occlusion) | Send the extent to which the scene environment is occluding objects in the frame.  |
 | [`send_screen_positions`](#send_screen_positions) | Given a list of worldspace positions, return the screenspace positions according to each of the avatar's camera.  |
 
+**Send Fixed Length Data Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_mouse`](#send_mouse) | Send mouse output data.  |
+| [`send_version`](#send_version) | Receive data about the build version.  |
+
+**Send Fixed Length Avatars Data Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_avatar_ids`](#send_avatar_ids) | Send the IDs of each avatar in the scene.  |
+| [`send_fast_avatars`](#send_fast_avatars) | Send the position and rotation of each avatar in the scene. This is slightly faster than SendAvatars, and FastAvatars compresses much better than Avatars. However, FastAvatars doesn't contain avatar IDs, which makes it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastAvatars.  |
+| [`send_fast_image_sensors`](#send_fast_image_sensors) | Send the and rotation of each avatar's camera in the scene. This is slightly faster than SendImageSensors, and FastImageSensors compresses much better than ImageSensors. However, FastImageSensors is missing a lot of information contained in ImageSensors, including avatar IDs, making it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastImageSensors.  |
+
+**Send Fixed Length Object Data Command**
+
+| Command | Description |
+| --- | --- |
+| [`send_fast_transforms`](#send_fast_transforms) | Send FastTransforms output data. This is slightly faster than SendTransforms, and FastTransforms compresses much better than Transforms. However, FastTransforms excludes some data (see output data documentation) and it is also harder to use. See: send_object_ids which serializes the object IDs in the same order as the data in FastTransforms.  |
+| [`send_object_ids`](#send_object_ids) | Send the IDs of all Rigidbody objects (models and composite sub-objects) in the scene. The object IDs are sorted.  |
+
 **Send Single Data Command**
 
 | Command | Description |
@@ -773,13 +796,13 @@
 | [`send_junk`](#send_junk) | Send junk data.  |
 | [`send_keyboard`](#send_keyboard) | Request keyboard input data.  |
 | [`send_lights`](#send_lights) | Send data for each directional light and point light in the scene.  |
-| [`send_mouse`](#send_mouse) | Send mouse output data.  |
 | [`send_obi_particles`](#send_obi_particles) | Send particle data for all Obi actors in the scene.  |
+| [`send_post_process`](#send_post_process) | Send post-processing values.  |
 | [`send_replicant_segmentation_colors`](#send_replicant_segmentation_colors) | Send the segmentationColor of each Replicant in the scene.  |
+| [`send_scene`](#send_scene) | Send streamed scene metadata.  |
 | [`send_scene_regions`](#send_scene_regions) | Receive data about the sub-regions within a scene in the scene. Only send this command after initializing the scene.  |
 | [`send_static_composite_objects`](#send_static_composite_objects) | Send static data for every composite object in the scene.  |
 | [`send_static_empty_objects`](#send_static_empty_objects) | Send the IDs of each empty object and the IDs of their parent objects.  |
-| [`send_version`](#send_version) | Receive data about the build version.  |
 | [`send_vr_rig`](#send_vr_rig) | Send data for a VR Rig currently in the scene.  |
 
 **Send Objects Block Command**
@@ -797,7 +820,9 @@
 | [`send_bounds`](#send_bounds) | Send rotated bounds data of objects in the scene.  |
 | [`send_euler_angles`](#send_euler_angles) | Send the rotations of each object expressed as Euler angles.  |
 | [`send_local_transforms`](#send_local_transforms) | Send Transform (position and rotation) data of objects in the scene relative to their parent object.  |
+| [`send_models`](#send_models) | Send name and URL of each model in the scene.  |
 | [`send_rigidbodies`](#send_rigidbodies) | Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.  |
+| [`send_scales`](#send_scales) | Send Scales data of objects in the scene. The scales are the worldspace scales rather than a factor. Send scale_object_to, not scale_object  |
 | [`send_segmentation_colors`](#send_segmentation_colors) | Send segmentation color data for objects in the scene.  |
 | [`send_static_rigidbodies`](#send_static_rigidbodies) | Send static rigidbody data (mass, kinematic state, etc.) of objects in the scene.  |
 | [`send_transforms`](#send_transforms) | Send Transform (position and rotation) data of objects in the scene.  |
@@ -815,7 +840,7 @@
 
 | Command | Description |
 | --- | --- |
-| [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data. |
+| [`send_leap_motion`](#send_leap_motion) | Send Leap Motion hand tracking data.  |
 | [`send_oculus_touch_buttons`](#send_oculus_touch_buttons) | Send data for buttons pressed on Oculus Touch controllers.  |
 | [`send_static_oculus_touch`](#send_static_oculus_touch) | Send static data for the Oculus Touch rig.  |
 
@@ -4895,6 +4920,29 @@ Scale the object by a factor from its current scale.
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
 | `"scale_factor"` | Vector3 | Multiply the scale of the object by this vector. (For example, if scale_factor is (2,2,2), then the object's current size will double.) | {"x": 1, "y": 1, "z": 1} |
+| `"id"` | int | The unique object ID. | |
+
+***
+
+## **`scale_object_to`**
+
+Scale the object to the given value. This is only useful if you know the model scale beforehand, which is not always (1, 1, 1). This command is only useful when used with send_scales, because ObjectScales output data will return the actual scale of each object. 
+
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `scale_object`</font>
+
+```python
+{"$type": "scale_object_to", "id": 1}
+```
+
+```python
+{"$type": "scale_object_to", "id": 1, "scale": {"x": 1, "y": 1, "z": 1}}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"scale"` | Vector3 | The object's new scale. | {"x": 1, "y": 1, "z": 1} |
 | `"id"` | int | The unique object ID. | |
 
 ***
@@ -9623,6 +9671,263 @@ Options for when to send data.
 | `"always"` | Send the data every frame. |
 | `"never"` | Never send the data. |
 
+# SendFixedLengthDataCommand
+
+These commands send fixed-length data, meaning that the output byte array size is always the same if the send frequency is "always". The output byte array is resized whenever these commands are sent. This means that these commands are significantly slower if they are sent per-communicate call with frequency "once".
+
+***
+
+## **`send_mouse`**
+
+Send mouse output data. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
+
+```python
+{"$type": "send_mouse"}
+```
+
+```python
+{"$type": "send_mouse", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_version`**
+
+Receive data about the build version. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Version`](output_data.md#Version)</font>
+
+```python
+{"$type": "send_version"}
+```
+
+```python
+{"$type": "send_version", "log": True, "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"log"` | bool | If True, log the TDW version in the Player or Editor log. | True |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendFixedLengthAvatarsDataCommand
+
+Abstract base class for sending avatar data where the size of the output data is the same on every communicate call.
+
+***
+
+## **`send_avatar_ids`**
+
+Send the IDs of each avatar in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`AvatarIds`](output_data.md#AvatarIds)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
+
+```python
+{"$type": "send_avatar_ids"}
+```
+
+```python
+{"$type": "send_avatar_ids", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | string [] | The avatar IDs. If empty, data for all avatars in the scene will be sent. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_fast_avatars`**
+
+Send the position and rotation of each avatar in the scene. This is slightly faster than SendAvatars, and FastAvatars compresses much better than Avatars. However, FastAvatars doesn't contain avatar IDs, which makes it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastAvatars. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`FastAvatars`](output_data.md#FastAvatars)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_avatars`</font>
+
+```python
+{"$type": "send_fast_avatars"}
+```
+
+```python
+{"$type": "send_fast_avatars", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | string [] | The avatar IDs. If empty, data for all avatars in the scene will be sent. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_fast_image_sensors`**
+
+Send the and rotation of each avatar's camera in the scene. This is slightly faster than SendImageSensors, and FastImageSensors compresses much better than ImageSensors. However, FastImageSensors is missing a lot of information contained in ImageSensors, including avatar IDs, making it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastImageSensors. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`FastImageSensors`](output_data.md#FastImageSensors)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_image_sensors`</font>
+
+```python
+{"$type": "send_fast_image_sensors"}
+```
+
+```python
+{"$type": "send_fast_image_sensors", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | string [] | The avatar IDs. If empty, data for all avatars in the scene will be sent. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+# SendFixedLengthObjectDataCommand
+
+Abstract base class for sending object data where the size of the output data is the same on every communicate call.
+
+***
+
+## **`send_fast_transforms`**
+
+Send FastTransforms output data. This is slightly faster than SendTransforms, and FastTransforms compresses much better than Transforms. However, FastTransforms excludes some data (see output data documentation) and it is also harder to use. See: send_object_ids which serializes the object IDs in the same order as the data in FastTransforms. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`FastTransforms`](output_data.md#FastTransforms)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_fast_transforms"}
+```
+
+```python
+{"$type": "send_fast_transforms", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | Send data for objects with these IDs. If this is empty, data for all objects will be sent. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_object_ids`**
+
+Send the IDs of all Rigidbody objects (models and composite sub-objects) in the scene. The object IDs are sorted. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ObjectIds`](output_data.md#ObjectIds)</font>
+- <font style="color:red">**Rarely used**: This command is very specialized; it's unlikely that this is the command you want to use.</font>
+
+    - <font style="color:red">**Use this command instead:** `send_transforms`</font>
+
+```python
+{"$type": "send_object_ids"}
+```
+
+```python
+{"$type": "send_object_ids", "ids": [], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | Send data for objects with these IDs. If this is empty, data for all objects will be sent. | [] |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
 # SendSingleDataCommand
 
 These commands send a single data object.
@@ -10019,38 +10324,6 @@ Options for when to send data.
 
 ***
 
-## **`send_mouse`**
-
-Send mouse output data. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Mouse`](output_data.md#Mouse)</font>
-
-```python
-{"$type": "send_mouse"}
-```
-
-```python
-{"$type": "send_mouse", "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
 ## **`send_obi_particles`**
 
 Send particle data for all Obi actors in the scene. 
@@ -10084,6 +10357,38 @@ Options for when to send data.
 
 ***
 
+## **`send_post_process`**
+
+Send post-processing values. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`PostProcess`](output_data.md#PostProcess)</font>
+
+```python
+{"$type": "send_post_process"}
+```
+
+```python
+{"$type": "send_post_process", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_replicant_segmentation_colors`**
 
 Send the segmentationColor of each Replicant in the scene. 
@@ -10098,6 +10403,38 @@ Send the segmentationColor of each Replicant in the scene.
 
 ```python
 {"$type": "send_replicant_segmentation_colors", "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_scene`**
+
+Send streamed scene metadata. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Scene`](output_data.md#Scene)</font>
+
+```python
+{"$type": "send_scene"}
+```
+
+```python
+{"$type": "send_scene", "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -10198,39 +10535,6 @@ Send the IDs of each empty object and the IDs of their parent objects.
 
 | Parameter | Type | Description | Default |
 | --- | --- | --- | --- |
-| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
-
-#### Frequency
-
-Options for when to send data.
-
-| Value | Description |
-| --- | --- |
-| `"once"` | Send the data for this frame only. |
-| `"always"` | Send the data every frame. |
-| `"never"` | Never send the data. |
-
-***
-
-## **`send_version`**
-
-Receive data about the build version. 
-
-- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
-
-    - <font style="color:green">**Type:** [`Version`](output_data.md#Version)</font>
-
-```python
-{"$type": "send_version"}
-```
-
-```python
-{"$type": "send_version", "log": True, "frequency": "once"}
-```
-
-| Parameter | Type | Description | Default |
-| --- | --- | --- | --- |
-| `"log"` | bool | If True, log the TDW version in the Player or Editor log. | True |
 | `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
 
 #### Frequency
@@ -10359,7 +10663,7 @@ Send the main albedo color of each object in the scene.
 
 - <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
 
-    - <font style="color:green">**Type:** [`SendAlbedoColors`](output_data.md#SendAlbedoColors)</font>
+    - <font style="color:green">**Type:** [`AlbedoColors`](output_data.md#AlbedoColors)</font>
 
 ```python
 {"$type": "send_albedo_colors", "ids": [0, 1, 2]}
@@ -10491,6 +10795,39 @@ Options for when to send data.
 
 ***
 
+## **`send_models`**
+
+Send name and URL of each model in the scene. 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`Models`](output_data.md#Models)</font>
+
+```python
+{"$type": "send_models", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_models", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
 ## **`send_rigidbodies`**
 
 Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene. 
@@ -10505,6 +10842,39 @@ Send Rigidbody (velocity, angular velocity, etc.) data of objects in the scene.
 
 ```python
 {"$type": "send_rigidbodies", "ids": [0, 1, 2], "frequency": "once"}
+```
+
+| Parameter | Type | Description | Default |
+| --- | --- | --- | --- |
+| `"ids"` | int [] | The IDs of the objects. If this list is undefined or empty, the build will return data for all objects. | |
+| `"frequency"` | Frequency | The frequency at which data is sent. | "once" |
+
+#### Frequency
+
+Options for when to send data.
+
+| Value | Description |
+| --- | --- |
+| `"once"` | Send the data for this frame only. |
+| `"always"` | Send the data every frame. |
+| `"never"` | Never send the data. |
+
+***
+
+## **`send_scales`**
+
+Send Scales data of objects in the scene. The scales are the worldspace scales rather than a factor. Send scale_object_to, not scale_object 
+
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`ObjectScales`](output_data.md#ObjectScales)</font>
+
+```python
+{"$type": "send_scales", "ids": [0, 1, 2]}
+```
+
+```python
+{"$type": "send_scales", "ids": [0, 1, 2], "frequency": "once"}
 ```
 
 | Parameter | Type | Description | Default |
@@ -10769,8 +11139,11 @@ These commands send data that is specific to certain types of VR rigs.
 
 ## **`send_leap_motion`**
 
-Send Leap Motion hand tracking data.
+Send Leap Motion hand tracking data. 
 
+- <font style="color:green">**Sends data**: This command instructs the build to send output data.</font>
+
+    - <font style="color:green">**Type:** [`LeapMotion`](output_data.md#LeapMotion)</font>
 
 ```python
 {"$type": "send_leap_motion"}

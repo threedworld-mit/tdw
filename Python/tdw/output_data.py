@@ -20,7 +20,6 @@ from tdw.FBOutput import VRRig as VR
 from tdw.FBOutput import LogMessage as Log
 from tdw.FBOutput import Meshes as Me
 from tdw.FBOutput import Substructure as Sub
-from tdw.FBOutput import Version as Ver
 from tdw.FBOutput import EnvironmentCollision as EnvCol
 from tdw.FBOutput import Volumes as Vol
 from tdw.FBOutput import AudioSources as Audi
@@ -52,7 +51,6 @@ from tdw.FBOutput import AudioSourceDone as AudDone
 from tdw.FBOutput import ObiParticles as ObiP
 from tdw.FBOutput import ObjectColliderIntersection as ObjColInt
 from tdw.FBOutput import EnvironmentColliderIntersection as EnvColInt
-from tdw.FBOutput import Mouse as Mous
 from tdw.FBOutput import TransformMatrices as TranMat
 from tdw.FBOutput import AvatarTransformMatrices as AvTranMat
 from tdw.FBOutput import DynamicRobots as DynRob
@@ -66,6 +64,11 @@ from tdw.FBOutput import Drones as Dro
 from tdw.FBOutput import ReplicantSegmentationColors as RepSepCo
 from tdw.FBOutput import AlbedoColors as AlbCol
 from tdw.FBOutput import Fove as Fov
+from tdw.FBOutput import Models as Mods
+from tdw.FBOutput import ObjectScales as ObjSca
+from tdw.FBOutput import PostProcess as PostProc
+from tdw.FBOutput import Scene as Sce
+from tdw.FBOutput import SystemInfo as SysInfo
 from tdw.vr_data.oculus_touch_button import OculusTouchButton
 from tdw.vr_data.fove.eye_state import EyeState
 from tdw.container_data.container_tag import ContainerTag
@@ -713,18 +716,21 @@ class Substructure(OutputData):
         return self.data.SubObjects(index).Materials(material_index).decode('utf-8')
 
 
-class Version(OutputData):
-    def get_data(self) -> Ver.Version:
-        return Ver.Version.GetRootAsVersion(self.bytes, 0)
+class Version:
+    def __init__(self, b):
+        self._standalone: bool = b[8] == b'\x01'
+        version_length = int(b[9])
+        self._tdw_version: str = b[10: 10 + version_length].decode('utf-8')
+        self._unity_version = b[10 + version_length:].decode('utf-8')
 
     def get_unity_version(self) -> str:
-        return self.data.Unity().decode('utf-8')
+        return self._unity_version
 
     def get_tdw_version(self) -> str:
-        return self.data.Tdw().decode('utf-8')
+        return self._tdw_version
 
     def get_standalone(self) -> bool:
-        return self.data.Standalone()
+        return self._standalone
 
 
 class EnvironmentCollision(OutputData):
@@ -1449,46 +1455,44 @@ class ObiParticles(OutputData):
         return self.data.Actors(index).SolverIndicesAsNumpy()
 
 
-class Mouse(OutputData):
-    def __init__(self, b):
-        super().__init__(b)
-        self._buttons: np.ndarray = self.data.ButtonsAsNumpy().reshape(3, 3)
-
-    def get_data(self) -> Mous.Mouse:
-        return Mous.Mouse.GetRootAsMouse(self.bytes, 0)
+class Mouse:
+    def __init__(self, b: bytes):
+        self._buttons: bytes = b[8:11]
+        self._position: np.ndarray = np.frombuffer(b[11:19])
+        self._scroll_delta: np.ndarray = np.frombuffer(b[19:])
 
     def get_position(self) -> np.ndarray:
-        return self.data.PositionAsNumpy()
+        return self._position
 
     def get_scroll_delta(self) -> np.ndarray:
-        return self.data.ScrollDeltaAsNumpy()
+        return self._scroll_delta
 
     def get_is_left_button_pressed(self) -> bool:
-        return bool(self._buttons[0][0])
+        return self._buttons[0] == 1
 
     def get_is_left_button_held(self) -> bool:
-        return bool(self._buttons[0][1])
+        return self._buttons[0] == 2
 
     def get_is_left_button_released(self) -> bool:
-        return bool(self._buttons[0][2])
-
+        return self._buttons[0] == 4
+    
     def get_is_middle_button_pressed(self) -> bool:
-        return bool(self._buttons[1][0])
+        return self._buttons[1] == 1
 
     def get_is_middle_button_held(self) -> bool:
-        return bool(self._buttons[1][1])
+        return self._buttons[1] == 2
 
     def get_is_middle_button_released(self) -> bool:
-        return bool(self._buttons[1][2])
-
+        return self._buttons[1] == 4
+    
     def get_is_right_button_pressed(self) -> bool:
-        return bool(self._buttons[2][0])
+        return self._buttons[2] == 1
 
     def get_is_right_button_held(self) -> bool:
-        return bool(self._buttons[2][1])
+        return self._buttons[2] == 2
 
     def get_is_right_button_released(self) -> bool:
-        return bool(self._buttons[2][2])
+        return self._buttons[2] == 4
 
 
 class TransformMatrices(OutputData):
@@ -1530,6 +1534,7 @@ class AvatarTransformMatrices(OutputData):
 
     def get_sensor_matrix(self, index: int) -> np.array:
         return self._sensor_container_matrices[index]
+
 
 class FieldOfView(OutputData):
     def get_data(self) -> Fofv.FieldOfView:
@@ -1814,3 +1819,191 @@ class Fove(OutputData):
 
     def get_is_calibrated(self) -> bool:
         return self.data.Calibrated()
+
+
+class Models(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+
+    def get_data(self) -> Mods.Models:
+        return Mods.Models.GetRootAsModels(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_name(self, index: int) -> str:
+        return self.data.Names(index).decode('utf-8')
+
+    def get_url(self, index: int) -> str:
+        return self.data.Urls(index).decode('utf-8')
+
+
+class ObjectScales(OutputData):
+    def __init__(self, b):
+        super().__init__(b)
+        self._ids = self.data.IdsAsNumpy()
+        self._scales = self.data.ScalesAsNumpy().reshape(-1, 3)
+
+    def get_data(self) -> ObjSca.ObjectScales:
+        return ObjSca.ObjectScales.GetRootAsObjectScales(self.bytes, 0)
+
+    def get_num(self) -> int:
+        return len(self._ids)
+
+    def get_id(self, index: int) -> int:
+        return int(self._ids[index])
+
+    def get_scale(self, index: int) -> np.ndarray:
+        return self._scales[index]
+
+
+class PostProcess(OutputData):
+    def get_data(self) -> PostProc.PostProcess:
+        return PostProc.PostProcess.GetRootAsPostProcess(self.bytes, 0)
+
+    def get_enabled(self) -> bool:
+        return self.data.Enabled()
+
+    def get_ambient_occlusion_intensity(self) -> float:
+        return self.data.AmbientOcclusionIntensity()
+
+    def get_ambient_occlusion_thickness_modifier(self) -> float:
+        return self.data.AmbientOcclusionThicknessModifier()
+
+    def get_aperture(self) -> float:
+        return self.data.Aperture()
+
+    def get_focus_distance(self) -> float:
+        return self.data.FocusDistance()
+
+    def get_contrast(self) -> float:
+        return self.data.Contrast()
+
+    def get_post_exposure(self) -> float:
+        return self.data.PostExposure()
+
+    def get_saturation(self) -> float:
+        return self.data.Saturation()
+
+    def get_screen_space_reflections(self) -> float:
+        return self.data.ScreenSpaceReflections()
+
+    def get_vignette(self) -> float:
+        return self.data.Vignette()
+
+
+class Scene(OutputData):
+    def get_data(self) -> Sce.Scene:
+        return Sce.Scene.GetRootAsScene(self.bytes, 0)
+
+    def get_name(self) -> str:
+        return self.data.Name().decode('utf-8')
+
+    def get_url(self) -> str:
+        return self.data.Url().decode('utf-8')
+
+
+class ObjectIds:
+    def __init__(self, b: bytes):
+        self._ids: List[int] = np.frombuffer(b[8:], dtype=np.int32).tolist()
+
+    def get_ids(self) -> List[int]:
+        return self._ids
+
+
+class _FastTransforms:
+    def __init__(self, b: bytes):
+        # The number of objects is the data minus the identifying prefix divided by sizeof(Vector3) + sizeof(Quaternion).
+        self._num_objects: int = (len(b) - 8) // 28
+        position_offset = 8 + self._num_objects * 12
+        self._positions: np.ndarray = np.frombuffer(b[8: position_offset], dtype=np.float32).reshape((self._num_objects, 3))
+        self._rotations: np.ndarray = np.frombuffer(b[position_offset:], dtype=np.float32).reshape((self._num_objects, 4))
+
+    def get_num(self) -> int:
+        return self._num_objects
+
+    def get_position(self, index: int) -> np.ndarray:
+        return self._positions[index]
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index]
+
+
+class FastTransforms(_FastTransforms):
+    pass
+
+
+class AvatarIds:
+    def __init__(self, b: bytes):
+        self._num: int = int.from_bytes(b[8:12], byteorder='little')
+        offset = 12 + self._num * 4
+        lengths: np.ndarray = np.frombuffer(b[12:offset], dtype=np.int32)
+        self._ids: List[str] = list()
+        for length in lengths:
+            self._ids.append(b[offset: offset + length].decode('ascii'))
+            offset += length
+        self._types: np.ndarray = np.frombuffer(b[offset:], dtype=np.uint8)
+
+    def get_num(self) -> int:
+        return self._num
+
+    def get_id(self, index: int) -> str:
+        return self._ids[index]
+
+    def get_type(self, index: int) -> str:
+        if self._types[index] == 0:
+            return "A_Img_Caps_Kinematic"
+        elif self._types[index] == 1:
+            return "A_Simple_Body"
+        elif self._types[index] == 2:
+            return "A_First_Person"
+        else:
+            raise Exception(f"Invalid avatar type: {self._types[index]}")
+
+
+class FastAvatars(_FastTransforms):
+    pass
+
+
+class FastImageSensors:
+    def __init__(self, b: bytes):
+        self._rotations: np.ndarray = np.frombuffer(b[8:], dtype=np.float32).reshape((-1, 4))
+
+    def get_num(self) -> int:
+        return len(self._rotations)
+
+    def get_rotation(self, index: int) -> np.ndarray:
+        return self._rotations[index]
+
+
+class SystemInfo(OutputData):
+    def get_data(self) -> SysInfo.SystemInfo:
+        return SysInfo.SystemInfo.GetRootAsSystemInfo(self.bytes, 0)
+
+    def get_os(self) -> str:
+        return self.data.Os().decode('utf-8')
+
+    def get_cpu(self) -> str:
+        return self.data.Cpu().decode('utf-8')
+
+    def get_browser(self) -> str:
+        return self.data.Browser().decode('utf-8')
+
+    def get_gpu(self) -> str:
+        return self.data.Gpu().decode('utf-8')
+
+    def get_graphics_api(self) -> str:
+        return self.data.GraphicsApi().decode('utf-8')
+
+    def get_time_since_startup(self) -> int:
+        return self.data.TimeSinceStartup()
+
+    def get_screen_width(self) -> int:
+        return self.data.ScreenWidth()
+
+    def get_screen_height(self) -> int:
+        return self.data.ScreenHeight()

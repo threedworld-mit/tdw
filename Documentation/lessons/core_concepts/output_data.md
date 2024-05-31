@@ -209,6 +209,19 @@ print(positions)
 c.communicate({"$type": "terminate"})
 ```
 
+## "Fast" Output Data
+
+Some output data types are prefixed with "Fast", for example `FastTransforms`. These output data types are harder to use that standard output data. In a typical TDW simulation, "fast" output data types are *marginally* faster than their standard counterparts and are *much* harder to use.
+
+For example, [`FastTransforms`](../../api/output_data.md#FastTransforms) is similar to [`Transforms`](../../api/output_data.md#Transforms) in that it sends the position and rotation of each object of the scene. However, there are crucial differences:
+
+- Send [`send_fast_transforms`](../../api/command_api.md#send_fast_transforms) instead of [`send_transforms`](../../api/command_api.md#send_transforms)
+- `FastTransforms` does not include forward directional vectors.
+- There isn't an add-on that includes `FastTransform` data.
+- `FastTransforms` does not include object IDs. To get object IDs, you must also send  [`send_object_ids`](../../api/command_api.md#send_object_ids), which returns [`ObjectIds`](../../api/output_data.md#ObjectIds). The order of the IDs in `ObjectIds` always matches the order of the transform data in `FastTransforms`.
+
+**The main benefit of "fast" output data is that it compresses better than standard output data.** If you intend to send, for example, gzip blobs of data, use "fast" output data to reduce the blob's size. 
+
 ## Other output data
 
 This document covers only a fraction of the possible output data available in TDW. The next document will explain image output data.
@@ -238,10 +251,14 @@ Command API:
 - [`send_transforms`](../../api/command_api.md#send_transforms)
 - [`send_rigidbodies`](../../api/command_api.md#send_rigidbodies)
 - [`send_bounds`](../../api/command_api.md#send_bounds)
+- [`send_fast_transforms`](../../api/command_api.md#send_fast_transforms)
+- [`send_object_ids`](../../api/command_api.md#send_object_ids)
 
 Output Data API:
 
 - [`SceneRegions`](../../api/output_data.md#SceneRegions) 
 - [`Transforms`](../../api/output_data.md#Transforms) 
 - [`Rigidbodies`](../../api/output_data.md#Rigidbodies) 
-- [`Bounds`](../../api/output_data.md#Bounds) 
+- [`Bounds`](../../api/output_data.md#Bounds)
+- [`FastTransforms`](../../api/output_data.md#FastTransforms) 
+- [`ObjectIds`](../../api/output_data.md#ObjectIds)

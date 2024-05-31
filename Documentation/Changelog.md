@@ -26,6 +26,16 @@
 | `show_leap_motion_hands` | Visually show or hide Leap Motion hands.  | 
 | `start_fove_calibration` | Start the FOVE headset's internal calibration. |
 | `tilt_fove_rig_by` | Tilt (pitch) the Fove rig by an angle.  |
+| `scale_object_to` | Scale the object to the given value. This is only useful if you know the model scale beforehand, which is not always (1, 1, 1). This command is only useful when used with send_scales, because ObjectScales output data will return the actual scale of each object.  | 
+| `send_avatar_ids` | Send the IDs of each avatar in the scene.  | 
+| `send_fast_avatars` | Send the position and rotation of each avatar in the scene. This is slightly faster than SendAvatars, and FastAvatars compresses much better than Avatars. However, FastAvatars doesn't contain avatar IDs, which makes it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastAvatars.  | 
+| `send_fast_image_sensors` | Send the and rotation of each avatar's camera in the scene. This is slightly faster than SendImageSensors, and FastImageSensors compresses much better than ImageSensors. However, FastImageSensors is missing a lot of information contained in ImageSensors, including avatar IDs, making it harder to use. See: send_avatar_ids which serializes the avatar IDs in the same order as the data in FastImageSensors.  | 
+| `send_fast_transforms` | Send FastTransforms output data. This is slightly faster than SendTransforms, and FastTransforms compresses much better than Transforms. However, FastTransforms excludes some data (see output data documentation) and it is also harder to use. See: send_object_ids which serializes the object IDs in the same order as the data in FastTransforms.  | 
+| `send_object_ids` | Send the IDs of all Rigidbody objects (models and composite sub-objects) in the scene. The object IDs are sorted.  | 
+| `send_post_process` | Send post-processing values.  | 
+| `send_scene` | Send streamed scene metadata.  | 
+| `send_models` | Send name and URL of each model in the scene.  | 
+| `send_scales` | Send Scales data of objects in the scene. The scales are the worldspace scales rather than a factor. Send scale_object_to, not scale_object  | 
 
 #### Modified Commands
 
@@ -35,11 +45,28 @@
 
 ### Output Data
 
-### New Output Data
+#### New Output Data
 
 | Output Data | Description |
 | --- | --- |
 | `Fove` | FOVE headset and eye tracking data. |
+| `Models` | Model names and URLs per object. |
+| `ObjectScales` | The spatial scale of each object in the scene. |
+| `PostProcess` | Post-processing values. |
+| `Scene` | The scene name and URL of the asset bundle. |
+| `SystemInfo` | System and hardware information. |
+| `AvatarIds` | The IDs of each avatar in the scene. | 
+| `FastAvatars` | Fast, fixed-length avatar transform data. Use this in conjunction with FastAvatarIds: the order of the IDs matches the order of this data. |
+| `FastImageSensors` | Fast, fixed-length avatar image sensor transform data. Use this in conjunction with FastAvatarIds: the order of the IDs matches the order of this data. |
+| `FastTransforms` | None | 
+| `ObjectIds` | The IDs of all Rigidbody objects (models and composite sub-objects) in the scene. |
+
+#### Modified Output Data
+
+| Output Data | Modification |
+| --- | --- |
+| `Mouse` | This is now fixed-length data, meaning that it compresses better and is slightly faster. |
+| `Version` | This is now fixed-length data, meaning that it compresses better and is slightly faster. |
 
 ### `tdw` module
 
@@ -80,6 +107,7 @@
 | `python/add_ons/fove_leap_motion.md` | API documentation for `FoveLeapMotion`. |
 | `python/add_ons/leap_motion.md` | API documentation for `LeapMotion`. |
 | `python/vr_data/fove/calibration_method.md`<br>`python/vr_data/fove/calibration_sphere.md`<br>`python/vr_data/fove/calibration_state.md`<br>`python/vr_data/fove/eye_by_eye_calibration.md`<br>`python/vr_data/fove/eye_torsion_calibration.md`<br>`python/vr_data/fove/eye_state.md`<br>`python/vr_data/fove/eye.md` | API documentation for data classes used by the `FoveLeapMotion` add-on. |
+| `lessons/core_concepts/output_data.md` | Added a section for "fast" output data. |
 
 #### Modified Documentation
 

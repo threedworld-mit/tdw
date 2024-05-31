@@ -24226,6 +24226,80 @@
             "wcategory": "sofa",
             "wnid": "n04256520"
         },
+        "baseball": {
+            "affordance_points": [],
+            "asset_bundle_sizes": {
+                "Darwin": 405264,
+                "Linux": 562626,
+                "Windows": 262847
+            },
+            "bounds": {
+                "back": {
+                    "x": 1.192093e-07,
+                    "y": 0.0372524,
+                    "z": -0.03499994
+                },
+                "bottom": {
+                    "x": 1.192093e-07,
+                    "y": 0,
+                    "z": 5.960464e-08
+                },
+                "center": {
+                    "x": 1.192093e-07,
+                    "y": 0.0372524,
+                    "z": 5.960464e-08
+                },
+                "front": {
+                    "x": 1.192093e-07,
+                    "y": 0.0372524,
+                    "z": 0.03500006
+                },
+                "left": {
+                    "x": -0.03499988,
+                    "y": 0.0372524,
+                    "z": 5.960464e-08
+                },
+                "right": {
+                    "x": 0.03500012,
+                    "y": 0.0372524,
+                    "z": 5.960464e-08
+                },
+                "top": {
+                    "x": 1.192093e-07,
+                    "y": 0.0745048,
+                    "z": 5.960464e-08
+                }
+            },
+            "canonical_rotation": {
+                "x": 0,
+                "y": 0.0,
+                "z": 0
+            },
+            "composite_object": false,
+            "container_shapes": [],
+            "do_not_use": false,
+            "do_not_use_reason": "",
+            "flex": false,
+            "name": "baseball",
+            "physics_quality": 0.9571212503276931,
+            "scale_factor": 1.0,
+            "substructure": [
+                {
+                    "materials": [
+                        "balls"
+                    ],
+                    "name": "baseball 1"
+                }
+            ],
+            "urls": {
+                "Darwin": "https://tdw-public.s3.amazonaws.com/models/osx/2018-2019.1/baseball",
+                "Linux": "https://tdw-public.s3.amazonaws.com/models/linux/2018-2019.1/baseball",
+                "Windows": "https://tdw-public.s3.amazonaws.com/models/windows/2018-2019.1/baseball"
+            },
+            "volume": 0.0003771293559111655,
+            "wcategory": "baseball",
+            "wnid": "n02799071"
+        },
         "basic_cork": {
             "asset_bundle_sizes": {
                 "Darwin": 3264929,

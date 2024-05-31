@@ -36,6 +36,22 @@ Per `communicate()` call, this add-on updates the positions of the VR rig, its h
 
 - `initialized` If True, this module has been initialized.
 
+- `rig` The [`Transform`](../object_data/transform.md) data of the root rig object. If `output_data == False`, this is never updated.
+
+- `left_hand` The [`Transform`](../object_data/transform.md) data of the left hand. If `output_data == False`, this is never updated.
+
+- `right_hand` The [`Transform`](../object_data/transform.md) data of the right hand. If `output_data == False`, this is never updated.
+
+- `head` The [`Transform`](../object_data/transform.md) data of the head. If `output_data == False`, this is never updated.
+
+- `held_left` A numpy of object IDs held by the left hand.
+
+- `held_right` A numpy of object IDs held by the right hand.
+
+- `commands` These commands will be appended to the commands of the next `communicate()` call.
+
+- `initialized` If True, this module has been initialized.
+
 ***
 
 ## Functions
@@ -55,7 +71,7 @@ Per `communicate()` call, this add-on updates the positions of the VR rig, its h
 | rotation |  float  | 0 | The initial rotation of the VR rig in degrees. |
 | attach_avatar |  bool  | False | If True, attach an [avatar](../../lessons/core_concepts/avatars.md) to the VR rig's head. Do this only if you intend to enable [image capture](../../lessons/core_concepts/images.md). The avatar's ID is `"vr"`. |
 | avatar_camera_width |  int  | 512 | The width of the avatar's camera in pixels. *This is not the same as the VR headset's screen resolution!* This only affects the avatar that is created if `attach_avatar` is `True`. Generally, you will want this to lower than the headset's actual pixel width, otherwise the framerate will be too slow. |
-| headset_aspect_ratio |  float  | 0.9 | The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all Oculus devices. |
+| headset_aspect_ratio |  float  | 0.9 | The `width / height` aspect ratio of the VR headset. This is only relevant if `attach_avatar` is `True` because it is used to set the height of the output images. The default value is the correct value for all VR devices. |
 | headset_resolution_scale |  float  | 1.0 | The headset resolution scale controls the actual size of eye textures as a multiplier of the device's default resolution. A value greater than 1 improves image quality but at a slight performance cost. Range: 0.5 to 1.75 |
 | non_graspable |  List[int] | None | A list of IDs of non-graspable objects. By default, all non-kinematic objects are graspable and all kinematic objects are non-graspable. Set this to make non-kinematic objects non-graspable. |
 | discrete_collision_detection_mode |  bool  | True | If True, the VR rig's hands and all graspable objects in the scene will be set to the `"discrete"` collision detection mode, which seems to reduce physics glitches in VR. If False, the VR rig's hands and all graspable objects will be set to the `"continuous_dynamic"` collision detection mode (the default in TDW). |
@@ -147,6 +163,17 @@ Usually, you shouldn't override this function. It is useful for a small number o
 
 _Returns:_  A list of commands that will initialize this add-on.
 
+#### listen_to_axis
+
+**`self.listen_to_axis(is_left, function)`**
+
+Listen for controller axis events.
+
+| Parameter | Type | Default | Description |
+| --- | --- | --- | --- |
+| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
+| function |  Callable[[np.ndarray] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |
+
 #### listen_to_button
 
 **`self.listen_to_button(button, is_left, function)`**
@@ -158,14 +185,3 @@ Listen for Oculus Touch controller button presses.
 | button |  OculusTouchButton |  | The Oculus Touch controller button. |
 | is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
 | function |  Callable[[] |  | The function to invoke when the button is pressed. This function must have no arguments and return None. |
-
-#### listen_to_axis
-
-**`self.listen_to_axis(is_left, function)`**
-
-Listen for Oculus Touch controller axis events.
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| is_left |  bool |  | If True, this is the left controller. If False, this is the right controller. |
-| function |  Callable[[np.ndarray] |  | The function to invoke when the button is pressed. This function must a single argument (a numpy array of shape `(2)`, representing (x, y) coordinates) and return None. |

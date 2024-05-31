@@ -4,7 +4,7 @@
 
 TDW was developed primarily by Jeremy Schwartz and [Esther Alter](https://github.com/alters-mit). It is now maintained by Esther Alter.
 
-**TDW is now in long-term support (LTS). TDW will receive only minor updates and bug fixes.**
+**TDW is now in [long-term support (LTS)](https://github.com/threedworld-mit/tdw/pull/709). TDW will receive only minor updates and bug fixes.**
 
 ![](splash.jpg)
 

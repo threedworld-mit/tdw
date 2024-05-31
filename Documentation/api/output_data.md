@@ -85,20 +85,24 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [Magnebot](#Magnebot) | Data for a Magnebot. | `magn` |
 | [MagnebotWheels](#MagnebotWheels) | A message sent when a Magnebot arrives at a target. | `mwhe` |
 | [Meshes](#Meshes) | Mesh data from readable objects. | `mesh` |
+| [Models](#Models) | Model names and URLs per object. | `mode` |
 | [Mouse](#Mouse) | Data for mouse input and movement. | `mous` |
 | [NavMeshPath](#NavMeshPath) | A path on the scene's NavMesh. | `path` |
 | [ObiParticles](#ObiParticles) | Obi particle data. | `obip` |
 | [ObjectColliderIntersection](#ObjectColliderIntersection) | Data for two objects whose colliders are intersecting. | `obci` |
+| [ObjectScales](#ObjectScales) | The spatial scale of each object in the scene. | `osca` |
 | [Occlusion](#Occlusion) | To what extent parts of the scene environment (such as walls) are occluding objects. | `occl` |
 | [OccupancyMap](#OccupancyMap) | A grid of positions denoting whether a space is occupied, free, or out of bounds. | `occu` |
 | [OculusTouchButtons](#OculusTouchButtons) | Which Oculus Touch controller buttons have been pressed. | `octb` |
 | [Overlap](#Overlap) | The IDs of every object that a shape overlaps. | `over` |
+| [PostProcess](#PostProcess) | Post-processing values. | `post` |
 | [QuitSignal](#QuitSignal) | A message sent by the build when it quits. | `quit` |
 | [Raycast](#Raycast) | A ray cast from an origin to a destination and what, if anything, it hit. | `rayc` |
 | [Replicants](#Replicants) | Data about each Replicant in the scene. | `repl` |
 | [ReplicantSegmentationColors](#ReplicantSegmentationColors) | Color segmentation data for Replicants in the scene. | `rseg` |
 | [Rigidbodies](#Rigidbodies) | Dynamic rigibody data (velocity, angular velocity, etc.) for objects in the scene. | `rigi` |
 | [RobotJointVelocities](#RobotJointVelocities) | Velocity for a robot in the scene. | `rojv` |
+| [Scene](#Scene) | The scene name and URL of the asset bundle. | `scen` |
 | [SceneRegions](#SceneRegions) | Data regarding the scene regions. | `sreg` |
 | [ScreenPosition](#ScreenPosition) | A position on the screen converted from a worldspace position. | `scre` |
 | [SegmentationColors](#SegmentationColors) | Color segmentation data for objects in the scene. | `segm` |
@@ -108,12 +112,18 @@ Objects in arrays can't be directly accessed (this is due to how the backend cod
 | [StaticRigidbodies](#StaticRigidbodies) | Static rigibody data (mass, kinematic state, etc.) for objects in the scene. | `srig` |
 | [StaticRobot](#StaticRobot) | Static data for a robot in the scene. | `srob` |
 | [Substructure](#Substructure) | The substructure of a model. This should be used mainly for backend debugging. | `subs` |
+| [SystemInfo](#SystemInfo) | System and hardware information. | `syst` |
 | [TransformMatrices](#TransformMatrices) | 4x4 transform matrices for each object in the scene. | `trma` |
 | [Transforms](#Transforms) | Data about the Transform component of objects (position and rotation). | `tran` |
 | [TriggerCollision](#TriggerCollision) | Data for a non-physics trigger collision event. | `trco` |
 | [Version](#Version) | The build version and Unity version. | `vers` |
 | [Volumes](#Volumes) | Spatial volume data for objects in the scene. | `volu` |
 | [VRRig](#VRRig) | Data about the VR rig currently in the scene. | `vrri` |
+| [AvatarIds](#AvatarIds) | The IDs of each avatar in the scene. | `avid` |
+| [FastAvatars](#FastAvatars) | Fast, fixed-length avatar transform data. Use this in conjunction with FastAvatarIds: the order of the IDs matches the order of this data. | `fava` |
+| [FastImageSensors](#FastImageSensors) | Fast, fixed-length avatar image sensor transform data. Use this in conjunction with FastAvatarIds: the order of the IDs matches the order of this data. | `fims` |
+| [FastTransforms](#FastTransforms) | None | `None` |
+| [ObjectIds](#ObjectIds) | The IDs of all Rigidbody objects (models and composite sub-objects) in the scene. | `obid` |
 
 # API
 ## AlbedoColors
@@ -627,7 +637,7 @@ Data about the Transform component of objects (position and rotation) relative t
 | --- | --- | --- |
 | `get_num()` | The number of objects. | `int` |
 | `get_id(index)` | The id. | `int` |
-| `get_position(index)` | The position. | `np.ndarray` |
+| `get_position(index)` | The position of the object's pivot point, in the order (x, y, z). | `np.ndarray` |
 | `get_forward(index)` | The forward directional vector, in worldspace rotational coordinates. | `np.ndarray` |
 | `get_rotation(index)` | The rotation. | `np.ndarray` |
 | `get_euler_angles(index)` | The `[x, y, z]` Euler angles of each object. | `np.ndarray` |
@@ -688,6 +698,21 @@ Mesh data from readable objects.
 | `get_num()` | The number of objects. | `int` |
 | `get_vertices(index)` | The (x, y, z) coordinates of each vertex. | `np.ndarray` |
 | `get_triangles(index)` | Each triangle of the mesh. | `np.ndarray` |
+
+## Models
+
+`m = Models(byte_array)`
+
+**Identifier:** `mode`
+
+Model names and URLs per object.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_name(index)` | The name. | `str` |
+| `get_url(index)` | The url. | `str` |
 
 ## Mouse
 
@@ -759,6 +784,20 @@ Data for two objects whose colliders are intersecting.
 | `get_distance()` | The distance along direction that is required to separate the colliders apart. | `float` |
 | `get_direction()` | The direction along which the translation required to separate the colliders apart is minimal. | `Tuple[float, float, float]` |
 
+## ObjectScales
+
+`o = ObjectScales(byte_array)`
+
+**Identifier:** `osca`
+
+The spatial scale of each object in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `int` |
+| `get_scale(index)` | The scale. | `np.ndarray` |
+
 ## Occlusion
 
 `o = Occlusion(byte_array)`
@@ -816,6 +855,27 @@ The IDs of every object that a shape overlaps.
 | `get_object_ids()` | The IDs of every object in the overlap shape. | `np.ndarray` |
 | `get_env()` | If true, the overlap shape includes at least one environment object (such as the floor). | `bool` |
 | `get_walls()` | If true, the overlap shape includes at least one environment object that isn't the floor. | `bool` |
+
+## PostProcess
+
+`p = PostProcess(byte_array)`
+
+**Identifier:** `post`
+
+Post-processing values.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_enabled()` | Whether post-processing is enabled. | `bool` |
+| `get_ambient_occlusion_intensity()` | The intensity (darkness) of the Ambient Occulusion effect. | `float` |
+| `get_ambient_occlusion_thickness_modifier()` | The spread of the Ambient Occlusion effect from corners. | `float` |
+| `get_aperture()` | The depth-of-field aperture. | `float` |
+| `get_focus_distance()` | The depth-of-field focus distance. | `float` |
+| `get_contrast()` | The color grading contrast. | `float` |
+| `get_post_exposure()` | The post-exposure value, which affects brightness. | `float` |
+| `get_saturation()` | The color grading saturation. | `float` |
+| `get_screen_space_reflections()` | Whether screen-space reflections are enabled. | `float` |
+| `get_vignette()` | Whether the vignette is enabled. | `float` |
 
 ## QuitSignal
 
@@ -920,6 +980,19 @@ Velocity for a robot in the scene.
 | `get_joint_velocity(index)` | The velocity of the joint. | `np.ndarray` |
 | `get_joint_angular_velocity(index)` | The angular velocity of the joint. | `np.ndarray` |
 | `get_joint_sleeping(index)` | The sleeping of the joint. | `bool` |
+
+## Scene
+
+`s = Scene(byte_array)`
+
+**Identifier:** `scen`
+
+The scene name and URL of the asset bundle.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_name()` | The name of the scene. | `str` |
+| `get_url()` | The URL of the asset bundle. | `str` |
 
 ## SceneRegions
 
@@ -1107,6 +1180,25 @@ The substructure of a model. This should be used mainly for backend debugging.
 | `get_num_sub_object_materials(index)` | The number of sub object materials. | `int` |
 | `get_sub_object_material(index, material_index)` | The material of the sub object. | `str` |
 
+## SystemInfo
+
+`s = SystemInfo(byte_array)`
+
+**Identifier:** `syst`
+
+System and hardware information.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_os()` | The operating system. | `str` |
+| `get_cpu()` | The processor name. | `str` |
+| `get_browser()` | The web browser. WebGL only. | `str` |
+| `get_gpu()` | The name of the GPU. | `str` |
+| `get_graphics_api()` | The graphics API. | `str` |
+| `get_time_since_startup()` | The time in ticks (100-nanosecond intervals) since startup. | `int` |
+| `get_screen_width()` | The pixel width of the application window. | `int` |
+| `get_screen_height()` | The pixel height of the application window. | `int` |
+
 ## TransformMatrices
 
 `t = TransformMatrices(byte_array)`
@@ -1204,4 +1296,65 @@ Data about the VR rig currently in the scene.
 | `get_head_forward()` | The forward of the head. | `Tuple[float, float, float]` |
 | `get_held_left()` | The IDs of the objects held by the left hand. | `np.ndarray` |
 | `get_held_right()` | The IDs of the objects held by the right hand. | `np.ndarray` |
+
+## AvatarIds
+
+`a = AvatarIds(byte_array)`
+
+**Identifier:** `avid`
+
+The IDs of each avatar in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of objects. | `int` |
+| `get_id(index)` | The id. | `str` |
+| `get_type(index)` | The type. | `str` |
+
+## FastAvatars
+
+`f = FastAvatars(byte_array)`
+
+**Identifier:** `fava`
+
+Fast, fixed-length avatar transform data. Use this in conjunction with FastAvatarIds: the order of the IDs matches the order of this data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+
+## FastImageSensors
+
+`f = FastImageSensors(byte_array)`
+
+**Identifier:** `fims`
+
+Fast, fixed-length avatar image sensor transform data. Use this in conjunction with FastAvatarIds: the order of the IDs matches the order of this data.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_num()` | The number of rotations. | `int` |
+| `get_rotation(index)` | The rotation. | `np.ndarray` |
+
+## FastTransforms
+
+`f = FastTransforms(byte_array)`
+
+**Identifier:** `None`
+
+None
+
+| Function | Description | Return type |
+| --- | --- | --- |
+
+## ObjectIds
+
+`o = ObjectIds(byte_array)`
+
+**Identifier:** `obid`
+
+The IDs of all Rigidbody objects (models and composite sub-objects) in the scene.
+
+| Function | Description | Return type |
+| --- | --- | --- |
+| `get_ids()` | The ID of each object and composite sub-object in the scene. This array is sorted. | `List[int]` |
 
